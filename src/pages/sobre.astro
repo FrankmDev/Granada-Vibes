@@ -11,18 +11,18 @@ const ogImage = 'https://placehold.co/1200x630/0F0E0C/FAF9F7?text=Granada+Vibes'
 const values = [
   {
     icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
-    title: 'Autenticidad',
-    desc: 'Solo recomendamos lo que le diríamos a un amigo. Sin pagos por posicionamiento, ni trampas turísticas.'
+    title: 'Autenticidad local',
+    desc: 'Solo recomendamos lo que le diríamos a un amigo. Conocemos cada barrio, cada callejón y cada bar de tapas de Granada.'
   },
   {
     icon: 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
-    title: 'Calidad Curada',
-    desc: 'Cada evento es seleccionado a mano. Preferimos menos opciones que realmente merezcan tu tiempo.'
+    title: 'Selección experta',
+    desc: 'Cada evento y ruta la probamos personalmente. Solo publicamos lo que realmente vale la pena en la Granada de 2025.'
   },
   {
     icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
-    title: 'Comunidad Primero',
-    desc: 'Amplificamos a creadores locales, artistas y pequeños negocios que hacen cosas interesantes.'
+    title: 'Apoyo a lo local',
+    desc: 'Colaboramos con artistas del Sacromonte, artesanos del Albaicín y bares de toda la vida que mantienen vivas las tradiciones.'
   }
 ];
 ---
@@ -30,14 +30,14 @@ const values = [
 <BaseLayout 
   locale={locale} 
   title="Sobre nosotros"
-  description="Granada Vibes es la guía cultural que Granada merece. Descubre quiénes somos, nuestra misión y cómo colaborar con nosotros."
+  description="Granada Vibes: guía cultural independiente creada por granadinos. Descubre la ciudad como un local: eventos curatorados, rutas auténticas y los mejores planes en Granada."
   ogImage={ogImage}
   schemaType="organization"
 >
   {/* Page Header */}
   <PageHeader 
     title="La guía que Granada merece"
-    subtitle="Somos un equipo pequeño de granadinos y adoptados construyendo la herramienta que nos hubiera gustado tener. Eventos curados, rutas auténticas, cero ruido."
+    subtitle="Guía cultural independiente creada por granadinos de toda la vida y adoptados. Conocemos cada rincón de la ciudad: desde el Albaicín hasta el Sacromonte, desde la Alhambra hasta el Realejo."
     accent="terra"
     variant="large"
   />
@@ -51,12 +51,13 @@ const values = [
       <div class="max-w-3xl mx-auto text-center reveal">
         <span class="text-amber text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">Nuestra misión</span>
         <h2 id="mission-heading" class="font-display text-3xl lg:text-4xl xl:text-5xl font-bold text-surface leading-tight mb-8">
-          Cortar el ruido. <br/>
-          <span class="text-surface-secondary">Encontrar la Granada real.</span>
+          La guía de Granada <br/>
+          <span class="text-surface-secondary">que los locales usarían.</span>
         </h2>
         <p class="text-lg text-surface-secondary leading-relaxed">
-          Las guías tradicionales se quedan obsoletas. Las redes sociales están dispersas. Demasiadas experiencias auténticas 
-          nunca llegan a quienes las buscan. Filtramos el ruido para que encuentres lo que merece la pena.
+          Granada tiene dos caras: la de las guías turísticas y la de quienes la vivimos. Nosotros te mostramos 
+          la segunda. Los mejores miradores del Albaicín, las cuevas flamencas del Sacromonte, los bares de toda 
+          la vida donde las tapas siguen siendo gratis. Sin filtros, sin colas, sin sorpresas.
         </p>
       </div>
     </div>
@@ -123,9 +124,10 @@ const values = [
               <span class="font-display text-2xl font-bold text-surface">1</span>
             </div>
             <div class="flex-1 pt-2">
-              <h3 class="font-display text-xl font-semibold text-surface mb-2">Exploramos</h3>
+              <h3 class="font-display text-xl font-semibold text-surface mb-2">Recorremos Granada</h3>
               <p class="text-surface-secondary leading-relaxed">
-                Cada semana recorremos la ciudad, hablamos con organizadores y visitamos espacios. Sin algoritmos — solo trabajo de campo.
+                Cada semana visitamos el Albaicín, el Sacromonte, el Realejo y el centro. Hablamos con organizadores, 
+                probamos bares y descubrimos espacios nuevos. Trabajo de campo, no algoritmos.
               </p>
             </div>
           </div>
@@ -139,9 +141,10 @@ const values = [
               <span class="font-display text-2xl font-bold text-base">2</span>
             </div>
             <div class="flex-1 pt-2">
-              <h3 class="font-display text-xl font-semibold text-surface mb-2">Curamos</h3>
+              <h3 class="font-display text-xl font-semibold text-surface mb-2">Seleccionamos lo mejor</h3>
               <p class="text-surface-secondary leading-relaxed">
-                Cada evento y ruta se selecciona manualmente. Buscamos autenticidad, calidad y variedad — no solo popularidad.
+                Cada evento y ruta pasa por nuestro filtro: ¿lo recomendaríamos a un amigo? Buscamos autenticidad, 
+                calidad y esa magia que solo tienen los lugares de verdad.
               </p>
             </div>
           </div>
@@ -155,9 +158,10 @@ const values = [
               <span class="font-display text-2xl font-bold text-surface">3</span>
             </div>
             <div class="flex-1 pt-2">
-              <h3 class="font-display text-xl font-semibold text-surface mb-2">Descubres</h3>
+              <h3 class="font-display text-xl font-semibold text-surface mb-2">Tú descubres</h3>
               <p class="text-surface-secondary leading-relaxed">
-                Desde flamenco en cuevas del Sacromonte hasta exposiciones de arte emergente — encuentra la Granada que existe más allá de la postal.
+                Flamenco auténtico en cuevas del Sacromonte, miradores secretos del Albaicín, bares de toda la vida 
+                en el Realejo. La Granada que no sale en las guías turísticas, pero que los locales conocemos bien.
               </p>
             </div>
           </div>
@@ -176,10 +180,11 @@ const values = [
         
         <div class="relative px-8 py-16 lg:px-16 lg:py-20 text-center reveal">
           <h2 id="collab-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface mb-4 max-w-2xl mx-auto">
-            ¿Tienes algo que compartir?
+            ¿Eres de Granada y organizas algo?
           </h2>
           <p class="text-surface-secondary text-lg max-w-xl mx-auto mb-10">
-            Ya sea que organices eventos, ofrezcas tours guiados o tengas un espacio único — nos encantaría saber de ti.
+            Si organizas eventos culturales, das tours por el Albaicín o el Sacromonte, o tienes un espacio único 
+            en Granada — nos encantaría colaborar contigo.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 justify-center">

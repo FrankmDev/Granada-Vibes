@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'default' | 'terra' | 'amber' | 'mint' | 'live' | 'outline';
+  variant?: 'default' | 'terra' | 'sand' | 'coral' | 'live' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   class?: string;
 }
@@ -10,8 +10,8 @@ const { variant = 'default', size = 'md', class: className = '' } = Astro.props;
 const variantClasses = {
   default: 'bg-base-elevated text-surface-secondary border-edge',
   terra: 'bg-terra/15 text-terra border-terra/30',
-  amber: 'bg-amber/15 text-amber border-amber/30',
-  mint: 'bg-mint/15 text-mint border-mint/30',
+  sand: 'bg-sand/15 text-sand border-sand/30',
+  coral: 'bg-coral/15 text-coral border-coral/30',
   live: 'bg-terra text-surface border-terra',
   outline: 'bg-transparent text-surface-secondary border-edge hover:border-surface-secondary',
 };

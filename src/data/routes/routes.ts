@@ -9,7 +9,7 @@ export const routes: Route[] = [
       en: 'Sunset at the Albaicín Viewpoints',
     },
     description: {
-      es: 'Recorrido por los tres miradores más espectaculares del Albaicín para contemplar la Alhambra al atardecer. San Nicolás, San Cristóbal y el secreto de Santa Isabel la Real.',
+      es: 'Ruta por los mejores miradores del Albaicín para ver la Alhambra al atardecer: San Nicolás, San Cristóbal y el jardín secreto de Santa Isabel la Real. La puesta de sol más famosa de Granada.',
       en: 'Route through the three most spectacular viewpoints of the Albaicín to contemplate the Alhambra at sunset. San Nicolás, San Cristóbal, and the secret of Santa Isabel la Real.',
     },
     category: 'viewpoint',
@@ -77,7 +77,7 @@ export const routes: Route[] = [
       en: 'Traditional Tapas Route',
     },
     description: {
-      es: 'Los mejores bares de tapas del centro histórico donde aún sirven gratis con la bebida. Una ruta por la gastronomía más auténtica de Granada.',
+      es: 'Ruta de tapeo por el centro histórico y el Realejo de Granada. Los mejores bares donde las tapas siguen siendo gratis con la bebida. Una experiencia gastronómica auténtica creada por locales.',
       en: 'The best tapas bars in the historic center where they still serve free with your drink. A route through Granada\'s most authentic gastronomy.',
     },
     category: 'tapas',
@@ -272,7 +272,7 @@ export const routes: Route[] = [
       en: 'Secret Corners of the Realejo',
     },
     description: {
-      es: 'El antiguo barrio judío esconde patios mágicos, murales ocultos y plazas donde el tiempo se detuvo. Una ruta para perderse y encontrar la Granada auténtica.',
+      es: 'Descubre los rincones secretos del Realejo, el antiguo barrio judío de Granada. Patios mágicos, grafitis de El Niño, plazas escondidas y la verdadera vida local lejos del turismo masivo.',
       en: 'The old Jewish quarter hides magical courtyards, hidden murals, and squares where time stopped. A route to get lost and find authentic Granada.',
     },
     category: 'secrets',

@@ -7,7 +7,7 @@ export const es = {
     about: 'Sobre nosotros',
     changeLanguage: 'Cambiar a English',
     skipToContent: 'Saltar al contenido principal',
-    guideLabel: 'Guía Cultural',
+    guideLabel: 'Guía Cultural de Granada',
     mainNavLabel: 'Navegación principal',
     mobileNavLabel: 'Navegación móvil',
     openMenu: 'Abrir menú',
@@ -36,13 +36,13 @@ export const es = {
   // Categories
   categories: {
     all: 'Todo',
-    concert: 'Concierto',
-    exhibition: 'Exposición',
-    festival: 'Festival',
-    market: 'Mercado',
+    concert: 'Conciertos',
+    exhibition: 'Exposiciones',
+    festival: 'Festivales',
+    market: 'Mercados',
     theater: 'Teatro',
-    workshop: 'Taller',
-    'guided-tour': 'Visita guiada',
+    workshop: 'Talleres',
+    'guided-tour': 'Visitas guiadas',
     viewpoint: 'Miradores',
     tapas: 'Tapeo',
     monuments: 'Monumentos',
@@ -83,8 +83,8 @@ export const es = {
 
   // Events page
   events: {
-    title: 'Eventos culturales',
-    subtitle: 'Descubre lo mejor de la escena cultural granadina',
+    title: 'Eventos en Granada',
+    subtitle: 'Conciertos, exposiciones, flamenco y planes culturales seleccionados por locales',
     upcoming: 'Próximos eventos',
     featured: 'Destacados',
     noEvents: 'No hay eventos que coincidan con tus filtros',
@@ -102,7 +102,7 @@ export const es = {
   // Routes page
   routes: {
     title: 'Rutas por Granada',
-    subtitle: 'Explora la ciudad con nuestras rutas curadas',
+    subtitle: 'Descubre la ciudad con itinerarios diseñados por granadinos: miradores, tapeo y lugares secretos',
     featured: 'Rutas destacadas',
     duration: '{{minutes}} min',
     distance: '{{km}} km',
@@ -122,12 +122,12 @@ export const es = {
     share: 'Compartir',
     free: 'Gratis',
     unknown: 'Consultar',
-    whatToExpect: 'Qué esperar',
-    practicalTips: 'Consejos prácticos',
+    whatToExpect: 'Qué vas a descubrir',
+    practicalTips: 'Consejos de local',
     tags: 'Etiquetas',
     getTickets: 'Comprar entradas',
     mapComingSoon: 'Mapa próximamente',
-    similarEvents: 'Eventos similares',
+    similarEvents: 'Eventos que te pueden gustar',
     similarRoutes: 'Rutas similares',
     whatToBring: 'Qué llevar',
     bestMonths: 'Mejores meses',
@@ -170,8 +170,8 @@ export const es = {
       ctaEvents: 'Ver eventos',
       ctaRoutes: 'Explorar rutas',
     },
-    featuredEvents: 'Eventos destacados',
-    featuredRoutes: 'Rutas recomendadas',
+    featuredEvents: 'Eventos destacados esta semana',
+    featuredRoutes: 'Rutas recomendadas por locales',
     discoverMore: 'Descubre más',
     exploreEvents: 'Explorar eventos',
     exploreRoutes: 'Explorar rutas',
@@ -180,9 +180,9 @@ export const es = {
       heritage: '2 Patrimonios UNESCO',
       tapas: '48h para perderse',
       free: '0€ tapa incluida',
-      yearsDesc: 'Desde la fundación',
-      heritageDesc: 'Patrimonios mundiales',
-      tapasDesc: 'De tapas y cultura',
+      yearsDesc: 'Desde la fundación árabe',
+      heritageDesc: 'Alhambra y Albaicín',
+      tapasDesc: 'De tapeo por Granada',
       freeDesc: 'Con cada bebida',
     },
   },
@@ -193,28 +193,28 @@ export const es = {
     mission: {
       title: 'Nuestra misión',
       description:
-        'Conectar a visitantes y locales con la rica cultura granadina, facilitando el descubrimiento de eventos, rutas y experiencias auténticas que celebren la esencia única de esta ciudad.',
+        'Somos un equipo de granadinos y adoptados que creamos la guía cultural que nos hubiera gustado tener. Sin algoritmos, sin pagos por posicionamiento: solo recomendaciones honestas de locales.',
     },
     values: {
       title: 'Nuestros valores',
       authentic: {
         title: 'Autenticidad',
-        description: 'Promovemos experiencias genuinas, lejos de las trampas turísticas.',
+        description: 'Solo recomendamos lo que le diríamos a un amigo. Sin trampas turísticas ni pagos ocultos.',
       },
       quality: {
         title: 'Calidad curada',
-        description: 'Cada evento y ruta es seleccionado cuidadosamente por nuestro equipo.',
+        description: 'Cada evento y ruta es seleccionado a mano. Preferimos menos opciones que realmente valgan la pena.',
       },
       community: {
-        title: 'Comunidad',
-        description: 'Apoyamos a creadores locales y negocios de la ciudad.',
+        title: 'Comunidad local',
+        description: 'Apoyamos a creadores locales, artistas y pequeños negocios que hacen Granada especial.',
       },
     },
   },
 
   // Footer
   footer: {
-    tagline: 'Tu guía cultural de Granada',
+    tagline: 'Tu guía local de Granada',
     links: {
       explore: 'Explorar',
       company: 'Nosotros',
@@ -226,7 +226,7 @@ export const es = {
     explore: 'Explorar',
     thisWeek: 'Esta semana',
     contact: 'Contacto',
-    newsletter: 'Recibe las novedades',
+    newsletter: 'Recibe las novedades de Granada',
     newsletterPlaceholder: 'Tu email',
     viewAllEvents: 'Ver todos los eventos',
     madeIn: 'Hecho con ❤ en Granada',
@@ -238,7 +238,7 @@ export const es = {
   meta: {
     siteName: 'Granada Vibes',
     defaultDescription:
-      'Tu guía cultural e inteligente de Granada. Descubre eventos, rutas y experiencias únicas en la ciudad de la Alhambra.',
+      'Guía cultural de Granada creada por locales. Eventos, rutas por el Albaicín y Sacromonte, y planes auténticos fuera de las guías turísticas.',
   },
 } as const;
 

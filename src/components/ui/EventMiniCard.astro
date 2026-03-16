@@ -1,0 +1,64 @@
+---
+/**
+ * EventMiniCard - Tarjeta minimalista para eventos (ideal para footers, sidebars)
+ * @param event - Evento a mostrar
+ * @param locale - Idioma actual
+ * @param dateLabel - Etiqueta de fecha opcional (ej: "Hoy", "Mañana")
+ */
+
+import type { Event } from '@types';
+import { formatDateShort } from '@utils/dates';
+
+interface Props {
+  event: Event;
+  locale: 'es' | 'en';
+  dateLabel?: string;
+  class?: string;
+}
+
+const { event, locale, dateLabel, class: className = '' } = Astro.props;
+
+const href = locale === 'es' ? `/eventos/${event.slug}` : `/en/events/${event.slug}`;
+const displayDate = dateLabel || formatDateShort(event.date, locale);
+---
+
+<a 
+  href={href}
+  class:list={[
+    'group block p-4 bg-base-card border border-edge rounded-2xl',
+    'hover:border-terra/30 hover:-translate-y-0.5 transition-all duration-300',
+    className,
+  ]}
+>
+  <div class="flex items-start gap-3">
+    {/* Date badge */}
+    <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-base-elevated border border-edge flex flex-col items-center justify-center">
+      <span class="text-[10px] font-bold uppercase text-surface-muted tracking-wider">
+        {displayDate.split(' ')[0]?.substring(0, 3)}
+      </span>
+      <span class="text-sm font-display font-bold text-surface">
+        {displayDate.split(' ')[1]}
+      </span>
+    </div>
+    
+    {/* Content */}
+    <div class="flex-1 min-w-0">
+      <p class="text-sm text-surface group-hover:text-terra transition-colors duration-300 line-clamp-2 font-medium leading-snug">
+        {event.title[locale]}
+      </p>
+      <p class="text-xs text-surface-muted mt-1 truncate">
+        {event.venue}
+      </p>
+      {event.price !== null && (
+        <p class="text-xs text-sand font-semibold mt-1.5">
+          {event.price}€
+        </p>
+      )}
+      {event.price === null && (
+        <p class="text-xs text-coral font-semibold mt-1.5">
+          Gratis
+        </p>
+      )}
+    </div>
+  </div>
+</a>

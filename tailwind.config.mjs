@@ -29,20 +29,20 @@ export default {
           subtle: 'rgba(232, 90, 60, 0.1)',
         },
 
-        // Secondary - Warm gold
-        amber: {
-          DEFAULT: '#F5A623',      // Secondary accent
-          hover: '#FFB84D',        // Hover state
-          glow: 'rgba(245, 166, 35, 0.4)',
-          subtle: 'rgba(245, 166, 35, 0.1)',
+        // Secondary - Warm sand/cream
+        sand: {
+          DEFAULT: '#C9A87C',      // Secondary accent
+          hover: '#D4B88F',        // Hover state
+          glow: 'rgba(201, 168, 124, 0.4)',
+          subtle: 'rgba(201, 168, 124, 0.1)',
         },
 
-        // Tertiary - Sage/Mediterranean
-        mint: {
-          DEFAULT: '#5C8D7F',      // Tertiary accent
-          hover: '#6BA08F',        // Hover state
-          glow: 'rgba(92, 141, 127, 0.4)',
-          subtle: 'rgba(92, 141, 127, 0.1)',
+        // Tertiary - Deep coral/rust
+        coral: {
+          DEFAULT: '#B85C4F',      // Tertiary accent
+          hover: '#C76E61',        // Hover state
+          glow: 'rgba(184, 92, 79, 0.4)',
+          subtle: 'rgba(184, 92, 79, 0.1)',
         },
 
         // Special - Midnight blue accent
@@ -58,13 +58,13 @@ export default {
           hover: 'rgba(250, 249, 247, 0.15)',
           strong: 'rgba(250, 249, 247, 0.25)',
           terra: 'rgba(232, 90, 60, 0.3)',
-          amber: 'rgba(245, 166, 35, 0.3)',
+          sand: 'rgba(201, 168, 124, 0.3)',
         },
 
         // Semantic
-        success: '#5C8D7F',
+        success: '#7A9E7E',
         error: '#E85A3C',
-        warning: '#F5A623',
+        warning: '#C9A87C',
       },
 
       fontFamily: {
@@ -108,8 +108,8 @@ export default {
       boxShadow: {
         // Soft glows for dark theme
         'glow-terra': '0 0 40px rgba(232, 90, 60, 0.3)',
-        'glow-amber': '0 0 40px rgba(245, 166, 35, 0.3)',
-        'glow-mint': '0 0 40px rgba(92, 141, 127, 0.3)',
+        'glow-sand': '0 0 40px rgba(201, 168, 124, 0.3)',
+        'glow-coral': '0 0 40px rgba(184, 92, 79, 0.3)',
         
         // Elevation shadows
         'elevated': '0 4px 24px rgba(0, 0, 0, 0.4)',
@@ -210,9 +210,9 @@ export default {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
         'gradient-terra': 'linear-gradient(135deg, #E85A3C 0%, #F07050 100%)',
-        'gradient-amber': 'linear-gradient(135deg, #F5A623 0%, #FFB84D 100%)',
-        'gradient-mint': 'linear-gradient(135deg, #5C8D7F 0%, #6BA08F 100%)',
-        'gradient-mesh': 'linear-gradient(135deg, rgba(232, 90, 60, 0.1) 0%, rgba(245, 166, 35, 0.1) 50%, rgba(92, 141, 127, 0.1) 100%)',
+        'gradient-sand': 'linear-gradient(135deg, #C9A87C 0%, #D4B88F 100%)',
+        'gradient-coral': 'linear-gradient(135deg, #B85C4F 0%, #C76E61 100%)',
+        'gradient-mesh': 'linear-gradient(135deg, rgba(232, 90, 60, 0.1) 0%, rgba(201, 168, 124, 0.1) 50%, rgba(184, 92, 79, 0.1) 100%)',
       },
     },
   },
@@ -226,8 +226,14 @@ export default {
           '-webkit-text-fill-color': 'transparent',
           'background-clip': 'text',
         },
-        '.text-gradient-amber': {
-          'background': 'linear-gradient(135deg, #F5A623 0%, #FFB84D 100%)',
+        '.text-gradient-sand': {
+          'background': 'linear-gradient(135deg, #C9A87C 0%, #D4B88F 100%)',
+          '-webkit-background-clip': 'text',
+          '-webkit-text-fill-color': 'transparent',
+          'background-clip': 'text',
+        },
+        '.text-gradient-coral': {
+          'background': 'linear-gradient(135deg, #B85C4F 0%, #C76E61 100%)',
           '-webkit-background-clip': 'text',
           '-webkit-text-fill-color': 'transparent',
           'background-clip': 'text',
@@ -279,8 +285,11 @@ export default {
         '.glow-terra': {
           'box-shadow': '0 0 40px rgba(232, 90, 60, 0.3)',
         },
-        '.glow-amber': {
-          'box-shadow': '0 0 40px rgba(245, 166, 35, 0.3)',
+        '.glow-sand': {
+          'box-shadow': '0 0 40px rgba(201, 168, 124, 0.3)',
+        },
+        '.glow-coral': {
+          'box-shadow': '0 0 40px rgba(184, 92, 79, 0.3)',
         },
         
         // Grain texture overlay

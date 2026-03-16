@@ -21,7 +21,7 @@ const temporalProximity = getTemporalProximity(event.date);
     <div class:list={[
       'relative h-full bg-base-card border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-2',
       event.featured 
-        ? 'border-amber/20 hover:border-amber/40 hover:shadow-lg hover:shadow-amber/10' 
+        ? 'border-sand/20 hover:border-sand/40 hover:shadow-lg hover:shadow-sand/10' 
         : 'border-edge hover:border-terra/30 hover:shadow-lg hover:shadow-terra/10'
     ]}>
       
@@ -44,7 +44,7 @@ const temporalProximity = getTemporalProximity(event.date);
         {/* Featured badge */}
         {event.featured && (
           <div class="absolute top-5 left-5">
-            <Badge variant="amber" size="sm">{t('events.featured')}</Badge>
+            <Badge variant="coral" size="sm">{t('events.featured')}</Badge>
           </div>
         )}
         
@@ -107,7 +107,7 @@ const temporalProximity = getTemporalProximity(event.date);
         </div>
         
         {/* Accent line */}
-        <div class="w-10 h-[2px] bg-gradient-to-r from-terra to-amber mb-4 transition-all duration-300 group-hover:w-16"></div>
+        <div class="w-10 h-[2px] bg-gradient-to-r from-terra to-sand mb-4 transition-all duration-300 group-hover:w-16"></div>
         
         {/* Title */}
         <h3 class:list={[
