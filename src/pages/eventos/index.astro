@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/layout/PageHeader.astro';
+import EventCard from '@components/events/EventCard.astro';
+import { getAllEvents } from '@data';
+import { useTranslations } from '@i18n/utils';
+import type { EventCategory } from '@types';
+
+const locale = 'es';
+const t = useTranslations(locale);
+const events = getAllEvents();
+
+const categories: EventCategory[] = ['concert', 'exhibition', 'festival', 'market', 'theater', 'workshop', 'guided-tour'];
+---
+
+<BaseLayout 
+  locale={locale} 
+  title={t('events.title')}
+  description={t('events.subtitle')}
+  schemaType="website"
+>
+  <PageHeader 
+    title={t('events.title')}
+    subtitle={t('events.subtitle')}
+    accent="accent"
+  />
+
+  {/* Filters Bar */}
+  <div class="border-y border-border/30 bg-bg-raised/20">
+    <div class="container py-4">
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label={t('events.filters.title')}>
+        <span class="text-sm text-text-muted mr-2">{t('events.filters.category')}:</span>
+        <button 
+          class="px-3 py-1.5 text-xs font-medium uppercase tracking-wider bg-accent text-bg rounded-full"
+          aria-pressed="true"
+        >
+          {t('categories.all')}
+        </button>
+        {categories.map((cat) => (
+          <button 
+            class="px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-text-secondary bg-bg-card border border-border rounded-full hover:border-accent/30 transition-colors"
+            aria-pressed="false"
+          >
+            {t(`categories.${cat}`)}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Events Grid */}
+  <section class="container py-12 lg:py-16" aria-labelledby="events-heading">
+    <h2 id="events-heading" class="sr-only">{t('events.title')}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {events.map((event) => (
+        <EventCard event={event} locale={locale} t={t} />
+      ))}
+    </div>
+    
+    {events.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-text-secondary">{t('events.noEvents')}</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

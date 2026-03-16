@@ -1,0 +1,314 @@
+---
+import type { Locale } from '@types';
+import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
+import SEOHead from '@components/seo/SEOHead.astro';
+import SchemaMarkup from '@components/seo/SchemaMarkup.astro';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  canonical?: string;
+  noindex?: boolean;
+  schemaType?: 'website' | 'event' | 'route' | 'organization';
+  schemaData?: Record<string, unknown>;
+}
+
+const { 
+  locale, 
+  title, 
+  description,
+  ogImage,
+  ogType,
+  canonical,
+  noindex,
+  schemaType = 'website',
+  schemaData,
+} = Astro.props;
+
+const siteUrl = SITE_CONFIG.url;
+const currentPath = Astro.url.pathname;
+const localePath = LOCALE_PATHS[locale];
+
+const navLinks = [
+  { href: `${localePath}/`, labelKey: 'nav.home', label: locale === 'es' ? 'Inicio' : 'Home' },
+  { href: `${localePath}/eventos`, labelKey: 'nav.events', label: locale === 'es' ? 'Eventos' : 'Events' },
+  { href: `${localePath}/rutas`, labelKey: 'nav.routes', label: locale === 'es' ? 'Rutas' : 'Routes' },
+  { href: `${localePath}/sobre`, labelKey: 'nav.about', label: locale === 'es' ? 'Nosotros' : 'About' },
+];
+
+const otherLocale = locale === 'es' ? 'en' : 'es';
+const otherLocalePath = LOCALE_PATHS[otherLocale];
+const switchUrl = otherLocalePath + currentPath.replace(/^\/en/, '');
+
+const isActive = (href: string) => {
+  if (href === `${localePath}/`) {
+    return currentPath === href || currentPath === `${localePath}`;
+  }
+  return currentPath.startsWith(href);
+};
+---
+
+<!doctype html>
+<html lang={locale} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    
+    {/* SEO */}
+    <SEOHead 
+      locale={locale}
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      ogType={ogType}
+      canonical={canonical}
+      noindex={noindex}
+    />
+    
+    {/* Schema Markup */}
+    <SchemaMarkup 
+      type={schemaType}
+      locale={locale}
+      data={schemaData}
+      path={currentPath}
+    />
+    
+    {/* Performance: Preconnect to external domains */}
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.fontshare.com" />
+    
+    {/* Prefetch critical resources */}
+    <link rel="prefetch" href={switchUrl} />
+    
+    <slot name="head" />
+  </head>
+  
+  <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased">
+    {/* Skip to content link for accessibility */}
+    <a 
+      href="#main-content" 
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg focus:rounded-lg"
+    >
+      {locale === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+    </a>
+    
+    {/* Header - Clean glass */}
+    <header class="fixed top-0 left-0 right-0 z-50" id="header" role="banner">
+      <div class="absolute inset-0 bg-bg/80 backdrop-blur-xl border-b border-border/40" id="header-bg" />
+      
+      <div class="container relative flex items-center justify-between h-[var(--header-height)]">
+        {/* Logo */}
+        <a 
+          href={localePath || '/'} 
+          class="relative z-10 flex items-center gap-2.5 group"
+          aria-label={`${SITE_CONFIG.name} - ${locale === 'es' ? 'Inicio' : 'Home'}`}
+        >
+          <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center transition-colors group-hover:bg-accent/20">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <span class="font-display text-lg font-semibold text-text-primary tracking-tight">
+            {SITE_CONFIG.name}
+          </span>
+        </a>
+        
+        {/* Desktop Navigation */}
+        <nav class="hidden md:flex items-center gap-1 relative z-10" aria-label={locale === 'es' ? 'Navegación principal' : 'Main navigation'}>
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                'px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-lg',
+                isActive(link.href) 
+                  ? 'text-accent bg-accent/10' 
+                  : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
+              ]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        
+        {/* Right side */}
+        <div class="flex items-center gap-2 relative z-10">
+          <a
+            href={switchUrl}
+            class="flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono uppercase tracking-wider text-text-muted hover:text-accent bg-bg-raised border border-border rounded-lg hover:border-accent/30 transition-all duration-200"
+            aria-label={locale === 'es' ? 'Cambiar a English' : 'Switch to Español'}
+          >
+            <span class={locale === 'es' ? 'text-accent font-medium' : ''} aria-hidden="true">ES</span>
+            <span class="text-border" aria-hidden="true">/</span>
+            <span class={locale === 'en' ? 'text-accent font-medium' : ''} aria-hidden="true">EN</span>
+          </a>
+          
+          <button
+            type="button"
+            class="md:hidden p-2.5 text-text-secondary hover:text-text-primary bg-bg-raised border border-border rounded-lg transition-colors"
+            aria-label={locale === 'es' ? 'Abrir menú' : 'Open menu'}
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            id="mobile-menu-button"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      {/* Mobile menu */}
+      <div 
+        id="mobile-menu" 
+        class="hidden md:hidden absolute top-full left-0 right-0 bg-bg/95 backdrop-blur-xl border-b border-border"
+        role="navigation"
+        aria-label={locale === 'es' ? 'Navegación móvil' : 'Mobile navigation'}
+      >
+        <nav class="container py-4 flex flex-col gap-1">
+          {navLinks.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                'px-4 py-3 rounded-xl transition-colors',
+                isActive(link.href)
+                  ? 'text-accent bg-accent/10'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-bg-raised'
+              ]}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+          <div class="h-px bg-border my-2" role="separator" />
+          <a
+            href={switchUrl}
+            class="px-4 py-3 text-text-muted hover:text-accent hover:bg-bg-raised rounded-xl transition-colors"
+          >
+            {locale === 'es' ? 'Cambiar a English' : 'Switch to Español'}
+          </a>
+        </nav>
+      </div>
+    </header>
+    
+    {/* Main Content */}
+    <main id="main-content" class="flex-1 pt-[var(--header-height)]" role="main">
+      <slot />
+    </main>
+    
+    {/* Footer - Clean */}
+    <footer class="border-t border-border/50" role="contentinfo">
+      <div class="container py-16">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {/* Brand */}
+          <div class="md:col-span-5">
+            <a href={localePath || '/'} class="inline-flex items-center gap-2.5 mb-5 group" aria-label={`${SITE_CONFIG.name} - ${locale === 'es' ? 'Inicio' : 'Home'}`}>
+              <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center transition-colors group-hover:bg-accent/20">
+                <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <span class="font-display text-lg font-semibold text-text-primary">
+                {SITE_CONFIG.name}
+              </span>
+            </a>
+            <p class="text-text-secondary text-sm leading-relaxed max-w-sm">
+              {SITE_CONFIG.description[locale]}
+            </p>
+          </div>
+          
+          {/* Links */}
+          <div class="md:col-span-3 md:col-start-7">
+            <h3 class="text-[11px] font-mono uppercase tracking-[0.15em] text-text-muted mb-5">
+              {locale === 'es' ? 'Explorar' : 'Explore'}
+            </h3>
+            <ul class="space-y-3" role="list">
+              <li>
+                <a href={`${localePath}/eventos`} class="text-sm text-text-secondary hover:text-accent transition-colors">
+                  {locale === 'es' ? 'Eventos' : 'Events'}
+                </a>
+              </li>
+              <li>
+                <a href={`${localePath}/rutas`} class="text-sm text-text-secondary hover:text-accent transition-colors">
+                  {locale === 'es' ? 'Rutas' : 'Routes'}
+                </a>
+              </li>
+              <li>
+                <a href={`${localePath}/sobre`} class="text-sm text-text-secondary hover:text-accent transition-colors">
+                  {locale === 'es' ? 'Sobre nosotros' : 'About us'}
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          {/* Contact */}
+          <div class="md:col-span-2">
+            <h3 class="text-[11px] font-mono uppercase tracking-[0.15em] text-text-muted mb-5">
+              {locale === 'es' ? 'Ubicación' : 'Location'}
+            </h3>
+            <address class="not-italic text-sm text-text-secondary">
+              Granada,<br />Andalucía, España
+            </address>
+          </div>
+        </div>
+        
+        {/* Bottom */}
+        <div class="mt-16 pt-8 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p class="text-xs text-text-muted">
+            © {new Date().getFullYear()} {SITE_CONFIG.name}
+          </p>
+          <p class="text-[11px] text-text-tertiary font-mono uppercase tracking-wider">
+            {locale === 'es' ? 'Hecho con ❤ en Granada' : 'Made with ❤ in Granada'}
+          </p>
+        </div>
+      </div>
+    </footer>
+    
+    {/* Scripts */}
+    <script is:inline>
+      (function() {
+        // Mobile menu toggle with accessibility
+        const button = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        
+        if (button && menu) {
+          let isOpen = false;
+          
+          button.addEventListener('click', function() {
+            isOpen = !isOpen;
+            menu.classList.toggle('hidden');
+            button.setAttribute('aria-expanded', String(isOpen));
+            button.setAttribute('aria-label', isOpen 
+              ? (document.documentElement.lang === 'es' ? 'Cerrar menú' : 'Close menu')
+              : (document.documentElement.lang === 'es' ? 'Abrir menú' : 'Open menu')
+            );
+          });
+          
+          // Close menu when clicking outside
+          document.addEventListener('click', function(event) {
+            if (isOpen && !button.contains(event.target) && !menu.contains(event.target)) {
+              isOpen = false;
+              menu.classList.add('hidden');
+              button.setAttribute('aria-expanded', 'false');
+            }
+          });
+          
+          // Close menu on escape key
+          document.addEventListener('keydown', function(event) {
+            if (isOpen && event.key === 'Escape') {
+              isOpen = false;
+              menu.classList.add('hidden');
+              button.setAttribute('aria-expanded', 'false');
+              button.focus();
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

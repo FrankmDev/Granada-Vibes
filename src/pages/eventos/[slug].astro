@@ -1,0 +1,124 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
+import Icon from '@components/ui/Icon.astro';
+import { getAllEvents, getEventBySlug } from '@data';
+import { useTranslations } from '@i18n/utils';
+import { formatDate } from '@utils/dates';
+
+export function getStaticPaths() {
+  const events = getAllEvents();
+  return events.map((event) => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const locale = 'es';
+const t = useTranslations(locale);
+
+const breadcrumbs = [
+  { label: t('nav.home'), href: '/' },
+  { label: t('nav.events'), href: '/eventos' },
+  { label: event.title[locale] },
+];
+---
+
+<BaseLayout 
+  locale={locale}
+  title={event.title[locale]}
+  description={event.description[locale]}
+  schemaType="event"
+  schemaData={event}
+>
+  <article class="container pt-32 pb-20">
+    <Breadcrumbs items={breadcrumbs} />
+
+    {/* Header */}
+    <header class="max-w-4xl mb-12">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-accent/10 text-accent rounded-full">
+          {t(`categories.${event.category}`)}
+        </span>
+        {event.featured && (
+          <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full">
+            {t('events.featured')}
+          </span>
+        )}
+      </div>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold tracking-[-0.02em] mb-6">
+        {event.title[locale]}
+      </h1>
+      <p class="text-lg text-text-secondary leading-relaxed">
+        {event.description[locale]}
+      </p>
+    </header>
+
+    {/* Info Cards */}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12" role="list" aria-label={t('events.filters.title')}>
+      <div class="p-6 bg-bg-card border border-border rounded-xl" role="listitem">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+            <Icon name="calendar" class="w-5 h-5 text-accent" />
+          </div>
+          <span class="text-sm text-text-muted">{t('events.filters.date')}</span>
+        </div>
+        <p class="font-medium text-text-primary">{formatDate(event.date, locale)}</p>
+      </div>
+
+      <div class="p-6 bg-bg-card border border-border rounded-xl" role="listitem">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+            <Icon name="clock" class="w-5 h-5 text-accent" />
+          </div>
+          <span class="text-sm text-text-muted">{locale === 'es' ? 'Hora' : 'Time'}</span>
+        </div>
+        <p class="font-medium text-text-primary">{event.time}{event.endTime ? ` - ${event.endTime}` : ''}</p>
+      </div>
+
+      <div class="p-6 bg-bg-card border border-border rounded-xl" role="listitem">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+            <Icon name="location" class="w-5 h-5 text-accent" />
+          </div>
+          <span class="text-sm text-text-muted">{t('events.filters.neighborhood')}</span>
+        </div>
+        <p class="font-medium text-text-primary">{event.venue}</p>
+        <p class="text-sm text-text-muted">{t(`neighborhoods.${event.neighborhood}`)}</p>
+      </div>
+    </div>
+
+    {/* Price & CTA */}
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-6 bg-bg-card border border-border rounded-xl">
+      <div>
+        <p class="text-sm text-text-muted mb-1">{locale === 'es' ? 'Precio' : 'Price'}</p>
+        <p class="text-3xl font-display font-semibold text-text-primary">
+          {event.price === null ? t('events.free') : `${event.price}€`}
+        </p>
+      </div>
+      <button 
+        class="inline-flex items-center gap-2 px-6 py-3.5 bg-accent text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] focus:outline-none focus:ring-2 focus:ring-accent/50"
+      >
+        <Icon name="ticket" class="w-5 h-5" />
+        {event.price === null ? 'Confirmar asistencia' : t('actions.getTickets')}
+      </button>
+    </div>
+
+    {/* Tags */}
+    {event.tags.length > 0 && (
+      <div class="mt-12">
+        <h2 class="font-mono text-[11px] uppercase tracking-[0.15em] text-text-muted mb-4">
+          {locale === 'es' ? 'Etiquetas' : 'Tags'}
+        </h2>
+        <div class="flex flex-wrap gap-2" role="list" aria-label={locale === 'es' ? 'Etiquetas del evento' : 'Event tags'}>
+          {event.tags.map((tag) => (
+            <span class="text-sm text-text-secondary bg-bg-raised px-3 py-1.5 rounded-full border border-border/50" role="listitem">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+  </article>
+</BaseLayout>

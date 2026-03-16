@@ -1,0 +1,22 @@
+---
+interface Props {
+  variant?: 'default' | 'gradient' | 'spacer';
+  class?: string;
+}
+
+const { variant = 'default', class: className = '' } = Astro.props;
+
+const variantClasses = {
+  default: 'border-t border-border',
+  gradient: 'h-px bg-gradient-to-r from-transparent via-border to-transparent',
+  spacer: 'border-t-0 h-8',
+};
+
+const baseClasses = [
+  'w-full',
+  variantClasses[variant],
+  className,
+].join(' ');
+---
+
+<div class={baseClasses} role="separator" />

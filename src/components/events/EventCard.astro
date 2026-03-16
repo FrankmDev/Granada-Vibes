@@ -1,0 +1,86 @@
+---
+import type { Event } from '@types';
+import { formatDateShort, formatTime } from '@utils/dates';
+
+interface Props {
+  event: Event;
+  locale: 'es' | 'en';
+  t: (key: string, vars?: Record<string, string | number>) => string;
+  featured?: boolean;
+}
+
+const { event, locale, t, featured = false } = Astro.props;
+const href = locale === 'es' ? `/eventos/${event.slug}` : `/en/events/${event.slug}`;
+---
+
+<article class:list={['group', { 'col-span-full md:col-span-2': featured }]}>
+  <a href={href} class="block h-full">
+    <div class="relative h-full bg-bg-card border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg">
+      {/* Image Area */}
+      <div class:list={['bg-bg-raised relative overflow-hidden', featured ? 'aspect-[21/9]' : 'aspect-[16/10]']}>
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        {/* Placeholder icon when no image */}
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-16 h-16 rounded-2xl bg-bg-card/50 border border-border flex items-center justify-center">
+            <svg class="w-8 h-8 text-text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+        
+        {/* Featured badge */}
+        {event.featured && (
+          <div class="absolute top-4 left-4">
+            <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full border border-sand/20">
+              {t('events.featured')}
+            </span>
+          </div>
+        )}
+        
+        {/* Category badge */}
+        <div class="absolute top-4" class:list={event.featured ? 'right-4' : 'right-4'}>
+          <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-bg/90 text-text-primary rounded-full border border-border/50">
+            {t(`categories.${event.category}`)}
+          </span>
+        </div>
+        
+        {/* Price badge */}
+        <div class="absolute bottom-4 right-4">
+          <span class="px-3 py-1.5 text-sm font-display font-semibold bg-bg/90 text-text-primary rounded-full border border-border/50">
+            {event.price === null ? t('events.free') : `${event.price}€`}
+          </span>
+        </div>
+      </div>
+      
+      {/* Content */}
+      <div class="p-5">
+        <div class="flex items-center gap-2 mb-3 text-sm text-text-muted">
+          <svg class="w-4 h-4 text-accent/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <span>{formatDateShort(event.date, locale)}</span>
+          <span class="w-1 h-1 rounded-full bg-border" />
+          <span>{formatTime(event.time, locale)}</span>
+        </div>
+        
+        <h3 class="text-lg font-display font-medium text-text-primary mb-2 group-hover:text-accent transition-colors duration-200 line-clamp-2">
+          {event.title[locale]}
+        </h3>
+        
+        <p class="text-sm text-text-secondary line-clamp-2 mb-3">
+          {event.description[locale]}
+        </p>
+        
+        <div class="flex items-center gap-1.5 text-sm text-text-muted pt-3 border-t border-border/30">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>{event.venue}</span>
+          <span class="w-1 h-1 rounded-full bg-border" />
+          <span>{t(`neighborhoods.${event.neighborhood}`)}</span>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

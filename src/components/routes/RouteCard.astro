@@ -1,0 +1,118 @@
+---
+import type { Route } from '@types';
+import { formatDuration, formatDistance } from '@utils/dates';
+
+interface Props {
+  route: Route;
+  locale: 'es' | 'en';
+  t: (key: string, vars?: Record<string, string | number>) => string;
+  index?: number;
+  variant?: 'list' | 'grid';
+}
+
+const { route, locale, t, index = 0, variant = 'list' } = Astro.props;
+const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+---
+
+{variant === 'list' ? (
+  <article class="group">
+    <a href={href} class="block">
+      <div class="flex flex-col md:flex-row md:items-center gap-4 p-5 bg-bg-card border border-border rounded-xl transition-all duration-300 hover:border-sand/30">
+        {/* Number */}
+        <span class="hidden md:block w-8 font-display text-base font-medium text-text-muted group-hover:text-sand transition-colors shrink-0">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        
+        {/* Content */}
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-sand">
+              {t(`categories.${route.category}`)}
+            </span>
+            <span class="w-1 h-1 rounded-full bg-border" />
+            <span class="text-xs text-text-muted">{t(`difficulty.${route.difficulty}`)}</span>
+            <span class="w-1 h-1 rounded-full bg-border" />
+            <span class="text-xs text-text-muted">{formatDuration(route.duration, locale)}</span>
+            <span class="w-1 h-1 rounded-full bg-border hidden sm:block" />
+            <span class="text-xs text-text-muted hidden sm:block">{formatDistance(route.distance, locale)}</span>
+          </div>
+          <h3 class="text-lg font-display font-medium text-text-primary group-hover:text-sand transition-colors duration-200">
+            {route.title[locale]}
+          </h3>
+          <p class="text-sm text-text-secondary line-clamp-1 mt-1">
+            {route.description[locale]}
+          </p>
+        </div>
+        
+        {/* Neighborhoods */}
+        <div class="flex flex-wrap gap-2 md:justify-end">
+          {route.neighborhoods.slice(0, 2).map((n) => (
+            <span class="px-2.5 py-1 text-xs text-text-muted bg-bg-raised rounded-full">
+              {t(`neighborhoods.${n}`)}
+            </span>
+          ))}
+        </div>
+        
+        {/* Arrow */}
+        <svg class="hidden md:block w-4 h-4 text-text-muted group-hover:text-sand group-hover:translate-x-1 transition-all duration-200 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </a>
+  </article>
+) : (
+  <article class="group">
+    <a href={href} class="block h-full">
+      <div class="h-full bg-bg-card border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-sand/30 hover:shadow-lg">
+        {/* Image Area */}
+        <div class="aspect-[16/10] bg-bg-raised relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-sand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          
+          {/* Placeholder icon */}
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-16 h-16 rounded-2xl bg-bg-card/50 border border-border flex items-center justify-center">
+              <svg class="w-8 h-8 text-text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
+              </svg>
+            </div>
+          </div>
+          
+          {/* Category badge */}
+          <div class="absolute top-4 left-4">
+            <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full border border-sand/20">
+              {t(`categories.${route.category}`)}
+            </span>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div class="p-5">
+          <div class="flex items-center gap-4 text-sm text-text-muted mb-3">
+            <span class="font-mono text-xs uppercase tracking-wider">
+              {t(`difficulty.${route.difficulty}`)}
+            </span>
+            <span class="w-1 h-1 rounded-full bg-text-muted" />
+            <span>{formatDuration(route.duration, locale)}</span>
+          </div>
+          
+          <h3 class="font-display text-xl font-semibold mb-2 group-hover:text-sand transition-colors duration-300 line-clamp-2">
+            {route.title[locale]}
+          </h3>
+          
+          <p class="text-text-secondary text-sm line-clamp-2 mb-4">
+            {route.description[locale]}
+          </p>
+          
+          {/* Neighborhood tags */}
+          <div class="flex flex-wrap gap-2">
+            {route.neighborhoods.slice(0, 3).map((n) => (
+              <span class="text-xs text-text-muted bg-bg-raised px-2.5 py-1 rounded-lg font-mono uppercase tracking-wider">
+                {t(`neighborhoods.${n}`)}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </a>
+  </article>
+)}

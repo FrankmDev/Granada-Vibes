@@ -7,14 +7,14 @@ import Icon from '@components/ui/Icon.astro';
 import { getFeaturedEvents, getFeaturedRoutes } from '@data';
 import { useTranslations } from '@i18n/utils';
 
-const locale = 'es';
+const locale = 'en';
 const t = useTranslations(locale);
 
 const featuredEvents = getFeaturedEvents().slice(0, 3);
 const featuredRoutes = getFeaturedRoutes().slice(0, 3);
 ---
 
-<BaseLayout locale={locale} seo={{ title: 'Inicio' }}>
+<BaseLayout locale={locale} seo={{ title: 'Home' }}>
   {/* Hero Section */}
   <section class="relative overflow-hidden" aria-labelledby="hero-title">
     <div class="absolute inset-0 bg-gradient-to-br from-bg via-bg to-bg-raised" />
@@ -31,7 +31,7 @@ const featuredRoutes = getFeaturedRoutes().slice(0, 3);
             
             <h1 id="hero-title" class="font-display text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-semibold leading-[0.9] tracking-[-0.04em]">
               <span class="block text-text-primary">
-                Descubre
+                Discover
               </span>
               <span class="block text-gradient mt-2">
                 Granada
@@ -42,7 +42,7 @@ const featuredRoutes = getFeaturedRoutes().slice(0, 3);
           {/* Right: Intro Text */}
           <div class="lg:col-span-4 lg:pb-4">
             <p class="text-text-secondary leading-relaxed">
-              Tu guía cultural para eventos, rutas y experiencias auténticas en la ciudad de la Alhambra.
+              Your cultural guide for events, routes, and authentic experiences in the city of the Alhambra.
             </p>
           </div>
         </div>
@@ -67,12 +67,12 @@ const featuredRoutes = getFeaturedRoutes().slice(0, 3);
           </div>
           <div class="flex-1" />
           <div class="flex items-center gap-4">
-            <a href="/eventos" 
+            <a href="/en/events" 
               class="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-bg font-medium text-sm rounded-lg transition-all duration-300 hover:shadow-[0_8px_20px_rgba(224,122,95,0.25)]"
             >
               {t('nav.events')}
             </a>
-            <a href="/rutas" 
+            <a href="/en/routes" 
               class="inline-flex items-center gap-2 px-5 py-2.5 text-text-primary font-medium text-sm border border-border rounded-lg hover:border-accent hover:text-accent transition-all duration-300"
             >
               {t('nav.routes')}
@@ -89,7 +89,7 @@ const featuredRoutes = getFeaturedRoutes().slice(0, 3);
       <SectionHeader
         overline={t('events.title')}
         title={t('home.featuredEvents')}
-        href="/eventos"
+        href="/en/events"
         linkText={t('actions.viewAll')}
         accent="accent"
       />
@@ -108,7 +108,7 @@ const featuredRoutes = getFeaturedRoutes().slice(0, 3);
       <SectionHeader
         overline={t('routes.title')}
         title={t('home.featuredRoutes')}
-        href="/rutas"
+        href="/en/routes"
         linkText={t('actions.viewAll')}
         accent="sand"
       />
@@ -135,12 +135,12 @@ const featuredRoutes = getFeaturedRoutes().slice(0, 3);
         </p>
         
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a href="/eventos" 
+          <a href="/en/events" 
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-accent text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)]"
           >
             {locale === 'es' ? 'Explorar eventos' : 'Explore events'}
           </a>
-          <a href="/rutas" 
+          <a href="/en/routes" 
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-transparent text-text-primary font-semibold text-sm uppercase tracking-wider rounded-xl border border-border hover:border-text-primary transition-colors duration-200"
           >
             {locale === 'es' ? 'Ver rutas' : 'View routes'}

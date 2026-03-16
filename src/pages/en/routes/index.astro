@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/layout/PageHeader.astro';
+import RouteCard from '@components/routes/RouteCard.astro';
+import { getAllRoutes } from '@data';
+import { useTranslations } from '@i18n/utils';
+import type { RouteCategory } from '@types';
+
+const locale = 'en';
+const t = useTranslations(locale);
+const routes = getAllRoutes();
+
+const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
+---
+
+<BaseLayout 
+  locale={locale} 
+  title={t('routes.title')}
+  description={t('routes.subtitle')}
+  schemaType="website"
+>
+  <PageHeader 
+    title={t('routes.title')}
+    subtitle={t('routes.subtitle')}
+    accent="sand"
+  />
+
+  {/* Filters Bar */}
+  <div class="border-y border-border/30 bg-bg-raised/20">
+    <div class="container py-4">
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label={t('events.filters.title')}>
+        <span class="text-sm text-text-muted mr-2">{t('events.filters.category')}:</span>
+        <button 
+          class="px-3 py-1.5 text-xs font-medium uppercase tracking-wider bg-sand text-bg rounded-full"
+          aria-pressed="true"
+        >
+          {t('categories.all')}
+        </button>
+        {categories.map((cat) => (
+          <button 
+            class="px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-text-secondary bg-bg-card border border-border rounded-full hover:border-sand/30 transition-colors"
+            aria-pressed="false"
+          >
+            {t(`categories.${cat}`)}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Routes List */}
+  <section class="container py-12 lg:py-16" aria-labelledby="routes-heading">
+    <h2 id="routes-heading" class="sr-only">{t('routes.title')}</h2>
+    <div class="space-y-4">
+      {routes.map((route, index) => (
+        <RouteCard route={route} locale={locale} t={t} index={index} variant="list" />
+      ))}
+    </div>
+    
+    {routes.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-text-secondary">{t('routes.noRoutes')}</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

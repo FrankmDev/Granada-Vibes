@@ -1,0 +1,57 @@
+---
+interface Props {
+  overline?: string;
+  title: string;
+  description?: string;
+  align?: 'left' | 'center';
+  accent?: 'accent' | 'sand' | 'sage';
+  href?: string;
+  linkText?: string;
+}
+
+const { 
+  overline, 
+  title, 
+  description, 
+  align = 'left', 
+  accent = 'accent',
+  href,
+  linkText 
+} = Astro.props;
+
+const accentColors = {
+  accent: 'text-accent group-hover:text-accent-hover',
+  sand: 'text-sand group-hover:text-sand-hover',
+  sage: 'text-sage group-hover:text-sage-hover',
+};
+
+const textAlign = align === 'center' ? 'text-center' : 'text-left';
+const flexDirection = align === 'center' ? 'flex-col items-center' : 'flex-col lg:flex-row lg:items-end lg:justify-between';
+---
+
+<div class:list={['flex gap-6 mb-12', flexDirection, textAlign]}>
+  <div class:list={{ 'max-w-2xl mx-auto': align === 'center' }}>
+    {overline && (
+      <span class:list={['text-[11px] font-mono uppercase tracking-[0.2em] mb-3 block', accentColors[accent].split(' ')[0]]}>
+        {overline}
+      </span>
+    )}
+    <h2 class="text-3xl lg:text-4xl font-display font-semibold text-text-primary tracking-[-0.02em]">
+      {title}
+    </h2>
+    {description && (
+      <p class="text-text-secondary mt-3 max-w-lg">
+        {description}
+      </p>
+    )}
+  </div>
+  
+  {href && linkText && (
+    <a href={href} class:list={['group inline-flex items-center gap-2 text-sm font-medium transition-colors shrink-0', accentColors[accent]]}>
+      <span class="uppercase tracking-wider">{linkText}</span>
+      <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </a>
+  )}
+</div>
