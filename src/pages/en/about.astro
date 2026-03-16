@@ -1,11 +1,30 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/layout/PageHeader.astro';
 import { useTranslations } from '@i18n/utils';
 
 const locale = 'en';
 const t = useTranslations(locale);
 
-const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
+const ogImage = 'https://placehold.co/1200x630/0F0E0C/FAF9F7?text=Granada+Vibes';
+
+const values = [
+  {
+    icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+    title: 'Authenticity',
+    desc: 'We only recommend what we\'d tell a friend. No paid placements, no tourist traps.'
+  },
+  {
+    icon: 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z',
+    title: 'Curated Quality',
+    desc: 'Every event is hand-picked. We prefer fewer options that are actually worth your time.'
+  },
+  {
+    icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z',
+    title: 'Community First',
+    desc: 'We amplify local creators, artists, and small businesses doing interesting things.'
+  }
+];
 ---
 
 <BaseLayout 
@@ -15,305 +34,173 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes'
   ogImage={ogImage}
   schemaType="organization"
 >
-  {/* Hero editorial */}
-  <section class="relative min-h-[60vh] flex items-center hero-grain bg-bg" aria-labelledby="hero-title">
-    <div class="container relative pt-32 pb-20">
-      <h1 id="hero-title" class="max-w-4xl">
-        <span class="block font-display text-4xl sm:text-5xl lg:text-7xl font-bold text-text-primary leading-[1.1]">
-          Granada deserves
-        </span>
-        <span class="block font-display text-4xl sm:text-5xl lg:text-7xl font-bold text-text-primary leading-[1.1] mt-2">
-          a better guide.
-        </span>
-        <span class="block font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-accent leading-[1.2] mt-6">
-          So we're building it.
-        </span>
-      </h1>
-    </div>
-  </section>
+  {/* Page Header */}
+  <PageHeader 
+    title="The guide Granada deserves"
+    subtitle="We're a small team of locals and adopted granadinos building the tool we wish we had. Curated events, authentic routes, zero noise."
+    accent="terra"
+    variant="large"
+  />
 
-  {/* Project Section */}
-  <section class="py-20 lg:py-28" aria-labelledby="project-heading">
-    <div class="container">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-        {/* Left column */}
-        <div>
-          <h2 id="project-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
-            What is Granada Vibes
-          </h2>
-          <div class="space-y-4 text-text-secondary leading-relaxed">
-            <p>
-              Granada Vibes was born from a shared frustration: the difficulty of discovering 
-              what's really happening in a city with as much cultural life as Granada. Traditional 
-              tourist guides become outdated, events on social media are scattered, and too many 
-              authentic experiences never reach those looking for them.
-            </p>
-            <p>
-              We're a small team of locals and adopted granadinos who decided to create the tool 
-              we wish we had. A living guide, constantly updated, that connects curious visitors 
-              with local creators, locals with new experiences, and everyone with the Granada 
-              that exists beyond the postcard.
-            </p>
-            <p>
-              We're not a travel agency. We don't sell tickets. We just filter the noise so you 
-              can find what's worth your time.
-            </p>
-          </div>
-        </div>
-
-        {/* Right column */}
-        <div>
-          <h2 class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
-            How it works
-          </h2>
-          <div class="space-y-4 text-text-secondary leading-relaxed">
-            <p>
-              Every week we walk the city, talk to organizers, visit venues and manually select 
-              what appears on the platform. There are no algorithms or automatic listings: every 
-              event and route is chosen because we believe it adds something unique.
-            </p>
-            <p>
-              What sets us apart is curation. We don't include something just because it's popular. 
-              We look for authenticity, quality and variety. From flamenco in a Sacromonte cave to 
-              emerging art exhibitions in the City Center, to hiking trails only locals know about.
-            </p>
-            <p>
-              In the future we want to add social features: personalized plans, shared lists, 
-              event alerts. But the core will always be the same: curated content with criteria 
-              and honesty.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* Values Section */}
-  <section class="py-20 lg:py-28 bg-bg-raised/30" aria-labelledby="values-heading">
-    <div class="container">
-      <h2 id="values-heading" class="sr-only">Our values</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
-        {/* Value 1 */}
-        <div>
-          <span class="font-display text-6xl lg:text-7xl font-bold text-accent/20">01</span>
-          <h3 class="font-display text-xl font-semibold text-text-primary mt-4 mb-3">
-            Authenticity
-          </h3>
-          <p class="text-text-secondary leading-relaxed">
-            We promote genuine experiences, away from tourist traps. If something is on 
-            Granada Vibes, it's because we'd recommend it to a friend. We don't accept 
-            payments for positioning or disguised advertising.
-          </p>
-        </div>
-
-        {/* Value 2 */}
-        <div>
-          <span class="font-display text-6xl lg:text-7xl font-bold text-accent/20">02</span>
-          <h3 class="font-display text-xl font-semibold text-text-primary mt-4 mb-3">
-            Curated quality
-          </h3>
-          <p class="text-text-secondary leading-relaxed">
-            Every event and route is carefully selected by our team. We prefer fewer 
-            options but guarantee they're all worth your time. No filler, only 
-            recommendations with criteria.
-          </p>
-        </div>
-
-        {/* Value 3 */}
-        <div>
-          <span class="font-display text-6xl lg:text-7xl font-bold text-accent/20">03</span>
-          <h3 class="font-display text-xl font-semibold text-text-primary mt-4 mb-3">
-            Community
-          </h3>
-          <p class="text-text-secondary leading-relaxed">
-            We support local creators and businesses in the city. Granada Vibes works 
-            because there are artists, organizers and merchants doing interesting things. 
-            Our job is to give them visibility.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {/* Work with us Section */}
-  <section class="py-20 lg:py-28 bg-bg-raised" aria-labelledby="work-heading">
-    <div class="container">
-      <div class="max-w-3xl mb-12">
-        <h2 id="work-heading" class="font-display text-3xl lg:text-4xl font-bold text-text-primary mb-4">
-          Do you have a business in Granada?
+  {/* Mission Statement */}
+  <section class="py-20 lg:py-28 relative" aria-labelledby="mission-heading">
+    {/* Background accent */}
+    <div class="absolute inset-0 bg-gradient-to-b from-terra/[0.02] to-transparent pointer-events-none" aria-hidden="true" />
+    
+    <div class="container relative">
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <span class="text-amber text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">Our mission</span>
+        <h2 id="mission-heading" class="font-display text-3xl lg:text-4xl xl:text-5xl font-bold text-surface leading-tight mb-8">
+          Cut through the noise. <br/>
+          <span class="text-surface-secondary">Find the real Granada.</span>
         </h2>
-        <p class="text-text-secondary text-lg leading-relaxed">
-          We reach visitors looking for authentic experiences, not tourist traps. 
-          If you organize cultural events, offer guided tours or have an interesting 
-          space, we'd love to meet you.
+        <p class="text-lg text-surface-secondary leading-relaxed">
+          Traditional guides become outdated. Social media is scattered. Too many authentic experiences 
+          never reach those looking for them. We filter the noise so you can find what's worth your time.
         </p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {/* Proposal 1 */}
-        <div class="p-6 bg-bg-card border border-border rounded-2xl">
-          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-          <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
-            List your events
-          </h3>
-          <p class="text-text-secondary text-sm leading-relaxed">
-            From intimate concerts to temporary exhibitions. If you have something 
-            interesting to announce, we want to know.
-          </p>
-        </div>
-
-        {/* Proposal 2 */}
-        <div class="p-6 bg-bg-card border border-border rounded-2xl">
-          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
-            </svg>
-          </div>
-          <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
-            Appear in our routes
-          </h3>
-          <p class="text-text-secondary text-sm leading-relaxed">
-            If you have a bar with history, an artisan workshop or a unique space, 
-            we can include it in our themed routes.
-          </p>
-        </div>
-
-        {/* Proposal 3 */}
-        <div class="p-6 bg-bg-card border border-border rounded-2xl">
-          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-            </svg>
-          </div>
-          <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
-            Collaborate with content
-          </h3>
-          <p class="text-text-secondary text-sm leading-relaxed">
-            Are you a photographer, writer or content creator? We're looking for 
-            collaborations to enrich our guides with fresh perspectives.
-          </p>
-        </div>
-      </div>
-
-      <a 
-        href="mailto:hola@granadavibes.com?subject=Collaboration%20with%20Granada%20Vibes"
-        class="inline-flex items-center gap-2 px-8 py-4 bg-accent text-bg font-semibold text-base rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"
-      >
-        Let's talk
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
     </div>
   </section>
 
-  {/* Contact Form */}
-  <section class="py-20 lg:py-28" aria-labelledby="contact-heading">
+  {/* Values Grid */}
+  <section class="py-20 lg:py-28 relative" aria-labelledby="values-heading">
     <div class="container">
-      <div class="max-w-2xl mx-auto">
-        <h2 id="contact-heading" class="font-display text-3xl lg:text-4xl font-bold text-text-primary mb-4 text-center">
-          Get in touch
+      <div class="text-center mb-16 reveal">
+        <span class="text-mint text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">What drives us</span>
+        <h2 id="values-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface">
+          Our values
         </h2>
-        <p class="text-text-secondary text-center mb-10">
-          Have a suggestion, want to propose an event or just say hello? 
-          We're listening.
-        </p>
+      </div>
 
-        <form id="contact-form" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label for="name" class="block text-sm font-medium text-text-secondary mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors"
-                placeholder="Your name"
-              />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 stagger-children">
+        {values.map((value, i) => (
+          <div class="group text-center p-8 rounded-3xl border border-edge bg-base-elevated/30 hover:border-edge-hover transition-all duration-500 hover:-translate-y-2">
+            {/* Icon */}
+            <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-terra/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+              <svg class="w-8 h-8 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={value.icon} />
+              </svg>
             </div>
-            <div>
-              <label for="email" class="block text-sm font-medium text-text-secondary mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors"
-                placeholder="you@email.com"
-              />
+            
+            {/* Number */}
+            <span class="font-display text-5xl font-bold text-surface/[0.03] block mb-2">
+              0{i + 1}
+            </span>
+            
+            {/* Title */}
+            <h3 class="font-display text-xl font-semibold text-surface mb-3">
+              {value.title}
+            </h3>
+            
+            {/* Description */}
+            <p class="text-surface-secondary leading-relaxed text-sm">
+              {value.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* How it Works - Visual Timeline */}
+  <section class="py-20 lg:py-28 relative overflow-hidden" aria-labelledby="how-heading">
+    {/* Background gradient */}
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-mint/[0.02] to-transparent pointer-events-none" aria-hidden="true" />
+    
+    <div class="container relative">
+      <div class="text-center mb-16 reveal">
+        <span class="text-amber text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">The process</span>
+        <h2 id="how-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface">
+          How it works
+        </h2>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="space-y-12">
+          {/* Step 1 */}
+          <div class="flex flex-col md:flex-row gap-8 items-start reveal">
+            <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-terra flex items-center justify-center">
+              <span class="font-display text-2xl font-bold text-surface">1</span>
+            </div>
+            <div class="flex-1 pt-2">
+              <h3 class="font-display text-xl font-semibold text-surface mb-2">We explore</h3>
+              <p class="text-surface-secondary leading-relaxed">
+                Every week we walk the city, talk to organizers, and visit venues. No algorithms — just boots on the ground.
+              </p>
             </div>
           </div>
 
-          <div>
-            <label for="type" class="block text-sm font-medium text-text-secondary mb-2">
-              Inquiry type
-            </label>
-            <select
-              id="type"
-              name="type"
-              required
-              class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
+          {/* Divider */}
+          <div class="hidden md:block h-px bg-edge ml-16" />
+
+          {/* Step 2 */}
+          <div class="flex flex-col md:flex-row gap-8 items-start reveal">
+            <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-amber flex items-center justify-center">
+              <span class="font-display text-2xl font-bold text-base">2</span>
+            </div>
+            <div class="flex-1 pt-2">
+              <h3 class="font-display text-xl font-semibold text-surface mb-2">We curate</h3>
+              <p class="text-surface-secondary leading-relaxed">
+                Every event and route is manually selected. We look for authenticity, quality, and variety — not just popularity.
+              </p>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div class="hidden md:block h-px bg-edge ml-16" />
+
+          {/* Step 3 */}
+          <div class="flex flex-col md:flex-row gap-8 items-start reveal">
+            <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-mint flex items-center justify-center">
+              <span class="font-display text-2xl font-bold text-surface">3</span>
+            </div>
+            <div class="flex-1 pt-2">
+              <h3 class="font-display text-xl font-semibold text-surface mb-2">You discover</h3>
+              <p class="text-surface-secondary leading-relaxed">
+                From flamenco in Sacromonte caves to emerging art exhibitions — find the Granada that exists beyond the postcard.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Collaboration CTA */}
+  <section class="py-20 lg:py-28 relative" aria-labelledby="collab-heading">
+    <div class="container">
+      <div class="relative rounded-[2rem] overflow-hidden">
+        {/* Background */}
+        <div class="absolute inset-0 bg-gradient-to-br from-terra/10 via-base-elevated to-base-elevated" aria-hidden="true" />
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-terra/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" aria-hidden="true" />
+        
+        <div class="relative px-8 py-16 lg:px-16 lg:py-20 text-center reveal">
+          <h2 id="collab-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface mb-4 max-w-2xl mx-auto">
+            Have something to share?
+          </h2>
+          <p class="text-surface-secondary text-lg max-w-xl mx-auto mb-10">
+            Whether you're organizing events, offering guided tours, or have a unique space — we'd love to hear from you.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="mailto:hola@granadavibes.com?subject=Collaboration%20with%20Granada%20Vibes"
+              class="btn btn-primary btn-lg"
             >
-              <option value="">Select an option</option>
-              <option value="event">List an event</option>
-              <option value="collaboration">Collaboration</option>
-              <option value="suggestion">Suggestion</option>
-              <option value="other">Other</option>
-            </select>
+              Get in touch
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a 
+              href="/en/events"
+              class="btn btn-secondary btn-lg"
+            >
+              Explore events
+            </a>
           </div>
-
-          <div>
-            <label for="message" class="block text-sm font-medium text-text-secondary mb-2">
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              rows="5"
-              required
-              class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors resize-none"
-              placeholder="Tell us what you need..."
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-bg font-semibold text-base rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"
-          >
-            Send message
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   </section>
-
-  <script is:inline>
-    (function() {
-      const form = document.getElementById('contact-form');
-      
-      form?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
-        const name = formData.get('name');
-        
-        alert(`Thank you ${name} — your message has been received. We'll get back to you in 24-48h.`);
-        
-        form.reset();
-      });
-    })();
-  </script>
 </BaseLayout>

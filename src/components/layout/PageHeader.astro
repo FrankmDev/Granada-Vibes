@@ -2,54 +2,172 @@
 interface Props {
   title: string;
   subtitle?: string;
-  accent?: 'terra' | 'amber' | 'mint';
+  accent?: 'terra' | 'amber' | 'mint' | 'gold' | 'accent';
   centered?: boolean;
+  variant?: 'default' | 'large' | 'minimal';
+  overline?: string;
 }
 
-const { title, subtitle, accent = 'terra', centered = true } = Astro.props;
+const { 
+  title, 
+  subtitle, 
+  accent = 'terra', 
+  centered = true,
+  variant = 'default',
+  overline = 'Granada Vibes'
+} = Astro.props;
 
-const accentColors = {
-  terra: 'from-terra/20 via-transparent to-transparent',
-  amber: 'from-amber/20 via-transparent to-transparent',
-  mint: 'from-mint/20 via-transparent to-transparent',
+// Map legacy accent values to new system
+const accentMap: Record<string, 'terra' | 'amber' | 'mint'> = {
+  terra: 'terra',
+  amber: 'amber',
+  mint: 'mint',
+  gold: 'amber',  // gold maps to amber
+  accent: 'terra', // accent maps to terra
 };
 
-const accentTextColors = {
-  terra: 'text-terra',
-  amber: 'text-amber',
-  mint: 'text-mint',
+const resolvedAccent = accentMap[accent] || 'terra';
+
+const accentColors = {
+  terra: {
+    text: 'text-terra',
+    bg: 'bg-terra',
+    glow: 'bg-terra/20',
+    border: 'border-terra/30',
+    gradient: 'from-terra/20',
+  },
+  amber: {
+    text: 'text-amber',
+    bg: 'bg-amber',
+    glow: 'bg-amber/20',
+    border: 'border-amber/30',
+    gradient: 'from-amber/20',
+  },
+  mint: {
+    text: 'text-mint',
+    bg: 'bg-mint',
+    glow: 'bg-mint/20',
+    border: 'border-mint/30',
+    gradient: 'from-mint/20',
+  },
+};
+
+const sizes = {
+  minimal: {
+    pt: 'pt-28',
+    pb: 'pb-12',
+    title: 'text-4xl lg:text-5xl',
+  },
+  default: {
+    pt: 'pt-32 lg:pt-40',
+    pb: 'pb-16 lg:pb-24',
+    title: 'text-5xl lg:text-6xl xl:text-7xl',
+  },
+  large: {
+    pt: 'pt-36 lg:pt-48',
+    pb: 'pb-20 lg:pb-32',
+    title: 'text-6xl lg:text-7xl xl:text-8xl',
+  },
 };
 ---
 
-<section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 overflow-hidden">
+<section class:list={[
+  'relative overflow-hidden',
+  sizes[variant].pt,
+  sizes[variant].pb,
+]} aria-labelledby="page-title">
   {/* Background gradient */}
-  <div class:list={['absolute inset-0 bg-gradient-to-b', accentColors[accent]]} aria-hidden="true"></div>
+  <div 
+    class:list={[
+      'absolute inset-0 bg-gradient-to-b via-transparent to-transparent pointer-events-none',
+      accentColors[resolvedAccent].gradient,
+    ]} 
+    aria-hidden="true"
+  />
   
-  {/* Decorative elements */}
-  <div class="absolute top-20 right-[10%] w-64 h-64 bg-terra/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+  {/* Decorative orb - top right */}
+  <div 
+    class:list={[
+      'absolute -top-20 right-[5%] w-[400px] h-[400px] rounded-full blur-[120px] opacity-20 pointer-events-none',
+      accentColors[resolvedAccent].glow,
+    ]} 
+    aria-hidden="true"
+  />
   
+  {/* Decorative orb - bottom left */}
+  <div 
+    class:list={[
+      'absolute bottom-0 left-[10%] w-[300px] h-[300px] rounded-full blur-[100px] opacity-10 pointer-events-none',
+      'bg-surface',
+    ]} 
+    aria-hidden="true"
+  />
+
+  {/* Grid pattern overlay */}
+  <div 
+    class="absolute inset-0 opacity-[0.02] pointer-events-none"
+    style="background-image: linear-gradient(rgba(250,249,247,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(250,249,247,0.5) 1px, transparent 1px); background-size: 60px 60px;"
+    aria-hidden="true"
+  />
+
   <div class="container relative">
-    <div class:list={['max-w-3xl', centered && 'mx-auto text-center']}>
+    <div class:list={[
+      'max-w-4xl',
+      centered && 'mx-auto text-center',
+    ]}>
       {/* Overline */}
-      <div class:list={['flex items-center gap-3 mb-6', centered && 'justify-center']}>
-        <span class:list={['w-12 h-[2px]', accent === 'terra' ? 'bg-terra' : accent === 'amber' ? 'bg-amber' : 'bg-mint']}></span>
-        <span class:list={['text-xs font-bold uppercase tracking-[0.2em]', accentTextColors[accent]]}>
-          Granada Vibes
+      <div class:list={[
+        'flex items-center gap-4 mb-8',
+        centered && 'justify-center',
+      ]}>
+        <span class:list={[
+          'h-px w-12',
+          accentColors[resolvedAccent].bg,
+        ]} />
+        <span class:list={[
+          'text-xs font-semibold uppercase tracking-[0.25em]',
+          accentColors[resolvedAccent].text,
+        ]}>
+          {overline}
         </span>
-        <span class:list={['w-12 h-[2px]', accent === 'terra' ? 'bg-terra' : accent === 'amber' ? 'bg-amber' : 'bg-mint', centered ? 'block' : 'hidden']}></span>
+        <span class:list={[
+          'h-px w-12',
+          accentColors[resolvedAccent].bg,
+          centered ? 'block' : 'hidden',
+        ]} />
       </div>
       
-      {/* Title */}
-      <h1 class="font-display text-5xl lg:text-6xl xl:text-7xl font-bold text-surface mb-6 leading-[0.95] tracking-[-0.03em]">
+      {/* Title with character animation potential */}
+      <h1 
+        id="page-title" 
+        class:list={[
+          'font-display font-bold text-surface leading-[0.95] tracking-[-0.04em] mb-6',
+          sizes[variant].title,
+        ]}
+      >
         {title}
       </h1>
       
       {/* Subtitle */}
       {subtitle && (
-        <p class="text-lg lg:text-xl text-surface-secondary max-w-2xl leading-relaxed">
+        <p class:list={[
+          'text-lg lg:text-xl text-surface-secondary leading-relaxed max-w-2xl',
+          centered && 'mx-auto',
+        ]}>
           {subtitle}
         </p>
       )}
+
+      {/* Bottom accent line */}
+      <div class:list={[
+        'mt-10',
+        centered && 'flex justify-center',
+      ]}>
+        <div class:list={[
+          'h-1 w-20 rounded-full',
+          accentColors[resolvedAccent].bg,
+        ]} />
+      </div>
     </div>
   </div>
 </section>
