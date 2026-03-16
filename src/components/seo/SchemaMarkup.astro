@@ -69,7 +69,7 @@ switch (type) {
         name: eventData.title[locale],
         description: eventData.description[locale],
         startDate: `${eventData.date}T${eventData.time}`,
-        endDate: eventData.endTime ? `${eventData.date}T${eventData.endTime}` : undefined,
+        endDate: eventData.endDate ?? undefined,
         eventStatus: 'https://schema.org/EventScheduled',
         eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         location: {

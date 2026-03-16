@@ -12,9 +12,9 @@ const t = useTranslations(locale);
 const events = getAllEvents();
 
 const categories: EventCategory[] = ['concert', 'exhibition', 'festival', 'market', 'theater', 'workshop', 'guided-tour'];
-const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'ronda'];
+const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'zaidin', 'otro'];
 
-const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+Eventos';
+const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+Eventos';
 ---
 
 <BaseLayout 
@@ -23,22 +23,22 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
   description="Descubre los mejores eventos culturales en Granada. Conciertos, exposiciones, festivales y más. Filtra por categoría, barrio, fecha y precio."
   ogImage={ogImage}
 >
-  <!-- Page Header - Luxe Edition -->
+  <!-- Page Header -->
   <PageHeader 
     title={t('events.title')}
     subtitle={t('events.subtitle')}
-    accent="accent"
+    accent="terra"
   />
 
-  {/* Filters Bar - Enhanced Design */}
-  <div class="relative border-y border-border/50 bg-bg-raised/50 backdrop-blur-sm">
-    <div class="absolute inset-0 bg-gradient-to-r from-accent/[0.02] via-transparent to-accent/[0.02]"></div>
+  {/* Filters Bar - Dark theme */}
+  <div class="relative border-y border-edge bg-base-elevated/80 backdrop-blur-sm">
+    <div class="absolute inset-0 bg-gradient-to-r from-terra/[0.03] via-transparent to-terra/[0.03]" aria-hidden="true"></div>
     
     <div class="container relative py-6 lg:py-8">
       {/* Fila 1 - Chips de categoría */}
       <div class="flex flex-wrap items-center gap-2 mb-6" role="group" aria-label={t('events.filters.title')}>
         <button 
-          class="filter-category px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-accent text-white rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
+          class="filter-category px-5 py-2.5 text-xs font-bold uppercase tracking-wider bg-terra text-surface rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-terra/30"
           data-category="all"
           aria-pressed="true"
         >
@@ -46,7 +46,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
         </button>
         {categories.map((cat) => (
           <button 
-            class="filter-category px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-text-secondary bg-bg-card border border-border rounded-full hover:border-accent/50 hover:text-text-primary transition-all duration-300"
+            class="filter-category px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-surface-secondary bg-base-card border border-edge rounded-full hover:border-terra/50 hover:text-surface transition-all duration-300"
             data-category={cat}
             aria-pressed="false"
           >
@@ -56,12 +56,12 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
       </div>
 
       {/* Fila 2 - Filtros secundarios */}
-      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-border/30">
+      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-edge">
         {/* Dropdown Barrio */}
         <div class="relative group">
           <select 
             id="filter-neighborhood"
-            class="appearance-none px-5 py-2.5 pr-12 text-sm text-text-primary bg-bg-card border border-border rounded-xl focus:outline-none focus:border-accent cursor-pointer transition-all duration-300 hover:border-border-hover min-w-[160px]"
+            class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-terra cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
             aria-label="Filtrar por barrio"
           >
             <option value="all">Todos los barrios</option>
@@ -69,7 +69,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
               <option value={n}>{t(`neighborhoods.${n}`)}</option>
             ))}
           </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none transition-colors group-hover:text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-muted pointer-events-none transition-colors group-hover:text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
@@ -78,7 +78,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
         <div class="relative group">
           <select 
             id="filter-date"
-            class="appearance-none px-5 py-2.5 pr-12 text-sm text-text-primary bg-bg-card border border-border rounded-xl focus:outline-none focus:border-accent cursor-pointer transition-all duration-300 hover:border-border-hover min-w-[160px]"
+            class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-terra cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
             aria-label="Filtrar por fecha"
           >
             <option value="all">Cualquier fecha</option>
@@ -87,27 +87,27 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
             <option value="weekend">Este fin de semana</option>
             <option value="month">Este mes</option>
           </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none transition-colors group-hover:text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-muted pointer-events-none transition-colors group-hover:text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
 
         {/* Toggle Solo gratis */}
-        <label class="flex items-center gap-3 px-5 py-2.5 bg-bg-card border border-border rounded-xl cursor-pointer hover:border-accent/50 transition-all duration-300 group">
+        <label class="flex items-center gap-3 px-5 py-2.5 bg-base-card border border-edge rounded-xl cursor-pointer hover:border-terra/50 transition-all duration-300 group">
           <input 
             type="checkbox" 
             id="filter-free"
-            class="w-4 h-4 rounded border-border text-accent focus:ring-accent bg-bg-card cursor-pointer"
+            class="w-4 h-4 rounded border-edge text-terra focus:ring-terra bg-base-card cursor-pointer"
           />
-          <span class="text-sm text-text-secondary group-hover:text-text-primary transition-colors">Solo gratis</span>
+          <span class="text-sm text-surface-secondary group-hover:text-surface transition-colors font-medium">Solo gratis</span>
         </label>
 
-        <div class="flex-1" />
+        <div class="flex-1"></div>
 
         {/* Botón Limpiar filtros (hidden by default) */}
         <button 
           id="clear-filters"
-          class="hidden items-center gap-2 px-5 py-2.5 text-sm text-text-muted hover:text-accent transition-all duration-300 rounded-xl hover:bg-bg-card"
+          class="hidden items-center gap-2 px-5 py-2.5 text-sm text-surface-muted hover:text-terra transition-all duration-300 rounded-xl hover:bg-base-card font-medium"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -120,9 +120,9 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
 
   {/* Results counter */}
   <div class="container py-6">
-    <div class="flex items-center gap-2 text-sm text-text-muted">
-      <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-      Mostrando <span id="results-count" class="font-semibold text-text-primary">{events.length}</span> eventos
+    <div class="flex items-center gap-2 text-sm text-surface-muted">
+      <span class="w-2 h-2 rounded-full bg-terra animate-pulse"></span>
+      Mostrando <span id="results-count" class="font-bold text-surface">{events.length}</span> eventos
     </div>
   </div>
 
@@ -144,21 +144,21 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
       ))}
     </div>
     
-    {/* Empty state - Enhanced */}
+    {/* Empty state */}
     <div id="empty-state" class="hidden text-center py-24">
       <div class="relative w-24 h-24 mx-auto mb-8">
-        <div class="absolute inset-0 bg-accent/10 rounded-3xl blur-xl"></div>
-        <div class="relative w-full h-full bg-bg-card border border-border rounded-3xl flex items-center justify-center">
-          <svg class="w-12 h-12 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="absolute inset-0 bg-terra/20 rounded-3xl blur-xl"></div>
+        <div class="relative w-full h-full bg-base-card border border-edge rounded-3xl flex items-center justify-center">
+          <svg class="w-12 h-12 text-surface-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
       </div>
-      <h3 class="font-display text-2xl font-semibold text-text-primary mb-3">
+      <h3 class="font-display text-2xl font-semibold text-surface mb-3">
         Sin resultados para estos filtros
       </h3>
-      <p class="text-text-secondary mb-8 max-w-md mx-auto">Prueba a cambiar los filtros o ver todos los eventos disponibles en Granada</p>
-      <Button variant="accent" size="md" id="empty-clear-filters">
+      <p class="text-surface-secondary mb-8 max-w-md mx-auto">Prueba a cambiar los filtros o ver todos los eventos disponibles en Granada</p>
+      <Button variant="terra" size="md" id="empty-clear-filters">
         Limpiar filtros
       </Button>
     </div>
@@ -166,7 +166,6 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
 
   <script is:inline>
     (function() {
-      // Get filter elements
       const categoryButtons = document.querySelectorAll('.filter-category');
       const neighborhoodSelect = document.getElementById('filter-neighborhood');
       const dateSelect = document.getElementById('filter-date');
@@ -178,7 +177,6 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
       const eventsGrid = document.getElementById('events-grid');
       const eventCards = document.querySelectorAll('.event-card-wrapper');
 
-      // Current filter state
       let filters = {
         category: 'all',
         neighborhood: 'all',
@@ -186,7 +184,6 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
         free: false
       };
 
-      // Helper: Check if date matches filter
       function matchesDateFilter(eventDate, filter) {
         if (filter === 'all') return true;
         
@@ -219,7 +216,6 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
         }
       }
 
-      // Apply filters
       function applyFilters() {
         let visibleCount = 0;
         
@@ -244,10 +240,8 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
           }
         });
         
-        // Update results count
         resultsCount.textContent = visibleCount;
         
-        // Show/hide empty state
         if (visibleCount === 0) {
           eventsGrid.classList.add('hidden');
           emptyState.classList.remove('hidden');
@@ -256,7 +250,6 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
           emptyState.classList.add('hidden');
         }
         
-        // Show/hide clear filters button
         const hasActiveFilters = filters.category !== 'all' || 
                                  filters.neighborhood !== 'all' || 
                                  filters.date !== 'all' || 
@@ -271,44 +264,37 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
         }
       }
 
-      // Category buttons
       categoryButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-          // Update visual state
           categoryButtons.forEach(b => {
-            b.classList.remove('bg-accent', 'text-white', 'shadow-lg', 'shadow-accent/25');
-            b.classList.add('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
+            b.classList.remove('bg-terra', 'text-surface', 'shadow-lg');
+            b.classList.add('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
             b.setAttribute('aria-pressed', 'false');
           });
-          btn.classList.remove('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
-          btn.classList.add('bg-accent', 'text-white', 'shadow-lg', 'shadow-accent/25');
+          btn.classList.remove('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
+          btn.classList.add('bg-terra', 'text-surface', 'shadow-lg');
           btn.setAttribute('aria-pressed', 'true');
           
-          // Update filter state
           filters.category = btn.dataset.category;
           applyFilters();
         });
       });
 
-      // Neighborhood select
       neighborhoodSelect?.addEventListener('change', (e) => {
         filters.neighborhood = e.target.value;
         applyFilters();
       });
 
-      // Date select
       dateSelect?.addEventListener('change', (e) => {
         filters.date = e.target.value;
         applyFilters();
       });
 
-      // Free checkbox
       freeCheckbox?.addEventListener('change', (e) => {
         filters.free = e.target.checked;
         applyFilters();
       });
 
-      // Clear filters
       function clearFilters() {
         filters = {
           category: 'all',
@@ -317,15 +303,14 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
           free: false
         };
         
-        // Reset UI
         categoryButtons.forEach(b => {
           if (b.dataset.category === 'all') {
-            b.classList.remove('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
-            b.classList.add('bg-accent', 'text-white', 'shadow-lg', 'shadow-accent/25');
+            b.classList.remove('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
+            b.classList.add('bg-terra', 'text-surface', 'shadow-lg');
             b.setAttribute('aria-pressed', 'true');
           } else {
-            b.classList.remove('bg-accent', 'text-white', 'shadow-lg', 'shadow-accent/25');
-            b.classList.add('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
+            b.classList.remove('bg-terra', 'text-surface', 'shadow-lg');
+            b.classList.add('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
             b.setAttribute('aria-pressed', 'false');
           }
         });
@@ -335,8 +320,6 @@ const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+
         freeCheckbox.checked = false;
         
         applyFilters();
-        
-        // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 

@@ -1,0 +1,185 @@
+---
+import type { Locale } from '@types';
+import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const localePath = LOCALE_PATHS[locale];
+---
+
+<footer class="relative border-t border-edge bg-base-elevated" role="contentinfo">
+  {/* Decorative top gradient */}
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-terra/50 to-transparent"></div>
+  
+  {/* Background blobs */}
+  <div class="absolute top-20 left-10 w-64 h-64 bg-terra/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-20 right-10 w-80 h-80 bg-amber/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+
+  <div class="container relative py-20 lg:py-28">
+    {/* Main footer content */}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+
+      {/* Brand column - Larger */}
+      <div class="lg:col-span-5">
+        <a
+          href={localePath || '/'}
+          class="inline-flex items-center gap-3 mb-6 group"
+          aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}
+        >
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-terra/20 to-amber/10 flex items-center justify-center transition-all duration-300 group-hover:from-terra/30 group-hover:to-amber/20 border border-terra/30">
+            <svg class="w-6 h-6 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-display text-2xl font-semibold text-surface">
+              {SITE_CONFIG.name}
+            </span>
+          </div>
+        </a>
+        
+        <p class="text-surface-secondary text-base leading-relaxed max-w-md mb-8">
+          {SITE_CONFIG.description[locale]}
+        </p>
+        
+        {/* Status badge */}
+        <div class="inline-flex items-center gap-3 px-4 py-2.5 bg-base-card border border-edge rounded-2xl">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-mint opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-mint"></span>
+          </span>
+          <span class="text-sm text-surface-secondary font-medium">
+            {t('footer.madeIn')}
+          </span>
+        </div>
+      </div>
+
+      {/* Spacer */}
+      <div class="hidden lg:block lg:col-span-1"></div>
+
+      {/* Explore links */}
+      <div class="lg:col-span-2">
+        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-terra mb-6">
+          {t('footer.explore')}
+        </h3>
+        <ul class="space-y-4" role="list">
+          <li>
+            <a href={`${localePath}/eventos`} class="group flex items-center gap-3 text-surface-secondary hover:text-surface transition-colors duration-300">
+              <span class="w-2 h-2 rounded-full bg-edge group-hover:bg-terra transition-colors"></span>
+              <span class="text-sm font-medium">{t('nav.events')}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`${localePath}/rutas`} class="group flex items-center gap-3 text-surface-secondary hover:text-surface transition-colors duration-300">
+              <span class="w-2 h-2 rounded-full bg-edge group-hover:bg-amber transition-colors"></span>
+              <span class="text-sm font-medium">{t('nav.routes')}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`${localePath}/sobre`} class="group flex items-center gap-3 text-surface-secondary hover:text-surface transition-colors duration-300">
+              <span class="w-2 h-2 rounded-full bg-edge group-hover:bg-mint transition-colors"></span>
+              <span class="text-sm font-medium">{t('nav.about')}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {/* This week events */}
+      <div class="lg:col-span-2">
+        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-terra mb-6">
+          {t('footer.thisWeek')}
+        </h3>
+        <ul class="space-y-4" role="list">
+          <li>
+            <a href={`${localePath}/eventos/festival-internacional-musica-danza`} class="block group">
+              <p class="text-sm text-surface-secondary group-hover:text-surface transition-colors duration-300 line-clamp-1 font-medium">
+                Festival Internacional de Música y Danza
+              </p>
+              <p class="text-xs text-surface-muted mt-1">20 jun 2025</p>
+            </a>
+          </li>
+          <li>
+            <a href={`${localePath}/eventos/visitas-nocturnas-alhambra`} class="block group">
+              <p class="text-sm text-surface-secondary group-hover:text-surface transition-colors duration-300 line-clamp-1 font-medium">
+                Visitas Nocturnas a la Alhambra
+              </p>
+              <p class="text-xs text-surface-muted mt-1">20 mar 2025</p>
+            </a>
+          </li>
+          <li>
+            <a href={`${localePath}/eventos`} class="inline-flex items-center gap-1.5 text-xs text-terra hover:text-terra-hover transition-colors duration-300 font-bold uppercase tracking-wider">
+              {t('footer.viewAllEvents')}
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      {/* Newsletter */}
+      <div class="lg:col-span-2">
+        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-terra mb-6">
+          {t('footer.contact')}
+        </h3>
+        
+        {/* Contact */}
+        <ul class="space-y-3 mb-6" role="list">
+          <li>
+            <a href="mailto:hola@granadavibes.com" class="text-sm text-surface-secondary hover:text-surface transition-colors duration-300 font-medium">
+              hola@granadavibes.com
+            </a>
+          </li>
+          <li>
+            <span class="text-sm text-surface-muted font-medium">@granadavibes</span>
+          </li>
+        </ul>
+
+        {/* Newsletter teaser */}
+        <div class="p-4 bg-base-card border border-edge rounded-2xl">
+          <p class="text-xs text-surface-muted mb-3 font-medium">
+            {t('footer.newsletter')}
+          </p>
+          <div class="flex gap-2">
+            <input
+              type="email"
+              placeholder={t('footer.newsletterPlaceholder')}
+              class="flex-1 px-3 py-2.5 text-sm bg-base border border-edge rounded-xl text-surface placeholder:text-surface-muted focus:outline-none focus:border-terra/50 transition-colors"
+            />
+            <button
+              class="px-4 py-2.5 bg-terra text-surface rounded-xl hover:bg-terra-hover transition-colors"
+              aria-label={t('footer.newsletter')}
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom bar */}
+    <div class="mt-16 pt-8 border-t border-edge">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-surface-muted">
+          © {new Date().getFullYear()} {SITE_CONFIG.name} · {t('footer.allRightsReserved')}
+        </p>
+        <div class="flex items-center gap-6 text-xs text-surface-muted">
+          <a href={`${localePath}/privacidad`} class="hover:text-surface transition-colors duration-300 font-medium">
+            {t('footer.links.privacy')}
+          </a>
+          <span class="text-surface-disabled">·</span>
+          <a href={`${localePath}/aviso-legal`} class="hover:text-surface transition-colors duration-300 font-medium">
+            {t('footer.links.legalNotice')}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

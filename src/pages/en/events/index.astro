@@ -5,14 +5,14 @@ import EventCard from '@components/events/EventCard.astro';
 import Button from '@components/ui/Button.astro';
 import { getAllEvents } from '@data';
 import { useTranslations } from '@i18n/utils';
-import type { EventCategory } from '@types';
+import type { EventCategory, Neighborhood } from '@types';
 
 const locale = 'en';
 const t = useTranslations(locale);
 const events = getAllEvents();
 
 const categories: EventCategory[] = ['concert', 'exhibition', 'festival', 'market', 'theater', 'workshop', 'guided-tour'];
-const neighborhoods = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'ronda'];
+const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'zaidin', 'otro'];
 
 const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+Events';
 ---

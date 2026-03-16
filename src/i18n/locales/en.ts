@@ -7,6 +7,14 @@ export const en: Translations = {
     events: 'Events',
     routes: 'Routes',
     about: 'About us',
+    changeLanguage: 'Switch to Español',
+    skipToContent: 'Skip to main content',
+    guideLabel: 'Cultural Guide',
+    mainNavLabel: 'Main navigation',
+    mobileNavLabel: 'Mobile navigation',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    switchLanguage: 'Switch language:',
   },
 
   // Common actions
@@ -52,7 +60,6 @@ export const en: Translations = {
     easy: 'Easy',
     moderate: 'Moderate',
     challenging: 'Challenging',
-    expert: 'Expert',
   },
 
   // Time of day
@@ -72,7 +79,8 @@ export const en: Translations = {
     realejo: 'Realejo',
     alhambra: 'Alhambra',
     cartuja: 'Cartuja',
-    ronda: 'Ronda',
+    zaidin: 'Zaidín',
+    otro: 'Other',
   },
 
   // Events page
@@ -107,6 +115,55 @@ export const en: Translations = {
     noRoutes: 'No routes match your filters',
   },
 
+  // Detail pages (events & routes)
+  detail: {
+    date: 'Date',
+    time: 'Time',
+    price: 'Price',
+    venue: 'Venue',
+    share: 'Share',
+    free: 'Free',
+    unknown: 'Check details',
+    whatToExpect: 'What to expect',
+    practicalTips: 'Practical tips',
+    tags: 'Tags',
+    getTickets: 'Get tickets',
+    mapComingSoon: 'Map coming soon',
+    similarEvents: 'Similar events',
+    similarRoutes: 'Similar routes',
+    whatToBring: 'What to bring',
+    bestMonths: 'Best months',
+    addToPlan: 'Add to plan',
+    confirmAttendance: 'Confirm attendance',
+    bookPlace: 'Book a spot',
+    difficulty: 'Difficulty',
+    duration: 'Duration',
+    distance: 'Distance',
+    bestTime: 'Best time',
+    shareSuccess: 'URL copied to clipboard',
+    shareError: 'Could not share',
+  },
+
+  // Filters
+  filters: {
+    clearFilters: 'Clear filters',
+    results: '{{count}} results',
+    noResults: 'No results',
+    noResultsDesc: 'Try different filters or browse all content.',
+    all: 'All',
+    anyDuration: 'Any duration',
+    anyTime: 'Any time',
+    onlyFree: 'Free only',
+    difficulty: 'Difficulty',
+    today: 'Today',
+    thisWeek: 'This week',
+    thisWeekend: 'This weekend',
+    thisMonth: 'This month',
+    short: 'Short (< 2h)',
+    medium: 'Medium (2–4h)',
+    long: 'Long (> 4h)',
+  },
+
   // Home page
   home: {
     hero: {
@@ -118,6 +175,18 @@ export const en: Translations = {
     featuredEvents: 'Featured events',
     featuredRoutes: 'Recommended routes',
     discoverMore: 'Discover more',
+    exploreEvents: 'Explore events',
+    exploreRoutes: 'Explore routes',
+    stats: {
+      years: '800+ years of history',
+      heritage: '2 UNESCO Heritage sites',
+      tapas: '48h to get lost',
+      free: '0€ tapa included',
+      yearsDesc: 'Since the founding',
+      heritageDesc: 'World Heritage sites',
+      tapasDesc: 'Of tapas and culture',
+      freeDesc: 'With every drink',
+    },
   },
 
   // About page
@@ -152,8 +221,19 @@ export const en: Translations = {
       explore: 'Explore',
       company: 'Company',
       legal: 'Legal',
+      privacy: 'Privacy',
+      legalNotice: 'Legal notice',
+      contact: 'Contact',
     },
+    explore: 'Explore',
+    thisWeek: 'This week',
+    contact: 'Contact',
+    newsletter: 'Get the latest updates',
+    newsletterPlaceholder: 'Your email',
+    viewAllEvents: 'View all events',
+    madeIn: 'Made with ❤ in Granada',
     copyright: '© {{year}} Granada Vibes. All rights reserved.',
+    allRightsReserved: 'All rights reserved',
   },
 
   // Meta

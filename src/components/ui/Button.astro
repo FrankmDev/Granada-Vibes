@@ -1,13 +1,14 @@
 ---
 interface Props {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'gold';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'terra' | 'amber' | 'mint';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   href?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   fullWidth?: boolean;
   class?: string;
   icon?: boolean;
+  iconPosition?: 'left' | 'right';
 }
 
 const {
@@ -19,21 +20,28 @@ const {
   fullWidth = false,
   class: className = '',
   icon = false,
+  iconPosition = 'right',
 } = Astro.props;
 
-const baseClasses = 'group relative inline-flex items-center justify-center gap-2 font-semibold transition-all duration-300 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden';
+// Base classes - Modern sans-serif styling
+const baseClasses = 'group relative inline-flex items-center justify-center gap-2.5 font-semibold transition-all duration-300 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terra/50 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden';
 
+// Variant classes - Bold neo-brutalism with glow effects
 const variantClasses = {
-  primary: 'bg-gradient-to-r from-accent to-coral text-white shadow-lg shadow-accent/15 hover:shadow-xl hover:shadow-accent/25 hover:-translate-y-0.5',
-  secondary: 'bg-white text-text-primary border border-border hover:border-accent/50 hover:text-accent hover:-translate-y-0.5 shadow-soft',
-  ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-bg-raised',
-  gold: 'bg-gradient-to-r from-gold to-gold-hover text-white font-semibold shadow-lg shadow-gold/15 hover:shadow-xl hover:shadow-gold/25 hover:-translate-y-0.5',
+  primary: 'bg-terra text-surface shadow-lg shadow-terra/25 hover:shadow-xl hover:shadow-terra/40 hover:-translate-y-0.5 active:translate-y-0',
+  secondary: 'bg-base-card text-surface border border-edge hover:border-terra/50 hover:text-terra hover:-translate-y-0.5 active:translate-y-0',
+  ghost: 'bg-transparent text-surface-secondary hover:text-surface hover:bg-base-elevated',
+  terra: 'bg-gradient-to-r from-terra to-terra-hover text-surface shadow-lg shadow-terra/30 hover:shadow-xl hover:shadow-terra/50 hover:-translate-y-0.5 active:translate-y-0',
+  amber: 'bg-gradient-to-r from-amber to-amber-hover text-base shadow-lg shadow-amber/30 hover:shadow-xl hover:shadow-amber/50 hover:-translate-y-0.5 active:translate-y-0',
+  mint: 'bg-gradient-to-r from-mint to-mint-hover text-surface shadow-lg shadow-mint/30 hover:shadow-xl hover:shadow-mint/50 hover:-translate-y-0.5 active:translate-y-0',
 };
 
+// Size classes - Generous padding for modern feel
 const sizeClasses = {
-  sm: 'px-4 py-2.5 text-sm',
-  md: 'px-6 py-3.5 text-[15px]',
+  sm: 'px-5 py-2.5 text-sm',
+  md: 'px-7 py-3.5 text-[15px]',
   lg: 'px-8 py-4 text-base',
+  xl: 'px-10 py-5 text-lg',
 };
 
 const classes = [
@@ -48,21 +56,39 @@ const classes = [
 {
   href ? (
     <a href={href} class={classes} role="button">
+      {icon && iconPosition === 'left' && (
+        <span class="transition-transform duration-300 group-hover:-translate-x-0.5">
+          <slot name="icon" />
+        </span>
+      )}
       <span class="relative z-10 flex items-center gap-2">
         <slot />
       </span>
-      {variant !== 'ghost' && (
-        <span class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+      {icon && iconPosition === 'right' && (
+        <span class="transition-transform duration-300 group-hover:translate-x-0.5">
+          <slot name="icon" />
+        </span>
       )}
+      {/* Shine effect on hover */}
+      <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span>
     </a>
   ) : (
     <button type={type} disabled={disabled} class={classes}>
+      {icon && iconPosition === 'left' && (
+        <span class="transition-transform duration-300 group-hover:-translate-x-0.5">
+          <slot name="icon" />
+        </span>
+      )}
       <span class="relative z-10 flex items-center gap-2">
         <slot />
       </span>
-      {variant !== 'ghost' && (
-        <span class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+      {icon && iconPosition === 'right' && (
+        <span class="transition-transform duration-300 group-hover:translate-x-0.5">
+          <slot name="icon" />
+        </span>
       )}
+      {/* Shine effect on hover */}
+      <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span>
     </button>
   )
 }

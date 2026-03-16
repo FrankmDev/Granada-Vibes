@@ -1,0 +1,97 @@
+---
+/**
+ * HeroAgenda — Columna derecha del Hero
+ * Estilos en: src/styles/hero.css
+ */
+import type { Event } from '@types';
+import { formatDateShort, getTemporalProximity } from '@utils/dates';
+
+interface Props {
+  events: Event[];
+  locale: 'es' | 'en';
+}
+
+const { events, locale } = Astro.props;
+---
+
+<aside class="hero-agenda" aria-label="Agenda de la semana">
+
+  <header class="agenda-hdr">
+    <div class="agenda-live" aria-hidden="true">
+      <span class="live-ring"></span>
+      <span class="live-dot"></span>
+    </div>
+    <span class="agenda-eyebrow">Esta semana</span>
+    <span class="agenda-count">{events.length}</span>
+  </header>
+
+  {events.length > 0 ? (
+    <ol class="agenda-list" aria-label="Próximos eventos">
+      {events.map((event, i) => {
+        const proximity = getTemporalProximity(event.date);
+        const dateLabel =
+          proximity === 'today'
+            ? 'Hoy'
+            : proximity === 'tomorrow'
+              ? 'Mañana'
+              : formatDateShort(event.date, locale);
+        const isToday = proximity === 'today';
+        const isTomorrow = proximity === 'tomorrow';
+        return (
+          <li
+            class:list={['agenda-item', isToday && 'agenda-item--today']}
+            style={`--item-delay: ${i * 60}ms`}
+          >
+            <a href={`/eventos/${event.slug}`} class="agenda-link">
+              <div class="agenda-date-col">
+                <span class:list={[
+                  'agenda-date-label',
+                  isToday && 'date--today',
+                  isTomorrow && 'date--tomorrow',
+                ]}>
+                  {dateLabel}
+                </span>
+                <span class="agenda-time">{event.time}</span>
+              </div>
+              <div class="agenda-body">
+                <p class="agenda-title">{event.title[locale]}</p>
+                <p class="agenda-venue">{event.venue}</p>
+              </div>
+              <div class="agenda-price-col">
+                <span class:list={['agenda-price', event.price === null && 'price--free']}>
+                  {event.price === null ? 'Gratis' : `${event.price}€`}
+                </span>
+              </div>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  ) : (
+    <p class="agenda-empty">Sin eventos esta semana.</p>
+  )}
+
+  <div class="agenda-footer">
+    <a href="/eventos" class="agenda-all-link">
+      Ver calendario completo
+      <svg viewBox="0 0 14 8" fill="none" aria-hidden="true" class="arrow-icon">
+        <path d="M0 4H12M9 1L12 4L9 7" stroke="currentColor" stroke-width="1.3"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="routes-block">
+    <span class="routes-eyebrow">Rutas curadas</span>
+    <a href="/rutas" class="routes-link">
+      <span class="routes-text">Albaicín, Sacromonte<br/>y más allá</span>
+      <div class="routes-arrow-box" aria-hidden="true">
+        <svg viewBox="0 0 10 10" fill="none">
+          <path d="M2 8L8 2M8 2H3M8 2V7" stroke="currentColor" stroke-width="1.2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </a>
+  </div>
+
+</aside>

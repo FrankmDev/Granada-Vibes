@@ -27,7 +27,7 @@ const {
 const siteUrl = SITE_CONFIG.url;
 const currentPath = path || Astro.url.pathname;
 
-const fullTitle = title 
+const fullTitle = title
   ? `${title} | ${SITE_CONFIG.name}`
   : `${SITE_CONFIG.name} - ${SITE_CONFIG.description[locale]}`;
 
@@ -35,10 +35,39 @@ const fullDescription = description ?? SITE_CONFIG.description[locale];
 const fullCanonical = canonical ?? `${siteUrl}${currentPath}`;
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
+// Path segment mapping between locales
+const esToEnSegments: Record<string, string> = {
+  'eventos': 'events',
+  'rutas': 'routes',
+  'sobre': 'about',
+  'privacidad': 'privacy',
+  'aviso-legal': 'legal',
+};
+const enToEsSegments: Record<string, string> = Object.fromEntries(
+  Object.entries(esToEnSegments).map(([k, v]) => [v, k])
+);
+
+function getEsPath(enPath: string): string {
+  const withoutPrefix = enPath.replace(/^\/en/, '') || '/';
+  return withoutPrefix.replace(
+    /^\/([^/]+)/,
+    (_, seg) => `/${enToEsSegments[seg] ?? seg}`
+  );
+}
+
+function getEnPath(esPath: string): string {
+  const translated = esPath.replace(
+    /^\/([^/]+)/,
+    (_, seg) => `/${esToEnSegments[seg] ?? seg}`
+  );
+  return `/en${translated === '/' ? '' : translated}` || '/en';
+}
+
 // Alternate URLs for hreflang
+const isEnPath = currentPath.startsWith('/en');
 const alternateUrls = {
-  es: `${siteUrl}${currentPath.replace(/^\/en/, '') || '/'}`,
-  en: `${siteUrl}/en${currentPath.replace(/^\/en/, '') || '/'}`,
+  es: `${siteUrl}${isEnPath ? getEsPath(currentPath) : currentPath}`,
+  en: `${siteUrl}${isEnPath ? currentPath : getEnPath(currentPath)}`,
 };
 ---
 
@@ -74,8 +103,8 @@ const alternateUrls = {
 <meta property="twitter:image" content={fullOgImage} />
 
 <!-- Additional SEO -->
-<meta name="theme-color" content="#0c0a09" />
-<meta name="msapplication-TileColor" content="#0c0a09" />
+<meta name="theme-color" content="#FAF8F5" />
+<meta name="msapplication-TileColor" content="#FAF8F5" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content={SITE_CONFIG.name} />

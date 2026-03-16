@@ -1,8 +1,11 @@
 ---
 import type { Locale } from '@types';
-import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
+import { SITE_CONFIG } from '@config/site';
 import SEOHead from '@components/seo/SEOHead.astro';
 import SchemaMarkup from '@components/seo/SchemaMarkup.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
+import { useTranslations } from '@i18n/utils';
 import '../styles/global.css';
 
 interface Props {
@@ -18,9 +21,9 @@ interface Props {
   variant?: 'default' | 'minimal';
 }
 
-const { 
-  locale, 
-  title, 
+const {
+  locale,
+  title,
   description,
   ogImage,
   ogType,
@@ -31,29 +34,8 @@ const {
   variant = 'default',
 } = Astro.props;
 
-const siteUrl = SITE_CONFIG.url;
+const t = useTranslations(locale);
 const currentPath = Astro.url.pathname;
-const localePath = LOCALE_PATHS[locale];
-
-const navLinks = [
-  { href: `${localePath}/`, labelKey: 'nav.home', label: locale === 'es' ? 'Inicio' : 'Home' },
-  { href: `${localePath}/eventos`, labelKey: 'nav.events', label: locale === 'es' ? 'Eventos' : 'Events' },
-  { href: `${localePath}/rutas`, labelKey: 'nav.routes', label: locale === 'es' ? 'Rutas' : 'Routes' },
-  { href: `${localePath}/sobre`, labelKey: 'nav.about', label: locale === 'es' ? 'Nosotros' : 'About' },
-];
-
-const otherLocale = locale === 'es' ? 'en' : 'es';
-const otherLocalePath = LOCALE_PATHS[otherLocale];
-const switchUrl = otherLocalePath + currentPath.replace(/^\/en/, '');
-
-const isActive = (href: string) => {
-  if (href === `${localePath}/`) {
-    return currentPath === href || currentPath === `${localePath}`;
-  }
-  return currentPath.startsWith(href);
-};
-
-const isHome = currentPath === '/' || currentPath === '/en/';
 ---
 
 <!doctype html>
@@ -62,9 +44,9 @@ const isHome = currentPath === '/' || currentPath === '/en/';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- SEO -->
-    <SEOHead 
+    <SEOHead
       locale={locale}
       title={title}
       description={description}
@@ -73,450 +55,64 @@ const isHome = currentPath === '/' || currentPath === '/en/';
       canonical={canonical}
       noindex={noindex}
     />
-    
+
     <!-- Schema Markup -->
-    <SchemaMarkup 
+    <SchemaMarkup
       type={schemaType}
       locale={locale}
       data={schemaData}
       path={currentPath}
     />
-    
+
     <!-- Performance: Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    
-    <!-- Prefetch critical resources -->
-    <link rel="prefetch" href={switchUrl} />
-    
+
     <slot name="head" />
   </head>
-  
-  <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased font-body">
+
+  <body class="min-h-screen flex flex-col bg-base text-surface antialiased font-body">
     <!-- Skip to content link for accessibility -->
-    <a 
-      href="#main-content" 
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-xl focus:font-semibold"
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-terra focus:text-surface focus:rounded-xl focus:font-bold"
     >
-      {locale === 'es' ? 'Saltar al contenido principal' : 'Skip to main content'}
+      {t('nav.skipToContent')}
     </a>
-    
-    <!-- Sentinel for scroll detection -->
-    <div id="nav-sentinel" class="h-px absolute top-[100px]" aria-hidden="true"></div>
-    
-    <!-- Header - Modern Glass Design -->
-    <header 
-      class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" 
-      id="header" 
-      role="banner"
-    >
-      <!-- Background with dynamic blur -->
-      <div 
-        class="absolute inset-0 transition-all duration-500" 
-        id="header-bg"
-        style="background: rgba(250, 248, 245, 0.8); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid rgba(232, 228, 222, 0.5);"
-      />
-      
-      <!-- Decorative gradient line at bottom -->
-      <div 
-        class="absolute bottom-0 left-0 right-0 h-px opacity-0 transition-opacity duration-500" 
-        id="header-line"
-        style="background: linear-gradient(90deg, transparent 0%, rgba(199, 91, 59, 0.3) 50%, transparent 100%);"
-      />
-      
-      <div class="container relative">
-        <div class="flex items-center justify-between h-[var(--header-height)]">
-          <!-- Logo - Fresh design with accent -->
-          <a 
-            href={localePath || '/'} 
-            class="relative z-10 flex items-center gap-3 group"
-            aria-label={`${SITE_CONFIG.name} - ${locale === 'es' ? 'Inicio' : 'Home'}`}
-          >
-            <div class="relative">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent/10 to-coral/10 flex items-center justify-center transition-all duration-300 group-hover:from-accent/20 group-hover:to-coral/20 border border-accent/20 group-hover:border-accent/30">
-                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-            </div>
-            <div class="flex flex-col">
-              <span class="font-display text-xl font-bold text-text-primary tracking-tight leading-none">
-                {SITE_CONFIG.name}
-              </span>
-              <span class="text-[10px] text-text-muted tracking-[0.15em] uppercase font-medium">
-                {locale === 'es' ? 'Guía Cultural' : 'Cultural Guide'}
-              </span>
-            </div>
-          </a>
-          
-          <!-- Desktop Navigation - Modern style -->
-          <nav class="hidden md:flex items-center gap-1 relative z-10" aria-label={locale === 'es' ? 'Navegación principal' : 'Main navigation'}>
-            {navLinks.map((link, index) => (
-              <a
-                href={link.href}
-                class:list={[
-                  'relative px-5 py-2.5 text-sm font-medium transition-all duration-300 rounded-xl',
-                  isActive(link.href) 
-                    ? 'text-accent' 
-                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-raised'
-                ]}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
-                {link.label}
-                {isActive(link.href) && (
-                  <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent"></span>
-                )}
-              </a>
-            ))}
-          </nav>
-          
-          <!-- Right side actions -->
-          <div class="flex items-center gap-3 relative z-10">
-            <!-- Language switcher - Modern -->
-            <a
-              href={switchUrl}
-              class="hidden sm:flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-text-muted hover:text-accent bg-white border border-border rounded-xl hover:border-accent/30 transition-all duration-300 shadow-soft"
-              aria-label={locale === 'es' ? 'Cambiar a English' : 'Switch to Español'}
-            >
-              <span class={locale === 'es' ? 'text-accent font-bold' : ''} aria-hidden="true">ES</span>
-              <span class="text-border">/</span>
-              <span class={locale === 'en' ? 'text-accent font-bold' : ''} aria-hidden="true">EN</span>
-            </a>
-            
-            <!-- Mobile menu button - Modern -->
-            <button
-              type="button"
-              class="md:hidden p-3 text-text-secondary hover:text-accent bg-white border border-border rounded-xl hover:border-accent/30 transition-all duration-300 shadow-soft"
-              aria-label={locale === 'es' ? 'Abrir menú' : 'Open menu'}
-              aria-expanded="false"
-              aria-controls="mobile-menu"
-              id="mobile-menu-button"
-            >
-              <svg class="w-5 h-5 transition-transform duration-300" id="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Mobile menu - Modern full-screen -->
-      <div 
-        id="mobile-menu" 
-        class="hidden md:hidden fixed inset-0 top-[var(--header-height-mobile)] bg-bg/98 backdrop-blur-2xl z-40"
-        role="navigation"
-        aria-label={locale === 'es' ? 'Navegación móvil' : 'Mobile navigation'}
-      >
-        <div class="container py-8">
-          <nav class="flex flex-col gap-2">
-            {navLinks.map((link, index) => (
-              <a
-                href={link.href}
-                class:list={[
-                  'px-6 py-4 text-2xl font-display font-medium rounded-2xl transition-all duration-300',
-                  isActive(link.href)
-                    ? 'text-accent bg-accent/5 border border-accent/20'
-                    : 'text-text-secondary hover:text-text-primary hover:bg-bg-raised'
-                ]}
-                style={`animation-delay: ${index * 50}ms`}
-                aria-current={isActive(link.href) ? 'page' : undefined}
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-          
-          <div class="mt-8 pt-8 border-t border-border">
-            <a
-              href={switchUrl}
-              class="flex items-center gap-3 px-6 py-4 text-text-muted hover:text-accent rounded-2xl hover:bg-bg-raised transition-all duration-300"
-            >
-              <span class="text-sm">{locale === 'es' ? 'Cambiar idioma:' : 'Switch language:'}</span>
-              <span class="font-semibold text-sm uppercase tracking-wider">
-                <span class={locale === 'es' ? 'text-accent font-bold' : ''}>Español</span>
-                <span class="mx-2 text-border">/</span>
-                <span class={locale === 'en' ? 'text-accent font-bold' : ''}>English</span>
-              </span>
-            </a>
-          </div>
-          
-          <!-- Mobile decorative element -->
-          <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-50">
-            <div class="w-px h-16 bg-gradient-to-b from-transparent via-accent/50 to-transparent"></div>
-            <span class="text-[10px] uppercase tracking-[0.3em] text-text-muted font-medium">Granada Vibes</span>
-          </div>
-        </div>
-      </div>
-    </header>
-    
+
+    <NavBar locale={locale} currentPath={currentPath} />
+
     <!-- Main Content -->
-    <main id="main-content" class="flex-1 pt-[var(--header-height)]" role="main">
+    <main id="main-content" class="flex-1" role="main">
       <slot />
     </main>
-    
-    <!-- Footer - Modern Editorial Design -->
-    <footer class="relative border-t border-border bg-bg-raised" role="contentinfo">
-      <!-- Decorative top gradient -->
-      <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent"></div>
-      
-      <div class="container py-20 lg:py-24">
-        <!-- Main footer content -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
-          
-          <!-- Brand column - Larger -->
-          <div class="lg:col-span-4">
-            <a href={localePath || '/'} class="inline-flex items-center gap-3 mb-6 group" aria-label={`${SITE_CONFIG.name} - ${locale === 'es' ? 'Inicio' : 'Home'}`}>
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-accent/10 to-coral/10 flex items-center justify-center transition-all duration-300 group-hover:from-accent/20 group-hover:to-coral/20 border border-accent/20">
-                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <div>
-                <span class="font-display text-2xl font-bold text-text-primary">
-                  {SITE_CONFIG.name}
-                </span>
-              </div>
-            </a>
-            <p class="text-text-secondary text-base leading-relaxed max-w-sm mb-6">
-              {SITE_CONFIG.description[locale]}
-            </p>
-            <!-- Social/Location badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-full shadow-soft">
-              <span class="w-2 h-2 rounded-full bg-sage animate-pulse"></span>
-              <span class="text-sm text-text-muted">
-                {locale === 'es' ? 'Hecho con ❤ en Granada' : 'Made with ❤ in Granada'}
-              </span>
-            </div>
-          </div>
-          
-          <!-- Explore links -->
-          <div class="lg:col-span-2 lg:col-start-6">
-            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-6">
-              {locale === 'es' ? 'Explorar' : 'Explore'}
-            </h3>
-            <ul class="space-y-4" role="list">
-              <li>
-                <a href={`${localePath}/eventos`} class="group flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors duration-300">
-                  <span class="w-1.5 h-1.5 rounded-full bg-border group-hover:bg-accent transition-colors"></span>
-                  <span class="text-sm">{locale === 'es' ? 'Eventos' : 'Events'}</span>
-                </a>
-              </li>
-              <li>
-                <a href={`${localePath}/rutas`} class="group flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors duration-300">
-                  <span class="w-1.5 h-1.5 rounded-full bg-border group-hover:bg-accent transition-colors"></span>
-                  <span class="text-sm">{locale === 'es' ? 'Rutas' : 'Routes'}</span>
-                </a>
-              </li>
-              <li>
-                <a href={`${localePath}/sobre`} class="group flex items-center gap-2 text-text-secondary hover:text-text-primary transition-colors duration-300">
-                  <span class="w-1.5 h-1.5 rounded-full bg-border group-hover:bg-accent transition-colors"></span>
-                  <span class="text-sm">{locale === 'es' ? 'Sobre nosotros' : 'About us'}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <!-- This week events -->
-          <div class="lg:col-span-3">
-            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-6">
-              {locale === 'es' ? 'Esta semana' : 'This week'}
-            </h3>
-            <ul class="space-y-4" role="list">
-              <li>
-                <a href={`${localePath}/eventos/festival-internacional-musica-danza`} class="block group">
-                  <p class="text-sm text-text-secondary group-hover:text-accent transition-colors duration-300 line-clamp-1">
-                    Festival Internacional de Música y Danza
-                  </p>
-                  <p class="text-xs text-text-muted mt-1">20 jun 2025</p>
-                </a>
-              </li>
-              <li>
-                <a href={`${localePath}/eventos/visitas-nocturnas-alhambra`} class="block group">
-                  <p class="text-sm text-text-secondary group-hover:text-accent transition-colors duration-300 line-clamp-1">
-                    Visitas Nocturnas a la Alhambra
-                  </p>
-                  <p class="text-xs text-text-muted mt-1">20 mar 2025</p>
-                </a>
-              </li>
-              <li>
-                <a href={`${localePath}/eventos`} class="inline-flex items-center gap-1.5 text-xs text-accent hover:text-accent-hover mt-2 transition-colors duration-300 font-medium">
-                  {locale === 'es' ? 'Ver todos los eventos' : 'View all events'}
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <!-- Contact -->
-          <div class="lg:col-span-3">
-            <h3 class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-6">
-              {locale === 'es' ? 'Contacto' : 'Contact'}
-            </h3>
-            <ul class="space-y-4" role="list">
-              <li>
-                <a href="mailto:hola@granadavibes.com" class="text-sm text-text-secondary hover:text-accent transition-colors duration-300">
-                  hola@granadavibes.com
-                </a>
-              </li>
-              <li>
-                <span class="text-sm text-text-muted">@granadavibes</span>
-              </li>
-            </ul>
-            
-            <!-- Newsletter teaser -->
-            <div class="mt-6 p-4 bg-white border border-border rounded-xl shadow-soft">
-              <p class="text-xs text-text-muted mb-3">
-                {locale === 'es' ? 'Recibe las novedades' : 'Get the latest updates'}
-              </p>
-              <div class="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder={locale === 'es' ? 'Tu email' : 'Your email'}
-                  class="flex-1 px-3 py-2 text-sm bg-bg-raised border border-border rounded-lg text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent/50 transition-colors"
-                />
-                <button class="px-3 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Bottom bar -->
-        <div class="mt-16 pt-8 border-t border-border/50">
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p class="text-xs text-text-muted">
-              © {new Date().getFullYear()} {SITE_CONFIG.name} · {locale === 'es' ? 'Todos los derechos reservados' : 'All rights reserved'}
-            </p>
-            <div class="flex items-center gap-6 text-xs text-text-tertiary">
-              <a href={`${localePath}/privacidad`} class="hover:text-accent transition-colors duration-300">
-                {locale === 'es' ? 'Privacidad' : 'Privacy'}
-              </a>
-              <span class="text-border">·</span>
-              <a href={`${localePath}/aviso-legal`} class="hover:text-accent transition-colors duration-300">
-                {locale === 'es' ? 'Aviso legal' : 'Legal'}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-    
-    <!-- Scripts -->
-    <script is:inline>
-      (function() {
-        // Mobile menu toggle with accessibility
-        const button = document.getElementById('mobile-menu-button');
-        const menu = document.getElementById('mobile-menu');
-        const menuIcon = document.getElementById('menu-icon');
-        
-        if (button && menu) {
-          let isOpen = false;
-          
-          button.addEventListener('click', function() {
-            isOpen = !isOpen;
-            menu.classList.toggle('hidden');
-            button.setAttribute('aria-expanded', String(isOpen));
-            
-            // Animate icon
-            if (menuIcon) {
-              if (isOpen) {
-                menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />';
-                menuIcon.classList.add('rotate-90');
-              } else {
-                menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />';
-                menuIcon.classList.remove('rotate-90');
-              }
-            }
-            
-            button.setAttribute('aria-label', isOpen 
-              ? (document.documentElement.lang === 'es' ? 'Cerrar menú' : 'Close menu')
-              : (document.documentElement.lang === 'es' ? 'Abrir menú' : 'Open menu')
-            );
-          });
-          
-          // Close menu when clicking outside
-          document.addEventListener('click', function(event) {
-            if (isOpen && !button.contains(event.target) && !menu.contains(event.target)) {
-              isOpen = false;
-              menu.classList.add('hidden');
-              button.setAttribute('aria-expanded', 'false');
-              if (menuIcon) {
-                menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />';
-                menuIcon.classList.remove('rotate-90');
-              }
-            }
-          });
-          
-          // Close menu on escape key
-          document.addEventListener('keydown', function(event) {
-            if (isOpen && event.key === 'Escape') {
-              isOpen = false;
-              menu.classList.add('hidden');
-              button.setAttribute('aria-expanded', 'false');
-              if (menuIcon) {
-                menuIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />';
-                menuIcon.classList.remove('rotate-90');
-              }
-              button.focus();
-            }
-          });
-        }
 
-        // Nav scroll detection with IntersectionObserver
-        const header = document.getElementById('header');
-        const headerBg = document.getElementById('header-bg');
-        const headerLine = document.getElementById('header-line');
-        const sentinel = document.getElementById('nav-sentinel');
-        
-        if (header && sentinel && headerBg && headerLine) {
-          const observer = new IntersectionObserver(
-            ([entry]) => {
-              if (!entry.isIntersecting) {
-                // Scrolled past sentinel - more opaque
-                headerBg.style.background = 'rgba(250, 248, 245, 0.95)';
-                headerBg.style.backdropFilter = 'blur(24px) saturate(200%)';
-                headerBg.style.borderBottom = '1px solid rgba(232, 228, 222, 0.8)';
-                headerLine.style.opacity = '1';
-              } else {
-                // At top - more transparent
-                headerBg.style.background = 'rgba(250, 248, 245, 0.8)';
-                headerBg.style.backdropFilter = 'blur(20px) saturate(180%)';
-                headerBg.style.borderBottom = '1px solid rgba(232, 228, 222, 0.5)';
-                headerLine.style.opacity = '0';
-              }
-            },
-            { threshold: 0 }
-          );
-          
-          observer.observe(sentinel);
-        }
-        
-        // Scroll reveal animation
+    <Footer locale={locale} />
+
+    <!-- Scroll reveal animation -->
+    <script is:inline>
+      (function () {
         const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children');
-        
+
         if (revealElements.length > 0) {
           const revealObserver = new IntersectionObserver(
             (entries) => {
-              entries.forEach(entry => {
+              entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                   entry.target.classList.add('visible');
                   revealObserver.unobserve(entry.target);
                 }
               });
             },
-            { 
+            {
               threshold: 0.1,
-              rootMargin: '0px 0px -50px 0px'
+              rootMargin: '0px 0px -50px 0px',
             }
           );
-          
-          revealElements.forEach(el => revealObserver.observe(el));
+
+          revealElements.forEach((el) => revealObserver.observe(el));
         }
       })();
     </script>

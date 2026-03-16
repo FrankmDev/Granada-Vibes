@@ -694,26 +694,4 @@ const ogImage = 'https://placehold.co/1200x630/C75B3B/FFFFFF?text=Granada+Vibes'
     </div>
   </section>
 
-  <!-- Scroll Reveal Script -->
-  <script is:inline>
-    (function() {
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, observerOptions);
-
-      document.querySelectorAll('.reveal, .stagger-children').forEach(el => {
-        observer.observe(el);
-      });
-    })();
-  </script>
 </BaseLayout>

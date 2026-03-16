@@ -1,0 +1,210 @@
+---
+import type { Locale } from '@types';
+import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const t = useTranslations(locale);
+
+const localePath = LOCALE_PATHS[locale];
+const otherLocale = locale === 'es' ? 'en' : 'es';
+const otherLocalePath = LOCALE_PATHS[otherLocale];
+const switchUrl = otherLocalePath + currentPath.replace(/^\/en/, '');
+
+const navLinks = [
+  { href: `${localePath}/`, label: t('nav.home') },
+  { href: `${localePath}/eventos`, label: t('nav.events') },
+  { href: `${localePath}/rutas`, label: t('nav.routes') },
+  { href: `${localePath}/sobre`, label: t('nav.about') },
+];
+
+const isActive = (href: string) => {
+  if (href === `${localePath}/`) {
+    return currentPath === href || currentPath === `${localePath}`;
+  }
+  return currentPath.startsWith(href);
+};
+---
+
+<!-- Sentinel for scroll detection -->
+<div id="nav-sentinel" class="h-px absolute top-[100px]" aria-hidden="true"></div>
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+  id="header"
+  role="banner"
+>
+  <!-- Background with dynamic blur - Dark theme -->
+  <div
+    class="absolute inset-0 transition-all duration-500 opacity-0"
+    id="header-bg"
+    style="background: rgba(15, 14, 12, 0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid rgba(250, 249, 247, 0.06);"
+  />
+
+  <!-- Decorative gradient line at bottom -->
+  <div
+    class="absolute bottom-0 left-0 right-0 h-px opacity-0 transition-opacity duration-500"
+    id="header-line"
+    style="background: linear-gradient(90deg, transparent 0%, rgba(232, 90, 60, 0.5) 50%, transparent 100%);"
+  />
+
+  <div class="container relative">
+    <div class="flex items-center justify-between h-20 lg:h-24">
+      
+      <!-- Logo - Bold modern style -->
+      <a
+        href={localePath || '/'}
+        class="relative z-10 flex items-center gap-3 group"
+        aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}
+      >
+        <div class="relative">
+          {/* Logo icon with glow effect */}
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-terra/20 to-amber/10 flex items-center justify-center transition-all duration-300 group-hover:from-terra/30 group-hover:to-amber/20 border border-terra/30 group-hover:border-terra/50 group-hover:shadow-lg group-hover:shadow-terra/20">
+            <svg class="w-5 h-5 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+        </div>
+        
+        {/* Logo text - Sans-serif display */}
+        <div class="flex flex-col">
+          <span class="font-display text-xl font-semibold text-surface tracking-tight leading-none">
+            {SITE_CONFIG.name}
+          </span>
+          <span class="text-[10px] text-surface-muted tracking-[0.2em] uppercase font-bold">
+            {t('nav.guideLabel')}
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation - Modern pill style -->
+      <nav class="hidden md:flex items-center gap-1 p-1.5 bg-base-elevated/80 backdrop-blur-sm rounded-2xl border border-edge" aria-label={t('nav.mainNavLabel')}>
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              'relative px-5 py-2.5 text-sm font-semibold transition-all duration-300 rounded-xl',
+              isActive(link.href)
+                ? 'text-surface bg-terra/20'
+                : 'text-surface-secondary hover:text-surface hover:bg-base-card',
+            ]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+            {isActive(link.href) && (
+              <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-terra"></span>
+            )}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Right side actions -->
+      <div class="flex items-center gap-3 relative z-10">
+        {/* Language switcher - Modern style */}
+        <a
+          href={switchUrl}
+          class="hidden sm:flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-surface-muted hover:text-surface bg-base-elevated border border-edge rounded-xl hover:border-terra/30 transition-all duration-300"
+          aria-label={t('nav.changeLanguage')}
+        >
+          <span class={locale === 'es' ? 'text-terra' : ''} aria-hidden="true">ES</span>
+          <span class="text-surface-disabled">/</span>
+          <span class={locale === 'en' ? 'text-terra' : ''} aria-hidden="true">EN</span>
+        </a>
+
+        {/* CTA Button - Desktop only */}
+        <a
+          href={`${localePath}/eventos`}
+          class="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-terra text-surface text-sm font-semibold rounded-xl hover:bg-terra-hover transition-all duration-300 hover:shadow-lg hover:shadow-terra/30 hover:-translate-y-0.5"
+        >
+          <span>Explorar</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+
+        {/* Mobile menu button - Modern style */}
+        <button
+          type="button"
+          class="md:hidden p-3 text-surface-secondary hover:text-terra bg-base-elevated border border-edge rounded-xl hover:border-terra/30 transition-all duration-300"
+          aria-label={t('nav.openMenu')}
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          id="mobile-menu-button"
+        >
+          <svg class="w-5 h-5 transition-transform duration-300" id="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile menu - Full screen dark theme -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden fixed inset-0 top-20 bg-base/98 backdrop-blur-2xl z-40"
+    role="navigation"
+    aria-label={t('nav.mobileNavLabel')}
+  >
+    <div class="container py-8">
+      <nav class="flex flex-col gap-3">
+        {navLinks.map((link, index) => (
+          <a
+            href={link.href}
+            class:list={[
+              'px-6 py-4 text-2xl font-display font-semibold rounded-2xl transition-all duration-300',
+              isActive(link.href)
+                ? 'text-terra bg-terra/10 border border-terra/30'
+                : 'text-surface-secondary hover:text-surface hover:bg-base-elevated',
+            ]}
+            style={`animation-delay: ${index * 50}ms`}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      {/* Mobile CTA */}
+      <div class="mt-8">
+        <a
+          href={`${localePath}/eventos`}
+          class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-terra text-surface text-lg font-semibold rounded-2xl hover:bg-terra-hover transition-all duration-300"
+        >
+          <span>Explorar eventos</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="mt-8 pt-8 border-t border-edge">
+        <a
+          href={switchUrl}
+          class="flex items-center gap-3 px-6 py-4 text-surface-muted hover:text-surface rounded-2xl hover:bg-base-elevated transition-all duration-300"
+          aria-label={t('nav.changeLanguage')}
+        >
+          <span class="text-sm font-semibold">{t('nav.switchLanguage')}</span>
+          <span class="font-bold text-sm uppercase tracking-wider">
+            <span class={locale === 'es' ? 'text-terra' : ''}>Español</span>
+            <span class="mx-2 text-surface-disabled">/</span>
+            <span class={locale === 'en' ? 'text-terra' : ''}>English</span>
+          </span>
+        </a>
+      </div>
+
+      {/* Decorative element */}
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-30">
+        <div class="w-px h-16 bg-gradient-to-b from-transparent via-terra/50 to-transparent"></div>
+        <span class="text-[10px] uppercase tracking-[0.3em] text-surface-muted font-bold">Granada Vibes</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script src="../../scripts/navBar.ts"></script>

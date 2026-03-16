@@ -29,7 +29,8 @@ export type Neighborhood =
   | 'realejo'
   | 'alhambra'
   | 'cartuja'
-  | 'ronda';
+  | 'zaidin'
+  | 'otro';
 
 export interface Event {
   id: string;
@@ -39,7 +40,7 @@ export interface Event {
   category: EventCategory;
   date: string; // ISO 8601 date
   time: string; // HH:MM format
-  endTime?: string; // HH:MM format
+  endDate?: string; // ISO 8601 date (YYYY-MM-DD) — end date for multi-day events
   venue: string;
   neighborhood: Neighborhood;
   address?: string;
@@ -49,9 +50,9 @@ export interface Event {
   featured: boolean;
   image?: string;
   url?: string;
-  // Campos nuevos para páginas de detalle
+  // Campos para páginas de detalle
   venueDescription?: LocalizedText;
-  highlights?: LocalizedText[];
+  highlights?: { es: string[]; en: string[] };
   tips?: LocalizedText;
   ticketsUrl?: string;
 }
@@ -60,7 +61,8 @@ export interface Event {
 // ROUTE TYPES
 // ============================================
 
-export type RouteDifficulty = 'easy' | 'moderate' | 'challenging' | 'expert';
+export type RouteDifficulty = 'easy' | 'moderate' | 'challenging';
+export type Difficulty = RouteDifficulty;
 export type RouteCategory =
   | 'viewpoint'
   | 'tapas'
@@ -98,9 +100,9 @@ export interface Route {
   image?: string;
   featured: boolean;
   tags: string[];
-  // Campos nuevos para páginas de detalle
+  // Campos para páginas de detalle
   longDescription?: LocalizedText;
-  whatToBring?: LocalizedText[];
+  whatToBring?: { es: string[]; en: string[] };
   bestMonths?: string[];
 }
 
