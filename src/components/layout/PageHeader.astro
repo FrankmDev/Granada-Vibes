@@ -2,35 +2,63 @@
 interface Props {
   title: string;
   subtitle?: string;
-  accent?: 'accent' | 'sand' | 'sage';
+  accent?: 'accent' | 'gold' | 'sage';
 }
 
 const { title, subtitle, accent = 'accent' } = Astro.props;
 
 const accentColors = {
-  accent: 'bg-accent text-accent',
-  sand: 'bg-sand text-sand',
-  sage: 'bg-sage text-sage',
+  accent: 'from-accent to-accent-hover',
+  gold: 'from-gold to-gold-hover',
+  sage: 'from-sage to-sage-hover',
 };
 
-const [bgColor, textColor] = accentColors[accent].split(' ');
+const lineColors = {
+  accent: 'bg-accent',
+  gold: 'bg-gold',
+  sage: 'bg-sage',
+};
+
+const textColors = {
+  accent: 'text-accent',
+  gold: 'text-gold',
+  sage: 'text-sage',
+};
 ---
 
-<section class="relative pt-32 pb-12">
-  <div class="container">
-    <div class="max-w-3xl">
-      <div class="flex items-center gap-3 mb-4">
-        <span class:list={['w-8 h-px', bgColor]} />
-        <span class:list={['font-mono text-[11px] uppercase tracking-[0.2em]', textColor]}>Granada Vibes</span>
+<section class="relative pt-32 lg:pt-40 pb-16 lg:pb-20 overflow-hidden">
+  {/* Background effects */}
+  <div class="absolute inset-0 bg-gradient-to-b from-bg-raised/50 to-transparent"></div>
+  <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-accent/5 to-transparent rounded-full blur-[100px] opacity-50"></div>
+  
+  <div class="container relative">
+    <div class="max-w-4xl">
+      {/* Overline */}
+      <div class="flex items-center gap-4 mb-6 reveal">
+        <div class:list={['w-12 h-0.5 bg-gradient-to-r', accentColors[accent]]}></div>
+        <span class:list={['font-mono text-xs uppercase tracking-[0.3em]', textColors[accent]]}>Granada Vibes</span>
       </div>
-      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold tracking-[-0.02em] mb-4">
-        {title}
+      
+      {/* Title */}
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight mb-6 reveal">
+        <span class="text-gradient-gold">{title}</span>
       </h1>
+      
+      {/* Subtitle */}
       {subtitle && (
-        <p class="text-lg text-text-secondary">
+        <p class="text-lg lg:text-xl text-text-secondary max-w-2xl leading-relaxed reveal">
           {subtitle}
         </p>
       )}
+      
+      {/* Decorative element */}
+      <div class="flex items-center gap-4 mt-10 reveal">
+        <div class="h-px flex-1 bg-gradient-to-r from-border to-transparent max-w-[200px]"></div>
+        <svg class="w-5 h-5 text-gold/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+        <div class="h-px flex-1 bg-gradient-to-l from-border to-transparent max-w-[200px]"></div>
+      </div>
     </div>
   </div>
 </section>

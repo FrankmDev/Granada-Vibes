@@ -1,6 +1,7 @@
 ---
 import type { Event } from '@types';
-import { formatDateShort, formatTime } from '@utils/dates';
+import { formatDateShort, formatTime, getTemporalProximity } from '@utils/dates';
+import Badge from '@components/ui/Badge.astro';
 
 interface Props {
   event: Event;
@@ -11,75 +12,137 @@ interface Props {
 
 const { event, locale, t, featured = false } = Astro.props;
 const href = locale === 'es' ? `/eventos/${event.slug}` : `/en/events/${event.slug}`;
+
+const temporalProximity = getTemporalProximity(event.date);
 ---
 
-<article class:list={['group', { 'col-span-full md:col-span-2': featured }]}>
+<article class:list={['group reveal', { 'lg:col-span-2': featured }]}>
   <a href={href} class="block h-full">
-    <div class="relative h-full bg-bg-card border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg">
-      {/* Image Area */}
+    <div class:list={[
+      'relative h-full bg-white border rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-soft-xl',
+      event.featured 
+        ? 'border-gold/30 hover:border-gold/50' 
+        : 'border-border/60 hover:border-accent/30'
+    ]}>
+      {/* Image Area - Enhanced */}
       <div class:list={['bg-bg-raised relative overflow-hidden', featured ? 'aspect-[21/9]' : 'aspect-[16/10]']}>
-        <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        {/* Multi-layer gradient overlays */}
+        <div class="absolute inset-0 bg-gradient-to-br from-accent/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/30 to-transparent opacity-70" />
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
         
-        {/* Placeholder icon when no image */}
+        {/* Placeholder icon with enhanced styling */}
         <div class="absolute inset-0 flex items-center justify-center">
-          <div class="w-16 h-16 rounded-2xl bg-bg-card/50 border border-border flex items-center justify-center">
-            <svg class="w-8 h-8 text-text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class:list={['rounded-2xl bg-white/95 border border-border/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-soft', featured ? 'w-24 h-24' : 'w-20 h-20']}>
+            <svg class="w-10 h-10 text-text-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
         </div>
         
-        {/* Featured badge */}
+        {/* Featured badge with premium styling */}
         {event.featured && (
-          <div class="absolute top-4 left-4">
-            <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full border border-sand/20">
-              {t('events.featured')}
-            </span>
+          <div class="absolute top-5 left-5">
+            <Badge variant="gold" size="sm">{t('events.featured')}</Badge>
           </div>
         )}
         
-        {/* Category badge */}
-        <div class="absolute top-4" class:list={event.featured ? 'right-4' : 'right-4'}>
-          <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-bg/90 text-text-primary rounded-full border border-border/50">
+        {/* Temporal proximity badge */}
+        {temporalProximity === 'today' && (
+          <div class="absolute top-5 right-5">
+            <Badge variant="live" size="md">HOY</Badge>
+          </div>
+        )}
+        {temporalProximity === 'tomorrow' && (
+          <div class="absolute top-5 right-5">
+            <Badge variant="accent" size="sm">MAÑANA</Badge>
+          </div>
+        )}
+        {temporalProximity === 'this-week' && !event.featured && (
+          <div class="absolute top-5 right-5">
+            <Badge variant="default" size="sm">ESTA SEMANA</Badge>
+          </div>
+        )}
+        
+        {/* Category badge with glass effect */}
+        <div class="absolute bottom-5 left-5">
+          <span class="px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.1em] bg-white/95 backdrop-blur-sm text-text-primary rounded-full border border-border/40 shadow-soft">
             {t(`categories.${event.category}`)}
           </span>
         </div>
         
-        {/* Price badge */}
-        <div class="absolute bottom-4 right-4">
-          <span class="px-3 py-1.5 text-sm font-display font-semibold bg-bg/90 text-text-primary rounded-full border border-border/50">
+        {/* Price badge - Premium positioning */}
+        <div class="absolute bottom-5 right-5">
+          <span class:list={[
+            'px-4 py-2 font-display font-semibold rounded-full border backdrop-blur-sm shadow-soft',
+            event.price === null 
+              ? 'bg-sage/10 text-sage border-sage/20' 
+              : 'bg-white/95 text-text-primary border-border/40'
+          ]}>
             {event.price === null ? t('events.free') : `${event.price}€`}
           </span>
         </div>
       </div>
       
-      {/* Content */}
-      <div class="p-5">
-        <div class="flex items-center gap-2 mb-3 text-sm text-text-muted">
-          <svg class="w-4 h-4 text-accent/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span>{formatDateShort(event.date, locale)}</span>
-          <span class="w-1 h-1 rounded-full bg-border" />
-          <span>{formatTime(event.time, locale)}</span>
+      {/* Content - Enhanced spacing and typography */}
+      <div class="p-6 lg:p-7">
+        {/* Date and time row */}
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <span class="font-display text-sm font-semibold text-text-primary">{formatDateShort(event.date, locale)}</span>
+          </div>
+          <span class="w-1 h-1 rounded-full bg-border"></span>
+          <div class="flex items-center gap-1.5 text-text-muted">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-sm">{formatTime(event.time, locale)}</span>
+          </div>
         </div>
         
-        <h3 class="text-lg font-display font-medium text-text-primary mb-2 group-hover:text-accent transition-colors duration-200 line-clamp-2">
+        {/* Divider accent */}
+        <div class="w-10 h-[2px] bg-gradient-to-r from-accent to-coral mb-4 transition-all duration-300 group-hover:w-16"></div>
+        
+        {/* Title */}
+        <h3 class:list={[
+          'font-display font-semibold text-text-primary mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2 leading-tight',
+          featured ? 'text-xl lg:text-2xl' : 'text-lg'
+        ]}>
           {event.title[locale]}
         </h3>
         
-        <p class="text-sm text-text-secondary line-clamp-2 mb-3">
+        {/* Description */}
+        <p class="text-sm text-text-secondary line-clamp-2 mb-4 leading-relaxed">
           {event.description[locale]}
         </p>
         
-        <div class="flex items-center gap-1.5 text-sm text-text-muted pt-3 border-t border-border/30">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          <span>{event.venue}</span>
-          <span class="w-1 h-1 rounded-full bg-border" />
-          <span>{t(`neighborhoods.${event.neighborhood}`)}</span>
+        {/* Location with enhanced styling */}
+        <div class="flex items-center gap-3 text-sm pt-4 border-t border-border/40">
+          <div class="w-8 h-8 rounded-lg bg-bg-raised flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-accent/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <span class="text-text-secondary truncate block">{event.venue}</span>
+            <span class="text-text-muted text-xs">{t(`neighborhoods.${event.neighborhood}`)}</span>
+          </div>
         </div>
+      </div>
+      
+      {/* Hover glow effect */}
+      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+        <div class="absolute inset-0 bg-gradient-to-t from-accent/[0.03] via-transparent to-transparent"></div>
+      </div>
+      
+      {/* Corner accent on hover */}
+      <div class="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div class="absolute top-4 right-4 w-2 h-2 border-t-2 border-r-2 border-accent/30 rounded-tr"></div>
       </div>
     </div>
   </a>

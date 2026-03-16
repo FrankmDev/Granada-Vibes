@@ -4,7 +4,7 @@ import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import Icon from '@components/ui/Icon.astro';
 import { getAllEvents, getEventBySlug } from '@data';
 import { useTranslations } from '@i18n/utils';
-import { formatDate } from '@utils/dates';
+import { formatDate, formatFullDate, formatTime, getTemporalProximity } from '@utils/dates';
 
 export function getStaticPaths() {
   const events = getAllEvents();
@@ -23,102 +23,367 @@ const breadcrumbs = [
   { label: t('nav.events'), href: '/eventos' },
   { label: event.title[locale] },
 ];
+
+// Get temporal proximity for badge
+const temporalProximity = getTemporalProximity(event.date);
+const proximityLabels = {
+  'today': 'HOY',
+  'tomorrow': 'MAÑANA',
+  'this-week': 'ESTA SEMANA',
+  'future': null,
+};
+
+// Get related events (same category, different event)
+const relatedEvents = getAllEvents()
+  .filter(e => e.category === event.category && e.id !== event.id)
+  .slice(0, 3);
+
+// OG Image
+const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
 ---
 
 <BaseLayout 
   locale={locale}
   title={event.title[locale]}
-  description={event.description[locale]}
+  description={`${event.title[locale]} en Granada — ${formatDate(event.date, locale)}. ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. Precio: ${event.price === null ? 'Gratis' : event.price + '€'}. Compra entradas y descubre más en Granada Vibes.`}
+  ogImage={ogImage}
   schemaType="event"
   schemaData={event}
 >
-  <article class="container pt-32 pb-20">
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: event.title[locale],
+    startDate: `${event.date}T${event.time}`,
+    endDate: event.endTime ? `${event.endTime}T${event.time}` : undefined,
+    location: {
+      '@type': 'Place',
+      name: event.venue,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Granada',
+        addressRegion: 'Andalucía',
+        addressCountry: 'ES'
+      }
+    },
+    offers: {
+      '@type': 'Offer',
+      price: event.price?.toString() || '0',
+      priceCurrency: 'EUR',
+      availability: event.price === null ? 'https://schema.org/InStock' : 'https://schema.org/InStock',
+      url: event.ticketsUrl || Astro.url.href
+    },
+    description: event.description[locale],
+    image: ogImage
+  })} />
+
+  <article class="container pt-28 pb-20 lg:pt-32">
     <Breadcrumbs items={breadcrumbs} />
 
-    {/* Header */}
-    <header class="max-w-4xl mb-12">
-      <div class="flex flex-wrap items-center gap-3 mb-4">
-        <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-accent/10 text-accent rounded-full">
-          {t(`categories.${event.category}`)}
-        </span>
-        {event.featured && (
-          <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full">
-            {t('events.featured')}
-          </span>
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 mt-8">
+      <!-- Columna Principal (70%) -->
+      <div class="order-2 lg:order-1">
+        <!-- Hero del evento -->
+        <header class="mb-10">
+          <!-- Badges -->
+          <div class="flex flex-wrap items-center gap-3 mb-5">
+            <span class="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-accent/10 text-accent rounded-full border border-accent/20">
+              {t(`categories.${event.category}`)}
+            </span>
+            {temporalProximity && proximityLabels[temporalProximity] && (
+              <span class:list={[
+                'px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider rounded-full border animate-pulse',
+                temporalProximity === 'today' 
+                  ? 'bg-accent text-bg border-accent' 
+                  : temporalProximity === 'tomorrow'
+                    ? 'bg-accent/20 text-accent border-accent/30'
+                    : 'bg-bg-elevated text-text-secondary border-border'
+              ]}>
+                {proximityLabels[temporalProximity]}
+              </span>
+            )}
+            {event.featured && (
+              <span class="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full border border-sand/20">
+                Destacado
+              </span>
+            )}
+          </div>
+
+          <!-- Headline -->
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] text-text-primary mb-6 leading-[1.1]">
+            {event.title[locale]}
+          </h1>
+
+          <!-- Descripción -->
+          <p class="text-lg lg:text-xl text-text-secondary leading-relaxed max-w-2xl">
+            {event.description[locale]}
+          </p>
+        </header>
+
+        <!-- Línea separadora -->
+        <div class="h-px bg-border/50 mb-10" />
+
+        <!-- Sección "El lugar" -->
+        <section class="mb-12" aria-labelledby="venue-heading">
+          <h2 id="venue-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-5">
+            {event.venue}
+          </h2>
+          
+          <div class="flex items-center gap-2 mb-5">
+            <span class="px-3 py-1 text-xs font-medium bg-bg-elevated text-text-secondary rounded-full border border-border">
+              {t(`neighborhoods.${event.neighborhood}`)}
+            </span>
+            {event.address && (
+              <span class="text-sm text-text-muted">{event.address}</span>
+            )}
+          </div>
+
+          {event.venueDescription && (
+            <p class="text-text-secondary leading-relaxed mb-8">
+              {event.venueDescription[locale]}
+            </p>
+          )}
+
+          <!-- Placeholder para mapa -->
+          <div class="aspect-video bg-bg-raised rounded-2xl border border-border flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-bg-card rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <p class="text-text-muted text-sm">Mapa próximamente</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sección "Qué esperar" -->
+        {event.highlights && event.highlights[locale]?.length > 0 && (
+          <section class="mb-12" aria-labelledby="highlights-heading">
+            <h2 id="highlights-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+              Qué esperar
+            </h2>
+            <ul class="space-y-4">
+              {event.highlights[locale]?.map((highlight) => (
+                <li class="flex items-start gap-4">
+                  <span class="w-2 h-2 rounded-full bg-accent mt-2.5 flex-shrink-0" />
+                  <span class="text-text-secondary leading-relaxed">{highlight}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- Sección "Consejos prácticos" -->
+        {event.tips && (
+          <section class="mb-12" aria-labelledby="tips-heading">
+            <div class="p-6 bg-bg-raised/50 rounded-2xl border border-border/50">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-display text-lg font-medium text-text-primary mb-2">Consejos prácticos</h3>
+                  <p class="text-text-secondary leading-relaxed">{event.tips[locale]}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        <!-- Tags -->
+        {event.tags.length > 0 && (
+          <section aria-labelledby="tags-heading">
+            <h2 id="tags-heading" class="sr-only">Etiquetas</h2>
+            <div class="flex flex-wrap gap-2">
+              {event.tags.map((tag) => (
+                <span class="px-4 py-2 text-sm text-text-secondary bg-bg-raised rounded-full border border-border/50">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </section>
         )}
       </div>
-      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold tracking-[-0.02em] mb-6">
-        {event.title[locale]}
-      </h1>
-      <p class="text-lg text-text-secondary leading-relaxed">
-        {event.description[locale]}
-      </p>
-    </header>
 
-    {/* Info Cards */}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12" role="list" aria-label={t('events.filters.title')}>
-      <div class="p-6 bg-bg-card border border-border rounded-xl" role="listitem">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
-            <Icon name="calendar" class="w-5 h-5 text-accent" />
-          </div>
-          <span class="text-sm text-text-muted">{t('events.filters.date')}</span>
-        </div>
-        <p class="font-medium text-text-primary">{formatDate(event.date, locale)}</p>
-      </div>
+      <!-- Sidebar (30%) -->
+      <aside class="order-1 lg:order-2">
+        <div class="lg:sticky lg:top-28 space-y-6">
+          <!-- Card de info principal -->
+          <div class="p-6 lg:p-8 bg-bg-card border border-border rounded-2xl">
+            <!-- Fecha completa -->
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-1">Fecha</p>
+              <p class="font-display text-2xl font-semibold text-text-primary">
+                {formatFullDate(event.date, locale)}
+              </p>
+              {event.endTime && event.endTime !== event.date && (
+                <p class="text-sm text-text-muted mt-1">
+                  Hasta {formatDate(event.endTime, locale)}
+                </p>
+              )}
+            </div>
 
-      <div class="p-6 bg-bg-card border border-border rounded-xl" role="listitem">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
-            <Icon name="clock" class="w-5 h-5 text-accent" />
-          </div>
-          <span class="text-sm text-text-muted">{locale === 'es' ? 'Hora' : 'Time'}</span>
-        </div>
-        <p class="font-medium text-text-primary">{event.time}{event.endTime ? ` - ${event.endTime}` : ''}</p>
-      </div>
+            <!-- Hora -->
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-1">Hora</p>
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p class="font-display text-xl font-semibold text-text-primary">
+                  {formatTime(event.time, locale)}
+                </p>
+              </div>
+            </div>
 
-      <div class="p-6 bg-bg-card border border-border rounded-xl" role="listitem">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
-            <Icon name="location" class="w-5 h-5 text-accent" />
+            <!-- Precio -->
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-1">Precio</p>
+              <p class:list={[
+                'font-display text-3xl font-bold',
+                event.price === null ? 'text-success' : 'text-text-primary'
+              ]}>
+                {event.price === null ? 'Gratis' : `${event.price}€`}
+              </p>
+            </div>
+
+            <!-- CTA -->
+            {event.ticketsUrl ? (
+              <a 
+                href={event.ticketsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-accent text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                </svg>
+                Comprar entradas
+              </a>
+            ) : (
+              <button 
+                class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-accent text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                {event.price === null ? 'Confirmar asistencia' : 'Reservar plaza'}
+              </button>
+            )}
+
+            <!-- Separador -->
+            <div class="h-px bg-border/50 my-6" />
+
+            <!-- Lugar -->
+            <div class="mb-4">
+              <p class="text-sm text-text-muted mb-1">Lugar</p>
+              <p class="font-medium text-text-primary">{event.venue}</p>
+              <p class="text-sm text-text-muted">{t(`neighborhoods.${event.neighborhood}`)}</p>
+            </div>
+
+            <!-- Separador -->
+            <div class="h-px bg-border/50 my-6" />
+
+            <!-- Botón compartir -->
+            <button 
+              id="share-button"
+              class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-transparent text-text-secondary font-medium text-sm rounded-xl border border-border hover:border-text-secondary hover:text-text-primary transition-all duration-200"
+              data-title={event.title[locale]}
+              data-url={Astro.url.href}
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              Compartir evento
+            </button>
           </div>
-          <span class="text-sm text-text-muted">{t('events.filters.neighborhood')}</span>
+
+          <!-- Eventos relacionados -->
+          {relatedEvents.length > 0 && (
+            <div class="p-6 bg-bg-raised/30 border border-border/50 rounded-2xl">
+              <h3 class="font-display text-lg font-medium text-text-primary mb-4">
+                Eventos similares
+              </h3>
+              <div class="space-y-4">
+                {relatedEvents.map((relatedEvent) => (
+                  <a 
+                    href={`/eventos/${relatedEvent.slug}`}
+                    class="block group"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div class="w-12 h-12 bg-bg-card rounded-xl flex items-center justify-center flex-shrink-0 border border-border group-hover:border-accent/30 transition-colors">
+                        <svg class="w-5 h-5 text-text-muted group-hover:text-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="font-medium text-text-primary text-sm group-hover:text-accent transition-colors line-clamp-2">
+                          {relatedEvent.title[locale]}
+                        </p>
+                        <p class="text-xs text-text-muted mt-1">
+                          {formatDate(relatedEvent.date, locale)}
+                        </p>
+                        <p class="text-xs text-text-muted">
+                          {relatedEvent.price === null ? 'Gratis' : `${relatedEvent.price}€`}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        <p class="font-medium text-text-primary">{event.venue}</p>
-        <p class="text-sm text-text-muted">{t(`neighborhoods.${event.neighborhood}`)}</p>
-      </div>
+      </aside>
     </div>
-
-    {/* Price & CTA */}
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 p-6 bg-bg-card border border-border rounded-xl">
-      <div>
-        <p class="text-sm text-text-muted mb-1">{locale === 'es' ? 'Precio' : 'Price'}</p>
-        <p class="text-3xl font-display font-semibold text-text-primary">
-          {event.price === null ? t('events.free') : `${event.price}€`}
-        </p>
-      </div>
-      <button 
-        class="inline-flex items-center gap-2 px-6 py-3.5 bg-accent text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] focus:outline-none focus:ring-2 focus:ring-accent/50"
-      >
-        <Icon name="ticket" class="w-5 h-5" />
-        {event.price === null ? 'Confirmar asistencia' : t('actions.getTickets')}
-      </button>
-    </div>
-
-    {/* Tags */}
-    {event.tags.length > 0 && (
-      <div class="mt-12">
-        <h2 class="font-mono text-[11px] uppercase tracking-[0.15em] text-text-muted mb-4">
-          {locale === 'es' ? 'Etiquetas' : 'Tags'}
-        </h2>
-        <div class="flex flex-wrap gap-2" role="list" aria-label={locale === 'es' ? 'Etiquetas del evento' : 'Event tags'}>
-          {event.tags.map((tag) => (
-            <span class="text-sm text-text-secondary bg-bg-raised px-3 py-1.5 rounded-full border border-border/50" role="listitem">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    )}
   </article>
+
+  <!-- Share functionality -->
+  <script is:inline>
+    (function() {
+      const shareButton = document.getElementById('share-button');
+      if (!shareButton) return;
+
+      const title = shareButton.dataset.title;
+      const url = shareButton.dataset.url;
+
+      shareButton.addEventListener('click', async function() {
+        // Try Web Share API first
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: title,
+              text: `Descubre "${title}" en Granada Vibes`,
+              url: url
+            });
+            return;
+          } catch (err) {
+            // User cancelled or share failed, fall back to clipboard
+          }
+        }
+
+        // Fallback to clipboard
+        try {
+          await navigator.clipboard.writeText(url);
+          const originalText = shareButton.innerHTML;
+          shareButton.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+            </svg>
+            Enlace copiado
+          `;
+          setTimeout(() => {
+            shareButton.innerHTML = originalText;
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+    })();
+  </script>
 </BaseLayout>

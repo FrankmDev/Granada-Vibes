@@ -1,0 +1,46 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { useTranslations } from '@i18n/utils';
+
+const locale = 'es';
+const t = useTranslations(locale);
+---
+
+<BaseLayout 
+  locale={locale} 
+  title="Aviso legal"
+  description="Aviso legal de Granada Vibes."
+  noindex={true}
+>
+  <section class="container pt-32 pb-20">
+    <div class="max-w-2xl mx-auto">
+      {/* Back link */}
+      <a href="/" class="inline-flex items-center gap-2 text-text-muted hover:text-accent transition-colors mb-8">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Volver a inicio
+      </a>
+
+      <h1 class="font-display text-4xl lg:text-5xl font-bold text-text-primary mb-6">
+        Aviso legal
+      </h1>
+      
+      <div class="prose prose-invert prose-lg max-w-none">
+        <p class="text-text-secondary leading-relaxed">
+          Este aviso legal está siendo redactado. Próximamente disponible.
+        </p>
+        
+        <p class="text-text-secondary leading-relaxed mt-4">
+          Mientras tanto, si tienes alguna pregunta sobre los términos legales de uso 
+          de este sitio, puedes contactarnos en <a href="mailto:hola@granadavibes.com" class="text-accent hover:underline">hola@granadavibes.com</a>.
+        </p>
+      </div>
+
+      {/* Last updated */}
+      <p class="text-text-tertiary text-sm mt-12">
+        Última actualización: marzo 2025
+      </p>
+    </div>
+  </section>
+</BaseLayout>

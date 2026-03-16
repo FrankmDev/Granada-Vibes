@@ -2,65 +2,370 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PageHeader from '@components/layout/PageHeader.astro';
 import RouteCard from '@components/routes/RouteCard.astro';
+import Button from '@components/ui/Button.astro';
 import { getAllRoutes } from '@data';
 import { useTranslations } from '@i18n/utils';
-import type { RouteCategory } from '@types';
+import type { RouteCategory, RouteDifficulty, TimeOfDay } from '@types';
 
 const locale = 'en';
 const t = useTranslations(locale);
 const routes = getAllRoutes();
 
 const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
+const difficulties: RouteDifficulty[] = ['easy', 'moderate', 'challenging'];
+const timeOfDayOptions: TimeOfDay[] = ['morning', 'afternoon', 'sunset', 'evening'];
+
+const difficultyColors = {
+  easy: { bg: 'bg-sage/15', text: 'text-sage', border: 'border-sage/30' },
+  moderate: { bg: 'bg-gold/15', text: 'text-gold', border: 'border-gold/30' },
+  challenging: { bg: 'bg-accent/15', text: 'text-accent', border: 'border-accent/30' },
+};
+
+const ogImage = 'https://placehold.co/1200x630/0a0908/c9a84c?text=Granada+Vibes+Routes';
 ---
 
 <BaseLayout 
   locale={locale} 
   title={t('routes.title')}
-  description={t('routes.subtitle')}
-  schemaType="website"
+  description="Explore Granada with our curated routes. Viewpoints, tapas, monuments and secret spots. Filter by difficulty, duration and best time."
+  ogImage={ogImage}
 >
+  <!-- Page Header - Luxe Edition -->
   <PageHeader 
     title={t('routes.title')}
     subtitle={t('routes.subtitle')}
-    accent="sand"
+    accent="gold"
   />
 
-  {/* Filters Bar */}
-  <div class="border-y border-border/30 bg-bg-raised/20">
-    <div class="container py-4">
-      <div class="flex flex-wrap items-center gap-2" role="group" aria-label={t('events.filters.title')}>
-        <span class="text-sm text-text-muted mr-2">{t('events.filters.category')}:</span>
+  {/* Filters Bar - Enhanced Design */}
+  <div class="relative border-y border-border/50 bg-bg-raised/50 backdrop-blur-sm">
+    <div class="absolute inset-0 bg-gradient-to-r from-gold/[0.02] via-transparent to-gold/[0.02]"></div>
+    
+    <div class="container relative py-6 lg:py-8">
+      {/* Row 1 - Category chips */}
+      <div class="flex flex-wrap items-center gap-2 mb-6" role="group" aria-label="Filter by category">
         <button 
-          class="px-3 py-1.5 text-xs font-medium uppercase tracking-wider bg-sand text-bg rounded-full"
+          class="filter-category px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-gold text-bg font-bold rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-gold/25"
+          data-category="all"
           aria-pressed="true"
         >
           {t('categories.all')}
         </button>
         {categories.map((cat) => (
           <button 
-            class="px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-text-secondary bg-bg-card border border-border rounded-full hover:border-sand/30 transition-colors"
+            class="filter-category px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-text-secondary bg-bg-card border border-border rounded-full hover:border-gold/50 hover:text-text-primary transition-all duration-300"
+            data-category={cat}
             aria-pressed="false"
           >
             {t(`categories.${cat}`)}
           </button>
         ))}
       </div>
+
+      {/* Row 2 - Secondary filters */}
+      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-border/30">
+        {/* Difficulty chips */}
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-sm text-text-muted mr-1">Difficulty:</span>
+          <button 
+            class="filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 bg-gold text-bg font-bold border-gold shadow-lg shadow-gold/20"
+            data-difficulty="all"
+            aria-pressed="true"
+          >
+            All
+          </button>
+          {difficulties.map((diff) => (
+            <button 
+              class:list={[
+                'filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 hover:scale-105',
+                difficultyColors[diff].bg,
+                difficultyColors[diff].text,
+                difficultyColors[diff].border
+              ]}
+              data-difficulty={diff}
+              aria-pressed="false"
+            >
+              {t(`difficulty.${diff}`)}
+            </button>
+          ))}
+        </div>
+
+        {/* Duration Dropdown */}
+        <div class="relative group">
+          <select 
+            id="filter-duration"
+            class="appearance-none px-5 py-2.5 pr-12 text-sm text-text-primary bg-bg-card border border-border rounded-xl focus:outline-none focus:border-gold cursor-pointer transition-all duration-300 hover:border-border-hover min-w-[160px]"
+            aria-label="Filter by duration"
+          >
+            <option value="all">Any duration</option>
+            <option value="short">Less than 2h</option>
+            <option value="medium">2-4h</option>
+            <option value="long">More than 4h</option>
+          </select>
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none transition-colors group-hover:text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+        {/* Best time Dropdown */}
+        <div class="relative group">
+          <select 
+            id="filter-time"
+            class="appearance-none px-5 py-2.5 pr-12 text-sm text-text-primary bg-bg-card border border-border rounded-xl focus:outline-none focus:border-gold cursor-pointer transition-all duration-300 hover:border-border-hover min-w-[160px]"
+            aria-label="Filter by best time"
+          >
+            <option value="all">Any time</option>
+            {timeOfDayOptions.map((time) => (
+              <option value={time}>{t(`timeOfDay.${time}`)}</option>
+            ))}
+          </select>
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none transition-colors group-hover:text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+        <div class="flex-1" />
+
+        {/* Clear filters button (hidden by default) */}
+        <button 
+          id="clear-filters"
+          class="hidden items-center gap-2 px-5 py-2.5 text-sm text-text-muted hover:text-gold transition-all duration-300 rounded-xl hover:bg-bg-card"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          Clear filters
+        </button>
+      </div>
     </div>
   </div>
 
-  {/* Routes List */}
-  <section class="container py-12 lg:py-16" aria-labelledby="routes-heading">
+  {/* Results counter */}
+  <div class="container py-6">
+    <div class="flex items-center gap-2 text-sm text-text-muted">
+      <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+      Showing <span id="results-count" class="font-semibold text-text-primary">{routes.length}</span> routes
+    </div>
+  </div>
+
+  {/* Routes Grid */}
+  <section class="container pb-20" aria-labelledby="routes-heading">
     <h2 id="routes-heading" class="sr-only">{t('routes.title')}</h2>
-    <div class="space-y-4">
+    
+    <div id="routes-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 stagger-children">
       {routes.map((route, index) => (
-        <RouteCard route={route} locale={locale} t={t} index={index} variant="list" />
+        <div 
+          class="route-card-wrapper reveal"
+          data-category={route.category}
+          data-difficulty={route.difficulty}
+          data-duration={route.duration}
+          data-time={route.timeOfDay}
+          data-featured={route.featured ? 'true' : 'false'}
+        >
+          <RouteCard route={route} locale={locale} t={t} variant="grid" index={index} />
+        </div>
       ))}
     </div>
     
-    {routes.length === 0 && (
-      <div class="text-center py-16">
-        <p class="text-text-secondary">{t('routes.noRoutes')}</p>
+    {/* Empty state - Enhanced */}
+    <div id="empty-state" class="hidden text-center py-24">
+      <div class="relative w-24 h-24 mx-auto mb-8">
+        <div class="absolute inset-0 bg-gold/10 rounded-3xl blur-xl"></div>
+        <div class="relative w-full h-full bg-bg-card border border-border rounded-3xl flex items-center justify-center">
+          <svg class="w-12 h-12 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
+          </svg>
+        </div>
       </div>
-    )}
+      <h3 class="font-display text-2xl font-semibold text-text-primary mb-3">
+        No routes for these filters
+      </h3>
+      <p class="text-text-secondary mb-8 max-w-md mx-auto">Try changing the filters or view all available routes in Granada</p>
+      <Button variant="gold" size="md" id="empty-clear-filters">
+        Clear filters
+      </Button>
+    </div>
   </section>
+
+  <script is:inline>
+    (function() {
+      const categoryButtons = document.querySelectorAll('.filter-category');
+      const difficultyButtons = document.querySelectorAll('.filter-difficulty');
+      const durationSelect = document.getElementById('filter-duration');
+      const timeSelect = document.getElementById('filter-time');
+      const clearFiltersBtn = document.getElementById('clear-filters');
+      const emptyClearFiltersBtn = document.getElementById('empty-clear-filters');
+      const resultsCount = document.getElementById('results-count');
+      const emptyState = document.getElementById('empty-state');
+      const routesGrid = document.getElementById('routes-grid');
+      const routeCards = document.querySelectorAll('.route-card-wrapper');
+
+      const difficultyColors = {
+        easy: { bg: 'bg-sage/15', text: 'text-sage', border: 'border-sage/30' },
+        moderate: { bg: 'bg-gold/15', text: 'text-gold', border: 'border-gold/30' },
+        challenging: { bg: 'bg-accent/15', text: 'text-accent', border: 'border-accent/30' },
+      };
+
+      let filters = {
+        category: 'all',
+        difficulty: 'all',
+        duration: 'all',
+        time: 'all'
+      };
+
+      function matchesDurationFilter(routeDuration, filter) {
+        if (filter === 'all') return true;
+        const durationHours = routeDuration / 60;
+        
+        switch (filter) {
+          case 'short':
+            return durationHours < 2;
+          case 'medium':
+            return durationHours >= 2 && durationHours <= 4;
+          case 'long':
+            return durationHours > 4;
+          default:
+            return true;
+        }
+      }
+
+      function applyFilters() {
+        let visibleCount = 0;
+        
+        routeCards.forEach(card => {
+          const category = card.dataset.category;
+          const difficulty = card.dataset.difficulty;
+          const duration = parseInt(card.dataset.duration, 10);
+          const time = card.dataset.time;
+          
+          const matchesCategory = filters.category === 'all' || category === filters.category;
+          const matchesDifficulty = filters.difficulty === 'all' || difficulty === filters.difficulty;
+          const matchesDuration = matchesDurationFilter(duration, filters.duration);
+          const matchesTime = filters.time === 'all' || time === filters.time;
+          
+          const isVisible = matchesCategory && matchesDifficulty && matchesDuration && matchesTime;
+          
+          if (isVisible) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        
+        resultsCount.textContent = visibleCount;
+        
+        if (visibleCount === 0) {
+          routesGrid.classList.add('hidden');
+          emptyState.classList.remove('hidden');
+        } else {
+          routesGrid.classList.remove('hidden');
+          emptyState.class.add('hidden');
+        }
+        
+        const hasActiveFilters = filters.category !== 'all' || 
+                                 filters.difficulty !== 'all' || 
+                                 filters.duration !== 'all' || 
+                                 filters.time !== 'all';
+        
+        if (hasActiveFilters) {
+          clearFiltersBtn.classList.remove('hidden');
+          clearFiltersBtn.classList.add('inline-flex');
+        } else {
+          clearFiltersBtn.classList.add('hidden');
+          clearFiltersBtn.classList.remove('inline-flex');
+        }
+      }
+
+      categoryButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryButtons.forEach(b => {
+            b.classList.remove('bg-gold', 'text-bg', 'font-bold', 'shadow-lg', 'shadow-gold/25');
+            b.classList.add('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
+            b.setAttribute('aria-pressed', 'false');
+          });
+          btn.classList.remove('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
+          btn.classList.add('bg-gold', 'text-bg', 'font-bold', 'shadow-lg', 'shadow-gold/25');
+          btn.setAttribute('aria-pressed', 'true');
+          
+          filters.category = btn.dataset.category;
+          applyFilters();
+        });
+      });
+
+      difficultyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const difficulty = btn.dataset.difficulty;
+          
+          difficultyButtons.forEach(b => {
+            const diff = b.dataset.difficulty;
+            b.setAttribute('aria-pressed', 'false');
+            
+            if (diff === 'all') {
+              b.className = 'filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 bg-gold text-bg font-bold border-gold shadow-lg shadow-gold/20';
+            } else {
+              b.className = `filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 hover:scale-105 ${difficultyColors[diff].bg} ${difficultyColors[diff].text} ${difficultyColors[diff].border}`;
+            }
+          });
+          
+          btn.setAttribute('aria-pressed', 'true');
+          btn.className = 'filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 bg-gold text-bg font-bold border-gold shadow-lg shadow-gold/20';
+          
+          filters.difficulty = difficulty;
+          applyFilters();
+        });
+      });
+
+      durationSelect?.addEventListener('change', (e) => {
+        filters.duration = e.target.value;
+        applyFilters();
+      });
+
+      timeSelect?.addEventListener('change', (e) => {
+        filters.time = e.target.value;
+        applyFilters();
+      });
+
+      function clearFilters() {
+        filters = {
+          category: 'all',
+          difficulty: 'all',
+          duration: 'all',
+          time: 'all'
+        };
+        
+        categoryButtons.forEach(b => {
+          if (b.dataset.category === 'all') {
+            b.classList.remove('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
+            b.classList.add('bg-gold', 'text-bg', 'font-bold', 'shadow-lg', 'shadow-gold/25');
+            b.setAttribute('aria-pressed', 'true');
+          } else {
+            b.classList.remove('bg-gold', 'text-bg', 'font-bold', 'shadow-lg', 'shadow-gold/25');
+            b.classList.add('text-text-secondary', 'bg-bg-card', 'border', 'border-border');
+            b.setAttribute('aria-pressed', 'false');
+          }
+        });
+        
+        difficultyButtons.forEach(b => {
+          const diff = b.dataset.difficulty;
+          if (diff === 'all') {
+            b.className = 'filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 bg-gold text-bg font-bold border-gold shadow-lg shadow-gold/20';
+            b.setAttribute('aria-pressed', 'true');
+          } else {
+            b.className = `filter-difficulty px-4 py-2 text-xs font-semibold rounded-full border transition-all duration-300 hover:scale-105 ${difficultyColors[diff].bg} ${difficultyColors[diff].text} ${difficultyColors[diff].border}`;
+            b.setAttribute('aria-pressed', 'false');
+          }
+        });
+        
+        durationSelect.value = 'all';
+        timeSelect.value = 'all';
+        
+        applyFilters();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      clearFiltersBtn?.addEventListener('click', clearFilters);
+      emptyClearFiltersBtn?.addEventListener('click', clearFilters);
+    })();
+  </script>
 </BaseLayout>

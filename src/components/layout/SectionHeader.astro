@@ -3,55 +3,110 @@ interface Props {
   overline?: string;
   title: string;
   description?: string;
-  align?: 'left' | 'center';
-  accent?: 'accent' | 'sand' | 'sage';
   href?: string;
   linkText?: string;
+  align?: 'left' | 'center';
+  accent?: 'gold' | 'accent' | 'sage';
 }
 
 const { 
   overline, 
   title, 
   description, 
-  align = 'left', 
-  accent = 'accent',
-  href,
-  linkText 
+  href, 
+  linkText,
+  align = 'left',
+  accent = 'gold',
 } = Astro.props;
 
 const accentColors = {
-  accent: 'text-accent group-hover:text-accent-hover',
-  sand: 'text-sand group-hover:text-sand-hover',
-  sage: 'text-sage group-hover:text-sage-hover',
+  gold: 'text-gold',
+  accent: 'text-accent',
+  sage: 'text-sage',
 };
 
-const textAlign = align === 'center' ? 'text-center' : 'text-left';
-const flexDirection = align === 'center' ? 'flex-col items-center' : 'flex-col lg:flex-row lg:items-end lg:justify-between';
+const accentLineColors = {
+  gold: 'bg-gold',
+  accent: 'bg-accent',
+  sage: 'bg-sage',
+};
+
+const accentBorderColors = {
+  gold: 'group-hover:border-gold/40 group-hover:shadow-gold/10',
+  accent: 'group-hover:border-accent/40 group-hover:shadow-accent/10',
+  sage: 'group-hover:border-sage/40 group-hover:shadow-sage/10',
+};
+
+const accentIconColors = {
+  gold: 'group-hover:bg-gold group-hover:text-white',
+  accent: 'group-hover:bg-accent group-hover:text-white',
+  sage: 'group-hover:bg-sage group-hover:text-white',
+};
 ---
 
-<div class:list={['flex gap-6 mb-12', flexDirection, textAlign]}>
-  <div class:list={{ 'max-w-2xl mx-auto': align === 'center' }}>
-    {overline && (
-      <span class:list={['text-[11px] font-mono uppercase tracking-[0.2em] mb-3 block', accentColors[accent].split(' ')[0]]}>
-        {overline}
-      </span>
-    )}
-    <h2 class="text-3xl lg:text-4xl font-display font-semibold text-text-primary tracking-[-0.02em]">
-      {title}
-    </h2>
-    {description && (
-      <p class="text-text-secondary mt-3 max-w-lg">
-        {description}
-      </p>
+<div class:list={[
+  'mb-14 lg:mb-20 reveal',
+  align === 'center' && 'text-center'
+]}>
+  <div class:list={[
+    'flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6',
+    align === 'center' && 'items-center'
+  ]}>
+    <div>
+      {overline && (
+        <div class="flex items-center gap-3 mb-4">
+          <span class:list={['w-10 h-[2px]', accentLineColors[accent]]}></span>
+          <span class:list={[
+            'text-xs font-semibold uppercase tracking-[0.2em]',
+            accentColors[accent]
+          ]}>
+            {overline}
+          </span>
+        </div>
+      )}
+      <h2 class="font-display text-3xl lg:text-5xl font-bold text-text-primary tracking-tight">
+        {title}
+      </h2>
+      {description && (
+        <p class="text-text-secondary mt-3 max-w-xl text-lg leading-relaxed">
+          {description}
+        </p>
+      )}
+    </div>
+    
+    {href && linkText && (
+      <div class="hidden sm:block pb-1">
+        <a 
+          href={href} 
+          class:list={[
+            'group inline-flex items-center gap-3 px-5 py-3 bg-white border border-border/60 rounded-xl transition-all duration-300',
+            accentBorderColors[accent]
+          ]}
+        >
+          <span class="text-sm font-semibold text-text-secondary group-hover:text-text-primary transition-colors">
+            {linkText}
+          </span>
+          <div class:list={[
+            'w-8 h-8 rounded-full bg-bg-raised flex items-center justify-center transition-all duration-300',
+            accentIconColors[accent]
+          ]}>
+            <svg 
+              class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+        </a>
+      </div>
     )}
   </div>
   
-  {href && linkText && (
-    <a href={href} class:list={['group inline-flex items-center gap-2 text-sm font-medium transition-colors shrink-0', accentColors[accent]]}>
-      <span class="uppercase tracking-wider">{linkText}</span>
-      <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-      </svg>
-    </a>
-  )}
+  <!-- Decorative line with gradient -->
+  <div class:list={[
+    'mt-8 h-px bg-gradient-to-r from-border to-transparent',
+    align === 'center' && 'from-border via-border to-transparent'
+  ]}></div>
 </div>

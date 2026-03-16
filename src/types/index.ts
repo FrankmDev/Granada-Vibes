@@ -49,6 +49,11 @@ export interface Event {
   featured: boolean;
   image?: string;
   url?: string;
+  // Campos nuevos para páginas de detalle
+  venueDescription?: LocalizedText;
+  highlights?: LocalizedText[];
+  tips?: LocalizedText;
+  ticketsUrl?: string;
 }
 
 // ============================================
@@ -93,6 +98,10 @@ export interface Route {
   image?: string;
   featured: boolean;
   tags: string[];
+  // Campos nuevos para páginas de detalle
+  longDescription?: LocalizedText;
+  whatToBring?: LocalizedText[];
+  bestMonths?: string[];
 }
 
 // ============================================

@@ -59,6 +59,15 @@ export const routes: Route[] = [
     ],
     tags: ['atardecer', 'vistas', 'albaicín', 'fotografía', 'romántico'],
     featured: true,
+    longDescription: {
+      es: 'El Albaicín es el barrio más antiguo de Granada, declarado Patrimonio de la Humanidad, y sus miradores ofrecen las vistas más icónicas de la Alhambra. Esta ruta te lleva por calles empedradas, entre casas encaladas y jardines secretos, para descubrir los tres puntos panorámicos más espectaculares. Desde el bullicioso Mirador de San Nicolás hasta el tranquilo de San Cristóbal, pasando por el escondido Carmen de Santa Isabel, cada parada ofrece una perspectiva única del monumento nazarí.',
+      en: 'The Albaicín is Granada\'s oldest neighborhood, declared a UNESCO World Heritage Site, and its viewpoints offer the most iconic views of the Alhambra. This route takes you along cobbled streets, between whitewashed houses and secret gardens, to discover the three most spectacular panoramic points. From the bustling San Nicolás viewpoint to the quiet San Cristóbal, passing through the hidden Carmen de Santa Isabel, each stop offers a unique perspective of the Nasrid monument.',
+    },
+    whatToBring: {
+      es: ['Calzado cómodo para caminar por empedrado', 'Cámara o móvil con batería cargada', 'Agua para el recorrido', 'Chaqueta ligera para después del atardecer', 'Gafas de sol para antes de la puesta'],
+      en: ['Comfortable shoes for walking on cobblestones', 'Camera or phone with charged battery', 'Water for the route', 'Light jacket for after sunset', 'Sunglasses for before sunset'],
+    },
+    bestMonths: ['marzo', 'abril', 'mayo', 'septiembre', 'octubre', 'noviembre'],
   },
   {
     id: 'rte-002',
@@ -118,6 +127,15 @@ export const routes: Route[] = [
     ],
     tags: ['gastronomía', 'tapas', 'bares', 'tradicional', 'centro'],
     featured: true,
+    longDescription: {
+      es: 'Granada es famosa por ser una de las últimas ciudades de España donde las tapas siguen siendo gratis con cada consumición. Esta ruta te lleva por los bares más auténticos del centro histórico y el Realejo, donde podrás disfrutar de la verdadera cultura del tapeo granadino. Desde los caracoles de Casa Julio hasta los vinos naturales de La Tana, cada parada es una institución local que ha mantenido vivas las tradiciones gastronómicas de la ciudad durante décadas.',
+      en: 'Granada is famous for being one of the last cities in Spain where tapas are still free with every drink. This route takes you through the most authentic bars in the historic center and the Realejo, where you can enjoy the true culture of Granadan tapas. From the snails at Casa Julio to the natural wines at La Tana, each stop is a local institution that has kept the city\'s gastronomic traditions alive for decades.',
+    },
+    whatToBring: {
+      es: ['Hambre y ganas de descubrir', 'Calzado cómodo para caminar entre bares', 'Dinero en efectivo (algunos bares no aceptan tarjeta)', 'Botella de agua entre tapa y tapa'],
+      en: ['Hunger and curiosity', 'Comfortable shoes for walking between bars', 'Cash (some bars don\'t accept cards)', 'Water bottle between tapas'],
+    },
+    bestMonths: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
   },
   {
     id: 'rte-003',
@@ -236,6 +254,15 @@ export const routes: Route[] = [
     ],
     tags: ['monumentos', 'historia', 'renacimiento', 'arquitectura', 'cultura'],
     featured: true,
+    longDescription: {
+      es: 'Granada es una de las ciudades con mayor concentración de monumentos renacentistas de España, fruto de su importancia histórica tras la Reconquista. Esta ruta te lleva a través de los siglos XVI y XVII, cuando la ciudad se transformó bajo el reinado de Carlos I y Felipe II. La Catedral, con su impresionante fachada y cúpula, marca el inicio de la arquitectura renacentista en España. La Capilla Real guarda los restos de los Reyes Católicos, artífices de la unificación de España. El Monasterio de San Jerónimo, joya poco concurrida, alberga el claustro más bello del país.',
+      en: 'Granada is one of the cities with the highest concentration of Renaissance monuments in Spain, a result of its historical importance after the Reconquest. This route takes you through the 16th and 17th centuries, when the city was transformed under the reign of Charles I and Philip II. The Cathedral, with its impressive façade and dome, marks the beginning of Renaissance architecture in Spain. The Royal Chapel holds the remains of the Catholic Monarchs, architects of Spanish unification. The Monastery of San Jerónimo, a little-visited jewel, houses the most beautiful cloister in the country.',
+    },
+    whatToBring: {
+      es: ['Calzado cómodo para caminar por el centro', 'Ropa apropiada para visitar lugares de culto', 'Cámara (sin flash en interiores)', 'Guía o audioguía para entender la historia', 'Agua y algún snack para las 5 horas de recorrido'],
+      en: ['Comfortable shoes for walking through the center', 'Appropriate clothing for visiting places of worship', 'Camera (no flash indoors)', 'Guide or audio guide to understand the history', 'Water and snacks for the 5-hour route'],
+    },
+    bestMonths: ['marzo', 'abril', 'mayo', 'junio', 'septiembre', 'octubre', 'noviembre'],
   },
   {
     id: 'rte-005',

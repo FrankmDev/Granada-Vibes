@@ -1,91 +1,105 @@
 /* ============================================
-   GRANADA VIBES - DESIGN TOKENS v3.0
-   Neo-Terracotta Minimalism
+   GRANADA VIBES - DESIGN TOKENS v4.0
+   Alhambra Noir - Luxe Editorial
    ============================================ */
 
 :root {
   /* ------------------------------------------
-     COLORS - Warm Minimalist Dark
+     COLORS - Alhambra Noir Palette
+     Deep blacks, warm golds, terracotta accents
      ------------------------------------------ */
   
-  /* Base - Warm black with subtle brown undertone */
-  --color-bg: #0c0a09;
-  --color-bg-raised: #141211;
-  --color-bg-elevated: #1c1917;
-  --color-bg-card: #1c1917;
-  --color-bg-hover: #292524;
+  /* Base - Rich warm black with subtle burgundy undertone */
+  --color-bg: #0a0908;
+  --color-bg-raised: #12100e;
+  --color-bg-elevated: #1a1714;
+  --color-bg-card: #161412;
+  --color-bg-hover: #231f1b;
+  --color-bg-glass: rgba(18, 16, 14, 0.85);
   
-  /* Borders - Warm gray scale */
-  --color-border: #292524;
-  --color-border-subtle: #1c1917;
-  --color-border-hover: #44403c;
-  --color-border-light: #57534e;
+  /* Borders - Warm sophisticated scale */
+  --color-border: #2a2520;
+  --color-border-subtle: #1a1714;
+  --color-border-hover: #3d3630;
+  --color-border-light: #524a42;
+  --color-border-gold: rgba(201, 168, 76, 0.3);
   
-  /* Text - Warm white scale */
-  --color-text-primary: #fafaf9;
-  --color-text-secondary: #a8a29e;
-  --color-text-muted: #78716c;
-  --color-text-tertiary: #57534e;
+  /* Text - Warm white with character */
+  --color-text-primary: #f5f2ed;
+  --color-text-secondary: #a89e94;
+  --color-text-muted: #6b6258;
+  --color-text-tertiary: #4a433d;
   
-  /* Primary Accent - Terracotta/Apricot */
-  --color-accent: #e07a5f;
-  --color-accent-hover: #e88d72;
-  --color-accent-muted: rgba(224, 122, 95, 0.1);
-  --color-accent-glow: rgba(224, 122, 95, 0.25);
+  /* Primary Accent - Deep Terracotta */
+  --color-accent: #c75b3b;
+  --color-accent-hover: #d47352;
+  --color-accent-muted: rgba(199, 91, 59, 0.12);
+  --color-accent-glow: rgba(199, 91, 59, 0.3);
   
-  /* Secondary Accent - Sage/Olive */
-  --color-sage: #81b29a;
-  --color-sage-hover: #94c3ad;
-  --color-sage-muted: rgba(129, 178, 154, 0.1);
+  /* Secondary Accent - Alhambra Gold */
+  --color-gold: #c9a84c;
+  --color-gold-hover: #d4b85a;
+  --color-gold-muted: rgba(201, 168, 76, 0.12);
+  --color-gold-glow: rgba(201, 168, 76, 0.25);
   
-  /* Tertiary - Sand/Warm beige */
-  --color-sand: #f2cc8f;
-  --color-sand-hover: #f5d9a8;
-  --color-sand-muted: rgba(242, 204, 143, 0.1);
+  /* Tertiary - Sage/Moorish Green */
+  --color-sage: #7a9e7e;
+  --color-sage-hover: #8db092;
+  --color-sage-muted: rgba(122, 158, 126, 0.12);
+  
+  /* Quaternary - Deep Azure (Alhambra tiles) */
+  --color-azure: #4a7c8c;
+  --color-azure-hover: #5a94a6;
+  --color-azure-muted: rgba(74, 124, 140, 0.12);
   
   /* Semantic */
-  --color-success: #81b29a;
-  --color-error: #e07a5f;
-  --color-warning: #f2cc8f;
+  --color-success: #7a9e7e;
+  --color-error: #c75b3b;
+  --color-warning: #d4a35a;
   
-  /* Gradients */
-  --gradient-warm: linear-gradient(135deg, #e07a5f 0%, #f2cc8f 100%);
-  --gradient-subtle: linear-gradient(180deg, rgba(224, 122, 95, 0.08) 0%, transparent 100%);
+  /* Gradients - Luxe combinations */
+  --gradient-gold: linear-gradient(135deg, #c9a84c 0%, #e8d5a3 50%, #c9a84c 100%);
+  --gradient-terracotta: linear-gradient(135deg, #c75b3b 0%, #e07a5f 100%);
+  --gradient-royal: linear-gradient(135deg, #c9a84c 0%, #c75b3b 100%);
+  --gradient-dark: linear-gradient(180deg, rgba(201, 168, 76, 0.05) 0%, transparent 100%);
+  --gradient-mesh: radial-gradient(ellipse at 20% 30%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 70%, rgba(199, 91, 59, 0.06) 0%, transparent 50%);
   
   /* ------------------------------------------
-     TYPOGRAPHY - All Sans-Serif, Ultra Modern
+     TYPOGRAPHY - Playfair Display + Plus Jakarta Sans
+     Editorial elegance meets modern clarity
      ------------------------------------------ */
   
-  /* Display: Clash Display - Geometric, bold, distinctive */
-  --font-display: 'Clash Display', 'Satoshi', 'Inter', system-ui, sans-serif;
+  /* Display: Playfair Display - Sophisticated, editorial, timeless */
+  --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
   
-  /* Body: Satoshi - Clean, modern, excellent readability */
-  --font-body: 'Satoshi', 'Inter', system-ui, -apple-system, sans-serif;
+  /* Body: Plus Jakarta Sans - Modern, warm, highly readable */
+  --font-body: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
   
-  /* Mono: JetBrains Mono - Technical, crisp */
+  /* Mono: JetBrains Mono - Technical precision */
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   
-  /* Font sizes - Dramatic scale */
+  /* Font sizes - Editorial scale with drama */
   --text-xs: 0.75rem;      /* 12px */
-  --text-sm: 0.8125rem;    /* 13px - tighter */
-  --text-base: 0.9375rem;  /* 15px - slightly smaller for density */
+  --text-sm: 0.8125rem;    /* 13px */
+  --text-base: 0.9375rem;  /* 15px */
   --text-lg: 1.125rem;     /* 18px */
   --text-xl: 1.375rem;     /* 22px */
-  --text-2xl: 1.75rem;     /* 28px */
-  --text-3xl: 2.25rem;     /* 36px */
-  --text-4xl: 3rem;        /* 48px */
-  --text-5xl: 4rem;        /* 64px - dramatic */
-  --text-6xl: 5rem;        /* 80px */
-  --text-7xl: 6.5rem;      /* 104px - massive display */
+  --text-2xl: 1.875rem;    /* 30px */
+  --text-3xl: 2.5rem;      /* 40px */
+  --text-4xl: 3.5rem;      /* 56px */
+  --text-5xl: 4.5rem;      /* 72px */
+  --text-6xl: 6rem;        /* 96px */
+  --text-7xl: 8rem;        /* 128px - massive display */
   
-  /* Line heights - Tighter, modern */
-  --leading-none: 1;
+  /* Line heights - Tight editorial */
+  --leading-none: 0.9;
   --leading-tight: 1;
   --leading-snug: 1.15;
   --leading-normal: 1.5;
-  --leading-relaxed: 1.6;
+  --leading-relaxed: 1.65;
   
-  /* Font weights - Extended range */
+  /* Font weights */
   --font-light: 300;
   --font-normal: 400;
   --font-medium: 500;
@@ -93,7 +107,7 @@
   --font-bold: 700;
   --font-black: 800;
   
-  /* Letter spacing - Tighter for modern feel */
+  /* Letter spacing */
   --tracking-tighter: -0.04em;
   --tracking-tight: -0.02em;
   --tracking-normal: 0;
@@ -124,14 +138,15 @@
   --space-64: 16rem;
   
   /* ------------------------------------------
-     BORDERS & RADII - Soft, organic
+     BORDERS & RADII - Refined, organic
      ------------------------------------------ */
   --radius-none: 0;
-  --radius-sm: 8px;
-  --radius-md: 12px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-2xl: 32px;
+  --radius-3xl: 48px;
   --radius-full: 9999px;
   
   /* Border widths */
@@ -139,42 +154,44 @@
   --border-width-2: 1.5px;
   
   /* ------------------------------------------
-     SHADOWS - Subtle, warm
+     SHADOWS - Sophisticated depth
      ------------------------------------------ */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.7);
   
-  /* Glow effects - Warm tinted */
-  --shadow-glow-accent: 0 0 40px rgba(224, 122, 95, 0.15);
-  --shadow-glow-sand: 0 0 40px rgba(242, 204, 143, 0.12);
+  /* Glow effects */
+  --shadow-glow-accent: 0 0 60px rgba(199, 91, 59, 0.2);
+  --shadow-glow-gold: 0 0 60px rgba(201, 168, 76, 0.15);
+  --shadow-glow-sage: 0 0 60px rgba(122, 158, 126, 0.15);
   
   /* ------------------------------------------
-     ANIMATIONS - Snappy, refined
+     ANIMATIONS - Luxe, refined timing
      ------------------------------------------ */
   --duration-instant: 100ms;
   --duration-fast: 150ms;
-  --duration-normal: 200ms;
-  --duration-slow: 300ms;
-  --duration-slower: 500ms;
-  --duration-dramatic: 800ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --duration-dramatic: 1000ms;
   
-  /* Easing curves */
+  /* Easing curves - Sophisticated */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-luxe: cubic-bezier(0.23, 1, 0.32, 1);
   
   /* ------------------------------------------
-     LAYOUT - Generous, editorial
+     LAYOUT - Editorial, generous
      ------------------------------------------ */
-  --container-max: 1200px;
-  --container-narrow: 680px;
-  --container-wide: 1400px;
+  --container-max: 1280px;
+  --container-narrow: 720px;
+  --container-wide: 1440px;
   
-  --header-height: 72px;
-  --header-height-mobile: 64px;
+  --header-height: 80px;
+  --header-height-mobile: 72px;
   
   /* Z-index scale */
   --z-base: 0;
@@ -185,6 +202,13 @@
   --z-modal: 500;
   --z-popover: 600;
   --z-toast: 700;
+  
+  /* ------------------------------------------
+     EFFECTS - Premium textures
+     ------------------------------------------ */
+  --noise-opacity: 0.03;
+  --glass-blur: 24px;
+  --glass-saturation: 180%;
 }
 
 /* Reduced motion */

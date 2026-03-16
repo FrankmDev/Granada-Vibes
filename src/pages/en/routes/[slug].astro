@@ -4,7 +4,8 @@ import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import Icon from '@components/ui/Icon.astro';
 import { getAllRoutes, getRouteBySlug } from '@data';
 import { useTranslations } from '@i18n/utils';
-import { formatDistance } from '@utils/dates';
+import { formatDuration, formatDistance } from '@utils/dates';
+import type { RouteDifficulty } from '@types';
 
 export function getStaticPaths() {
   const routes = getAllRoutes();
@@ -23,122 +24,456 @@ const breadcrumbs = [
   { label: t('nav.routes'), href: '/en/routes' },
   { label: route.title[locale] },
 ];
+
+const difficultyColors: Record<RouteDifficulty, { bg: string; text: string; bar: string; label: string }> = {
+  easy: { bg: 'bg-success/15', text: 'text-success', bar: 'bg-success', label: 'Easy' },
+  moderate: { bg: 'bg-[#d4873a]/15', text: 'text-[#d4873a]', bar: 'bg-[#d4873a]', label: 'Moderate' },
+  challenging: { bg: 'bg-error/15', text: 'text-error', bar: 'bg-error', label: 'Challenging' },
+  expert: { bg: 'bg-error/15', text: 'text-error', bar: 'bg-error', label: 'Expert' },
+};
+
+const difficultyConfig = difficultyColors[route.difficulty];
+
+const difficultyBars = {
+  easy: 1,
+  moderate: 2,
+  challenging: 3,
+  expert: 3,
+};
+
+const relatedRoutes = getAllRoutes()
+  .filter(r => r.category === route.category && r.id !== route.id)
+  .slice(0, 2);
+
+if (relatedRoutes.length < 2) {
+  const moreRoutes = getAllRoutes()
+    .filter(r => r.difficulty === route.difficulty && r.id !== route.id && !relatedRoutes.find(rr => rr.id === r.id))
+    .slice(0, 2 - relatedRoutes.length);
+  relatedRoutes.push(...moreRoutes);
+}
+
+const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+Routes';
 ---
 
 <BaseLayout 
   locale={locale}
   title={route.title[locale]}
-  description={route.description[locale]}
+  description={`${t(`categories.${route.category}`)} route through ${route.neighborhoods.map(n => t(`neighborhoods.${n}`)).join(', ')} in Granada: ${formatDuration(route.duration, locale)}, ${formatDistance(route.distance, locale)}. Difficulty: ${t(`difficulty.${route.difficulty}`)}. Tips, highlights and best time.`}
+  ogImage={ogImage}
   schemaType="route"
   schemaData={route}
 >
-  <article class="container pt-32 pb-20">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: route.title[locale],
+    description: route.description[locale],
+    'additionalType': 'https://schema.org/Place',
+    containedInPlace: {
+      '@type': 'City',
+      name: 'Granada',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Granada',
+        addressRegion: 'Andalucía',
+        addressCountry: 'ES'
+      }
+    },
+    image: ogImage
+  })} />
+
+  <article class="container pt-28 pb-20 lg:pt-32">
     <Breadcrumbs items={breadcrumbs} />
 
-    {/* Header */}
-    <header class="max-w-4xl mb-12">
-      <div class="flex flex-wrap items-center gap-3 mb-4">
-        <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full">
-          {t(`categories.${route.category}`)}
-        </span>
-        {route.featured && (
-          <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full">
-            {t('routes.featured')}
-          </span>
-        )}
-      </div>
-      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold tracking-[-0.02em] mb-6">
-        {route.title[locale]}
-      </h1>
-      <p class="text-lg text-text-secondary leading-relaxed">
-        {route.description[locale]}
-      </p>
-    </header>
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 mt-8">
+      {/* Main Column (70%) */}
+      <div class="order-2 lg:order-1">
+        {/* Route Hero */}
+        <header class="mb-10">
+          <div class="flex flex-wrap items-center gap-3 mb-5">
+            <span class="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full border border-sand/20">
+              {t(`categories.${route.category}`)}
+            </span>
+            <span class:list={[
+              'px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider rounded-full border',
+              difficultyConfig.bg,
+              difficultyConfig.text,
+              `border-${difficultyConfig.text.replace('text-', '')}/30`
+            ]}>
+              {t(`difficulty.${route.difficulty}`)}
+            </span>
+            {route.featured && (
+              <span class="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-accent/10 text-accent rounded-full border border-accent/20">
+                Featured
+              </span>
+            )}
+          </div>
 
-    {/* Stats Grid */}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12" role="list" aria-label={locale === 'es' ? 'Estadísticas de la ruta' : 'Route statistics'}>
-      <div class="p-5 bg-bg-card border border-border rounded-xl text-center" role="listitem">
-        <div class="w-10 h-10 bg-sand/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-          <Icon name="clock" class="w-5 h-5 text-sand" />
-        </div>
-        <p class="text-xs text-text-muted uppercase tracking-wider mb-1">{locale === 'es' ? 'Duración' : 'Duration'}</p>
-        <p class="font-display text-xl font-semibold text-text-primary">{route.duration} min</p>
-      </div>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] text-text-primary mb-6 leading-[1.1]">
+            {route.title[locale]}
+          </h1>
 
-      <div class="p-5 bg-bg-card border border-border rounded-xl text-center" role="listitem">
-        <div class="w-10 h-10 bg-sand/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-          <Icon name="trend" class="w-5 h-5 text-sand" />
-        </div>
-        <p class="text-xs text-text-muted uppercase tracking-wider mb-1">{locale === 'es' ? 'Distancia' : 'Distance'}</p>
-        <p class="font-display text-xl font-semibold text-text-primary">{formatDistance(route.distance, locale)}</p>
-      </div>
+          <p class="text-lg lg:text-xl text-text-secondary leading-relaxed max-w-2xl">
+            {route.description[locale]}
+          </p>
+        </header>
 
-      <div class="p-5 bg-bg-card border border-border rounded-xl text-center" role="listitem">
-        <div class="w-10 h-10 bg-sand/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-          <Icon name="lightning" class="w-5 h-5 text-sand" />
-        </div>
-        <p class="text-xs text-text-muted uppercase tracking-wider mb-1">{t('routes.difficultyLabel')}</p>
-        <p class="font-display text-xl font-semibold text-text-primary">{t(`difficulty.${route.difficulty}`)}</p>
-      </div>
-
-      <div class="p-5 bg-bg-card border border-border rounded-xl text-center" role="listitem">
-        <div class="w-10 h-10 bg-sand/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-          <Icon name="sun" class="w-5 h-5 text-sand" />
-        </div>
-        <p class="text-xs text-text-muted uppercase tracking-wider mb-1">{t('routes.bestTime')}</p>
-        <p class="font-display text-xl font-semibold text-text-primary">{t(`timeOfDay.${route.timeOfDay}`)}</p>
-      </div>
-    </div>
-
-    {/* Highlights */}
-    {route.highlights.length > 0 && (
-      <section class="mb-12" aria-labelledby="highlights-heading">
-        <h2 id="highlights-heading" class="font-mono text-[11px] uppercase tracking-[0.15em] text-text-muted mb-6">
-          {t('routes.highlights')}
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {route.highlights.map((highlight) => (
-            <div class="p-5 bg-bg-card border border-border rounded-xl">
-              <h3 class="font-display text-base font-medium text-text-primary mb-2">{highlight.title[locale]}</h3>
-              <p class="text-sm text-text-secondary">{highlight.description[locale]}</p>
+        {/* Metrics Bar */}
+        <div class="p-6 bg-bg-raised rounded-2xl border border-border/50 mb-10">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="text-center">
+              <div class="w-12 h-12 bg-sand/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <svg class="w-6 h-6 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p class="font-display text-2xl font-semibold text-text-primary">
+                {Math.round(route.duration / 60)}h
+              </p>
+              <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Duration</p>
             </div>
-          ))}
-        </div>
-      </section>
-    )}
 
-    {/* Tips */}
-    {route.tips.length > 0 && (
-      <section class="mb-12" aria-labelledby="tips-heading">
-        <h2 id="tips-heading" class="font-mono text-[11px] uppercase tracking-[0.15em] text-text-muted mb-6">
-          {t('routes.tips')}
-        </h2>
-        <div class="space-y-3">
-          {route.tips.map((tip) => (
-            <div class="flex items-start gap-4 p-4 bg-bg-card border border-border rounded-xl">
-              <div class="w-8 h-8 bg-sand/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Icon name="information" class="w-4 h-4 text-sand" />
+            <div class="text-center">
+              <div class="w-12 h-12 bg-sand/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <svg class="w-6 h-6 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
+                </svg>
+              </div>
+              <p class="font-display text-2xl font-semibold text-text-primary">
+                {route.distance} km
+              </p>
+              <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Distance</p>
+            </div>
+
+            <div class="text-center">
+              <div class:list={['w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3', difficultyConfig.bg]}>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" class:list={[difficultyConfig.text]}>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <p class:list={['font-display text-2xl font-semibold', difficultyConfig.text]}>
+                {difficultyConfig.label}
+              </p>
+              <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Difficulty</p>
+            </div>
+
+            <div class="text-center">
+              <div class="w-12 h-12 bg-sand/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                {route.timeOfDay === 'evening' || route.timeOfDay === 'sunset' ? (
+                  <svg class="w-6 h-6 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                ) : (
+                  <svg class="w-6 h-6 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                )}
+              </div>
+              <p class="font-display text-2xl font-semibold text-text-primary">
+                {t(`timeOfDay.${route.timeOfDay}`)}
+              </p>
+              <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Best time</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Long description */}
+        {route.longDescription && (
+          <section class="mb-12" aria-labelledby="description-heading">
+            <h2 id="description-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-5">
+              About this route
+            </h2>
+            <p class="text-text-secondary leading-relaxed">
+              {route.longDescription[locale]}
+            </p>
+          </section>
+        )}
+
+        {/* Highlights Timeline */}
+        {route.highlights.length > 0 && (
+          <section class="mb-12" aria-labelledby="highlights-heading">
+            <h2 id="highlights-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-8">
+              Route highlights
+            </h2>
+            <div class="relative">
+              <div class="absolute left-5 top-0 bottom-0 w-px bg-border" />
+              
+              <div class="space-y-8">
+                {route.highlights.map((highlight, index) => (
+                  <div class="relative flex items-start gap-6">
+                    <div class="relative z-10 w-10 h-10 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+                      <span class="text-bg font-display font-semibold text-sm">{index + 1}</span>
+                    </div>
+                    <div class="flex-1 pt-2">
+                      <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+                        {highlight.title[locale]}
+                      </h3>
+                      <p class="text-text-secondary leading-relaxed">
+                        {highlight.description[locale]}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Tips */}
+        {route.tips.length > 0 && (
+          <section class="mb-12" aria-labelledby="tips-heading">
+            <h2 id="tips-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+              Tips
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {route.tips.map((tip) => (
+                <div class="p-5 bg-bg-raised/50 rounded-2xl border border-border/50">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 bg-sand/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="font-display text-base font-medium text-text-primary mb-1">
+                        {tip.title[locale]}
+                      </h3>
+                      <p class="text-sm text-text-secondary leading-relaxed">
+                        {tip.content[locale]}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* What to bring */}
+        {route.whatToBring && route.whatToBring[locale]?.length > 0 && (
+          <section class="mb-12" aria-labelledby="what-to-bring-heading">
+            <h2 id="what-to-bring-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+              What to bring
+            </h2>
+            <div class="p-6 bg-bg-raised/30 rounded-2xl border border-border/50">
+              <ul class="space-y-3">
+                {route.whatToBring[locale]?.map((item) => (
+                  <li class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-sand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span class="text-text-secondary">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
+
+        {/* Add to plan placeholder */}
+        <section class="mb-12" aria-labelledby="plan-heading">
+          <div class="p-6 bg-accent-muted rounded-2xl border border-accent/20">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
               </div>
               <div>
-                <h3 class="font-display text-sm font-medium text-text-primary mb-1">{tip.title[locale]}</h3>
-                <p class="text-sm text-text-secondary">{tip.content[locale]}</p>
+                <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+                  Add to your plan
+                </h3>
+                <p class="text-text-secondary text-sm leading-relaxed">
+                  Save this route to your personal plan — <span class="text-accent">Coming soon</span>
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-    )}
+          </div>
+        </section>
 
-    {/* Neighborhoods */}
-    <footer>
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm text-text-muted mr-2">{locale === 'es' ? 'Barrios:' : 'Neighborhoods:'}</span>
-        {route.neighborhoods.map((n) => (
-          <span class="px-2.5 py-1 text-xs text-text-secondary bg-bg-raised rounded-full border border-border/50">
-            {t(`neighborhoods.${n}`)}
-          </span>
-        ))}
+        {/* Tags */}
+        {route.tags.length > 0 && (
+          <section aria-labelledby="tags-heading">
+            <h2 id="tags-heading" class="sr-only">Tags</h2>
+            <div class="flex flex-wrap gap-2">
+              {route.tags.map((tag) => (
+                <span class="px-4 py-2 text-sm text-text-secondary bg-bg-raised rounded-full border border-border/50">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
-    </footer>
+
+      {/* Sidebar (30%) */}
+      <aside class="order-1 lg:order-2">
+        <div class="lg:sticky lg:top-28 space-y-6">
+          {/* Info card */}
+          <div class="p-6 lg:p-8 bg-bg-card border border-border rounded-2xl">
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-3">Difficulty</p>
+              <div class="flex items-center gap-3">
+                <div class="flex gap-1">
+                  {[1, 2, 3].map((bar) => (
+                    <div 
+                      class:list={[
+                        'w-8 h-2 rounded-full',
+                        bar <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-bg-elevated'
+                      ]} 
+                    />
+                  ))}
+                </div>
+                <span class:list={['text-sm font-medium', difficultyConfig.text]}>
+                  {t(`difficulty.${route.difficulty}`)}
+                </span>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-1">Duration</p>
+              <p class="font-display text-xl font-semibold text-text-primary">
+                {formatDuration(route.duration, locale)}
+              </p>
+            </div>
+
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-1">Distance</p>
+              <p class="font-display text-xl font-semibold text-text-primary">
+                {formatDistance(route.distance, locale)}
+              </p>
+            </div>
+
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-1">Best time</p>
+              <div class="flex items-center gap-2">
+                {route.timeOfDay === 'evening' || route.timeOfDay === 'sunset' ? (
+                  <svg class="w-5 h-5 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                ) : (
+                  <svg class="w-5 h-5 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                )}
+                <p class="font-medium text-text-primary">
+                  Best at {t(`timeOfDay.${route.timeOfDay}`).toLowerCase()}
+                </p>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <p class="text-sm text-text-muted mb-3">Neighborhoods</p>
+              <div class="flex flex-wrap gap-2">
+                {route.neighborhoods.map((n) => (
+                  <span class="px-3 py-1.5 text-xs font-medium bg-bg-raised text-text-secondary rounded-full border border-border">
+                    {t(`neighborhoods.${n}`)}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {route.bestMonths && route.bestMonths.length > 0 && (
+              <div class="mb-6">
+                <p class="text-sm text-text-muted mb-3">Best months</p>
+                <div class="flex flex-wrap gap-1">
+                  {route.bestMonths.map((month) => (
+                    <span class="px-2 py-1 text-xs text-text-muted capitalize">
+                      {month}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div class="h-px bg-border/50 my-6" />
+
+            <button 
+              id="share-button"
+              class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-transparent text-text-secondary font-medium text-sm rounded-xl border border-border hover:border-text-secondary hover:text-text-primary transition-all duration-200"
+              data-title={route.title[locale]}
+              data-url={Astro.url.href}
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              Share route
+            </button>
+          </div>
+
+          {/* Similar routes */}
+          {relatedRoutes.length > 0 && (
+            <div class="p-6 bg-bg-raised/30 border border-border/50 rounded-2xl">
+              <h3 class="font-display text-lg font-medium text-text-primary mb-4">
+                Similar routes
+              </h3>
+              <div class="space-y-4">
+                {relatedRoutes.map((relatedRoute) => (
+                  <a 
+                    href={`/en/routes/${relatedRoute.slug}`}
+                    class="block group"
+                  >
+                    <div class="flex items-start gap-3">
+                      <div class="w-12 h-12 bg-bg-card rounded-xl flex items-center justify-center flex-shrink-0 border border-border group-hover:border-sand/30 transition-colors">
+                        <svg class="w-5 h-5 text-text-muted group-hover:text-sand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
+                        </svg>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="font-medium text-text-primary text-sm group-hover:text-sand transition-colors line-clamp-2">
+                          {relatedRoute.title[locale]}
+                        </p>
+                        <p class="text-xs text-text-muted mt-1">
+                          {formatDuration(relatedRoute.duration, locale)} · {t(`difficulty.${relatedRoute.difficulty}`)}
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </aside>
+    </div>
   </article>
+
+  <script is:inline>
+    (function() {
+      const shareButton = document.getElementById('share-button');
+      if (!shareButton) return;
+
+      const title = shareButton.dataset.title;
+      const url = shareButton.dataset.url;
+
+      shareButton.addEventListener('click', async function() {
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: title,
+              text: `Discover the route "${title}" on Granada Vibes`,
+              url: url
+            });
+            return;
+          } catch (err) {}
+        }
+
+        try {
+          await navigator.clipboard.writeText(url);
+          const originalText = shareButton.innerHTML;
+          shareButton.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+            </svg>
+            Link copied
+          `;
+          setTimeout(() => {
+            shareButton.innerHTML = originalText;
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+    })();
+  </script>
 </BaseLayout>

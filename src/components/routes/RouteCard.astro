@@ -1,6 +1,7 @@
 ---
-import type { Route } from '@types';
+import type { Route, RouteDifficulty } from '@types';
 import { formatDuration, formatDistance } from '@utils/dates';
+import Badge from '@components/ui/Badge.astro';
 
 interface Props {
   route: Route;
@@ -12,106 +13,214 @@ interface Props {
 
 const { route, locale, t, index = 0, variant = 'list' } = Astro.props;
 const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+
+// Difficulty color mapping - refined
+const difficultyColors: Record<RouteDifficulty, { bg: string; text: string; bar: string; border: string }> = {
+  easy: { bg: 'bg-sage/10', text: 'text-sage', bar: 'bg-sage', border: 'border-sage/20' },
+  moderate: { bg: 'bg-gold/10', text: 'text-gold', bar: 'bg-gold', border: 'border-gold/20' },
+  challenging: { bg: 'bg-accent/10', text: 'text-accent', bar: 'bg-accent', border: 'border-accent/20' },
+  expert: { bg: 'bg-accent/15', text: 'text-accent', bar: 'bg-accent', border: 'border-accent/25' },
+};
+
+const difficultyConfig = difficultyColors[route.difficulty];
+
+// Difficulty bars
+const difficultyBars = {
+  easy: 1,
+  moderate: 2,
+  challenging: 3,
+  expert: 3,
+};
+
+const bar1Class = 1 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-border';
+const bar2Class = 2 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-border';
+const bar3Class = 3 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-border';
 ---
 
 {variant === 'list' ? (
-  <article class="group">
+  <article class="group reveal">
     <a href={href} class="block">
-      <div class="flex flex-col md:flex-row md:items-center gap-4 p-5 bg-bg-card border border-border rounded-xl transition-all duration-300 hover:border-sand/30">
-        {/* Number */}
-        <span class="hidden md:block w-8 font-display text-base font-medium text-text-muted group-hover:text-sand transition-colors shrink-0">
+      <div class:list={[
+        'relative flex flex-col md:flex-row md:items-center gap-5 p-6 bg-white border rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:shadow-soft-xl overflow-hidden',
+        route.featured 
+          ? 'border-gold/30 hover:border-gold/50'
+          : 'border-border/60 hover:border-gold/30'
+      ]}>
+        {/* Index number */}
+        <span class="hidden md:block w-12 font-display text-2xl font-bold text-text-primary/[0.08] group-hover:text-gold/20 transition-colors duration-300 shrink-0 text-center">
           {String(index + 1).padStart(2, '0')}
         </span>
         
         {/* Content */}
         <div class="flex-1 min-w-0">
-          <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2">
-            <span class="text-[10px] font-mono uppercase tracking-wider text-sand">
-              {t(`categories.${route.category}`)}
+          {/* Meta row */}
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
+            <Badge variant="gold" size="sm">{t(`categories.${route.category}`)}</Badge>
+            <span class="w-1 h-1 rounded-full bg-border"></span>
+            
+            {/* Difficulty with enhanced styling */}
+            <span class:list={['px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider rounded-full border flex items-center gap-1.5', difficultyConfig.bg, difficultyConfig.text, difficultyConfig.border]}>
+              <span class="flex gap-0.5">
+                <span class:list={['w-1.5 h-1 rounded-full', bar1Class]}></span>
+                <span class:list={['w-1.5 h-1 rounded-full', bar2Class]}></span>
+                <span class:list={['w-1.5 h-1 rounded-full', bar3Class]}></span>
+              </span>
+              {t(`difficulty.${route.difficulty}`)}
             </span>
-            <span class="w-1 h-1 rounded-full bg-border" />
-            <span class="text-xs text-text-muted">{t(`difficulty.${route.difficulty}`)}</span>
-            <span class="w-1 h-1 rounded-full bg-border" />
-            <span class="text-xs text-text-muted">{formatDuration(route.duration, locale)}</span>
-            <span class="w-1 h-1 rounded-full bg-border hidden sm:block" />
+            
+            <span class="w-1 h-1 rounded-full bg-border hidden sm:block"></span>
+            <span class="text-xs text-text-muted flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {formatDuration(route.duration, locale)}
+            </span>
+            <span class="w-1 h-1 rounded-full bg-border hidden sm:block"></span>
             <span class="text-xs text-text-muted hidden sm:block">{formatDistance(route.distance, locale)}</span>
           </div>
-          <h3 class="text-lg font-display font-medium text-text-primary group-hover:text-sand transition-colors duration-200">
+          
+          {/* Title */}
+          <h3 class="text-lg lg:text-xl font-display font-semibold text-text-primary group-hover:text-gold transition-colors duration-300 leading-tight">
             {route.title[locale]}
           </h3>
-          <p class="text-sm text-text-secondary line-clamp-1 mt-1">
+          
+          {/* Description */}
+          <p class="text-sm text-text-secondary line-clamp-1 mt-2">
             {route.description[locale]}
           </p>
+          
+          {/* Best time indicator */}
+          <div class="flex items-center gap-2 mt-3 text-xs">
+            <div class="w-6 h-6 rounded-md bg-bg-raised flex items-center justify-center">
+              {route.timeOfDay === 'evening' || route.timeOfDay === 'sunset' ? (
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              ) : (
+                <svg class="w-3.5 h-3.5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              )}
+            </div>
+            <span class="text-text-muted">Mejor al {t(`timeOfDay.${route.timeOfDay}`).toLowerCase()}</span>
+          </div>
         </div>
         
         {/* Neighborhoods */}
         <div class="flex flex-wrap gap-2 md:justify-end">
           {route.neighborhoods.slice(0, 2).map((n) => (
-            <span class="px-2.5 py-1 text-xs text-text-muted bg-bg-raised rounded-full">
+            <span class="px-3 py-1.5 text-xs text-text-secondary bg-bg-raised border border-border/50 rounded-full">
               {t(`neighborhoods.${n}`)}
             </span>
           ))}
         </div>
         
-        {/* Arrow */}
-        <svg class="hidden md:block w-4 h-4 text-text-muted group-hover:text-sand group-hover:translate-x-1 transition-all duration-200 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
+        {/* Arrow with enhanced styling */}
+        <div class="hidden md:flex w-10 h-10 items-center justify-center rounded-full bg-bg-raised border border-border/50 group-hover:border-gold/30 group-hover:bg-gold/5 transition-all duration-300 shrink-0">
+          <svg class="w-4 h-4 text-text-muted group-hover:text-gold group-hover:translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+        
+        {/* Hover accent line */}
+        <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-gold to-coral w-0 group-hover:w-full transition-all duration-500"></div>
       </div>
     </a>
   </article>
 ) : (
-  <article class="group">
+  <article class="group reveal">
     <a href={href} class="block h-full">
-      <div class="h-full bg-bg-card border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-sand/30 hover:shadow-lg">
+      <div class:list={[
+        'relative h-full bg-white border rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-soft-xl',
+        route.featured 
+          ? 'border-gold/30 hover:border-gold/50'
+          : 'border-border/60 hover:border-gold/30'
+      ]}>
         {/* Image Area */}
         <div class="aspect-[16/10] bg-bg-raised relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-sand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div class="absolute inset-0 bg-gradient-to-br from-gold/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          <div class="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
           
           {/* Placeholder icon */}
           <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-16 h-16 rounded-2xl bg-bg-card/50 border border-border flex items-center justify-center">
-              <svg class="w-8 h-8 text-text-muted/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-20 h-20 rounded-2xl bg-white/95 border border-border/50 flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-soft">
+              <svg class="w-10 h-10 text-text-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
               </svg>
             </div>
           </div>
           
           {/* Category badge */}
-          <div class="absolute top-4 left-4">
-            <span class="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider bg-sand/10 text-sand rounded-full border border-sand/20">
-              {t(`categories.${route.category}`)}
-            </span>
+          <div class="absolute top-5 left-5">
+            <Badge variant="gold" size="sm">{t(`categories.${route.category}`)}</Badge>
+          </div>
+          
+          {/* Difficulty indicator */}
+          <div class="absolute top-5 right-5">
+            <div class="flex items-center gap-1.5 px-3 py-2 bg-white/95 backdrop-blur-sm rounded-full border border-border/40 shadow-soft">
+              <span class="flex gap-0.5">
+                <span class:list={['w-1.5 h-2 rounded-sm', bar1Class]}></span>
+                <span class:list={['w-1.5 h-2 rounded-sm', bar2Class]}></span>
+                <span class:list={['w-1.5 h-2 rounded-sm', bar3Class]}></span>
+              </span>
+            </div>
           </div>
         </div>
         
         {/* Content */}
-        <div class="p-5">
-          <div class="flex items-center gap-4 text-sm text-text-muted mb-3">
-            <span class="font-mono text-xs uppercase tracking-wider">
+        <div class="p-6 lg:p-7">
+          {/* Meta */}
+          <div class="flex items-center gap-4 text-sm text-text-muted mb-4">
+            <span class:list={['text-xs font-semibold uppercase tracking-wider', difficultyConfig.text]}>
               {t(`difficulty.${route.difficulty}`)}
             </span>
-            <span class="w-1 h-1 rounded-full bg-text-muted" />
-            <span>{formatDuration(route.duration, locale)}</span>
+            <span class="w-1 h-1 rounded-full bg-border"></span>
+            <span class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {formatDuration(route.duration, locale)}
+            </span>
+            <span class="w-1 h-1 rounded-full bg-border"></span>
+            <span>{formatDistance(route.distance, locale)}</span>
           </div>
           
-          <h3 class="font-display text-xl font-semibold mb-2 group-hover:text-sand transition-colors duration-300 line-clamp-2">
+          {/* Divider accent */}
+          <div class="w-8 h-[2px] bg-gradient-to-r from-gold to-accent mb-4 transition-all duration-300 group-hover:w-14"></div>
+          
+          {/* Title */}
+          <h3 class="font-display text-xl font-semibold text-text-primary mb-3 group-hover:text-gold transition-colors duration-300 line-clamp-2 leading-tight">
             {route.title[locale]}
           </h3>
           
-          <p class="text-text-secondary text-sm line-clamp-2 mb-4">
+          {/* Description */}
+          <p class="text-text-secondary text-sm line-clamp-2 mb-5 leading-relaxed">
             {route.description[locale]}
           </p>
           
           {/* Neighborhood tags */}
-          <div class="flex flex-wrap gap-2">
+          <div class="flex flex-wrap gap-2 pt-4 border-t border-border/40">
             {route.neighborhoods.slice(0, 3).map((n) => (
-              <span class="text-xs text-text-muted bg-bg-raised px-2.5 py-1 rounded-lg font-mono uppercase tracking-wider">
+              <span class="text-xs text-text-secondary bg-bg-raised px-3 py-1.5 rounded-full border border-border/40">
                 {t(`neighborhoods.${n}`)}
               </span>
             ))}
           </div>
         </div>
+        
+        {/* Hover glow effect */}
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div class="absolute inset-0 bg-gradient-to-t from-gold/[0.03] via-transparent to-transparent"></div>
+        </div>
+        
+        {/* Corner accent on hover */}
+        <div class="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div class="absolute top-4 right-4 w-2 h-2 border-t-2 border-r-2 border-gold/30 rounded-tr"></div>
+        </div>
+        
+        {/* Hover accent line */}
+        <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-gold to-coral w-0 group-hover:w-full transition-all duration-500"></div>
       </div>
     </a>
   </article>

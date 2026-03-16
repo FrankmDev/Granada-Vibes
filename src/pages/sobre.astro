@@ -1,95 +1,324 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PageHeader from '@components/layout/PageHeader.astro';
-import Icon from '@components/ui/Icon.astro';
 import { useTranslations } from '@i18n/utils';
 
 const locale = 'es';
 const t = useTranslations(locale);
 
-const values = [
-  {
-    icon: 'check' as const,
-    title: t('about.values.authentic.title'),
-    description: t('about.values.authentic.description'),
-    color: 'accent' as const,
-  },
-  {
-    icon: 'star' as const,
-    title: t('about.values.quality.title'),
-    description: t('about.values.quality.description'),
-    color: 'sand' as const,
-  },
-  {
-    icon: 'users' as const,
-    title: t('about.values.community.title'),
-    description: t('about.values.community.description'),
-    color: 'sage' as const,
-  },
-];
-
-const colors = {
-  accent: 'bg-accent/10 text-accent',
-  sand: 'bg-sand/10 text-sand',
-  sage: 'bg-sage/10 text-sage',
-};
+const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
 ---
 
 <BaseLayout 
   locale={locale} 
-  title={t('about.title')}
-  description={t('about.mission.description')}
+  title="Sobre nosotros"
+  description="Granada Vibes es la guía cultural que Granada merece. Descubre quiénes somos, nuestra misión y cómo colaborar con nosotros."
+  ogImage={ogImage}
   schemaType="organization"
 >
-  <PageHeader 
-    title={t('about.title')}
-    accent="accent"
-  />
-
-  {/* Mission Statement */}
-  <section class="container pb-16" aria-labelledby="mission-heading">
-    <div class="max-w-3xl">
-      <p id="mission-heading" class="text-lg lg:text-xl text-text-secondary leading-relaxed">
-        {t('about.mission.description')}
-      </p>
+  {/* Hero editorial */}
+  <section class="relative min-h-[60vh] flex items-center hero-grain bg-bg" aria-labelledby="hero-title">
+    <div class="container relative pt-32 pb-20">
+      <h1 id="hero-title" class="max-w-4xl">
+        <span class="block font-display text-4xl sm:text-5xl lg:text-7xl font-bold text-text-primary leading-[1.1]">
+          Granada merece
+        </span>
+        <span class="block font-display text-4xl sm:text-5xl lg:text-7xl font-bold text-text-primary leading-[1.1] mt-2">
+          una guía mejor.
+        </span>
+        <span class="block font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-accent leading-[1.2] mt-6">
+          Así que la estamos construyendo.
+        </span>
+      </h1>
     </div>
   </section>
 
-  {/* Values Section */}
-  <section class="container py-16 lg:py-20" aria-labelledby="values-heading">
-    <h2 id="values-heading" class="sr-only">{t('about.values.title')}</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-      {values.map((value) => (
-        <div class="text-center md:text-left">
-          <div class:list={['w-12 h-12 rounded-xl flex items-center justify-center mb-5 mx-auto md:mx-0', colors[value.color]]}>
-            <Icon name={value.icon} class="w-6 h-6" />
+  {/* Sección El proyecto */}
+  <section class="py-20 lg:py-28" aria-labelledby="project-heading">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+        {/* Columna izquierda */}
+        <div>
+          <h2 id="project-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+            Qué es Granada Vibes
+          </h2>
+          <div class="space-y-4 text-text-secondary leading-relaxed">
+            <p>
+              Granada Vibes nace de una frustración compartida: la dificultad de descubrir lo que realmente 
+              está pasando en una ciudad con tanta vida cultural como Granada. Las guías turísticas tradicionales 
+              se quedan obsoletas, los eventos en redes están dispersos, y demasiadas experiencias auténticas 
+              nunca llegan a quienes las buscan.
+            </p>
+            <p>
+              Somos un equipo pequeño de granadinos y adoptados que decidimos crear la herramienta que 
+              nos hubiera gustado tener. Una guía viva, actualizada constantemente, que conecte a visitantes 
+              curiosos con creadores locales, a locales con experiencias nuevas, y a todos con la Granada 
+              que existe más allá de la postal.
+            </p>
+            <p>
+              No somos una agencia de viajes. No vendemos entradas. Solo filtramos el ruido para que 
+              encuentres lo que merece la pena.
+            </p>
           </div>
-          <h3 class="font-display text-xl font-medium text-text-primary mb-3">
-            {value.title}
+        </div>
+
+        {/* Columna derecha */}
+        <div>
+          <h2 class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+            Cómo funciona
+          </h2>
+          <div class="space-y-4 text-text-secondary leading-relaxed">
+            <p>
+              Cada semana recorremos la ciudad, hablamos con organizadores, visitamos espacios y 
+              seleccionamos manualmente lo que aparece en la plataforma. No hay algoritmos ni listados 
+              automáticos: cada evento y ruta es elegido porque creemos que aporta algo único.
+            </p>
+            <p>
+              Lo que nos diferencia es el criterio. No incluimos algo solo porque sea popular. Buscamos 
+              autenticidad, calidad y variedad. Desde flamenco en una cueva del Sacromonte hasta 
+              exposiciones de arte emergente en el Centro, pasando por rutas de senderismo que solo 
+              conocen los locales.
+            </p>
+            <p>
+              En el futuro queremos añadir funcionalidades sociales: planes personalizados, listas 
+              compartidas, alertas de eventos. Pero el núcleo siempre será el mismo: contenido 
+              curado con criterio y honestidad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Sección Valores */}
+  <section class="py-20 lg:py-28 bg-bg-raised/30" aria-labelledby="values-heading">
+    <div class="container">
+      <h2 id="values-heading" class="sr-only">Nuestros valores</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+        {/* Valor 1 */}
+        <div>
+          <span class="font-display text-6xl lg:text-7xl font-bold text-accent/20">01</span>
+          <h3 class="font-display text-xl font-semibold text-text-primary mt-4 mb-3">
+            Autenticidad
           </h3>
-          <p class="text-text-secondary text-sm leading-relaxed">
-            {value.description}
+          <p class="text-text-secondary leading-relaxed">
+            Promovemos experiencias genuinas, lejos de las trampas turísticas. Si algo está en 
+            Granada Vibes es porque lo recomendaríamos a un amigo. No aceptamos pagos por 
+            posicionamiento ni publicidad encubierta.
           </p>
         </div>
-      ))}
+
+        {/* Valor 2 */}
+        <div>
+          <span class="font-display text-6xl lg:text-7xl font-bold text-accent/20">02</span>
+          <h3 class="font-display text-xl font-semibold text-text-primary mt-4 mb-3">
+            Calidad curada
+          </h3>
+          <p class="text-text-secondary leading-relaxed">
+            Cada evento y ruta es seleccionado cuidadosamente por nuestro equipo. Preferimos 
+            tener menos opciones pero garantizar que todas merecen tu tiempo. No hay relleno, 
+            solo recomendaciones con criterio.
+          </p>
+        </div>
+
+        {/* Valor 3 */}
+        <div>
+          <span class="font-display text-6xl lg:text-7xl font-bold text-accent/20">03</span>
+          <h3 class="font-display text-xl font-semibold text-text-primary mt-4 mb-3">
+            Comunidad
+          </h3>
+          <p class="text-text-secondary leading-relaxed">
+            Apoyamos a creadores locales y negocios de la ciudad. Granada Vibes funciona 
+            porque hay artistas, organizadores y comerciantes haciendo cosas interesantes. 
+            Nuestro trabajo es darles visibilidad.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  {/* Contact CTA */}
-  <section class="container py-16 lg:py-20" aria-labelledby="contact-heading">
-    <div class="max-w-3xl mx-auto p-8 lg:p-12 bg-bg-card border border-border rounded-2xl text-center">
-      <h2 id="contact-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-4">
-        ¿Tienes un evento o ruta que compartir?
-      </h2>
-      <p class="text-text-secondary mb-8 max-w-xl mx-auto">
-        Estamos siempre buscando nuevas experiencias para compartir con nuestra comunidad. Si organizas eventos culturales o conoces rutas especiales en Granada, nos encantaría saber de ti.
-      </p>
+  {/* Sección Trabaja con nosotros */}
+  <section class="py-20 lg:py-28 bg-bg-raised" aria-labelledby="work-heading">
+    <div class="container">
+      <div class="max-w-3xl mb-12">
+        <h2 id="work-heading" class="font-display text-3xl lg:text-4xl font-bold text-text-primary mb-4">
+          ¿Tienes un negocio en Granada?
+        </h2>
+        <p class="text-text-secondary text-lg leading-relaxed">
+          Llegamos a visitantes que buscan experiencias auténticas, no trampas turísticas. 
+          Si organizas eventos culturales, ofreces rutas guiadas o tienes un espacio 
+          interesante, nos encantaría conocerte.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        {/* Propuesta 1 */}
+        <div class="p-6 bg-bg-card border border-border rounded-2xl">
+          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+            Publica tus eventos
+          </h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Desde conciertos íntimos hasta exposiciones temporales. Si tienes algo 
+            interesante que anunciar, queremos saberlo.
+          </p>
+        </div>
+
+        {/* Propuesta 2 */}
+        <div class="p-6 bg-bg-card border border-border rounded-2xl">
+          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
+            </svg>
+          </div>
+          <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+            Aparece en nuestras rutas
+          </h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            Si tienes un bar con historia, un taller artesanal o un espacio único, 
+            podemos incluirlo en nuestras rutas temáticas.
+          </p>
+        </div>
+
+        {/* Propuesta 3 */}
+        <div class="p-6 bg-bg-card border border-border rounded-2xl">
+          <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+            </svg>
+          </div>
+          <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+            Colabora con contenido
+          </h3>
+          <p class="text-text-secondary text-sm leading-relaxed">
+            ¿Eres fotógrafo, escritor o creador de contenido? Buscamos colaboraciones 
+            para enriquecer nuestras guías con perspectivas frescas.
+          </p>
+        </div>
+      </div>
+
       <a 
-        href="mailto:hola@granadavibes.com"
-        class="inline-flex items-center gap-2 px-6 py-3.5 bg-accent text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] focus:outline-none focus:ring-2 focus:ring-accent/50"
+        href="mailto:hola@granadavibes.com?subject=Colaboración%20con%20Granada%20Vibes"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-accent text-bg font-semibold text-base rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"
       >
-        Contáctanos
+        Hablemos
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
       </a>
     </div>
   </section>
+
+  {/* Formulario de contacto */}
+  <section class="py-20 lg:py-28" aria-labelledby="contact-heading">
+    <div class="container">
+      <div class="max-w-2xl mx-auto">
+        <h2 id="contact-heading" class="font-display text-3xl lg:text-4xl font-bold text-text-primary mb-4 text-center">
+          Escríbenos
+        </h2>
+        <p class="text-text-secondary text-center mb-10">
+          ¿Tienes una sugerencia, quieres proponer un evento o simplemente saludar? 
+          Estamos atentos.
+        </p>
+
+        <form id="contact-form" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-text-secondary mb-2">
+                Nombre
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors"
+                placeholder="Tu nombre"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-text-secondary mb-2">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors"
+                placeholder="tu@email.com"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="type" class="block text-sm font-medium text-text-secondary mb-2">
+              Tipo de consulta
+            </label>
+            <select
+              id="type"
+              name="type"
+              required
+              class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
+            >
+              <option value="">Selecciona una opción</option>
+              <option value="event">Publicar un evento</option>
+              <option value="collaboration">Colaboración</option>
+              <option value="suggestion">Sugerencia</option>
+              <option value="other">Otro</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-text-secondary mb-2">
+              Mensaje
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              class="w-full px-4 py-3 bg-bg-card border border-border rounded-xl text-text-primary placeholder-text-muted focus:outline-none focus:border-accent transition-colors resize-none"
+              placeholder="Cuéntanos lo que necesitas..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-bg font-semibold text-base rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"
+          >
+            Enviar mensaje
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form handling script -->
+  <script is:inline>
+    (function() {
+      const form = document.getElementById('contact-form');
+      
+      form?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const name = formData.get('name');
+        const type = formData.get('type');
+        
+        // Show confirmation (non-functional for now)
+        alert(`Gracias ${name} — tu mensaje ha sido recibido. Te contactaremos en 24-48h.`);
+        
+        // Reset form
+        form.reset();
+      });
+    })();
+  </script>
 </BaseLayout>
