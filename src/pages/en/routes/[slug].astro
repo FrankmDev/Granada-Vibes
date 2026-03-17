@@ -84,23 +84,23 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
               {t(`difficulty.${route.difficulty}`)}
             </span>
             {route.featured && (
-              <span class="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-accent/10 text-accent rounded-full border border-accent/20">
+              <span class="px-3 py-1.5 text-[11px] font-mono uppercase tracking-wider bg-terra/10 text-terra rounded-full border border-terra/20">
                 Featured
               </span>
             )}
           </div>
 
-          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] text-text-primary mb-6 leading-[1.1]">
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.02em] text-surface mb-6 leading-[1.1]">
             {route.title[locale]}
           </h1>
 
-          <p class="text-lg lg:text-xl text-text-secondary leading-relaxed max-w-2xl">
+          <p class="text-lg lg:text-xl text-surface-secondary leading-relaxed max-w-2xl">
             {route.description[locale]}
           </p>
         </header>
 
         {/* Metrics Bar */}
-        <div class="p-6 bg-bg-raised rounded-2xl border border-border/50 mb-10">
+        <div class="p-6 bg-base rounded-2xl border border-edge/50 mb-10">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="text-center">
               <div class="w-12 h-12 bg-sand/10 rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -108,7 +108,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <p class="font-display text-2xl font-semibold text-text-primary">
+              <p class="font-display text-2xl font-semibold text-surface">
                 {Math.round(route.duration / 60)}h
               </p>
               <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Duration</p>
@@ -120,7 +120,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
                 </svg>
               </div>
-              <p class="font-display text-2xl font-semibold text-text-primary">
+              <p class="font-display text-2xl font-semibold text-surface">
                 {route.distance} km
               </p>
               <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Distance</p>
@@ -150,7 +150,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
                   </svg>
                 )}
               </div>
-              <p class="font-display text-2xl font-semibold text-text-primary">
+              <p class="font-display text-2xl font-semibold text-surface">
                 {t(`timeOfDay.${route.timeOfDay}`)}
               </p>
               <p class="text-xs text-text-muted uppercase tracking-wider mt-1">Best time</p>
@@ -161,10 +161,10 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
         {/* Long description */}
         {route.longDescription && (
           <section class="mb-12" aria-labelledby="description-heading">
-            <h2 id="description-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-5">
+            <h2 id="description-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface mb-5">
               About this route
             </h2>
-            <p class="text-text-secondary leading-relaxed">
+            <p class="text-surface-secondary leading-relaxed">
               {route.longDescription[locale]}
             </p>
           </section>
@@ -173,7 +173,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
         {/* Highlights Timeline */}
         {route.highlights.length > 0 && (
           <section class="mb-12" aria-labelledby="highlights-heading">
-            <h2 id="highlights-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-8">
+            <h2 id="highlights-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface mb-8">
               Route highlights
             </h2>
             <div class="relative">
@@ -182,14 +182,14 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
               <div class="space-y-8">
                 {route.highlights.map((highlight, index) => (
                   <div class="relative flex items-start gap-6">
-                    <div class="relative z-10 w-10 h-10 rounded-full bg-accent flex items-center justify-center flex-shrink-0">
+                    <div class="relative z-10 w-10 h-10 rounded-full bg-terra flex items-center justify-center flex-shrink-0">
                       <span class="text-bg font-display font-semibold text-sm">{index + 1}</span>
                     </div>
                     <div class="flex-1 pt-2">
-                      <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+                      <h3 class="font-display text-lg font-semibold text-surface mb-2">
                         {highlight.title[locale]}
                       </h3>
-                      <p class="text-text-secondary leading-relaxed">
+                      <p class="text-surface-secondary leading-relaxed">
                         {highlight.description[locale]}
                       </p>
                     </div>
@@ -203,12 +203,12 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
         {/* Tips */}
         {route.tips.length > 0 && (
           <section class="mb-12" aria-labelledby="tips-heading">
-            <h2 id="tips-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+            <h2 id="tips-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface mb-6">
               Tips
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               {route.tips.map((tip) => (
-                <div class="p-5 bg-bg-raised/50 rounded-2xl border border-border/50">
+                <div class="p-5 bg-base/50 rounded-2xl border border-edge/50">
                   <div class="flex items-start gap-3">
                     <div class="w-10 h-10 bg-sand/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <svg class="w-5 h-5 text-sand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -216,10 +216,10 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
                       </svg>
                     </div>
                     <div>
-                      <h3 class="font-display text-base font-medium text-text-primary mb-1">
+                      <h3 class="font-display text-base font-medium text-surface mb-1">
                         {tip.title[locale]}
                       </h3>
-                      <p class="text-sm text-text-secondary leading-relaxed">
+                      <p class="text-sm text-surface-secondary leading-relaxed">
                         {tip.content[locale]}
                       </p>
                     </div>
@@ -233,17 +233,17 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
         {/* What to bring */}
         {route.whatToBring && route.whatToBring[locale]?.length > 0 && (
           <section class="mb-12" aria-labelledby="what-to-bring-heading">
-            <h2 id="what-to-bring-heading" class="font-display text-2xl lg:text-3xl font-semibold text-text-primary mb-6">
+            <h2 id="what-to-bring-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface mb-6">
               What to bring
             </h2>
-            <div class="p-6 bg-bg-raised/30 rounded-2xl border border-border/50">
+            <div class="p-6 bg-base/30 rounded-2xl border border-edge/50">
               <ul class="space-y-3">
                 {route.whatToBring[locale]?.map((item) => (
                   <li class="flex items-center gap-3">
                     <svg class="w-5 h-5 text-sand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span class="text-text-secondary">{item}</span>
+                    <span class="text-surface-secondary">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -253,19 +253,19 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
 
         {/* Add to plan placeholder */}
         <section class="mb-12" aria-labelledby="plan-heading">
-          <div class="p-6 bg-accent-muted rounded-2xl border border-accent/20">
+          <div class="p-6 bg-terra-muted rounded-2xl border border-terra/20">
             <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-12 h-12 bg-terra/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                 </svg>
               </div>
               <div>
-                <h3 class="font-display text-lg font-semibold text-text-primary mb-2">
+                <h3 class="font-display text-lg font-semibold text-surface mb-2">
                   Add to your plan
                 </h3>
-                <p class="text-text-secondary text-sm leading-relaxed">
-                  Save this route to your personal plan — <span class="text-accent">Coming soon</span>
+                <p class="text-surface-secondary text-sm leading-relaxed">
+                  Save this route to your personal plan — <span class="text-terra">Coming soon</span>
                 </p>
               </div>
             </div>
@@ -278,7 +278,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
             <h2 id="tags-heading" class="sr-only">Tags</h2>
             <div class="flex flex-wrap gap-2">
               {route.tags.map((tag) => (
-                <span class="px-4 py-2 text-sm text-text-secondary bg-bg-raised rounded-full border border-border/50">
+                <span class="px-4 py-2 text-sm text-surface-secondary bg-base rounded-full border border-edge/50">
                   #{tag}
                 </span>
               ))}
@@ -291,7 +291,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
       <aside class="order-1 lg:order-2">
         <div class="lg:sticky lg:top-28 space-y-6">
           {/* Info card */}
-          <div class="p-6 lg:p-8 bg-bg-card border border-border rounded-2xl">
+          <div class="p-6 lg:p-8 bg-bg-card border border-edge rounded-2xl">
             <div class="mb-6">
               <p class="text-sm text-text-muted mb-3">Difficulty</p>
               <div class="flex items-center gap-3">
@@ -313,14 +313,14 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
 
             <div class="mb-6">
               <p class="text-sm text-text-muted mb-1">Duration</p>
-              <p class="font-display text-xl font-semibold text-text-primary">
+              <p class="font-display text-xl font-semibold text-surface">
                 {formatDuration(route.duration, locale)}
               </p>
             </div>
 
             <div class="mb-6">
               <p class="text-sm text-text-muted mb-1">Distance</p>
-              <p class="font-display text-xl font-semibold text-text-primary">
+              <p class="font-display text-xl font-semibold text-surface">
                 {formatDistance(route.distance, locale)}
               </p>
             </div>
@@ -337,7 +337,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
                 )}
-                <p class="font-medium text-text-primary">
+                <p class="font-medium text-surface">
                   Best at {t(`timeOfDay.${route.timeOfDay}`).toLowerCase()}
                 </p>
               </div>
@@ -347,7 +347,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
               <p class="text-sm text-text-muted mb-3">Neighborhoods</p>
               <div class="flex flex-wrap gap-2">
                 {route.neighborhoods.map((n) => (
-                  <span class="px-3 py-1.5 text-xs font-medium bg-bg-raised text-text-secondary rounded-full border border-border">
+                  <span class="px-3 py-1.5 text-xs font-medium bg-base text-surface-secondary rounded-full border border-edge">
                     {t(`neighborhoods.${n}`)}
                   </span>
                 ))}
@@ -371,7 +371,7 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
 
             <button 
               id="share-button"
-              class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-transparent text-text-secondary font-medium text-sm rounded-xl border border-border hover:border-text-secondary hover:text-text-primary transition-all duration-200"
+              class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-transparent text-surface-secondary font-medium text-sm rounded-xl border border-edge hover:border-text-secondary hover:text-surface transition-all duration-200"
               data-title={route.title[locale]}
               data-url={Astro.url.href}
             >
@@ -384,8 +384,8 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
 
           {/* Similar routes */}
           {relatedRoutes.length > 0 && (
-            <div class="p-6 bg-bg-raised/30 border border-border/50 rounded-2xl">
-              <h3 class="font-display text-lg font-medium text-text-primary mb-4">
+            <div class="p-6 bg-base/30 border border-edge/50 rounded-2xl">
+              <h3 class="font-display text-lg font-medium text-surface mb-4">
                 Similar routes
               </h3>
               <div class="space-y-4">
@@ -395,13 +395,13 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+
                     class="block group"
                   >
                     <div class="flex items-start gap-3">
-                      <div class="w-12 h-12 bg-bg-card rounded-xl flex items-center justify-center flex-shrink-0 border border-border group-hover:border-sand/30 transition-colors">
+                      <div class="w-12 h-12 bg-bg-card rounded-xl flex items-center justify-center flex-shrink-0 border border-edge group-hover:border-sand/30 transition-colors">
                         <svg class="w-5 h-5 text-text-muted group-hover:text-sand transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
                         </svg>
                       </div>
                       <div class="flex-1 min-w-0">
-                        <p class="font-medium text-text-primary text-sm group-hover:text-sand transition-colors line-clamp-2">
+                        <p class="font-medium text-surface text-sm group-hover:text-sand transition-colors line-clamp-2">
                           {relatedRoute.title[locale]}
                         </p>
                         <p class="text-xs text-text-muted mt-1">

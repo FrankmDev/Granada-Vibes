@@ -1,7 +1,6 @@
 ---
 import type { Route, RouteDifficulty } from '@types';
 import { formatDuration, formatDistance } from '@utils/dates';
-import Badge from '@components/ui/Badge.astro';
 
 interface Props {
   route: Route;
@@ -14,211 +13,148 @@ interface Props {
 const { route, locale, t, index = 0, variant = 'list' } = Astro.props;
 const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
 
-// Difficulty color mapping - Dark theme
 const difficultyColors: Record<RouteDifficulty, { bg: string; text: string; bar: string; border: string }> = {
-  easy:        { bg: 'bg-mint/10',    text: 'text-mint',   bar: 'bg-mint',   border: 'border-mint/30' },
-  moderate:    { bg: 'bg-amber/10',   text: 'text-amber',  bar: 'bg-amber',  border: 'border-amber/30' },
-  challenging: { bg: 'bg-terra/10',   text: 'text-terra',  bar: 'bg-terra',  border: 'border-terra/30' },
+  easy:        { bg: 'bg-mint/10',    text: 'text-mint',   bar: 'bg-mint',   border: 'border-mint/20' },
+  moderate:    { bg: 'bg-amber/10',   text: 'text-amber',  bar: 'bg-amber',  border: 'border-amber/20' },
+  challenging: { bg: 'bg-terra/10',   text: 'text-terra',  bar: 'bg-terra',  border: 'border-terra/20' },
 };
 
 const difficultyConfig = difficultyColors[route.difficulty];
 
-// Difficulty bars
 const difficultyBars: Record<RouteDifficulty, number> = {
   easy:        1,
   moderate:    2,
   challenging: 3,
 };
 
-const bar1Class = 1 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-surface-disabled';
-const bar2Class = 2 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-surface-disabled';
-const bar3Class = 3 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-surface-disabled';
+const bar1Class = 1 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-surface-disabled/30';
+const bar2Class = 2 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-surface-disabled/30';
+const bar3Class = 3 <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-surface-disabled/30';
 ---
 
 {variant === 'list' ? (
-  <article class="group reveal">
+  <article class="group">
     <a href={href} class="block">
       <div class:list={[
-        'relative flex flex-col md:flex-row md:items-center gap-5 p-5 bg-base-card border rounded-2xl transition-all duration-500 hover:-translate-y-1 hover:shadow-elevated overflow-hidden',
-        route.featured 
-          ? 'border-amber/20 hover:border-amber/40'
-          : 'border-edge hover:border-amber/30'
+        'relative flex flex-col md:flex-row md:items-center gap-4 p-4 bg-base-card/60 backdrop-blur-sm border border-edge rounded-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-amber/20',
       ]}>
-        {/* Index number */}
-        <span class="hidden md:block w-12 font-display text-3xl font-bold text-surface/[0.08] group-hover:text-amber/20 transition-colors duration-300 shrink-0 text-center">
+        {/* Index */}
+        <span class="hidden md:block w-8 font-display text-2xl font-bold text-surface/[0.06] shrink-0 text-center">
           {String(index + 1).padStart(2, '0')}
         </span>
         
         {/* Content */}
         <div class="flex-1 min-w-0">
-          {/* Meta row */}
-          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
-            <Badge variant="amber" size="sm">{t(`categories.${route.category}`)}</Badge>
-            <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
-            
-            {/* Difficulty indicator */}
-            <span class:list={['px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider rounded-full border flex items-center gap-1.5', difficultyConfig.bg, difficultyConfig.text, difficultyConfig.border]}>
-              <span class="flex gap-0.5">
-                <span class:list={['w-1.5 h-1.5 rounded-full', bar1Class]}></span>
-                <span class:list={['w-1.5 h-1.5 rounded-full', bar2Class]}></span>
-                <span class:list={['w-1.5 h-1.5 rounded-full', bar3Class]}></span>
-              </span>
-              {t(`difficulty.${route.difficulty}`)}
+          {/* Meta */}
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span class:list={['px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded-full border', difficultyConfig.bg, difficultyConfig.text, difficultyConfig.border]}>
+              {t(`categories.${route.category}`)}
             </span>
-            
-            <span class="w-1 h-1 rounded-full bg-surface-disabled hidden sm:block"></span>
-            <span class="text-xs text-surface-muted flex items-center gap-1.5 font-medium">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span class="flex items-center gap-1 text-[10px] text-surface-muted">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {formatDuration(route.duration, locale)}
             </span>
-            <span class="w-1 h-1 rounded-full bg-surface-disabled hidden sm:block"></span>
-            <span class="text-xs text-surface-muted hidden sm:block font-medium">{formatDistance(route.distance, locale)}</span>
+            <span class="text-[10px] text-surface-muted">{formatDistance(route.distance, locale)}</span>
           </div>
           
           {/* Title */}
-          <h3 class="text-lg lg:text-xl font-display font-semibold text-surface group-hover:text-amber transition-colors duration-300 leading-tight">
+          <h3 class="text-base font-display font-medium text-surface group-hover:text-amber transition-colors duration-200">
             {route.title[locale]}
           </h3>
-          
-          {/* Description */}
-          <p class="text-sm text-surface-secondary line-clamp-1 mt-2">
-            {route.description[locale]}
-          </p>
-          
-          {/* Best time indicator */}
-          <div class="flex items-center gap-2 mt-3 text-xs">
-            <div class="w-6 h-6 rounded-lg bg-base-elevated flex items-center justify-center">
-              {route.timeOfDay === 'evening' || route.timeOfDay === 'sunset' ? (
-                <svg class="w-3.5 h-3.5 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              ) : (
-                <svg class="w-3.5 h-3.5 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              )}
-            </div>
-            <span class="text-surface-muted font-medium">Mejor al {t(`timeOfDay.${route.timeOfDay}`).toLowerCase()}</span>
-          </div>
+        </div>
+        
+        {/* Difficulty bars */}
+        <div class="hidden md:flex items-center gap-2">
+          <span class="flex gap-0.5">
+            <span class:list={['w-1.5 h-3 rounded-sm', bar1Class]}></span>
+            <span class:list={['w-1.5 h-3 rounded-sm', bar2Class]}></span>
+            <span class:list={['w-1.5 h-3 rounded-sm', bar3Class]}></span>
+          </span>
         </div>
         
         {/* Neighborhoods */}
-        <div class="flex flex-wrap gap-2 md:justify-end">
+        <div class="flex flex-wrap gap-1.5 md:justify-end">
           {route.neighborhoods.slice(0, 2).map((n) => (
-            <span class="px-3 py-1.5 text-xs text-surface-secondary bg-base-elevated border border-edge rounded-full font-medium">
+            <span class="px-2 py-1 text-[9px] text-surface-muted bg-base-elevated/50 rounded-full font-medium">
               {t(`neighborhoods.${n}`)}
             </span>
           ))}
         </div>
         
         {/* Arrow */}
-        <div class="hidden md:flex w-11 h-11 items-center justify-center rounded-xl bg-base-elevated border border-edge group-hover:border-amber/30 group-hover:bg-amber/5 transition-all duration-300 shrink-0">
-          <svg class="w-5 h-5 text-surface-muted group-hover:text-amber group-hover:translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="hidden md:flex w-8 h-8 items-center justify-center rounded-lg bg-base-elevated/50 border border-edge/50 group-hover:border-amber/20 group-hover:bg-amber/5 transition-all duration-200 shrink-0">
+          <svg class="w-4 h-4 text-surface-muted group-hover:text-amber group-hover:translate-x-0.5 transition-all duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </div>
-        
-        {/* Hover accent line */}
-        <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-amber to-terra w-0 group-hover:w-full transition-all duration-500"></div>
       </div>
     </a>
   </article>
 ) : (
-  <article class="group reveal">
+  <article class="group">
     <a href={href} class="block h-full">
       <div class:list={[
-        'relative h-full bg-base-card border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-2',
-        route.featured 
-          ? 'border-amber/20 hover:border-amber/40 hover:shadow-lg hover:shadow-amber/10'
-          : 'border-edge hover:border-amber/30 hover:shadow-lg hover:shadow-amber/10'
+        'relative h-full bg-base-card/60 backdrop-blur-sm border border-edge rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-amber/15 hover:shadow-[0_8px_30px_rgba(232,157,58,0.05)]',
       ]}>
-        {/* Image Area */}
-        <div class="aspect-[16/10] bg-base-elevated relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-amber/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div class="absolute inset-0 bg-gradient-to-t from-base-card via-base-card/40 to-transparent"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+        {/* Image */}
+        <div class="aspect-[16/9] bg-base-elevated/50 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-base-elevated to-base-card"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-base-card via-base-card/30 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
           
-          {/* Placeholder icon */}
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-20 h-20 rounded-2xl bg-base border border-edge flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-              <svg class="w-10 h-10 text-surface-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
-              </svg>
-            </div>
-          </div>
+          {/* Shapes */}
+          <div class="absolute top-3 right-3 w-12 h-12 border border-white/[0.04] rounded-lg rotate-6" aria-hidden="true"></div>
+          <div class="absolute bottom-6 left-3 w-6 h-6 bg-white/[0.02] rounded-full" aria-hidden="true"></div>
           
           {/* Category badge */}
-          <div class="absolute top-5 left-5">
-            <Badge variant="amber" size="sm">{t(`categories.${route.category}`)}</Badge>
+          <div class="absolute top-3 left-3">
+            <span class:list={['px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider rounded-full border', difficultyConfig.bg, difficultyConfig.text, difficultyConfig.border]}>
+              {t(`categories.${route.category}`)}
+            </span>
           </div>
           
-          {/* Difficulty indicator */}
-          <div class="absolute top-5 right-5">
-            <div class="flex items-center gap-1.5 px-3 py-2 bg-base border border-edge rounded-full">
+          {/* Difficulty */}
+          <div class="absolute top-3 right-3">
+            <div class="flex items-center gap-1 px-2 py-1.5 bg-base/60 backdrop-blur-sm rounded-full border border-white/[0.05]">
               <span class="flex gap-0.5">
-                <span class:list={['w-1.5 h-2 rounded-sm', bar1Class]}></span>
-                <span class:list={['w-1.5 h-2 rounded-sm', bar2Class]}></span>
-                <span class:list={['w-1.5 h-2 rounded-sm', bar3Class]}></span>
+                <span class:list={['w-1 h-1.5 rounded-sm', bar1Class]}></span>
+                <span class:list={['w-1 h-1.5 rounded-sm', bar2Class]}></span>
+                <span class:list={['w-1 h-1.5 rounded-sm', bar3Class]}></span>
               </span>
             </div>
           </div>
         </div>
         
         {/* Content */}
-        <div class="p-6 lg:p-7">
+        <div class="p-4">
           {/* Meta */}
-          <div class="flex items-center gap-4 text-sm text-surface-muted mb-4">
-            <span class:list={['text-xs font-bold uppercase tracking-wider', difficultyConfig.text]}>
-              {t(`difficulty.${route.difficulty}`)}
-            </span>
-            <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
-            <span class="flex items-center gap-1.5">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex items-center gap-2 text-[10px] text-surface-muted mb-2">
+            <span class="flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {formatDuration(route.duration, locale)}
             </span>
-            <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
+            <span class="w-0.5 h-0.5 rounded-full bg-surface-muted/30"></span>
             <span>{formatDistance(route.distance, locale)}</span>
           </div>
           
-          {/* Divider accent */}
-          <div class="w-8 h-[2px] bg-gradient-to-r from-amber to-terra mb-4 transition-all duration-300 group-hover:w-14"></div>
-          
           {/* Title */}
-          <h3 class="font-display text-xl font-semibold text-surface mb-3 group-hover:text-amber transition-colors duration-300 line-clamp-2 leading-tight">
+          <h3 class="font-display text-base font-medium text-surface mb-2 group-hover:text-amber transition-colors duration-200 line-clamp-2">
             {route.title[locale]}
           </h3>
           
-          {/* Description */}
-          <p class="text-surface-secondary text-sm line-clamp-2 mb-5 leading-relaxed">
-            {route.description[locale]}
-          </p>
-          
-          {/* Neighborhood tags */}
-          <div class="flex flex-wrap gap-2 pt-4 border-t border-edge">
-            {route.neighborhoods.slice(0, 3).map((n) => (
-              <span class="text-xs text-surface-secondary bg-base-elevated px-3 py-1.5 rounded-full border border-edge font-medium">
+          {/* Neighborhoods */}
+          <div class="flex flex-wrap gap-1.5 pt-2 border-t border-edge/50">
+            {route.neighborhoods.slice(0, 2).map((n) => (
+              <span class="text-[9px] text-surface-muted bg-base-elevated/50 px-2 py-1 rounded-full">
                 {t(`neighborhoods.${n}`)}
               </span>
             ))}
           </div>
         </div>
-        
-        {/* Hover effects */}
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-          <div class="absolute inset-0 bg-gradient-to-t from-amber/5 via-transparent to-transparent"></div>
-        </div>
-        
-        {/* Corner accent on hover */}
-        <div class="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div class="absolute top-4 right-4 w-2 h-2 border-t-2 border-r-2 border-amber/30 rounded-tr"></div>
-        </div>
-        
-        {/* Hover accent line */}
-        <div class="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-amber to-terra w-0 group-hover:w-full transition-all duration-500"></div>
       </div>
     </a>
   </article>

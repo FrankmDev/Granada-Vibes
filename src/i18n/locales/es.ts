@@ -85,7 +85,7 @@ export const es = {
   events: {
     title: 'Eventos en Granada',
     subtitle: 'Conciertos, exposiciones, flamenco y planes culturales seleccionados por locales',
-    upcoming: 'Próximos eventos',
+    upcoming: 'Próximos',
     featured: 'Destacados',
     noEvents: 'No hay eventos que coincidan con tus filtros',
     filters: {

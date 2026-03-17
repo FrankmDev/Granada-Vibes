@@ -1,8 +1,7 @@
 ---
 /**
- * HeroSection — Hero principal renovado
- * Diseño: Neo-brutalism limpio, Work Sans legible,
- *         elementos flotantes refinados, tipografía audaz
+ * HeroSection — Hybrid: Classic Hero + Event Cards
+ * Diseño: H1 + descripción + CTAs tradicionales, con mini-cards de eventos debajo
  */
 import type { Event } from '@types';
 
@@ -13,176 +12,297 @@ interface Props {
 
 const { thisWeekEvents, locale } = Astro.props;
 
-// Limit events for the hero
-const heroEvents = thisWeekEvents.slice(0, 3);
+const heroEvents = thisWeekEvents.slice(0, 4);
 
-// Función helper para formatear fecha
-function formatHeroDate(dateStr: string) {
+function formatDate(dateStr: string) {
   const date = new Date(dateStr);
   return {
     day: date.getDate(),
     month: date.toLocaleDateString(locale, { month: 'short' })
   };
 }
+
+function getUrgency(dateStr: string) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(dateStr);
+  eventDate.setHours(0, 0, 0, 0);
+  
+  const diffDays = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (diffDays <= 1) return { label: locale === 'es' ? 'HOY' : 'TODAY', class: 'urgent' };
+  if (diffDays <= 3) return { label: locale === 'es' ? 'MAÑANA' : 'TOMORROW', class: 'soon' };
+  if (diffDays <= 7) return { label: locale === 'es' ? 'ESTA SEMANA' : 'THIS WEEK', class: 'week' };
+  return null;
+}
 ---
 
-<section class="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-20" aria-labelledby="hero-title">
+<section class="relative min-h-screen flex flex-col overflow-hidden pt-24 pb-16" aria-labelledby="hero-title">
   
-  {/* Background gradient - Subtle depth */}
+  {/* Background */}
+  <div class="absolute inset-0 bg-base" aria-hidden="true"></div>
   <div class="absolute inset-0 bg-gradient-to-br from-base via-base to-base-elevated" aria-hidden="true"></div>
   
-  {/* Animated gradient orbs - Refined positions */}
-  <div class="absolute top-1/3 left-[10%] w-[500px] h-[500px] bg-terra/8 rounded-full blur-[120px] animate-float pointer-events-none" aria-hidden="true"></div>
-  <div class="absolute bottom-1/4 right-[5%] w-[400px] h-[400px] bg-amber/8 rounded-full blur-[100px] animate-float-slow pointer-events-none" aria-hidden="true"></div>
-  
-  {/* Geometric decorative elements */}
-  <div class="absolute top-[15%] right-[15%] w-24 h-24 border border-terra/15 rounded-2xl rotate-12 animate-float pointer-events-none" aria-hidden="true"></div>
-  <div class="absolute bottom-[20%] left-[8%] w-16 h-16 border border-amber/15 rounded-full animate-float-slow pointer-events-none" aria-hidden="true"></div>
-  <div class="absolute top-[60%] left-[5%] w-12 h-12 bg-terra/5 rounded-xl -rotate-6 animate-float-delayed pointer-events-none" aria-hidden="true"></div>
-  <div class="absolute top-[20%] left-[20%] w-8 h-8 bg-amber/5 rounded-lg rotate-45 animate-float pointer-events-none" aria-hidden="true"></div>
+  {/* Ambient orbs */}
+  <div class="absolute top-0 left-[-10%] w-[600px] h-[600px] bg-terra/6 rounded-full blur-[180px] pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-0 right-[-5%] w-[500px] h-[500px] bg-amber/4 rounded-full blur-[160px] pointer-events-none" aria-hidden="true"></div>
 
-  {/* Main content */}
-  <div class="container relative z-10">
-    <div class="max-w-5xl">
-      
-      {/* Eyebrow - Clean and minimal */}
-      <div class="reveal mb-8">
-        <div class="inline-flex items-center gap-3 px-4 py-2 bg-base-card border border-edge rounded-full">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-terra opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-terra"></span>
-          </span>
-          <span class="text-xs font-semibold uppercase tracking-[0.15em] text-surface-secondary">Guía Local de Granada</span>
-          <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
-          <span class="text-xs font-semibold uppercase tracking-[0.15em] text-terra">Granada 2026</span>
+  {/* Decorative line */}
+  <div class="absolute top-[15%] left-[5%] w-px h-[200px] bg-gradient-to-b from-transparent via-terra/20 to-transparent pointer-events-none" aria-hidden="true"></div>
+
+  {/* Grain */}
+  <div class="absolute inset-0 opacity-[0.025] pointer-events-none grain" aria-hidden="true"></div>
+
+  <div class="container relative z-10 flex-1 flex flex-col">
+    
+    {/* Main Hero Content */}
+    <div class="flex-1 flex items-center py-12">
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
+        
+        {/* Left: Text Content */}
+        <div class="lg:col-span-6">
+          <div class="reveal opacity-0" style="animation: fadeInUp 0.7s ease-out forwards;">
+            {/* Eyebrow */}
+            <div class="inline-flex items-center gap-2.5 px-3 py-1.5 bg-base-card/50 border border-edge rounded-full mb-6">
+              <span class="relative flex h-1.5 w-1.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-terra opacity-60"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-terra"></span>
+              </span>
+              <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-surface-muted">
+                {locale === 'es' ? 'Guía cultural de Granada' : 'Cultural guide of Granada'}
+              </span>
+            </div>
+            
+            {/* H1 */}
+            <h1 id="hero-title" class="font-display font-semibold text-surface leading-[1.05] tracking-[-0.03em] mb-6">
+              <span class="block text-[clamp(2.75rem,7vw,5rem)]">
+                {locale === 'es' ? 'Granada existe.' : 'Granada is real.'}
+              </span>
+              <span class="block text-[clamp(2.75rem,7vw,5rem)] text-gradient-terra">
+                {locale === 'es' ? 'Vívela de verdad.' : 'Experience it for real.'}
+              </span>
+            </h1>
+            
+            {/* Description */}
+            <p class="text-base md:text-lg text-surface-secondary leading-relaxed max-w-md mb-8">
+              {locale === 'es' 
+                ? 'Eventos culturales, rutas por miradores secretos y el mejor tapeo de España. La ciudad que las guías turísticas no te cuentan.'
+                : 'Cultural events, secret viewpoint routes, and the best tapas in Spain. The city tourist guides don\'t tell you about.'}
+            </p>
+            
+            {/* CTAs */}
+            <div class="flex flex-wrap gap-3 mb-8">
+              <a 
+                href={locale === 'es' ? '/eventos' : '/en/events'}
+                class="inline-flex items-center gap-2.5 px-7 py-4 bg-terra text-surface font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-[0_8px_32px_rgba(232,90,60,0.35)] hover:-translate-y-1"
+              >
+                <span>{locale === 'es' ? 'Ver eventos' : 'View events'}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+              
+              <a 
+                href={locale === 'es' ? '/rutas' : '/en/routes'}
+                class="inline-flex items-center gap-2.5 px-7 py-4 bg-base-card/50 text-surface font-semibold text-sm rounded-xl border border-edge hover:border-amber/30 transition-all duration-300 hover:-translate-y-1"
+              >
+                <span>{locale === 'es' ? 'Ver rutas' : 'View routes'}</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17" />
+                </svg>
+              </a>
+            </div>
+            
+            {/* Stats mini - Event-focused */}
+            <div class="flex items-center gap-5">
+              <div class="flex items-center gap-2">
+                <span class="font-display text-xl font-bold text-terra">+10</span>
+                <span class="text-xs text-surface-muted">{locale === 'es' ? 'rutas' : 'routes'}</span>
+              </div>
+              <div class="w-px h-5 bg-edge"></div>
+              <div class="flex items-center gap-2">
+                <span class="font-display text-xl font-bold text-amber">+50</span>
+                <span class="text-xs text-surface-muted">{locale === 'es' ? 'planes/mes' : 'plans/month'}</span>
+              </div>
+              <div class="w-px h-5 bg-edge"></div>
+              <div class="flex items-center gap-2">
+                <span class="font-display text-xl font-bold text-mint">100%</span>
+                <span class="text-xs text-surface-muted">{locale === 'es' ? 'local' : 'local'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Event Cards - Desktop only */}
+        <div class="hidden lg:block lg:col-span-6">
+          <div class="reveal opacity-0" style="animation: fadeInUp 0.7s ease-out 0.2s forwards;">
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-surface-muted">
+                  {locale === 'es' ? 'Próximamente' : 'Coming up'}
+                </span>
+                <a href={locale === 'es' ? '/eventos' : '/en/events'} class="text-xs font-semibold text-terra hover:underline">
+                  {locale === 'es' ? 'Ver todos →' : 'View all →'}
+                </a>
+              </div>
+              
+              {heroEvents.map((event) => {
+                const urgency = getUrgency(event.date);
+                return (
+                  <a 
+                    href={`/${locale === 'es' ? 'eventos' : 'en/events'}/${event.slug}`}
+                    class="group flex items-center gap-4 p-4 bg-base-card/40 backdrop-blur-sm border border-edge rounded-2xl hover:border-terra/30 transition-all duration-300 hover:-translate-x-1"
+                  >
+                    {/* Date */}
+                    <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-base-elevated border border-edge flex flex-col items-center justify-center">
+                      <span class="text-sm font-display font-bold text-terra leading-none">{formatDate(event.date).day}</span>
+                      <span class="text-[8px] text-surface-muted uppercase">{formatDate(event.date).month}</span>
+                    </div>
+                    
+                    {/* Info */}
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-1">
+                        {urgency && (
+                          <span class={`px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded ${
+                            urgency.class === 'urgent' ? 'bg-terra text-surface animate-pulse' 
+                            : urgency.class === 'soon' ? 'bg-amber/20 text-amber'
+                            : 'bg-surface-muted/10 text-surface-muted'
+                          }`}>
+                            {urgency.label}
+                          </span>
+                        )}
+                      </div>
+                      <h3 class="font-display text-sm font-medium text-surface truncate group-hover:text-terra transition-colors">
+                        {event.title[locale]}
+                      </h3>
+                      <p class="text-xs text-surface-muted truncate">{event.venue}</p>
+                    </div>
+                    
+                    {/* Price */}
+                    <div class="flex-shrink-0">
+                      {event.price === 0 ? (
+                        <span class="text-xs font-bold text-mint">GRATIS</span>
+                      ) : (
+                        <span class="text-xs font-semibold text-surface-secondary">{event.price}€</span>
+                      )}
+                    </div>
+                    
+                    {/* Arrow */}
+                    <svg class="w-4 h-4 text-surface-muted group-hover:text-terra transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
+    </div>
 
-      {/* Main headline - BOLD new title */}
-      <div class="reveal mb-8" style="transition-delay: 100ms;">
-        <h1 id="hero-title" class="font-display font-bold text-surface leading-[0.9] tracking-[-0.04em]">
-          <span class="block text-[clamp(3.5rem,11vw,9rem)]">
-            Granada,
-          </span>
-          <span class="block text-[clamp(3.5rem,11vw,9rem)]">
-            pero <em class="not-italic text-gradient-terra">de verdad</em>.
-          </span>
-        </h1>
+    {/* Mobile: Event Cards horizontal scroll */}
+    <div class="lg:hidden mt-6">
+      {/* Swipe hint */}
+      <div class="flex items-center justify-center gap-2 mb-3 text-surface-muted">
+        <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+        <span class="text-[10px] uppercase tracking-wider">{locale === 'es' ? 'Desliza' : 'Swipe'}</span>
+        <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
       </div>
-
-      {/* Subtitle - Clean Work Sans */}
-      <div class="reveal max-w-2xl mb-10" style="transition-delay: 200ms;">
-        <p class="text-lg md:text-xl text-surface-secondary leading-relaxed font-normal">
-          Eventos culturales en el Albaicín y Sacromonte, rutas por miradores secretos y el mejor tapeo 
-          con <span class="text-surface font-medium">tapas gratis</span>. Descubre la Granada que no sale en las guías turísticas.
-        </p>
+      
+      <div class="overflow-x-auto scrollbar-hide -mx-4 px-4">
+        <div class="flex gap-3 pb-2">
+          {heroEvents.map((event) => {
+            const urgency = getUrgency(event.date);
+            return (
+              <a 
+                href={`/${locale === 'es' ? 'eventos' : 'en/events'}/${event.slug}`}
+                class="flex-shrink-0 w-64 p-3 bg-base-card/60 backdrop-blur-sm border border-edge rounded-xl hover:border-terra/30 transition-all"
+              >
+                <div class="flex items-center gap-2 mb-2">
+                  <div class="w-8 h-8 rounded-lg bg-base-elevated border border-edge flex items-center justify-center flex-shrink-0">
+                    <span class="text-xs font-display font-bold text-terra leading-none">{formatDate(event.date).day}</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    {urgency && (
+                      <span class={`px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded ${
+                        urgency.class === 'urgent' ? 'bg-terra text-surface' 
+                        : urgency.class === 'soon' ? 'bg-amber/20 text-amber'
+                        : 'bg-surface-muted/10 text-surface-muted'
+                      }`}>
+                        {urgency.label}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <h3 class="font-display text-xs font-medium text-surface truncate mb-0.5">
+                  {event.title[locale]}
+                </h3>
+                <p class="text-[10px] text-surface-muted truncate">
+                  {event.venue}
+                </p>
+              </a>
+            );
+          })}
+        </div>
       </div>
+    </div>
 
-      {/* CTA Buttons - Clean styling */}
-      <div class="reveal flex flex-col sm:flex-row items-start gap-4 mb-16" style="transition-delay: 300ms;">
-        <a 
-          href="/eventos" 
-          class="group relative inline-flex items-center gap-3 px-8 py-4 bg-terra text-surface font-semibold text-base rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-terra/30 hover:-translate-y-1"
-        >
-          <span class="relative z-10">Explorar eventos</span>
-          <svg class="w-5 h-5 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-          <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-        </a>
+    {/* Bottom bar */}
+    <div class="reveal opacity-0 py-6 border-t border-edge/50" style="animation: fadeInUp 0.7s ease-out 0.4s forwards;">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-4 text-xs text-surface-muted">
+          <span class="flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            </svg>
+            {locale === 'es' ? 'Albaicín • Centro • Sacromonte' : 'Albaicín • Centro • Sacromonte'}
+          </span>
+        </div>
         
-        <a 
-          href="/rutas" 
-          class="group inline-flex items-center gap-3 px-8 py-4 bg-base-card text-surface font-semibold text-base rounded-2xl border border-edge hover:border-amber/50 transition-all duration-300 hover:-translate-y-1"
-        >
-          <span>Ver rutas</span>
-          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17L17 7M17 7H7M17 7V17" />
-          </svg>
-        </a>
-      </div>
-
-      {/* Stats row - Clean with Work Sans */}
-      <div class="reveal" style="transition-delay: 400ms;">
-        <div class="flex flex-wrap items-center gap-8 md:gap-12">
-          <div class="flex items-center gap-4">
-            <span class="font-display text-4xl md:text-5xl font-bold text-terra">800+</span>
-            <span class="text-sm text-surface-muted font-medium leading-tight">años de<br/>historia</span>
-          </div>
-          <div class="hidden md:block w-px h-10 bg-edge"></div>
-          <div class="flex items-center gap-4">
-            <span class="font-display text-4xl md:text-5xl font-bold text-amber">2</span>
-            <span class="text-sm text-surface-muted font-medium leading-tight">Patrimonios<br/>UNESCO</span>
-          </div>
-          <div class="hidden md:block w-px h-10 bg-edge"></div>
-          <div class="flex items-center gap-4">
-            <span class="font-display text-4xl md:text-5xl font-bold text-mint">0€</span>
-            <span class="text-sm text-surface-muted font-medium leading-tight">tapa con<br/>cada bebida</span>
-          </div>
+        <div class="flex items-center gap-6 text-xs">
+          <a href={locale === 'es' ? '/eventos?cat=concierto' : '/en/events?cat=concert'} class="text-surface-secondary hover:text-terra transition-colors">
+            {locale === 'es' ? 'Conciertos' : 'Concerts'}
+          </a>
+          <a href={locale === 'es' ? '/eventos?cat=exposicion' : '/en/events?cat=exhibition'} class="text-surface-secondary hover:text-terra transition-colors">
+            {locale === 'es' ? 'Exposiciones' : 'Exhibitions'}
+          </a>
+          <a href={locale === 'es' ? '/eventos?cat=festival' : '/en/events?cat=festival'} class="text-surface-secondary hover:text-terra transition-colors">
+            {locale === 'es' ? 'Festivales' : 'Festivals'}
+          </a>
         </div>
       </div>
     </div>
   </div>
 
-  {/* Bottom gradient fade */}
-  <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-base to-transparent pointer-events-none" aria-hidden="true"></div>
-  
-  {/* Scroll indicator - Minimal */}
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-40">
-    <div class="w-5 h-8 border border-surface-muted rounded-full flex justify-center pt-1.5">
-      <div class="w-1 h-1.5 bg-terra rounded-full animate-bounce"></div>
+  {/* Scroll indicator */}
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-20">
+    <div class="w-4 h-7 border border-surface-muted/40 rounded-full flex justify-center pt-1.5">
+      <div class="w-0.5 h-1 bg-terra rounded-full animate-bounce"></div>
     </div>
-    <span class="text-[10px] uppercase tracking-[0.3em] text-surface-muted font-medium">Scroll</span>
   </div>
 </section>
 
-{/* Floating events bar - Only show if there are events */}
-{heroEvents.length > 0 && (
-  <div class="relative -mt-16 mb-20 z-20">
-    <div class="container">
-      <div class="reveal bg-base-card border border-edge rounded-3xl p-6 md:p-8 shadow-elevated">
-        <div class="flex flex-col md:flex-row md:items-center gap-6 mb-6">
-          <div class="flex items-center gap-3">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-terra opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-terra"></span>
-            </span>
-            <span class="text-xs font-semibold uppercase tracking-[0.15em] text-terra">Planes esta semana</span>
-          </div>
-          <div class="flex-1 h-px bg-edge hidden md:block"></div>
-          <a href="/eventos" class="group inline-flex items-center gap-2 text-sm font-medium text-surface-secondary hover:text-terra transition-colors">
-            Ver calendario completo
-            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {heroEvents.map((event, index) => (
-            <a 
-              href={`/eventos/${event.slug}`}
-              class="group flex items-center gap-4 p-4 bg-base-elevated border border-edge rounded-2xl hover:border-terra/30 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-base-card border border-edge flex flex-col items-center justify-center">
-                <span class="text-lg font-display font-bold text-terra">{formatHeroDate(event.date).day}</span>
-                <span class="text-[10px] uppercase tracking-wider text-surface-muted font-semibold">
-                  {formatHeroDate(event.date).month}
-                </span>
-              </div>
-              <div class="flex-1 min-w-0">
-                <h3 class="font-display font-semibold text-surface text-sm mb-1 truncate group-hover:text-terra transition-colors">
-                  {event.title[locale]}
-                </h3>
-                <p class="text-xs text-surface-muted truncate">{event.venue}</p>
-              </div>
-              <svg class="w-5 h-5 text-surface-muted group-hover:text-terra transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-)}
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

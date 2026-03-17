@@ -87,7 +87,7 @@ export const en: Translations = {
   events: {
     title: 'Cultural events',
     subtitle: 'Discover the best of Granada\'s cultural scene',
-    upcoming: 'Upcoming events',
+    upcoming: 'Upcoming',
     featured: 'Featured',
     noEvents: 'No events match your filters',
     filters: {

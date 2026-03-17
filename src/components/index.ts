@@ -6,6 +6,9 @@ export { default as Tag } from './ui/Tag.astro';
 export { default as Divider } from './ui/Divider.astro';
 export { default as Icon } from './ui/Icon.astro';
 export { default as ShareButton } from './ui/ShareButton.astro';
+export { default as SocialLinks } from './ui/SocialLinks.astro';
+export { default as FooterLinkGroup } from './ui/FooterLinkGroup.astro';
+export { default as EventMiniCard } from './ui/EventMiniCard.astro';
 
 // Layout Components
 export { default as NavBar } from './layout/NavBar.astro';
@@ -17,6 +20,7 @@ export { default as Breadcrumbs } from './layout/Breadcrumbs.astro';
 // Event Components
 export { default as EventCard } from './events/EventCard.astro';
 export { default as WeekEventCard } from './events/WeekEventCard.astro';
+export { default as EventCarousel } from './events/EventCarousel.astro';
 
 // Route Components
 export { default as RouteCard } from './routes/RouteCard.astro';

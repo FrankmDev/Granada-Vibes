@@ -1,268 +1,226 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import SectionHeader from '@components/layout/SectionHeader.astro';
 import EventCard from '@components/events/EventCard.astro';
+import EventCarousel from '@components/events/EventCarousel.astro';
 import RouteCard from '@components/routes/RouteCard.astro';
-import Button from '@components/ui/Button.astro';
-import Badge from '@components/ui/Badge.astro';
 import HeroSection from '@components/home/HeroSection.astro';
 import { getFeaturedEvents, getFeaturedRoutes, getAllEvents } from '@data';
 import { useTranslations } from '@i18n/utils';
-import { formatDateShort, getTemporalProximity } from '@utils/dates';
 
 const locale = 'es';
 const t = useTranslations(locale);
 
+const today = new Date().toISOString().split('T')[0];
+const allEvents = getAllEvents();
+
 const featuredEvents = getFeaturedEvents().slice(0, 3);
+
+const upcomingEvents = allEvents
+  .filter(e => e.date >= today)
+  .sort((a, b) => a.date.localeCompare(b.date));
+
+const thisWeekEvents = upcomingEvents.slice(0, 4);
+
+const freeEvents = allEvents
+  .filter(e => e.price === null && e.date >= today)
+  .sort((a, b) => a.date.localeCompare(b.date))
+  .slice(0, 3);
+
 const featuredRoutes = getFeaturedRoutes().slice(0, 3);
 
-// Get this week's events (next 7 days)
-const today = new Date().toISOString().split('T')[0];
-const thisWeekEvents = getAllEvents()
-  .filter(e => e.date >= today)
-  .sort((a, b) => a.date.localeCompare(b.date))
-  .slice(0, 4);
-
-// OG Image
-const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes';
+const ogImage = 'https://placehold.co/1200x630/252320/F5F4F1?text=Granada+Vibes';
 ---
 
 <BaseLayout
   locale={locale}
   title="Inicio"
-  description="Descubre qué hacer en Granada en 2025. Guía local de eventos culturales, rutas por el Albaicín y Sacromonte, y planes alternativos fuera de lo turístico. ¡La Granada auténtica te espera!"
+  description="Descubre qué hacer en Granada. Guía local de eventos culturales, rutas por el Albaicín y Sacromonte, y planes alternativos fuera de lo turístico."
   ogImage={ogImage}
 >
-  {/* Hero Section - Neo-Brutalism Andalusí */}
   <HeroSection thisWeekEvents={thisWeekEvents} locale={locale} />
 
-  {/* Featured Events Section */}
-  <section class="relative py-24 lg:py-32" aria-labelledby="events-heading">
-    {/* Background accent */}
-    <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-terra/5 to-transparent pointer-events-none" aria-hidden="true"></div>
-    
-    {/* Section number */}
-    <div class="absolute top-16 right-8 hidden lg:block">
-      <span class="section-number">01</span>
-    </div>
+  {/* Upcoming Events Carousel */}
+  <EventCarousel 
+    events={upcomingEvents}
+    locale={locale}
+    t={t}
+    title="Esta semana"
+    subtitle="Descubre los mejores planes culturales esta semana en Granada: conciertos, exposiciones, flamenco y experiencias únicas."
+    maxEvents={8}
+  />
 
-    <div class="container relative">
-      <SectionHeader
-        overline={t('events.title')}
-        title={t('home.featuredEvents')}
-        description="Los mejores planes culturales en Granada esta semana: conciertos, exposiciones, flamenco y eventos en el Albaicín, Sacromonte y centro histórico"
-        href="/eventos"
-        linkText={t('actions.viewAll')}
-        accent="terra"
-      />
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 stagger-children">
-        {featuredEvents[0] && (
-          <div class="lg:col-span-7 reveal">
-            <EventCard event={featuredEvents[0]} locale={locale} t={t} featured={true} />
+  {/* Featured Events */}
+  <section class="relative py-20 lg:py-28" aria-labelledby="featured-events-heading">
+    <div class="container">
+      {/* Header */}
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+        <div>
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="w-6 h-[1.5px] bg-terra"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-terra">
+              {t('events.featured')}
+            </span>
           </div>
-        )}
-
-        <div class="lg:col-span-5 flex flex-col gap-6">
-          {featuredEvents.slice(1, 3).map((event) => (
-            <div class="reveal flex-1">
-              <EventCard event={event} locale={locale} t={t} />
-            </div>
-          ))}
+          <h2 id="featured-events-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface">
+            Eventos destacados
+          </h2>
         </div>
+        
+        <a 
+          href="/eventos" 
+          class="inline-flex items-center gap-2 text-sm font-medium text-surface-secondary hover:text-terra transition-colors"
+        >
+          <span>Ver todos</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+
+      {/* Grid - All equal cards */}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {featuredEvents.map((event) => (
+          <EventCard event={event} locale={locale} t={t} />
+        ))}
       </div>
     </div>
   </section>
 
-  {/* Featured Routes Section */}
-  <section id="routes" class="relative py-24 lg:py-32 bg-base-elevated" aria-labelledby="routes-heading">
-    {/* Background elements */}
-    <div class="absolute top-24 left-0 w-64 h-64 bg-amber/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
-    
-    {/* Section number */}
-    <div class="absolute top-32 left-8 hidden lg:block">
-      <span class="section-number">02</span>
-    </div>
+  {/* Free Events */}
+  {freeEvents.length > 0 && (
+    <section class="relative py-20 lg:py-28 bg-base-elevated/50" aria-labelledby="free-events-heading">
+      <div class="container">
+        <div class="flex items-center gap-2.5 mb-8">
+          <span class="w-6 h-[1.5px] bg-mint"></span>
+          <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-mint">
+            Gratis
+          </span>
+        </div>
+        
+        <h2 id="free-events-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface mb-8">
+          Eventos gratuitos
+        </h2>
 
-    <div class="container relative">
-      <SectionHeader
-        overline={t('routes.title')}
-        title={t('home.featuredRoutes')}
-        description="Rutas creadas por granadinos: miradores del Albaicín, tapeo tradicional, senderismo por el Darro y secretos del Realejo"
-        href="/rutas"
-        linkText={t('actions.viewAll')}
-        accent="amber"
-      />
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 stagger-children">
-        <div class="lg:col-span-5 flex flex-col gap-6 order-2 lg:order-1">
-          {featuredRoutes.slice(0, 2).map((route, index) => (
-            <div class="reveal" style={`transition-delay: ${index * 100}ms`}>
-              <RouteCard route={route} locale={locale} t={t} index={index} variant="list" />
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {freeEvents.map((event) => (
+            <EventCard event={event} locale={locale} t={t} />
           ))}
         </div>
+      </div>
+    </section>
+  )}
 
-        {featuredRoutes[2] && (
-          <div class="lg:col-span-7 order-1 lg:order-2 reveal">
-            <a href={`/rutas/${featuredRoutes[2].slug}`} class="block h-full group">
-              <div class="relative h-full bg-base-card border border-amber/20 rounded-3xl overflow-hidden transition-all duration-500 hover:border-amber/40 hover:-translate-y-2 hover:shadow-elevated">
-                <div class="aspect-[16/9] lg:aspect-auto lg:h-full bg-base-elevated relative overflow-hidden">
-                  <div class="absolute inset-0 bg-gradient-to-br from-amber/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  <div class="absolute inset-0 bg-gradient-to-t from-base-card via-base-card/20 to-transparent"></div>
-
-                  <div class="absolute inset-0 flex items-center justify-center">
-                    <div class="relative">
-                      <div class="absolute inset-0 bg-amber/20 blur-2xl rounded-full scale-150"></div>
-                      <div class="relative w-28 h-28 rounded-2xl bg-base border border-amber/30 flex items-center justify-center shadow-elevated group-hover:scale-110 transition-transform duration-500">
-                        <svg class="w-14 h-14 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="absolute top-6 left-6">
-                    <Badge variant="amber" size="md">{t(`categories.${featuredRoutes[2].category}`)}</Badge>
-                  </div>
-                </div>
-
-                <div class="p-8 lg:p-10">
-                  <div class="flex items-center gap-4 text-sm text-surface-muted mb-5">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber">{t(`difficulty.${featuredRoutes[2].difficulty}`)}</span>
-                    <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
-                    <span class="flex items-center gap-1.5">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {Math.round(featuredRoutes[2].duration / 60)}h
-                    </span>
-                    <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
-                    <span>{featuredRoutes[2].distance} km</span>
-                  </div>
-
-                  <h3 class="font-display text-2xl lg:text-3xl font-bold text-surface mb-4 group-hover:text-amber transition-colors duration-300">
-                    {featuredRoutes[2].title[locale]}
-                  </h3>
-
-                  <p class="text-surface-secondary leading-relaxed text-lg mb-6">
-                    {featuredRoutes[2].description[locale]}
-                  </p>
-
-                  <div class="flex items-center gap-3 text-amber font-semibold">
-                    <span>Explorar ruta</span>
-                    <div class="w-10 h-10 rounded-xl border border-amber/30 flex items-center justify-center group-hover:bg-amber group-hover:text-base transition-all duration-300">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
+  {/* Featured Routes */}
+  <section class="relative py-20 lg:py-28" aria-labelledby="routes-heading">
+    <div class="container">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+        <div>
+          <div class="flex items-center gap-2.5 mb-3">
+            <span class="w-6 h-[1.5px] bg-amber"></span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-amber">
+              {t('routes.title')}
+            </span>
           </div>
-        )}
+          <h2 id="routes-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface">
+            Rutas recomendadas
+          </h2>
+        </div>
+        
+        <a 
+          href="/rutas" 
+          class="inline-flex items-center gap-2 text-sm font-medium text-surface-secondary hover:text-amber transition-colors"
+        >
+          <span>Ver todas</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {featuredRoutes.map((route, index) => (
+          <RouteCard route={route} locale={locale} t={t} index={index} variant="grid" />
+        ))}
       </div>
     </div>
   </section>
 
-  {/* Stats Section - Modern dark */}
-  <section class="relative py-28 lg:py-36 overflow-hidden" aria-labelledby="numbers-heading">
-    <div class="absolute inset-0 bg-gradient-to-b from-base via-base-elevated to-base"></div>
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-edge to-transparent"></div>
-    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-edge to-transparent"></div>
-
-    {/* Section number */}
-    <div class="absolute top-16 right-8 hidden lg:block">
-      <span class="section-number">03</span>
-    </div>
-
-    <div class="container relative">
-      <div class="text-center mb-20 reveal">
-        <div class="flex items-center justify-center gap-4 mb-6">
-          <span class="w-16 h-[2px] bg-terra"></span>
-          <span class="text-xs font-bold uppercase tracking-[0.25em] text-terra">Datos</span>
-          <span class="w-16 h-[2px] bg-terra"></span>
+  {/* Stats */}
+  <section class="relative py-20 lg:py-28 bg-base-elevated/50" aria-labelledby="numbers-heading">
+    <div class="container">
+      <div class="text-center mb-12">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <span class="w-8 h-[1px] bg-terra/50"></span>
+          <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-surface-muted">Datos</span>
+          <span class="w-8 h-[1px] bg-terra/50"></span>
         </div>
-        <h2 id="numbers-heading" class="font-display text-4xl lg:text-6xl font-bold text-surface leading-tight">
-          Descubre Granada en <span class="text-gradient-terra">cifras</span>
+        <h2 id="numbers-heading" class="font-display text-2xl lg:text-3xl font-semibold text-surface">
+          Granada en <span class="text-gradient-terra">cifras</span>
         </h2>
       </div>
 
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 stagger-children">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
         {[
-          { value: '800+', label: 'años de historia', desc: 'Desde la fundación', color: 'text-terra' },
-          { value: '2', label: 'UNESCO', desc: 'Patrimonios mundiales', color: 'text-amber' },
-          { value: '48h', label: 'para perderse', desc: 'De tapas y cultura', color: 'text-mint' },
-          { value: '0€', label: 'tapa incluida', desc: 'Con cada bebida', color: 'text-terra' },
+          { value: '800+', label: 'años', desc: 'de historia', color: 'text-terra' },
+          { value: '2', label: 'UNESCO', desc: 'Patrimonios', color: 'text-amber' },
+          { value: '48h', label: 'para', desc: 'perderse', color: 'text-terra' },
+          { value: '0€', label: 'tapa', desc: 'incluida', color: 'text-mint' },
         ].map((stat, index) => (
-          <div class:list={['text-center reveal p-8', index < 3 && 'lg:border-r lg:border-edge']}>
-            <p class:list={['font-display text-5xl lg:text-7xl font-bold mb-3 tracking-tight', stat.color]}>{stat.value}</p>
-            <p class="text-surface font-bold uppercase tracking-wider text-sm mb-2">{stat.label}</p>
-            <p class="text-surface-muted text-sm">{stat.desc}</p>
+          <div class:list={['text-center p-6 rounded-2xl bg-base-card/40 border border-edge', index < 3 && 'lg:border-r lg:border-edge']}>
+            <p class:list={['font-display text-4xl lg:text-5xl font-semibold mb-1', stat.color]}>{stat.value}</p>
+            <p class="text-xs font-medium text-surface uppercase tracking-wider mb-0.5">{stat.label}</p>
+            <p class="text-[10px] text-surface-muted">{stat.desc}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  {/* CTA Section - Bold finale */}
-  <section class="relative py-28 lg:py-36 overflow-hidden" aria-labelledby="cta-title">
-    <div class="absolute inset-0 bg-gradient-to-b from-base-elevated to-base"></div>
+  {/* CTA */}
+  <section class="relative py-24 lg:py-32 overflow-hidden" aria-labelledby="cta-title">
+    <div class="absolute inset-0 bg-gradient-to-b from-base-elevated/30 to-base pointer-events-none"></div>
     
-    {/* Large background text */}
     <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-      <span class="font-display text-[20vw] font-bold text-surface/[0.02] whitespace-nowrap select-none">
+      <span class="font-display text-[15vw] font-bold text-surface/[0.015] whitespace-nowrap select-none">
         GRANADA
       </span>
     </div>
 
-    {/* Gradient orbs */}
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-terra/10 rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-terra/8 rounded-full blur-[100px] pointer-events-none"></div>
 
     <div class="container relative">
-      <div class="max-w-3xl mx-auto text-center reveal">
-        <div class="flex items-center justify-center gap-4 mb-12">
-          <div class="h-px w-20 bg-gradient-to-r from-transparent to-terra/50"></div>
-          <div class="w-14 h-14 rounded-2xl border border-terra/30 flex items-center justify-center bg-terra/5">
-            <svg class="w-6 h-6 text-terra/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-            </svg>
-          </div>
-          <div class="h-px w-20 bg-gradient-to-l from-transparent to-terra/50"></div>
-        </div>
-
-        <h2 id="cta-title" class="mb-8">
-          <span class="block overflow-hidden">
-            <span class="block font-display text-3xl md:text-4xl lg:text-5xl font-bold text-surface">
-              La Alhambra ya la conoces.
-            </span>
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 id="cta-title" class="mb-6">
+          <span class="block font-display text-2xl lg:text-3xl font-semibold text-surface">
+            La Alhambra ya la conoces.
           </span>
-          <span class="block overflow-hidden mt-3">
-            <span class="block font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-terra">
-              Granada todavía no.
-            </span>
+          <span class="block font-display text-2xl lg:text-3xl font-semibold text-gradient-terra mt-1">
+            Granada todavía no.
           </span>
         </h2>
 
-        <p class="text-surface-secondary text-lg lg:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-          La guía cultural de Granada creada por locales. Eventos curatorados, rutas auténticas por el Albaicín 
-          y Sacromonte, y los mejores planes para descubrir la ciudad como un verdader granadino.
+        <p class="text-sm text-surface-secondary mb-8 max-w-md mx-auto">
+          La guía cultural de Granada creada por locales. Eventos, rutas auténticas y los mejores planes.
         </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button variant="terra" size="lg" href="/eventos">
-            <span>Descubrir ahora</span>
-            <svg slot="icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a 
+            href="/eventos"
+            class="inline-flex items-center gap-2 px-7 py-3.5 bg-terra text-surface font-medium text-sm rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_rgba(232,90,60,0.25)] hover:-translate-y-0.5"
+          >
+            <span>Descubrir eventos</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Button>
-          <Button variant="secondary" size="lg" href="/rutas">
-            Explorar rutas
-          </Button>
+          </a>
+          <a 
+            href="/rutas"
+            class="inline-flex items-center gap-2 px-7 py-3.5 bg-base-card/60 text-surface font-medium text-sm rounded-xl border border-edge hover:border-amber/30 transition-all duration-300 hover:-translate-y-0.5"
+          >
+            <span>Explorar rutas</span>
+          </a>
         </div>
       </div>
     </div>
   </section>
-
 </BaseLayout>

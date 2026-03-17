@@ -14,34 +14,34 @@
 @tailwind utilities;
 
 /* ============================================
-   CSS CUSTOM PROPERTIES — DESIGN TOKENS
+   GRANADA VIBES — GLOBAL STYLES v8.0
+   Refined Dark Premium — Sophisticated & Elevated
    ============================================ */
 
 :root {
-  /* Colors - Base scale */
-  --color-base: #0F0E0C;
-  --color-base-elevated: #1A1916;
-  --color-base-card: #23221F;
-  --color-base-hover: #2D2C28;
+  /* Colors - Base scale - Slightly lighter */
+  --color-base: #141412;
+  --color-base-elevated: #1C1B19;
+  --color-base-card: #252320;
+  --color-base-hover: #2D2B27;
   
   /* Colors - Surface scale */
-  --color-surface: #FAF9F7;
-  --color-surface-secondary: #B8B5AD;
-  --color-surface-muted: #6B6964;
-  --color-surface-disabled: #454440;
+  --color-surface: #F5F4F1;
+  --color-surface-secondary: #A8A59E;
+  --color-surface-muted: #6B6862;
+  --color-surface-disabled: #4A4844;
   
   /* Colors - Accents */
   --color-terra: #E85A3C;
   --color-terra-hover: #F07050;
-  --color-amber: #F5A623;
-  --color-amber-hover: #FFB84D;
+  --color-amber: #E89D3A;
   --color-mint: #5C8D7F;
   --color-mint-hover: #6BA08F;
   
   /* Colors - Border */
-  --color-edge: rgba(250, 249, 247, 0.08);
-  --color-edge-hover: rgba(250, 249, 247, 0.15);
-  --color-edge-strong: rgba(250, 249, 247, 0.25);
+  --color-edge: rgba(245, 244, 241, 0.08);
+  --color-edge-hover: rgba(245, 244, 241, 0.15);
+  --color-edge-strong: rgba(245, 244, 241, 0.2);
   
   /* Typography */
   --font-display: 'Satoshi', system-ui, sans-serif;

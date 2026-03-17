@@ -16,69 +16,68 @@ const href = locale === 'es' ? `/eventos/${event.slug}` : `/en/events/${event.sl
 const temporalProximity = getTemporalProximity(event.date);
 ---
 
-<article class:list={['group reveal', { 'lg:col-span-2': featured }]}>
+<article class:list={['group', { 'lg:col-span-2': featured }]}>
   <a href={href} class="block h-full">
     <div class:list={[
-      'relative h-full bg-base-card border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-2',
+      'relative h-full bg-base-card/80 backdrop-blur-sm border border-edge rounded-2xl overflow-hidden transition-all duration-400 hover:-translate-y-1.5',
       event.featured 
-        ? 'border-sand/20 hover:border-sand/40 hover:shadow-lg hover:shadow-sand/10' 
-        : 'border-edge hover:border-terra/30 hover:shadow-lg hover:shadow-terra/10'
+        ? 'hover:border-amber/30 hover:shadow-[0_12px_40px_rgba(232,157,58,0.08)]' 
+        : 'hover:border-terra/25 hover:shadow-[0_12px_40px_rgba(232,90,60,0.08)]'
     ]}>
       
-      {/* Image Area - Dark themed */}
-      <div class:list={['bg-base-elevated relative overflow-hidden', featured ? 'aspect-[21/9]' : 'aspect-[16/10]']}>
-        {/* Gradient overlays */}
-        <div class="absolute inset-0 bg-gradient-to-br from-terra/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        <div class="absolute inset-0 bg-gradient-to-t from-base-card via-base-card/40 to-transparent" />
-        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-terra/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+      {/* Image Area - Softer gradient */}
+      <div class:list={['relative overflow-hidden', featured ? 'aspect-[21/9]' : 'aspect-[16/10]']}>
+        {/* Gradient background */}
+        <div class="absolute inset-0 bg-gradient-to-br from-base-elevated to-base-card"></div>
         
-        {/* Placeholder icon */}
-        <div class="absolute inset-0 flex items-center justify-center">
-          <div class:list={['rounded-2xl bg-base border border-edge flex items-center justify-center group-hover:scale-110 transition-transform duration-500', featured ? 'w-24 h-24' : 'w-20 h-20']}>
-            <svg class="w-10 h-10 text-surface-muted/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </div>
-        </div>
+        {/* Subtle gradient overlays */}
+        <div class="absolute inset-0 bg-gradient-to-t from-base-card via-base-card/30 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1200"></div>
+        
+        {/* Geometric shapes */}
+        <div class="absolute top-4 right-4 w-16 h-16 border border-white/[0.05] rounded-xl rotate-6" aria-hidden="true"></div>
+        <div class="absolute bottom-8 left-4 w-8 h-8 bg-white/[0.02] rounded-full" aria-hidden="true"></div>
         
         {/* Featured badge */}
         {event.featured && (
-          <div class="absolute top-5 left-5">
-            <Badge variant="coral" size="sm">{t('events.featured')}</Badge>
+          <div class="absolute top-4 left-4">
+            <span class="inline-flex items-center px-3 py-1.5 bg-amber/90 backdrop-blur-sm text-base text-[10px] font-bold uppercase tracking-[0.12em] rounded-full">
+              {t('events.featured')}
+            </span>
           </div>
         )}
         
         {/* Temporal proximity badge */}
         {temporalProximity === 'today' && (
-          <div class="absolute top-5 right-5">
-            <Badge variant="live" size="md">HOY</Badge>
+          <div class="absolute top-4 right-4">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-terra text-surface text-[10px] font-bold uppercase tracking-[0.12em] rounded-full animate-pulse">
+              <span class="w-1.5 h-1.5 bg-surface rounded-full"></span>
+              HOY
+            </span>
           </div>
         )}
         {temporalProximity === 'tomorrow' && (
-          <div class="absolute top-5 right-5">
-            <Badge variant="terra" size="sm">MAÑANA</Badge>
-          </div>
-        )}
-        {temporalProximity === 'this-week' && !event.featured && (
-          <div class="absolute top-5 right-5">
-            <Badge variant="default" size="sm">ESTA SEMANA</Badge>
+          <div class="absolute top-4 right-4">
+            <span class="inline-flex items-center px-3 py-1.5 bg-amber/90 backdrop-blur-sm text-base text-[10px] font-bold uppercase tracking-[0.12em] rounded-full">
+              MAÑANA
+            </span>
           </div>
         )}
         
         {/* Category badge */}
-        <div class="absolute bottom-5 left-5">
-          <span class="px-4 py-2 text-[10px] font-bold uppercase tracking-[0.12em] bg-base border border-edge text-surface rounded-full">
+        <div class="absolute bottom-4 left-4">
+          <span class="px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.15em] bg-base/70 backdrop-blur-sm border border-white/[0.08] text-surface-secondary rounded-full">
             {t(`categories.${event.category}`)}
           </span>
         </div>
         
         {/* Price badge */}
-        <div class="absolute bottom-5 right-5">
+        <div class="absolute bottom-4 right-4">
           <span class:list={[
-            'px-4 py-2 font-display font-semibold rounded-full border',
+            'px-3 py-1.5 font-display font-semibold text-xs rounded-full backdrop-blur-sm border',
             event.price === null 
-              ? 'bg-mint/10 text-mint border-mint/30' 
-              : 'bg-base text-surface border-edge'
+              ? 'bg-mint/20 text-mint border-mint/20' 
+              : 'bg-base/70 text-surface-secondary border-white/[0.08]'
           ]}>
             {event.price === null ? t('events.free') : `${event.price}€`}
           </span>
@@ -86,64 +85,54 @@ const temporalProximity = getTemporalProximity(event.date);
       </div>
       
       {/* Content */}
-      <div class="p-6 lg:p-7">
+      <div class="p-5 lg:p-6">
         {/* Date and time row */}
-        <div class="flex items-center gap-3 mb-4">
+        <div class="flex items-center gap-3 mb-3">
           <div class="flex items-center gap-2">
-            <div class="w-9 h-9 rounded-xl bg-terra/10 flex items-center justify-center">
-              <svg class="w-4 h-4 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-8 h-8 rounded-lg bg-terra/10 flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
-            <span class="font-display text-sm font-semibold text-surface">{formatDateShort(event.date, locale)}</span>
+            <span class="font-display text-sm font-medium text-surface">{formatDateShort(event.date, locale)}</span>
           </div>
-          <span class="w-1 h-1 rounded-full bg-surface-disabled"></span>
-          <div class="flex items-center gap-1.5 text-surface-muted">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <span class="w-0.5 h-0.5 rounded-full bg-surface-muted"></span>
+          <div class="flex items-center gap-1 text-surface-muted text-xs">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span class="text-sm">{formatTime(event.time, locale)}</span>
+            <span>{formatTime(event.time, locale)}</span>
           </div>
         </div>
         
         {/* Accent line */}
-        <div class="w-10 h-[2px] bg-gradient-to-r from-terra to-sand mb-4 transition-all duration-300 group-hover:w-16"></div>
+        <div class="w-8 h-[1.5px] bg-gradient-to-r from-terra/60 to-amber/40 mb-3 transition-all duration-300 group-hover:w-12"></div>
         
         {/* Title */}
         <h3 class:list={[
-          'font-display font-semibold text-surface mb-3 group-hover:text-terra transition-colors duration-300 line-clamp-2 leading-tight',
-          featured ? 'text-xl lg:text-2xl' : 'text-lg'
+          'font-display font-medium text-surface mb-2 group-hover:text-terra transition-colors duration-300 line-clamp-2',
+          featured ? 'text-lg lg:text-xl' : 'text-base'
         ]}>
           {event.title[locale]}
         </h3>
         
         {/* Description */}
-        <p class="text-sm text-surface-secondary line-clamp-2 mb-4 leading-relaxed">
+        <p class="text-xs text-surface-muted line-clamp-2 mb-3 leading-relaxed">
           {event.description[locale]}
         </p>
         
         {/* Location */}
-        <div class="flex items-center gap-3 text-sm pt-4 border-t border-edge">
-          <div class="w-9 h-9 rounded-xl bg-base-elevated flex items-center justify-center flex-shrink-0">
-            <svg class="w-4 h-4 text-terra/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        <div class="flex items-center gap-2.5 pt-3 border-t border-edge/50">
+          <div class="w-7 h-7 rounded-lg bg-base-elevated flex items-center justify-center flex-shrink-0">
+            <svg class="w-3.5 h-3.5 text-terra/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
             </svg>
           </div>
           <div class="min-w-0">
-            <span class="text-surface-secondary truncate block">{event.venue}</span>
-            <span class="text-surface-muted text-xs">{t(`neighborhoods.${event.neighborhood}`)}</span>
+            <span class="text-xs text-surface-secondary truncate block">{event.venue}</span>
+            <span class="text-[10px] text-surface-muted">{t(`neighborhoods.${event.neighborhood}`)}</span>
           </div>
         </div>
-      </div>
-      
-      {/* Hover effects */}
-      <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-        <div class="absolute inset-0 bg-gradient-to-t from-terra/5 via-transparent to-transparent"></div>
-      </div>
-      
-      {/* Corner accent on hover */}
-      <div class="absolute top-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <div class="absolute top-4 right-4 w-2 h-2 border-t-2 border-r-2 border-terra/30 rounded-tr"></div>
       </div>
     </div>
   </a>
