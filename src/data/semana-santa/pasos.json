@@ -1,0 +1,989 @@
+{
+  "meta": {
+    "title": "Semana Santa de Granada 2026",
+    "fechas": "29 de marzo — 5 de abril de 2026",
+    "declaracion": "Fiesta de Interés Turístico Internacional (desde 2009)",
+    "totalCofradias": 32,
+    "totalPasos": 58,
+    "totalCostaleros": 2000,
+    "carreraOficial": "Carrera de la Virgen → Plaza Bibataubín → Plaza del Campillo → Plaza Mariana Pineda → Ángel Ganivet (Tribuna Oficial) → Puerta Real → Mesones → Marqués de Gerona → Plaza de las Pasiegas → Catedral",
+    "fuentes": [
+      "https://www.ahoragranada.com/noticias/programa-de-la-semana-santa-de-granada-2026-todos-los-horarios-e-itinerarios-de-las-hermandades/",
+      "https://www.granadadirect.com/fiestas/semana-santa-granada/",
+      "https://www.granadadirect.com/fiestas/miercoles-santo-granada/",
+      "https://www.granadadirect.com/fiestas/jueves-santo-granada/",
+      "https://www.granadadirect.com/fiestas/viernes-santo-granada/",
+      "https://www.granadadirect.com/fiestas/sabado-santo-granada/"
+    ]
+  },
+  "dias": [
+    {
+      "id": "domingo-ramos",
+      "nombre": "Domingo de Ramos",
+      "fecha": "2026-03-29",
+      "descripcion": "La popular 'Borriquilla' inaugura la Semana Santa. Cinco cofradías realizan estación de penitencia ante las puertas de la Catedral.",
+      "cofradias": [
+        {
+          "id": "borriquilla",
+          "nombrePopular": "La Borriquilla",
+          "nombreOficial": "Ilustre Cofradía de la Entrada de Jesús en Jerusalén y Nuestra Señora de la Paz",
+          "iglesiaSalida": "Iglesia Parroquial de San Andrés Apóstol",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Jesús en su entrada en Jerusalén",
+              "tipo": "misterio",
+              "descripcion": "Representa la entrada de Jesús a Jerusalén sobre un burro, escena que da nombre popular a la cofradía."
+            },
+            {
+              "nombre": "Nuestra Señora de la Paz",
+              "tipo": "palio",
+              "descripcion": "Paso de palio que acompaña al misterio inaugural de la Semana Santa granadina."
+            }
+          ],
+          "horario": {
+            "salida": "15:45",
+            "inicioCarreraOficial": "18:40",
+            "tribunaOficial": "19:20",
+            "puertaCatedral": "19:50",
+            "salidaCatedral": "20:35",
+            "regresoTemplo": {
+              "cruzDeGuia": "21:25",
+              "pasoMisterio": "21:45",
+              "pasoPalio": "22:05"
+            }
+          },
+          "itinerario": "Elvira, Arco de Elvira, Acera de la Merced, Tinajilla, Gran Vía de Colón, Plaza Isabel la Católica, Reyes Católicos, Puerta Real, Acera del Darro, Puente de la Virgen → Carrera Oficial → Cárcel Baja, Elvira, a su Templo",
+          "curiosidades": "Inaugura la Semana Santa granadina cada año. Su nombre popular proviene del borrico que porta la imagen de Cristo.",
+          "colorTunoca": null
+        },
+        {
+          "id": "santa-cena",
+          "nombrePopular": "La Santa Cena",
+          "nombreOficial": "Muy Ilustre y Real Cofradía de Nazarenos de la Santa Cena Sacramental y María Santísima de la Victoria",
+          "iglesiaSalida": "Iglesia de Santo Domingo / Parroquia de Santa Escolástica",
+          "barrio": "Realejo",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "La Santa Cena Sacramental",
+              "tipo": "misterio",
+              "descripcion": "Representación de la última cena de Jesús con sus apóstoles, uno de los pasos más queridos del Realejo."
+            },
+            {
+              "nombre": "María Santísima de la Victoria",
+              "tipo": "palio",
+              "descripcion": "Virgen dolorosa que acompaña el misterio de la Santa Cena."
+            }
+          ],
+          "horario": {
+            "salida": "17:15",
+            "inicioCarreraOficial": "19:15",
+            "puertaCatedral": "20:35",
+            "salidaCatedral": "21:10",
+            "regresoTemplo": {
+              "cruzDeGuia": "22:20",
+              "pasoMisterio": "22:55",
+              "pasoPalio": "23:40"
+            }
+          },
+          "itinerario": "Plaza de Santo Domingo, Ancha de Santo Domingo, Plaza de los Girones, Santa Escolástica, Pavaneras, Plaza San Juan de la Cruz, San Matías, Plaza Mariana Pineda → Carrera Oficial → Cárcel Baja, Gran Vía, Plaza Isabel la Católica, San Matías, Ancha de Santo Domingo, a su Templo",
+          "curiosidades": "Sale desde el emblemático barrio del Realejo, uno de los corazones cofrades de Granada.",
+          "colorTunica": null
+        },
+        {
+          "id": "despojado",
+          "nombrePopular": "El Despojado",
+          "nombreOficial": "Hermandad del Santísimo Sacramento y Cofradía de Nazarenos de Nuestro Padre Jesús Despojado de sus Vestiduras, María Santísima del Dulce Nombre y San Juan Evangelista",
+          "iglesiaSalida": "Iglesia Parroquial de San Emilio",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús Despojado de sus Vestiduras",
+              "tipo": "misterio",
+              "descripcion": "Representa el momento en que Cristo es despojado de sus vestiduras antes de la crucifixión."
+            },
+            {
+              "nombre": "María Santísima del Dulce Nombre",
+              "tipo": "palio",
+              "descripcion": "Paso de palio con advocación al Dulce Nombre de María."
+            }
+          ],
+          "horario": {
+            "salidaCasaHermandad": "18:05",
+            "inicioCarreraOficial": "19:50",
+            "puertaCatedral": "21:05",
+            "salidaCatedral": "21:35",
+            "regresoTemplo": {
+              "cruzDeGuia": "23:55",
+              "pasoMisterio": "00:10",
+              "pasoPalio": "00:25"
+            }
+          },
+          "itinerario": "Músico José Ayala Canto, Agustina de Aragón, Mulhacén, Marqués de Mondéjar, Abu Isaac, Alhamar, San Antón, Verónica de la Virgen, Acera del Darro, Puente de la Virgen → Carrera Oficial → Cárcel Baja, San Jerónimo, Plaza Romanilla, Capuchinas, Plaza Trinidad, Alhóndiga, Recogidas, San Antón, a su Casa de Hermandad",
+          "curiosidades": "Una de las cofradías que más tarde regresa a su templo el Domingo de Ramos.",
+          "colorTunica": null
+        },
+        {
+          "id": "maravillas",
+          "nombrePopular": "Las Maravillas",
+          "nombreOficial": "Pontificia e Ilustre Hermandad Sacramental y Cofradía de Nazarenos de Nuestro Padre Jesús de la Sentencia y María Santísima de las Maravillas",
+          "iglesiaSalida": "Iglesia Parroquial de San Pedro y San Pablo",
+          "barrio": "Albaicín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús de la Sentencia",
+              "tipo": "misterio",
+              "descripcion": "Representa la escena de la sentencia de muerte dictada contra Jesús."
+            },
+            {
+              "nombre": "María Santísima de las Maravillas",
+              "tipo": "palio",
+              "descripcion": "Bella imagen dolorosa que da nombre popular a la hermandad."
+            }
+          ],
+          "horario": {
+            "salida": "17:20",
+            "inicioCarreraOficial": "20:20",
+            "tribunaOficial": "21:00",
+            "puertaCatedral": "21:40",
+            "salidaCatedral": "22:15",
+            "regresoTemplo": {
+              "cruzDeGuia": "23:30",
+              "pasoMisterio": "23:50",
+              "pasoPalio": "00:15"
+            }
+          },
+          "itinerario": "Carrera del Darro, Plaza de Santa Ana, Plaza Nueva, Reyes Católicos, Colcha, Pavaneras, Plaza Fortuny, Portería de Santo Domingo, Plaza de Santo Domingo, Cuesta de Aixa, Ancha de la Virgen → Carrera Oficial → Cárcel Baja, Pasaje Diego de Siloé, Gran Vía, Plaza Isabel la Católica, Reyes Católicos, Plaza Nueva, Carrera del Darro, a su Templo",
+          "curiosidades": "Sale desde San Pedro y San Pablo, a los pies de la Alhambra, bajando por la espectacular Carrera del Darro.",
+          "colorTunica": null
+        },
+        {
+          "id": "cautivo-encarnacion",
+          "nombrePopular": "Cautivo y Encarnación",
+          "nombreOficial": "Hermandad Sacramental de San Francisco de Asís y Santa Clara y Real Cofradía de Penitencia de Nuestro Padre Jesús Cautivo y María Santísima de la Encarnación",
+          "iglesiaSalida": "Monasterio Conventual de la Encarnación / Iglesia Parroquial del Sagrario",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús Cautivo",
+              "tipo": "cristo",
+              "descripcion": "Cristo con las manos atadas que representa la escena del prendimiento y cautiverio."
+            },
+            {
+              "nombre": "María Santísima de la Encarnación",
+              "tipo": "palio",
+              "descripcion": "Imagen dolorosa con advocación a la Encarnación, salida del Monasterio Conventual."
+            }
+          ],
+          "horario": {
+            "salida": "18:00",
+            "inicioCarreraOficial": "20:55",
+            "puertaCatedral": "22:15",
+            "salidaCatedral": "22:50",
+            "regresoTemplo": {
+              "cruzDeGuia": "00:05",
+              "pasoMisterio": "00:20",
+              "pasoPalio": "00:55"
+            }
+          },
+          "itinerario": "Plaza Alonso Cano, Plaza de las Pasiegas, Marqués de Gerona, Jáudenes, Alhóndiga, Gracia, Puentezuelas, Recogidas, San Antón, Verónica de la Virgen, Acera del Darro, Puente de la Virgen → Carrera Oficial → Cárcel Baja, San Jerónimo, Plaza Romanilla, Capuchinas, Plaza Trinidad, Mesones, Marqués de Gerona, Plaza Pasiegas, Plaza Alonso Cano, a su Templo del Sagrario",
+          "curiosidades": "Cierra el Domingo de Ramos siendo una de las cofradías que más tarde regresa, ya pasada la medianoche.",
+          "colorTunica": null
+        }
+      ]
+    },
+    {
+      "id": "lunes-santo",
+      "nombre": "Lunes Santo",
+      "fecha": "2026-03-30",
+      "descripcion": "Los barrios cofrades viven la Semana Santa con gran devoción. El Lunes Santo sale del Zaidín a primera hora la más joven de sus hermandades.",
+      "cofradias": [
+        {
+          "id": "huerto",
+          "nombrePopular": "El Huerto",
+          "nombreOficial": "Real, Muy Ilustre y Comendadora Hermandad Sacramental de Santa María Madre de Dios y Cofradía de Penitencia de la Oración de Nuestro Señor en el Huerto de los Olivos y María Santísima de la Amargura Coronada",
+          "iglesiaSalida": "Real Monasterio de la Madre de Dios de las Comendadoras de Santiago",
+          "barrio": "Realejo",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "La Oración de Nuestro Señor en el Huerto de los Olivos",
+              "tipo": "misterio",
+              "descripcion": "Representación de la oración de Jesús en el Huerto de Getsemaní, la noche antes de su prendimiento."
+            },
+            {
+              "nombre": "María Santísima de la Amargura Coronada",
+              "tipo": "palio",
+              "descripcion": "Virgen coronada con advocación a la Amargura, una de las imágenes más veneradas del Realejo."
+            }
+          ],
+          "horario": {
+            "salida": "16:10",
+            "inicioCarreraOficial": "18:15",
+            "tribunaOficial": "18:55",
+            "puertaCatedral": "19:45",
+            "salidaCatedral": "20:30",
+            "regresoTemplo": {
+              "cruzDeGuia": "22:10",
+              "pasoMisterio": "22:45",
+              "pasoPalio": "23:30"
+            }
+          },
+          "itinerario": "Santiago, Jarrería, Molinos, Plaza del Realejo, Plaza Fortuny, Portería de Santo Domingo, Plaza de Santo Domingo, Cuesta de Aixa, Ancha de la Virgen → Carrera Oficial → Cárcel Baja, Pasaje Diego de Siloé, Gran Vía, Plaza Isabel la Católica, Padre Suárez, Pavaneras, Santa Escolástica, Plaza Fortuny, Plaza del Realejo, Santiago, a su Templo",
+          "curiosidades": "Sale del histórico Real Monasterio de la Madre de Dios, en pleno corazón del Realejo.",
+          "colorTunica": null
+        },
+        {
+          "id": "trabajo-luz",
+          "nombrePopular": "Trabajo y Luz",
+          "nombreOficial": "Venerable Hermandad de Caridad del Santísimo Cristo del Trabajo y Nuestra Señora de la Luz",
+          "iglesiaSalida": "Iglesia Parroquial del Santísimo Corpus Christi",
+          "barrio": "Zaidín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo del Trabajo",
+              "tipo": "cristo",
+              "descripcion": "Cristo que representa el sufrimiento y la dignidad del trabajo, muy popular en el barrio del Zaidín."
+            },
+            {
+              "nombre": "Nuestra Señora de la Luz",
+              "tipo": "palio",
+              "descripcion": "Virgen con advocación a la Luz, patrona espiritual de la hermandad del Zaidín."
+            }
+          ],
+          "horario": {
+            "salida": "16:00",
+            "inicioCarreraOficial": "18:55",
+            "tribunaOficial": "19:35",
+            "puertaCatedral": "20:35",
+            "salidaCatedral": "21:20",
+            "regresoTemplo": {
+              "cruzDeGuia": "01:30",
+              "pasoMisterio": "01:50",
+              "pasoPalio": "02:20"
+            }
+          },
+          "itinerario": "Polinario, Avenida de Dílar, Avenida Pablo Picasso, Camino de La Zubia, Profesor Tierno Galván, Sos del Rey Católico, Poeta Manuel de Góngora, Puente Romano, Paseo del Salón → Carrera Oficial → Cárcel Baja, Gran Vía, Plaza Isabel la Católica, Pavaneras, San Matías, Plaza Mariana Pineda, Plaza Bibataubín, Carrera de la Virgen lateral, Plaza del Humilladero, Puente Romano, Poeta Manuel de Góngora, Sos del Rey Católico, Avenida de Dílar, Polinario, a su Templo",
+          "curiosidades": "Hace uno de los recorridos más largos de la Semana Santa granadina, partiendo y regresando al Zaidín. Es la hermandad más joven del barrio.",
+          "colorTunica": null
+        },
+        {
+          "id": "dolores",
+          "nombrePopular": "Los Dolores",
+          "nombreOficial": "Real Cofradía de Nuestra Señora de los Dolores",
+          "iglesiaSalida": "Iglesia Parroquial de San Pedro y San Pablo",
+          "barrio": "Albaicín",
+          "numeroPasos": 1,
+          "pasos": [
+            {
+              "nombre": "Nuestra Señora de los Dolores",
+              "tipo": "palio",
+              "descripcion": "Un único paso de palio con la Virgen de los Dolores, una de las imágenes marianas más veneradas del Albaicín."
+            }
+          ],
+          "horario": {
+            "salida": "17:15",
+            "inicioCarreraOficial": "19:45",
+            "tribunaOficial": "20:25",
+            "puertaCatedral": "21:20",
+            "salidaCatedral": "21:55",
+            "regresoTemplo": {
+              "cruzDeGuia": "00:00",
+              "pasoPalio": "00:45"
+            }
+          },
+          "itinerario": "Carrera del Darro, Plaza de Santa Ana, Plaza Nueva, Reyes Católicos, Colcha, Pavaneras, Plaza Padre Suárez, Santa Escolástica, Plaza Fortuny, Portería de Santo Domingo, Plaza Santo Domingo, Cuesta de Aixa, Ancha de la Virgen → Carrera Oficial → Cárcel Baja, Elvira, Plaza Nueva, Plaza de Santa Ana, Carrera del Darro, a su Templo",
+          "curiosidades": "Procesiona con un único paso de palio, lo que le da una solemnidad y recogimiento especiales.",
+          "colorTunica": null
+        },
+        {
+          "id": "rescate",
+          "nombrePopular": "El Rescate",
+          "nombreOficial": "Cofradía de Nuestro Padre Jesús del Rescate",
+          "iglesiaSalida": "Iglesia Parroquial de Santa María Magdalena",
+          "barrio": "Centro",
+          "numeroPasos": 1,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús del Rescate",
+              "tipo": "cristo",
+              "descripcion": "Imagen de Cristo que simboliza la liberación y el rescate de la humanidad a través de su sacrificio."
+            }
+          ],
+          "horario": {
+            "salida": "17:25",
+            "inicioCarreraOficial": "20:20",
+            "tribunaOficial": "21:10",
+            "puertaCatedral": "21:55",
+            "salidaCatedral": "22:30",
+            "regresoTemplo": {
+              "cruzDeGuia": "23:20",
+              "pasoCristo": "00:00"
+            }
+          },
+          "itinerario": "Placeta de Nuestro Padre Jesús del Rescate, Puentezuelas, Obispo Hurtado, San Miguel Alta, Cruz, Puentezuelas, Recogidas, San Antón, Puente Castañeda, Acera del Darro, Puente de la Virgen → Carrera Oficial → Cárcel Baja, San Jerónimo, Plaza Romanilla, Capuchinas, Plaza Trinidad, Buensuceso, Puentezuelas, Placeta del Rescate, a su Templo",
+          "curiosidades": "Procesiona con un único paso de Cristo, lo que lo convierte en uno de los cortejos más austeros y solemnes del Lunes Santo.",
+          "colorTunica": null
+        },
+        {
+          "id": "san-agustin",
+          "nombrePopular": "San Agustín",
+          "nombreOficial": "Muy Antigua, Real e Ilustre Hermandad Sacramental del Santísimo Cristo de la Misericordia y Cofradía de Nazarenos de San Agustín",
+          "iglesiaSalida": "Iglesia de San Agustín",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de la Misericordia",
+              "tipo": "cristo",
+              "descripcion": "Imagen de Cristo en la Cruz, una de las tallas más antiguas y veneradas del Centro histórico."
+            },
+            {
+              "nombre": "Virgen de la Esperanza",
+              "tipo": "palio",
+              "descripcion": "Paso de palio que acompaña al Cristo de la Misericordia en su estación de penitencia."
+            }
+          ],
+          "horario": {
+            "salida": "18:30",
+            "inicioCarreraOficial": "20:55",
+            "puertaCatedral": "22:15",
+            "salidaCatedral": "22:55"
+          },
+          "itinerario": "Sale desde la Iglesia de San Agustín en el Centro histórico, recorriendo las calles principales hasta la Carrera Oficial.",
+          "curiosidades": "Una de las hermandades más antiguas del Centro histórico de Granada.",
+          "colorTunica": null
+        }
+      ]
+    },
+    {
+      "id": "martes-santo",
+      "nombre": "Martes Santo",
+      "fecha": "2026-03-31",
+      "descripcion": "Plaza Nueva se viste de gala cuando salen el Gran Poder y la Esperanza desde San Gil y Santa Ana. También procesionan La Lanzada desde el Zaidín, el Vía Crucis desde la iglesia más antigua de Granada, y La Cañilla desde el Realejo.",
+      "cofradias": [
+        {
+          "id": "lanzada",
+          "nombrePopular": "La Lanzada",
+          "nombreOficial": "Cofradía del Santísimo Cristo de la Lanzada y María Santísima de la Caridad",
+          "iglesiaSalida": "Parroquia de Nuestra Señora de los Dolores",
+          "barrio": "Zaidín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de la Lanzada",
+              "tipo": "cristo",
+              "descripcion": "Cristo crucificado representando el momento en que el soldado romano lo traspasó con su lanza."
+            },
+            {
+              "nombre": "María Santísima de la Caridad",
+              "tipo": "palio",
+              "descripcion": "Virgen con advocación a la Caridad que acompaña al Cristo de la Lanzada en su procesión."
+            }
+          ],
+          "horario": {
+            "salida": "16:25",
+            "inicioCarreraOficial": "18:55",
+            "tribunaOficial": "19:25",
+            "salidaCatedral": "21:05",
+            "regresoTemplo": "~01:00"
+          },
+          "itinerario": "Sale del Zaidín, cruza el Puente Romano hasta llegar a la Carrera de la Virgen. Regresa por Gran Vía y calle San Matías, entrando en los Alminares por Poeta Manuel de Góngora (~23:00).",
+          "curiosidades": "Fundada en 1984, es la hermandad más joven del Martes Santo. Su regreso al barrio es muy emotivo, con los vecinos esperando a la cofradía entre aplausos.",
+          "colorTunica": null
+        },
+        {
+          "id": "gran-poder-esperanza",
+          "nombrePopular": "La Esperanza / Gran Poder",
+          "nombreOficial": "Cofradía de Nuestro Padre Jesús del Gran Poder y Nuestra Señora de la Esperanza",
+          "iglesiaSalida": "Iglesia de San Gil y Santa Ana",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús del Gran Poder",
+              "tipo": "misterio",
+              "descripcion": "Cristo portando la cruz, una imagen de gran devoción popular que sale desde la iglesia más bella de la Plaza Nueva."
+            },
+            {
+              "nombre": "Nuestra Señora de la Esperanza",
+              "tipo": "palio",
+              "descripcion": "Talla de José de Risueño de 1718, procedente de la desaparecida antigua Iglesia de San Gil. Una de las imágenes marianas más bellas de la Semana Santa granadina."
+            }
+          ],
+          "horario": {
+            "salida": "~17:30",
+            "inicioCarreraOficial": "19:55",
+            "puertaCatedral": "21:20",
+            "regresoTemplo": "~23:10"
+          },
+          "itinerario": "Plaza Nueva, Plaza Santo Domingo, Cuesta de Aixa → Carrera Oficial → regresa por calle Elvira llegando a su templo en torno a las 23:10.",
+          "curiosidades": "Plaza Nueva es el escenario de excepción cuando se abren las puertas de San Gil y Santa Ana para dar paso a esta hermandad. La Esperanza empezó siendo el único paso de la cofradía. Los nazarenos visten hábitos y capirote verde con capa blanca.",
+          "colorTunica": "Verde con capa blanca"
+        },
+        {
+          "id": "via-crucis",
+          "nombrePopular": "El Vía Crucis",
+          "nombreOficial": "Hermandad del Vía Crucis de Nuestro Padre Jesús de la Amargura y Nuestra Señora de los Reyes",
+          "iglesiaSalida": "Iglesia de San Juan de los Reyes",
+          "barrio": "Albaicín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús de la Amargura",
+              "tipo": "cristo",
+              "descripcion": "Cristo que porta una bellísima cruz de taracea granadina, arte nazarí aplicado a la imaginería procesional. Sale de la primera iglesia cristiana bendecida por los Reyes Católicos tras su entrada en Granada en 1492."
+            },
+            {
+              "nombre": "Nuestra Señora de los Reyes",
+              "tipo": "palio",
+              "descripcion": "Imagen del siglo XVIII que rinde homenaje a los Reyes Católicos desde la iglesia que ellos mandaron construir."
+            }
+          ],
+          "horario": {
+            "salida": "17:00",
+            "llegadaCarreraDarro": "18:00",
+            "inicioCarreraOficial": "19:30",
+            "puertaCatedral": "20:55",
+            "salidaCatedral": "~21:30",
+            "rezoPenitencial": "~22:00"
+          },
+          "itinerario": "Sale de la iglesia más antigua de Granada, baja por San Matías y accede a la Carrera Oficial por Ancha de la Virgen (19:30). Cruza la Gran Vía por el Pasaje Diego de Siloé. Entra en Reyes Católicos por Joaquín Costa. Al llegar a Plaza de Santa Ana (~22:00) se inicia el rezo del Vía Crucis Penitencial hasta llegar al templo.",
+          "curiosidades": "Es la decana del Martes Santo, procesionó por primera vez en 1917. Sale de la capilla adosada a San Juan de los Reyes, la primera iglesia cristiana que los Reyes Católicos mandaron bendecir tras tomar Granada en 1492.",
+          "colorTunica": null
+        },
+        {
+          "id": "canilla",
+          "nombrePopular": "La Cañilla",
+          "nombreOficial": "Hermandad del Santísimo Sacramento y Cofradía de Nazarenos del Señor de la Humildad, Soledad de Nuestra Señora y Dulce Nombre de Jesús. Procesión de los 'Facundillos'",
+          "iglesiaSalida": "Iglesia de Santo Domingo",
+          "barrio": "Realejo",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Señor de la Humildad",
+              "tipo": "misterio",
+              "descripcion": "Cristo sentado con una caña en la mano, en el momento de la coronación de espinas o descansando antes de la crucifixión. Su iconografía le da el apodo popular de 'La Cañilla'."
+            },
+            {
+              "nombre": "Soledad de Nuestra Señora",
+              "tipo": "palio",
+              "descripcion": "Esta Virgen procesiona también el Viernes Santo para estar presente en la tradicional ceremonia de las tres de la tarde junto al Cristo de los Favores en el Campo del Príncipe."
+            }
+          ],
+          "horario": {
+            "salida": "18:40",
+            "inicioCarreraOficial": "20:40",
+            "regresoTemplo": "~00:15"
+          },
+          "itinerario": "Sale de Santo Domingo, va por calle Santiago hasta calle Salvador y entra en la Carrera Oficial por Ancha de la Virgen (20:40). Regresa por calle San Matías hasta la Plaza de Santo Domingo (~00:15).",
+          "curiosidades": "Recibe el nombre popular de 'La Cañilla' por la peculiar iconografía del Señor de la Humildad, que porta una caña. Sale desde Santo Domingo, la iglesia desde la que más hermandades parten en toda la Semana Santa granadina.",
+          "colorTunica": null
+        }
+      ]
+    },
+    {
+      "id": "miercoles-santo",
+      "nombre": "Miércoles Santo",
+      "fecha": "2026-04-01",
+      "descripcion": "Día grande para el Sacromonte: el Cristo de los Gitanos sube al barrio entre hogueras, saetas y fervor. También es el día del Realejo, con el Nazareno, y de la Cofradía Universitaria. El Rosario modifica su horario de salida.",
+      "cofradias": [
+        {
+          "id": "consuelo-gitanos",
+          "nombrePopular": "Cristo de los Gitanos",
+          "nombreOficial": "Cofradía del Santísimo Cristo del Consuelo y María Santísima del Sacromonte",
+          "iglesiaSalida": "Iglesia del Sagrado Corazón de Jesús (Gran Vía de Colón)",
+          "barrio": "Sacromonte",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo del Consuelo",
+              "tipo": "cristo",
+              "descripcion": "Cristo crucificado de gran devoción para la comunidad gitana de Granada. Sube al Sacromonte entre hogueras en una de las estampas más icónicas de la Semana Santa granadina."
+            },
+            {
+              "nombre": "María Santísima del Sacromonte",
+              "tipo": "palio",
+              "descripcion": "Virgen del Sacromonte que acompaña al Cristo en su subida al barrio de las cuevas."
+            }
+          ],
+          "horario": {
+            "salida": "16:10",
+            "pesoHarina": "~23:10",
+            "regresoAbadia": "~04:00"
+          },
+          "itinerario": "Sale de la Gran Vía, baja por Reyes Católicos hasta la Carrera de la Virgen para hacer la Carrera Oficial. Sube la Cuesta del Chapiz (~23:00) entre hogueras, piropos y saetas por todo el Camino del Sacromonte. Regresa a la Abadía de los Peregrinos pasadas las 4 de la madrugada.",
+          "curiosidades": "Una de las procesiones más únicas de España. La subida al Sacromonte entre hogueras es una escena que no tiene igual en ninguna otra Semana Santa. Es de las procesiones que más tarde regresa a su templo de toda la Semana Santa. Para 2026 se ha adelantado la llegada a la Abadía aproximadamente una hora respecto a años anteriores.",
+          "colorTunica": null
+        },
+        {
+          "id": "meditacion-universitaria",
+          "nombrePopular": "Cofradía Universitaria",
+          "nombreOficial": "Cofradía Universitaria — Nuestro Señor de la Meditación y María Santísima de los Remedios",
+          "iglesiaSalida": "Parroquia de los Santos Mártires Justo y Pastor",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Señor de la Meditación",
+              "tipo": "misterio",
+              "descripcion": "Cristo en actitud meditativa, imagen vinculada históricamente a la comunidad universitaria de Granada."
+            },
+            {
+              "nombre": "María Santísima de los Remedios",
+              "tipo": "palio",
+              "descripcion": "Virgen de los Remedios, patrona de la hermandad universitaria granadina."
+            }
+          ],
+          "horario": {
+            "salida": "17:00"
+          },
+          "itinerario": "Sale de la Parroquia de los Santos Mártires Justo y Pastor, en el Centro histórico.",
+          "curiosidades": "La Cofradía Universitaria reúne a cofrades vinculados a la Universidad de Granada, una de las más antiguas de España.",
+          "colorTunica": null
+        },
+        {
+          "id": "rosario",
+          "nombrePopular": "El Rosario",
+          "nombreOficial": "Cofradía del Rosario",
+          "iglesiaSalida": "A confirmar",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Cristo del Rosario",
+              "tipo": "cristo",
+              "descripcion": "Paso de Cristo de la Cofradía del Rosario."
+            },
+            {
+              "nombre": "Virgen del Rosario",
+              "tipo": "palio",
+              "descripcion": "Paso de palio de la Cofradía del Rosario."
+            }
+          ],
+          "horario": {
+            "salida": "19:30",
+            "entradaPalio": "02:15"
+          },
+          "itinerario": "A confirmar.",
+          "curiosidades": "En 2026 retrasa su salida media hora respecto al año anterior, fijándola a las 19:30. La entrada de su palio está prevista a las 02:15 de la madrugada.",
+          "colorTunica": null
+        },
+        {
+          "id": "nazareno",
+          "nombrePopular": "El Nazareno",
+          "nombreOficial": "Cofradía de Nuestro Padre Jesús Nazareno y María Santísima de la Merced",
+          "iglesiaSalida": "Convento de las Carmelitas Descalzas (calle San Matías)",
+          "barrio": "Realejo",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús Nazareno",
+              "tipo": "misterio",
+              "descripcion": "Cristo Nazareno que procesiona en absoluto silencio, sin banda de música, lo que le otorga una solemnidad única. El convento del que sale fue fundado en 1582 por Ana de Jesús, enviada por Santa Teresa, con San Juan de la Cruz como prior."
+            },
+            {
+              "nombre": "María Santísima de la Merced",
+              "tipo": "palio",
+              "descripcion": "Virgen de la Merced, imagen dolorosa que acompaña al Nazareno en su procesión silenciosa."
+            }
+          ],
+          "horario": {
+            "salida": "20:30",
+            "inicioCarreraOficial": "21:40"
+          },
+          "itinerario": "Sale del Convento de las Carmelitas Descalzas en San Matías, baja por la Cuesta de Aixa para comenzar la Carrera Oficial a las 21:40 a las puertas de la Virgen de las Angustias.",
+          "curiosidades": "Procesiona en silencio, sin banda de música. Característica que lo hace especialmente sobrecogedor. Sale desde un convento fundado por San Juan de la Cruz en 1582. En 2026 modifica su horario de salida.",
+          "colorTunica": "Morado"
+        }
+      ]
+    },
+    {
+      "id": "jueves-santo",
+      "nombre": "Jueves Santo",
+      "fecha": "2026-04-02",
+      "descripcion": "Día grande del Albaicín. Las calles estrechas y empedradas del barrio se convierten en un hervidero de gente buscando el mejor lugar para ver La Estrella, La Aurora y La Concha. Plaza Nueva es el punto de encuentro de todas las cofradías que bajan del barrio.",
+      "cofradias": [
+        {
+          "id": "concha",
+          "nombrePopular": "La Concha",
+          "nombreOficial": "Cofradía de Nuestro Padre Jesús del Amor y la Entrega y Nuestra Señora de la Concepción",
+          "iglesiaSalida": "Monasterio de la Concepción",
+          "barrio": "Albaicín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús del Amor y la Entrega",
+              "tipo": "misterio",
+              "descripcion": "Cristo con la cruz al hombro, obra del imaginero granadino Miguel Zúñiga Navarro."
+            },
+            {
+              "nombre": "Nuestra Señora de la Concepción",
+              "tipo": "palio",
+              "descripcion": "Virgen dolorosa obra de Aurelio López Azaustre. Conocida popularmente como 'La Concha' en el barrio."
+            }
+          ],
+          "horario": {
+            "salida": "15:45",
+            "carreraDarro": "~16:15",
+            "inicioCarreraOficial": "18:55"
+          },
+          "itinerario": "Sale del Monasterio de la Concepción, baja por calle San Matías (17:35), gira en Plaza Mariana hacia Enriqueta Lozano y entra en la Carrera Oficial por Ancha de la Virgen (18:55). Espectacular su paso por la Carrera del Darro hacia las 16:15.",
+          "curiosidades": "Abre el Jueves Santo en Granada desde el Albaicín. El cruce de su cortejo con la bajada de La Estrella por la Cuesta del Chapiz a partir de las 18:15 es uno de los momentos más emocionantes de la Semana Santa granadina.",
+          "colorTunica": null
+        },
+        {
+          "id": "estrella",
+          "nombrePopular": "La Estrella",
+          "nombreOficial": "Hermandad de Nuestro Padre Jesús de la Pasión y María Santísima de la Estrella",
+          "iglesiaSalida": "Iglesia de San Cristóbal",
+          "barrio": "Albaicín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús de la Pasión",
+              "tipo": "misterio",
+              "descripcion": "Cristo que procesiona acompañado por la propia banda musical de la hermandad, la Agrupación Musical María Santísima de la Estrella, que desfila detrás del paso nazareno."
+            },
+            {
+              "nombre": "María Santísima de la Estrella",
+              "tipo": "palio",
+              "descripcion": "Una de las vírgenes más queridas del Albaicín. Sale desde lo más alto del barrio, en la Iglesia de San Cristóbal, un templo del año 1501."
+            }
+          ],
+          "horario": {
+            "salida": "17:15",
+            "inicioCarreraOficial": "21:30"
+          },
+          "itinerario": "Sale desde lo más alto del Albaicín (Iglesia de San Cristóbal, 1501) serpenteando por las calles del barrio hasta la Carrera del Darro, dejando estampas preciosas a lo largo del recorrido. Entra en la Carrera Oficial a las 21:30 por Ancha de la Virgen.",
+          "curiosidades": "Hace uno de los recorridos más espectaculares de toda la Semana Santa: baja desde lo más alto del Albaicín hasta la Carrera del Darro serpenteando por sus calles estrechas y empedradas.",
+          "colorTunica": null
+        },
+        {
+          "id": "aurora",
+          "nombrePopular": "La Aurora",
+          "nombreOficial": "Cofradía de María Santísima de la Aurora y Nuestro Padre Jesús del Perdón",
+          "iglesiaSalida": "Iglesia de San Miguel Bajo",
+          "barrio": "Albaicín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Nuestro Padre Jesús del Perdón",
+              "tipo": "misterio",
+              "descripcion": "Cristo portando la cruz camino del Calvario, imagen de gran devoción en el Albaicín."
+            },
+            {
+              "nombre": "María Santísima de la Aurora",
+              "tipo": "palio",
+              "descripcion": "Una de las vírgenes más populares de Granada. Sale del corazón del Albaicín, desde la Plaza de San Miguel Bajo."
+            }
+          ],
+          "horario": {
+            "salida": "16:30",
+            "llegadaPlazaNueva": "18:05",
+            "regresoPlazaSanMiguelBajo": "~01:00"
+          },
+          "itinerario": "Sale de San Miguel Bajo en el corazón del Albaicín (16:30), llega a Plaza Nueva (18:05) y recorre la Carrera Oficial. El regreso a la Plaza de San Miguel Bajo en torno a la 1:00 de la madrugada es un momento emocionante que cierra el Jueves Santo en el barrio.",
+          "curiosidades": "Su regreso a la Plaza de San Miguel Bajo en torno a las 01:00 de la madrugada, cuando el Albaicín se despide de ella con fervor, es uno de los momentos más especiales de toda la Semana Santa granadina.",
+          "colorTunica": null
+        },
+        {
+          "id": "salesianos",
+          "nombrePopular": "Los Salesianos",
+          "nombreOficial": "Cofradía del Santísimo Cristo de la Redención y Nuestra Señora de la Salud",
+          "iglesiaSalida": "Iglesia de María Auxiliadora",
+          "barrio": "Zaidín",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de la Redención",
+              "tipo": "cristo",
+              "descripcion": "Cristo crucificado que ya representa a Jesús muerto en la Cruz. Sale del Zaidín para hacer su larga estación de penitencia."
+            },
+            {
+              "nombre": "Nuestra Señora de la Salud",
+              "tipo": "palio",
+              "descripcion": "Virgen con advocación a la Salud, titular de la popular hermandad salesiana del Zaidín."
+            }
+          ],
+          "horario": {
+            "salida": "16:45",
+            "inicioCarreraOficial": "19:30",
+            "salidaCatedral": "21:50"
+          },
+          "itinerario": "Sale del Zaidín, llega al Puente Romano y comienza la Carrera Oficial a las 19:30. Sale de la Catedral a las 21:50 para iniciar el regreso pasando por San Antón y el Palacio de Congresos (novedad 2026). Entra a la Avda. de Dílar por Profesor Tierno Galván.",
+          "curiosidades": "Viste túnicas negras con capirote azul. En 2026 su recorrido de regreso incorpora como novedad el paso por San Antón y el Palacio de Congresos.",
+          "colorTunica": "Negra con capirote azul"
+        },
+        {
+          "id": "silencio",
+          "nombrePopular": "El Silencio",
+          "nombreOficial": "Hermandad del Santísimo Cristo de la Misericordia",
+          "iglesiaSalida": "Iglesia de San Pedro y San Pablo",
+          "barrio": "Albaicín",
+          "numeroPasos": 1,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de la Misericordia",
+              "tipo": "cristo",
+              "descripcion": "Obra del gran José de Mora, considerada una de las piezas más importantes del Barroco español. Sale a medianoche en absoluto silencio, con las luces apagadas a su paso. Su recorrido por la Carrera del Darro con la Alhambra iluminada al fondo es una imagen única en el mundo."
+            }
+          ],
+          "horario": {
+            "salida": "~00:00",
+            "inicioCarreraOficial": "02:15",
+            "regresoTemplo": {
+              "cruzDeGuia": "05:15"
+            }
+          },
+          "itinerario": "Sale a medianoche desde San Pedro y San Pablo, recorre la espectacular Carrera del Darro a golpe de tambor con las luces apagadas. Baja por San Matías y pasa por la Carrera de la Virgen lateral para subir luego por el paseo central e iniciar la Carrera Oficial a las 02:15. Regresa a su templo con la cruz de guía prevista a las 05:15.",
+          "curiosidades": "Sale con un único paso. En 2026 vuelve a realizar su recorrido completo tras la excepcional situación del año anterior (Año Santo), cuando permaneció en la Catedral. Su talla, obra de José de Mora, es una de las obras más famosas del Barroco español. Se apagan las luces a su paso. La imagen de la procesión cruzando la Carrera del Darro a oscuras con la Alhambra iluminada al fondo es única en el mundo.",
+          "colorTunica": null
+        }
+      ]
+    },
+    {
+      "id": "viernes-santo",
+      "nombre": "Viernes Santo",
+      "fecha": "2026-04-03",
+      "descripcion": "El día de mayor fervor popular. El rezo al Señor de los Favores en el Campo del Príncipe a las tres de la tarde reúne más de 20.000 personas y silencia toda Granada. Es el día con más procesiones: seis cofradías recorren la ciudad.",
+      "eventoEspecial": {
+        "nombre": "Rezo al Señor de los Favores",
+        "lugar": "Campo del Príncipe",
+        "hora": "15:00",
+        "descripcion": "El acto más tradicional y popular de toda la Semana Santa andaluza. Un Cristo de piedra que preside el Campo del Príncipe desde 1682. Más de 20.000 personas se congregan para pedirle tres favores en silencio absoluto. Es el acto de convocatoria más popular de toda Andalucía."
+      },
+      "cofradias": [
+        {
+          "id": "soledad-favores",
+          "nombrePopular": "La Soledad / Los Tres Favores",
+          "nombreOficial": "Cofradía del Santísimo Cristo de los Favores y María Santísima de la Soledad",
+          "iglesiaSalida": "Iglesia de Santo Domingo",
+          "barrio": "Realejo",
+          "numeroPasos": 1,
+          "pasos": [
+            {
+              "nombre": "Virgen de la Soledad",
+              "tipo": "palio",
+              "descripcion": "Sale sola para acudir puntual a la cita del rezo de las tres. El Cristo de los Favores es la imagen de piedra que preside permanentemente el Campo del Príncipe desde 1682, no procesiona."
+            }
+          ],
+          "horario": {
+            "salida": "13:45",
+            "regreso": "~16:00"
+          },
+          "itinerario": "Sale de Santo Domingo a las 13:45 para llegar puntual al rezo de las tres de la tarde en el Campo del Príncipe. Regresa a su Templo hacia las 16:00.",
+          "curiosidades": "Esta cofradía ya procesionó el Martes Santo con el Señor de la Humildad (La Cañilla). El Viernes Santo toma el protagonismo la Virgen de la Soledad para asistir al rezo al Cristo de los Favores.",
+          "colorTunica": null
+        },
+        {
+          "id": "ferroviarios",
+          "nombrePopular": "Los Ferroviarios",
+          "nombreOficial": "Cofradía del Santísimo Cristo de la Buena Muerte y Nuestra Señora del Amor y del Trabajo",
+          "iglesiaSalida": "Parroquia de San Juan de Letrán",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de la Buena Muerte",
+              "tipo": "cristo",
+              "descripcion": "Cristo crucificado que sale con gran solemnidad desde la parroquia conocida como 'la de los Ferroviarios'."
+            },
+            {
+              "nombre": "Nuestra Señora del Amor y del Trabajo",
+              "tipo": "palio",
+              "descripcion": "Virgen con advocación al Amor y al Trabajo, patrona de los trabajadores del ferrocarril granadino."
+            }
+          ],
+          "horario": {
+            "salida": "16:00",
+            "inicioCarreraOficial": "19:50"
+          },
+          "itinerario": "Sale de San Juan de Letrán, recorre la Avenida de la Constitución, San Jerónimo, Plaza de la Trinidad y llega a San Antón a las 19:00 para acceder a la Carrera Oficial.",
+          "curiosidades": "Su nombre popular hace referencia a la parroquia de San Juan de Letrán, históricamente vinculada a la comunidad ferroviaria de Granada.",
+          "colorTunica": null
+        },
+        {
+          "id": "escolapios",
+          "nombrePopular": "Los Escolapios",
+          "nombreOficial": "Cofradía del Santísimo Cristo de la Expiración y María Santísima del Mayor Dolor",
+          "iglesiaSalida": "Parroquia de San José de Calasanz",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de la Expiración",
+              "tipo": "cristo",
+              "descripcion": "Cristo en el momento de exhalar el último suspiro en la Cruz. Sale junto al río Genil."
+            },
+            {
+              "nombre": "María Santísima del Mayor Dolor",
+              "tipo": "palio",
+              "descripcion": "Virgen muy venerada conocida popularmente como 'la de los Escolapios'. El Puente Romano es uno de los mejores puntos para verla pasar."
+            }
+          ],
+          "horario": {
+            "salida": "18:20",
+            "puente_romano_ida": "18:50",
+            "puente_romano_vuelta": "00:00"
+          },
+          "itinerario": "Sale de la Parroquia de San José de Calasanz, junto al río Genil. Cruza el Puente Romano a las 18:50. Regresa cruzando de nuevo el Puente Romano hacia medianoche.",
+          "curiosidades": "Uno de los mejores lugares para verla es cuando cruza el Puente Romano, tanto a la salida (18:50) como a su regreso (~00:00).",
+          "colorTunica": null
+        },
+        {
+          "id": "cristo-favores",
+          "nombrePopular": "Cristo de los Favores",
+          "nombreOficial": "Cofradía del Santísimo Cristo de los Favores y María Santísima de la Misericordia Coronada",
+          "iglesiaSalida": "Parroquia de San Cecilio",
+          "barrio": "Realejo",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santísimo Cristo de los Favores",
+              "tipo": "cristo",
+              "descripcion": "La imagen de Cristo que procesa en este paso es distinta al Cristo de piedra permanente del Campo del Príncipe. Sale de San Cecilio bajando por el Carril de San Cecilio y cruzando el Campo del Príncipe, donde se ha celebrado el rezo horas antes."
+            },
+            {
+              "nombre": "María Santísima de la Misericordia Coronada",
+              "tipo": "palio",
+              "descripcion": "Virgen coronada con advocación a la Misericordia, acompaña al Cristo de los Favores en su procesión."
+            }
+          ],
+          "horario": {
+            "salida": "18:45",
+            "inicioCarreraOficial": "20:25"
+          },
+          "itinerario": "Sale de la Parroquia de San Cecilio, baja por el Carril de San Cecilio y cruza el Campo del Príncipe. Llega a Plaza de Santo Domingo, baja por Cuesta de Aixa y el Cuarto Real de Santo Domingo para entrar en la Carrera Oficial a las 20:25.",
+          "curiosidades": "Ver cómo baja por el Carril de San Cecilio y cruza el Campo del Príncipe es imprescindible. Muchos vecinos llevan esperando desde el rezo de las tres de la tarde.",
+          "colorTunica": null
+        },
+        {
+          "id": "chias",
+          "nombrePopular": "Las Chías",
+          "nombreOficial": "Cofradía del Descendimiento y Soledad de Nuestra Señora",
+          "iglesiaSalida": "Monasterio de San Jerónimo",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "El Descendimiento",
+              "tipo": "misterio",
+              "descripcion": "Paso que representa el traslado de Jesús al sepulcro. Obra de Pablo de Rojas, datada en el siglo XVI. Una de las tallas más antiguas e importantes de la Semana Santa granadina."
+            },
+            {
+              "nombre": "Soledad de Nuestra Señora",
+              "tipo": "palio",
+              "descripcion": "Dolorosa obra de Pedro de Mena (siglo XVII). Acompaña el Descendimiento con el singular cortejo que incluye la figura de la Chía."
+            }
+          ],
+          "horario": {
+            "salida": "18:15",
+            "plazaUniversidad": "19:15",
+            "plazaTrinidad": "20:15",
+            "inicioCarreraOficial": "22:05"
+          },
+          "itinerario": "Sale del Monasterio de San Jerónimo, recorre Plaza Universidad (19:15), Escuelas, Fábrica Vieja, Plaza Trinidad (20:15), Alhóndiga, San Antón (20:55). Entra por Puente de la Virgen a la Carrera Oficial a las 22:05.",
+          "curiosidades": "Es la cofradía más antigua de la Semana Santa de Granada, con orígenes documentados en 1561. Sale del impresionante Monasterio de San Jerónimo. El singular cortejo incluye la figura de la Chía, que da el nombre popular a la hermandad.",
+          "colorTunica": null
+        },
+        {
+          "id": "santo-sepulcro",
+          "nombrePopular": "El Santo Entierro",
+          "nombreOficial": "Hermandad del Santo Sepulcro y Nuestra Señora de la Soledad del Calvario",
+          "iglesiaSalida": "Iglesia de San Gil y Santa Ana",
+          "barrio": "Centro",
+          "numeroPasos": 2,
+          "pasos": [
+            {
+              "nombre": "Santo Sepulcro",
+              "tipo": "misterio",
+              "descripcion": "Paso acompañado por música solemne de capilla. Representa el entierro de Cristo y pone el broche de oro al Viernes Santo en Granada."
+            },
+            {
+              "nombre": "Nuestra Señora de la Soledad del Calvario",
+              "tipo": "palio",
+              "descripcion": "Acompañada por la Banda Municipal de Granada. Junto al Santo Sepulcro, cierra el Viernes Santo con la solemnidad del entierro de Cristo."
+            }
+          ],
+          "horario": {
+            "salida": "20:00",
+            "plazaMariana": "20:45",
+            "inicioCarreraOficial": "21:30"
+          },
+          "itinerario": "Sale de San Gil y Santa Ana en Plaza Nueva (20:00), baja por San Matías, llega a Plaza Mariana (20:45) y entra en Enriqueta Lozano para acceder a la Carrera Oficial a las 21:30 por Ancha de la Virgen.",
+          "curiosidades": "Cierra el Viernes Santo granadino. Sale desde la misma iglesia que el Gran Poder y la Esperanza del Martes Santo. El Santo Sepulcro va con música de capilla y la Soledad con la Banda Municipal. En 2026 retrasa su salida casi una hora para adaptarse a necesidades organizativas.",
+          "colorTunica": null
+        }
+      ]
+    },
+    {
+      "id": "sabado-santo",
+      "nombre": "Sábado Santo",
+      "fecha": "2026-04-04",
+      "descripcion": "Granada dedica sus calles y todas sus miradas a la Señora de la Alhambra. Es la única procesión del día y una de las más representativas de toda la Semana Santa granadina.",
+      "cofradias": [
+        {
+          "id": "santa-maria-alhambra",
+          "nombrePopular": "La Alhambra / Señora de la Alhambra",
+          "nombreOficial": "Cofradía de Santa María de la Alhambra — Nuestra Señora de las Angustias Coronada",
+          "iglesiaSalida": "Iglesia de Santa María de la Alhambra (dentro del recinto nazarí)",
+          "barrio": "Alhambra",
+          "numeroPasos": 1,
+          "pasos": [
+            {
+              "nombre": "Nuestra Señora de las Angustias Coronada de Santa María de la Alhambra",
+              "tipo": "palio",
+              "descripcion": "Imagen de la Virgen de las Angustias, patrona de Granada, sentada al pie de la Cruz. Talla de 1750 de Ruiz del Peral. Su paso de orfebrería en plata de ley está inspirado en el Patio de los Leones de la Alhambra. Es la única procesión que baja desde el interior del recinto de la Alhambra."
+            }
+          ],
+          "horario": {
+            "salida": "17:00",
+            "puertaJusticia": "17:35",
+            "llegadaPlazaNueva": "~19:00",
+            "inicioCarreraOficial": "20:55",
+            "regresoTemplo": "pasada medianoche"
+          },
+          "itinerario": "Sale de la Iglesia de Santa María de la Alhambra (17:00) recorriendo el espectacular paseo del recinto nazarí. Pasa por la Puerta de la Justicia (17:35). Baja por la Cuesta de Gomérez y es recibida en Plaza Nueva (~19:00) con gran entusiasmo. Como novedad 2026, irá por Reyes Católicos y Acera del Darro para iniciar su Carrera Oficial a las 20:55. Regresa a su Templo pasada la medianoche por el mismo recorrido.",
+          "curiosidades": "La única procesión del Sábado Santo. Su salida a las 17:00 origina tal algarabía de campanas y cohetes que puede oírse en toda la ciudad. El paso por la Puerta de la Justicia (17:35) maravilla a quienes conocen la estrechez y dificultad del recorrido dentro del recinto. Es una de las procesiones más representativas y únicas de la Semana Santa española. En 2026 modifica su recorrido de acceso al centro, dejando de bajar por Fuente de las Batallas.",
+          "colorTunica": null
+        }
+      ]
+    },
+    {
+      "id": "domingo-resurreccion",
+      "nombre": "Domingo de Resurrección",
+      "fecha": "2026-04-05",
+      "descripcion": "El Domingo de Resurrección tañen las campanas y la alegría invade Granada. Una cofradía muy peculiar anuncia con campanillas un paso infantil, poniendo el punto final a la Semana Santa granadina.",
+      "cofradias": [
+        {
+          "id": "resurreccion",
+          "nombrePopular": "La Resurrección",
+          "nombreOficial": "Cofradía de Cristo Resucitado",
+          "iglesiaSalida": "A confirmar",
+          "barrio": "Centro",
+          "numeroPasos": 1,
+          "pasos": [
+            {
+              "nombre": "Cristo Resucitado",
+              "tipo": "cristo",
+              "descripcion": "Imagen del Cristo Resucitado que cierra la Semana Santa granadina con alegría y esperanza."
+            }
+          ],
+          "horario": {
+            "salida": "A confirmar"
+          },
+          "itinerario": "A confirmar. Los horarios e itinerarios del Domingo de Resurrección se mantienen sin cambios respecto al año anterior.",
+          "curiosidades": "Una cofradía muy peculiar que anuncia con campanillas la alegría de la Resurrección. Incluye un paso infantil, diferenciándola de todas las demás procesiones de la Semana Santa. Cierra el ciclo de la Semana Santa granadina.",
+          "colorTunica": null
+        }
+      ]
+    }
+  ]
+}

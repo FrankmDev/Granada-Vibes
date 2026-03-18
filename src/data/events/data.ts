@@ -98,7 +98,7 @@ export const events: Event[] = [
     },
     category: 'exhibition',
     date: '2026-03-01',
-    endDate: '2025-06-30',
+    endDate: '2026-06-30',
     time: '10:00',
     venue: 'Museo de Bellas Artes',
     neighborhood: 'centro',
@@ -121,7 +121,7 @@ export const events: Event[] = [
     category: 'market',
     date: '2026-03-22',
     time: '11:00',
-    endDate: '2025-03-23',
+    endDate: '2026-03-23',
     venue: 'Camino del Sacromonte',
     neighborhood: 'sacromonte',
     price: null,
@@ -186,7 +186,6 @@ export const events: Event[] = [
     category: 'workshop',
     date: '2026-04-05',
     time: '10:00',
-    endDate: '2025-04-05',
     venue: 'Escuela de Artes',
     neighborhood: 'realejo',
     price: 45,
@@ -252,7 +251,7 @@ export const events: Event[] = [
     category: 'festival',
     date: '2026-07-15',
     time: '21:00',
-    endDate: '2025-07-17',
+    endDate: '2026-07-17',
     venue: 'Plaza de la Trinidad',
     neighborhood: 'centro',
     price: null,
@@ -274,7 +273,7 @@ export const events: Event[] = [
     category: 'exhibition',
     date: '2026-05-20',
     time: '11:00',
-    endDate: '2025-08-20',
+    endDate: '2026-08-20',
     venue: 'Centro Cultural Gran Capitán',
     neighborhood: 'centro',
     price: null,
@@ -317,7 +316,6 @@ export const events: Event[] = [
     category: 'market',
     date: '2026-04-20',
     time: '10:00',
-    endDate: '2025-04-20',
     venue: 'Plaza del Carmen',
     neighborhood: 'centro',
     price: null,
@@ -339,7 +337,6 @@ export const events: Event[] = [
     category: 'workshop',
     date: '2026-05-25',
     time: '10:00',
-    endDate: '2025-05-25',
     venue: 'Carmen de la Victoria',
     neighborhood: 'albaicin',
     price: 30,
@@ -464,7 +461,7 @@ export const events: Event[] = [
     category: 'exhibition',
     date: '2026-04-01',
     time: '11:00',
-    endDate: '2025-06-15',
+    endDate: '2026-06-15',
     venue: 'Centro Cultural CajaGranada',
     neighborhood: 'centro',
     price: null,
@@ -486,7 +483,6 @@ export const events: Event[] = [
     category: 'workshop',
     date: '2026-05-08',
     time: '21:00',
-    endDate: '2025-05-08',
     venue: 'Mirador de San Nicolás',
     neighborhood: 'albaicin',
     price: 40,
@@ -547,7 +543,7 @@ export const events: Event[] = [
     category: 'festival',
     date: '2026-06-10',
     time: '22:00',
-    endDate: '2025-06-15',
+    endDate: '2026-06-15',
     venue: 'Plaza de la Universidad',
     neighborhood: 'centro',
     price: null,
@@ -594,26 +590,118 @@ export const events: Event[] = [
     tags: ['teatro', 'clásico', 'alhambra', 'patrimonio'],
     featured: true,
   },
+  {
+    id: 'evt-021',
+    slug: 'ciclo-cine-alhambra',
+    title: {
+      es: 'Ciclo de Cine en el Corral del Carbón',
+      en: 'Cinema Cycle at Corral del Carbón',
+    },
+    description: {
+      es: 'Proyecciones de cine de autor en el único Alhóndiga nazarí que se conserva en el mundo. Películas de la historia del cine español bajo las estrellas, en uno de los patios más hermosos de Granada.',
+      en: 'Art house film screenings in the only surviving Nasrid alhóndiga in the world. Classic Spanish cinema under the stars in one of Granada\'s most beautiful courtyards.',
+    },
+    category: 'cinema',
+    date: '2026-05-30',
+    time: '22:00',
+    endDate: '2026-06-27',
+    venue: 'Corral del Carbón',
+    neighborhood: 'centro',
+    address: 'Calle Mariana Pineda, s/n',
+    price: null,
+    currency: 'EUR',
+    tags: ['cine', 'patrimonio', 'cine de autor', 'gratis', 'al aire libre'],
+    featured: true,
+    venueDescription: {
+      es: 'El Corral del Carbón es el monumento nazarí mejor conservado de Granada y el único alhóndiga (posada de caravanas) islámico que permanece en pie en España. Su patio porticado de tres alturas, construido en el siglo XIV, se convierte cada verano en una sala de cine al aire libre sin igual.',
+      en: 'The Corral del Carbón is the best-preserved Nasrid monument in Granada and the only Islamic alhóndiga (caravanserai) still standing in Spain. Its three-story arcaded courtyard, built in the 14th century, becomes an unparalleled open-air cinema every summer.',
+    },
+    highlights: {
+      es: [
+        'Ciclo de 5 viernes con cine español contemporáneo y clásico',
+        'Entrada gratuita con aforo limitado — llega pronto',
+        'Presentación a cargo de un crítico de cine cada sesión',
+        'Bar con vino local y tapas disponible desde las 21:00',
+      ],
+      en: [
+        '5-Friday cycle of contemporary and classic Spanish cinema',
+        'Free entry with limited capacity — arrive early',
+        'Introduction by a film critic before each screening',
+        'Bar with local wine and tapas available from 9 PM',
+      ],
+    },
+    tips: {
+      es: 'Lleva una chaqueta ligera, las noches refrescan aunque el día haya sido caluroso. Las sillas son limitadas; mucha gente trae su propia esterilla.',
+      en: 'Bring a light jacket, nights get cool even after a hot day. Chairs are limited; many people bring their own mat.',
+    },
+  },
+  {
+    id: 'evt-022',
+    slug: 'granada-film-festival',
+    title: {
+      es: 'Granada Film Festival — Competición Internacional',
+      en: 'Granada Film Festival — International Competition',
+    },
+    description: {
+      es: 'Festival de cine independiente con competición de cortometrajes de más de 30 países. Proyecciones, talleres con directores y la noche de los premios en el Teatro Isabel la Católica.',
+      en: 'Independent film festival with a short film competition from over 30 countries. Screenings, director workshops, and the awards night at the Teatro Isabel la Católica.',
+    },
+    category: 'cinema',
+    date: '2026-09-18',
+    time: '18:00',
+    endDate: '2026-09-21',
+    venue: 'Teatro Isabel la Católica',
+    neighborhood: 'centro',
+    address: 'Acera del Casino, 1',
+    price: 5,
+    currency: 'EUR',
+    tags: ['cine', 'festival', 'cortos', 'internacional', 'cultura'],
+    featured: false,
+    venueDescription: {
+      es: 'El Teatro Isabel la Católica es el coliseo municipal de Granada, un espacio art déco de 1958 que alberga las producciones más importantes de la ciudad.',
+      en: 'Teatro Isabel la Católica is Granada\'s municipal theater, a 1958 art deco space hosting the city\'s most important productions.',
+    },
+    highlights: {
+      es: [
+        'Competición de cortometrajes de ficción, documental y animación',
+        'Sección especial de cine andaluz contemporáneo',
+        'Talleres y masterclasses con directores internacionales',
+        'Gala de premios el domingo con entrega del Mirador de Oro',
+      ],
+      en: [
+        'Competition for fiction, documentary, and animated short films',
+        'Special section for contemporary Andalusian cinema',
+        'Workshops and masterclasses with international directors',
+        'Awards gala on Sunday with the Mirador de Oro ceremony',
+      ],
+    },
+    tips: {
+      es: 'El bono de 4 días cuesta 15€ y da acceso a todas las proyecciones. Los talleres requieren inscripción previa gratuita en la web del festival.',
+      en: 'The 4-day pass costs €15 and includes all screenings. Workshops require free prior registration on the festival website.',
+    },
+  },
+  {
+    id: 'evt-023',
+    slug: 'cine-verano-carmen-Casas',
+    title: {
+      es: 'Cine de Verano en los Jardines de la Casa de los Tiros',
+      en: 'Summer Cinema at the Casa de los Tiros Gardens',
+    },
+    description: {
+      es: 'Ciclo de verano de cine clásico en los jardines del museo más singular del Realejo. Comedias españolas de los 50, neorrealismo italiano y cine negro americano bajo la arquitectura renacentista.',
+      en: 'Summer classic film series in the gardens of the Realejo\'s most singular museum. Spanish comedies of the 50s, Italian neorealism, and American film noir under Renaissance architecture.',
+    },
+    category: 'cinema',
+    date: '2026-07-03',
+    time: '22:30',
+    endDate: '2026-08-28',
+    venue: 'Casa de los Tiros',
+    neighborhood: 'realejo',
+    address: 'Calle Pavaneras, 19',
+    price: null,
+    currency: 'EUR',
+    tags: ['cine clásico', 'gratis', 'jardines', 'verano', 'realejo'],
+    featured: false,
+  },
 ];
 
-export function getAllEvents(): Event[] {
-  return events;
-}
-
-export function getFeaturedEvents(): Event[] {
-  return events.filter((e) => e.featured);
-}
-
-export function getEventsByCategory(category: Event['category']): Event[] {
-  return events.filter((e) => e.category === category);
-}
-
-export function getEventsByNeighborhood(
-  neighborhood: Event['neighborhood']
-): Event[] {
-  return events.filter((e) => e.neighborhood === neighborhood);
-}
-
-export function getEventBySlug(slug: string): Event | undefined {
-  return events.find((e) => e.slug === slug);
-}
