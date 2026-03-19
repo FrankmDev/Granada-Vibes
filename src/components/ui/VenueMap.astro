@@ -1,0 +1,157 @@
+---
+/**
+ * Interactive venue map using Leaflet + CartoDB Dark Matter tiles.
+ * Loads Leaflet from CDN — no npm dependency needed.
+ */
+interface Props {
+  lat: number;
+  lng: number;
+  venueName: string;
+  zoom?: number;
+}
+
+const { lat, lng, venueName, zoom = 15 } = Astro.props;
+---
+
+<div class="venue-map-container relative rounded-2xl overflow-hidden border border-edge">
+  <div
+    id="venue-map"
+    class="w-full aspect-video"
+    data-lat={lat}
+    data-lng={lng}
+    data-venue={venueName}
+    data-zoom={zoom}
+  ></div>
+
+  <!-- Directions link overlay -->
+  <a
+    href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="absolute bottom-4 right-4 z-[1000] flex items-center gap-2 px-4 py-2.5 bg-base-card/90 backdrop-blur-sm text-surface text-sm font-medium rounded-xl border border-edge hover:border-terra/50 hover:text-terra transition-all duration-300"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+    Cómo llegar
+  </a>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<script is:inline>
+  (function() {
+    const mapEl = document.getElementById('venue-map');
+    if (!mapEl) return;
+
+    const lat = parseFloat(mapEl.dataset.lat);
+    const lng = parseFloat(mapEl.dataset.lng);
+    const venue = mapEl.dataset.venue;
+    const zoom = parseInt(mapEl.dataset.zoom, 10);
+
+    function initMap() {
+      if (typeof L === 'undefined') return;
+
+      const map = L.map('venue-map', {
+        center: [lat, lng],
+        zoom: zoom,
+        scrollWheelZoom: false,
+        attributionControl: false,
+      });
+
+      // CartoDB Dark Matter tiles — matches our dark theme
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        subdomains: 'abcd',
+      }).addTo(map);
+
+      // Attribution (required but styled small)
+      L.control.attribution({
+        position: 'bottomleft',
+        prefix: false,
+      }).addTo(map).addAttribution(
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OSM</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
+      );
+
+      // Custom terra-colored marker using SVG
+      const markerIcon = L.divIcon({
+        className: 'venue-marker',
+        html: `<div style="
+          width: 32px; height: 32px;
+          background: var(--color-accent, #e8622a);
+          border: 3px solid var(--color-bg, #080808);
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          box-shadow: 0 4px 12px rgba(232, 98, 42, 0.4);
+        "></div>`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32],
+      });
+
+      const marker = L.marker([lat, lng], { icon: markerIcon }).addTo(map);
+
+      marker.bindPopup(
+        `<div style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #f0ede8; padding: 4px 0;">${venue}</div>`,
+        {
+          className: 'venue-popup',
+          closeButton: false,
+          offset: [0, -4],
+        }
+      );
+
+      // Enable scroll zoom on click
+      map.on('click', function() {
+        map.scrollWheelZoom.enable();
+      });
+
+      // Invalidate size after a short delay to handle layout shifts
+      setTimeout(function() { map.invalidateSize(); }, 200);
+    }
+
+    // Load Leaflet JS dynamically
+    if (typeof L !== 'undefined') {
+      initMap();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = initMap;
+      document.head.appendChild(script);
+    }
+  })();
+</script>
+
+<style>
+  /* Dark popup styling */
+  :global(.venue-popup .leaflet-popup-content-wrapper) {
+    background: var(--color-bg-card, #171717);
+    border: 1px solid var(--color-border, #242424);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  :global(.venue-popup .leaflet-popup-tip) {
+    background: var(--color-bg-card, #171717);
+    border: 1px solid var(--color-border, #242424);
+    border-top: none;
+    border-left: none;
+  }
+
+  :global(.venue-marker) {
+    background: transparent !important;
+    border: none !important;
+  }
+
+  :global(.leaflet-control-attribution) {
+    background: rgba(8, 8, 8, 0.7) !important;
+    color: var(--color-text-muted, #5a5550) !important;
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+  }
+
+  :global(.leaflet-control-attribution a) {
+    color: var(--color-text-secondary, #9a9490) !important;
+  }
+</style>

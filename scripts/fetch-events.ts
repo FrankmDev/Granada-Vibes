@@ -3,13 +3,36 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchTicketmasterEvents, type TicketmasterEvent } from './sources/ticketmaster.js';
 import { fetchEventbriteEvents, type EventbriteEvent } from './sources/eventbrite.js';
+import { fetchConciertosGranadaEvents } from './sources/conciertos-granada.js';
+import { fetchYuzinEvents } from './sources/yuzin.js';
+import { fetchGranadaEsCulturaEvents } from './sources/granada-es-cultura.js';
+import { fetchIndyRockEvents } from './sources/indyrock.js';
+import { fetchPalacioEvents } from './sources/palacio-congresos.js';
+import { fetchTurgranadaEvents } from './sources/turgranada.js';
+import { fetchAyuntamientoEvents } from './sources/ayuntamiento.js';
+import { fetchElegirHoyEvents } from './sources/elegirhoy.js';
+import {
+  transformConciertosGranada,
+  transformYuzin,
+  transformGranadaEsCultura,
+  transformIndyRock,
+  transformPalacio,
+  transformTurgranada,
+  transformAyuntamiento,
+  transformElegirHoy,
+} from './utils/transform-scraped.js';
+import { detectNeighborhood } from './utils/venue-neighborhood.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const GENERATED_PATH = resolve(__dirname, '../src/data/events/generated.json');
 
 // ─── Types (mirrored from src/types — no alias available in scripts) ───
 
-type EventSource = 'ticketmaster' | 'eventbrite' | 'manual' | 'mock';
+type EventSource =
+  | 'ticketmaster' | 'eventbrite'
+  | 'yuzin' | 'conciertos-granada' | 'granada-es-cultura' | 'indyrock'
+  | 'ayuntamiento' | 'turgranada' | 'palacio-congresos' | 'elegirhoy'
+  | 'manual' | 'mock';
 
 type EventCategory =
   | 'concert'
@@ -107,7 +130,7 @@ function transformTicketmaster(raw: TicketmasterEvent): GeneratedEvent {
     date: raw.dates.start.localDate,
     time,
     venue,
-    neighborhood: 'centro',
+    neighborhood: detectNeighborhood(venue),
     price,
     currency: 'EUR',
     tags: [],
@@ -152,7 +175,7 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
     date: raw.start_date,
     time: raw.start_time ? raw.start_time.slice(0, 5) : 'Por confirmar',
     venue,
-    neighborhood: 'centro',
+    neighborhood: detectNeighborhood(venue),
     price: null,
     currency: 'EUR',
     tags: (raw.tags ?? [])
@@ -172,8 +195,24 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
 function isValidEvent(event: GeneratedEvent): boolean {
   if (!event.title.es) return false;
   if (!event.venue) return false;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(event.date)) return false;
   if (Number.isNaN(new Date(event.date).getTime())) return false;
+  // Filter past events at ingestion time
+  const today = new Date().toISOString().split('T')[0] as string;
+  if (event.date < today) return false;
+  // Filter cancelled events
+  if (/^cancelad[oa]\b/i.test(event.title.es)) return false;
   return true;
+}
+
+/** Normalize title for content-based deduplication */
+function normalizeTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '')
+    .trim();
 }
 
 function loadExistingEvents(): GeneratedEvent[] {
@@ -201,7 +240,7 @@ function deduplicateAndMerge(
 ): GeneratedEvent[] {
   const today = new Date().toISOString().split('T')[0] as string;
 
-  // Key by source+sourceId to avoid cross-source collisions
+  // Step 1: Key by source+sourceId to avoid cross-source collisions
   const key = (e: GeneratedEvent): string => `${e.source}:${e.sourceId}`;
   const incomingByKey = new Map(incoming.map((e) => [key(e), e]));
   const merged = new Map<string, GeneratedEvent>();
@@ -216,9 +255,23 @@ function deduplicateAndMerge(
     merged.set(key(event), event);
   }
 
-  const sorted = Array.from(merged.values()).sort((a, b) =>
-    a.date.localeCompare(b.date)
-  );
+  // Step 2: Content-based deduplication (same normalized title + same date)
+  // Keeps the first occurrence (which has the best data from source priority)
+  const contentDeduped = new Map<string, GeneratedEvent>();
+  for (const event of merged.values()) {
+    const contentKey = `${normalizeTitle(event.title.es)}::${event.date}`;
+    if (!contentDeduped.has(contentKey)) {
+      contentDeduped.set(contentKey, event);
+    }
+  }
+
+  const deduped = Array.from(contentDeduped.values());
+  const beforeCount = merged.size;
+  if (deduped.length < beforeCount) {
+    console.log(`✓ Deduplicación por contenido: ${beforeCount - deduped.length} duplicados eliminados`);
+  }
+
+  const sorted = deduped.sort((a, b) => a.date.localeCompare(b.date));
 
   return ensureUniqueSlugs(sorted);
 }
@@ -252,6 +305,48 @@ async function fetchFromEventbrite(): Promise<SourceResult> {
   return { name: 'Eventbrite', events: transformed };
 }
 
+// ─── Scraper fetchers ───
+
+async function fetchFromConciertosGranada(): Promise<SourceResult> {
+  const raw = await fetchConciertosGranadaEvents();
+  return { name: 'ConciertosenGranada', events: raw.map(transformConciertosGranada).filter(isValidEvent) };
+}
+
+async function fetchFromYuzin(): Promise<SourceResult> {
+  const raw = await fetchYuzinEvents();
+  return { name: 'Yuzin', events: raw.map(transformYuzin).filter(isValidEvent) };
+}
+
+async function fetchFromGranadaEsCultura(): Promise<SourceResult> {
+  const raw = await fetchGranadaEsCulturaEvents();
+  return { name: 'GranadaEsCultura', events: raw.map(transformGranadaEsCultura).filter(isValidEvent) };
+}
+
+async function fetchFromIndyRock(): Promise<SourceResult> {
+  const raw = await fetchIndyRockEvents();
+  return { name: 'IndyRock', events: raw.map(transformIndyRock).filter(isValidEvent) };
+}
+
+async function fetchFromPalacio(): Promise<SourceResult> {
+  const raw = await fetchPalacioEvents();
+  return { name: 'PalacioCongresos', events: raw.map(transformPalacio).filter(isValidEvent) };
+}
+
+async function fetchFromTurgranada(): Promise<SourceResult> {
+  const raw = await fetchTurgranadaEvents();
+  return { name: 'Turgranada', events: raw.map(transformTurgranada).filter(isValidEvent) };
+}
+
+async function fetchFromAyuntamiento(): Promise<SourceResult> {
+  const raw = await fetchAyuntamientoEvents();
+  return { name: 'Ayuntamiento', events: raw.map(transformAyuntamiento).filter(isValidEvent) };
+}
+
+async function fetchFromElegirHoy(): Promise<SourceResult> {
+  const raw = await fetchElegirHoyEvents();
+  return { name: 'ElegirHoy', events: raw.map(transformElegirHoy).filter(isValidEvent) };
+}
+
 // ─── Main ───
 
 async function main(): Promise<void> {
@@ -259,7 +354,18 @@ async function main(): Promise<void> {
   const errors: string[] = [];
 
   // Fetch from all sources in parallel
-  const fetchers = [fetchFromTicketmaster(), fetchFromEventbrite()];
+  const fetchers = [
+    fetchFromTicketmaster(),
+    fetchFromEventbrite(),
+    fetchFromConciertosGranada(),
+    fetchFromYuzin(),
+    fetchFromGranadaEsCultura(),
+    fetchFromIndyRock(),
+    fetchFromPalacio(),
+    fetchFromTurgranada(),
+    fetchFromAyuntamiento(),
+    fetchFromElegirHoy(),
+  ];
   const settled = await Promise.allSettled(fetchers);
 
   for (const result of settled) {

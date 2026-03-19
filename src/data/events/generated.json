@@ -1,322 +1,886 @@
 [
   {
-    "id": "eb-1497160680899",
-    "slug": "gastrocata-luxury-granada",
+    "id": "cg-o0dgwy",
+    "slug": "la-perra-blanco",
     "title": {
-      "es": "Gastrocata Luxury Granada",
-      "en": "Gastrocata Luxury Granada"
-    },
-    "description": {
-      "es": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail.",
-      "en": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail."
-    },
-    "category": "other",
-    "date": "2026-03-19",
-    "time": "20:30",
-    "venue": "Hotel Monasterio Granada Adults Only",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Food & Drink"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1497160680899",
-    "sourceUrl": "https://www.eventbrite.es/e/gastrocata-luxury-granada-tickets-1497160680899",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
-  },
-  {
-    "id": "eb-1978344015205",
-    "slug": "escape-room-al-aire-libre-en-granada",
-    "title": {
-      "es": "Escape Room al Aire Libre en Granada",
-      "en": "Escape Room al Aire Libre en Granada"
-    },
-    "description": {
-      "es": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego.",
-      "en": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego."
-    },
-    "category": "other",
-    "date": "2026-03-19",
-    "time": "12:00",
-    "venue": "Pl. de Bib-Rambla, 6",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Travel & Outdoor"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1978344015205",
-    "sourceUrl": "https://www.eventbrite.com/e/escape-room-al-aire-libre-en-granada-tickets-1978344015205",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
-  },
-  {
-    "id": "eb-1978347078367",
-    "slug": "escape-room-al-aire-libre-en-granada-2",
-    "title": {
-      "es": "Escape Room al Aire Libre en Granada",
-      "en": "Escape Room al Aire Libre en Granada"
-    },
-    "description": {
-      "es": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego.",
-      "en": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego."
-    },
-    "category": "other",
-    "date": "2026-03-19",
-    "time": "19:00",
-    "venue": "Pl. de Bib-Rambla, 6",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Travel & Outdoor"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1978347078367",
-    "sourceUrl": "https://www.eventbrite.com/e/escape-room-al-aire-libre-en-granada-tickets-1978347078367",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
-  },
-  {
-    "id": "eb-1978345813584",
-    "slug": "escape-room-al-aire-libre-en-granada-3",
-    "title": {
-      "es": "Escape Room al Aire Libre en Granada",
-      "en": "Escape Room al Aire Libre en Granada"
-    },
-    "description": {
-      "es": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego.",
-      "en": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego."
-    },
-    "category": "other",
-    "date": "2026-03-19",
-    "time": "16:00",
-    "venue": "Pl. de Bib-Rambla, 6",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Travel & Outdoor"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1978345813584",
-    "sourceUrl": "https://www.eventbrite.com/e/escape-room-al-aire-libre-en-granada-tickets-1978345813584",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
-  },
-  {
-    "id": "tm-LvZ18Q2EMcbK31YZls_U4",
-    "slug": "una-y-carne-que-la-rumba-te-acompane",
-    "title": {
-      "es": "Uña Y Carne -  QUE LA RUMBA TE ACOMPAÑE",
-      "en": "Uña Y Carne -  QUE LA RUMBA TE ACOMPAÑE"
+      "es": "La Perra Blanco",
+      "en": "La Perra Blanco"
     },
     "description": {
       "es": "",
       "en": ""
     },
     "category": "concert",
-    "date": "2026-03-20",
-    "time": "22:00",
-    "venue": "Aliatar",
+    "date": "2026-03-22",
+    "time": "Por confirmar",
+    "venue": "Planta Baja",
     "neighborhood": "centro",
     "price": null,
     "currency": "EUR",
     "tags": [],
     "featured": false,
-    "source": "ticketmaster",
-    "sourceId": "LvZ18Q2EMcbK31YZls_U4",
-    "sourceUrl": "https://www.universe.com/events/una-y-carne-que-la-rumba-te-acompane-tickets-D6T3M4?ref=ticketmaster",
-    "imageUrl": "https://s1.ticketm.net/dam/c/548/5fefbd1c-973b-4b0e-9b2e-d78e4ce37548_106111_TABLET_LANDSCAPE_LARGE_16_9.jpg",
-    "lastSyncedAt": "2026-03-19T07:26:40.233Z"
+    "source": "conciertos-granada",
+    "sourceId": "o0dgwy",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115028-la-perra-blanco",
+    "imageUrl": "https://conciertos.club/doc/ban/L/ban_laperrablanco.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
   },
   {
-    "id": "eb-1984615482332",
-    "slug": "presentacion-branking-granada",
+    "id": "pc-tmz7zk",
+    "slug": "david-navarro-no-tengo-remedio",
     "title": {
-      "es": "Presentación - BRANKING GRANADA",
-      "en": "Presentación - BRANKING GRANADA"
+      "es": "David Navarro - No tengo remedio",
+      "en": "David Navarro - No tengo remedio"
     },
     "description": {
-      "es": "Informe cualitativo sobre la calidad de las marcas más representativas de Granada desde el punto de vista estratégico.",
-      "en": "Informe cualitativo sobre la calidad de las marcas más representativas de Granada desde el punto de vista estratégico."
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-03-22",
+    "time": "18:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "tmz7zk",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-qzuo6e",
+    "slug": "cal-poly-arab-music-ensemble",
+    "title": {
+      "es": "Cal Poly - Arab Music Ensemble",
+      "en": "Cal Poly - Arab Music Ensemble"
+    },
+    "description": {
+      "es": "",
+      "en": ""
     },
     "category": "other",
     "date": "2026-03-26",
-    "time": "10:00",
-    "venue": "International School of Management",
-    "neighborhood": "centro",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
     "price": null,
     "currency": "EUR",
     "tags": [],
     "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1984615482332",
-    "sourceUrl": "https://www.eventbrite.es/e/entradas-presentacion-branking-granada-1984615482332",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
+    "source": "palacio-congresos",
+    "sourceId": "qzuo6e",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
   },
   {
-    "id": "eb-1980329265141",
-    "slug": "tee-time-under-the-stars",
+    "id": "pc-qlpwvi",
+    "slug": "pasion-hakuna-group-music",
     "title": {
-      "es": "Tee Time Under the Stars",
-      "en": "Tee Time Under the Stars"
+      "es": "Pasión - Hakuna Group Music",
+      "en": "Pasión - Hakuna Group Music"
     },
     "description": {
-      "es": "A Magical Night of Glow Golf, Gourmet Bites, and Jazz",
-      "en": "A Magical Night of Glow Golf, Gourmet Bites, and Jazz"
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-03-26",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "qlpwvi",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-1m13ir",
+    "slug": "el-show-de-la-fantasy-house",
+    "title": {
+      "es": "El Show de la Fantasy House",
+      "en": "El Show de la Fantasy House"
+    },
+    "description": {
+      "es": "",
+      "en": ""
     },
     "category": "other",
     "date": "2026-03-27",
-    "time": "18:00",
-    "venue": "Granada",
-    "neighborhood": "centro",
+    "time": "19:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
     "price": null,
     "currency": "EUR",
-    "tags": [
-      "Charity & Causes"
-    ],
+    "tags": [],
     "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1980329265141",
-    "sourceUrl": "https://www.eventbrite.com/e/tee-time-under-the-stars-tickets-1980329265141",
-    "lastSyncedAt": "2026-03-19T07:23:38.552Z"
+    "source": "palacio-congresos",
+    "sourceId": "1m13ir",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
   },
   {
-    "id": "eb-1982434280298",
-    "slug": "retiro-mixto-matriz-granada-juanfran-diaz-sentimidad",
+    "id": "pc-hg4iuy",
+    "slug": "rafa-sanchez-biografia",
     "title": {
-      "es": "Retiro mixto MATRIZ Granada • Juanfran Díaz • SENTIMIDAD",
-      "en": "Retiro mixto MATRIZ Granada • Juanfran Díaz • SENTIMIDAD"
+      "es": "Rafa Sánchez - Biografía",
+      "en": "Rafa Sánchez - Biografía"
     },
     "description": {
-      "es": "Retiro mixto de Semana Santa sobre Intimidad, Vínculos y Gozo en el desierto de Gorafe (Granada) con Juanfran Díaz Quiles",
-      "en": "Retiro mixto de Semana Santa sobre Intimidad, Vínculos y Gozo en el desierto de Gorafe (Granada) con Juanfran Díaz Quiles"
+      "es": "",
+      "en": ""
     },
     "category": "other",
-    "date": "2026-04-02",
-    "time": "18:00",
-    "venue": "Granada",
-    "neighborhood": "centro",
+    "date": "2026-03-27",
+    "time": "21:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
     "price": null,
     "currency": "EUR",
-    "tags": [
-      "Home & Lifestyle"
-    ],
+    "tags": [],
     "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1982434280298",
-    "sourceUrl": "https://www.eventbrite.es/e/registro-retiro-mixto-matriz-granada-juanfran-diaz-sentimidad-1982434280298",
-    "lastSyncedAt": "2026-03-19T07:23:38.552Z"
+    "source": "palacio-congresos",
+    "sourceId": "hg4iuy",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
   },
   {
-    "id": "eb-1984268376128",
-    "slug": "ciervoss-dj-soundclout-sala-planta-baja-granada",
+    "id": "pc-2d3lhw",
+    "slug": "hasta-el-ch-ocho-m",
     "title": {
-      "es": "CIERVOSS + DJ SOUNDCLOUT - SALA PLANTA BAJA - GRANADA",
-      "en": "CIERVOSS + DJ SOUNDCLOUT - SALA PLANTA BAJA - GRANADA"
+      "es": "Hasta el (ch)ocho - M",
+      "en": "Hasta el (ch)ocho - M"
     },
     "description": {
-      "es": "Ciervoss llega a Granada con un repertorio donde el concierto y la rave forman una simbiosis con mucha, muchísima química.",
-      "en": "Ciervoss llega a Granada con un repertorio donde el concierto y la rave forman una simbiosis con mucha, muchísima química."
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-03-28",
+    "time": "19:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "2d3lhw",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-7c93ii",
+    "slug": "great-straits-the-great-songs-of-dire-straits",
+    "title": {
+      "es": "gREAT sTRAITS - The great songs of dIRE sTRAITS",
+      "en": "gREAT sTRAITS - The great songs of dIRE sTRAITS"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-03-28",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "7c93ii",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-2ftfm3",
+    "slug": "los-brincos-60-aniversario",
+    "title": {
+      "es": "Los Brincos - 60 aniversario",
+      "en": "Los Brincos - 60 aniversario"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-03-29",
+    "time": "19:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "2ftfm3",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "cg-xlifqs",
+    "slug": "remojon-granaino-fest-ganzer-red-soul-community-darro-river-rockies-el-extrano-caso-de-carmen-dorado-mr-man-the-small-frying-pan-smokin-mary-plant-bloody-kalma-the-micronovas",
+    "title": {
+      "es": "Remojón Granaíno Fest: Ganzer + Red Soul Community + Darro River Rockies + El extraño caso de Carmen Dorado + Mr. Man & The Small Frying Pan + Smokin Mary Plant + Bloody Kalma + The Micronovas",
+      "en": "Remojón Granaíno Fest: Ganzer + Red Soul Community + Darro River Rockies + El extraño caso de Carmen Dorado + Mr. Man & The Small Frying Pan + Smokin Mary Plant + Bloody Kalma + The Micronovas"
+    },
+    "description": {
+      "es": "",
+      "en": ""
     },
     "category": "concert",
-    "date": "2026-04-04",
-    "time": "21:00",
+    "date": "2026-04-03",
+    "time": "Por confirmar",
     "venue": "Planta Baja",
     "neighborhood": "centro",
     "price": null,
     "currency": "EUR",
     "tags": [
-      "Music"
+      "Soul"
     ],
     "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1984268376128",
-    "sourceUrl": "https://www.eventbrite.com/e/ciervoss-dj-soundclout-sala-planta-baja-granada-tickets-1984268376128",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
+    "source": "conciertos-granada",
+    "sourceId": "xlifqs",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115192-ganzer-red-soul-community-darro-river-rockies-el-extrano-caso-de-carmen-dorado-mr-man-the-small-frying-pan-smokin-mary-plant-bloody-kalma-the-micronovas",
+    "imageUrl": "https://conciertos.club/doc/ban/G/ban_ganzer.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
   },
   {
-    "id": "eb-1817852438579",
-    "slug": "fran-torrella-granada-concierto-te-traigo-flores-tour",
+    "id": "cg-kifmu2",
+    "slug": "elsa-bhor",
     "title": {
-      "es": "Fran Torrella - GRANADA - Concierto Te traigo flores Tour",
-      "en": "Fran Torrella - GRANADA - Concierto Te traigo flores Tour"
-    },
-    "description": {
-      "es": "Fran Torrella por primera vez en concierto presentando su nuevo disco en Granada en la mítica Taberna J&J.",
-      "en": "Fran Torrella por primera vez en concierto presentando su nuevo disco en Granada en la mítica Taberna J&J."
-    },
-    "category": "concert",
-    "date": "2026-04-10",
-    "time": "20:30",
-    "venue": "Taberna J&J",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Music"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1817852438579",
-    "sourceUrl": "https://www.eventbrite.es/e/fran-torrella-granada-concierto-te-traigo-flores-tour-tickets-1817852438579",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
-  },
-  {
-    "id": "eb-1982608995877",
-    "slug": "foro-aedhvenus-2026-granada",
-    "title": {
-      "es": "Foro #AEDHVenus 2026 Granada",
-      "en": "Foro #AEDHVenus 2026 Granada"
-    },
-    "description": {
-      "es": "Foro #AEDHVenus Granada \"Liderazgo compartido: El turismo que construye el futuro\"",
-      "en": "Foro #AEDHVenus Granada \"Liderazgo compartido: El turismo que construye el futuro\""
-    },
-    "category": "other",
-    "date": "2026-04-21",
-    "time": "09:00",
-    "venue": "Gran Hotel Luna de Granada",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Travel & Outdoor"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1982608995877",
-    "sourceUrl": "https://www.eventbrite.es/e/entradas-foro-aedhvenus-2026-granada-1982608995877",
-    "lastSyncedAt": "2026-03-19T07:27:09.213Z"
-  },
-  {
-    "id": "tm-Z698xZ2qZ1kAYOs19",
-    "slug": "el-kanka",
-    "title": {
-      "es": "El Kanka",
-      "en": "El Kanka"
+      "es": "Elsa Bhör",
+      "en": "Elsa Bhör"
     },
     "description": {
       "es": "",
       "en": ""
     },
     "category": "concert",
-    "date": "2026-05-22",
-    "time": "21:00",
-    "venue": "Sala Industrial Copera",
+    "date": "2026-04-05",
+    "time": "Por confirmar",
+    "venue": "JJ Taberna",
     "neighborhood": "centro",
     "price": null,
     "currency": "EUR",
     "tags": [],
     "featured": false,
-    "source": "ticketmaster",
-    "sourceId": "Z698xZ2qZ1kAYOs19",
-    "sourceUrl": "https://www.ticketmaster.es/event/el-kanka-tickets/170831297?language=en-us",
-    "imageUrl": "https://s1.ticketm.net/dam/a/ba0/83b77406-373c-4b35-8887-9e552ecf3ba0_SOURCE",
-    "lastSyncedAt": "2026-03-19T07:26:40.233Z"
+    "source": "conciertos-granada",
+    "sourceId": "kifmu2",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115735-elsa-bhor",
+    "imageUrl": "https://conciertos.club/doc/ban/E/ban_elsabhor.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-13zjg9",
+    "slug": "patricia-benito-gira-teatros-2026",
+    "title": {
+      "es": "Patricia Benito - Gira Teatros 2026",
+      "en": "Patricia Benito - Gira Teatros 2026"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-10",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "13zjg9",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-omphzb",
+    "slug": "el-arrebato-gira-el-viaje-inesperado-2026",
+    "title": {
+      "es": "El Arrebato Gira El viaje inesperado 2026",
+      "en": "El Arrebato Gira El viaje inesperado 2026"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-10",
+    "time": "21:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "omphzb",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "cg-lmxmbx",
+    "slug": "paula-mattheus",
+    "title": {
+      "es": "Paula Mattheus",
+      "en": "Paula Mattheus"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-11",
+    "time": "Por confirmar",
+    "venue": "El Tren",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "lmxmbx",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/106183-paula-mattheus",
+    "imageUrl": "https://conciertos.club/doc/ban/P/ban_paulamattheus.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-nzeqdk",
+    "slug": "marta-sanchez",
+    "title": {
+      "es": "Marta Sánchez",
+      "en": "Marta Sánchez"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-11",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "nzeqdk",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-d5cwww",
+    "slug": "shado-el-mago-cleptomago",
+    "title": {
+      "es": "Shado el mago CLEPTÓMAGO",
+      "en": "Shado el mago CLEPTÓMAGO"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-12",
+    "time": "19:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "d5cwww",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "cg-nrya5p",
+    "slug": "sun-and-snow-festival",
+    "title": {
+      "es": "Sun And Snow Festival",
+      "en": "Sun And Snow Festival"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-17",
+    "time": "Por confirmar",
+    "venue": "Sierra Nevada Estación de Esquí",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "nrya5p",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/112344-sun-and-snow-festival",
+    "imageUrl": "https://conciertos.club/doc/ban/S/ban_sunandsnow.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "cg-ljhion",
+    "slug": "la-cuchilla-analogicos",
+    "title": {
+      "es": "La Cuchilla + Analógicos",
+      "en": "La Cuchilla + Analógicos"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-18",
+    "time": "Por confirmar",
+    "venue": "Sala Riff. Armilla",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "ljhion",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/111913-la-cuchilla-analogicos",
+    "imageUrl": "https://conciertos.club/doc/ban/L/ban_lacuchilla.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "cg-d3vh9i",
+    "slug": "pablo-und-destruktion",
+    "title": {
+      "es": "Pablo Und Destruktion",
+      "en": "Pablo Und Destruktion"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-19",
+    "time": "Por confirmar",
+    "venue": "Planta Baja",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "d3vh9i",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/110952-pablo-und-destruktion",
+    "imageUrl": "https://conciertos.club/doc/ban/P/ban_pabloundestruktion.jpg",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-jvjopx",
+    "slug": "film-symphony-orchestra-toon-story",
+    "title": {
+      "es": "Film Symphony Orchestra - TOON STORY",
+      "en": "Film Symphony Orchestra - TOON STORY"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "cinema",
+    "date": "2026-04-19",
+    "time": "18:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "jvjopx",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-k11k3b",
+    "slug": "universo-cadi",
+    "title": {
+      "es": "Universo Cádi",
+      "en": "Universo Cádi"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-19",
+    "time": "18:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "k11k3b",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-6vz3s7",
+    "slug": "borja-niso-dark-tour",
+    "title": {
+      "es": "Borja Niso - Dark Tour",
+      "en": "Borja Niso - Dark Tour"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-24",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "6vz3s7",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-fujpsp",
+    "slug": "paco-candela-gira-30",
+    "title": {
+      "es": "Paco Candela - Gira 30",
+      "en": "Paco Candela - Gira 30"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-24",
+    "time": "21:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "fujpsp",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-be50ec",
+    "slug": "david-cepo-no-cruces-los-brazos",
+    "title": {
+      "es": "David Cepo - No cruces los brazos",
+      "en": "David Cepo - No cruces los brazos"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-04-25",
+    "time": "19:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "be50ec",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-iid8ph",
+    "slug": "pena-pena-candela-pena-y-secun-de-la-rosa",
+    "title": {
+      "es": "Peña + Peña. Candela Peña y Secun de la Rosa",
+      "en": "Peña + Peña. Candela Peña y Secun de la Rosa"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-05-09",
+    "time": "17:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "iid8ph",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-bla7le",
+    "slug": "petite-lorena-tremenda",
+    "title": {
+      "es": "Petite Lorena - Tremenda",
+      "en": "Petite Lorena - Tremenda"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-05-29",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "bla7le",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-i7oey4",
+    "slug": "los-morancos-bota-antonia",
+    "title": {
+      "es": "Los Morancos - Bota Antonia",
+      "en": "Los Morancos - Bota Antonia"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-06-25",
+    "time": "22:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "i7oey4",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-an5ku5",
+    "slug": "tarzan-el-musical-by-theatre-properties",
+    "title": {
+      "es": "TARZÁN EL MUSICAL by Theatre Properties",
+      "en": "TARZÁN EL MUSICAL by Theatre Properties"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "theater",
+    "date": "2026-07-11",
+    "time": "17:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "an5ku5",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-ym4sks",
+    "slug": "guelmi-suerte-de-manicomio",
+    "title": {
+      "es": "Guelmi - Suerte de manicomio",
+      "en": "Guelmi - Suerte de manicomio"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-10-03",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "ym4sks",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-zh9xhd",
+    "slug": "morricone-y-otros-grandes-del-cine",
+    "title": {
+      "es": "Morricone y otros grandes del cine",
+      "en": "Morricone y otros grandes del cine"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "cinema",
+    "date": "2026-10-04",
+    "time": "18:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "zh9xhd",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-f20tw2",
+    "slug": "lo-de-los-monologos",
+    "title": {
+      "es": "Lo de los Monólogos",
+      "en": "Lo de los Monólogos"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-10-10",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "f20tw2",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-waujn9",
+    "slug": "antonio-carmona-gira-20-aniversario",
+    "title": {
+      "es": "Antonio Carmona - Gira 20 Aniversario",
+      "en": "Antonio Carmona - Gira 20 Aniversario"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-10-16",
+    "time": "21:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "waujn9",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-unmxe2",
+    "slug": "mentes-peligrosas",
+    "title": {
+      "es": "Mentes peligrosas",
+      "en": "Mentes peligrosas"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-10-24",
+    "time": "21:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "unmxe2",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-du06th",
+    "slug": "techno-pop",
+    "title": {
+      "es": "Techno Pop",
+      "en": "Techno Pop"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-11-28",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "du06th",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+  },
+  {
+    "id": "pc-6dl395",
+    "slug": "mision-impro-sible-aguilera-y-meni",
+    "title": {
+      "es": "Misión: Impro-sible. Aguilera y Mení",
+      "en": "Misión: Impro-sible. Aguilera y Mení"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-12-11",
+    "time": "21:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "6dl395",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
   }
 ]

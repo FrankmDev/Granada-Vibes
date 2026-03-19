@@ -24,7 +24,19 @@ export type EventCategory =
   | 'cinema'
   | 'other';
 
-export type EventSource = 'ticketmaster' | 'eventbrite' | 'manual' | 'mock';
+export type EventSource =
+  | 'ticketmaster'
+  | 'eventbrite'
+  | 'yuzin'
+  | 'conciertos-granada'
+  | 'granada-es-cultura'
+  | 'indyrock'
+  | 'ayuntamiento'
+  | 'turgranada'
+  | 'palacio-congresos'
+  | 'elegirhoy'
+  | 'manual'
+  | 'mock';
 
 export type Neighborhood =
   | 'albaicin'

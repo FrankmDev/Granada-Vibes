@@ -45,11 +45,16 @@ export function formatTime(
   time: string,
   locale: 'es' | 'en' = 'es'
 ): string {
+  // Handle non-numeric time strings (e.g., "Por confirmar")
+  if (!time || !/^\d{1,2}:\d{2}$/.test(time)) {
+    return locale === 'es' ? 'Por confirmar' : 'TBC';
+  }
+
   const [hours, minutes] = time.split(':').map(Number);
   const date = new Date();
   date.setHours(hours ?? 0, minutes ?? 0);
   const localeString = locale === 'es' ? 'es-ES' : 'en-US';
-  
+
   return date.toLocaleTimeString(localeString, {
     hour: '2-digit',
     minute: '2-digit',

@@ -2,7 +2,9 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import Icon from '@components/ui/Icon.astro';
+import VenueMap from '@components/ui/VenueMap.astro';
 import { getAllEvents, getEventBySlug } from '@data';
+import { getVenueCoordinates } from '../../data/venues/coordinates';
 import { useTranslations } from '@i18n/utils';
 import { formatDate, formatFullDate, formatTime, getTemporalProximity } from '@utils/dates';
 
@@ -32,6 +34,9 @@ const proximityLabels = {
   'this-week': 'ESTA SEMANA',
   'future': null,
 };
+
+// Get venue coordinates for map
+const venueCoords = getVenueCoordinates(event.venue, event.neighborhood);
 
 // Get related events (same category, different event)
 const relatedEvents = getAllEvents()
@@ -119,18 +124,21 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes'
             </p>
           )}
 
-          <!-- Placeholder para mapa -->
-          <div class="aspect-video bg-base rounded-2xl border border-edge flex items-center justify-center">
-            <div class="text-center">
-              <div class="w-16 h-16 bg-base-card rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-surface-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+          {venueCoords ? (
+            <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} />
+          ) : (
+            <div class="aspect-video bg-base rounded-2xl border border-edge flex items-center justify-center">
+              <div class="text-center">
+                <div class="w-16 h-16 bg-base-card rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-surface-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <p class="text-surface-muted text-sm">Ubicación no disponible</p>
               </div>
-              <p class="text-surface-muted text-sm">Mapa próximamente</p>
             </div>
-          </div>
+          )}
         </section>
 
         <!-- Sección "Qué esperar" -->
