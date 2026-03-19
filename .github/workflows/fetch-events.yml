@@ -1,0 +1,40 @@
+name: Fetch Events Daily
+
+on:
+  schedule:
+    - cron: '0 5 * * *' # 5:00 UTC = 6:00/7:00 España
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install script dependencies
+        working-directory: scripts
+        run: npm install
+
+      - name: Fetch events from all sources
+        working-directory: scripts
+        env:
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+          EVENTBRITE_API_KEY: ${{ secrets.EVENTBRITE_API_KEY }}
+        run: npm run fetch
+
+      - name: Commit updated data if changed
+        run: |
+          git config user.name "Granada Vibes Bot"
+          git config user.email "bot@granadavibes.com"
+          git add src/data/events/generated.json
+          git diff --staged --quiet || git commit -m "chore(data): sync events [$(date +'%Y-%m-%d')]"
+          git push

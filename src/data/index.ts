@@ -5,7 +5,7 @@
 
 // Events
 export {
-  events,
+  mockEvents,
   getAllEvents,
   getFeaturedEvents,
   getEventsByCategory,

@@ -45,6 +45,8 @@ export const en: Translations = {
     theater: 'Theater',
     workshop: 'Workshop',
     'guided-tour': 'Guided tour',
+    cinema: 'Cinema',
+    other: 'Other',
     viewpoint: 'Viewpoints',
     tapas: 'Tapas',
     monuments: 'Monuments',

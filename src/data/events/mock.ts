@@ -1,6 +1,6 @@
 import type { Event } from '@types';
 
-export const events: Event[] = [
+export const mockEvents: Event[] = [
   {
     id: 'evt-001',
     slug: 'festival-internacional-musica-danza',

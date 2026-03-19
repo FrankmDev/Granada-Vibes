@@ -3,7 +3,7 @@
  * FooterLinkGroup - Grupo de enlaces para el footer con estilo consistente
  * @param title - Título de la sección
  * @param links - Array de enlaces { href, label, external? }
- * @param titleColor - Color del título ('terra' | 'sand' | 'coral' | 'surface')
+ * @param titleColor - Color del título ('terra' | 'sand' | 'coral' | 'surface' | 'primary' | 'secondary')
  */
 
 interface Link {
@@ -15,7 +15,7 @@ interface Link {
 interface Props {
   title: string;
   links: Link[];
-  titleColor?: 'terra' | 'sand' | 'coral' | 'surface';
+  titleColor?: 'terra' | 'sand' | 'coral' | 'surface' | 'primary' | 'secondary';
   class?: string;
 }
 
@@ -26,9 +26,11 @@ const titleColorClasses = {
   sand: 'text-sand',
   coral: 'text-coral',
   surface: 'text-surface',
+  primary: 'text-primary',
+  secondary: 'text-secondary',
 };
 
-const dotColors = ['bg-terra', 'bg-sand', 'bg-coral'];
+const dotColors = ['bg-terra', 'bg-sand', 'bg-coral', 'bg-primary', 'bg-secondary'];
 ---
 
 <div class={className}>

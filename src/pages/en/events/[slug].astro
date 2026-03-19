@@ -207,9 +207,9 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes'
               </p>
             </div>
 
-            {event.ticketsUrl ? (
-              <a 
-                href={event.ticketsUrl}
+            {(event.ticketsUrl || event.sourceUrl) ? (
+              <a
+                href={event.ticketsUrl || event.sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-terra text-bg font-semibold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(224,122,95,0.25)] hover:scale-[1.02]"

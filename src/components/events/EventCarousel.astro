@@ -1,7 +1,6 @@
 ---
 /**
- * EventCarousel — Carrusel de eventos con EventCard
- * Navegación horizontal con flechas
+ * EventCarousel — Modern Coral Design
  */
 
 import type { Event, Locale } from '@types';
@@ -18,27 +17,27 @@ interface Props {
 
 const { events, locale, t, title, subtitle, maxEvents = 8 } = Astro.props;
 
-// Limitar eventos y ordenar por fecha
 const sortedEvents = events
   .sort((a, b) => a.date.localeCompare(b.date))
   .slice(0, maxEvents);
 ---
 
 <section class="relative py-20 lg:py-28 overflow-hidden" aria-labelledby={title ? 'carousel-title' : undefined}>
-  {/* Background decorations */}
+  <!-- Background decorations -->
   <div class="absolute inset-0 pointer-events-none">
     <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-edge to-transparent" />
-    <div class="absolute top-20 right-0 w-96 h-96 bg-terra/[0.02] rounded-full blur-[120px]" />
+    <div class="absolute top-20 right-0 w-96 h-96 bg-primary/[0.03] rounded-full blur-[120px]" />
+    <div class="absolute bottom-20 left-0 w-64 h-64 bg-secondary/[0.02] rounded-full blur-[100px]" />
   </div>
 
   <div class="container relative">
-    {/* Header */}
+    <!-- Header -->
     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
       <div class="reveal">
         {title && (
           <div class="flex items-center gap-3 mb-4">
-            <span class="w-8 h-[2px] bg-terra" />
-            <span class="text-xs font-bold uppercase tracking-[0.2em] text-terra">
+            <span class="w-8 h-[2px] bg-gradient-to-r from-primary to-secondary rounded-full" />
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary">
               {t('events.upcoming')}
             </span>
           </div>
@@ -55,11 +54,11 @@ const sortedEvents = events
         )}
       </div>
       
-      {/* Navigation arrows - desktop */}
+      <!-- Navigation arrows - desktop -->
       <div class="hidden lg:flex items-center gap-3 reveal">
         <button 
           type="button"
-          class="carousel-prev w-12 h-12 rounded-xl bg-base-card border border-edge flex items-center justify-center text-surface-secondary hover:text-surface hover:border-terra/50 transition-all duration-300 group"
+          class="carousel-prev w-12 h-12 rounded-xl bg-white border-2 border-edge flex items-center justify-center text-surface-secondary hover:text-primary hover:border-primary/30 transition-all duration-300 group shadow-soft-sm hover:shadow-soft"
           aria-label="Anterior"
         >
           <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +67,7 @@ const sortedEvents = events
         </button>
         <button 
           type="button"
-          class="carousel-next w-12 h-12 rounded-xl bg-base-card border border-edge flex items-center justify-center text-surface-secondary hover:text-surface hover:border-terra/50 transition-all duration-300 group"
+          class="carousel-next w-12 h-12 rounded-xl bg-white border-2 border-edge flex items-center justify-center text-surface-secondary hover:text-primary hover:border-primary/30 transition-all duration-300 group shadow-soft-sm hover:shadow-soft"
           aria-label="Siguiente"
         >
           <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,9 +77,9 @@ const sortedEvents = events
       </div>
     </div>
 
-    {/* Carousel container */}
+    <!-- Carousel container -->
     <div class="relative">
-      {/* Scroll container - usando cards de evento reales */}
+      <!-- Scroll container -->
       <div 
         class="carousel-scroll flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 scrollbar-hide scroll-smooth"
         style="-webkit-overflow-scrolling: touch;"
@@ -92,12 +91,12 @@ const sortedEvents = events
         ))}
       </div>
 
-      {/* Gradient fades for scroll indication */}
+      <!-- Gradient fades for scroll indication -->
       <div class="absolute top-0 bottom-6 left-0 w-12 bg-gradient-to-r from-base to-transparent pointer-events-none lg:hidden" />
       <div class="absolute top-0 bottom-6 right-0 w-12 bg-gradient-to-l from-base to-transparent pointer-events-none lg:hidden" />
     </div>
 
-    {/* Mobile scroll indicator */}
+    <!-- Mobile scroll indicator -->
     <div class="flex items-center justify-center gap-2 mt-6 lg:hidden">
       <span class="text-xs text-surface-muted">Desliza para ver más</span>
       <svg class="w-4 h-4 text-surface-muted animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,14 +104,14 @@ const sortedEvents = events
       </svg>
     </div>
 
-    {/* View all link */}
+    <!-- View all link -->
     <div class="flex justify-center mt-12 reveal">
       <a 
         href={`${locale === 'es' ? '' : '/en'}/eventos`}
-        class="group inline-flex items-center gap-3 px-8 py-4 bg-base-card border border-edge rounded-2xl text-surface font-semibold hover:border-terra/50 hover:-translate-y-0.5 transition-all duration-300"
+        class="group inline-flex items-center gap-3 px-8 py-4 bg-white border-2 border-edge rounded-2xl text-surface font-semibold hover:border-primary/50 hover:-translate-y-0.5 transition-all duration-300 shadow-soft-sm hover:shadow-soft"
       >
         <span>{t('actions.viewAll')}</span>
-        <svg class="w-5 h-5 text-terra transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 text-primary transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
       </a>
@@ -121,7 +120,6 @@ const sortedEvents = events
 </section>
 
 <script>
-  // Carousel navigation logic
   function initCarousels() {
     const carousels = document.querySelectorAll('.carousel-scroll');
     
@@ -130,7 +128,7 @@ const sortedEvents = events
       const prevBtn = container?.querySelector('.carousel-prev');
       const nextBtn = container?.querySelector('.carousel-next');
       
-      const scrollAmount = 380; // Card width + gap
+      const scrollAmount = 380;
       
       prevBtn?.addEventListener('click', () => {
         carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -142,7 +140,6 @@ const sortedEvents = events
     });
   }
 
-  // Initialize on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCarousels);
   } else {

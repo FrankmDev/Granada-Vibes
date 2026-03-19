@@ -1,4 +1,4 @@
-export { events } from './data';
+export { mockEvents } from './mock';
 export {
   getAllEvents,
   getFeaturedEvents,

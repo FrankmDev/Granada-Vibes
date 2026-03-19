@@ -1,5 +1,12 @@
 import type { Event, EventCategory, Neighborhood } from '@types';
-import { events } from './data';
+import { mockEvents } from './mock';
+import generatedRaw from './generated.json';
+
+const generatedEvents = generatedRaw as Event[];
+
+const events: Event[] = generatedEvents.length > 0
+  ? generatedEvents
+  : mockEvents;
 
 export function getAllEvents(): Event[] {
   return events;

@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "fetch:events": "cd scripts && npm run fetch"
   },
   "dependencies": {
     "astro": "^6.0.4"

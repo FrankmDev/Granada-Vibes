@@ -43,6 +43,8 @@ export const es = {
     theater: 'Teatro',
     workshop: 'Talleres',
     'guided-tour': 'Visitas guiadas',
+    cinema: 'Cine',
+    other: 'Otros',
     viewpoint: 'Miradores',
     tapas: 'Tapeo',
     monuments: 'Monumentos',

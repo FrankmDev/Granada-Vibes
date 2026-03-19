@@ -20,7 +20,11 @@ export type EventCategory =
   | 'market'
   | 'theater'
   | 'workshop'
-  | 'guided-tour';
+  | 'guided-tour'
+  | 'cinema'
+  | 'other';
+
+export type EventSource = 'ticketmaster' | 'eventbrite' | 'manual' | 'mock';
 
 export type Neighborhood =
   | 'albaicin'
@@ -55,6 +59,12 @@ export interface Event {
   highlights?: { es: string[]; en: string[] };
   tips?: LocalizedText;
   ticketsUrl?: string;
+  // Campos de trazabilidad para fuentes externas
+  source?: EventSource;
+  sourceId?: string;
+  sourceUrl?: string;
+  imageUrl?: string;
+  lastSyncedAt?: string;
 }
 
 // ============================================

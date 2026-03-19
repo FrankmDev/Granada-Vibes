@@ -13,11 +13,14 @@ const t = useTranslations(locale);
 const today = new Date().toISOString().split('T')[0];
 const allEvents = getAllEvents();
 
-const featuredEvents = getFeaturedEvents().slice(0, 3);
-
 const upcomingEvents = allEvents
   .filter(e => e.date >= today)
   .sort((a, b) => a.date.localeCompare(b.date));
+
+const featuredRaw = getFeaturedEvents();
+const featuredEvents = featuredRaw.length > 0
+  ? featuredRaw.slice(0, 3)
+  : upcomingEvents.slice(0, 3);
 
 const thisWeekEvents = upcomingEvents.slice(0, 4);
 
