@@ -1,0 +1,129 @@
+---
+/**
+ * TimeSelector — "¿Cuánto tiempo tienes?" section for the home page
+ * Visual time block selector linking to mixed route plans
+ */
+import type { Locale, TimeDuration } from '@types';
+import { getAllMixedRoutes } from '@data';
+
+interface Props {
+  locale: Locale;
+  t: (key: string, vars?: Record<string, string | number>) => string;
+}
+
+const { locale, t } = Astro.props;
+const plans = getAllMixedRoutes();
+
+const timeBlocks: { duration: TimeDuration; label: string; shortLabel: string; color: string; bgColor: string; borderColor: string; glowColor: string }[] = [
+  { duration: '2h', label: t('mixedRoutes.durations.2h'), shortLabel: '2h', color: '#00CC99', bgColor: 'rgba(0, 204, 153, 0.08)', borderColor: 'rgba(0, 204, 153, 0.25)', glowColor: 'rgba(0, 204, 153, 0.15)' },
+  { duration: '6h', label: t('mixedRoutes.durations.6h'), shortLabel: '6h', color: '#FF9933', bgColor: 'rgba(255, 153, 51, 0.08)', borderColor: 'rgba(255, 153, 51, 0.25)', glowColor: 'rgba(255, 153, 51, 0.15)' },
+  { duration: '12h', label: t('mixedRoutes.durations.12h'), shortLabel: '12h', color: '#FF3366', bgColor: 'rgba(255, 51, 102, 0.08)', borderColor: 'rgba(255, 51, 102, 0.25)', glowColor: 'rgba(255, 51, 102, 0.15)' },
+  { duration: '1day', label: t('mixedRoutes.durations.1day'), shortLabel: '1d', color: '#FF3366', bgColor: 'rgba(255, 51, 102, 0.08)', borderColor: 'rgba(255, 51, 102, 0.25)', glowColor: 'rgba(255, 51, 102, 0.15)' },
+  { duration: '2days', label: t('mixedRoutes.durations.2days'), shortLabel: '2d', color: '#FF9933', bgColor: 'rgba(255, 153, 51, 0.08)', borderColor: 'rgba(255, 153, 51, 0.25)', glowColor: 'rgba(255, 153, 51, 0.15)' },
+  { duration: '3days', label: t('mixedRoutes.durations.3days'), shortLabel: '3d', color: '#00CC99', bgColor: 'rgba(0, 204, 153, 0.08)', borderColor: 'rgba(0, 204, 153, 0.25)', glowColor: 'rgba(0, 204, 153, 0.15)' },
+];
+---
+
+<section class="relative py-24 lg:py-32 overflow-hidden bg-[#050505]" aria-labelledby="time-selector-heading">
+  <!-- Background effects -->
+  <div class="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#050505] to-[#0a0a0a]" aria-hidden="true"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#FF3366]/5 rounded-full blur-[150px] pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute top-1/4 right-1/4 w-[300px] h-[300px] bg-[#FF9933]/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+
+  <!-- Decorative text -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+    <span class="font-display text-[10vw] font-bold text-white/[0.015] whitespace-nowrap select-none">
+      TIEMPO
+    </span>
+  </div>
+
+  <div class="container relative">
+    <!-- Header -->
+    <div class="text-center mb-16 reveal">
+      <div class="flex items-center justify-center gap-3 mb-5">
+        <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-[#FF3366]/40"></span>
+        <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#FF3366]">
+          {locale === 'es' ? 'Planifica tu visita' : 'Plan your visit'}
+        </span>
+        <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-[#FF3366]/40"></span>
+      </div>
+      <h2 id="time-selector-heading" class="font-display text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-5">
+        {t('mixedRoutes.sectionTitle')}
+      </h2>
+      <p class="text-base lg:text-lg text-white/50 max-w-xl mx-auto">
+        {t('mixedRoutes.sectionSubtitle')}
+      </p>
+    </div>
+
+    <!-- Time blocks grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-5 max-w-5xl mx-auto">
+      {timeBlocks.map((block, index) => {
+        const plan = plans.find(p => p.duration === block.duration);
+        if (!plan) return null;
+        const href = locale === 'es' ? `/rutas/por-tiempo/${plan.slug}` : `/en/routes/by-time/${plan.slug}`;
+        const totalStops = plan.days.reduce(
+          (acc, day) => acc + day.blocks.reduce((bAcc, b) => bAcc + b.stops.length, 0), 0
+        );
+
+        return (
+          <a
+            href={href}
+            class="time-block group relative flex flex-col items-center justify-center p-6 lg:p-8 rounded-2xl border transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl reveal"
+            style={`
+              background: ${block.bgColor};
+              border-color: ${block.borderColor};
+              animation-delay: ${index * 80}ms;
+              --block-color: ${block.color};
+              --block-glow: ${block.glowColor};
+            `}
+            data-duration={block.duration}
+          >
+            <!-- Hover glow -->
+            <div
+              class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              style={`background: radial-gradient(circle at 50% 50%, ${block.glowColor} 0%, transparent 70%); box-shadow: 0 0 40px ${block.glowColor};`}
+            ></div>
+
+            <!-- Duration number -->
+            <span
+              class="relative font-display text-4xl lg:text-5xl font-bold mb-2 transition-transform duration-300 group-hover:scale-110"
+              style={`color: ${block.color};`}
+            >
+              {block.shortLabel}
+            </span>
+
+            <!-- Label -->
+            <span class="relative text-sm font-medium text-white/80 mb-3 text-center">
+              {block.label}
+            </span>
+
+            <!-- Stops count -->
+            <span class="relative text-[11px] text-white/40 font-medium">
+              {totalStops} {t('mixedRoutes.stops')}
+            </span>
+
+            <!-- Arrow indicator on hover -->
+            <div class="relative mt-3 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0" style={`background: ${block.bgColor}; border: 1px solid ${block.borderColor};`}>
+              <svg class="w-4 h-4" style={`color: ${block.color};`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- Link to all plans -->
+    <div class="text-center mt-12 reveal">
+      <a
+        href={locale === 'es' ? '/rutas/por-tiempo' : '/en/routes/by-time'}
+        class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FF3366]/30 hover:shadow-lg hover:shadow-[#FF3366]/10 group"
+      >
+        <span>{t('mixedRoutes.viewPlan')}</span>
+        <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

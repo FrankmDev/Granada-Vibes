@@ -1,0 +1,35 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/layout/PageHeader.astro';
+import TimePlanCard from '@components/mixed-routes/TimePlanCard.astro';
+import { getAllMixedRoutes } from '@data';
+import { useTranslations } from '@i18n/utils';
+
+const locale = 'es';
+const t = useTranslations(locale);
+const plans = getAllMixedRoutes();
+---
+
+<BaseLayout
+  locale={locale}
+  title={t('mixedRoutes.title')}
+  description="Planes completos para visitar Granada según tu tiempo disponible: 2 horas, 6 horas, 1 día, 2 días o 3 días. Rutas curadas por locales con miradores, tapas y experiencias auténticas."
+>
+  <PageHeader
+    title={t('mixedRoutes.title')}
+    subtitle={t('mixedRoutes.subtitle')}
+    accent="primary"
+  />
+
+  <section class="container py-16 lg:py-24" aria-labelledby="plans-heading">
+    <h2 id="plans-heading" class="sr-only">{t('mixedRoutes.title')}</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {plans.map((plan, index) => (
+        <div class="scroll-animate">
+          <TimePlanCard plan={plan} locale={locale} t={t} index={index} />
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -2,29 +2,21 @@
 import type { Locale } from '@types';
 import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
 import { useTranslations } from '@i18n/utils';
-import { getAllEvents } from '@data';
-import { formatDateShort, getTemporalProximity } from '@utils/dates';
 import SocialLinks from '@components/ui/SocialLinks.astro';
-import FooterLinkGroup from '@components/ui/FooterLinkGroup.astro';
-import EventMiniCard from '@components/ui/EventMiniCard.astro';
+import FooterEvents from './FooterEvents.astro';
 
-interface Props {
-  locale: Locale;
-}
+interface Props { locale: Locale; }
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const localePath = LOCALE_PATHS[locale];
-
-const today = new Date().toISOString().split('T')[0];
-const upcomingEvents = getAllEvents()
-  .filter(e => e.date >= today)
-  .sort((a, b) => a.date.localeCompare(b.date))
-  .slice(0, 4);
+const currentYear = new Date().getFullYear();
 
 const exploreLinks = [
   { href: `${localePath}/eventos`, label: t('nav.events') },
   { href: `${localePath}/rutas`, label: t('nav.routes') },
+  { href: locale === 'es' ? '/rutas/por-tiempo' : '/en/routes/by-time', label: t('mixedRoutes.title') },
+  { href: `${localePath}/blog`, label: t('nav.blog') },
   { href: `${localePath}/sobre`, label: t('nav.about') },
 ];
 
@@ -32,158 +24,96 @@ const legalLinks = [
   { href: `${localePath}/privacidad`, label: t('footer.links.privacy') },
   { href: `${localePath}/aviso-legal`, label: t('footer.links.legalNotice') },
 ];
-
-function getEventDateLabel(date: string, locale: string): string | undefined {
-  const proximity = getTemporalProximity(date);
-  if (proximity === 'today') return 'Hoy';
-  if (proximity === 'tomorrow') return 'Mañana';
-  return undefined;
-}
 ---
 
-<footer class="relative bg-white" role="contentinfo">
-  <!-- Top gradient border -->
-  <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-primary/50" />
-  
-  <!-- Background decorations -->
-  <div class="absolute inset-0 overflow-hidden pointer-events-none">
-    <div class="absolute top-20 left-10 w-64 h-64 bg-primary/[0.03] rounded-full blur-[100px]" aria-hidden="true" />
-    <div class="absolute bottom-20 right-10 w-80 h-80 bg-secondary/[0.03] rounded-full blur-[100px]" aria-hidden="true" />
-  </div>
+<footer class="footer relative overflow-hidden" role="contentinfo">
+  <div class="footer__top-line" aria-hidden="true"></div>
+  <div class="footer__orb footer__orb--accent" aria-hidden="true"></div>
+  <div class="footer__orb footer__orb--secondary" aria-hidden="true"></div>
 
   <div class="container relative">
-    <!-- Main footer content -->
-    <div class="py-16 lg:py-24">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
-        
-        <!-- Brand column -->
+    <div class="py-20 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+
+        <!-- Brand -->
         <div class="lg:col-span-4">
-          <a
-            href={localePath || '/'}
-            class="inline-flex items-center gap-3 mb-6 group"
-            aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}
-          >
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/20">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+          <a href={localePath || '/'} class="footer__logo group" aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}>
+            <div class="footer__logo-mark">
+              <div class="footer__logo-gradient"></div>
+              <div class="footer__logo-inner"><span class="text-xl font-black text-white">G</span></div>
             </div>
-            <span class="font-display text-2xl font-semibold text-surface">
-              {SITE_CONFIG.name}
-            </span>
+            <div class="flex flex-col">
+              <span class="font-bold text-2xl text-white leading-none tracking-tight">{SITE_CONFIG.name}</span>
+              <span class="text-xs text-white/40 font-medium tracking-[0.1em] uppercase mt-1">
+                {locale === 'es' ? 'Guía Cultural' : 'Cultural Guide'}
+              </span>
+            </div>
           </a>
-          
-          <p class="text-surface-secondary text-base leading-relaxed max-w-sm mb-8">
-            {SITE_CONFIG.description[locale]}
-          </p>
-          
-          <!-- Status badge -->
-          <div class="inline-flex items-center gap-3 px-4 py-2.5 bg-base-100 border-2 border-edge/50 rounded-2xl mb-8">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+
+          <p class="text-white/50 text-base leading-relaxed max-w-sm mb-6">{SITE_CONFIG.description[locale]}</p>
+
+          <div class="footer__status-badge">
+            <span class="footer__status-dot">
+              <span class="footer__status-ping"></span>
+              <span class="footer__status-solid"></span>
             </span>
-            <span class="text-sm text-surface-secondary font-medium">
-              {t('footer.madeIn')}
-            </span>
+            <span class="text-sm text-white/40 font-medium">{t('footer.madeIn')}</span>
           </div>
-          
-          <!-- Social links -->
+
           <SocialLinks variant="default" size="md" />
         </div>
 
-        <!-- Spacer -->
-        <div class="hidden lg:block lg:col-span-1" />
-
-        <!-- Explore links -->
-        <FooterLinkGroup 
-          title={t('footer.explore')}
-          links={exploreLinks}
-          titleColor="primary"
-          class="lg:col-span-2"
-        />
-
-        <!-- This week events -->
-        <div class="lg:col-span-3">
-          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-6">
-            {t('footer.thisWeek')}
-          </h3>
-          
-          {upcomingEvents.length > 0 ? (
-            <div class="space-y-3">
-              {upcomingEvents.slice(0, 2).map((event) => {
-                const dateLabel = getEventDateLabel(event.date, locale);
-                return (
-                  <EventMiniCard 
-                    event={event} 
-                    locale={locale} 
-                    dateLabel={dateLabel ?? undefined}
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <p class="text-sm text-surface-secondary">No hay eventos próximos.</p>
-          )}
-          
-          <a 
-            href={`${localePath}/eventos`} 
-            class="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-primary hover:text-primary-hover transition-colors duration-300 group"
-          >
-            {t('footer.viewAllEvents')}
-            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+        <!-- Explore -->
+        <div class="lg:col-span-2">
+          <h3 class="footer__heading">{t('footer.explore')}</h3>
+          <ul class="space-y-3">
+            {exploreLinks.map((link) => (
+              <li>
+                <a href={link.href} class="footer__nav-link group">
+                  <span class="footer__nav-line"></span>
+                  <span class="font-medium">{link.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <!-- Newsletter -->
-        <div class="lg:col-span-2">
-          <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-6">
-            {t('footer.contact')}
-          </h3>
-          
-          <ul class="space-y-3 mb-6" role="list">
+        <!-- Events -->
+        <div class="lg:col-span-3">
+          <FooterEvents locale={locale} t={t} />
+        </div>
+
+        <!-- Contact -->
+        <div class="lg:col-span-3">
+          <h3 class="footer__heading">{t('footer.contact')}</h3>
+
+          <ul class="space-y-4 mb-8">
             <li>
-              <a 
-                href="mailto:hola@granadavibes.com" 
-                class="group flex items-center gap-2 text-sm text-surface-secondary hover:text-surface transition-colors duration-300"
-              >
-                <svg class="w-4 h-4 text-primary group-hover:text-primary-hover transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <a href="mailto:hola@granadavibes.com" class="footer__contact-link group">
+                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span class="font-medium">hola@granadavibes.com</span>
+                <span class="text-sm font-medium">hola@granadavibes.com</span>
               </a>
             </li>
             <li>
-              <span class="flex items-center gap-2 text-sm text-surface-secondary">
-                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span class="flex items-center gap-3 text-white/50">
+                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
                 </svg>
-                <span class="font-medium">@granadavibes</span>
+                <span class="text-sm font-medium">@granadavibes</span>
               </span>
             </li>
           </ul>
 
-          <!-- Newsletter form -->
-          <div class="p-4 bg-base-100 border-2 border-edge/50 rounded-2xl">
-            <p class="text-xs text-surface-muted mb-3 font-medium leading-relaxed">
-              {t('footer.newsletter')}
-            </p>
-            <form class="flex gap-2" onsubmit="event.preventDefault();">
-              <input
-                type="email"
-                placeholder={t('footer.newsletterPlaceholder')}
-                class="flex-1 px-3 py-2.5 text-sm bg-white border-2 border-edge rounded-xl text-surface placeholder:text-surface-muted focus:outline-none focus:border-primary/50 transition-colors"
-                aria-label="Email para newsletter"
-              />
-              <button
-                type="submit"
-                class="px-4 py-2.5 bg-primary text-white rounded-xl hover:bg-primary-hover transition-colors flex items-center justify-center shadow-soft hover:shadow-soft-md"
-                aria-label="Suscribirse"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <!-- Newsletter -->
+          <div class="footer__newsletter">
+            <p class="text-xs text-white/30 mb-4 font-medium leading-relaxed">{t('footer.newsletter')}</p>
+            <form class="flex flex-col gap-3" onsubmit="event.preventDefault();">
+              <input type="email" placeholder={t('footer.newsletterPlaceholder')} class="input" aria-label="Email" />
+              <button type="submit" class="footer__newsletter-btn group" aria-label={locale === 'es' ? 'Suscribirse' : 'Subscribe'}>
+                <span>{locale === 'es' ? 'Suscribirse' : 'Subscribe'}</span>
+                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </button>
@@ -194,27 +124,160 @@ function getEventDateLabel(date: string, locale: string): string | undefined {
     </div>
 
     <!-- Bottom bar -->
-    <div class="py-6 border-t-2 border-edge/30">
+    <div class="py-6 border-t border-white/[0.06]">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-xs text-surface-muted">
-          © {new Date().getFullYear()} {SITE_CONFIG.name} · {t('footer.allRightsReserved')}
-        </p>
-        <div class="flex items-center gap-6">
-          {legalLinks.map((link, index) => (
-            <>
-              <a 
-                href={link.href} 
-                class="text-xs text-surface-muted hover:text-surface transition-colors duration-300 font-medium"
-              >
-                {link.label}
-              </a>
-              {index < legalLinks.length - 1 && (
-                <span class="text-surface-disabled">·</span>
-              )}
-            </>
+        <p class="text-xs text-white/30">© {currentYear} {SITE_CONFIG.name} · {t('footer.allRightsReserved')}</p>
+        <div class="flex items-center gap-8">
+          {legalLinks.map((link) => (
+            <a href={link.href} class="text-xs text-white/30 hover:text-white transition-colors font-medium">{link.label}</a>
           ))}
         </div>
       </div>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer { background: #050505; }
+
+  .footer__top-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent);
+  }
+
+  .footer__orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .footer__orb--accent {
+    top: 5rem;
+    right: 0;
+    width: 500px;
+    height: 500px;
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+    filter: blur(150px);
+  }
+
+  .footer__orb--secondary {
+    bottom: 0;
+    left: 0;
+    width: 400px;
+    height: 400px;
+    background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
+    filter: blur(120px);
+  }
+
+  .footer__logo { display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+
+  .footer__logo-mark { position: relative; width: 3rem; height: 3rem; }
+  .footer__logo-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+    border-radius: var(--radius-lg);
+    transition: transform var(--duration-slow);
+  }
+  .group:hover .footer__logo-gradient { transform: scale(1.1); }
+  .footer__logo-inner {
+    position: absolute;
+    inset: 2px;
+    background: var(--color-bg);
+    border-radius: calc(var(--radius-lg) - 2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer__status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-full);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer__status-dot { position: relative; display: flex; width: 0.5rem; height: 0.5rem; }
+  .footer__status-ping {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-success);
+    opacity: 0.75;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .footer__status-solid { position: relative; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-success); }
+
+  @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+
+  .footer__heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer__nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color var(--duration-normal);
+  }
+  .footer__nav-link:hover { color: var(--color-accent); }
+
+  .footer__nav-line {
+    width: 1rem;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all var(--duration-normal);
+  }
+  .group:hover .footer__nav-line { width: 1.5rem; background: var(--color-accent); }
+
+  .footer__contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color var(--duration-normal);
+  }
+  .footer__contact-link:hover { color: var(--color-accent); }
+
+  .footer__newsletter {
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-xl);
+  }
+
+  .footer__newsletter-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--color-accent);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-lg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all var(--duration-normal);
+  }
+  .footer__newsletter-btn:hover {
+    background: var(--color-accent-hover);
+    box-shadow: 0 8px 24px var(--color-accent-glow);
+  }
+</style>

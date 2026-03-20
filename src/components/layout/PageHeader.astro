@@ -2,172 +2,133 @@
 interface Props {
   title: string;
   subtitle?: string;
-  accent?: 'terra' | 'amber' | 'mint' | 'gold' | 'accent';
+  accent?: 'primary' | 'secondary' | 'tertiary' | 'success';
   centered?: boolean;
   variant?: 'default' | 'large' | 'minimal';
   overline?: string;
 }
 
-const { 
-  title, 
-  subtitle, 
-  accent = 'terra', 
+const {
+  title,
+  subtitle,
+  accent = 'primary',
   centered = true,
   variant = 'default',
-  overline = 'Granada Vibes'
+  overline = 'Granada Vibes',
 } = Astro.props;
 
-// Map legacy accent values to new system
-const accentMap: Record<string, 'terra' | 'amber' | 'mint'> = {
-  terra: 'terra',
-  amber: 'amber',
-  mint: 'mint',
-  gold: 'amber',  // gold maps to amber
-  accent: 'terra', // accent maps to terra
+const accentColorMap = {
+  primary: 'var(--color-accent)',
+  secondary: 'var(--color-secondary)',
+  tertiary: '#06b6d4',
+  success: 'var(--color-success)',
 };
 
-const resolvedAccent = accentMap[accent] || 'terra';
+const accentColor = accentColorMap[accent];
 
-const accentColors = {
-  terra: {
-    text: 'text-terra',
-    bg: 'bg-terra',
-    glow: 'bg-terra/20',
-    border: 'border-terra/30',
-    gradient: 'from-terra/20',
-  },
-  amber: {
-    text: 'text-amber',
-    bg: 'bg-amber',
-    glow: 'bg-amber/20',
-    border: 'border-amber/30',
-    gradient: 'from-amber/20',
-  },
-  mint: {
-    text: 'text-mint',
-    bg: 'bg-mint',
-    glow: 'bg-mint/20',
-    border: 'border-mint/30',
-    gradient: 'from-mint/20',
-  },
-};
-
-const sizes = {
-  minimal: {
-    pt: 'pt-28',
-    pb: 'pb-12',
-    title: 'text-4xl lg:text-5xl',
-  },
-  default: {
-    pt: 'pt-32 lg:pt-40',
-    pb: 'pb-16 lg:pb-24',
-    title: 'text-5xl lg:text-6xl xl:text-7xl',
-  },
-  large: {
-    pt: 'pt-36 lg:pt-48',
-    pb: 'pb-20 lg:pb-32',
-    title: 'text-6xl lg:text-7xl xl:text-8xl',
-  },
+const sizeClasses = {
+  minimal: { pt: 'pt-28', pb: 'pb-12', title: 'text-4xl lg:text-5xl' },
+  default: { pt: 'pt-32 lg:pt-40', pb: 'pb-16 lg:pb-24', title: 'text-5xl lg:text-6xl xl:text-7xl' },
+  large: { pt: 'pt-36 lg:pt-48', pb: 'pb-20 lg:pb-32', title: 'text-6xl lg:text-7xl xl:text-8xl' },
 };
 ---
 
-<section class:list={[
-  'relative overflow-hidden',
-  sizes[variant].pt,
-  sizes[variant].pb,
-]} aria-labelledby="page-title">
-  {/* Background gradient */}
-  <div 
-    class:list={[
-      'absolute inset-0 bg-gradient-to-b via-transparent to-transparent pointer-events-none',
-      accentColors[resolvedAccent].gradient,
-    ]} 
-    aria-hidden="true"
-  />
-  
-  {/* Decorative orb - top right */}
-  <div 
-    class:list={[
-      'absolute -top-20 right-[5%] w-[400px] h-[400px] rounded-full blur-[120px] opacity-20 pointer-events-none',
-      accentColors[resolvedAccent].glow,
-    ]} 
-    aria-hidden="true"
-  />
-  
-  {/* Decorative orb - bottom left */}
-  <div 
-    class:list={[
-      'absolute bottom-0 left-[10%] w-[300px] h-[300px] rounded-full blur-[100px] opacity-10 pointer-events-none',
-      'bg-surface',
-    ]} 
-    aria-hidden="true"
-  />
-
-  {/* Grid pattern overlay */}
-  <div 
-    class="absolute inset-0 opacity-[0.02] pointer-events-none"
-    style="background-image: linear-gradient(rgba(250,249,247,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(250,249,247,0.5) 1px, transparent 1px); background-size: 60px 60px;"
-    aria-hidden="true"
-  />
+<section
+  class:list={['page-header relative overflow-hidden', sizeClasses[variant].pt, sizeClasses[variant].pb]}
+  style={`--accent: ${accentColor}`}
+  aria-labelledby="page-title"
+>
+  <div class="page-header__bg" aria-hidden="true"></div>
+  <div class="page-header__orb page-header__orb--main" aria-hidden="true"></div>
+  <div class="page-header__orb page-header__orb--secondary" aria-hidden="true"></div>
+  <div class="page-header__grid" aria-hidden="true"></div>
 
   <div class="container relative">
-    <div class:list={[
-      'max-w-4xl',
-      centered && 'mx-auto text-center',
-    ]}>
-      {/* Overline */}
-      <div class:list={[
-        'flex items-center gap-4 mb-8',
-        centered && 'justify-center',
-      ]}>
-        <span class:list={[
-          'h-px w-12',
-          accentColors[resolvedAccent].bg,
-        ]} />
-        <span class:list={[
-          'text-xs font-semibold uppercase tracking-[0.25em]',
-          accentColors[resolvedAccent].text,
-        ]}>
-          {overline}
-        </span>
-        <span class:list={[
-          'h-px w-12',
-          accentColors[resolvedAccent].bg,
-          centered ? 'block' : 'hidden',
-        ]} />
+    <div class:list={['max-w-4xl', centered && 'mx-auto text-center']}>
+      <div class:list={['flex items-center gap-4 mb-8', centered && 'justify-center']}>
+        <span class="page-header__line"></span>
+        <span class="page-header__overline">{overline}</span>
+        {centered && <span class="page-header__line"></span>}
       </div>
-      
-      {/* Title with character animation potential */}
-      <h1 
-        id="page-title" 
-        class:list={[
-          'font-display font-bold text-surface leading-[0.95] tracking-[-0.04em] mb-6',
-          sizes[variant].title,
-        ]}
-      >
+
+      <h1 id="page-title" class:list={['font-black text-white leading-[0.95] tracking-[-0.04em] mb-6', sizeClasses[variant].title]}>
         {title}
       </h1>
-      
-      {/* Subtitle */}
+
       {subtitle && (
-        <p class:list={[
-          'text-lg lg:text-xl text-surface-secondary leading-relaxed max-w-2xl',
-          centered && 'mx-auto',
-        ]}>
+        <p class:list={['text-lg lg:text-xl text-white/50 leading-relaxed max-w-2xl', centered && 'mx-auto']}>
           {subtitle}
         </p>
       )}
 
-      {/* Bottom accent line */}
-      <div class:list={[
-        'mt-10',
-        centered && 'flex justify-center',
-      ]}>
-        <div class:list={[
-          'h-1 w-20 rounded-full',
-          accentColors[resolvedAccent].bg,
-        ]} />
+      <div class:list={['mt-10', centered && 'flex justify-center']}>
+        <div class="page-header__bar"></div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .page-header__bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--accent) 20%, transparent), transparent);
+    pointer-events: none;
+  }
+
+  .page-header__orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .page-header__orb--main {
+    top: -5rem;
+    right: 5%;
+    width: 400px;
+    height: 400px;
+    background: var(--accent);
+    opacity: 0.2;
+    filter: blur(120px);
+  }
+
+  .page-header__orb--secondary {
+    bottom: 0;
+    left: 10%;
+    width: 300px;
+    height: 300px;
+    background: white;
+    opacity: 0.1;
+    filter: blur(100px);
+  }
+
+  .page-header__grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.02;
+    pointer-events: none;
+    background-image: linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .page-header__line {
+    height: 1px;
+    width: 3rem;
+    background: var(--accent);
+  }
+
+  .page-header__overline {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+  }
+
+  .page-header__bar {
+    height: 4px;
+    width: 5rem;
+    border-radius: var(--radius-full);
+    background: var(--accent);
+  }
+</style>

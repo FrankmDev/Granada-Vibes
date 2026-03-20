@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'terra' | 'amber' | 'mint';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'accent';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   href?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -23,72 +23,127 @@ const {
   iconPosition = 'right',
 } = Astro.props;
 
-// Base classes - Modern sans-serif styling
-const baseClasses = 'group relative inline-flex items-center justify-center gap-2.5 font-semibold transition-all duration-300 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terra/50 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden';
-
-// Variant classes - Bold neo-brutalism with glow effects
-const variantClasses = {
-  primary: 'bg-terra text-surface shadow-lg shadow-terra/25 hover:shadow-xl hover:shadow-terra/40 hover:-translate-y-0.5 active:translate-y-0',
-  secondary: 'bg-base-card text-surface border border-edge hover:border-terra/50 hover:text-terra hover:-translate-y-0.5 active:translate-y-0',
-  ghost: 'bg-transparent text-surface-secondary hover:text-surface hover:bg-base-elevated',
-  terra: 'bg-gradient-to-r from-terra to-terra-hover text-surface shadow-lg shadow-terra/30 hover:shadow-xl hover:shadow-terra/50 hover:-translate-y-0.5 active:translate-y-0',
-  amber: 'bg-gradient-to-r from-amber to-amber-hover text-base shadow-lg shadow-amber/30 hover:shadow-xl hover:shadow-amber/50 hover:-translate-y-0.5 active:translate-y-0',
-  mint: 'bg-gradient-to-r from-mint to-mint-hover text-surface shadow-lg shadow-mint/30 hover:shadow-xl hover:shadow-mint/50 hover:-translate-y-0.5 active:translate-y-0',
-};
-
-// Size classes - Generous padding for modern feel
-const sizeClasses = {
-  sm: 'px-5 py-2.5 text-sm',
-  md: 'px-7 py-3.5 text-[15px]',
-  lg: 'px-8 py-4 text-base',
-  xl: 'px-10 py-5 text-lg',
-};
-
 const classes = [
-  baseClasses,
-  variantClasses[variant],
-  sizeClasses[size],
-  fullWidth ? 'w-full' : '',
+  `btn-ui btn-ui--${variant} btn-ui--${size}`,
+  fullWidth && 'w-full',
   className,
-].join(' ');
+].filter(Boolean).join(' ');
 ---
 
-{
-  href ? (
-    <a href={href} class={classes} role="button">
-      {icon && iconPosition === 'left' && (
-        <span class="transition-transform duration-300 group-hover:-translate-x-0.5">
-          <slot name="icon" />
-        </span>
-      )}
-      <span class="relative z-10 flex items-center gap-2">
-        <slot />
-      </span>
-      {icon && iconPosition === 'right' && (
-        <span class="transition-transform duration-300 group-hover:translate-x-0.5">
-          <slot name="icon" />
-        </span>
-      )}
-      {/* Shine effect on hover */}
-      <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span>
-    </a>
-  ) : (
-    <button type={type} disabled={disabled} class={classes}>
-      {icon && iconPosition === 'left' && (
-        <span class="transition-transform duration-300 group-hover:-translate-x-0.5">
-          <slot name="icon" />
-        </span>
-      )}
-      <span class="relative z-10 flex items-center gap-2">
-        <slot />
-      </span>
-      {icon && iconPosition === 'right' && (
-        <span class="transition-transform duration-300 group-hover:translate-x-0.5">
-          <slot name="icon" />
-        </span>
-      )}
-      {/* Shine effect on hover */}
-      <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"></span>
-    </button>
-  )
-}
+{href ? (
+  <a href={href} class={classes} role="button">
+    {icon && iconPosition === 'left' && <span class="btn-ui__icon btn-ui__icon--left"><slot name="icon" /></span>}
+    <span class="btn-ui__label"><slot /></span>
+    {icon && iconPosition === 'right' && <span class="btn-ui__icon btn-ui__icon--right"><slot name="icon" /></span>}
+    <span class="btn-ui__shine"></span>
+  </a>
+) : (
+  <button type={type} disabled={disabled} class={classes}>
+    {icon && iconPosition === 'left' && <span class="btn-ui__icon btn-ui__icon--left"><slot name="icon" /></span>}
+    <span class="btn-ui__label"><slot /></span>
+    {icon && iconPosition === 'right' && <span class="btn-ui__icon btn-ui__icon--right"><slot name="icon" /></span>}
+    <span class="btn-ui__shine"></span>
+  </button>
+)}
+
+<style>
+  .btn-ui {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--duration-slow) var(--ease-out-expo);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-ui:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 50%, transparent);
+  }
+
+  .btn-ui:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Sizes */
+  .btn-ui--sm { padding: 0.625rem 1.25rem; font-size: 0.75rem; }
+  .btn-ui--md { padding: 0.875rem 1.75rem; font-size: 0.875rem; }
+  .btn-ui--lg { padding: 1rem 2rem; font-size: 0.875rem; }
+  .btn-ui--xl { padding: 1.25rem 2.5rem; font-size: 1rem; }
+
+  /* Variants */
+  .btn-ui--primary {
+    background: var(--color-accent);
+    color: white;
+    box-shadow: 0 8px 24px var(--color-accent-glow);
+  }
+  .btn-ui--primary:hover {
+    background: var(--color-accent-hover);
+    transform: scale(1.02);
+    box-shadow: 0 10px 40px var(--color-accent-glow);
+  }
+  .btn-ui--primary:active { transform: scale(0.98); }
+
+  .btn-ui--secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .btn-ui--secondary:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .btn-ui--ghost {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .btn-ui--ghost:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .btn-ui--accent {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .btn-ui--accent:hover {
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+    color: var(--color-secondary);
+    transform: translateY(-2px);
+  }
+
+  /* Sub-elements */
+  .btn-ui__label {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-ui__icon {
+    transition: transform var(--duration-normal);
+  }
+  .btn-ui:hover .btn-ui__icon--left { transform: translateX(-2px); }
+  .btn-ui:hover .btn-ui__icon--right { transform: translateX(2px); }
+
+  .btn-ui__shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.7s ease-out;
+  }
+  .btn-ui:hover .btn-ui__shine { transform: translateX(100%); }
+</style>

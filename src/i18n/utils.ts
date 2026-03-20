@@ -1,6 +1,6 @@
-import type { Translations } from './locales/es';
-import { es } from './locales/es';
-import { en } from './locales/en';
+import type { Translations } from './locales/es.js';
+import { es } from './locales/es.js';
+import { en } from './locales/en.js';
 import type { Locale } from '@types';
 
 const translations: Record<Locale, Translations> = {

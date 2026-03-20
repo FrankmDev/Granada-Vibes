@@ -1,0 +1,96 @@
+/* ============================================
+   GRANADA VIBES — DESIGN TOKENS
+   Single source of truth for all visual values.
+   Referenced by both CSS and Tailwind config.
+   ============================================ */
+
+:root {
+  /* ── Backgrounds ── */
+  --color-bg:            #0a0a0a;
+  --color-bg-raised:     #111111;
+  --color-bg-card:       #171717;
+  --color-bg-subtle:     #1e1e1e;
+
+  /* ── Borders ── */
+  --color-border:        #242424;
+  --color-border-subtle: #1a1a1a;
+
+  /* ── Text ── */
+  --color-text-primary:   #f0ede8;
+  --color-text-secondary: #9a9490;
+  --color-text-muted:     #5a5550;
+
+  /* ── Accent (naranja granada) ── */
+  --color-accent:        #E84D27;
+  --color-accent-hover:  #F06040;
+  --color-accent-muted:  rgba(232, 77, 39, 0.10);
+  --color-accent-glow:   rgba(232, 77, 39, 0.25);
+
+  /* ── Gold (Alhambra) ── */
+  --color-gold:          #c9a84c;
+  --color-gold-muted:    rgba(201, 168, 76, 0.10);
+
+  /* ── Secondary (amber) ── */
+  --color-secondary:     #F59E0B;
+  --color-secondary-muted: rgba(245, 158, 11, 0.10);
+
+  /* ── Semantic ── */
+  --color-success:       #4a9e6b;
+  --color-success-muted: rgba(74, 158, 107, 0.15);
+  --color-error:         #c94a4a;
+  --color-error-muted:   rgba(201, 74, 74, 0.15);
+
+  /* ── Difficulty ── */
+  --color-difficulty-easy:     var(--color-success);
+  --color-difficulty-moderate: #d4873a;
+  --color-difficulty-hard:     var(--color-error);
+
+  /* ── Category accent colors ── */
+  --color-cat-concert:     var(--color-accent);
+  --color-cat-exhibition:  var(--color-secondary);
+  --color-cat-festival:    var(--color-accent);
+  --color-cat-market:      #10b981;
+  --color-cat-theater:     #a855f7;
+  --color-cat-workshop:    var(--color-secondary);
+  --color-cat-guided-tour: #06b6d4;
+  --color-cat-cinema:      #6366f1;
+  --color-cat-other:       var(--color-text-muted);
+
+  /* ── Route category colors ── */
+  --color-cat-viewpoints:   var(--color-secondary);
+  --color-cat-tapas:        var(--color-accent);
+  --color-cat-monuments:    #06b6d4;
+  --color-cat-hiking:       #10b981;
+  --color-cat-photography:  #a855f7;
+  --color-cat-secrets:      #ec4899;
+  --color-cat-history:      #f59e0b;
+  --color-cat-flamenco:     #f43f5e;
+
+  /* ── Typography ── */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  /* ── Spacing ── */
+  --container-max:         1280px;
+  --header-height:         72px;
+  --header-height-mobile:  64px;
+
+  /* ── Border Radius ── */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ── Transitions ── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast:   150ms;
+  --duration-normal: 300ms;
+  --duration-slow:   500ms;
+  --duration-slower: 700ms;
+}

@@ -1,0 +1,163 @@
+---
+import type { Locale } from '@types';
+import { LOCALE_PATHS } from '@config/site';
+
+interface NavLink {
+  href: string;
+  label: string;
+  index: string;
+}
+
+interface Props {
+  locale: Locale;
+  navLinks: NavLink[];
+  switchUrl: string;
+  isActive: (href: string) => boolean;
+  t: (key: string) => string;
+}
+
+const { locale, navLinks, switchUrl, isActive, t } = Astro.props;
+const localePath = LOCALE_PATHS[locale];
+---
+
+<div
+  id="mobile-menu"
+  class="nav-mobile hidden lg:hidden fixed inset-0 z-40"
+  role="navigation"
+  aria-label={t('nav.mobileNavLabel')}
+>
+  <div class="nav-mobile__bg" aria-hidden="true">
+    <div class="nav-mobile__orb nav-mobile__orb--accent"></div>
+    <div class="nav-mobile__orb nav-mobile__orb--secondary"></div>
+  </div>
+
+  <div class="container relative h-full flex flex-col pt-24 pb-8">
+    <div class="flex-1 flex flex-col justify-center">
+      <nav class="flex flex-col gap-2">
+        {navLinks.map((link, index) => (
+          <a
+            href={link.href}
+            class:list={['nav-mobile__link group', isActive(link.href) && 'is-active']}
+            style={`animation-delay: ${index * 100}ms`}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            <span class="nav-mobile__index">{link.index}</span>
+            <span class="text-3xl sm:text-4xl font-black tracking-tight">{link.label}</span>
+            {!isActive(link.href) && (
+              <svg class="ml-auto w-6 h-6 text-white/20 group-hover:text-accent group-hover:translate-x-2 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            )}
+          </a>
+        ))}
+      </nav>
+    </div>
+
+    <div class="space-y-6 pt-6 border-t border-white/10">
+      <a href={`${localePath}/eventos`} class="nav-mobile__cta">
+        <span>{locale === 'es' ? 'Explorar eventos' : 'Explore events'}</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <a href={switchUrl} class="flex items-center justify-between text-white/50 hover:text-white transition-colors" aria-label={t('nav.changeLanguage')}>
+        <span class="text-sm font-medium">{t('nav.switchLanguage')}</span>
+        <div class="flex items-center gap-3">
+          <span class:list={['nav-mobile__lang-btn', locale === 'es' && 'is-active']}>ES</span>
+          <span class="text-white/20">&rarr;</span>
+          <span class:list={['nav-mobile__lang-btn', locale === 'en' && 'is-active']}>EN</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .nav-mobile { background: var(--color-bg); }
+
+  .nav-mobile__bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .nav-mobile__orb {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .nav-mobile__orb--accent {
+    top: 25%;
+    left: -8rem;
+    width: 16rem;
+    height: 16rem;
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    filter: blur(100px);
+  }
+
+  .nav-mobile__orb--secondary {
+    bottom: 25%;
+    right: -8rem;
+    width: 24rem;
+    height: 24rem;
+    background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
+    filter: blur(120px);
+  }
+
+  .nav-mobile__link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.4);
+    transition: all var(--duration-slow);
+  }
+
+  .nav-mobile__link:hover,
+  .nav-mobile__link.is-active { color: white; }
+
+  .nav-mobile__index {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    transition: color var(--duration-normal);
+  }
+
+  .group:hover .nav-mobile__index,
+  .is-active .nav-mobile__index { color: var(--color-accent); }
+
+  .nav-mobile__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: var(--color-accent);
+    color: white;
+    font-weight: 700;
+    border-radius: var(--radius-lg);
+    transition: background var(--duration-normal);
+  }
+
+  .nav-mobile__cta:hover { background: var(--color-accent-hover); }
+
+  .nav-mobile__lang-btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    transition: all var(--duration-normal);
+  }
+
+  .nav-mobile__lang-btn.is-active {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+  }
+</style>

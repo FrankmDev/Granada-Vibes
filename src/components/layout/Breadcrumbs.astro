@@ -1,4 +1,6 @@
 ---
+import { icons } from '@config/ui';
+
 interface BreadcrumbItem {
   label: string;
   href?: string;
@@ -16,21 +18,16 @@ const { items } = Astro.props;
     {items.map((item, index) => (
       <li class="flex items-center gap-2">
         {index > 0 && (
-          <svg class="w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          <svg class="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icons.chevronRight} />
           </svg>
         )}
         {item.href ? (
-          <a 
-            href={item.href} 
-            class="text-text-muted hover:text-accent transition-colors"
-          >
+          <a href={item.href} class="text-white/40 hover:text-accent transition-colors">
             {item.label}
           </a>
         ) : (
-          <span class="text-text-primary font-medium" aria-current="page">
-            {item.label}
-          </span>
+          <span class="text-white font-medium" aria-current="page">{item.label}</span>
         )}
       </li>
     ))}

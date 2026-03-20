@@ -13,6 +13,7 @@ export interface IndyRockEvent {
   venue: string;
   url: string;
   description: string;
+  imageUrl?: string;
 }
 
 const PAGE_URL = 'https://indyrock.es/granada.htm';
@@ -77,6 +78,21 @@ export async function fetchIndyRockEvents(): Promise<IndyRockEvent[]> {
 
     if (!venue) venue = 'Granada';
 
+    // Extract image from heading section
+    let imageUrl: string | undefined;
+    const $img = $heading.nextUntil('h3, h4, hr').find('img').first();
+    const imgSrc = $img.attr('src') ?? $img.attr('data-src') ?? '';
+    if (imgSrc && imgSrc.startsWith('http') && !imgSrc.startsWith('data:')) {
+      imageUrl = imgSrc;
+    }
+    // Also check the heading itself
+    if (!imageUrl) {
+      const headingImg = $heading.find('img').first().attr('src') ?? '';
+      if (headingImg && headingImg.startsWith('http')) {
+        imageUrl = headingImg;
+      }
+    }
+
     // Extract URL from any link in the paragraphs
     let url = '';
     $heading.nextUntil('h3, h4, hr').find('a').each((_, a) => {
@@ -101,6 +117,7 @@ export async function fetchIndyRockEvents(): Promise<IndyRockEvent[]> {
       venue,
       url,
       description: fullText.slice(0, 300).trim(),
+      imageUrl,
     });
   }
 

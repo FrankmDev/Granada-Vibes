@@ -129,6 +129,77 @@ export interface Route {
 }
 
 // ============================================
+// MIXED ROUTE TYPES (Time-based plans)
+// ============================================
+
+export type TimeDuration = '2h' | '6h' | '12h' | '1day' | '2days' | '3days';
+
+export type MixedStopCategory =
+  | 'mirador'
+  | 'tapas'
+  | 'monumento'
+  | 'cultura'
+  | 'paseo'
+  | 'compras'
+  | 'naturaleza'
+  | 'flamenco';
+
+export interface MixedRouteStop {
+  name: LocalizedText;
+  description: LocalizedText;
+  category: MixedStopCategory;
+  neighborhood?: Neighborhood;
+  duration: number; // minutes
+  tip?: LocalizedText;
+}
+
+export interface MixedRouteTimeBlock {
+  label: LocalizedText;
+  stops: MixedRouteStop[];
+}
+
+export interface MixedRouteDayPlan {
+  day?: number;
+  label?: LocalizedText;
+  blocks: MixedRouteTimeBlock[];
+}
+
+export interface MixedRoute {
+  id: string;
+  slug: string;
+  duration: TimeDuration;
+  title: LocalizedText;
+  description: LocalizedText;
+  totalHours: number;
+  neighborhoods: Neighborhood[];
+  days: MixedRouteDayPlan[];
+  essentialTips?: LocalizedText[];
+  bestFor?: LocalizedText;
+  image?: string;
+}
+
+// ============================================
+// BLOG TYPES
+// ============================================
+
+export type BlogCategory = 'guia' | 'cultura' | 'gastronomia' | 'barrios' | 'consejos';
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  content: { es: string; en: string };
+  publishDate: string; // ISO 8601 date
+  category: BlogCategory;
+  tags: string[];
+  author: string;
+  image?: string;
+  readingTime: number; // minutes
+  featured: boolean;
+}
+
+// ============================================
 // UI COMPONENT TYPES
 // ============================================
 

@@ -30,11 +30,54 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
   ogImage={ogImage}
 >
   <!-- Page Header -->
-  <PageHeader 
+  <PageHeader
     title={t('routes.title')}
     subtitle={t('routes.subtitle')}
-    accent="amber"
+    accent="secondary"
   />
+
+  <!-- Mixed Routes CTA Banner -->
+  <section class="relative bg-base-elevated/50 border-b border-edge overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-terra/[0.03] via-transparent to-amber/[0.03]" aria-hidden="true"></div>
+
+    <div class="container relative py-10 lg:py-12">
+      <a
+        href="/en/routes/by-time"
+        class="group flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-6 lg:p-8 bg-base-card/40 border border-edge rounded-2xl hover:border-terra/30 hover:bg-base-card/60 transition-all duration-500 hover:-translate-y-0.5"
+      >
+        <div class="flex items-center gap-5">
+          <div class="w-14 h-14 rounded-2xl bg-terra/10 border border-terra/20 flex items-center justify-center shrink-0">
+            <svg class="w-7 h-7 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display text-xl lg:text-2xl font-semibold text-surface mb-1 group-hover:text-terra transition-colors">
+              {t('mixedRoutes.sectionTitle')}
+            </h3>
+            <p class="text-sm text-surface-secondary max-w-lg">
+              {t('mixedRoutes.subtitle')}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 shrink-0">
+          <div class="hidden lg:flex items-center gap-2">
+            {['2h', '6h', '12h', '1d', '2d', '3d'].map((label) => (
+              <span class="px-3 py-1.5 text-xs font-bold text-surface-muted bg-base-card border border-edge rounded-lg">
+                {label}
+              </span>
+            ))}
+          </div>
+          <div class="w-10 h-10 rounded-full bg-terra/10 border border-terra/20 flex items-center justify-center group-hover:bg-terra/20 transition-colors">
+            <svg class="w-5 h-5 text-terra group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
 
   {/* Filters Bar - Dark theme */}
   <div class="relative border-y border-edge bg-base-elevated/80 backdrop-blur-sm">

@@ -2,6 +2,7 @@
 import type { Locale } from '@types';
 import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
 import { useTranslations } from '@i18n/utils';
+import NavMobile from './NavMobile.astro';
 
 interface Props {
   locale: Locale;
@@ -10,182 +11,314 @@ interface Props {
 
 const { locale, currentPath } = Astro.props;
 const t = useTranslations(locale);
-
 const localePath = LOCALE_PATHS[locale];
 const otherLocale = locale === 'es' ? 'en' : 'es';
-const otherLocalePath = LOCALE_PATHS[otherLocale];
-const switchUrl = otherLocalePath + currentPath.replace(/^\/en/, '');
+const switchUrl = LOCALE_PATHS[otherLocale] + currentPath.replace(/^\/en/, '');
 
 const navLinks = [
-  { href: `${localePath}/`, label: t('nav.home') },
-  { href: `${localePath}/eventos`, label: t('nav.events') },
-  { href: `${localePath}/rutas`, label: t('nav.routes') },
-  { href: `${localePath}/sobre`, label: t('nav.about') },
+  { href: `${localePath}/`, label: t('nav.home'), index: '01' },
+  { href: `${localePath}/eventos`, label: t('nav.events'), index: '02' },
+  { href: `${localePath}/rutas`, label: t('nav.routes'), index: '03' },
+  { href: `${localePath}/blog`, label: t('nav.blog'), index: '04' },
+  { href: `${localePath}/sobre`, label: t('nav.about'), index: '05' },
 ];
 
 const isActive = (href: string) => {
-  if (href === `${localePath}/`) {
-    return currentPath === href || currentPath === `${localePath}`;
-  }
+  if (href === `${localePath}/`) return currentPath === href || currentPath === `${localePath}`;
   return currentPath.startsWith(href);
 };
 ---
 
-<!-- Sentinel for scroll detection -->
-<div id="nav-sentinel" class="h-px absolute top-[100px]" aria-hidden="true"></div>
+<div id="nav-sentinel" class="h-px absolute top-0" aria-hidden="true"></div>
 
-<header
-  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-  id="header"
-  role="banner"
->
-  <!-- Background -->
-  <div
-    class="absolute inset-0 transition-all duration-300 opacity-0"
-    id="header-bg"
-    style="background: rgba(250, 250, 250, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(0, 0, 0, 0.06);"
-  />
+<header id="header" class="navbar fixed top-0 left-0 right-0 z-50" role="banner">
+  <div id="header-bg" class="navbar__bg" aria-hidden="true"></div>
+  <div id="header-border" class="navbar__border" aria-hidden="true"></div>
 
   <div class="container relative">
-    <div class="flex items-center justify-between h-[72px]">
-      
+    <div class="flex items-center justify-between h-20 lg:h-24">
       <!-- Logo -->
-      <a
-        href={localePath || '/'}
-        class="relative z-10 flex items-center gap-3 group"
-        aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}
-      >
-        <!-- Logo icon - Vibrant coral circle -->
-        <div class="relative w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-soft group-hover:scale-105 transition-transform duration-200">
-          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+      <a href={localePath || '/'} class="navbar__logo group relative z-10" aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}>
+        <div class="navbar__logo-mark">
+          <div class="navbar__logo-gradient"></div>
+          <div class="navbar__logo-inner">
+            <span class="text-2xl lg:text-3xl font-black text-white tracking-tighter group-hover:scale-110 transition-transform duration-500">G</span>
+            <div class="navbar__logo-shine"></div>
+          </div>
         </div>
-        
-        <!-- Logo text -->
-        <div class="flex flex-col">
-          <span class="font-display text-lg font-semibold text-surface leading-none tracking-tight">
-            {SITE_CONFIG.name}
+        <div class="hidden sm:flex flex-col">
+          <span class="font-black text-lg lg:text-xl text-white leading-none tracking-tight">{SITE_CONFIG.name}</span>
+          <span class="text-[10px] font-medium text-white/40 tracking-[0.2em] uppercase mt-0.5">
+            {locale === 'es' ? 'Guía Cultural' : 'Cultural Guide'}
           </span>
-          <span class="text-[10px] text-surface-muted font-medium">Guía Cultural</span>
         </div>
       </a>
 
-      <!-- Desktop Navigation - Clean pill style -->
-      <nav class="hidden md:flex items-center gap-1 p-1 bg-white/80 backdrop-blur-sm rounded-full border border-edge/50 shadow-soft-sm" aria-label={t('nav.mainNavLabel')}>
+      <!-- Desktop nav -->
+      <nav class="hidden lg:flex items-center gap-8" aria-label={t('nav.mainNavLabel')}>
         {navLinks.map((link) => (
-          <a
-            href={link.href}
-            class:list={[
-              'relative px-5 py-2.5 text-sm font-medium transition-all duration-200 rounded-full',
-              isActive(link.href)
-                ? 'bg-surface text-white shadow-soft-sm'
-                : 'text-surface-secondary hover:text-surface hover:bg-base-100',
-            ]}
-            aria-current={isActive(link.href) ? 'page' : undefined}
-          >
-            {link.label}
+          <a href={link.href} class:list={['navbar__link group', isActive(link.href) && 'is-active']} aria-current={isActive(link.href) ? 'page' : undefined}>
+            <span class="navbar__link-index">{link.index}</span>
+            <span class="relative">
+              {link.label}
+              <span class:list={['navbar__link-underline', isActive(link.href) && 'is-active']}></span>
+            </span>
           </a>
         ))}
       </nav>
 
-      <!-- Right side actions -->
-      <div class="flex items-center gap-2 relative z-10">
-        <!-- Language switcher -->
-        <a
-          href={switchUrl}
-          class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-surface-secondary hover:text-surface bg-white border border-edge/50 rounded-lg hover:border-edge shadow-soft-sm transition-all duration-200"
-          aria-label={t('nav.changeLanguage')}
-        >
-          <span class={locale === 'es' ? 'text-primary' : 'opacity-60'} aria-hidden="true">ES</span>
-          <span class="text-edge">/</span>
-          <span class={locale === 'en' ? 'text-primary' : 'opacity-60'} aria-hidden="true">EN</span>
+      <!-- Actions -->
+      <div class="flex items-center gap-3 lg:gap-6 relative z-10">
+        <a href={switchUrl} class="navbar__lang-switch hidden sm:flex" aria-label={t('nav.changeLanguage')}>
+          <span class={locale === 'es' ? 'text-white' : ''}>ES</span>
+          <span class="text-white/20 text-[8px]">&#9679;</span>
+          <span class={locale === 'en' ? 'text-white' : ''}>EN</span>
         </a>
 
-        <!-- CTA Button -->
-        <a
-          href={`${localePath}/eventos`}
-          class="hidden lg:flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover transition-all duration-200 hover:shadow-glow-primary hover:-translate-y-0.5"
-        >
-          <span>Explorar</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        <a href={`${localePath}/eventos`} class="navbar__cta hidden lg:flex group">
+          <span>{locale === 'es' ? 'Explorar' : 'Explore'}</span>
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </a>
 
-        <!-- Mobile menu button -->
-        <button
-          type="button"
-          class="md:hidden p-2.5 text-surface-secondary hover:text-surface bg-white border border-edge/50 rounded-lg transition-all duration-200 shadow-soft-sm"
-          aria-label={t('nav.openMenu')}
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-          id="mobile-menu-button"
-        >
-          <svg class="w-5 h-5 transition-transform duration-200" id="menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+        <button type="button" id="mobile-menu-button" class="lg:hidden p-3 text-white hover:bg-white/10 rounded-xl transition-all" aria-label={t('nav.openMenu')} aria-expanded="false" aria-controls="mobile-menu">
+          <div class="w-6 h-5 flex flex-col justify-between">
+            <span class="block w-full h-0.5 bg-white origin-left transition-all duration-300" id="menu-line-1"></span>
+            <span class="block w-full h-0.5 bg-white transition-all duration-300" id="menu-line-2"></span>
+            <span class="block w-full h-0.5 bg-white origin-left transition-all duration-300" id="menu-line-3"></span>
+          </div>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Mobile menu -->
-  <div
-    id="mobile-menu"
-    class="hidden md:hidden fixed inset-0 top-[72px] bg-white/98 backdrop-blur-2xl z-40"
-    role="navigation"
-    aria-label={t('nav.mobileNavLabel')}
-  >
-    <div class="container py-8">
-      <nav class="flex flex-col gap-2">
-        {navLinks.map((link, index) => (
-          <a
-            href={link.href}
-            class:list={[
-              'px-6 py-4 text-xl font-display font-medium rounded-2xl transition-all duration-200',
-              isActive(link.href)
-                ? 'bg-primary text-white'
-                : 'text-surface-secondary hover:text-surface hover:bg-base-100',
-            ]}
-            style={`animation-delay: ${index * 50}ms`}
-            aria-current={isActive(link.href) ? 'page' : undefined}
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav>
-
-      <!-- Mobile CTA -->
-      <div class="mt-8">
-        <a
-          href={`${localePath}/eventos`}
-          class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-primary text-white text-lg font-semibold rounded-2xl hover:bg-primary-hover transition-all duration-200 shadow-glow-primary"
-        >
-          <span>Explorar eventos</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </div>
-
-      <div class="mt-6 pt-6 border-t border-edge">
-        <a
-          href={switchUrl}
-          class="flex items-center gap-3 px-6 py-4 text-surface-secondary hover:text-surface rounded-2xl hover:bg-base-100 transition-all duration-200"
-          aria-label={t('nav.changeLanguage')}
-        >
-          <span class="text-sm font-medium">{t('nav.switchLanguage')}</span>
-          <span class="font-semibold text-sm uppercase tracking-wider">
-            <span class={locale === 'es' ? 'text-primary' : ''}>Español</span>
-            <span class="mx-2 text-edge">/</span>
-            <span class={locale === 'en' ? 'text-primary' : ''}>English</span>
-          </span>
-        </a>
-      </div>
-    </div>
-  </div>
+  <NavMobile locale={locale} navLinks={navLinks} switchUrl={switchUrl} isActive={isActive} t={t} />
 </header>
 
-<script src="../../scripts/navBar.ts"></script>
+<style>
+  .navbar { transition: all 0.7s var(--ease-out-expo); will-change: transform; }
+
+  .navbar__bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-out-expo);
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.8));
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+  }
+
+  .navbar.is-scrolled .navbar__bg { opacity: 1; }
+
+  .navbar__border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    opacity: 0;
+    transition: opacity 0.7s;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 30%, transparent) 20%, color-mix(in srgb, var(--color-accent) 30%, transparent) 80%, transparent);
+  }
+
+  .navbar.is-scrolled .navbar__border { opacity: 1; }
+
+  .navbar__logo { display: flex; align-items: center; gap: 1rem; }
+
+  .navbar__logo-mark {
+    position: relative;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  @media (min-width: 1024px) {
+    .navbar__logo-mark { width: 3.5rem; height: 3.5rem; }
+  }
+
+  .navbar__logo-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary), var(--color-accent));
+    border-radius: var(--radius-lg);
+    transition: transform var(--duration-slow);
+  }
+
+  .group:hover .navbar__logo-gradient { transform: scale(1.05) rotate(3deg); }
+
+  .navbar__logo-inner {
+    position: absolute;
+    inset: 2px;
+    background: var(--color-bg);
+    border-radius: calc(var(--radius-lg) - 2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .navbar__logo-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 1s;
+  }
+
+  .group:hover .navbar__logo-shine { transform: translateX(100%); }
+
+  .navbar__link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color var(--duration-normal);
+  }
+
+  .navbar__link:hover,
+  .navbar__link.is-active { color: white; }
+
+  .navbar__link-index {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color var(--duration-normal);
+  }
+
+  .navbar__link:hover .navbar__link-index,
+  .navbar__link.is-active .navbar__link-index { color: var(--color-accent); }
+
+  .navbar__link-underline {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    height: 2px;
+    background: var(--color-accent);
+    width: 0;
+    transition: width var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .navbar__link:hover .navbar__link-underline,
+  .navbar__link-underline.is-active { width: 100%; }
+
+  .navbar__lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-full);
+    transition: all var(--duration-normal);
+  }
+
+  .navbar__lang-switch:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .navbar__cta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    border-radius: var(--radius-lg);
+    transition: all var(--duration-normal);
+  }
+
+  .navbar__cta:hover {
+    background: var(--color-accent-hover);
+    box-shadow: 0 8px 30px var(--color-accent-glow);
+    transform: translateY(-2px);
+  }
+</style>
+
+<script>
+  (function () {
+    const header = document.getElementById('header');
+    const sentinel = document.getElementById('nav-sentinel');
+    if (!header || !sentinel) return;
+
+    // IntersectionObserver for scroll-past-top detection
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry) {
+          header.classList.toggle('is-scrolled', !entry.isIntersecting);
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(sentinel);
+
+    // Small scroll listener for hide-on-scroll-down (rAF throttled)
+    let lastY = 0;
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          header.style.transform = y > lastY && y > 200 ? 'translateY(-100%)' : 'translateY(0)';
+          lastY = y;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  (function () {
+    const btn = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    const lines = ['menu-line-1', 'menu-line-2', 'menu-line-3'].map(id => document.getElementById(id));
+    if (!btn || !menu || lines.some(l => !l)) return;
+
+    let isOpen = false;
+
+    function toggle(open: boolean) {
+      isOpen = open;
+      btn.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+
+      if (open) {
+        menu.classList.remove('hidden');
+        menu.style.animation = 'menuIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards';
+        lines[0]!.style.cssText = 'transform:rotate(45deg) translateY(-2px);width:100%';
+        lines[1]!.style.cssText = 'opacity:0;transform:translateX(-10px)';
+        lines[2]!.style.cssText = 'transform:rotate(-45deg) translateY(2px);width:100%';
+
+        menu.querySelectorAll('nav a').forEach((el, i) => {
+          const item = el as HTMLElement;
+          item.style.cssText = 'opacity:0;transform:translateX(-30px)';
+          setTimeout(() => {
+            item.style.transition = 'opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+            item.style.opacity = '1';
+            item.style.transform = 'translateX(0)';
+          }, 100 + i * 100);
+        });
+      } else {
+        menu.style.animation = 'menuOut 0.4s cubic-bezier(0.16,1,0.3,1) forwards';
+        lines.forEach(l => { if (l) l.style.cssText = ''; });
+        setTimeout(() => { menu.classList.add('hidden'); menu.style.animation = ''; }, 400);
+      }
+    }
+
+    btn.addEventListener('click', () => toggle(!isOpen));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && isOpen) toggle(false); });
+    menu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => { if (isOpen) toggle(false); }));
+  })();
+</script>

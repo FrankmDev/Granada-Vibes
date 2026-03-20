@@ -1,0 +1,87 @@
+---
+import type { BlogPost, Locale } from '@types';
+import { LOCALE_PATHS } from '@config/site';
+
+interface Props {
+  post: BlogPost;
+  locale: Locale;
+  t: (key: string, vars?: Record<string, string | number>) => string;
+  featured?: boolean;
+}
+
+const { post, locale, t, featured = false } = Astro.props;
+const localePath = LOCALE_PATHS[locale];
+
+const formattedDate = new Date(post.publishDate).toLocaleDateString(
+  locale === 'es' ? 'es-ES' : 'en-GB',
+  { year: 'numeric', month: 'long', day: 'numeric' }
+);
+
+const categoryLabel = t(`blog.categories.${post.category}`);
+---
+
+<a
+  href={`${localePath}/blog/${post.slug}`}
+  class:list={[
+    'group block bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--color-primary)]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20',
+    featured && 'border-l-4 border-l-[var(--color-primary)]',
+  ]}
+>
+  {/* Image */}
+  <div class="relative aspect-[16/9] overflow-hidden bg-[var(--color-bg-subtle)]">
+    {post.image ? (
+      <img
+        src={post.image}
+        alt={post.title[locale]}
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-bg-subtle)]">
+        <svg class="w-12 h-12 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+        </svg>
+      </div>
+    )}
+
+    {/* Category badge */}
+    <div class="absolute top-4 left-4">
+      <span class="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-[var(--color-primary)] text-white rounded-full">
+        {categoryLabel}
+      </span>
+    </div>
+  </div>
+
+  {/* Content */}
+  <div class="p-6">
+    {/* Meta */}
+    <div class="flex items-center gap-3 text-xs text-[var(--color-text-muted)] mb-3">
+      <time datetime={post.publishDate}>{formattedDate}</time>
+      <span class="w-1 h-1 rounded-full bg-[var(--color-text-muted)]"></span>
+      <span>{t('blog.readingTime', { minutes: post.readingTime })}</span>
+    </div>
+
+    {/* Title */}
+    <h3 class="text-lg font-bold text-[var(--color-text-primary)] mb-2 line-clamp-2 group-hover:text-[var(--color-primary)] transition-colors duration-300">
+      {post.title[locale]}
+    </h3>
+
+    {/* Description */}
+    <p class="text-sm text-[var(--color-text-secondary)] line-clamp-3 leading-relaxed mb-4">
+      {post.description[locale]}
+    </p>
+
+    {/* Author & Read more */}
+    <div class="flex items-center justify-between pt-4 border-t border-[var(--color-border-subtle)]">
+      <span class="text-xs text-[var(--color-text-muted)] font-medium">
+        {t('blog.by', { author: post.author })}
+      </span>
+      <span class="text-xs font-semibold text-[var(--color-primary)] group-hover:translate-x-1 transition-transform duration-300 flex items-center gap-1">
+        {t('actions.viewMore')}
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </span>
+    </div>
+  </div>
+</a>

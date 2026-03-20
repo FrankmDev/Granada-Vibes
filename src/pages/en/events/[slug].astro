@@ -41,7 +41,10 @@ const relatedEvents = getAllEvents()
   .filter(e => e.category === event.category && e.id !== event.id)
   .slice(0, 3);
 
-const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
+// Event image (from scraper or mock)
+const eventImage = event.imageUrl || event.image;
+
+const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
 ---
 
 <BaseLayout 
@@ -56,6 +59,20 @@ const ogImage = 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes'
 
   <article class="container pt-28 pb-20 lg:pt-32">
     <Breadcrumbs items={breadcrumbs} />
+
+    {/* Hero image */}
+    {eventImage && (
+      <div class="relative w-full aspect-[21/9] rounded-2xl overflow-hidden mt-6 mb-10">
+        <img
+          src={eventImage}
+          alt={event.title[locale]}
+          class="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+      </div>
+    )}
 
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 mt-8">
       {/* Main Column (70%) */}

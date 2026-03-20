@@ -2,6 +2,9 @@ export interface TicketmasterEvent {
   id: string;
   name: string;
   url: string;
+  description?: string;
+  info?: string;
+  pleaseNote?: string;
   dates: {
     start: {
       localDate: string;
@@ -23,6 +26,7 @@ export interface TicketmasterEvent {
     url: string;
     width: number;
     height: number;
+    ratio?: string;
   }>;
   priceRanges?: Array<{
     min: number;

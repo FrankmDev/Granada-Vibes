@@ -2,134 +2,145 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PageHeader from '@components/layout/PageHeader.astro';
 import RouteCard from '@components/routes/RouteCard.astro';
-import Button from '@components/ui/Button.astro';
-import { getAllRoutes } from '@data';
+import { getAllRoutes } from '@data/index';
 import { useTranslations } from '@i18n/utils';
-import type { RouteCategory, RouteDifficulty, TimeOfDay } from '@types';
+import type { RouteType, RouteDifficulty, Neighborhood } from '@types';
 
 const locale = 'es';
 const t = useTranslations(locale);
 const routes = getAllRoutes();
 
-const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
+const types: RouteType[] = ['viewpoints', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
 const difficulties: RouteDifficulty[] = ['easy', 'moderate', 'challenging'];
-const timeOfDayOptions: TimeOfDay[] = ['morning', 'afternoon', 'sunset', 'evening'];
+const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra'];
 
-const difficultyColors = {
-  easy: { bg: 'bg-mint/15', text: 'text-mint', border: 'border-mint/30' },
-  moderate: { bg: 'bg-amber/15', text: 'text-amber', border: 'border-amber/30' },
-  challenging: { bg: 'bg-terra/15', text: 'text-terra', border: 'border-terra/30' },
-};
-
-const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+Rutas';
+const ogImage = 'https://placehold.co/1200x630/D4A853/FFFFFF?text=Granada+Vibes+Rutas';
 ---
 
 <BaseLayout 
   locale={locale} 
   title={t('routes.title')}
-  description="Rutas guiadas por Granada: miradores del Albaicín, tapeo tradicional con tapas gratis, senderismo por el Darro y secretos del Realejo. Planes originales creados por locales."
+  description="Rutas y planes alternativos por Granada: miradores secretos, tapas locales, paseos por el Albaicín y Sacromonte. Guías creadas por granadinos."
   ogImage={ogImage}
 >
   <!-- Page Header -->
-  <PageHeader 
+  <PageHeader
     title={t('routes.title')}
     subtitle={t('routes.subtitle')}
-    accent="amber"
+    accent="secondary"
   />
 
-  {/* Filters Bar - Dark theme */}
-  <div class="relative border-y border-edge bg-base-elevated/80 backdrop-blur-sm">
-    <div class="absolute inset-0 bg-gradient-to-r from-amber/[0.03] via-transparent to-amber/[0.03]" aria-hidden="true"></div>
+  <!-- Mixed Routes CTA Banner -->
+  <section class="relative bg-[#050505] border-b border-white/[0.06] overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#FF3366]/5 via-transparent to-[#FF9933]/5" aria-hidden="true"></div>
+    <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-[#FF3366]/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
+
+    <div class="container relative py-10 lg:py-12">
+      <a
+        href="/rutas/por-tiempo"
+        class="group flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-6 lg:p-8 bg-white/[0.03] border border-white/[0.08] rounded-2xl hover:border-[#FF3366]/30 hover:bg-white/[0.05] transition-all duration-500 hover:-translate-y-0.5"
+      >
+        <div class="flex items-center gap-5">
+          <div class="w-14 h-14 rounded-2xl bg-[#FF3366]/10 border border-[#FF3366]/20 flex items-center justify-center shrink-0">
+            <svg class="w-7 h-7 text-[#FF3366]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display text-xl lg:text-2xl font-bold text-white mb-1 group-hover:text-[#FF3366] transition-colors">
+              {t('mixedRoutes.sectionTitle')}
+            </h3>
+            <p class="text-sm text-white/50 max-w-lg">
+              {t('mixedRoutes.subtitle')}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 shrink-0">
+          <div class="hidden lg:flex items-center gap-2">
+            {['2h', '6h', '12h', '1d', '2d', '3d'].map((label) => (
+              <span class="px-3 py-1.5 text-xs font-bold text-white/40 bg-white/[0.05] border border-white/[0.08] rounded-lg">
+                {label}
+              </span>
+            ))}
+          </div>
+          <div class="w-10 h-10 rounded-full bg-[#FF3366]/10 border border-[#FF3366]/20 flex items-center justify-center group-hover:bg-[#FF3366]/20 transition-colors">
+            <svg class="w-5 h-5 text-[#FF3366] group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  {/* Filters Bar */}
+  <div class="relative border-y border-white/[0.06] bg-[#0a0a0a]">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/[0.03] via-transparent to-[#F59E0B]/[0.03]" aria-hidden="true"></div>
     
-    <div class="container relative py-6 lg:py-8">
-      {/* Fila 1 - Chips de categoría */}
-      <div class="flex flex-wrap items-center gap-2 mb-6" role="group" aria-label="Filtrar por categoría">
+    <div class="container relative py-8 lg:py-10">
+      {/* Fila 1 - Tipo de ruta */}
+      <div class="flex flex-wrap items-center gap-3 mb-6" role="group" aria-label="Filtrar por tipo">
         <button 
-          class="filter-category px-5 py-2.5 text-xs font-bold uppercase tracking-wider bg-amber text-base rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-amber/30"
-          data-category="all"
+          class="filter-type px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] bg-[#F59E0B] text-white rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-[#F59E0B]/20"
+          data-type="all"
           aria-pressed="true"
         >
-          {t('categories.all')}
+          Todas
         </button>
-        {categories.map((cat) => (
+        {types.map((type) => (
           <button 
-            class="filter-category px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-surface-secondary bg-base-card border border-edge rounded-full hover:border-amber/50 hover:text-surface transition-all duration-300"
-            data-category={cat}
+            class="filter-type px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] text-white/70 bg-white/[0.05] border border-white/[0.08] rounded-full hover:border-[#F59E0B]/30 hover:text-[#F59E0B] transition-all duration-300"
+            data-type={type}
             aria-pressed="false"
           >
-            {t(`categories.${cat}`)}
+            {t(`categories.${type}`)}
           </button>
         ))}
       </div>
 
       {/* Fila 2 - Filtros secundarios */}
-      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-edge">
-        {/* Dificultad chips */}
-        <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-sm text-surface-muted mr-1 font-medium">Dificultad:</span>
-          <button 
-            class="filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 bg-amber text-base border-amber shadow-lg shadow-amber/20"
-            data-difficulty="all"
-            aria-pressed="true"
-          >
-            Todas
-          </button>
-          {difficulties.map((diff) => (
-            <button 
-              class:list={[
-                'filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 hover:scale-105',
-                difficultyColors[diff].bg,
-                difficultyColors[diff].text,
-                difficultyColors[diff].border
-              ]}
-              data-difficulty={diff}
-              aria-pressed="false"
-            >
-              {t(`difficulty.${diff}`)}
-            </button>
-          ))}
-        </div>
-
-        {/* Dropdown Duración */}
+      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-[var(--color-border)]">
+        {/* Dropdown Dificultad */}
         <div class="relative group">
           <select 
-            id="filter-duration"
-            class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-amber cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
-            aria-label="Filtrar por duración"
+            id="filter-difficulty"
+            class="appearance-none px-5 py-3 pr-12 text-sm text-[var(--color-text-primary)] bg-white border border-[var(--color-border)] rounded-xl focus:outline-none focus:border-[var(--color-secondary)] cursor-pointer transition-all duration-300 hover:border-[var(--color-secondary)]/30 min-w-[180px]"
+            aria-label="Filtrar por dificultad"
           >
-            <option value="all">Cualquier duración</option>
-            <option value="short">Menos de 2h</option>
-            <option value="medium">2-4h</option>
-            <option value="long">Más de 4h</option>
+            <option value="all">Todas las dificultades</option>
+            {difficulties.map((d) => (
+              <option value={d}>{t(`difficulty.${d}`)}</option>
+            ))}
           </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-muted pointer-events-none transition-colors group-hover:text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none transition-colors group-hover:text-[var(--color-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
 
-        {/* Dropdown Mejor momento */}
+        {/* Dropdown Barrio */}
         <div class="relative group">
           <select 
-            id="filter-time"
-            class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-amber cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
-            aria-label="Filtrar por mejor momento"
+            id="filter-neighborhood"
+            class="appearance-none px-5 py-3 pr-12 text-sm text-[var(--color-text-primary)] bg-white border border-[var(--color-border)] rounded-xl focus:outline-none focus:border-[var(--color-secondary)] cursor-pointer transition-all duration-300 hover:border-[var(--color-secondary)]/30 min-w-[180px]"
+            aria-label="Filtrar por barrio"
           >
-            <option value="all">Cualquier momento</option>
-            {timeOfDayOptions.map((time) => (
-              <option value={time}>{t(`timeOfDay.${time}`)}</option>
+            <option value="all">Todos los barrios</option>
+            {neighborhoods.map((n) => (
+              <option value={n}>{t(`neighborhoods.${n}`)}</option>
             ))}
           </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-muted pointer-events-none transition-colors group-hover:text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none transition-colors group-hover:text-[var(--color-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </div>
 
         <div class="flex-1"></div>
 
-        {/* Botón Limpiar filtros (hidden by default) */}
+        {/* Botón Limpiar filtros */}
         <button 
           id="clear-filters"
-          class="hidden items-center gap-2 px-5 py-2.5 text-sm text-surface-muted hover:text-amber transition-all duration-300 rounded-xl hover:bg-base-card font-medium"
+          class="hidden items-center gap-2 px-5 py-3 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-secondary)] transition-all duration-300 rounded-xl hover:bg-[var(--color-secondary-muted)] font-medium"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -141,28 +152,26 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
   </div>
 
   {/* Results counter */}
-  <div class="container py-6">
-    <div class="flex items-center gap-2 text-sm text-surface-muted">
-      <span class="w-2 h-2 rounded-full bg-amber animate-pulse"></span>
-      Mostrando <span id="results-count" class="font-bold text-surface">{routes.length}</span> rutas
+  <div class="container py-8">
+    <div class="flex items-center gap-3 text-sm text-[var(--color-text-secondary)]">
+      <span class="w-2 h-2 rounded-full bg-[var(--color-secondary)] animate-pulse"></span>
+      Mostrando <span id="results-count" class="font-bold text-[var(--color-text-primary)]">{routes.length}</span> rutas
     </div>
   </div>
 
   {/* Routes Grid */}
-  <section class="container pb-20" aria-labelledby="routes-heading">
+  <section class="container pb-24" aria-labelledby="routes-heading">
     <h2 id="routes-heading" class="sr-only">{t('routes.title')}</h2>
     
-    <div id="routes-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 stagger-children">
+    <div id="routes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {routes.map((route, index) => (
         <div 
-          class="route-card-wrapper reveal"
-          data-category={route.category}
+          class="route-card-wrapper scroll-animate"
+          data-type={route.category}
           data-difficulty={route.difficulty}
-          data-duration={route.duration}
-          data-time={route.timeOfDay}
-          data-featured={route.featured ? 'true' : 'false'}
+          data-neighborhoods={route.neighborhoods.join(',')}
         >
-          <RouteCard route={route} locale={locale} t={t} variant="grid" index={index} />
+          <RouteCard route={route} locale={locale} t={t} index={index} variant="grid" />
         </div>
       ))}
     </div>
@@ -170,29 +179,32 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
     {/* Empty state */}
     <div id="empty-state" class="hidden text-center py-24">
       <div class="relative w-24 h-24 mx-auto mb-8">
-        <div class="absolute inset-0 bg-amber/20 rounded-3xl blur-xl"></div>
-        <div class="relative w-full h-full bg-base-card border border-edge rounded-3xl flex items-center justify-center">
-          <svg class="w-12 h-12 text-surface-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
+        <div class="absolute inset-0 bg-[var(--color-secondary)]/20 rounded-2xl blur-xl"></div>
+        <div class="relative w-full h-full bg-[var(--color-bg-cream)] border border-[var(--color-secondary)]/20 rounded-2xl flex items-center justify-center">
+          <svg class="w-12 h-12 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
       </div>
-      <h3 class="font-display text-2xl font-semibold text-surface mb-3">
-        Sin rutas para estos filtros
+      <h3 class="text-2xl font-bold text-[var(--color-text-primary)] mb-3">
+        Sin resultados para estos filtros
       </h3>
-      <p class="text-surface-secondary mb-8 max-w-md mx-auto">Prueba a cambiar los filtros o ver todas las rutas disponibles en Granada</p>
-      <Button variant="amber" size="md" id="empty-clear-filters">
+      <p class="text-[var(--color-text-secondary)] mb-8 max-w-md mx-auto">Prueba a cambiar los filtros o ver todas las rutas disponibles</p>
+      <button 
+        id="empty-clear-filters"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-secondary)] text-white font-semibold rounded-full hover:bg-[var(--color-secondary-dark)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-secondary)]/25"
+      >
         Limpiar filtros
-      </Button>
+      </button>
     </div>
   </section>
 
   <script is:inline>
     (function() {
-      const categoryButtons = document.querySelectorAll('.filter-category');
-      const difficultyButtons = document.querySelectorAll('.filter-difficulty');
-      const durationSelect = document.getElementById('filter-duration');
-      const timeSelect = document.getElementById('filter-time');
+      const typeButtons = document.querySelectorAll('.filter-type');
+      const difficultySelect = document.getElementById('filter-difficulty');
+      const neighborhoodSelect = document.getElementById('filter-neighborhood');
       const clearFiltersBtn = document.getElementById('clear-filters');
       const emptyClearFiltersBtn = document.getElementById('empty-clear-filters');
       const resultsCount = document.getElementById('results-count');
@@ -200,50 +212,25 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
       const routesGrid = document.getElementById('routes-grid');
       const routeCards = document.querySelectorAll('.route-card-wrapper');
 
-      const difficultyColors = {
-        easy: { bg: 'bg-mint/15', text: 'text-mint', border: 'border-mint/30' },
-        moderate: { bg: 'bg-amber/15', text: 'text-amber', border: 'border-amber/30' },
-        challenging: { bg: 'bg-terra/15', text: 'text-terra', border: 'border-terra/30' },
-      };
-
       let filters = {
-        category: 'all',
+        type: 'all',
         difficulty: 'all',
-        duration: 'all',
-        time: 'all'
+        neighborhood: 'all'
       };
-
-      function matchesDurationFilter(routeDuration, filter) {
-        if (filter === 'all') return true;
-        const durationHours = routeDuration / 60;
-        
-        switch (filter) {
-          case 'short':
-            return durationHours < 2;
-          case 'medium':
-            return durationHours >= 2 && durationHours <= 4;
-          case 'long':
-            return durationHours > 4;
-          default:
-            return true;
-        }
-      }
 
       function applyFilters() {
         let visibleCount = 0;
         
         routeCards.forEach(card => {
-          const category = card.dataset.category;
+          const type = card.dataset.type;
           const difficulty = card.dataset.difficulty;
-          const duration = parseInt(card.dataset.duration, 10);
-          const time = card.dataset.time;
+          const neighborhoods = card.dataset.neighborhoods?.split(',') || [];
           
-          const matchesCategory = filters.category === 'all' || category === filters.category;
+          const matchesType = filters.type === 'all' || type === filters.type;
           const matchesDifficulty = filters.difficulty === 'all' || difficulty === filters.difficulty;
-          const matchesDuration = matchesDurationFilter(duration, filters.duration);
-          const matchesTime = filters.time === 'all' || time === filters.time;
+          const matchesNeighborhood = filters.neighborhood === 'all' || neighborhoods.includes(filters.neighborhood);
           
-          const isVisible = matchesCategory && matchesDifficulty && matchesDuration && matchesTime;
+          const isVisible = matchesType && matchesDifficulty && matchesNeighborhood;
           
           if (isVisible) {
             card.style.display = '';
@@ -263,10 +250,9 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
           emptyState.classList.add('hidden');
         }
         
-        const hasActiveFilters = filters.category !== 'all' || 
+        const hasActiveFilters = filters.type !== 'all' || 
                                  filters.difficulty !== 'all' || 
-                                 filters.duration !== 'all' || 
-                                 filters.time !== 'all';
+                                 filters.neighborhood !== 'all';
         
         if (hasActiveFilters) {
           clearFiltersBtn.classList.remove('hidden');
@@ -277,88 +263,53 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
         }
       }
 
-      categoryButtons.forEach(btn => {
+      typeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-          categoryButtons.forEach(b => {
-            b.classList.remove('bg-amber', 'text-base', 'shadow-lg');
-            b.classList.add('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
+          typeButtons.forEach(b => {
+            b.classList.remove('bg-[var(--color-secondary)]', 'text-white');
+            b.classList.add('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
             b.setAttribute('aria-pressed', 'false');
           });
-          btn.classList.remove('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
-          btn.classList.add('bg-amber', 'text-base', 'shadow-lg');
+          btn.classList.remove('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
+          btn.classList.add('bg-[var(--color-secondary)]', 'text-white');
           btn.setAttribute('aria-pressed', 'true');
           
-          filters.category = btn.dataset.category;
+          filters.type = btn.dataset.type;
           applyFilters();
         });
       });
 
-      difficultyButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const difficulty = btn.dataset.difficulty;
-          
-          difficultyButtons.forEach(b => {
-            const diff = b.dataset.difficulty;
-            b.setAttribute('aria-pressed', 'false');
-            
-            if (diff === 'all') {
-              b.className = 'filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 bg-amber text-base border-amber shadow-lg shadow-amber/20';
-            } else {
-              b.className = `filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 hover:scale-105 ${difficultyColors[diff].bg} ${difficultyColors[diff].text} ${difficultyColors[diff].border}`;
-            }
-          });
-          
-          btn.setAttribute('aria-pressed', 'true');
-          btn.className = 'filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 bg-amber text-base border-amber shadow-lg shadow-amber/20';
-          
-          filters.difficulty = difficulty;
-          applyFilters();
-        });
-      });
-
-      durationSelect?.addEventListener('change', (e) => {
-        filters.duration = e.target.value;
+      difficultySelect?.addEventListener('change', (e) => {
+        filters.difficulty = e.target.value;
         applyFilters();
       });
 
-      timeSelect?.addEventListener('change', (e) => {
-        filters.time = e.target.value;
+      neighborhoodSelect?.addEventListener('change', (e) => {
+        filters.neighborhood = e.target.value;
         applyFilters();
       });
 
       function clearFilters() {
         filters = {
-          category: 'all',
+          type: 'all',
           difficulty: 'all',
-          duration: 'all',
-          time: 'all'
+          neighborhood: 'all'
         };
         
-        categoryButtons.forEach(b => {
-          if (b.dataset.category === 'all') {
-            b.classList.remove('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
-            b.classList.add('bg-amber', 'text-base', 'shadow-lg');
+        typeButtons.forEach(b => {
+          if (b.dataset.type === 'all') {
+            b.classList.remove('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
+            b.classList.add('bg-[var(--color-secondary)]', 'text-white');
             b.setAttribute('aria-pressed', 'true');
           } else {
-            b.classList.remove('bg-amber', 'text-base', 'shadow-lg');
-            b.classList.add('text-surface-secondary', 'bg-base-card', 'border', 'border-edge');
+            b.classList.remove('bg-[var(--color-secondary)]', 'text-white');
+            b.classList.add('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
             b.setAttribute('aria-pressed', 'false');
           }
         });
         
-        difficultyButtons.forEach(b => {
-          const diff = b.dataset.difficulty;
-          if (diff === 'all') {
-            b.className = 'filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 bg-amber text-base border-amber shadow-lg shadow-amber/20';
-            b.setAttribute('aria-pressed', 'true');
-          } else {
-            b.className = `filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 hover:scale-105 ${difficultyColors[diff].bg} ${difficultyColors[diff].text} ${difficultyColors[diff].border}`;
-            b.setAttribute('aria-pressed', 'false');
-          }
-        });
-        
-        durationSelect.value = 'all';
-        timeSelect.value = 'all';
+        difficultySelect.value = 'all';
+        neighborhoodSelect.value = 'all';
         
         applyFilters();
         window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -1,0 +1,88 @@
+---
+/**
+ * HeroBackground — All decorative/atmospheric layers for the hero section.
+ * Layers: spotlight, gradient, orbs, particles, image, noise, decorative elements.
+ */
+---
+
+<!-- Layer 1: Dynamic spotlight that follows cursor -->
+<div class="hero-spotlight" aria-hidden="true"></div>
+
+<!-- Layer 2: Base gradient -->
+<div class="hero-bg__gradient" aria-hidden="true"></div>
+
+<!-- Layer 3: Animated mesh gradient orbs -->
+<div class="hero-bg__orbs" aria-hidden="true">
+  <div class="hero-bg__orb hero-bg__orb--accent" data-speed="0.02"></div>
+  <div class="hero-bg__orb hero-bg__orb--gold" data-speed="0.03"></div>
+  <div class="hero-bg__orb hero-bg__orb--bottom" data-speed="0.015"></div>
+</div>
+
+<!-- Layer 4: Atmospheric particles -->
+<div class="hero-bg__particles" id="particles-container" aria-hidden="true"></div>
+
+<!-- Layer 5: Hero background image with parallax -->
+<div class="hero-bg__image-container" id="hero-image-container" aria-hidden="true">
+  <div class="hero-bg__image-wrapper" id="hero-image-wrapper">
+    <img
+      src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1920&q=90"
+      alt=""
+      class="hero-bg__image"
+      loading="eager"
+    />
+  </div>
+  <div class="hero-bg__vignette-bottom"></div>
+  <div class="hero-bg__vignette-side"></div>
+</div>
+
+<!-- Layer 6: Noise texture -->
+<div class="hero-bg__noise" aria-hidden="true"></div>
+
+<!-- Layer 7: Decorative elements -->
+<div class="hero-bg__decor" id="decorative-elements" aria-hidden="true">
+  <div class="hero-bg__floating-orb hero-bg__floating-orb--1"></div>
+  <div class="hero-bg__floating-orb hero-bg__floating-orb--2"></div>
+  <div class="hero-bg__floating-orb hero-bg__floating-orb--3"></div>
+  <div class="hero-bg__floating-orb hero-bg__floating-orb--4"></div>
+  <div class="hero-bg__geo-frame hero-bg__geo-frame--lg"></div>
+  <div class="hero-bg__geo-frame hero-bg__geo-frame--sm"></div>
+  <div class="hero-bg__accent-line hero-bg__accent-line--1"></div>
+  <div class="hero-bg__accent-line hero-bg__accent-line--2"></div>
+</div>
+
+<style>
+  .hero-spotlight { position: absolute; inset: 0; pointer-events: none; z-index: 1; opacity: 0; transition: opacity 0.7s; background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), color-mix(in srgb, var(--color-accent) 6%, transparent), transparent 50%); }
+  .hero-bg__gradient { position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom right, var(--color-bg), #0d0d0d, var(--color-bg)); }
+  .hero-bg__orbs { position: absolute; inset: 0; z-index: 3; opacity: 0.6; }
+  .hero-bg__orb { position: absolute; border-radius: 50%; }
+  .hero-bg__orb--accent { top: -10%; left: 10%; width: 800px; height: 800px; background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 25%, transparent), transparent 70%); filter: blur(150px); }
+  .hero-bg__orb--gold { top: 20%; right: 5%; width: 600px; height: 600px; background: radial-gradient(circle, color-mix(in srgb, var(--color-secondary) 20%, transparent), transparent 70%); filter: blur(120px); }
+  .hero-bg__orb--bottom { bottom: -10%; left: 30%; width: 900px; height: 900px; background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 15%, transparent), transparent 70%); filter: blur(180px); }
+  .hero-bg__particles { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+  .hero-bg__image-container { position: absolute; inset: 0; overflow: hidden; z-index: 5; }
+  .hero-bg__image-wrapper { position: absolute; inset: 0; transform: scale(1.1); }
+  .hero-bg__image { width: 100%; height: 100%; object-fit: cover; opacity: 0.25; }
+  .hero-bg__vignette-bottom { position: absolute; inset: 0; background: linear-gradient(to top, var(--color-bg), color-mix(in srgb, var(--color-bg) 50%, transparent), color-mix(in srgb, var(--color-bg) 20%, transparent)); }
+  .hero-bg__vignette-side { position: absolute; inset: 0; background: linear-gradient(to right, var(--color-bg), color-mix(in srgb, var(--color-bg) 30%, transparent), transparent); }
+  .hero-bg__noise { position: absolute; inset: 0; z-index: 6; opacity: 0.03; pointer-events: none; mix-blend-mode: overlay; background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); }
+  .hero-bg__decor { position: absolute; inset: 0; z-index: 7; overflow: hidden; pointer-events: none; }
+
+  .hero-bg__floating-orb { position: absolute; border-radius: 50%; animation: hero-float 12s ease-in-out infinite; }
+  .hero-bg__floating-orb--1 { width: 0.75rem; height: 0.75rem; top: 15%; left: 8%; background: color-mix(in srgb, var(--color-accent) 40%, transparent); filter: blur(2px); }
+  .hero-bg__floating-orb--2 { width: 0.5rem; height: 0.5rem; top: 25%; right: 12%; background: color-mix(in srgb, var(--color-secondary) 50%, transparent); filter: blur(2px); animation-delay: -4s; }
+  .hero-bg__floating-orb--3 { width: 1rem; height: 1rem; top: 60%; left: 5%; background: rgba(255, 255, 255, 0.2); filter: blur(4px); animation-delay: -8s; }
+  .hero-bg__floating-orb--4 { width: 0.5rem; height: 0.5rem; bottom: 30%; right: 20%; background: color-mix(in srgb, var(--color-accent) 30%, transparent); filter: blur(2px); animation-delay: -2s; }
+
+  .hero-bg__geo-frame { position: absolute; border: 1px solid color-mix(in srgb, var(--color-accent) 10%, transparent); animation: hero-float 20s ease-in-out infinite; }
+  .hero-bg__geo-frame--lg { width: 10rem; height: 10rem; bottom: 15%; right: 5%; transform: rotate(45deg); }
+  .hero-bg__geo-frame--sm { width: 6rem; height: 6rem; bottom: 20%; right: 10%; border-color: color-mix(in srgb, var(--color-accent) 5%, transparent); transform: rotate(12deg); }
+
+  .hero-bg__accent-line { position: absolute; width: 1px; animation: hero-float 10s ease-in-out infinite; }
+  .hero-bg__accent-line--1 { height: 8rem; top: 20%; right: 18%; background: linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 50%, transparent), color-mix(in srgb, var(--color-accent) 20%, transparent), transparent); }
+  .hero-bg__accent-line--2 { height: 6rem; top: 35%; right: 22%; background: linear-gradient(to bottom, color-mix(in srgb, var(--color-secondary) 40%, transparent), color-mix(in srgb, var(--color-secondary) 10%, transparent), transparent); }
+
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+  }
+</style>

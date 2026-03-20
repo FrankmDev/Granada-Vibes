@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PageHeader from '@components/layout/PageHeader.astro';
+import BlogCard from '@components/blog/BlogCard.astro';
+import { getAllPosts } from '@data/index';
+import { useTranslations } from '@i18n/utils';
+
+const locale = 'es';
+const t = useTranslations(locale);
+const posts = getAllPosts();
+
+const ogImage = 'https://placehold.co/1200x630/D4704A/FFFFFF?text=Granada+Vibes+Blog';
+---
+
+<BaseLayout
+  locale={locale}
+  title={t('blog.title')}
+  description="Blog de Granada Vibes: guías locales, consejos prácticos, rutas secretas y todo lo que necesitas saber para vivir Granada como un local."
+  ogImage={ogImage}
+>
+  <PageHeader
+    title={t('blog.title')}
+    subtitle={t('blog.subtitle')}
+    accent="primary"
+  />
+
+  <section class="container py-16 lg:py-24" aria-labelledby="blog-heading">
+    <h2 id="blog-heading" class="sr-only">{t('blog.allPosts')}</h2>
+
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post, index) => (
+          <div class="scroll-animate">
+            <BlogCard post={post} locale={locale} t={t} featured={index === 0} />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-24">
+        <p class="text-lg text-[var(--color-text-secondary)]">{t('blog.noPosts')}</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

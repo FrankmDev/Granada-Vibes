@@ -80,11 +80,12 @@ const now = new Date().toISOString();
 export function transformConciertosGranada(raw: ConciertosGranadaEvent): GeneratedEvent {
   // Clean title: strip whitespace pollution from scraping
   const cleanTitle = raw.title.replace(/\s+/g, ' ').trim();
+  const desc = raw.description ?? '';
   return {
     id: `cg-${hashId(raw.url)}`,
     slug: slugify(cleanTitle),
     title: { es: cleanTitle, en: cleanTitle },
-    description: { es: '', en: '' },
+    description: { es: desc, en: desc },
     category: 'concert',
     date: raw.date,
     time: raw.time,
@@ -168,17 +169,19 @@ export function transformIndyRock(raw: IndyRockEvent): GeneratedEvent {
     source: 'indyrock',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
+    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
     lastSyncedAt: now,
   };
 }
 
 export function transformPalacio(raw: PalacioEvent): GeneratedEvent {
   const cleanTitle = raw.title.replace(/\s+/g, ' ').trim();
+  const desc = raw.description ?? '';
   return {
     id: `pc-${hashId(raw.url + raw.title)}`,
     slug: slugify(cleanTitle),
     title: { es: cleanTitle, en: cleanTitle },
-    description: { es: '', en: '' },
+    description: { es: desc, en: desc },
     category: detectCategory(raw.title),
     date: raw.date,
     time: raw.time,
@@ -237,6 +240,7 @@ export function transformAyuntamiento(raw: AyuntamientoEvent): GeneratedEvent {
     source: 'ayuntamiento',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
+    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
     lastSyncedAt: now,
   };
 }

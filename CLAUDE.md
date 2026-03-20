@@ -1,4 +1,8 @@
-# CLAUDE.md — Granada Vibes
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Granada Vibes
 
 Guía de contexto para Claude Code. Lee esto antes de tocar cualquier archivo.
 Respeta estas decisiones. No las cuestiones salvo que haya un error técnico real.

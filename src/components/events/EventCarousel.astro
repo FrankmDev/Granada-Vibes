@@ -1,8 +1,4 @@
 ---
-/**
- * EventCarousel — Modern Coral Design
- */
-
 import type { Event, Locale } from '@types';
 import EventCard from './EventCard.astro';
 
@@ -16,7 +12,6 @@ interface Props {
 }
 
 const { events, locale, t, title, subtitle, maxEvents = 8 } = Astro.props;
-
 const sortedEvents = events
   .sort((a, b) => a.date.localeCompare(b.date))
   .slice(0, maxEvents);
@@ -25,65 +20,51 @@ const sortedEvents = events
 <section class="relative py-20 lg:py-28 overflow-hidden" aria-labelledby={title ? 'carousel-title' : undefined}>
   <!-- Background decorations -->
   <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-edge to-transparent" />
-    <div class="absolute top-20 right-0 w-96 h-96 bg-primary/[0.03] rounded-full blur-[120px]" />
-    <div class="absolute bottom-20 left-0 w-64 h-64 bg-secondary/[0.02] rounded-full blur-[100px]" />
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent"></div>
+    <div class="carousel__orb carousel__orb--accent"></div>
+    <div class="carousel__orb carousel__orb--secondary"></div>
   </div>
 
   <div class="container relative">
     <!-- Header -->
     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-      <div class="reveal">
+      <div class="scroll-animate">
         {title && (
           <div class="flex items-center gap-3 mb-4">
-            <span class="w-8 h-[2px] bg-gradient-to-r from-primary to-secondary rounded-full" />
-            <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+            <span class="w-8 h-[2px] bg-gradient-to-r from-accent to-secondary rounded-full"></span>
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-accent">
               {t('events.upcoming')}
             </span>
           </div>
         )}
         {title && (
-          <h2 id="carousel-title" class="font-display text-3xl lg:text-4xl font-bold text-surface">
+          <h2 id="carousel-title" class="font-display text-3xl lg:text-4xl font-bold text-white">
             {title}
           </h2>
         )}
         {subtitle && (
-          <p class="text-surface-secondary text-lg mt-3 max-w-xl">
-            {subtitle}
-          </p>
+          <p class="text-white/50 text-lg mt-3 max-w-xl">{subtitle}</p>
         )}
       </div>
-      
-      <!-- Navigation arrows - desktop -->
-      <div class="hidden lg:flex items-center gap-3 reveal">
-        <button 
-          type="button"
-          class="carousel-prev w-12 h-12 rounded-xl bg-white border-2 border-edge flex items-center justify-center text-surface-secondary hover:text-primary hover:border-primary/30 transition-all duration-300 group shadow-soft-sm hover:shadow-soft"
-          aria-label="Anterior"
-        >
-          <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+      <!-- Navigation arrows -->
+      <div class="hidden lg:flex items-center gap-3 scroll-animate">
+        <button type="button" class="carousel-nav carousel-prev" aria-label="Anterior">
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <button 
-          type="button"
-          class="carousel-next w-12 h-12 rounded-xl bg-white border-2 border-edge flex items-center justify-center text-surface-secondary hover:text-primary hover:border-primary/30 transition-all duration-300 group shadow-soft-sm hover:shadow-soft"
-          aria-label="Siguiente"
-        >
-          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button type="button" class="carousel-nav carousel-next" aria-label="Siguiente">
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
     </div>
 
-    <!-- Carousel container -->
+    <!-- Carousel -->
     <div class="relative">
-      <!-- Scroll container -->
-      <div 
-        class="carousel-scroll flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 scrollbar-hide scroll-smooth"
-        style="-webkit-overflow-scrolling: touch;"
-      >
+      <div class="carousel-scroll flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6 scrollbar-hide scroll-smooth" style="-webkit-overflow-scrolling: touch;">
         {sortedEvents.map((event) => (
           <div class="flex-shrink-0 w-[320px] sm:w-[360px] snap-start">
             <EventCard event={event} locale={locale} t={t} />
@@ -91,27 +72,27 @@ const sortedEvents = events
         ))}
       </div>
 
-      <!-- Gradient fades for scroll indication -->
-      <div class="absolute top-0 bottom-6 left-0 w-12 bg-gradient-to-r from-base to-transparent pointer-events-none lg:hidden" />
-      <div class="absolute top-0 bottom-6 right-0 w-12 bg-gradient-to-l from-base to-transparent pointer-events-none lg:hidden" />
+      <!-- Gradient fades -->
+      <div class="carousel__fade carousel__fade--left lg:hidden"></div>
+      <div class="carousel__fade carousel__fade--right lg:hidden"></div>
     </div>
 
     <!-- Mobile scroll indicator -->
     <div class="flex items-center justify-center gap-2 mt-6 lg:hidden">
-      <span class="text-xs text-surface-muted">Desliza para ver más</span>
-      <svg class="w-4 h-4 text-surface-muted animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <span class="text-xs text-white/30">{locale === 'es' ? 'Desliza para ver más' : 'Swipe for more'}</span>
+      <svg class="w-4 h-4 text-white/30 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
       </svg>
     </div>
 
     <!-- View all link -->
-    <div class="flex justify-center mt-12 reveal">
-      <a 
+    <div class="flex justify-center mt-12 scroll-animate">
+      <a
         href={`${locale === 'es' ? '' : '/en'}/eventos`}
-        class="group inline-flex items-center gap-3 px-8 py-4 bg-white border-2 border-edge rounded-2xl text-surface font-semibold hover:border-primary/50 hover:-translate-y-0.5 transition-all duration-300 shadow-soft-sm hover:shadow-soft"
+        class="carousel__view-all group"
       >
         <span>{t('actions.viewAll')}</span>
-        <svg class="w-5 h-5 text-primary transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 text-accent transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
         </svg>
       </a>
@@ -119,21 +100,100 @@ const sortedEvents = events
   </div>
 </section>
 
+<style>
+  .carousel__orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .carousel__orb--accent {
+    top: 5rem;
+    right: 0;
+    width: 24rem;
+    height: 24rem;
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+    filter: blur(120px);
+  }
+
+  .carousel__orb--secondary {
+    bottom: 5rem;
+    left: 0;
+    width: 16rem;
+    height: 16rem;
+    background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
+    filter: blur(100px);
+  }
+
+  .carousel-nav {
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all var(--duration-normal);
+  }
+
+  .carousel-nav:hover {
+    color: var(--color-accent);
+    border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .carousel__fade {
+    position: absolute;
+    top: 0;
+    bottom: 1.5rem;
+    width: 3rem;
+    pointer-events: none;
+  }
+
+  .carousel__fade--left {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg), transparent);
+  }
+
+  .carousel__fade--right {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg), transparent);
+  }
+
+  .carousel__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-lg);
+    color: white;
+    font-weight: 600;
+    transition: all var(--duration-normal);
+  }
+
+  .carousel__view-all:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+  }
+</style>
+
 <script>
   function initCarousels() {
     const carousels = document.querySelectorAll('.carousel-scroll');
-    
     carousels.forEach(carousel => {
       const container = carousel.closest('section');
       const prevBtn = container?.querySelector('.carousel-prev');
       const nextBtn = container?.querySelector('.carousel-next');
-      
       const scrollAmount = 380;
-      
+
       prevBtn?.addEventListener('click', () => {
         carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       });
-      
       nextBtn?.addEventListener('click', () => {
         carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       });

@@ -1,0 +1,146 @@
+---
+import type { Route, Locale, Neighborhood } from '@types';
+import { formatDuration, formatDistance } from '@utils/dates';
+import { routeCategoryStyles, difficultyStyles, timeOfDayStyles, icons } from '@config/ui';
+
+interface Props {
+  route: Route;
+  locale: Locale;
+  t: (key: string, vars?: Record<string, string | number>) => string;
+}
+
+const { route, locale, t } = Astro.props;
+const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+
+const catStyle = routeCategoryStyles[route.category] ?? routeCategoryStyles.monuments;
+const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;
+const timeStyle = timeOfDayStyles[route.timeOfDay] ?? timeOfDayStyles.any;
+const diffLevel = diffStyle.bars;
+---
+
+<article class="group h-full">
+  <a href={href} class="block h-full">
+    <div class="card-base h-full">
+      <div class="accent-bar"></div>
+
+      <!-- Image header -->
+      <div class="route-grid__header">
+        <div class="route-grid__pattern"></div>
+        <div class="route-grid__gradient" style={`--cat-color: ${catStyle.colorVar}`}></div>
+
+        <!-- Decorative icon -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-20">
+          <svg class="w-24 h-24" style={`color: ${catStyle.colorVar}`} viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+            <path d="M50 5 L95 50 L50 95 L5 50 Z" /><circle cx="50" cy="50" r="20" />
+          </svg>
+        </div>
+
+        <!-- Category badge -->
+        <div class="absolute top-4 left-4 z-10">
+          <span class="badge badge-glass route-grid__cat" style={`--cat-color: ${catStyle.colorVar}`}>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={catStyle.icon} />
+            </svg>
+            {t(`categories.${route.category}`)}
+          </span>
+        </div>
+
+        <!-- Difficulty bars -->
+        <div class="absolute top-4 right-4 z-10">
+          <div class="badge-glass flex items-center gap-2 px-3 py-2 rounded-xl">
+            <span class="flex gap-1">
+              {[1, 2, 3].map(i => (
+                <span
+                  class="w-2 h-4 rounded-sm"
+                  style={i <= diffLevel ? `background: ${diffStyle.colorVar}` : 'background: rgba(255,255,255,0.2)'}
+                ></span>
+              ))}
+            </span>
+          </div>
+        </div>
+
+        <!-- Time of day -->
+        <div class="absolute bottom-4 right-4 z-10">
+          <span class="badge badge-glass">
+            <svg class="w-4 h-4" style={`color: var(--color-secondary)`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={timeStyle.icon} />
+            </svg>
+            {t(`timeOfDay.${route.timeOfDay}`)}
+          </span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="p-6">
+        <div class="flex items-center gap-5 text-sm text-white/50 mb-4">
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons.clock} />
+            </svg>
+            {formatDuration(route.duration, locale)}
+          </span>
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons.distance} />
+            </svg>
+            {formatDistance(route.distance, locale)}
+          </span>
+        </div>
+
+        <div class="accent-line-animated mb-5"></div>
+
+        <h3 class="font-bold text-xl text-white mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2">
+          {route.title[locale]}
+        </h3>
+
+        <p class="text-sm text-white/50 line-clamp-2 mb-6 leading-relaxed">
+          {route.description[locale]}
+        </p>
+
+        <div class="flex items-center justify-between pt-5 border-t border-white/[0.05]">
+          <div class="flex flex-wrap gap-2">
+            {route.neighborhoods.slice(0, 2).map((n: Neighborhood) => (
+              <span class="tag">{t(`neighborhoods.${n}`)}</span>
+            ))}
+          </div>
+          <div class="arrow-btn">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icons.chevronRight} />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="hover-glow-overlay"></div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .route-grid__header {
+    position: relative;
+    height: 12rem;
+    background: linear-gradient(135deg, #0f0f0f, var(--color-bg), #050505);
+    overflow: hidden;
+  }
+
+  .route-grid__pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+
+  .route-grid__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--cat-color) 20%, transparent), color-mix(in srgb, var(--cat-color) 5%, transparent), transparent);
+  }
+
+  .route-grid__cat {
+    background: color-mix(in srgb, var(--cat-color) 15%, transparent);
+    color: var(--cat-color);
+    border-color: color-mix(in srgb, var(--cat-color) 30%, transparent);
+  }
+</style>

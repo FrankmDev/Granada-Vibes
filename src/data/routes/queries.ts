@@ -1,5 +1,5 @@
 import type { Route, RouteCategory, Neighborhood } from '@types';
-import { routes } from './data';
+import { routes } from './data.js';
 
 export function getAllRoutes(): Route[] {
   return routes;

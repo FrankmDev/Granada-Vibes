@@ -15,6 +15,7 @@ export interface ConciertosGranadaEvent {
   price: string;
   url: string;
   imageUrl?: string;
+  description?: string;
 }
 
 const BASE_URL = 'https://conciertosengranada.es';
@@ -104,6 +105,12 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
           : `${BASE_URL}${imgSrc}`
         : undefined;
 
+    // Extract description from parent text (extra info beyond title/venue/date)
+    const $descEl = $parent.find('p, .description, .info, .resumen').first();
+    const description = $descEl.length
+      ? $descEl.text().trim().slice(0, 300)
+      : undefined;
+
     // Extract genre/price from parent text
     const parentText = $parent.text();
     const genreMatch = parentText.match(
@@ -128,6 +135,7 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
       price,
       url: cleanHref.startsWith('http') ? cleanHref : `${BASE_URL}${cleanHref}`,
       imageUrl,
+      description,
     });
   });
 

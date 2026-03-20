@@ -5,7 +5,6 @@ import SEOHead from '@components/seo/SEOHead.astro';
 import SchemaMarkup from '@components/seo/SchemaMarkup.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
-import { useTranslations } from '@i18n/utils';
 import '../styles/global.css';
 
 interface Props {
@@ -34,7 +33,6 @@ const {
   variant = 'default',
 } = Astro.props;
 
-const t = useTranslations(locale);
 const currentPath = Astro.url.pathname;
 ---
 
@@ -48,7 +46,7 @@ const currentPath = Astro.url.pathname;
     <!-- SEO -->
     <SEOHead
       locale={locale}
-      title={title}
+      title={title ?? SITE_CONFIG.name}
       description={description}
       ogImage={ogImage}
       ogType={ogType}
@@ -64,7 +62,7 @@ const currentPath = Astro.url.pathname;
       path={currentPath}
     />
 
-    <!-- Performance: Preconnect to external domains -->
+    <!-- Performance: Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
@@ -73,15 +71,7 @@ const currentPath = Astro.url.pathname;
     <slot name="head" />
   </head>
 
-  <body class="min-h-screen flex flex-col bg-base text-surface antialiased font-body">
-    <!-- Skip to content link for accessibility -->
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-terra focus:text-surface focus:rounded-xl focus:font-bold"
-    >
-      {t('nav.skipToContent')}
-    </a>
-
+  <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased">
     <NavBar locale={locale} currentPath={currentPath} />
 
     <!-- Main Content -->
@@ -94,14 +84,14 @@ const currentPath = Astro.url.pathname;
     <!-- Scroll reveal animation -->
     <script is:inline>
       (function () {
-        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children');
-
-        if (revealElements.length > 0) {
+        const revealElements = document.querySelectorAll('.scroll-animate');
+        
+        if (revealElements.length > 0 && 'IntersectionObserver' in window) {
           const revealObserver = new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                  entry.target.classList.add('visible');
+                  entry.target.classList.add('is-visible');
                   revealObserver.unobserve(entry.target);
                 }
               });
@@ -111,10 +101,23 @@ const currentPath = Astro.url.pathname;
               rootMargin: '0px 0px -50px 0px',
             }
           );
-
+          
           revealElements.forEach((el) => revealObserver.observe(el));
         }
       })();
+    </script>
+
+    <!-- View Transitions support -->
+    <script is:inline>
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      if (!prefersReducedMotion) {
+        // Add page load animation class
+        document.addEventListener('DOMContentLoaded', () => {
+          document.body.classList.add('page-loaded');
+        });
+      }
     </script>
   </body>
 </html>

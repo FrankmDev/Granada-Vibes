@@ -13,6 +13,7 @@ export interface PalacioEvent {
   time: string;
   url: string;
   imageUrl?: string;
+  description?: string;
 }
 
 const BASE_URL = 'https://www.pcgr.org';
@@ -65,6 +66,12 @@ export async function fetchPalacioEvents(): Promise<PalacioEvent[]> {
       ? img.startsWith('http') ? img : `${BASE_URL}/${img.replace(/^\.\//, '')}`
       : undefined;
 
+    // Extract description from section paragraphs
+    const descText = $section.find('p').first().text().trim();
+    const description = descText && descText.length > 5
+      ? descText.slice(0, 300)
+      : undefined;
+
     // Full URL
     const fullUrl = href.startsWith('http') ? href : `${BASE_URL}/${href.replace(/^\.\//, '')}`;
 
@@ -74,6 +81,7 @@ export async function fetchPalacioEvents(): Promise<PalacioEvent[]> {
       time,
       url: fullUrl,
       imageUrl,
+      description,
     });
   });
 

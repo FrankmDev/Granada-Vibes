@@ -1,0 +1,116 @@
+---
+/**
+ * HeroEventsList — Glass container with upcoming events for the hero sidebar.
+ */
+import type { Locale, Event } from '@types';
+import { LOCALE_PATHS } from '@config/site';
+import { useTranslations } from '@i18n/utils';
+import HeroEventCard from './HeroEventCard.astro';
+
+interface Props {
+  events: Event[];
+  locale: Locale;
+}
+
+const { events, locale } = Astro.props;
+const t = useTranslations(locale);
+const localePath = LOCALE_PATHS[locale];
+const eventsPath = locale === 'es' ? 'eventos' : 'en/events';
+---
+
+<div class="hero-events">
+  <div class="hero-reveal hero-events__header" data-delay="200">
+    <div>
+      <span class="hero-events__overline">
+        <span class="hero-events__dot"></span>
+        {t('home.hero.eventsTitle')}
+      </span>
+      <h2 class="hero-events__title">{t('home.hero.eventsSubtitle')}</h2>
+    </div>
+    <a href={`${localePath}/eventos`} class="hero-events__link group">
+      <span>{t('actions.viewAll')}</span>
+      <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-events__list">
+    {events.map((event, index) => (
+      <HeroEventCard
+        event={event}
+        locale={locale}
+        href={`/${eventsPath}/${event.slug}`}
+        delay={350 + (index * 100)}
+      />
+    ))}
+  </div>
+
+  <div class="hero-events__corner" aria-hidden="true"></div>
+</div>
+
+<style>
+  .hero-events {
+    position: relative;
+    padding: 1.25rem;
+    border-radius: var(--radius-2xl);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .hero-events__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-events__overline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .hero-events__dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  .hero-events__title { font-size: 1.25rem; font-weight: 900; color: white; }
+
+  .hero-events__link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color var(--duration-normal);
+  }
+
+  .hero-events__link:hover { color: var(--color-accent); }
+
+  .hero-events__list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+  .hero-events__corner {
+    position: absolute;
+    bottom: -1rem;
+    right: -1rem;
+    width: 8rem;
+    height: 8rem;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 10%, transparent);
+    border-radius: var(--radius-2xl);
+    z-index: -1;
+  }
+</style>

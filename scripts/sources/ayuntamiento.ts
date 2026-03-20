@@ -14,6 +14,7 @@ export interface AyuntamientoEvent {
   venue: string;
   url: string;
   description: string;
+  imageUrl?: string;
 }
 
 const BASE_URL = 'https://www.granada.org';
@@ -82,13 +83,26 @@ async function scrapeFromUrl(url: string): Promise<AyuntamientoEvent[]> {
       ? href
       : `${BASE_URL}${href.startsWith('/') ? '' : '/'}${href}`;
 
+    // Extract description from surrounding text
+    const descText = $row.find('p, .description, td:last-child').first().text().trim();
+    const description = descText && descText !== title && descText.length > 5
+      ? descText.slice(0, 300)
+      : '';
+
+    // Extract image from row
+    const imgSrc = $row.find('img').first().attr('src') ?? '';
+    const imageUrl = imgSrc && !imgSrc.startsWith('data:')
+      ? imgSrc.startsWith('http') ? imgSrc : `${BASE_URL}${imgSrc.startsWith('/') ? '' : '/'}${imgSrc}`
+      : undefined;
+
     events.push({
       title,
       date,
       time,
       venue: venue || 'Granada',
       url: fullUrl,
-      description: '',
+      description,
+      imageUrl,
     });
   });
 

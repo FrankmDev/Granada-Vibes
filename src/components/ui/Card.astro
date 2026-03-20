@@ -1,42 +1,72 @@
 ---
 interface Props {
   href?: string;
-  variant?: 'default' | 'terra' | 'amber' | 'mint' | 'glass' | 'elevated';
+  variant?: 'default' | 'glass' | 'elevated' | 'accent';
   class?: string;
   hover?: boolean;
   glow?: boolean;
 }
 
 const { href, variant = 'default', class: className = '', hover = true, glow = false } = Astro.props;
-
-const variantClasses = {
-  default: 'bg-base-card border-edge hover:border-edge-hover',
-  terra: 'bg-base-card border-terra/20 hover:border-terra/40 hover:glow-terra',
-  amber: 'bg-base-card border-amber/20 hover:border-amber/40 hover:glow-amber',
-  mint: 'bg-base-card border-mint/20 hover:border-mint/40',
-  glass: 'glass border-edge-hover',
-  elevated: 'bg-base-elevated border-edge shadow-elevated hover:shadow-elevated-lg',
-};
-
-const baseClasses = [
-  'relative rounded-3xl overflow-hidden transition-all duration-500',
-  variantClasses[variant],
-  hover && 'hover:-translate-y-2',
-  glow && 'hover:shadow-lg',
-  className,
-].join(' ');
 ---
 
-{
-  href ? (
-    <a href={href} class:list={[baseClasses, 'group block']}>
-      <slot />
-      {/* Hover gradient overlay */}
-      <div class="absolute inset-0 bg-gradient-to-t from-terra/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-    </a>
-  ) : (
-    <div class:list={[baseClasses]}>
-      <slot />
-    </div>
-  )
-}
+{href ? (
+  <a href={href} class:list={[`card-ui card-ui--${variant}`, hover && 'card-ui--hover', glow && 'card-ui--glow', 'group block', className]}>
+    <div class="accent-bar"></div>
+    <slot />
+    <div class="hover-glow-overlay"></div>
+  </a>
+) : (
+  <div class:list={[`card-ui card-ui--${variant}`, hover && 'card-ui--hover', glow && 'card-ui--glow', className]}>
+    <slot />
+  </div>
+)}
+
+<style>
+  .card-ui {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .card-ui--default {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .card-ui--glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .card-ui--elevated {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card-ui--accent {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+
+  .card-ui--hover:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .card-ui--default.card-ui--hover:hover,
+  .card-ui--glass.card-ui--hover:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+
+  .card-ui--accent.card-ui--hover:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+  }
+
+  .card-ui--glow:hover {
+    box-shadow: 0 12px 40px color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+</style>

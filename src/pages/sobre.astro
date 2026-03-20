@@ -38,23 +38,23 @@ const values = [
   <PageHeader 
     title="La guía que Granada merece"
     subtitle="Guía cultural independiente creada por granadinos de toda la vida y adoptados. Conocemos cada rincón de la ciudad: desde el Albaicín hasta el Sacromonte, desde la Alhambra hasta el Realejo."
-    accent="terra"
+    accent="primary"
     variant="large"
   />
 
   {/* Mission Statement */}
   <section class="py-20 lg:py-28 relative" aria-labelledby="mission-heading">
     {/* Background accent */}
-    <div class="absolute inset-0 bg-gradient-to-b from-terra/[0.02] to-transparent pointer-events-none" aria-hidden="true" />
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background: linear-gradient(to bottom, rgba(232, 77, 39, 0.02), transparent);" />
     
     <div class="container relative">
       <div class="max-w-3xl mx-auto text-center reveal">
-        <span class="text-amber text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">Nuestra misión</span>
-        <h2 id="mission-heading" class="font-display text-3xl lg:text-4xl xl:text-5xl font-bold text-surface leading-tight mb-8">
+        <span class="text-sm font-semibold uppercase tracking-[0.2em] mb-4 block" style="color: var(--color-secondary);">Nuestra misión</span>
+        <h2 id="mission-heading" class="font-display text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-8" style="color: var(--color-surface);">
           La guía de Granada <br/>
-          <span class="text-surface-secondary">que los locales usarían.</span>
+          <span style="color: var(--color-surface-secondary);">que los locales usarían.</span>
         </h2>
-        <p class="text-lg text-surface-secondary leading-relaxed">
+        <p class="text-lg leading-relaxed" style="color: var(--color-surface-secondary);">
           Granada tiene dos caras: la de las guías turísticas y la de quienes la vivimos. Nosotros te mostramos 
           la segunda. Los mejores miradores del Albaicín, las cuevas flamencas del Sacromonte, los bares de toda 
           la vida donde las tapas siguen siendo gratis. Sin filtros, sin colas, sin sorpresas.
@@ -67,34 +67,34 @@ const values = [
   <section class="py-20 lg:py-28 relative" aria-labelledby="values-heading">
     <div class="container">
       <div class="text-center mb-16 reveal">
-        <span class="text-mint text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">Lo que nos mueve</span>
-        <h2 id="values-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface">
+        <span class="text-sm font-semibold uppercase tracking-[0.2em] mb-4 block" style="color: var(--color-success);">Lo que nos mueve</span>
+        <h2 id="values-heading" class="font-display text-3xl lg:text-4xl font-bold" style="color: var(--color-surface);">
           Nuestros valores
         </h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 stagger-children">
         {values.map((value, i) => (
-          <div class="group text-center p-8 rounded-3xl border border-edge bg-base-elevated/30 hover:border-edge-hover transition-all duration-500 hover:-translate-y-2">
+          <div class="group text-center p-8 rounded-3xl transition-all duration-500 hover:-translate-y-2" style="background: rgba(17, 17, 17, 0.3); border: 1px solid rgba(255, 255, 255, 0.06);" onmouseenter="this.style.borderColor='rgba(255, 255, 255, 0.1)';" onmouseleave="this.style.borderColor='rgba(255, 255, 255, 0.06)';">
             {/* Icon */}
-            <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-terra/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-              <svg class="w-8 h-8 text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500" style="background: rgba(232, 77, 39, 0.1);">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--color-primary);">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={value.icon} />
               </svg>
             </div>
             
             {/* Number */}
-            <span class="font-display text-5xl font-bold text-surface/[0.03] block mb-2">
+            <span class="font-display text-5xl font-bold block mb-2" style="color: rgba(240, 237, 232, 0.03);">
               0{i + 1}
             </span>
             
             {/* Title */}
-            <h3 class="font-display text-xl font-semibold text-surface mb-3">
+            <h3 class="font-display text-xl font-semibold mb-3" style="color: var(--color-surface);">
               {value.title}
             </h3>
             
             {/* Description */}
-            <p class="text-surface-secondary leading-relaxed text-sm">
+            <p class="leading-relaxed text-sm" style="color: var(--color-surface-secondary);">
               {value.desc}
             </p>
           </div>
@@ -106,12 +106,12 @@ const values = [
   {/* How it Works - Visual Timeline */}
   <section class="py-20 lg:py-28 relative overflow-hidden" aria-labelledby="how-heading">
     {/* Background gradient */}
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-mint/[0.02] to-transparent pointer-events-none" aria-hidden="true" />
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.02), transparent);" />
     
     <div class="container relative">
       <div class="text-center mb-16 reveal">
-        <span class="text-amber text-sm font-semibold uppercase tracking-[0.2em] mb-4 block">El proceso</span>
-        <h2 id="how-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface">
+        <span class="text-sm font-semibold uppercase tracking-[0.2em] mb-4 block" style="color: var(--color-secondary);">El proceso</span>
+        <h2 id="how-heading" class="font-display text-3xl lg:text-4xl font-bold" style="color: var(--color-surface);">
           Cómo funciona
         </h2>
       </div>
@@ -120,12 +120,12 @@ const values = [
         <div class="space-y-12">
           {/* Step 1 */}
           <div class="flex flex-col md:flex-row gap-8 items-start reveal">
-            <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-terra flex items-center justify-center">
-              <span class="font-display text-2xl font-bold text-surface">1</span>
+            <div class="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center" style="background-color: var(--color-primary);">
+              <span class="font-display text-2xl font-bold" style="color: var(--color-surface);">1</span>
             </div>
             <div class="flex-1 pt-2">
-              <h3 class="font-display text-xl font-semibold text-surface mb-2">Recorremos Granada</h3>
-              <p class="text-surface-secondary leading-relaxed">
+              <h3 class="font-display text-xl font-semibold mb-2" style="color: var(--color-surface);">Recorremos Granada</h3>
+              <p class="leading-relaxed" style="color: var(--color-surface-secondary);">
                 Cada semana visitamos el Albaicín, el Sacromonte, el Realejo y el centro. Hablamos con organizadores, 
                 probamos bares y descubrimos espacios nuevos. Trabajo de campo, no algoritmos.
               </p>
@@ -133,16 +133,16 @@ const values = [
           </div>
 
           {/* Divider */}
-          <div class="hidden md:block h-px bg-edge ml-16" />
+          <div class="hidden md:block h-px ml-16" style="background-color: rgba(255, 255, 255, 0.06);" />
 
           {/* Step 2 */}
           <div class="flex flex-col md:flex-row gap-8 items-start reveal">
-            <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-amber flex items-center justify-center">
-              <span class="font-display text-2xl font-bold text-base">2</span>
+            <div class="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center" style="background-color: var(--color-secondary);">
+              <span class="font-display text-2xl font-bold" style="color: var(--color-bg);">2</span>
             </div>
             <div class="flex-1 pt-2">
-              <h3 class="font-display text-xl font-semibold text-surface mb-2">Seleccionamos lo mejor</h3>
-              <p class="text-surface-secondary leading-relaxed">
+              <h3 class="font-display text-xl font-semibold mb-2" style="color: var(--color-surface);">Seleccionamos lo mejor</h3>
+              <p class="leading-relaxed" style="color: var(--color-surface-secondary);">
                 Cada evento y ruta pasa por nuestro filtro: ¿lo recomendaríamos a un amigo? Buscamos autenticidad, 
                 calidad y esa magia que solo tienen los lugares de verdad.
               </p>
@@ -150,16 +150,16 @@ const values = [
           </div>
 
           {/* Divider */}
-          <div class="hidden md:block h-px bg-edge ml-16" />
+          <div class="hidden md:block h-px ml-16" style="background-color: rgba(255, 255, 255, 0.06);" />
 
           {/* Step 3 */}
           <div class="flex flex-col md:flex-row gap-8 items-start reveal">
-            <div class="flex-shrink-0 w-16 h-16 rounded-2xl bg-mint flex items-center justify-center">
-              <span class="font-display text-2xl font-bold text-surface">3</span>
+            <div class="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center" style="background-color: var(--color-success);">
+              <span class="font-display text-2xl font-bold" style="color: var(--color-surface);">3</span>
             </div>
             <div class="flex-1 pt-2">
-              <h3 class="font-display text-xl font-semibold text-surface mb-2">Tú descubres</h3>
-              <p class="text-surface-secondary leading-relaxed">
+              <h3 class="font-display text-xl font-semibold mb-2" style="color: var(--color-surface);">Tú descubres</h3>
+              <p class="leading-relaxed" style="color: var(--color-surface-secondary);">
                 Flamenco auténtico en cuevas del Sacromonte, miradores secretos del Albaicín, bares de toda la vida 
                 en el Realejo. La Granada que no sale en las guías turísticas, pero que los locales conocemos bien.
               </p>
@@ -175,14 +175,14 @@ const values = [
     <div class="container">
       <div class="relative rounded-[2rem] overflow-hidden">
         {/* Background */}
-        <div class="absolute inset-0 bg-gradient-to-br from-terra/10 via-base-elevated to-base-elevated" aria-hidden="true" />
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-terra/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" aria-hidden="true" />
+        <div class="absolute inset-0" aria-hidden="true" style="background: linear-gradient(to bottom right, rgba(232, 77, 39, 0.1), var(--color-bg-elevated), var(--color-bg-elevated));" />
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" aria-hidden="true" style="background: rgba(232, 77, 39, 0.1);" />
         
         <div class="relative px-8 py-16 lg:px-16 lg:py-20 text-center reveal">
-          <h2 id="collab-heading" class="font-display text-3xl lg:text-4xl font-bold text-surface mb-4 max-w-2xl mx-auto">
+          <h2 id="collab-heading" class="font-display text-3xl lg:text-4xl font-bold mb-4 max-w-2xl mx-auto" style="color: var(--color-surface);">
             ¿Eres de Granada y organizas algo?
           </h2>
-          <p class="text-surface-secondary text-lg max-w-xl mx-auto mb-10">
+          <p class="text-lg max-w-xl mx-auto mb-10" style="color: var(--color-surface-secondary);">
             Si organizas eventos culturales, das tours por el Albaicín o el Sacromonte, o tienes un espacio único 
             en Granada — nos encantaría colaborar contigo.
           </p>

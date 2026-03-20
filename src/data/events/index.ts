@@ -1,4 +1,4 @@
-export { mockEvents } from './mock';
+export { mockEvents } from './mock.js';
 export {
   getAllEvents,
   getFeaturedEvents,
@@ -7,4 +7,4 @@ export {
   getEventBySlug,
   getUpcomingEvents,
   getEventsByTag,
-} from './queries';
+} from './queries.js';

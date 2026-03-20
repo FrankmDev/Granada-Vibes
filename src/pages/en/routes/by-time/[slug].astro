@@ -1,0 +1,217 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getAllMixedRoutes, getMixedRouteBySlug } from '@data';
+import { useTranslations } from '@i18n/utils';
+import type { MixedRoute, MixedRouteStop } from '@types';
+
+export function getStaticPaths() {
+  const plans = getAllMixedRoutes();
+  return plans.map((plan) => ({
+    params: { slug: plan.slug },
+    props: { plan },
+  }));
+}
+
+interface Props {
+  plan: MixedRoute;
+}
+
+const { plan } = Astro.props;
+const locale = 'en';
+const t = useTranslations(locale);
+
+const totalStops = plan.days.reduce(
+  (acc, day) => acc + day.blocks.reduce((bAcc, block) => bAcc + block.stops.length, 0),
+  0
+);
+
+const stopCategoryConfig: Record<string, { color: string; bg: string; border: string; icon: string }> = {
+  mirador: { color: '#FF9933', bg: 'rgba(255,153,51,0.1)', border: 'rgba(255,153,51,0.3)', icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z' },
+  tapas: { color: '#FF3366', bg: 'rgba(255,51,102,0.1)', border: 'rgba(255,51,102,0.3)', icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z' },
+  monumento: { color: '#00CC99', bg: 'rgba(0,204,153,0.1)', border: 'rgba(0,204,153,0.3)', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4' },
+  cultura: { color: '#FF9933', bg: 'rgba(255,153,51,0.1)', border: 'rgba(255,153,51,0.3)', icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z' },
+  paseo: { color: '#00CC99', bg: 'rgba(0,204,153,0.1)', border: 'rgba(0,204,153,0.3)', icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' },
+  compras: { color: '#FF9933', bg: 'rgba(255,153,51,0.1)', border: 'rgba(255,153,51,0.3)', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' },
+  naturaleza: { color: '#00CC99', bg: 'rgba(0,204,153,0.1)', border: 'rgba(0,204,153,0.3)', icon: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' },
+  flamenco: { color: '#FF3366', bg: 'rgba(255,51,102,0.1)', border: 'rgba(255,51,102,0.3)', icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3' },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  title={plan.title[locale]}
+  description={plan.description[locale]}
+>
+  <!-- Hero -->
+  <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 bg-[#050505] overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#FF3366]/5 via-transparent to-transparent" aria-hidden="true"></div>
+    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#FF3366]/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="container relative">
+      <a
+        href="/en/routes/by-time"
+        class="inline-flex items-center gap-2 text-sm text-white/50 hover:text-[#FF3366] transition-colors mb-8"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        {t('mixedRoutes.title')}
+      </a>
+
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-3 mb-5">
+          <span class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-wider text-[#FF3366] bg-[#FF3366]/10 border border-[#FF3366]/30 rounded-full">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {t(`mixedRoutes.durations.${plan.duration}`)}
+          </span>
+          <span class="text-sm text-white/40">
+            {totalStops} {t('mixedRoutes.stops')} · {plan.neighborhoods.length} {t('mixedRoutes.neighborhoods')}
+          </span>
+        </div>
+
+        <h1 class="font-display text-3xl lg:text-5xl font-bold text-white mb-5">
+          {plan.title[locale]}
+        </h1>
+        <p class="text-lg text-white/60 leading-relaxed">
+          {plan.description[locale]}
+        </p>
+
+        {plan.bestFor && (
+          <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm text-white/60">
+            <span class="font-semibold text-white/80">{t('mixedRoutes.bestFor')}:</span>
+            {plan.bestFor[locale]}
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline content -->
+  <section class="relative py-16 lg:py-24 bg-[#0a0a0a]">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        {plan.days.map((day, dayIndex) => (
+          <div class={dayIndex > 0 ? 'mt-16 pt-16 border-t border-white/10' : ''}>
+            {day.label && (
+              <h2 class="font-display text-2xl lg:text-3xl font-bold text-white mb-10 reveal">
+                {day.label[locale]}
+              </h2>
+            )}
+
+            {day.blocks.map((block, blockIndex) => (
+              <div class={blockIndex > 0 ? 'mt-12' : ''}>
+                <!-- Time block header -->
+                <div class="flex items-center gap-3 mb-6 reveal">
+                  <div class="w-10 h-10 rounded-xl bg-[#FF3366]/10 border border-[#FF3366]/20 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5 text-[#FF3366]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 class="text-lg font-bold text-white">
+                    {block.label[locale]}
+                  </h3>
+                  <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent"></div>
+                </div>
+
+                <!-- Stops -->
+                <div class="space-y-4 pl-5 border-l-2 border-white/10 ml-5">
+                  {block.stops.map((stop: MixedRouteStop, stopIndex: number) => {
+                    const catConfig = stopCategoryConfig[stop.category] || stopCategoryConfig.paseo;
+                    return (
+                      <div class="relative pl-8 pb-2 reveal">
+                        <!-- Timeline dot -->
+                        <div
+                          class="absolute -left-[11px] top-2 w-5 h-5 rounded-full border-2 flex items-center justify-center"
+                          style={`background: ${catConfig.bg}; border-color: ${catConfig.border};`}
+                        >
+                          <div class="w-2 h-2 rounded-full" style={`background: ${catConfig.color};`}></div>
+                        </div>
+
+                        <div class="bg-[#111] rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-colors">
+                          <!-- Stop header -->
+                          <div class="flex items-start justify-between gap-4 mb-3">
+                            <div class="flex items-center gap-3">
+                              <span
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg border"
+                                style={`color: ${catConfig.color}; background: ${catConfig.bg}; border-color: ${catConfig.border};`}
+                              >
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={catConfig.icon} />
+                                </svg>
+                                {t(`mixedRoutes.stopCategories.${stop.category}`)}
+                              </span>
+                              {stop.neighborhood && (
+                                <span class="text-xs text-white/40 font-medium">
+                                  {t(`neighborhoods.${stop.neighborhood}`)}
+                                </span>
+                              )}
+                            </div>
+                            <span class="text-xs text-white/40 font-medium shrink-0">
+                              ~{stop.duration} min
+                            </span>
+                          </div>
+
+                          <h4 class="text-lg font-bold text-white mb-2">
+                            {stop.name[locale]}
+                          </h4>
+                          <p class="text-sm text-white/60 leading-relaxed">
+                            {stop.description[locale]}
+                          </p>
+
+                          {stop.tip && (
+                            <div class="mt-4 flex items-start gap-2 px-4 py-3 bg-[#FF9933]/5 border border-[#FF9933]/20 rounded-xl">
+                              <svg class="w-4 h-4 text-[#FF9933] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              <span class="text-sm text-[#FF9933]/80">{stop.tip[locale]}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <!-- Essential tips -->
+      {plan.essentialTips && plan.essentialTips.length > 0 && (
+        <div class="max-w-3xl mx-auto mt-16 pt-16 border-t border-white/10">
+          <h2 class="font-display text-2xl font-bold text-white mb-8 reveal">
+            {t('mixedRoutes.essentialTips')}
+          </h2>
+          <div class="space-y-4">
+            {plan.essentialTips.map((tip) => (
+              <div class="flex items-start gap-4 p-5 bg-[#111] rounded-2xl border border-white/10 reveal">
+                <div class="w-8 h-8 rounded-lg bg-[#FF9933]/10 border border-[#FF9933]/20 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4 text-[#FF9933]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <p class="text-sm text-white/70 leading-relaxed">{tip[locale]}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Back to all plans -->
+      <div class="max-w-3xl mx-auto mt-12 text-center">
+        <a
+          href="/en/routes/by-time"
+          class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-white/60 hover:text-[#FF3366] transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          {t('mixedRoutes.title')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

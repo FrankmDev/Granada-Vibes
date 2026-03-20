@@ -13,7 +13,7 @@ export {
   getEventBySlug,
   getUpcomingEvents,
   getEventsByTag,
-} from './events';
+} from './events/index.js';
 
 // Routes
 export {
@@ -23,7 +23,26 @@ export {
   getRoutesByCategory,
   getRoutesByNeighborhood,
   getRouteBySlug,
-} from './routes';
+} from './routes/index.js';
+
+// Mixed Routes (Time-based plans)
+export {
+  mixedRoutes,
+  getAllMixedRoutes,
+  getMixedRouteBySlug,
+  getMixedRouteByDuration,
+} from './mixed-routes/index.js';
+
+// Blog
+export {
+  posts,
+  getAllPosts,
+  getFeaturedPosts,
+  getPostsByCategory,
+  getPostBySlug,
+  getRelatedPosts,
+  getPostsByTag,
+} from './blog/index.js';
 
 // Semana Santa
 export {
@@ -36,4 +55,4 @@ export {
   getPasoBySlug,
   getCofradiaById,
   getAllCofradiasByDay,
-} from './semana-santa';
+} from './semana-santa/index.js';

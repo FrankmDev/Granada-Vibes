@@ -5,80 +5,50 @@ interface Props {
   description?: string;
   href?: string;
   linkText?: string;
-  accent?: 'terra' | 'amber' | 'mint';
+  accent?: 'primary' | 'secondary' | 'accent';
   centered?: boolean;
 }
 
-const { 
-  overline, 
-  title, 
-  description, 
-  href, 
+const {
+  overline,
+  title,
+  description,
+  href,
   linkText,
-  accent = 'terra',
-  centered = false 
+  accent = 'primary',
+  centered = false,
 } = Astro.props;
 
-const accentColors = {
-  terra: 'text-terra',
-  amber: 'text-amber',
-  mint: 'text-mint',
+const accentColorMap = {
+  primary: 'var(--color-accent)',
+  secondary: 'var(--color-secondary)',
+  accent: 'var(--color-success)',
 };
 
-const accentBgColors = {
-  terra: 'bg-terra',
-  amber: 'bg-amber',
-  mint: 'bg-mint',
-};
-
-const accentBorderColors = {
-  terra: 'border-terra/30 hover:border-terra/50',
-  amber: 'border-amber/30 hover:border-amber/50',
-  mint: 'border-mint/30 hover:border-mint/50',
-};
-
-const accentTextHoverColors = {
-  terra: 'group-hover:text-terra',
-  amber: 'group-hover:text-amber',
-  mint: 'group-hover:text-mint',
-};
+const accentColor = accentColorMap[accent];
 ---
 
-<div class:list={['mb-12 lg:mb-16', centered && 'text-center']}>
-  {/* Overline */}
+<div class:list={['section-header mb-12 lg:mb-16', centered && 'text-center']} style={`--accent: ${accentColor}`}>
   <div class:list={['flex items-center gap-3 mb-5', centered && 'justify-center']}>
-    <span class:list={['w-12 h-[2px]', accentBgColors[accent]]}></span>
-    <span class:list={['text-xs font-bold uppercase tracking-[0.2em]', accentColors[accent]]}>
-      {overline}
-    </span>
-    <span class:list={['w-12 h-[2px]', accentBgColors[accent], centered ? 'block' : 'hidden']}></span>
+    <span class="section-header__line"></span>
+    <span class="section-header__overline">{overline}</span>
+    {centered && <span class="section-header__line"></span>}
   </div>
-  
-  {/* Title and link row */}
+
   <div class:list={['flex flex-col lg:flex-row lg:items-end gap-6', centered && 'flex-col items-center']}>
-    <div class:list={[centered && 'max-w-2xl']}> 
-      <h2 class="font-display text-4xl lg:text-5xl font-bold text-surface mb-4 leading-tight">
+    <div class:list={[centered && 'max-w-2xl']}>
+      <h2 class="font-display text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
         {title}
       </h2>
       {description && (
-        <p class="text-lg text-surface-secondary max-w-xl">
-          {description}
-        </p>
+        <p class="text-lg text-white/50 max-w-xl">{description}</p>
       )}
     </div>
-    
+
     {href && linkText && (
       <div class:list={['lg:ml-auto', centered && 'lg:mx-auto lg:mt-4']}>
-        <a 
-          href={href} 
-          class:list={[
-            'group inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-surface-secondary border rounded-xl transition-all duration-300 hover:-translate-y-0.5',
-            accentBorderColors[accent]
-          ]}
-        >
-          <span class:list={['transition-colors duration-300', accentTextHoverColors[accent]]}>
-            {linkText}
-          </span>
+        <a href={href} class="section-header__link group">
+          <span class="group-hover:text-[var(--accent)] transition-colors duration-300">{linkText}</span>
           <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -87,3 +57,37 @@ const accentTextHoverColors = {
     )}
   </div>
 </div>
+
+<style>
+  .section-header__line {
+    width: 3rem;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .section-header__overline {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+  }
+
+  .section-header__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: var(--radius-lg);
+    transition: all var(--duration-normal);
+  }
+
+  .section-header__link:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+    transform: translateY(-2px);
+  }
+</style>

@@ -108,9 +108,25 @@ function mapTmCategory(event: TicketmasterEvent): EventCategory {
 
 function getBestTmImage(event: TicketmasterEvent): string | undefined {
   if (!event.images?.length) return undefined;
-  return event.images.reduce((best, img) =>
+
+  // Prefer 16:9 ratio images at highest resolution
+  const preferred = event.images.filter((img) => img.ratio === '16_9');
+  const pool = preferred.length > 0 ? preferred : event.images;
+
+  return pool.reduce((best, img) =>
     img.width > best.width ? img : best
   ).url;
+}
+
+function getBestTmDescription(event: TicketmasterEvent): string {
+  // Ticketmaster has several description fields — take the first with content
+  const candidates = [event.description, event.info, event.pleaseNote];
+  for (const text of candidates) {
+    if (text && text.trim().length > 0) {
+      return text.trim().slice(0, 500);
+    }
+  }
+  return '';
 }
 
 function transformTicketmaster(raw: TicketmasterEvent): GeneratedEvent {
@@ -120,12 +136,13 @@ function transformTicketmaster(raw: TicketmasterEvent): GeneratedEvent {
     ? raw.dates.start.localTime.slice(0, 5)
     : 'Por confirmar';
   const imageUrl = getBestTmImage(raw);
+  const description = getBestTmDescription(raw);
 
   return {
     id: `tm-${raw.id}`,
     slug: slugify(raw.name),
     title: { es: raw.name, en: raw.name },
-    description: { es: '', en: '' },
+    description: { es: description, en: description },
     category: mapTmCategory(raw),
     date: raw.dates.start.localDate,
     time,
@@ -407,6 +424,12 @@ async function main(): Promise<void> {
   const final = deduplicateAndMerge(existing, allIncoming);
 
   console.log(`✓ Después de deduplicar: ${final.length} eventos en total`);
+
+  // Coverage summary
+  const withImage = final.filter((e) => e.imageUrl).length;
+  const withDescription = final.filter((e) => e.description.es.length > 0).length;
+  console.log(`📸 Con imagen: ${withImage}/${final.length} (${Math.round((withImage / final.length) * 100)}%)`);
+  console.log(`📝 Con descripción: ${withDescription}/${final.length} (${Math.round((withDescription / final.length) * 100)}%)`);
 
   // Write
   writeFileSync(GENERATED_PATH, JSON.stringify(final, null, 2) + '\n', 'utf-8');

@@ -1,22 +1,18 @@
 ---
 interface Props {
-  variant?: 'default' | 'gradient' | 'spacer';
+  variant?: 'default' | 'gradient' | 'accent' | 'spacer';
   class?: string;
 }
 
 const { variant = 'default', class: className = '' } = Astro.props;
-
-const variantClasses = {
-  default: 'border-t border-border',
-  gradient: 'h-px bg-gradient-to-r from-transparent via-border to-transparent',
-  spacer: 'border-t-0 h-8',
-};
-
-const baseClasses = [
-  'w-full',
-  variantClasses[variant],
-  className,
-].join(' ');
 ---
 
-<div class={baseClasses} role="separator" />
+<div class:list={[`divider-ui divider-ui--${variant}`, className]} role="separator" />
+
+<style>
+  .divider-ui { width: 100%; }
+  .divider-ui--default { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+  .divider-ui--gradient { height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); }
+  .divider-ui--accent { height: 1px; background: linear-gradient(90deg, transparent, var(--color-accent), transparent); }
+  .divider-ui--spacer { height: 2rem; }
+</style>

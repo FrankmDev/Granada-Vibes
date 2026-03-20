@@ -1,5 +1,5 @@
 import type { Event, EventCategory, Neighborhood } from '@types';
-import { mockEvents } from './mock';
+import { mockEvents } from './mock.js';
 import generatedRaw from './generated.json';
 
 const generatedEvents = generatedRaw as Event[];

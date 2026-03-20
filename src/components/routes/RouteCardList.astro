@@ -1,0 +1,101 @@
+---
+import type { Route, Locale, Neighborhood } from '@types';
+import { formatDuration, formatDistance } from '@utils/dates';
+import { difficultyStyles, icons } from '@config/ui';
+
+interface Props {
+  route: Route;
+  locale: Locale;
+  t: (key: string, vars?: Record<string, string | number>) => string;
+  index?: number;
+}
+
+const { route, locale, t, index = 0 } = Astro.props;
+const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+
+const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;
+const diffLevel = diffStyle.bars;
+---
+
+<article class="group">
+  <a href={href} class="block">
+    <div class="card-base flex flex-col md:flex-row md:items-center gap-5 p-6">
+      <div class="accent-bar"></div>
+
+      <!-- Index number -->
+      <span class="route-list__index hidden md:flex" style={`--cat-color: var(--color-accent)`}>
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-3 mb-3">
+          <span class="route-list__difficulty" style={`--diff-color: ${diffStyle.colorVar}`}>
+            <span class="flex gap-1">
+              {[1, 2, 3].map(i => (
+                <span
+                  class="w-1 h-3.5 rounded-sm"
+                  style={i <= diffLevel ? `background: ${diffStyle.colorVar}` : 'background: rgba(255,255,255,0.2)'}
+                ></span>
+              ))}
+            </span>
+            {diffStyle.label[locale]}
+          </span>
+          <span class="flex items-center gap-2 text-sm text-white/50">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icons.clock} />
+            </svg>
+            {formatDuration(route.duration, locale)}
+          </span>
+          <span class="text-sm text-white/50">{formatDistance(route.distance, locale)}</span>
+        </div>
+
+        <h3 class="text-lg font-bold text-white group-hover:text-accent transition-colors duration-300">
+          {route.title[locale]}
+        </h3>
+      </div>
+
+      <div class="flex flex-wrap gap-2 md:justify-end">
+        {route.neighborhoods.slice(0, 2).map((n: Neighborhood) => (
+          <span class="tag">{t(`neighborhoods.${n}`)}</span>
+        ))}
+      </div>
+
+      <div class="arrow-btn hidden md:flex">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icons.chevronRight} />
+        </svg>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .route-list__index {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--cat-color) 10%, transparent), color-mix(in srgb, var(--color-secondary) 10%, transparent));
+    border: 1px solid color-mix(in srgb, var(--cat-color) 10%, transparent);
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: color-mix(in srgb, var(--cat-color) 50%, transparent);
+  }
+
+  .route-list__difficulty {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--diff-color) 10%, transparent);
+    color: var(--diff-color);
+    border: 1px solid color-mix(in srgb, var(--diff-color) 30%, transparent);
+  }
+</style>

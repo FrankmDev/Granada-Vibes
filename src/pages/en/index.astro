@@ -4,6 +4,7 @@ import EventCard from '@components/events/EventCard.astro';
 import EventCarousel from '@components/events/EventCarousel.astro';
 import RouteCard from '@components/routes/RouteCard.astro';
 import HeroSection from '@components/home/HeroSection.astro';
+import TimeSelector from '@components/home/TimeSelector.astro';
 import { getFeaturedEvents, getFeaturedRoutes, getAllEvents } from '@data';
 import { useTranslations } from '@i18n/utils';
 
@@ -147,6 +148,9 @@ const ogImage = 'https://placehold.co/1200x630/252320/F5F4F1?text=Granada+Vibes'
       </div>
     </div>
   </section>
+
+  {/* Time Selector - How much time do you have? */}
+  <TimeSelector locale={locale} t={t} />
 
   {/* Stats */}
   <section class="relative py-20 lg:py-28 bg-base-elevated/50" aria-labelledby="numbers-heading">
