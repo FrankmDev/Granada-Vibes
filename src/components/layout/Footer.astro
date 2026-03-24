@@ -2,8 +2,6 @@
 import type { Locale } from '@types';
 import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
 import { useTranslations } from '@i18n/utils';
-import SocialLinks from '@components/ui/SocialLinks.astro';
-import FooterEvents from './FooterEvents.astro';
 
 interface Props { locale: Locale; }
 
@@ -14,270 +12,150 @@ const currentYear = new Date().getFullYear();
 
 const exploreLinks = [
   { href: `${localePath}/eventos`, label: t('nav.events') },
-  { href: `${localePath}/rutas`, label: t('nav.routes') },
-  { href: locale === 'es' ? '/rutas/por-tiempo' : '/en/routes/by-time', label: t('mixedRoutes.title') },
-  { href: `${localePath}/blog`, label: t('nav.blog') },
-  { href: `${localePath}/sobre`, label: t('nav.about') },
+  { href: `${localePath}/rutas`,   label: t('nav.routes') },
+  { href: `${localePath}/sobre`,   label: t('nav.about') },
 ];
 
 const legalLinks = [
-  { href: `${localePath}/privacidad`, label: t('footer.links.privacy') },
+  { href: `${localePath}/privacidad`,  label: t('footer.links.privacy') },
   { href: `${localePath}/aviso-legal`, label: t('footer.links.legalNotice') },
 ];
 ---
 
-<footer class="footer relative overflow-hidden" role="contentinfo">
-  <div class="footer__top-line" aria-hidden="true"></div>
-  <div class="footer__orb footer__orb--accent" aria-hidden="true"></div>
-  <div class="footer__orb footer__orb--secondary" aria-hidden="true"></div>
-
-  <div class="container relative">
-    <div class="py-20 lg:py-24">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-
-        <!-- Brand -->
-        <div class="lg:col-span-4">
-          <a href={localePath || '/'} class="footer__logo group" aria-label={`${SITE_CONFIG.name} - ${t('nav.home')}`}>
-            <div class="footer__logo-mark">
-              <div class="footer__logo-gradient"></div>
-              <div class="footer__logo-inner"><span class="text-xl font-black text-white">G</span></div>
-            </div>
-            <div class="flex flex-col">
-              <span class="font-bold text-2xl text-white leading-none tracking-tight">{SITE_CONFIG.name}</span>
-              <span class="text-xs text-white/40 font-medium tracking-[0.1em] uppercase mt-1">
-                {locale === 'es' ? 'Guía Cultural' : 'Cultural Guide'}
-              </span>
-            </div>
+<footer class="sacrom-footer">
+  <div class="sacrom-footer-inner">
+    <div class="sacrom-footer-top">
+      <div class="sacrom-footer-desc-col">
+        <p class="sacrom-footer-desc">
+          {locale === 'es'
+            ? 'Sacrom es un repositorio digital dedicado a la preservación y difusión de la herencia viva de Granada. Desde las cumbres de Sierra Nevada hasta las profundidades del Albaicín.'
+            : 'Sacrom is a digital repository dedicated to the preservation and dissemination of Granada\'s living heritage. From the peaks of Sierra Nevada to the depths of the Albayzín.'}
+        </p>
+      </div>
+      
+      <div class="sacrom-footer-links-grid">
+        {exploreLinks.map((link) => (
+          <a href={link.href} class="sacrom-footer-link">{link.label}</a>
+        ))}
+        {legalLinks.map((link) => (
+          <a href={link.href} class="sacrom-footer-link">{link.label}</a>
+        ))}
+        <a href="mailto:hola@granadavibes.com" class="sacrom-footer-link">CONTACT</a>
+        {SITE_CONFIG.social.instagram && (
+          <a href={SITE_CONFIG.social.instagram} class="sacrom-footer-link" target="_blank" rel="noopener noreferrer">
+            INSTAGRAM
           </a>
-
-          <p class="text-white/50 text-base leading-relaxed max-w-sm mb-6">{SITE_CONFIG.description[locale]}</p>
-
-          <div class="footer__status-badge">
-            <span class="footer__status-dot">
-              <span class="footer__status-ping"></span>
-              <span class="footer__status-solid"></span>
-            </span>
-            <span class="text-sm text-white/40 font-medium">{t('footer.madeIn')}</span>
-          </div>
-
-          <SocialLinks variant="default" size="md" />
-        </div>
-
-        <!-- Explore -->
-        <div class="lg:col-span-2">
-          <h3 class="footer__heading">{t('footer.explore')}</h3>
-          <ul class="space-y-3">
-            {exploreLinks.map((link) => (
-              <li>
-                <a href={link.href} class="footer__nav-link group">
-                  <span class="footer__nav-line"></span>
-                  <span class="font-medium">{link.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Events -->
-        <div class="lg:col-span-3">
-          <FooterEvents locale={locale} t={t} />
-        </div>
-
-        <!-- Contact -->
-        <div class="lg:col-span-3">
-          <h3 class="footer__heading">{t('footer.contact')}</h3>
-
-          <ul class="space-y-4 mb-8">
-            <li>
-              <a href="mailto:hola@granadavibes.com" class="footer__contact-link group">
-                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span class="text-sm font-medium">hola@granadavibes.com</span>
-              </a>
-            </li>
-            <li>
-              <span class="flex items-center gap-3 text-white/50">
-                <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
-                </svg>
-                <span class="text-sm font-medium">@granadavibes</span>
-              </span>
-            </li>
-          </ul>
-
-          <!-- Newsletter -->
-          <div class="footer__newsletter">
-            <p class="text-xs text-white/30 mb-4 font-medium leading-relaxed">{t('footer.newsletter')}</p>
-            <form class="flex flex-col gap-3" onsubmit="event.preventDefault();">
-              <input type="email" placeholder={t('footer.newsletterPlaceholder')} class="input" aria-label="Email" />
-              <button type="submit" class="footer__newsletter-btn group" aria-label={locale === 'es' ? 'Suscribirse' : 'Subscribe'}>
-                <span>{locale === 'es' ? 'Suscribirse' : 'Subscribe'}</span>
-                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
-            </form>
-          </div>
-        </div>
+        )}
       </div>
     </div>
-
-    <!-- Bottom bar -->
-    <div class="py-6 border-t border-white/[0.06]">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-xs text-white/30">© {currentYear} {SITE_CONFIG.name} · {t('footer.allRightsReserved')}</p>
-        <div class="flex items-center gap-8">
-          {legalLinks.map((link) => (
-            <a href={link.href} class="text-xs text-white/30 hover:text-white transition-colors font-medium">{link.label}</a>
-          ))}
-        </div>
-      </div>
+    
+    <span class="sacrom-footer-huge">
+      SAKROM
+    </span>
+    
+    <div class="sacrom-footer-bottom">
+      <span>© {currentYear} SACROM MONOCHROME.</span>
+      <span>ARCHIVAL DATA 37.1773° N, 3.5986° W.</span>
     </div>
   </div>
 </footer>
 
 <style>
-  .footer { background: #050505; }
-
-  .footer__top-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent);
-  }
-
-  .footer__orb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  .footer__orb--accent {
-    top: 5rem;
-    right: 0;
-    width: 500px;
-    height: 500px;
-    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
-    filter: blur(150px);
-  }
-
-  .footer__orb--secondary {
-    bottom: 0;
-    left: 0;
-    width: 400px;
-    height: 400px;
-    background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
-    filter: blur(120px);
-  }
-
-  .footer__logo { display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-
-  .footer__logo-mark { position: relative; width: 3rem; height: 3rem; }
-  .footer__logo-gradient {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
-    border-radius: var(--radius-lg);
-    transition: transform var(--duration-slow);
-  }
-  .group:hover .footer__logo-gradient { transform: scale(1.1); }
-  .footer__logo-inner {
-    position: absolute;
-    inset: 2px;
-    background: var(--color-bg);
-    border-radius: calc(var(--radius-lg) - 2px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .footer__status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: var(--radius-full);
-    margin-bottom: 1.5rem;
-  }
-
-  .footer__status-dot { position: relative; display: flex; width: 0.5rem; height: 0.5rem; }
-  .footer__status-ping {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: var(--color-success);
-    opacity: 0.75;
-    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-  .footer__status-solid { position: relative; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-success); }
-
-  @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
-
-  .footer__heading {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--color-accent);
-    margin-bottom: 1.5rem;
-  }
-
-  .footer__nav-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: rgba(255, 255, 255, 0.5);
-    transition: color var(--duration-normal);
-  }
-  .footer__nav-link:hover { color: var(--color-accent); }
-
-  .footer__nav-line {
-    width: 1rem;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.2);
-    transition: all var(--duration-normal);
-  }
-  .group:hover .footer__nav-line { width: 1.5rem; background: var(--color-accent); }
-
-  .footer__contact-link {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: rgba(255, 255, 255, 0.5);
-    transition: color var(--duration-normal);
-  }
-  .footer__contact-link:hover { color: var(--color-accent); }
-
-  .footer__newsletter {
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-xl);
-  }
-
-  .footer__newsletter-btn {
+  .sacrom-footer {
+    background-color: var(--color-bg);
     width: 100%;
-    padding: 0.75rem 1rem;
-    background: var(--color-accent);
-    color: white;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-radius: var(--radius-lg);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: all var(--duration-normal);
+    position: relative;
+    border-top: 2px solid var(--color-border);
   }
-  .footer__newsletter-btn:hover {
-    background: var(--color-accent-hover);
-    box-shadow: 0 8px 24px var(--color-accent-glow);
+
+  .sacrom-footer-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 5rem 1.5rem;
+    gap: 3rem;
+  }
+
+  .sacrom-footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .sacrom-footer-desc-col {
+    max-width: 28rem;
+  }
+
+  .sacrom-footer-desc {
+    font-family: var(--font-body); /* Lora serif */
+    font-style: italic;
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .sacrom-footer-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .sacrom-footer-links-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .sacrom-footer-link {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .sacrom-footer-link:hover {
+    font-style: italic;
+  }
+
+  .sacrom-footer-huge {
+    font-family: var(--font-display);
+    font-size: 18vw;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.08em; /* kerning-v-tight */
+    text-transform: uppercase;
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-top: 2px solid var(--color-border);
+    padding-top: 2rem;
+    color: var(--color-text-primary);
+  }
+
+  .sacrom-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 0.3em; /* kerning-widest */
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  @media (max-width: 640px) {
+    .sacrom-footer-bottom {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+      text-align: center;
+    }
   }
 </style>

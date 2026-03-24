@@ -1034,8 +1034,8 @@ export const mockEvents: Event[] = [
     id: 'evt-023',
     slug: 'cine-verano-carmen-casas',
     title: {
-      es: 'Cine de Verano en los Jardines de la Casa de los Tiros',
-      en: 'Summer Cinema at the Casa de los Tiros Gardens',
+      es: 'Cine de Verano en Casa de los Tiros',
+      en: 'Summer Cinema at Casa de los Tiros',
     },
     description: {
       es: 'Ciclo de verano de cine clásico en los jardines del museo más singular del Realejo. Ocho jueves de julio y agosto con una programación que recorre lo mejor del cine del siglo XX: comedias españolas de los 50 de Berlanga y Bardem, neorrealismo italiano de Fellini y De Sica, y cine negro americano de Wilder y Hitchcock. Todo ello en el jardín renacentista de la Casa de los Tiros, un palacete del siglo XVI con una fachada decorada con espadas y escudos que le dan nombre. Entrada gratuita.',

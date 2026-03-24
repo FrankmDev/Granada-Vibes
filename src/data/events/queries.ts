@@ -2,7 +2,10 @@ import type { Event, EventCategory, Neighborhood } from '@types';
 import { mockEvents } from './mock.js';
 import generatedRaw from './generated.json';
 
-const generatedEvents = generatedRaw as Event[];
+const generatedEvents = (generatedRaw as Event[]).map((e) => ({
+  ...e,
+  image: e.image ?? e.imageUrl,
+}));
 
 const events: Event[] = generatedEvents.length > 0
   ? generatedEvents

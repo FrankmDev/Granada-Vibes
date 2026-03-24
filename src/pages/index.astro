@@ -1,252 +1,41 @@
 ---
-import BaseLayout from '@layouts/BaseLayout.astro';
-import EventCard from '@components/events/EventCard.astro';
-import EventCarousel from '@components/events/EventCarousel.astro';
-import RouteCard from '@components/routes/RouteCard.astro';
-import HeroSection from '@components/home/HeroSection.astro';
-import TimeSelector from '@components/home/TimeSelector.astro';
-import type { Event, Route } from '@types';
-import { getFeaturedEvents, getFeaturedRoutes, getAllEvents } from '@data';
-import { useTranslations } from '@i18n/utils';
+import type { Event } from '../types';
+import { getAllEvents, getFeaturedRoutes } from '../data';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
+import BrutalHero from '@components/home/BrutalHero.astro';
+import EditorialBento from '@components/home/EditorialBento.astro';
+import RoutesShowcase from '@components/home/RoutesShowcase.astro';
 
 const locale = 'es';
-const t = useTranslations(locale);
-
-const today = new Date().toISOString().split('T')[0];
+const currentPath = Astro.url.pathname;
+const todayStr = new Date().toISOString().split('T')[0] ?? '';
 const allEvents = getAllEvents();
+const featuredRoutes = getFeaturedRoutes();
 
-const upcomingEvents = allEvents
-  .filter((e: Event) => e.date >= today)
+const upcoming = allEvents
+  .filter((e: Event) => e.date >= todayStr)
   .sort((a: Event, b: Event) => a.date.localeCompare(b.date));
 
-const featuredRaw = getFeaturedEvents();
-const featuredEvents = featuredRaw.length > 0
-  ? featuredRaw.slice(0, 3)
-  : upcomingEvents.slice(0, 3);
-
-const thisWeekEvents = upcomingEvents.slice(0, 4);
-
-const freeEvents = allEvents
-  .filter((e: Event) => e.price === null && e.date >= today)
-  .sort((a: Event, b: Event) => a.date.localeCompare(b.date))
-  .slice(0, 3);
-
-const featuredRoutes = getFeaturedRoutes().slice(0, 3);
-
-const ogImage = 'https://placehold.co/1200x630/0a0a0a/E84D27?text=Granada+Vibes';
+const gridEvents = upcoming.slice(0, 20);
+const displayRoutes = featuredRoutes.slice(0, 4);
 ---
 
 <BaseLayout
   locale={locale}
-  title="Inicio"
-  description="Descubre qué hacer en Granada. Guía local de eventos culturales, rutas por el Albaicín y Sacromonte, y planes alternativos fuera de lo turístico."
-  ogImage={ogImage}
+  title="Granada Vibes — Guía Cultural"
+  description="La guía cultural definitiva de Granada. Eventos, rutas y experiencias reales sin filtros."
+  schemaType="website"
 >
-  <HeroSection thisWeekEvents={thisWeekEvents} locale={locale} />
+  <!-- Header -->
+  <NavBar slot="header" locale={locale} currentPath={currentPath} />
 
-  <!-- Upcoming Events Carousel -->
-  <EventCarousel 
-    events={upcomingEvents}
-    locale={locale}
-    t={t}
-    title="Esta semana"
-    subtitle="Descubre los mejores planes culturales esta semana en Granada: conciertos, exposiciones, flamenco y experiencias únicas."
-    maxEvents={8}
-  />
+  <!-- Secciones -->
+  <BrutalHero locale={locale} />
+  <EditorialBento events={gridEvents} locale={locale} />
+  <RoutesShowcase routes={displayRoutes} locale={locale} />
 
-  <!-- Featured Events -->
-  <section class="relative py-20 lg:py-28" style="background-color: var(--color-bg);" aria-labelledby="featured-events-heading">
-    <div class="container">
-      <!-- Header -->
-      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-        <div class="reveal">
-          <div class="flex items-center gap-3 mb-4">
-            <span class="w-10 h-[2px] bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] rounded-full"></span>
-            <span class="text-xs font-bold uppercase tracking-[0.25em]" style="color: var(--color-primary);">
-              {t('events.featured')}
-            </span>
-          </div>
-          <h2 id="featured-events-heading" class="font-display text-3xl lg:text-4xl font-bold" style="color: white;">
-            Eventos destacados
-          </h2>
-        </div>
-        
-        <a 
-          href="/eventos" 
-          class="inline-flex items-center gap-2 text-sm font-medium hover:text-[var(--color-primary)] transition-colors group"
-          style="color: rgba(255, 255, 255, 0.6);"
-        >
-          <span>Ver todos</span>
-          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </div>
-
-      <!-- Asymmetric Grid - Featured event larger -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredEvents.map((event: Event, index: number) => (
-          <EventCard event={event} locale={locale} t={t} featured={index === 0} />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Free Events -->
-  {freeEvents.length > 0 && (
-    <section class="relative py-20 lg:py-28" style="background-color: var(--color-bg-elevated);" aria-labelledby="free-events-heading">
-      <div class="container">
-        <div class="flex items-center gap-3 mb-6 reveal">
-          <span class="w-8 h-[2px] bg-gradient-to-r from-[var(--color-success)] to-[var(--color-success)]/60 rounded-full"></span>
-          <span class="text-xs font-bold uppercase tracking-[0.25em]" style="color: var(--color-success);">
-            {locale === 'es' ? 'Gratis' : 'Free'}
-          </span>
-        </div>
-        
-        <h2 id="free-events-heading" class="font-display text-3xl lg:text-4xl font-bold mb-10 reveal" style="color: white;">
-          Eventos gratuitos
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {freeEvents.map((event: Event) => (
-            <EventCard event={event} locale={locale} t={t} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- Featured Routes -->
-  <section class="relative py-20 lg:py-28" style="background-color: var(--color-bg);" aria-labelledby="routes-heading">
-    <div class="container">
-      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
-        <div class="reveal">
-          <div class="flex items-center gap-3 mb-4">
-            <span class="w-10 h-[2px] bg-gradient-to-r from-[var(--color-secondary)] to-[var(--color-primary)] rounded-full"></span>
-            <span class="text-xs font-bold uppercase tracking-[0.25em]" style="color: var(--color-secondary);">
-              {t('routes.title')}
-            </span>
-          </div>
-          <h2 id="routes-heading" class="font-display text-3xl lg:text-4xl font-bold" style="color: white;">
-            Rutas recomendadas
-          </h2>
-        </div>
-        
-        <a 
-          href="/rutas" 
-          class="inline-flex items-center gap-2 text-sm font-medium hover:text-[var(--color-secondary)] transition-colors group"
-          style="color: rgba(255, 255, 255, 0.6);"
-        >
-          <span>Ver todas</span>
-          <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredRoutes.map((route: Route, index: number) => (
-          <RouteCard route={route} locale={locale} t={t} index={index} variant="grid" />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Time Selector - ¿Cuánto tiempo tienes? -->
-  <TimeSelector locale={locale} t={t} />
-
-  <!-- Stats Section -->
-  <section class="relative py-20 lg:py-28" style="background-color: var(--color-bg-elevated);" aria-labelledby="numbers-heading">
-    <div class="container">
-      <div class="text-center mb-14 reveal">
-        <div class="flex items-center justify-center gap-3 mb-4">
-          <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-[var(--color-primary)]/30"></span>
-          <span class="text-[10px] font-bold uppercase tracking-[0.25em]" style="color: rgba(255, 255, 255, 0.4);">Datos</span>
-          <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-[var(--color-primary)]/30"></span>
-        </div>
-        <h2 id="numbers-heading" class="font-display text-3xl lg:text-4xl font-bold" style="color: white;">
-          Granada en <span style="color: var(--color-primary);">cifras</span>
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-        {[
-          { value: '800+', label: 'años', desc: 'de historia', color: 'text-[var(--color-primary)]', bgColor: 'bg-[var(--color-primary)]/10', borderColor: 'border-[var(--color-primary)]/20' },
-          { value: '2', label: 'UNESCO', desc: 'Patrimonios', color: 'text-[var(--color-secondary)]', bgColor: 'bg-[var(--color-secondary)]/10', borderColor: 'border-[var(--color-secondary)]/20' },
-          { value: '48h', label: 'para', desc: 'perderse', color: 'text-[var(--color-success)]', bgColor: 'bg-[var(--color-success)]/10', borderColor: 'border-[var(--color-success)]/20' },
-          { value: '0€', label: 'tapa', desc: 'incluida', color: 'text-[var(--color-secondary)]', bgColor: 'bg-[var(--color-secondary)]/10', borderColor: 'border-[var(--color-secondary)]/20' },
-        ].map((stat, index) => (
-          <div class:list={[
-            'text-center p-6 lg:p-8 rounded-3xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1',
-            stat.borderColor
-          ]} 
-          style={`animation-delay: ${index * 100}ms; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.06);`}
-          onmouseenter="this.style.boxShadow='0 25px 50px -12px rgba(232, 77, 39, 0.15)';"
-          onmouseleave="this.style.boxShadow='none';"
-          >
-            <p class:list={['font-display text-4xl lg:text-5xl font-bold mb-2', stat.color]}>{stat.value}</p>
-            <p class="text-xs font-semibold uppercase tracking-wider mb-1" style="color: white;">{stat.label}</p>
-            <p class="text-xs" style="color: rgba(255, 255, 255, 0.4);">{stat.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section -->
-  <section class="relative py-24 lg:py-32 overflow-hidden" style="background-color: var(--color-bg);" aria-labelledby="cta-title">
-    <!-- Background decorations -->
-    <div class="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)]/5 via-transparent to-[var(--color-secondary)]/5" aria-hidden="true"></div>
-    
-    <!-- Decorative text background -->
-    <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-      <span class="font-display text-[12vw] font-bold whitespace-nowrap select-none" style="color: rgba(255, 255, 255, 0.02);">
-        GRANADA
-      </span>
-    </div>
-
-    <!-- Ambient glow -->
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none" style="background: rgba(232, 77, 39, 0.1);"></div>
-
-    <div class="container relative">
-      <div class="max-w-2xl mx-auto text-center">
-        <h2 id="cta-title" class="mb-8 reveal">
-          <span class="block font-display text-3xl lg:text-4xl font-bold mb-2" style="color: white;">
-            La Alhambra ya la conoces.
-          </span>
-          <span class="block font-display text-3xl lg:text-4xl font-bold" style="color: var(--color-primary);">
-            Granada todavía no.
-          </span>
-        </h2>
-
-        <p class="text-base lg:text-lg mb-10 max-w-md mx-auto reveal" style="color: rgba(255, 255, 255, 0.6);">
-          La guía cultural de Granada creada por locales. Eventos, rutas auténticas y los mejores planes.
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal">
-          <a 
-            href="/eventos"
-            class="group inline-flex items-center gap-3 px-8 py-4 font-semibold text-base rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-            style="background-color: var(--color-primary); color: white; box-shadow: 0 10px 15px -3px rgba(232, 77, 39, 0.25);"
-            onmouseenter="this.style.backgroundColor='var(--color-primary-hover)'; this.style.boxShadow='0 20px 25px -5px rgba(232, 77, 39, 0.35)';"
-            onmouseleave="this.style.backgroundColor='var(--color-primary)'; this.style.boxShadow='0 10px 15px -3px rgba(232, 77, 39, 0.25)';"
-          >
-            <span>Descubrir eventos</span>
-            <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-          <a 
-            href="/rutas"
-            class="group inline-flex items-center gap-3 px-8 py-4 font-semibold text-base rounded-2xl border transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-            style="background: rgba(255, 255, 255, 0.05); color: white; border-color: rgba(255, 255, 255, 0.1);"
-            onmouseenter="this.style.borderColor='rgba(245, 158, 11, 0.3)';"
-            onmouseleave="this.style.borderColor='rgba(255, 255, 255, 0.1)';"
-          >
-            <span>Explorar rutas</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Footer -->
+  <Footer slot="footer" locale={locale} />
 </BaseLayout>

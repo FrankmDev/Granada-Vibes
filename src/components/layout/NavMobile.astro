@@ -5,7 +5,6 @@ import { LOCALE_PATHS } from '@config/site';
 interface NavLink {
   href: string;
   label: string;
-  index: string;
 }
 
 interface Props {
@@ -22,142 +21,214 @@ const localePath = LOCALE_PATHS[locale];
 
 <div
   id="mobile-menu"
-  class="nav-mobile hidden lg:hidden fixed inset-0 z-40"
+  class="nav-mobile hidden"
   role="navigation"
   aria-label={t('nav.mobileNavLabel')}
 >
-  <div class="nav-mobile__bg" aria-hidden="true">
-    <div class="nav-mobile__orb nav-mobile__orb--accent"></div>
-    <div class="nav-mobile__orb nav-mobile__orb--secondary"></div>
-  </div>
-
-  <div class="container relative h-full flex flex-col pt-24 pb-8">
-    <div class="flex-1 flex flex-col justify-center">
-      <nav class="flex flex-col gap-2">
-        {navLinks.map((link, index) => (
-          <a
-            href={link.href}
-            class:list={['nav-mobile__link group', isActive(link.href) && 'is-active']}
-            style={`animation-delay: ${index * 100}ms`}
-            aria-current={isActive(link.href) ? 'page' : undefined}
-          >
-            <span class="nav-mobile__index">{link.index}</span>
-            <span class="text-3xl sm:text-4xl font-black tracking-tight">{link.label}</span>
-            {!isActive(link.href) && (
-              <svg class="ml-auto w-6 h-6 text-white/20 group-hover:text-accent group-hover:translate-x-2 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            )}
-          </a>
-        ))}
-      </nav>
+  <!-- Full-screen overlay -->
+  <div class="nav-mobile__inner">
+    <!-- Header row with logo placeholder + close implicit via btn -->
+    <div class="nav-mobile__top" aria-hidden="true">
+      <span class="nav-mobile__gv">GV</span>
     </div>
 
-    <div class="space-y-6 pt-6 border-t border-white/10">
+    <!-- Links -->
+    <nav class="nav-mobile__nav">
+      {navLinks.map((link, index) => (
+        <a
+          href={link.href}
+          class:list={['nav-mobile__link', isActive(link.href) && 'is-active']}
+          style={`--idx: ${index}`}
+          aria-current={isActive(link.href) ? 'page' : undefined}
+        >
+          <span class="nav-mobile__link-num">{String(index + 1).padStart(2, '0')}</span>
+          <span class="nav-mobile__link-text">{link.label}</span>
+          <span class="nav-mobile__link-arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </nav>
+
+    <!-- Footer row -->
+    <div class="nav-mobile__footer">
       <a href={`${localePath}/eventos`} class="nav-mobile__cta">
-        <span>{locale === 'es' ? 'Explorar eventos' : 'Explore events'}</span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        <span>{locale === 'es' ? 'explorar eventos' : 'explore events'}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </a>
 
-      <a href={switchUrl} class="flex items-center justify-between text-white/50 hover:text-white transition-colors" aria-label={t('nav.changeLanguage')}>
-        <span class="text-sm font-medium">{t('nav.switchLanguage')}</span>
-        <div class="flex items-center gap-3">
-          <span class:list={['nav-mobile__lang-btn', locale === 'es' && 'is-active']}>ES</span>
-          <span class="text-white/20">&rarr;</span>
-          <span class:list={['nav-mobile__lang-btn', locale === 'en' && 'is-active']}>EN</span>
-        </div>
+      <a href={switchUrl} class="nav-mobile__lang">
+        <span class="nav-mobile__lang-label">{locale === 'es' ? 'Switch to English' : 'Ver en español'}</span>
+        <span class="nav-mobile__lang-badge">{locale === 'es' ? 'EN' : 'ES'}</span>
       </a>
     </div>
   </div>
 </div>
 
 <style>
-  .nav-mobile { background: var(--color-bg); }
-
-  .nav-mobile__bg {
-    position: absolute;
+  .nav-mobile {
+    position: fixed;
     inset: 0;
+    z-index: 40;
+    background: var(--color-bg);
     overflow: hidden;
-    pointer-events: none;
   }
 
-  .nav-mobile__orb {
-    position: absolute;
-    border-radius: 50%;
+  .nav-mobile.is-open .nav-mobile__inner {
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .nav-mobile__orb--accent {
-    top: 25%;
-    left: -8rem;
-    width: 16rem;
-    height: 16rem;
-    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-    filter: blur(100px);
+  .nav-mobile__inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: opacity 0.32s var(--ease-editorial), transform 0.32s var(--ease-editorial);
   }
 
-  .nav-mobile__orb--secondary {
-    bottom: 25%;
-    right: -8rem;
-    width: 24rem;
-    height: 24rem;
-    background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
-    filter: blur(120px);
+  .nav-mobile__top {
+    display: flex;
+    align-items: center;
+    height: var(--header-height);
+    margin-bottom: 3rem;
+  }
+
+  .nav-mobile__gv {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 900;
+    font-style: italic;
+    color: var(--color-accent);
+    letter-spacing: -0.04em;
+  }
+
+  /* ── Nav links ── */
+  .nav-mobile__nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
   }
 
   .nav-mobile__link {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.4);
-    transition: all var(--duration-slow);
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .nav-mobile__link:first-child {
+    border-top: 1px solid var(--color-border-subtle);
   }
 
   .nav-mobile__link:hover,
-  .nav-mobile__link.is-active { color: white; }
-
-  .nav-mobile__index {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: color-mix(in srgb, var(--color-accent) 50%, transparent);
-    transition: color var(--duration-normal);
+  .nav-mobile__link.is-active {
+    color: var(--color-text-primary);
+    padding-left: 0.5rem;
   }
 
-  .group:hover .nav-mobile__index,
-  .is-active .nav-mobile__index { color: var(--color-accent); }
+  .nav-mobile__link.is-active {
+    color: var(--color-accent);
+  }
+
+  .nav-mobile__link-num {
+    font-family: var(--font-body);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .nav-mobile__link-text {
+    flex: 1;
+    text-transform: lowercase;
+  }
+
+  .nav-mobile__link-arrow {
+    font-size: 1rem;
+    color: var(--color-accent);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    align-self: center;
+  }
+
+  .nav-mobile__link:hover .nav-mobile__link-arrow,
+  .nav-mobile__link.is-active .nav-mobile__link-arrow {
+    opacity: 1;
+  }
+
+  /* ── Footer row ── */
+  .nav-mobile__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border-subtle);
+  }
 
   .nav-mobile__cta {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
+    gap: 0.625rem;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
     padding: 1rem 1.5rem;
     background: var(--color-accent);
-    color: white;
-    font-weight: 700;
-    border-radius: var(--radius-lg);
-    transition: background var(--duration-normal);
+    color: #ffffff;
+    transition: background 0.2s ease;
   }
 
-  .nav-mobile__cta:hover { background: var(--color-accent-hover); }
-
-  .nav-mobile__lang-btn {
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.875rem;
-    font-weight: 700;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.5);
-    transition: all var(--duration-normal);
+  .nav-mobile__cta:hover {
+    background: var(--color-accent-hover);
   }
 
-  .nav-mobile__lang-btn.is-active {
-    background: var(--color-accent);
-    color: white;
+  .nav-mobile__lang {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    padding: 0.75rem 0;
+  }
+
+  .nav-mobile__lang-label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: lowercase;
+  }
+
+  .nav-mobile__lang-badge {
+    font-family: var(--font-body);
+    font-size: 0.5625rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--color-text-secondary);
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--color-border);
+    transition: all 0.2s ease;
+  }
+
+  .nav-mobile__lang:hover .nav-mobile__lang-badge {
+    color: var(--color-accent);
     border-color: var(--color-accent);
   }
 </style>

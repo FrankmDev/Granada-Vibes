@@ -1,0 +1,660 @@
+---
+import type { Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+// Tourism copy elevated to premium luxury
+const content = {
+  es: {
+    supra: 'Patrimonio de la Humanidad',
+    title: 'GRANADA',
+    live: 'HORA LOCAL',
+    todayLabel: 'HOY',
+    tomorrowLabel: 'MAÑANA',
+    weatherLabel: 'TIEMPO',
+    eventLabel: 'PRÓXIMO EVENTO',
+    eventName: 'F. Inteligencia Artificial',
+    eventDate: '24–25 Jun / Palacio de Congresos',
+    eventLink: '/eventos',
+    cta: 'Descubrir Granada',
+    ctaLink: '/eventos',
+    label: 'DESTINO PATRIMONIAL'
+  },
+  en: {
+    supra: 'World Heritage Site',
+    title: 'GRANADA',
+    live: 'LOCAL TIME',
+    todayLabel: 'TODAY',
+    tomorrowLabel: 'TMRW',
+    weatherLabel: 'WEATHER',
+    eventLabel: 'UPCOMING EVENT',
+    eventName: 'Artifical Intelligence F.',
+    eventDate: 'Jun 24–25 / Conference Center',
+    eventLink: '/en/events',
+    cta: 'Discover Granada',
+    ctaLink: '/en/events',
+    label: 'HERITAGE DESTINATION'
+  }
+};
+
+const t = content[locale];
+---
+
+<section class="portal-hero" aria-label={locale === 'es' ? 'La Puerta a Granada' : 'The Gateway to Granada'}>
+  
+  <!-- "Camera" Screen Frame -->
+  <div class="screen-frame">
+    <div class="corner-crosshair top-left"></div>
+    <div class="corner-crosshair top-right"></div>
+    <div class="corner-crosshair bottom-left"></div>
+    <div class="corner-crosshair bottom-right"></div>
+  </div>
+
+  <!-- 1. The Living Canvas -->
+  <div class="ambient-layer">
+    <video class="ambient-video" autoplay muted loop playsinline preload="auto" poster="/images/hero-fallback.jpg">
+      <source src="/heroVideo.mp4" type="video/mp4" />
+    </video>
+    <div class="ambient-filter"></div>
+    <div class="ambient-gradient"></div>
+  </div>
+
+  <!-- 2. Colossal Monumental Lockup -->
+  <!-- Separated significantly further from the top header per user request -->
+  <div class="epic-title-layer">
+    <span class="epic-subtitle" data-parallax="-0.04">{t.supra}</span>
+    <h1 class="epic-title" data-parallax="-0.03" aria-label="Granada">
+      {t.title.split('').map((letter, index) => (
+        <span class="title-char" style={`--delay: ${index * 0.1}s`}>{letter}</span>
+      ))}
+    </h1>
+  </div>
+
+  <!-- 3. The Alhambra Portal (Expanded Width & Height for better viewing) -->
+  <div class="portal-wrapper">
+    
+    <!-- Tourism Metadata floating horizontally beside the portal -->
+    <div class="portal-meta meta-left">
+      <span class="meta-text">{t.label}</span>
+      <span class="meta-dot"></span>
+    </div>
+
+    <!-- The physical portal lens -->
+    <div class="portal" data-parallax="0.05" aria-hidden="true">
+      <div class="portal-inner-frame">
+        <video class="sharp-video" autoplay muted loop playsinline preload="auto">
+          <source src="/heroVideo.mp4" type="video/mp4" />
+        </video>
+        <div class="portal-shadows"></div>
+        <div class="portal-glare"></div>
+      </div>
+    </div>
+    
+    <!-- Tourism Metadata floating horizontally beside the portal -->
+    <div class="portal-meta meta-right">
+      <span class="meta-dot"></span>
+      <span class="meta-text">37°N · 3°W</span>
+    </div>
+  </div>
+
+  <!-- 4. The Grand Glass Dock (Live Dashboard Layout) -->
+  <div class="glass-dock-layer">
+    <div class="glass-dock">
+
+      <!-- Column 1: Weather Widget -->
+      <div class="dock-widget hide-mobile">
+        <div class="widget-row">
+          <span class="widget-live-dot"></span>
+          <span class="widget-label">{t.weatherLabel}</span>
+        </div>
+        <div class="weather-temps">
+          <div class="weather-pill">
+            <span class="weather-day-tag">{t.todayLabel}</span>
+            <span class="weather-icon-el" id="weather-icon-today">—</span>
+            <span class="data-main" id="weather-today">—°</span>
+          </div>
+          <div class="weather-pill weather-pill--dim">
+            <span class="weather-day-tag">{t.tomorrowLabel}</span>
+            <span class="weather-icon-el" id="weather-icon-tomorrow">—</span>
+            <span class="data-main" id="weather-tomorrow">—°</span>
+          </div>
+        </div>
+        <span class="data-time" id="live-time">00:00:00</span>
+      </div>
+
+      <!-- Separator 1 -->
+      <div class="dock-sep" aria-hidden="true"></div>
+
+      <!-- Column 2: Upcoming Dynamic Event (clickable) -->
+      <a href={t.eventLink} class="dock-info" aria-label={t.eventName}>
+        <span class="event-badge">
+          <span class="event-badge-dot"></span>
+          {t.eventLabel}
+        </span>
+        <p class="dock-desc" title={t.eventName}>{t.eventName}</p>
+        <span class="event-date">
+          <span class="event-date-sep">·</span>
+          {t.eventDate}
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" class="event-arrow" aria-hidden="true">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </span>
+      </a>
+
+      <!-- Separator 2 -->
+      <div class="dock-sep" aria-hidden="true"></div>
+
+      <!-- Column 3: Premium CTA -->
+      <a href={t.ctaLink} class="dock-cta" aria-label={t.cta}>
+        <span class="cta-label">{t.cta}</span>
+        <div class="cta-arrow-wrap" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</section>
+
+<style>
+  :root {
+    --portal-fg: #ffffff;
+    --portal-glass: rgba(15, 15, 15, 0.45);
+    --portal-border: rgba(255, 255, 255, 0.2);
+    --gold-glow: rgba(212, 175, 55, 0.3);
+    --gold-text: #e6c587;
+  }
+
+  .portal-hero {
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    min-height: 800px;
+    background: #000;
+    overflow: hidden;
+    color: var(--portal-fg);
+  }
+
+  /* 
+   * THE SCREEN FRAME 
+   */
+  .screen-frame {
+    position: absolute;
+    top: calc(2rem + 64px + 1rem);
+    left: 2rem;
+    right: 2rem;
+    bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .corner-crosshair { position: absolute; width: 10px; height: 10px; }
+  .corner-crosshair::before, .corner-crosshair::after { content: ''; position: absolute; background: rgba(255,255,255,0.35); }
+  .top-left { top: -1px; left: -1px; }
+  .top-left::before { width: 10px; height: 1px; top: 0; left: 0; }
+  .top-left::after { width: 1px; height: 10px; top: 0; left: 0; }
+  .top-right { top: -1px; right: -1px; }
+  .top-right::before { width: 10px; height: 1px; top: 0; right: 0; }
+  .top-right::after { width: 1px; height: 10px; top: 0; right: 0; }
+  .bottom-left { bottom: -1px; left: -1px; }
+  .bottom-left::before { width: 10px; height: 1px; bottom: 0; left: 0; }
+  .bottom-left::after { width: 1px; height: 10px; bottom: 0; left: 0; }
+  .bottom-right { bottom: -1px; right: -1px; }
+  .bottom-right::before { width: 10px; height: 1px; bottom: 0; right: 0; }
+  .bottom-right::after { width: 1px; height: 10px; bottom: 0; right: 0; }
+
+  @media (max-width: 768px) { .screen-frame { display: none; } }
+
+  /* 
+   * MULTI-LAYERED AMBIENT CANVAS
+   */
+  .ambient-layer {
+    position: absolute; inset: -5%; z-index: 1; pointer-events: none; opacity: 0;
+    animation: fade-in 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .ambient-video {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: blur(4px) saturate(1.1) brightness(0.85); transform: scale(1.02);
+  }
+  .ambient-filter {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay; z-index: 2;
+  }
+  .ambient-gradient {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.85) 100%); z-index: 3;
+  }
+
+  /* 
+   * COLOSSAL LOGO LOCKUP 
+   * Pushed further down from header per user request to breathe cleanly.
+   */
+  .epic-title-layer {
+    position: absolute;
+    top: max(140px, 16vh); /* Extended breathing room from the top grid */
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .epic-subtitle {
+    font-family: var(--font-display, 'Inter', sans-serif);
+    font-size: clamp(0.75rem, 1.2vw, 1.1rem);
+    font-weight: 700;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+    opacity: 0;
+    animation: fade-in 2s forwards 1s;
+  }
+
+  .epic-title {
+    font-family: var(--font-body, 'Fraunces', serif);
+    font-size: clamp(4.5rem, 12vw, 15rem); /* Perfectly balanced to let background portal shine */
+    font-weight: 400;
+    line-height: 1;
+    margin: 0;
+    display: flex;
+    justify-content: center; 
+    gap: clamp(8px, 1vw, 20px);
+    width: 100%;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.9);
+    letter-spacing: -0.01em;
+  }
+
+  .title-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: slide-up-fade 1.5s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+  }
+
+  /* 
+   * ENLARGED DOUBLE BORDERED ALHAMBRA PORTAL 
+   */
+  .portal-wrapper {
+    position: absolute;
+    top: max(38vh, 320px); /* Safely anchored right below the Title Layer */
+    bottom: 22vh; /* Anchored just above the dock */
+    left: 0;
+    width: 100%;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Allows cursor to interact with video parallax safely behind it */
+  }
+
+  .portal {
+    position: relative;
+    width: clamp(340px, 35vw, 480px);
+    height: 100%;
+    max-height: 600px;
+    border-radius: 40vw 40vw 0 0;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.95),
+      0 0 80px rgba(212,175,55,0.15),
+      0 0 0 1px rgba(255,255,255,0.25);
+    border-bottom: none;
+    opacity: 0;
+    animation: portal-reveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    padding: 0.5rem;
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(5px);
+  }
+
+  .portal-inner-frame {
+    position: relative;
+    width: 100%; height: 100%; border-radius: inherit; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  /* Video scaling ensuring the composition doesn't cut off heads vertically */
+  .sharp-video { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; filter: saturate(1.2) contrast(1.15); }
+
+  .portal-shadows {
+    position: absolute; inset: 0; border-radius: inherit;
+    box-shadow: inset 0 30px 60px rgba(0,0,0,0.5), inset 0 3px 0 rgba(255,220,150,0.5); /* Boosted rim light to match new scale */
+    background: linear-gradient(180deg, rgba(255,220,150,0.08) 0%, rgba(0,0,0,0.15) 100%);
+  }
+
+  .portal-glare {
+    position: absolute; top: 50%; left: 50%; width: 200%; height: 200%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 40%);
+    mix-blend-mode: overlay; transition: transform 0.1s linear;
+  }
+
+  /* Portal Meta Data — glass pill tags anchored to portal edges */
+  .portal-meta {
+    position: absolute;
+    top: 40%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.85rem;
+    background: rgba(0,0,0,0.42);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    opacity: 0;
+    animation: fade-in 2s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+    pointer-events: none;
+    /* never overflow off-screen */
+    max-width: calc(50% - clamp(170px, 17.5vw, 240px) - 3.5rem);
+    overflow: hidden;
+  }
+
+  .meta-left {
+    right: max(1.5rem, calc(50% + clamp(170px, 17.5vw, 240px) + 1.5rem));
+    transform: translateX(0);
+  }
+  .meta-right {
+    left: max(1.5rem, calc(50% + clamp(170px, 17.5vw, 240px) + 1.5rem));
+    transform: translateX(0);
+  }
+
+  .meta-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold-text); flex-shrink: 0; }
+
+  .meta-text {
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.88);
+    white-space: nowrap;
+    text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /*
+   * THE GRAND GLASS DOCK
+   */
+  .glass-dock-layer {
+    position: absolute;
+    bottom: 4.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 6rem);
+    max-width: 980px;
+    z-index: 10;
+    opacity: 0;
+    animation: dock-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+  }
+
+  .glass-dock {
+    display: grid;
+    grid-template-columns: minmax(220px, auto) 1px 1fr 1px auto;
+    gap: 0;
+    align-items: center;
+    background:
+      linear-gradient(135deg, rgba(14, 12, 10, 0.80) 0%, rgba(20, 16, 10, 0.85) 100%);
+    backdrop-filter: blur(60px) saturate(180%) brightness(0.85);
+    -webkit-backdrop-filter: blur(60px) saturate(180%) brightness(0.85);
+    border-radius: 22px;
+    padding: 2.25rem 2.5rem;
+    box-shadow:
+      0 60px 100px rgba(0, 0, 0, 0.55),
+      0 20px 40px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.32),
+      inset 0 1px 0 rgba(212, 175, 55, 0.12),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+      inset 1px 0 0 rgba(255, 255, 255, 0.06),
+      inset -1px 0 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Gradient separators — barely visible, clip top/bottom with margin */
+  .dock-sep {
+    width: 1px;
+    align-self: stretch;
+    margin: 1rem 3rem;
+    background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.10) 30%, rgba(255,255,255,0.10) 70%, transparent 100%);
+    flex-shrink: 0;
+  }
+
+  /* Column 1: Weather Widget */
+  .dock-widget { display: flex; flex-direction: column; gap: 0.85rem; min-width: 210px; padding-right: 0; }
+  .widget-row { display: flex; align-items: center; gap: 0.45rem; }
+  .widget-live-dot { width: 6px; height: 6px; background: #ff3b30; border-radius: 50%; animation: blink 1.5s infinite; flex-shrink: 0; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .widget-label { font-family: var(--font-display, 'DM Sans', sans-serif); font-size: 0.58rem; font-weight: 800; letter-spacing: 0.22em; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+
+  .weather-temps { display: flex; align-items: center; gap: 0.65rem; }
+  .weather-pill {
+    display: flex; align-items: center; gap: 0.45rem;
+    background: rgba(255,255,255,0.10); border-radius: 8px;
+    padding: 0.35rem 0.7rem;
+  }
+  .weather-pill--dim { background: rgba(255,255,255,0.055); }
+  .weather-pill--dim .data-main { color: rgba(255,255,255,0.55); font-size: 1.05rem; }
+  .weather-day-tag { font-family: var(--font-display, 'DM Sans', sans-serif); font-size: 0.52rem; font-weight: 800; letter-spacing: 0.14em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+  .weather-icon-el { font-size: 0.95rem; line-height: 1; }
+  .data-main { font-family: var(--font-display, 'DM Sans', sans-serif); font-size: 1.2rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--portal-fg); }
+  .data-time { font-family: var(--font-display, 'DM Sans', sans-serif); font-size: 0.65rem; font-weight: 600; font-variant-numeric: tabular-nums; color: rgba(255,255,255,0.35); letter-spacing: 0.18em; margin-top: 0.25rem; display: block; opacity: 0.9; }
+
+  /* Column 2: Event Block */
+  .dock-info {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    text-decoration: none; padding: 0.75rem 1.25rem; border-radius: 12px;
+    border: 1px solid transparent;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .dock-info:hover { background: rgba(255,255,255,0.055); border-color: rgba(255,255,255,0.06); }
+
+  .event-badge {
+    display: flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 0.58rem; font-weight: 800; letter-spacing: 0.2em;
+    color: var(--gold-text); text-transform: uppercase;
+  }
+  .event-badge-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--gold-text);
+    box-shadow: 0 0 6px var(--gold-glow);
+    animation: blink 2s infinite;
+    flex-shrink: 0;
+  }
+
+  .dock-desc {
+    font-family: var(--font-body, 'Fraunces', serif);
+    font-size: clamp(1.3rem, 1.8vw, 1.6rem); font-weight: 400; color: var(--portal-fg);
+    margin: 0; line-height: 1.2;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: color 0.25s;
+  }
+  .dock-info:hover .dock-desc { color: rgba(255,255,255,0.82); }
+
+  .event-date {
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 0.73rem; font-weight: 500;
+    color: rgba(255,255,255,0.48); letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: color 0.25s;
+  }
+  .event-date-sep { color: rgba(255,255,255,0.25); }
+  .dock-info:hover .event-date { color: rgba(255,255,255,0.75); }
+  .event-arrow { opacity: 0; transform: translateX(-4px); transition: opacity 0.2s, transform 0.2s; }
+  .dock-info:hover .event-arrow { opacity: 1; transform: translateX(0); }
+
+  /* Column 3: CTA */
+  .dock-cta {
+    display: flex; align-items: center; gap: 1.1rem;
+    padding: 0.9rem 0.9rem 0.9rem 1.85rem;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.10);
+    text-decoration: none; color: var(--portal-fg); white-space: nowrap;
+    transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, color 0.3s;
+  }
+  .dock-cta:hover {
+    background: var(--portal-fg);
+    border-color: var(--portal-fg);
+    color: #0a0908;
+  }
+  .cta-label {
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+    transition: inherit;
+  }
+  .cta-arrow-wrap {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dock-cta:hover .cta-arrow-wrap {
+    background: rgba(0,0,0,0.12);
+    border-color: rgba(0,0,0,0.1);
+    transform: rotate(-45deg);
+  }
+
+  @keyframes slide-up-fade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes portal-reveal { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  @keyframes dock-rise { from { opacity: 0; transform: translateX(-50%) translateY(40px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Responsive Constraints */
+  @media (max-width: 1024px) {
+    .epic-title { font-size: 14vw; gap: 5px; }
+    .portal-meta { display: none; }
+    .hide-mobile { display: none; }
+    /* Hide widget col and both seps; collapse to info + cta */
+    .glass-dock { grid-template-columns: 1fr auto; }
+    .dock-sep { display: none; }
+    .dock-desc { white-space: normal; }
+  }
+
+  @media (max-width: 768px) {
+    .screen-frame { display: none; }
+    .epic-title-layer { top: 11vh; }
+    .epic-subtitle { font-size: 0.6rem; margin-bottom: 0.8rem; letter-spacing: 0.3em; }
+    .epic-title { font-size: 18vw; gap: 2px; }
+    .portal-wrapper { top: 26vh; bottom: 26vh; }
+    .portal { width: 80vw; border-radius: 50vw 50vw 0 0; animation: fade-in 2s forwards; }
+    .glass-dock-layer { bottom: 1.5rem; width: calc(100% - 2rem); }
+    .glass-dock {
+      display: flex; flex-direction: column;
+      border-radius: 16px; padding: 1.5rem 1.5rem; gap: 1.25rem; text-align: center;
+    }
+    .dock-sep { display: none; }
+    .dock-info { align-items: center; max-width: 100%; gap: 0.5rem; padding: 0.25rem 0; }
+    .dock-desc { font-size: 1.15rem; white-space: normal; }
+    .event-date { justify-content: center; }
+    .dock-cta { width: 100%; justify-content: space-between; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Live Time (Europe/Madrid)
+    const timeEl = document.getElementById('live-time');
+    if (timeEl) {
+      const updateTime = () => {
+        timeEl.textContent = new Intl.DateTimeFormat('es-ES', {
+          timeZone: 'Europe/Madrid',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        }).format(new Date());
+      };
+      updateTime();
+      setInterval(updateTime, 1000);
+    }
+
+    // 2. Live Weather — Open-Meteo (Granada lat/lon, no API key)
+    const WMO_ICONS: Record<number, string> = {
+      0: '☀️', 1: '🌤', 2: '⛅', 3: '☁️',
+      45: '🌫', 48: '🌫',
+      51: '🌦', 53: '🌦', 55: '🌦',
+      61: '🌧', 63: '🌧', 65: '🌧',
+      71: '❄️', 73: '❄️', 75: '❄️',
+      80: '🌦', 81: '🌦', 82: '🌦',
+      95: '⛈', 96: '⛈', 99: '⛈',
+    };
+    const wmoIcon = (code: number): string => {
+      if (WMO_ICONS[code]) return WMO_ICONS[code];
+      if (code <= 3) return '🌤';
+      if (code <= 48) return '🌫';
+      if (code <= 67) return '🌧';
+      if (code <= 77) return '❄️';
+      if (code <= 82) return '🌦';
+      return '⛈';
+    };
+
+    fetch(
+      'https://api.open-meteo.com/v1/forecast?latitude=37.18&longitude=-3.60&current=temperature_2m,weather_code&daily=temperature_2m_max,weather_code&timezone=Europe%2FMadrid&forecast_days=2'
+    )
+      .then((r) => r.json())
+      .then((data) => {
+        const todayTemp = document.getElementById('weather-today');
+        const todayIcon = document.getElementById('weather-icon-today');
+        const tomorrowTemp = document.getElementById('weather-tomorrow');
+        const tomorrowIcon = document.getElementById('weather-icon-tomorrow');
+
+        const curTemp = Math.round(data.current.temperature_2m);
+        const curCode = data.current.weather_code as number;
+        const tmrwTemp = Math.round(data.daily.temperature_2m_max[1]);
+        const tmrwCode = data.daily.weather_code[1] as number;
+
+        if (todayTemp) todayTemp.textContent = `${curTemp}°`;
+        if (todayIcon) todayIcon.textContent = wmoIcon(curCode);
+        if (tomorrowTemp) tomorrowTemp.textContent = `${tmrwTemp}°`;
+        if (tomorrowIcon) tomorrowIcon.textContent = wmoIcon(tmrwCode);
+      })
+      .catch(() => {
+        // silently degrade — dashes remain
+      });
+
+    // 2. Advanced Cinematic Glare and Parallax Physics
+    if (window.matchMedia("(pointer: fine)").matches) {
+      const section = document.querySelector('.portal-hero') as HTMLElement;
+      const portal = document.querySelector('.portal') as HTMLElement;
+      const glare = document.querySelector('.portal-glare') as HTMLElement;
+      const titleLayer = document.querySelector('.epic-title-layer') as HTMLElement;
+
+      section?.addEventListener('mousemove', (e) => {
+        const { clientX, clientY, innerWidth, innerHeight } = window;
+        const x = (clientX / innerWidth - 0.5);
+        const y = (clientY / innerHeight - 0.5);
+
+        requestAnimationFrame(() => {
+          if (titleLayer) {
+            titleLayer.style.transform = `translate(${x * -30}px, ${y * -20}px)`;
+          }
+          if (portal) {
+            portal.style.transform = `translate(${x * 20}px, ${y * 15}px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg)`;
+          }
+          if (glare) {
+            glare.style.transform = `translate(calc(-50% + ${x * -100}px), calc(-50% + ${y * -100}px))`;
+          }
+        });
+      });
+
+      section?.addEventListener('mouseleave', () => {
+        requestAnimationFrame(() => {
+          if (titleLayer) titleLayer.style.transform = `translate(0, 0)`;
+          if (portal) portal.style.transform = `translate(0, 0) rotateY(0deg) rotateX(0deg)`;
+          if (glare) glare.style.transform = `translate(-50%, -50%)`;
+        });
+      });
+    }
+  });
+</script>

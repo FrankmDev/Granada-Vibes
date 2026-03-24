@@ -17,7 +17,6 @@ interface Props {
   noindex?: boolean;
   schemaType?: 'website' | 'event' | 'route' | 'organization';
   schemaData?: Record<string, unknown>;
-  variant?: 'default' | 'minimal';
 }
 
 const {
@@ -30,7 +29,6 @@ const {
   noindex,
   schemaType = 'website',
   schemaData,
-  variant = 'default',
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -62,24 +60,29 @@ const currentPath = Astro.url.pathname;
       path={currentPath}
     />
 
-    <!-- Performance: Preconnect -->
+    <!-- Fonts: Work Sans (grotesk, brutalist) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
     <slot name="head" />
   </head>
 
   <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased">
-    <NavBar locale={locale} currentPath={currentPath} />
+    <!-- Header: override via <Fragment slot="header"> -->
+    <slot name="header">
+      <NavBar locale={locale} currentPath={currentPath} />
+    </slot>
 
     <!-- Main Content -->
     <main id="main-content" class="flex-1" role="main">
       <slot />
     </main>
 
-    <Footer locale={locale} />
+    <!-- Footer: override via <Fragment slot="footer"> -->
+    <slot name="footer">
+      <Footer locale={locale} />
+    </slot>
 
     <!-- Scroll reveal animation -->
     <script is:inline>

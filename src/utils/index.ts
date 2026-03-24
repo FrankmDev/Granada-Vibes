@@ -47,3 +47,6 @@ export {
   difficultyConfig,
   getDifficultyBars,
 } from './routes';
+
+// String utilities
+export { truncateTitle } from './strings';

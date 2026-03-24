@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&amp;family=Lora:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "secondary-fixed": "#ebe8e3",
+                "on-background": "#1c1c19",
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary-container": "#ffffff",
+                "tertiary": "#1c1c19",
+                "primary-fixed": "#dcdad5",
+                "secondary-container": "#dcdad5",
+                "on-tertiary-fixed": "#1c1c19",
+                "surface-container-high": "#ebe8e3",
+                "on-primary": "#ffffff",
+                "on-primary-fixed-variant": "#212121",
+                "outline": "#777777",
+                "on-secondary": "#ffffff",
+                "surface-dim": "#dcdad5",
+                "primary": "#000000",
+                "on-primary-fixed": "#000000",
+                "surface-tint": "#000000",
+                "primary-container": "#212121",
+                "on-secondary-container": "#1c1c19",
+                "secondary": "#5f5e5e",
+                "surface": "#fcf9f4",
+                "on-error-container": "#410002",
+                "inverse-on-surface": "#f3f0eb",
+                "surface-bright": "#fcf9f4",
+                "on-secondary-fixed": "#1c1c19",
+                "on-primary-container": "#ffffff",
+                "inverse-surface": "#31302d",
+                "surface-container-low": "#f6f3ee",
+                "surface-variant": "#e5e2dd",
+                "error-container": "#ffdad6",
+                "outline-variant": "#c6c6c6",
+                "surface-container-highest": "#e5e2dd",
+                "background": "#fcf9f4",
+                "inverse-primary": "#ffffff",
+                "surface-container": "#f0ede8",
+                "tertiary-fixed": "#f0ede8",
+                "tertiary-container": "#474747",
+                "primary-fixed-dim": "#c6c6c6",
+                "on-error": "#ffffff",
+                "secondary-fixed-dim": "#dcdad5",
+                "tertiary-fixed-dim": "#ebe8e3",
+                "on-tertiary-fixed-variant": "#474747",
+                "on-surface": "#1c1c19",
+                "error": "#ba1a1a",
+                "on-secondary-fixed-variant": "#474747",
+                "on-tertiary": "#ffffff",
+                "on-surface-variant": "#474747"
+              },
+              fontFamily: {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Inter"],
+                "serif": ["Lora"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kerning-v-tight { letter-spacing: -0.08em; }
+        .kerning-widest { letter-spacing: 0.3em; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary selection:text-white">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-[#FCF9F4] dark:bg-black bg-opacity-90 backdrop-blur-md border-b-2 border-black dark:border-white flex justify-between items-center px-6 py-4">
+<div class="text-4xl font-black tracking-[-0.08em] text-black dark:text-white">SACROM</div>
+<div class="hidden md:flex gap-8">
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm text-black dark:text-white border-b-2 border-black dark:border-white pb-1 transition-colors duration-200" href="#">ARCHIVE</a>
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm text-[#5F5E5E] dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200" href="#">EDITORIAL</a>
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm text-[#5F5E5E] dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200" href="#">EXPERIENCES</a>
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm text-[#5F5E5E] dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200" href="#">CULTURE</a>
+</div>
+<button class="font-['Inter'] font-black tracking-tighter uppercase text-sm text-black dark:text-white hover:italic transition-all duration-300">SUBSCRIBE</button>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+<div class="absolute inset-0 opacity-80">
+<img class="w-full h-full object-cover grayscale-0" data-alt="Cinematic aerial shot of the Alhambra palace in Granada at sunset with the Sierra Nevada mountains in the background under warm golden light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzIwwSQAt8yLsGszWiujj2rifA4U3oofQFskDJXM7bJ9Q879CSemnCAPJUbASOTdx5GPkSFEqYL7BdQsGOOhtU7dHZsyV9ZnDw_l8TFA134VI3TyEwcclOXLc4H3sRJokrERLHb45jBJquHWIBS7c54W2sE9dX3Md7qtCnlTbC5hWm9QUeXU1EDvpbk-d5hSzeZgMXZSwq-Kq08q8n_Q9XhpoYJpIYws5YguhdMCHoTmTzABczHuIyDAVghRwFjI5iq1vePbIqdxk"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-40"></div>
+<div class="relative z-10 text-center px-6">
+<span class="kerning-widest uppercase text-xs font-black text-white bg-black px-2 py-1 mb-6 inline-block">[ GRANADA · ARCHIVO CULTURAL ]</span>
+<h1 class="text-[15vw] md:text-[12vw] font-black text-white leading-[0.85] kerning-v-tight uppercase">CONOCE<br/>GRANADA</h1>
+</div>
+</section>
+<!-- Section Header Sticky -->
+<div class="sticky top-[72px] z-40 bg-background border-b-2 border-primary px-6 py-2 flex justify-between items-end">
+<h2 class="text-4xl font-black kerning-v-tight uppercase">01 // CURATED EXPERIENCES</h2>
+<span class="text-[0.6rem] font-black kerning-widest uppercase pb-1 tracking-[0.5em]">ARCHIVAL DATA 2024</span>
+</div>
+<!-- Bento Grid Section -->
+<section class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 auto-rows-[250px] gap-0 border-b-2 border-primary bg-primary">
+<!-- Main Feature -->
+<div class="col-span-2 row-span-2 relative group overflow-hidden border-r-2 border-b-2 border-primary">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close up of ornate Moorish architectural details and intricate carvings in the Nasrid Palaces of the Alhambra" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWbD2z51Pg9n0SptmIcjmPJLNKfusRecAo52xXAqDysGyn7jk-gbB5DwRl6QB0NWqhIzMmXEzg1FkCmtOyuFwbsyMRkheYcPN6EEK1Mv4gerBEMZVELoDefv0aa6sr5HWrZ7IBzBpThb-OQ-i_nugmUbIzAWDzTlpR1ylMRdXh8YmRS5dcY3lFSOBEpHcMO9GKW7O-cCkzED1ipHimUbBQhtR3Ed4ATrUCXScSVd5lqOr9lfUk7KFiH39Gr5_ZJmX8RQ6Dn3Xm4GI"/>
+<div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-0 transition-all duration-300"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full text-white bg-gradient-to-t from-black to-transparent">
+<span class="text-[0.6rem] font-black kerning-widest uppercase">[HISTORY]</span>
+<h3 class="text-3xl font-black uppercase kerning-v-tight">The Al-Andalus Legacy</h3>
+<p class="text-xs font-bold uppercase mt-2">ALHAMBRA // PERMANENT</p>
+</div>
+</div>
+<!-- Grid Items -->
+<div class="col-span-1 row-span-1 relative group overflow-hidden border-r-2 border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Vibrant street scene in the Albaicín quarter with white houses and narrow cobblestone alleys" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA35JjMAeAtw7LdnbRH6geHPKK69EUMwt1RJQTvJ652bG1JqP_8JdTELK_1UlVXga_FW11KxXJ7QwhtRZr3xh9N7p9QfLVvqOBSvkkCsm9JCSL3u4e-aOgQw0A394-IUV4dCvPAI7oR7wndNiRXXbwAXeFyLc-qNRZ5vk1Dkwn6OUahFNqqz7IrwypMwEFwpoWPGmfVgBguJmiatSAPk5QH8Ab4TpF3w2UipBotuxUXgBBpHet8khwnAdw7kb2aCQqs4F60dzByWB0"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[WALK]</span>
+<h4 class="text-sm font-black uppercase leading-tight">Albaicín Sunset</h4>
+</div>
+</div>
+<div class="col-span-1 row-span-2 relative group overflow-hidden border-r-2 border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Traditional Flamenco dancer in mid-performance wearing a vibrant red dress in a dark cave setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD84vlY6vqMOyx89UsNxXXBmGA7OcTH0DFbHv5hkqY0dwE0T6LQH3DOhMyVswJZGB2du9vvXZ4oBcm2tPH7RAGSj3YmqDiw_AzRFkDPr5LzVMp4Ks-IVruxaMN82aE7CgTrk1UYC6tU9FHaiMTzkjBEAOm4YoNTXX-UOnmhkZSDozPnHUL2rS8bMwL5TLm17Zn3IXq-iFfTGMmR8xGbOcRranikwaJxUrHpvLngW-8T8GUY1XAJ3yQtpufipdAPBj9K6Lqzrp62lCg"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-40 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[MUSIC]</span>
+<h4 class="text-xl font-black uppercase leading-tight">Sacromonte Flamenco</h4>
+<p class="text-[0.6rem] font-bold mt-1">NIGHTLY // VARIOUS CAVES</p>
+</div>
+</div>
+<div class="col-span-2 row-span-1 relative group overflow-hidden border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Modern art installation in a minimalist gallery space with white walls and focused lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGz9YrnQWclPnMV-x1sKg0kIEWW3C2B-7K1Za0ANuNESgkDywKzy3LTv2tXYGnYaDmYY9VchgFBGEviYrgNAypK9yyqGXrHNVgy8ttnqGMJgLIu-SlXS1Y9dE3mYHbMJXYLVo9QHhnWIXUBgMghoGEHuFerK7NJwyHYqK_h3PoO1y3MjHyCdXEQi7ThcZSrl83snlZGOtimO7o7JubIKut7e_SJljK_RTcIebbVK2mTWwoB5euVoyt-l5qsjJ9y6FfvEg3pIuJh80"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[CONTEMPORARY]</span>
+<h4 class="text-lg font-black uppercase leading-tight">Palacio de Carlos V Exhibition</h4>
+</div>
+</div>
+<div class="col-span-1 row-span-1 relative group overflow-hidden border-r-2 border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Traditional tapas plate featuring colorful local ingredients on a rustic wooden table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVzG9T54Hd_Grtvfxd8CN_QYdkOYJetT4lr38UXluIiyYLhTuub2gYKPbz7zjERxTmdt5HXBsFWKAzjeyQvgUSyBavlXbnpRd3F564eyY4Kbjv3-_Ied2Kmd0K9CWK7OR16lrWDXTVmOx7LWLMb5TplMkpL7VlFPPkg_z23n1Ywlzt-Xflvgt5IXQHjFYlbpJ-HErECwtZ1B7vrsj5mCiwlv8VCSIrDbSaAcgWUogaIJe6Sw6co0YtdbXNUtFb_-o8hnzwN2RrCG8"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[GASTRO]</span>
+<h4 class="text-sm font-black uppercase leading-tight">Tapas Route</h4>
+</div>
+</div>
+<div class="col-span-1 row-span-1 relative group overflow-hidden border-r-2 border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Lush green gardens of Generalife with cypress trees and flowing water fountains" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvsAHe8RoJnoJDdEd3Vupl4ZBnAH7zkdHBnmZXL0RWRk1xW2bNfefPCfPsq3m85UPg3bTOhUD41MJH0ZqZCE3mVEFse2aPkD8eroOA-BAScWwXMAaFI-gDlWw21pYHFjCzS9NAb2fpEqgMaJekbwnXf__-03ujiXiUqUSfEinI8WfhE2V3T2R-zINWAoVT6Or4Zn-fuOVnLkyR3YY3iXwprBb6WHj_WI3ZBiR3OoJhHCou2XQ3tG3f7YvB2FyT9bGyp68rQtVJdwU"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[BOTANICAL]</span>
+<h4 class="text-sm font-black uppercase leading-tight">Generalife Water Gardens</h4>
+</div>
+</div>
+<div class="col-span-1 row-span-1 relative group overflow-hidden border-r-2 border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Panoramic view of Sierra Nevada peaks covered in snow against a clear blue sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwdKva09_aPHVmL3gq9pFFNSqKPoCinJc2AC0Nnk6Gfwxrv388ZoY0qBvZR5-hO3Zn7rlsoqAmc_osBe34KGXgpC0SHRPy36e5UxdMLHVyhsD756-Pt_tpi4RdnaEkEtCdf05iFaoNYytMW-OQ-z5HGCtxrp0ivixDwoqSH6khv67AmuY85Tj4UZBZOltWCJh6L1ooIXdvpIi7IA6O2P9hRLjNUMNP12EkLy-5kKmv6AFliL8ua_qmfW6yIDfdoodBxKiELmf8kEg"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[NATURE]</span>
+<h4 class="text-sm font-black uppercase leading-tight">Alpine Ridge Trek</h4>
+</div>
+</div>
+<div class="col-span-1 row-span-1 relative group overflow-hidden border-b-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="Interior of a traditional Arab bath house with geometric star-shaped ceiling vents and steam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjVONK3nliPYz3TOmF5RGejhg9N4LY_G2oFtBwgY7VTAsGiO6ABjcn4kpY0zcxenrFi3DIwRpogJJUuabYmi-pyl5EjQITWFTmZNEXW-EnBSEyTLpwJ1pCTzxNjr4Kar_KL1LT-YMwJ_CsYfKiLbFFWthkJWzMsxp0GcBdeXsr3MNY0PDjSonX6g0keN6oFrixOOAHVakceNxv9djWDksObycZ1702dZlADxy3QxYSrh4eamWgH8qXkYMTDFRsQx3DsXk5vbnKQpk"/>
+<div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-30 group-hover:bg-opacity-10 transition-all text-white">
+<span class="text-[0.5rem] font-black uppercase tracking-widest">[WELLNESS]</span>
+<h4 class="text-sm font-black uppercase leading-tight">Hammam Al Ándalus</h4>
+</div>
+</div>
+</section>
+<!-- Section Header Routes -->
+<div class="sticky top-[72px] z-40 bg-background border-b-2 border-primary px-6 py-2 flex justify-between items-end">
+<h2 class="text-4xl font-black kerning-v-tight uppercase">02 // ARCHITECTURAL ROUTES</h2>
+<span class="text-[0.6rem] font-black kerning-widest uppercase pb-1 tracking-[0.5em]">MAP DATA V.4.1</span>
+</div>
+<!-- Routes Horizontal Cards -->
+<section class="grid grid-cols-1 md:grid-cols-4 border-b-2 border-primary bg-primary gap-[2px]">
+<div class="bg-background group cursor-pointer relative">
+<div class="aspect-[4/5] overflow-hidden">
+<img class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" data-alt="Detailed view of Alhambra architecture showing arched doorways and geometric patterns" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJgF75QBDnxsUceJI-ggp_9RM5B5DNd0aLgPKqB1z7m-5DK-2T41cexQUNUf3cmmYWQTKG9m38oVBLg5hXGcPohtp-nUdQgq9WTOdVXGL2mbE3J7b4s8aoFKXGF51xjkj-rtZuaG-FXBNO6olJpaalTMhPVaRKlf0h5o1Qvp5eQy6T9PL_XMUMzvQlC-lqrSxHduSVVQaymA6cWr_GPgabKriVM5PnFC8GNLqEv5wt-x_oSd1IBiaSMLNprUxi_M_6bX5NeHRvzHU"/>
+</div>
+<div class="p-6 border-t-2 border-primary">
+<h3 class="text-2xl font-black uppercase kerning-v-tight mb-4">Nasrid Palaces Detail</h3>
+<div class="grid grid-cols-2 gap-4 border-t-2 border-primary pt-4">
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Duration</span>
+<span class="font-black">3.5 HRS</span>
+</div>
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Distance</span>
+<span class="font-black">2.4 KM</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-background group cursor-pointer relative">
+<div class="aspect-[4/5] overflow-hidden">
+<img class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" data-alt="Snowy pine trees and rugged terrain in the Sierra Nevada mountains during winter" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1Vl8xa7gU7tYQ-bzQPF9hNkrmvwqkLrre8Ys9gMvribHvNVgTjkWDR2ps4742jxDlE1q-tAH6W3lMffACFUWN9NwFktADD2n7LjFISdYACxStQ62X5pzUyD_0UkqJeGUXoDbsWGn60lYLNgeLCVplKkkz-IMHhXvFhlw8bF5kjOy96KwZfxFMhNcAm3cTl2xcESj86N26zG1x7h9sfQ_wYir1PegATl9Q9oegpCH2mHagxn1qBupcqmH11_XKho2-qDvPkn4sots"/>
+</div>
+<div class="p-6 border-t-2 border-primary">
+<h3 class="text-2xl font-black uppercase kerning-v-tight mb-4">Sierra Summit Walk</h3>
+<div class="grid grid-cols-2 gap-4 border-t-2 border-primary pt-4">
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Duration</span>
+<span class="font-black">6.0 HRS</span>
+</div>
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Distance</span>
+<span class="font-black">12.8 KM</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-background group cursor-pointer relative">
+<div class="aspect-[4/5] overflow-hidden">
+<img class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" data-alt="Gothic interior of the Granada Cathedral with massive columns and high vaulted ceilings" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNJlAoRsjPaOChE_XYzpxPgOyfj66HQMYsZIwaqTuw0k9pNkAP0KK20uSNp01MOoTnipKyqzMN5GoOzDerxMtzFHGlp-DYQK_A2UJCy1cEZHyK1iwncy2vnSmwLd8PGTD71vfaF1s1urecYzOccB43pgHJ4qpnCAtEoHHYmi5w6WOQvabluaR4yLDLQn1Ia31PykzER0PWekW9WTMDBOgR6urLYlqPTbOdMINvdmFggyB33ylo5-6hAUffB8m4bS8buDlXxuHQUsQ"/>
+</div>
+<div class="p-6 border-t-2 border-primary">
+<h3 class="text-2xl font-black uppercase kerning-v-tight mb-4">Cathedral &amp; Royal Chapel</h3>
+<div class="grid grid-cols-2 gap-4 border-t-2 border-primary pt-4">
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Duration</span>
+<span class="font-black">2.0 HRS</span>
+</div>
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Distance</span>
+<span class="font-black">1.1 KM</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-background group cursor-pointer relative">
+<div class="aspect-[4/5] overflow-hidden">
+<img class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110" data-alt="Winding narrow streets of Realejo neighborhood with colorful murals and traditional balconies" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtVmLoZ-7hzbMxtZXX-um7vN9HuYWYZIHBhmDyhqroYKBWIZM04DC4lVzCPc4bimF-g1W3Wp3X4JaeFkQklp4AqRbSVt_P_lh9kwfBaAxNvSd4flWDGtxSgXqq7RfuNC7wy4yWdTjuoCpu5qg-lMcOe7ygUZA4sN-mxkBfxtb2MYGqNA1y9TkGAncAW3QQjETFQCu42PRP0Lbgef7ZHvXKlaIdypAPYzA_I0ztOza7fIvVLNjhfVdgTFgMeilTX7-KdcXNxGaEa9A"/>
+</div>
+<div class="p-6 border-t-2 border-primary">
+<h3 class="text-2xl font-black uppercase kerning-v-tight mb-4">Realejo Urban Art</h3>
+<div class="grid grid-cols-2 gap-4 border-t-2 border-primary pt-4">
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Duration</span>
+<span class="font-black">3.0 HRS</span>
+</div>
+<div>
+<span class="block text-[0.6rem] font-black uppercase opacity-50">Distance</span>
+<span class="font-black">4.5 KM</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section Header Holy Week -->
+<div class="sticky top-[72px] z-40 bg-background border-b-2 border-primary px-6 py-2 flex justify-between items-end">
+<h2 class="text-4xl font-black kerning-v-tight uppercase">03 // SEMANA SANTA</h2>
+<span class="text-[0.6rem] font-black kerning-widest uppercase pb-1 tracking-[0.5em]">SEASONAL OBSERVATIONS</span>
+</div>
+<!-- Holy Week Cinematic Strip -->
+<section class="flex overflow-x-auto hide-scrollbar bg-primary gap-[2px]">
+<div class="flex-none w-[300px] md:w-[400px] h-[600px] bg-background relative overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Dramatic night shot of a religious procession in Granada with incense smoke and flickering candlelight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH2_J7gDB_F1kjBqGKUPzW-wZ7m6v4aoxkIn_obxblTVwJ_e40kbXB3qgiPgUJ2bZXNOefrLlXtVwyDx5BRm53T4Cbofzi3QYIuev0ssLtiMTuX_rM-ah7h6SBd20V6853dtk9CFnAg0cgFSmDi9dviCraqZCFRc34q9UQBy7fBnyCuobsQCfq0j589BRbe0cmWoyFoviCSscnKZibJSpBq040QnrE_Uz7c5nTAO4DSJBlhBKKtG885q5BiOwB_x3pjxKjXArKVks"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-60"></div>
+<div class="absolute bottom-0 p-8 text-white">
+<span class="text-3xl font-black block mb-2">18:00</span>
+<h4 class="text-2xl font-black uppercase kerning-v-tight border-b-2 border-white pb-2 mb-4">Los Gitanos</h4>
+<p class="font-serif italic text-sm opacity-80">El ascenso al Sacromonte entre hogueras y saetas.</p>
+</div>
+</div>
+<div class="flex-none w-[300px] md:w-[400px] h-[600px] bg-background relative overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Close up of a traditional ornate processional float carried through narrow streets at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8vQtyFFnEQWAV75hMjrX9BHhA5iYkr51SeyNv2qhBzF5-1_LPBSLQH8W-1GWp5GM2p-WXSJPmDaJRj1dfLzrkpI4YDqN3k235ysBuKnmtDRL7fpjPAe_TMTN3r2bxCF22J_0k3CJXvfmBxgL1V4-6OxEiH114is_eU-kNZ_wpAChpm6cZVs14Zs1AsEPY2cAsCDRrWaEIaJ0FmkCY3PMJMzrHzJp539tuIyW_JmlblCYoZOXGXeuUSYrlBkVaSBRdSkwxP5XoItA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-60"></div>
+<div class="absolute bottom-0 p-8 text-white">
+<span class="text-3xl font-black block mb-2">21:30</span>
+<h4 class="text-2xl font-black uppercase kerning-v-tight border-b-2 border-white pb-2 mb-4">El Silencio</h4>
+<p class="font-serif italic text-sm opacity-80">La oscuridad absoluta recorre la Carrera del Darro.</p>
+</div>
+</div>
+<div class="flex-none w-[300px] md:w-[400px] h-[600px] bg-background relative overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Vibrant purple and gold ceremonial robes of a cofradía during a daytime procession" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRFcx8IuZd7GpYmd4Ie1ic9hppXXhbg_6HsAMKgbt2S5Oa66HtrqKzni5XvPLbuhrs3qua-an2XKhmbdu2kFty7FkM_tBQal6BHoN8nsE0qj08GLbrKVdMbSGYBFERLOXRCHz0xCzVRmz-PXt18XsLwrMldYM3-nK2SuuZFKcZlzJB7ot-RWiPjD384veqWCZpTiGa0GaW7l61rdUe_TQ86LeCxSCiCF8ZZHxO2fPZesNzFGMLSJ9-gTra1-tVFgICF-Ugd7cIMhY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-60"></div>
+<div class="absolute bottom-0 p-8 text-white">
+<span class="text-3xl font-black block mb-2">16:45</span>
+<h4 class="text-2xl font-black uppercase kerning-v-tight border-b-2 border-white pb-2 mb-4">Santa María</h4>
+<p class="font-serif italic text-sm opacity-80">Descenso majestuoso desde los jardines de la Alhambra.</p>
+</div>
+</div>
+<div class="flex-none w-[300px] md:w-[400px] h-[600px] bg-background relative overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Traditional pointed hood and robes of a penitent against an old stone wall background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuUTTZXXcgumSf_Rrk705Ks3MMxFn-EVbE7YdrjlNlN_2XC_MYfhKMzFWkOU6DyyIKLwUkFQD09pBUmUeOUh6n7m43z8rkk-ytrmIZOtgro-Z0GpLF36we8cigaBdvsBHUWt0V9XrRKSZOSZPzPlNdw2aPrHbL-Xk8xwsaID0BQ8aUcuux_qJIXmIBF9fVFHHg87XKmh7PxtNgaHy39rFy1skOdPsEOyEwifxPllcPgquCBKrzdyK2M32-8tXsk0d0rXk5ZeK4Rbo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-60"></div>
+<div class="absolute bottom-0 p-8 text-white">
+<span class="text-3xl font-black block mb-2">20:15</span>
+<h4 class="text-2xl font-black uppercase kerning-v-tight border-b-2 border-white pb-2 mb-4">Las Tres Caídas</h4>
+<p class="font-serif italic text-sm opacity-80">El fervor del barrio del Realejo en su máxima expresión.</p>
+</div>
+</div>
+<div class="flex-none w-[300px] md:w-[400px] h-[600px] bg-background relative overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="Interior of a baroque church decorated with flowers and silver for a religious celebration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9H7aSz_YEPW86ENViCk3RUmvAhD_at0FReAM5J8n6haivybTAFXqIpmKIEwyVEv3wWmQhMsuySX-k9_66MNSB0Ocqfv2IIYnpvtFfOhrE94CQ-jfoNzoP02iDWR0dB7N6S4JnoAJMdL_h1xxFIDAL8ZRZthmtrTdFVSV1fgcznS91s50CmJ2wpFWCExgt_o3dzdd60db-JcDI1yIZ_JsuU9q6YrF-AqzNz1grYohi3BJsblFPOTz0Z-5rK_whZ08EAWcKDhozK6E"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-60"></div>
+<div class="absolute bottom-0 p-8 text-white">
+<span class="text-3xl font-black block mb-2">00:00</span>
+<h4 class="text-2xl font-black uppercase kerning-v-tight border-b-2 border-white pb-2 mb-4">Resurrección</h4>
+<p class="font-serif italic text-sm opacity-80">El tañer de las campanas anuncia el fin de la vigilia.</p>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#FCF9F4] dark:bg-black w-full relative border-t-2 border-black dark:border-white">
+<div class="flex flex-col w-full px-6 py-20 gap-12">
+<div class="flex flex-wrap justify-between items-start gap-8">
+<div class="max-w-md">
+<p class="font-['Lora'] italic text-2xl md:text-3xl leading-tight">
+                        Sacrom is a digital repository dedicated to the preservation and dissemination of Granada's living heritage. From the peaks of Sierra Nevada to the depths of the Albayzín.
+                    </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-x-12 gap-y-4">
+<a class="font-['Inter'] font-black uppercase text-sm hover:italic transition-all duration-300" href="#">INSTAGRAM</a>
+<a class="font-['Inter'] font-black uppercase text-sm hover:italic transition-all duration-300" href="#">TWITTER</a>
+<a class="font-['Inter'] font-black uppercase text-sm hover:italic transition-all duration-300" href="#">VIMEO</a>
+<a class="font-['Inter'] font-black uppercase text-sm hover:italic transition-all duration-300" href="#">ARCHIVE</a>
+<a class="font-['Inter'] font-black uppercase text-sm hover:italic transition-all duration-300" href="#">CONTACT</a>
+<a class="font-['Inter'] font-black uppercase text-sm hover:italic transition-all duration-300 underline decoration-2" href="#">LEGAL</a>
+</div>
+</div>
+<span class="text-[18vw] font-black leading-none tracking-[-0.08em] uppercase block w-full text-center border-t-2 border-black dark:border-white pt-8">
+                SACROM
+            </span>
+<div class="flex justify-between items-center text-[0.6rem] font-black kerning-widest uppercase">
+<span>© 2024 SACROM MONOCHROME.</span>
+<span>ARCHIVAL DATA 37.1773° N, 3.5986° W.</span>
+</div>
+</div>
+</footer>
+</body></html>

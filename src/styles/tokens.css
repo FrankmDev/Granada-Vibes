@@ -1,96 +1,90 @@
 /* ============================================
    GRANADA VIBES — DESIGN TOKENS
-   Single source of truth for all visual values.
-   Referenced by both CSS and Tailwind config.
+   Sacrom Monochrome — Inter + Lora + 2px strokes
    ============================================ */
 
 :root {
-  /* ── Backgrounds ── */
-  --color-bg:            #0a0a0a;
-  --color-bg-raised:     #111111;
-  --color-bg-card:       #171717;
-  --color-bg-subtle:     #1e1e1e;
+  /* ── Surfaces — Brutalist Archive ── */
+  --color-bg:                     #FCF9F4; /* warm paper */
+  --color-bg-raised:              #f6f3ee;
+  --color-bg-card:                #FCF9F4;
+  --color-bg-subtle:              #dcdad5;
+  --color-bg-dark:                #000000;
 
-  /* ── Borders ── */
-  --color-border:        #242424;
-  --color-border-subtle: #1a1a1a;
+  /* Legacy surface aliases */
+  --color-surface:                var(--color-bg);
+  --color-surface-low:            var(--color-bg-subtle);
+  --color-surface-lowest:         #ebe8e3;
+  --color-surface-high:           #ffffff;
+  --color-surface-highest:        #ffffff;
 
-  /* ── Text ── */
-  --color-text-primary:   #f0ede8;
-  --color-text-secondary: #9a9490;
-  --color-text-muted:     #5a5550;
+  /* ── Borders — Heavy 2px solid ── */
+  --color-border:                 #000000;
+  --color-border-subtle:          #474747;
+  --color-outline:                var(--color-border);
+  --color-outline-variant:        var(--color-border-subtle);
 
-  /* ── Accent (naranja granada) ── */
-  --color-accent:        #E84D27;
-  --color-accent-hover:  #F06040;
-  --color-accent-muted:  rgba(232, 77, 39, 0.10);
-  --color-accent-glow:   rgba(232, 77, 39, 0.25);
+  /* ── Text — Pure ink black ── */
+  --color-text-primary:           #000000;
+  --color-text-secondary:         #474747;
+  --color-text-muted:             #777777;
+  --color-text-inverse:           #ffffff;
 
-  /* ── Gold (Alhambra) ── */
-  --color-gold:          #c9a84c;
-  --color-gold-muted:    rgba(201, 168, 76, 0.10);
+  /* Legacy text aliases */
+  --color-on-surface:             var(--color-text-primary);
+  --color-on-surface-variant:     var(--color-text-secondary);
+  --color-on-surface-muted:       var(--color-text-muted);
 
-  /* ── Secondary (amber) ── */
-  --color-secondary:     #F59E0B;
-  --color-secondary-muted: rgba(245, 158, 11, 0.10);
+  /* ── Accent — Stark Monochrome ── */
+  --color-accent:                 #000000;
+  --color-accent-hover:           #1C1C19;
+  --color-accent-muted:           rgba(0,0,0,0.12);
+
+  /* Legacy primary aliases */
+  --color-primary:                var(--color-accent);
+  --color-primary-container:      var(--color-accent);
+  --color-on-primary-container:   #ffffff;
+
+  /* ── Secondary — Architectural Grays ── */
+  --color-gold:                   #5F5E5E; /* Legacy name for semantic gray */
+  --color-gold-muted:             #dcdad5;
+  --color-secondary:              #5F5E5E;
 
   /* ── Semantic ── */
-  --color-success:       #4a9e6b;
-  --color-success-muted: rgba(74, 158, 107, 0.15);
-  --color-error:         #c94a4a;
-  --color-error-muted:   rgba(201, 74, 74, 0.15);
+  --color-success:                #1a7a3a;
+  --color-error:                  #ba1a1a;
 
   /* ── Difficulty ── */
-  --color-difficulty-easy:     var(--color-success);
-  --color-difficulty-moderate: #d4873a;
-  --color-difficulty-hard:     var(--color-error);
+  --color-difficulty-easy:        #5F5E5E;
+  --color-difficulty-moderate:    #474747;
+  --color-difficulty-hard:        #000000;
 
-  /* ── Category accent colors ── */
-  --color-cat-concert:     var(--color-accent);
-  --color-cat-exhibition:  var(--color-secondary);
-  --color-cat-festival:    var(--color-accent);
-  --color-cat-market:      #10b981;
-  --color-cat-theater:     #a855f7;
-  --color-cat-workshop:    var(--color-secondary);
-  --color-cat-guided-tour: #06b6d4;
-  --color-cat-cinema:      #6366f1;
-  --color-cat-other:       var(--color-text-muted);
+  /* ── Typography — Dual Family ── */
+  --font-display: 'Inter', sans-serif;
+  --font-body:    'Lora', serif;
 
-  /* ── Route category colors ── */
-  --color-cat-viewpoints:   var(--color-secondary);
-  --color-cat-tapas:        var(--color-accent);
-  --color-cat-monuments:    #06b6d4;
-  --color-cat-hiking:       #10b981;
-  --color-cat-photography:  #a855f7;
-  --color-cat-secrets:      #ec4899;
-  --color-cat-history:      #f59e0b;
-  --color-cat-flamenco:     #f43f5e;
+  /* ── Layout ── */
+  --container-max:                100%;
+  --header-height:                72px; /* Matches sticky top value in code.html */
+  --header-height-mobile:         64px;
 
-  /* ── Typography ── */
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body:    'DM Sans', system-ui, sans-serif;
-
-  /* ── Spacing ── */
-  --container-max:         1280px;
-  --header-height:         72px;
-  --header-height-mobile:  64px;
-
-  /* ── Border Radius ── */
-  --radius-xs:   4px;
-  --radius-sm:   8px;
-  --radius-md:   12px;
-  --radius-lg:   16px;
-  --radius-xl:   20px;
-  --radius-2xl:  24px;
-  --radius-full: 9999px;
+  /* ── Border Radius — Brutalist = sharp edges ── */
+  --radius-xs:    0px;
+  --radius-sm:    0px;
+  --radius-md:    0px;
+  --radius-lg:    0px;
+  --radius-xl:    0px;
+  --radius-2xl:   0px;
+  --radius-full:  0px;
 
   /* ── Transitions ── */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-editorial: cubic-bezier(0.65, 0, 0.35, 1);
 
-  --duration-fast:   150ms;
-  --duration-normal: 300ms;
-  --duration-slow:   500ms;
-  --duration-slower: 700ms;
+  --duration-fast:   100ms;
+  --duration-normal: 200ms;
+  --duration-slow:   300ms;
+  --duration-slower: 700ms; /* Use for the slow image hovers */
 }

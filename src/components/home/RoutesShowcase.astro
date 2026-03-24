@@ -1,0 +1,202 @@
+---
+import type { Route, Locale } from '@types';
+
+interface Props {
+  routes: Route[];
+  locale: Locale;
+}
+
+const { routes, locale } = Astro.props;
+
+const ROUTE_FALLBACKS: Record<string, string> = {
+  tapeo:      'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=1000&fit=crop',
+  cultural:   'https://images.unsplash.com/photo-1544645224-fa98dd0abed1?w=800&h=1000&fit=crop',
+  naturaleza: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=1000&fit=crop',
+  artesania:  'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&h=1000&fit=crop',
+  default:    'https://images.unsplash.com/photo-1544645224-fa98dd0abed1?w=800&h=1000&fit=crop',
+};
+---
+
+<div class="sacrom-sticky-header">
+  <h2 class="sacrom-section-title">02 // {locale === 'es' ? 'RUTAS ARQUITECTÓNICAS' : 'ARCHITECTURAL ROUTES'}</h2>
+  <span class="sacrom-section-meta">MAP DATA V.4.1</span>
+</div>
+
+<section class="sacrom-routes-grid" aria-labelledby="routes-heading">
+  {routes.map((route: Route) => {
+    const href = `/rutas/${route.slug}`;
+    const title = route.title[locale];
+    const bgImage = route.image || ROUTE_FALLBACKS[route.category] || ROUTE_FALLBACKS.default;
+
+    return (
+      <article class="sacrom-route-card group">
+        <a href={href} class="sacrom-route-link">
+          <div class="sacrom-route-media">
+            <img src={bgImage} alt="" class="sacrom-route-img" loading="lazy" decoding="async" />
+          </div>
+
+          <div class="sacrom-route-content">
+            <h3 class="sacrom-route-title">{title}</h3>
+            
+            <div class="sacrom-route-stats">
+              <div class="sacrom-stat-block">
+                <span class="sacrom-stat-label">Duration</span>
+                <span class="sacrom-stat-value">
+                  {Math.floor(route.duration / 60)}h {route.duration % 60 > 0 ? `${route.duration % 60}m` : ''}
+                </span>
+              </div>
+              <div class="sacrom-stat-block">
+                <span class="sacrom-stat-label">Distance</span>
+                <span class="sacrom-stat-value">{route.distance} KM</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </article>
+    );
+  })}
+</section>
+
+<style>
+  .sacrom-sticky-header {
+    position: sticky;
+    top: 72px; /* --header-height */
+    z-index: 40;
+    background-color: var(--color-bg);
+    border-bottom: 2px solid var(--color-border);
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .sacrom-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 900;
+    letter-spacing: -0.08em; /* kerning-v-tight */
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .sacrom-section-meta {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 0.5em; /* kerning-widest+ tracking */
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    padding-bottom: 0.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .sacrom-sticky-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+
+  .sacrom-routes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: var(--color-border);
+    border-bottom: 2px solid var(--color-border);
+    gap: 2px; /* acts as the border separator between items if bg is black */
+  }
+
+  @media (min-width: 768px) {
+    .sacrom-routes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sacrom-routes-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .sacrom-route-card {
+    background-color: var(--color-bg);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sacrom-route-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  .sacrom-route-media {
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sacrom-route-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: transform 0.8s ease, filter 0.5s ease;
+  }
+
+  .sacrom-route-link:hover .sacrom-route-img {
+    transform: scale(1.1);
+    filter: grayscale(0%);
+  }
+
+  .sacrom-route-content {
+    padding: 1.5rem;
+    border-top: 2px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .sacrom-route-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    margin: 0 0 1rem 0;
+    line-height: 1.1;
+  }
+
+  .sacrom-route-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    border-top: 2px solid var(--color-border);
+    padding-top: 1rem;
+    margin-top: auto;
+  }
+
+  .sacrom-stat-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sacrom-stat-label {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 0.125rem;
+  }
+
+  .sacrom-stat-value {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+  }
+</style>

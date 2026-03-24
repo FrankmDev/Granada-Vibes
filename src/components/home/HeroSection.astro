@@ -1,255 +1,593 @@
 ---
 /**
- * HeroSection — Orchestrator composing HeroBackground + HeroContent + HeroEventsList.
- * Contains section wrapper, scroll indicator, and client-side scripts.
+ * HeroSection — Cinematic Video Hero
+ * Full-bleed video background, editorial typography
  */
-import type { Locale, Event } from '@types';
-import { useTranslations } from '@i18n/utils';
-import HeroBackground from './HeroBackground.astro';
-import HeroContent from './HeroContent.astro';
-import HeroEventsList from './HeroEventsList.astro';
+import type { Event } from '../../types';
 
 interface Props {
   thisWeekEvents: Event[];
-  locale: Locale;
+  locale: string;
 }
 
 const { thisWeekEvents, locale } = Astro.props;
-const t = useTranslations(locale);
-const heroEvents = thisWeekEvents.slice(0, 4);
+
+const eyebrowLabel = locale === 'es' ? 'Guía Cultural' : 'Cultural Guide';
+const tagline = locale === 'es'
+  ? 'Eventos, rutas auténticas y los mejores planes de la ciudad.'
+  : 'Events, authentic routes and the best plans in the city.';
+const ctaLabel = locale === 'es' ? 'Ver programación' : 'View programme';
+const eventsLabel = locale === 'es' ? 'Eventos' : 'Events';
+const routesLabel = locale === 'es' ? 'Rutas' : 'Routes';
 ---
 
-<section class="hero-section" aria-labelledby="hero-heading">
-  <HeroBackground />
+<section class="hero" aria-label={locale === 'es' ? 'Granada Vibes — Guía Cultural' : 'Granada Vibes — Cultural Guide'}>
+  
+  <!-- ── Video Background ── -->
+  <div class="hero__video-container" aria-hidden="true">
+    <video 
+      class="hero__video" 
+      autoplay 
+      muted 
+      loop 
+      playsinline
+      preload="auto"
+      crossorigin="anonymous"
+      poster="/images/hero-fallback.jpg"
+    >
+      <source src="/heroVideo.avi" type="video/x-msvideo" />
+      <source src="/heroVideo.webm" type="video/webm" />
+    </video>
+    <div class="hero__video-overlay"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+  </div>
 
-  <div class="hero-section__content container">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-      <HeroContent locale={locale} />
-      <div class="lg:col-span-5 relative z-30">
-        <HeroEventsList events={heroEvents} locale={locale} />
+  <!-- ── Main Content ── -->
+  <div class="hero__content">
+    
+    <!-- Top: Eyebrow and Navigation -->
+    <div class="hero__top">
+      <div class="hero__eyebrow">
+        <span class="hero__eyebrow-bracket">[</span>
+        <span class="hero__eyebrow-text">{eyebrowLabel}</span>
+        <span class="hero__eyebrow-bracket">]</span>
+        <span class="hero__year">2025 — 2026</span>
       </div>
+      
+      <nav class="hero__nav" aria-label={locale === 'es' ? 'Navegación principal' : 'Main navigation'}>
+        <a href={locale === 'es' ? '/eventos' : '/en/events'} class="hero__nav-link">
+          {eventsLabel}
+        </a>
+        <a href={locale === 'es' ? '/rutas' : '/en/routes'} class="hero__nav-link">
+          {routesLabel}
+        </a>
+        <a href={locale === 'es' ? '/semana-santa' : '/en/easter'} class="hero__nav-link hero__nav-link--accent">
+          Semana Santa
+        </a>
+      </nav>
+    </div>
+    
+    <!-- Bottom: Title and CTA -->
+    <div class="hero__bottom">
+      <div class="hero__title-block">
+        <h1 class="hero__title">
+          <span class="hero__title-line hero__title-line--1">GRANADA</span>
+          <span class="hero__title-line hero__title-line--2">VIBES</span>
+        </h1>
+        
+        <p class="hero__tagline">{tagline}</p>
+      </div>
+      
+      <a
+        href={locale === 'es' ? '/eventos' : '/en/events'}
+        class="hero__cta"
+        aria-label={ctaLabel}
+      >
+        <span>{ctaLabel}</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </div>
   </div>
 
-  <!-- Bottom scroll indicator -->
-  <div class="hero-section__scroll" id="scroll-indicator">
-    <span class="hero-section__scroll-text">{t('home.hero.scrollText')}</span>
-    <div class="hero-section__scroll-bar">
-      <div class="hero-section__scroll-bar-inner"></div>
+  <!-- ── Stats Bar ── -->
+  <div class="hero__stats" aria-label={locale === 'es' ? 'Datos de Granada' : 'Granada facts'}>
+    <div class="hero__stat">
+      <span class="hero__stat-num">
+        <span class="hero__stat-value" data-count-target="48">0</span>
+      </span>
+      <span class="hero__stat-label">{locale === 'es' ? 'horas de tapeo' : 'hours of tapas'}</span>
     </div>
+    <div class="hero__stat-divider"></div>
+    <div class="hero__stat">
+      <span class="hero__stat-num">
+        <span class="hero__stat-value" data-count-target="800">0</span>
+        <span class="hero__stat-suffix">+</span>
+      </span>
+      <span class="hero__stat-label">{locale === 'es' ? 'años de historia' : 'years of history'}</span>
+    </div>
+    <div class="hero__stat-divider"></div>
+    <div class="hero__stat">
+      <span class="hero__stat-num">
+        <span class="hero__stat-value" data-count-target="2">0</span>
+      </span>
+      <span class="hero__stat-label">{locale === 'es' ? 'Patrimonios UNESCO' : 'UNESCO sites'}</span>
+    </div>
+    <div class="hero__stat-divider hero__stat-divider--hide"></div>
+    <div class="hero__stat hero__stat--hide">
+      <span class="hero__stat-num">
+        <span class="hero__stat-value" data-count-target="40">0</span>
+        <span class="hero__stat-suffix">+</span>
+      </span>
+      <span class="hero__stat-label">{locale === 'es' ? 'rutas curadas' : 'curated routes'}</span>
+    </div>
+  </div>
+
+  <!-- ── Scroll Indicator ── -->
+  <div class="hero__scroll-indicator" aria-hidden="true">
+    <span class="hero__scroll-text">{locale === 'es' ? 'Descubrir' : 'Discover'}</span>
+    <div class="hero__scroll-line"></div>
   </div>
 </section>
 
 <style>
-  .hero-section {
+  /* ── Base ── */
+  .hero {
     position: relative;
-    min-height: 100vh;
-    background: var(--color-bg);
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
     overflow: hidden;
-  }
-
-  .hero-section__content {
-    position: relative;
-    z-index: 20;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding-top: 6rem;
-    padding-bottom: 5rem;
   }
 
-  @media (min-width: 1024px) { .hero-section__content { padding-top: 7rem; } }
+  /* ── Video Background ── */
+  .hero__video-container {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: 
+      radial-gradient(ellipse at 30% 70%, rgba(232, 98, 42, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 30%, rgba(201, 168, 76, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #0f0f0f 0%, #080808 50%, #0a0a0a 100%);
+  }
 
-  .hero-section__scroll {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
+  .hero__video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .hero__video[data-loaded="true"] {
+    opacity: 1;
+  }
+
+  .hero__video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(8, 8, 8, 0.95) 0%,
+      rgba(8, 8, 8, 0.7) 40%,
+      rgba(8, 8, 8, 0.3) 70%,
+      rgba(8, 8, 8, 0.5) 100%
+    );
+    pointer-events: none;
+  }
+
+  .hero__grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* ── Content ── */
+  .hero__content {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    padding-top: calc(var(--nav-height, 80px) + 1rem);
+  }
+
+  @media (min-width: 768px) {
+    .hero__content {
+      padding: clamp(2rem, 5vw, 4rem);
+      padding-top: calc(var(--nav-height, 90px) + 1.5rem);
+    }
+  }
+
+  /* ── Top Section ── */
+  .hero__top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero__top {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: fadeIn 0.8s ease 0.2s both;
+  }
+
+  .hero__eyebrow-bracket {
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .hero__eyebrow-text {
+    color: var(--color-text-secondary);
+  }
+
+  .hero__year {
+    margin-left: 1rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .hero__nav {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.8s ease 0.3s both;
+  }
+
+  .hero__nav-link {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-display);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.25s ease;
+  }
+
+  .hero__nav-link:last-child {
+    border-right: none;
+  }
+
+  .hero__nav-link:hover {
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .hero__nav-link--accent {
+    color: var(--color-accent);
+  }
+
+  .hero__nav-link--accent:hover {
+    color: var(--color-accent-hover);
+    background: rgba(232, 98, 42, 0.1);
+  }
+
+  /* ── Bottom Section ── */
+  .hero__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 0;
+    }
+  }
+
+  .hero__title-block {
+    max-width: 600px;
+  }
+
+  .hero__title {
+    margin: 0 0 1rem;
+    line-height: 0.9;
+  }
+
+  .hero__title-line {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  .hero__title-line--1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+
+  .hero__title-line--2 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: rgba(240, 237, 232, 0.8);
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero__tagline {
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 400px;
+    animation: fadeIn 0.8s ease 0.5s both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CTA ── */
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-bg);
+    background: var(--color-text-primary);
+    text-decoration: none;
+    padding: 1rem 1.75rem;
+    border: 2px solid var(--color-text-primary);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeIn 0.8s ease 0.6s both;
+  }
+
+  .hero__cta:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .hero__cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  .hero__cta svg {
+    transition: transform 0.25s ease;
+  }
+
+  /* ── Stats Bar ── */
+  .hero__stats {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: stretch;
+    background: rgba(8, 8, 8, 0.8);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 clamp(1.5rem, 4vw, 4rem);
+  }
+
+  .hero__stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.5rem clamp(1rem, 2.5vw, 2rem);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .hero__stat:last-child {
+    border-right: none;
+  }
+
+  .hero__stat-num {
+    display: flex;
+    align-items: baseline;
+    gap: 0.125rem;
+    line-height: 1;
+  }
+
+  .hero__stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+  }
+
+  .hero__stat-suffix {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .hero__stat-label {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .hero__stat-divider {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 639px) {
+    .hero__stat--hide,
+    .hero__stat-divider--hide {
+      display: none;
+    }
+  }
+
+  /* ── Scroll Indicator ── */
+  .hero__scroll-indicator {
+    position: absolute;
+    right: clamp(1.5rem, 4vw, 3rem);
+    bottom: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    z-index: 50;
-    opacity: 0;
-    pointer-events: none;
-    animation: hero-fade-in 0.8s ease-out 1.2s forwards;
+    z-index: 10;
+    animation: fadeIn 0.8s ease 1s both;
   }
 
-  .hero-section__scroll-text {
+  @media (max-width: 767px) {
+    .hero__scroll-indicator {
+      display: none;
+    }
+  }
+
+  .hero__scroll-text {
     font-size: 0.625rem;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--color-text-muted);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
   }
 
-  .hero-section__scroll-bar {
+  .hero__scroll-line {
     width: 1px;
-    height: 2.5rem;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
-    position: relative;
-    overflow: hidden;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--color-accent), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
   }
 
-  .hero-section__scroll-bar-inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, var(--color-accent), var(--color-secondary));
-    animation: hero-scroll-line 2s ease-in-out infinite;
+  @keyframes scrollPulse {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scaleY(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scaleY(1);
+    }
   }
 
-  @keyframes hero-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  /* ── Responsive ── */
+  @media (max-width: 767px) {
+    .hero {
+      min-height: 100svh;
+    }
 
-  @keyframes hero-scroll-line {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(200%); }
-  }
+    .hero__nav {
+      width: 100%;
+      justify-content: center;
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+    .hero__nav-link {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem 0.5rem;
+    }
+
+    .hero__cta {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
 
 <script>
-  // Reveal animations via IntersectionObserver
-  (function() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const delay = entry.target.getAttribute('data-delay') || '0';
-          setTimeout(() => {
-            (entry.target as HTMLElement).style.opacity = '1';
-            (entry.target as HTMLElement).style.transform = 'translateY(0)';
-          }, parseInt(delay));
-          observer.unobserve(entry.target);
-        }
+  /* Video load handler */
+  (function () {
+    const video = document.querySelector('.hero__video');
+    if (video) {
+      video.addEventListener('loadeddata', function() {
+        this.setAttribute('data-loaded', 'true');
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-    document.querySelectorAll('.hero-reveal').forEach(el => {
-      const htmlEl = el as HTMLElement;
-      htmlEl.style.opacity = '0';
-      htmlEl.style.transform = 'translateY(20px)';
-      htmlEl.style.transition = 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)';
-      observer.observe(el);
-    });
+      // Fallback: if video fails, ensure content is still visible
+      video.addEventListener('error', function() {
+        console.warn('Hero video failed to load');
+      });
+    }
   })();
 
-  // Parallax for hero background image + orbs (rAF-throttled scroll)
-  (function() {
-    const heroWrapper = document.getElementById('hero-image-wrapper');
-    const orbs = document.querySelectorAll('.hero-bg__orb');
-    let ticking = false;
+  /* Count-up on stats with IntersectionObserver */
+  (function () {
+    const stats = document.querySelectorAll('[data-count-target]');
+    if (!stats.length || !('IntersectionObserver' in window)) {
+      stats.forEach((el) => {
+        const target = parseInt((el as HTMLElement).dataset.countTarget ?? '0', 10);
+        el.textContent = String(target);
+      });
+      return;
+    }
 
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const y = window.scrollY;
-          if (heroWrapper) heroWrapper.style.transform = `translateY(${y * 0.4}px) scale(1.1)`;
-          orbs.forEach((orb) => {
-            const speed = parseFloat(orb.getAttribute('data-speed') || '0.02');
-            (orb as HTMLElement).style.transform = `translateY(${y * speed}px)`;
-          });
-          ticking = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          const target = parseInt(el.dataset.countTarget ?? '0', 10);
+          const duration = 1400;
+          const start = performance.now();
+
+          function step(now: number) {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = String(Math.round(eased * target));
+            if (progress < 1) requestAnimationFrame(step);
+          }
+
+          requestAnimationFrame(step);
+          observer.unobserve(el);
         });
-        ticking = true;
-      }
-    }, { passive: true });
-  })();
+      },
+      { threshold: 0.4 }
+    );
 
-  // Cursor spotlight effect
-  (function() {
-    const section = document.querySelector('.hero-section') as HTMLElement | null;
-    const spotlight = document.querySelector('.hero-spotlight') as HTMLElement | null;
-    if (!section || !spotlight) return;
-
-    setTimeout(() => { spotlight.style.opacity = '1'; }, 800);
-
-    let mouseX = 50, mouseY = 50, currentX = 50, currentY = 50;
-
-    section.addEventListener('mousemove', (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect();
-      mouseX = ((e.clientX - rect.left) / rect.width) * 100;
-      mouseY = ((e.clientY - rect.top) / rect.height) * 100;
-    });
-
-    function animate() {
-      currentX += (mouseX - currentX) * 0.08;
-      currentY += (mouseY - currentY) * 0.08;
-      section!.style.setProperty('--mouse-x', `${currentX}%`);
-      section!.style.setProperty('--mouse-y', `${currentY}%`);
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    section.addEventListener('mouseleave', () => { spotlight.style.opacity = '0'; });
-    section.addEventListener('mouseenter', () => { spotlight.style.opacity = '1'; });
-  })();
-
-  // Generate atmospheric particles
-  (function() {
-    const container = document.getElementById('particles-container');
-    if (!container) return;
-
-    for (let i = 0; i < 20; i++) {
-      const p = document.createElement('div');
-      const rand = Math.random();
-      p.className = `hero-particle ${rand > 0.8 ? 'hero-particle--gold' : rand > 0.6 ? 'hero-particle--white' : ''}`;
-      p.style.left = `${Math.random() * 100}%`;
-      p.style.animationDelay = `${Math.random() * 15}s`;
-      p.style.animationDuration = `${12 + Math.random() * 8}s`;
-      container.appendChild(p);
-    }
-  })();
-
-  // Hide scroll indicator on scroll
-  (function() {
-    const indicator = document.getElementById('scroll-indicator');
-    if (!indicator) return;
-    let hidden = false;
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 100 && !hidden) { indicator.style.opacity = '0'; hidden = true; }
-      else if (window.scrollY <= 100 && hidden) { indicator.style.opacity = '1'; hidden = false; }
-    }, { passive: true });
+    stats.forEach((el) => observer.observe(el));
   })();
 </script>
-
-<!-- Particle styles (global scope for dynamically created elements) -->
-<style is:global>
-  .hero-particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 50%, transparent) 0%, transparent 70%);
-    animation: hero-particle-float 15s linear infinite;
-  }
-
-  .hero-particle--gold {
-    background: radial-gradient(circle, color-mix(in srgb, var(--color-gold) 40%, transparent) 0%, transparent 70%);
-  }
-
-  .hero-particle--white {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-  }
-
-  @keyframes hero-particle-float {
-    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-    10% { opacity: 0.5; }
-    90% { opacity: 0.5; }
-    100% { transform: translateY(-10vh) translateX(20px); opacity: 0; }
-  }
-</style>

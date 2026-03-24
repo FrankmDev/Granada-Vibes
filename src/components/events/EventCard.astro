@@ -1,6 +1,7 @@
 ---
 import type { Event, Locale } from '@types';
 import { formatDateShort, formatTime, getTemporalProximity } from '@utils/dates';
+import { truncateTitle } from '@utils/strings';
 import { eventCategoryStyles, icons } from '@config/ui';
 
 interface Props {
@@ -25,16 +26,16 @@ const catColor = catStyle.colorVar;
 
       <!-- Image -->
       <div class:list={['relative overflow-hidden', featured ? 'aspect-[21/10]' : 'aspect-[16/10]']}>
-        {eventImage ? (
+        <div class="event-card__fallback" style={`--cat-color: ${catColor}`}></div>
+        {eventImage && (
           <img
             src={eventImage}
             alt={event.title[locale]}
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             loading="lazy"
             decoding="async"
+            onerror="this.style.display='none'"
           />
-        ) : (
-          <div class="event-card__fallback" style={`--cat-color: ${catColor}`}></div>
         )}
 
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
@@ -108,7 +109,7 @@ const catColor = catStyle.colorVar;
           'font-bold text-white mb-3 transition-colors duration-300 line-clamp-2 group-hover:text-accent',
           featured ? 'text-xl lg:text-2xl' : 'text-lg'
         ]}>
-          {event.title[locale]}
+          {truncateTitle(event.title[locale])}
         </h3>
 
         <p class="text-sm text-white/50 line-clamp-2 mb-6 leading-relaxed">
