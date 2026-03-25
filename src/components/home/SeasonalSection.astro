@@ -1,0 +1,428 @@
+---
+import type { Locale } from '../../types';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import semanaSantaData from '../../data/semana-santa/pasos.json';
+import {
+  type DiaRaw,
+  type ProcessedDia,
+  TYPE_COLORS,
+  PASO_IMAGES,
+  buildProcessedDias,
+  getTypeLabel,
+  formatShortDate,
+} from './seasonal-data';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const processedDias: ProcessedDia[] = buildProcessedDias(semanaSantaData.dias as DiaRaw[]);
+
+const ctaLink    = locale === 'es' ? '/eventos' : '/en/events';
+const todasLabel = locale === 'es' ? 'Ver todas las procesiones' : 'View all processions';
+const edicion    = 'No. 001';
+const vol        = 'VOL. I · 2026';
+const coords     = '37.177°N';
+---
+
+<section class="seasonal" aria-label={locale === 'es' ? 'Semana Santa' : 'Holy Week'}>
+  <ScreenFrame
+    tagTopLeft={locale === 'es' ? 'PROCESIONES' : 'PROCESSIONS'}
+    tagTopRight={edicion}
+    tagBottomRight={coords}
+  />
+  <div class="cin-grain" aria-hidden="true"></div>
+
+  <!-- ══ SECTION HEADER ══ -->
+  <SectionHeader
+    eyebrow={locale === 'es' ? 'TEMPORADA' : 'SEASONAL'}
+    eyebrowYear={vol}
+    titleLabel={edicion}
+    title={locale === 'es' ? 'SEMANA SANTA' : 'HOLY WEEK'}
+    animateTitle={true}
+    ctaHref={ctaLink}
+    ctaLabel={todasLabel}
+  >
+    <!-- Day filter tabs (slotted into header) -->
+    <div class="days-nav">
+      <div class="days-track">
+        {processedDias.map((dia) => (
+          <button class="day-btn" data-id={dia.id}>
+            <div class="day-btn-inner">
+              <span class="day-btn-date">{formatShortDate(dia.fecha, locale)}</span>
+              <span class="day-btn-name">{dia.nombre}</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </SectionHeader>
+
+  <!-- i18n config for client script -->
+  <div id="ss-config"
+       data-hoy={locale === 'es' ? 'HOY' : 'TODAY'}
+       data-proximo={locale === 'es' ? 'PRÓXIMO DÍA' : 'NEXT DAY'}
+       data-pasado={locale === 'es' ? 'FINALIZADO' : 'COMPLETED'}
+       data-futuro={locale === 'es' ? 'PRÓXIMAMENTE' : 'UPCOMING'}
+       aria-hidden="true"></div>
+
+  <!-- ══ DAY PANELS ══ -->
+  <div class="day-panels-wrapper">
+    {processedDias.map((dia) => (
+      <div class="day-panel" data-id={dia.id} data-date={dia.fecha}>
+
+        <div class="panel-header">
+          <div class="status-badge" data-badge-for={dia.id}>
+            <span class="status-dot"></span>
+            <span class="status-text">--</span>
+          </div>
+          <h3 class="panel-day-title">{dia.nombre}</h3>
+        </div>
+
+        <div class="masonry-wrapper">
+          {dia.masonryData.map((colData, colIndex) => (
+            <div class={`masonry-col col-${['left','center','right'][colIndex]}`}>
+              {colData.items.map((paso, idx) => (
+                <article class="masonry-item" style={`height: ${colData.heights[idx]}vh; --card-index: ${paso.originalIndex}`}>
+                  <a href={ctaLink} class="paso-link">
+                    <img
+                      src={PASO_IMAGES[paso.originalIndex % PASO_IMAGES.length]}
+                      alt={paso.nombre}
+                      class="paso-img"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div class="paso-overlay"></div>
+
+                    <span class="cb cb-tl" aria-hidden="true"></span>
+                    <span class="cb cb-tr" aria-hidden="true"></span>
+                    <span class="cb cb-bl" aria-hidden="true"></span>
+                    <span class="cb cb-br" aria-hidden="true"></span>
+
+                    <div class="paso-top">
+                      <div class="paso-type-badge" style={`--tc: ${TYPE_COLORS[paso.tipo] ?? TYPE_COLORS.Palio}`}>
+                        <span class="type-dot"></span>
+                        <span>{getTypeLabel(paso.tipo, locale)}</span>
+                      </div>
+                      <div class="paso-time">{paso.hora}</div>
+                    </div>
+
+                    <div class="paso-content">
+                      <div class="paso-header">
+                        <span class="paso-barrio">{paso.barrio}</span>
+                      </div>
+                      <h4 class="paso-name">{paso.nombre}</h4>
+                      <span class="paso-hermandad">{paso.hermandad}</span>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="mobile-cta-wrapper">
+    <a href={ctaLink} class="header-cta mobile-cta">
+      <span class="cta-text">{todasLabel}</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<script>
+  function initSemanaSantaTabs() {
+    const panels = document.querySelectorAll<HTMLElement>('.day-panel');
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.day-btn');
+    const badges = document.querySelectorAll<HTMLElement>('.status-badge');
+    const configEl = document.getElementById('ss-config');
+
+    if (!panels.length || !buttons.length || !configEl) return;
+
+    const labels = {
+      hoy:     configEl.dataset.hoy     ?? 'HOY',
+      proximo: configEl.dataset.proximo ?? 'PRÓXIMO DÍA',
+      pasado:  configEl.dataset.pasado  ?? 'FINALIZADO',
+      futuro:  configEl.dataset.futuro  ?? 'PRÓXIMAMENTE',
+    };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayMs = today.getTime();
+
+    let targetId = panels[0]?.dataset.id;
+    let found = false;
+
+    panels.forEach((panel) => {
+      const pDate = panel.dataset.date;
+      if (!pDate) return;
+
+      const panelDate = new Date(pDate);
+      panelDate.setHours(0, 0, 0, 0);
+      const pMs = panelDate.getTime();
+
+      let status: string;
+      let temporal: string;
+
+      if (pMs === todayMs) {
+        status = labels.hoy;
+        temporal = 'hoy';
+        if (!found) { targetId = panel.dataset.id; found = true; }
+      } else if (pMs < todayMs) {
+        status = labels.pasado;
+        temporal = 'pasado';
+      } else if (!found) {
+        status = labels.proximo;
+        temporal = 'proximo';
+        targetId = panel.dataset.id;
+        found = true;
+      } else {
+        status = labels.futuro;
+        temporal = 'futuro';
+      }
+
+      panel.dataset.temporal = temporal;
+
+      const badge = Array.from(badges).find((b) => b.dataset.badgeFor === panel.dataset.id);
+      if (badge) {
+        const textSpan = badge.querySelector('.status-text');
+        if (textSpan) textSpan.textContent = status;
+        badge.classList.toggle('status-active', temporal === 'hoy' || temporal === 'proximo');
+      }
+    });
+
+    function activateTab(id: string | undefined) {
+      if (!id) return;
+      panels.forEach((p) => {
+        const isActive = p.dataset.id === id;
+        p.classList.toggle('active', isActive);
+        p.style.display = isActive ? 'block' : 'none';
+      });
+      buttons.forEach((btn) => {
+        const isActive = btn.dataset.id === id;
+        btn.classList.toggle('active', isActive);
+        if (isActive) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+    }
+
+    buttons.forEach((btn) => btn.addEventListener('click', () => activateTab(btn.dataset.id)));
+    activateTab(targetId);
+  }
+
+  document.addEventListener('DOMContentLoaded', initSemanaSantaTabs);
+  document.addEventListener('astro:page-load', initSemanaSantaTabs);
+</script>
+
+<style>
+  .seasonal {
+    --s-cream:    #f5f0ea;
+    --s-ink:      #1a1619;
+    --s-ink-2:    #5a4f47;
+    --s-ink-3:    #8a7f77;
+    --s-orange:   #e8622a;
+    --s-gold:     #c9a84c;
+    --s-border:   rgba(26, 22, 25, 0.10);
+    --s-border-s: rgba(26, 22, 25, 0.06);
+
+    position: relative;
+    width: 100%;
+    background: var(--s-cream);
+    overflow: hidden;
+  }
+
+  .seasonal :global(.cin-screen-frame) { border-color: var(--s-border); }
+  .seasonal :global(.cin-corner::before),
+  .seasonal :global(.cin-corner::after) { background: var(--s-ink); opacity: 0.2; }
+  .seasonal :global(.cin-frame-tag) { color: var(--s-ink-3); }
+
+  .cin-grain {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+
+  /* Mobile CTA wrapper — only needed in this section */
+  .mobile-cta-wrapper { display: none; padding: 2rem 1.5rem; border-top: 1px solid var(--s-border); }
+  .mobile-cta { width: 100%; justify-content: center; animation: none; }
+
+  /* Day filter tabs */
+  .days-nav {
+    width: 100%; border-bottom: 1px solid var(--s-border);
+    padding: 0 clamp(1.5rem, 5vw, 4rem) 2rem;
+    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .days-nav::-webkit-scrollbar { display: none; }
+  .days-track { display: flex; gap: 1rem; min-width: max-content; padding-bottom: 0.5rem; }
+  .day-btn {
+    background: transparent; border: 1px solid var(--s-border); border-radius: 12px;
+    padding: 0.85rem 1.5rem; cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 160px; text-align: left; position: relative; overflow: hidden;
+  }
+  .day-btn-inner { display: flex; flex-direction: column; gap: 0.4rem; position: relative; z-index: 2; }
+  .day-btn-date { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-orange); transition: color 0.4s ease; }
+  .day-btn-name { font-family: var(--font-body); font-size: 1.15rem; font-weight: 400; color: var(--s-ink-2); line-height: 1.1; transition: color 0.4s ease; }
+  .day-btn:hover { border-color: rgba(26, 22, 25, 0.25); background: rgba(26, 22, 25, 0.02); transform: translateY(-2px); }
+  .day-btn.active {
+    background: var(--s-ink); border-color: var(--s-ink);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(26, 22, 25, 0.18);
+  }
+  .day-btn.active .day-btn-date { color: var(--s-orange); }
+  .day-btn.active .day-btn-name { color: var(--s-cream); }
+
+  /* Day panels */
+  .day-panels-wrapper { position: relative; z-index: 2; }
+  .day-panel { display: none; animation: fade-in-panel 0.6s ease forwards; }
+  @keyframes fade-in-panel {
+    from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+    to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+  }
+
+  .panel-header {
+    padding: 3rem clamp(1.5rem, 5vw, 4rem) 2.5rem;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem;
+  }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    background: rgba(26, 22, 25, 0.04); border: 1px solid var(--s-border); border-radius: 6px;
+  }
+  .status-badge.status-active {
+    background: rgba(232, 98, 42, 0.08); border-color: rgba(232, 98, 42, 0.3);
+  }
+  .status-badge.status-active .status-dot { background: var(--s-orange); box-shadow: 0 0 8px var(--s-orange); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--s-ink-3); flex-shrink: 0; }
+  .status-text { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-ink); }
+  .panel-day-title {
+    font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 300; letter-spacing: -0.02em; color: var(--s-ink); margin: 0; line-height: 1;
+  }
+
+  /* Masonry (mirrors EventsGridSection layout) */
+  .masonry-wrapper {
+    display: flex; width: 100%;
+    background: var(--s-border); border-bottom: 1px solid var(--s-border);
+  }
+  .masonry-col { display: flex; flex-direction: column; background: var(--s-cream); }
+  .col-left   { flex: 1; border-right: 1px solid var(--s-border); }
+  .col-center { flex: 1; border-right: 1px solid var(--s-border); }
+  .col-right  { flex: 1; }
+
+  .masonry-item {
+    position: relative; width: 100%; overflow: hidden;
+    border-bottom: 1px solid var(--s-border);
+    opacity: 0;
+    animation: cell-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1)
+      calc(0.1s + var(--card-index) * 0.05s) forwards;
+  }
+
+  .paso-link { display: block; text-decoration: none; color: var(--color-text-primary); height: 100%; position: relative; }
+  .paso-img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(25%) contrast(1.05) brightness(0.8);
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), filter 0.8s ease;
+  }
+  .masonry-item:hover .paso-img { transform: scale(1.05); filter: grayscale(0%) contrast(1.02) brightness(0.88); }
+
+  .paso-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to top,
+      rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.72) 25%,
+      rgba(0,0,0,0.2) 65%, transparent 100%
+    );
+    transition: background 0.4s ease;
+  }
+  .masonry-item:hover .paso-overlay {
+    background: linear-gradient(to top,
+      rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.82) 35%,
+      rgba(0,0,0,0.3) 75%, transparent 100%
+    );
+  }
+
+  /* Corner brackets */
+  .cb {
+    position: absolute; width: 18px; height: 18px;
+    border-color: rgba(255, 255, 255, 0.2); border-style: solid; border-width: 0;
+    opacity: 0; transition: opacity 0.4s ease; pointer-events: none; z-index: 3;
+  }
+  .masonry-item:hover .cb { opacity: 0.8; }
+  .cb-tl { top: 1rem;    left: 1rem;  border-top-width: 1px;    border-left-width: 1px; }
+  .cb-tr { top: 1rem;    right: 1rem; border-top-width: 1px;    border-right-width: 1px; }
+  .cb-bl { bottom: 1rem; left: 1rem;  border-bottom-width: 1px; border-left-width: 1px; }
+  .cb-br { bottom: 1rem; right: 1rem; border-bottom-width: 1px; border-right-width: 1px; }
+
+  /* Card content */
+  .paso-top {
+    position: absolute; top: 1.25rem; left: 1.25rem; right: 1.25rem; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  }
+  .paso-type-badge {
+    background: rgba(245, 240, 234, 0.92); backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(245, 240, 234, 0.6); padding: 0.55rem 0.9rem; border-radius: 6px;
+    font-family: var(--font-display); font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink);
+    transition: all 0.4s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: flex; align-items: center; gap: 0.45rem; white-space: nowrap;
+  }
+  .masonry-item:hover .paso-type-badge {
+    transform: translateY(-3px); background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+  .type-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tc, var(--s-gold)); flex-shrink: 0; }
+
+  .paso-time {
+    font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; color: var(--s-ink);
+    background: rgba(245, 240, 234, 0.92); backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    padding: 0.4rem 0.75rem; border-radius: 4px; white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25); transition: transform 0.4s ease, background 0.4s ease;
+  }
+  .masonry-item:hover .paso-time { transform: translateY(-3px); background: rgba(255, 255, 255, 0.98); }
+
+  .paso-content {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 5;
+    padding: 2rem 1.5rem 1.5rem;
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .masonry-item:hover .paso-content { transform: translateY(-5px); }
+  .paso-barrio {
+    font-family: var(--font-display); font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--s-orange); margin-bottom: 0.2rem;
+  }
+  .paso-name {
+    font-family: var(--font-body); font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+    font-weight: 400; letter-spacing: -0.01em; line-height: 1.15;
+    color: var(--color-text-primary); text-shadow: 0 2px 8px rgba(0,0,0,0.5); margin: 0 0 0.2rem;
+  }
+  .paso-hermandad {
+    font-family: var(--font-display); font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); margin-top: 0.3rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .mobile-cta-wrapper { display: flex; }
+    .panel-header { padding: 2.5rem 1.5rem 2rem; }
+    .panel-day-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+    .masonry-wrapper { flex-direction: column; border: none; }
+    .col-left, .col-center, .col-right { width: 100%; border-right: none; }
+    .masonry-item { height: 45vh !important; }
+  }
+
+  @media (max-width: 480px) {
+    .masonry-item { height: 50vh !important; }
+    .day-btn { min-width: 130px; padding: 0.7rem 1rem; }
+    .day-btn-name { font-size: 1rem; }
+  }
+</style>

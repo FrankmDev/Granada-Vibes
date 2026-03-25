@@ -1,12 +1,13 @@
 ---
-import type { Event } from '../types';
 import { getAllEvents, getFeaturedRoutes } from '../data';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
-import BrutalHero from '@components/home/BrutalHero.astro';
-import EditorialBento from '@components/home/EditorialBento.astro';
-import RoutesShowcase from '@components/home/RoutesShowcase.astro';
+import HeroSection from '@components/home/HeroSection.astro';
+import EventsGridSection from '@components/home/EventsGridSection.astro';
+import SeasonalSection from '@components/home/SeasonalSection.astro';
+import RoutesGridSection from '@components/home/RoutesGridSection.astro';
+import HomeCTA from '@components/home/HomeCTA.astro';
 
 const locale = 'es';
 const currentPath = Astro.url.pathname;
@@ -15,11 +16,11 @@ const allEvents = getAllEvents();
 const featuredRoutes = getFeaturedRoutes();
 
 const upcoming = allEvents
-  .filter((e: Event) => e.date >= todayStr)
-  .sort((a: Event, b: Event) => a.date.localeCompare(b.date));
+  .filter((e) => e.date >= todayStr)
+  .sort((a, b) => a.date.localeCompare(b.date));
 
 const gridEvents = upcoming.slice(0, 20);
-const displayRoutes = featuredRoutes.slice(0, 4);
+const displayRoutes = featuredRoutes.slice(0, 7);
 ---
 
 <BaseLayout
@@ -28,14 +29,13 @@ const displayRoutes = featuredRoutes.slice(0, 4);
   description="La guía cultural definitiva de Granada. Eventos, rutas y experiencias reales sin filtros."
   schemaType="website"
 >
-  <!-- Header -->
   <NavBar slot="header" locale={locale} currentPath={currentPath} />
 
-  <!-- Secciones -->
-  <BrutalHero locale={locale} />
-  <EditorialBento events={gridEvents} locale={locale} />
-  <RoutesShowcase routes={displayRoutes} locale={locale} />
+  <HeroSection locale={locale} />
+  <EventsGridSection events={gridEvents} locale={locale} />
+  <SeasonalSection locale={locale} />
+  <RoutesGridSection routes={displayRoutes} locale={locale} />
+  <HomeCTA locale={locale} />
 
-  <!-- Footer -->
   <Footer slot="footer" locale={locale} />
 </BaseLayout>

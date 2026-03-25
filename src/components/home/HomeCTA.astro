@@ -1,0 +1,217 @@
+---
+import type { Locale } from '@types';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const ctaContent = {
+  es: {
+    supra:    'DESTINO',
+    title:    'GRANADA',
+    subtitle: 'DESCUBRE',
+    line1:    'La Alhambra',
+    line2:    'ya la conoces.',
+    line3:    'Granada',
+    line4:    'todavía no.',
+    cta1:     t('home.hero.ctaEvents'),
+    cta1Link: '/eventos',
+    cta2:     t('home.hero.ctaRoutes'),
+    cta2Link: '/rutas',
+    vol:      'VOL. I · 2026',
+    coords:   '37.177°N',
+  },
+  en: {
+    supra:    'DESTINATION',
+    title:    'GRANADA',
+    subtitle: 'DISCOVER',
+    line1:    'You know',
+    line2:    'the Alhambra.',
+    line3:    'Granada you',
+    line4:    "don't.",
+    cta1:     t('home.hero.ctaEvents'),
+    cta1Link: '/en/events',
+    cta2:     t('home.hero.ctaRoutes'),
+    cta2Link: '/en/routes',
+    vol:      'VOL. I · 2026',
+    coords:   '37.177°N',
+  },
+};
+
+const c = ctaContent[locale];
+
+const splitText = (text: string, baseDelay = 0) =>
+  text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.04 }));
+---
+
+<section class="cta-section" aria-label={locale === 'es' ? 'Descubre Granada' : 'Discover Granada'}>
+  <ScreenFrame tagTopLeft="GV/CTA" tagTopRight={c.vol} tagBottomRight={c.coords} />
+  <div class="cin-grain" aria-hidden="true"></div>
+
+  <!-- ══ SECTION HEADER ══ -->
+  <SectionHeader
+    eyebrow={c.supra}
+    eyebrowYear={c.vol}
+    titleLabel={c.subtitle}
+    title={c.title}
+    animateTitle={true}
+    ctaHref={c.cta1Link}
+    ctaLabel={c.cta1}
+    showDecoration={true}
+  />
+
+  <!-- ══ MAIN CTA CONTENT ══ -->
+  <div class="cta-content">
+    <div class="headline-wrapper">
+      <div class="headline">
+        <div class="hl-row">
+          {splitText(c.line1).map(({ char, delay }) => (
+            <span class="hl-char hl-muted" style={`--delay: ${delay}s`}>{char === ' ' ? '\u00A0' : char}</span>
+          ))}
+          <span class="hl-space">&nbsp;</span>
+          {splitText(c.line2, c.line1.length * 0.04).map(({ char, delay }) => (
+            <span class="hl-char hl-bright" style={`--delay: ${delay}s`}>{char === ' ' ? '\u00A0' : char}</span>
+          ))}
+        </div>
+        <div class="hl-row">
+          {splitText(c.line3, (c.line1.length + c.line2.length) * 0.04).map(({ char, delay }) => (
+            <span class="hl-char hl-accent" style={`--delay: ${delay}s`}>{char === ' ' ? '\u00A0' : char}</span>
+          ))}
+          <span class="hl-space">&nbsp;</span>
+          {splitText(c.line4, (c.line1.length + c.line2.length + c.line3.length) * 0.04).map(({ char, delay }) => (
+            <span class="hl-char hl-muted" style={`--delay: ${delay}s`}>{char === ' ' ? '\u00A0' : char}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Nazari star decoration -->
+      <div class="nazari-row" aria-hidden="true">
+        <div class="nazari-line"></div>
+        <svg class="nazari-star" viewBox="0 0 40 40" fill="none">
+          <path d="M20 2 L22.9 14.1 L34 8 L27.9 19.1 L40 20 L27.9 20.9 L34 32 L22.9 25.9 L20 38 L17.1 25.9 L6 32 L12.1 20.9 L0 20 L12.1 19.1 L6 8 L17.1 14.1 Z" fill="none" stroke="var(--s-orange)" stroke-width="1" stroke-opacity="0.4"/>
+          <path d="M20 8 L21.5 15.5 L28 12 L24.5 18.5 L32 20 L24.5 21.5 L28 28 L21.5 24.5 L20 32 L18.5 24.5 L12 28 L15.5 21.5 L8 20 L15.5 18.5 L12 12 L18.5 15.5 Z" fill="var(--s-orange)" fill-opacity="0.2" stroke="none"/>
+        </svg>
+        <div class="nazari-line"></div>
+      </div>
+    </div>
+
+    <!-- Secondary CTA -->
+    <div class="secondary-cta-wrapper">
+      <a href={c.cta2Link} class="secondary-cta">
+        <span>{c.cta2}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom decorative ornament -->
+  <div class="bottom-ornament" aria-hidden="true">
+    <div class="orn-line"></div>
+    <svg class="orn-diamond" viewBox="0 0 12 12">
+      <polygon points="6,0 12,6 6,12 0,6" fill="var(--s-ink)"/>
+    </svg>
+    <div class="orn-line"></div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    --s-cream:    #f5f0ea;
+    --s-ink:      #1a1619;
+    --s-ink-2:    #5a4f47;
+    --s-ink-3:    #8a7f77;
+    --s-orange:   #e8622a;
+    --s-border:   rgba(26, 22, 25, 0.10);
+    --s-border-s: rgba(26, 22, 25, 0.06);
+
+    position: relative;
+    width: 100%;
+    background: var(--s-cream);
+    overflow: hidden;
+    padding-bottom: 4rem;
+  }
+
+  .cta-section :global(.cin-screen-frame) { border-color: var(--s-border); }
+  .cta-section :global(.cin-corner::before),
+  .cta-section :global(.cin-corner::after) { background: var(--s-ink); opacity: 0.2; }
+  .cta-section :global(.cin-frame-tag) { color: var(--s-ink-3); }
+
+  .cin-grain {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+
+  /* ══ MAIN CTA CONTENT ══ */
+  .cta-content {
+    position: relative; z-index: 5;
+    padding: 4rem clamp(1.5rem, 5vw, 4rem);
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 3rem;
+  }
+
+  .headline-wrapper { display: flex; flex-direction: column; gap: 3rem; max-width: 900px; }
+  .headline { display: flex; flex-direction: column; gap: 0.5rem; }
+  .hl-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; }
+  .hl-space { display: inline-block; width: 0.35em; }
+
+  .hl-char {
+    font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+    display: inline-block; opacity: 0; transform: translateY(30px);
+    animation: char-rise 1s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+  }
+  .hl-muted  { color: var(--s-ink-3); }
+  .hl-bright { color: var(--s-ink); }
+  .hl-accent { color: var(--s-orange); text-shadow: 0 2px 20px rgba(232, 98, 42, 0.15); }
+
+  /* Nazari star row */
+  .nazari-row {
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0; animation: cin-fade-in 2s ease forwards 1.2s;
+  }
+  .nazari-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--s-border), transparent); }
+  .nazari-star { width: 40px; height: 40px; flex-shrink: 0; }
+
+  /* Secondary CTA */
+  .secondary-cta-wrapper { opacity: 0; animation: cin-fade-in 1s ease forwards 1.5s; }
+  .secondary-cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-2);
+    text-decoration: none; padding: 0.75rem 1.25rem; border: 1px solid var(--s-border);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .secondary-cta:hover { color: var(--s-orange); border-color: var(--s-orange); transform: translateY(-2px); }
+  .secondary-cta:hover svg { transform: translateX(3px); }
+  .secondary-cta svg { transition: transform 0.25s ease; }
+
+  /* Bottom ornament */
+  .bottom-ornament {
+    position: relative; z-index: 5;
+    display: flex; align-items: center;
+    padding: 0 clamp(1.5rem, 5vw, 4rem); margin-top: 2rem;
+    opacity: 0; animation: cin-fade-in 2s ease forwards 2s;
+  }
+  .orn-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--s-border), transparent); }
+  .orn-diamond { width: 10px; height: 10px; margin: 0 0.75rem; flex-shrink: 0; opacity: 0.6; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hl-char { font-size: clamp(2rem, 10vw, 3.5rem); }
+    .cta-content { padding: 3rem 1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    .hl-char { font-size: clamp(1.75rem, 9vw, 2.8rem); }
+    .nazari-star { width: 32px; height: 32px; }
+  }
+</style>

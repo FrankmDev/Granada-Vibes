@@ -1,0 +1,310 @@
+---
+import type { Event, Locale, EventCategory } from '../../types';
+import { useTranslations } from '../../i18n/utils';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+
+interface Props {
+  events: Event[];
+  locale: Locale;
+}
+
+const { events, locale } = Astro.props;
+const t = useTranslations(locale);
+
+// Category labels sourced from i18n — no inline map needed
+const categoryLabels: Record<EventCategory, string> = {
+  concert:      t('categories.concert').toUpperCase(),
+  exhibition:   t('categories.exhibition').toUpperCase(),
+  festival:     t('categories.festival').toUpperCase(),
+  market:       t('categories.market').toUpperCase(),
+  theater:      t('categories.theater').toUpperCase(),
+  workshop:     t('categories.workshop').toUpperCase(),
+  'guided-tour':t('categories.guided-tour').toUpperCase(),
+  cinema:       t('categories.cinema').toUpperCase(),
+  other:        t('categories.other').toUpperCase(),
+};
+
+// Column height patterns for masonry alternation
+const COL_HEIGHTS: [number[], number[], number[]] = [
+  [58, 72, 58, 72], // left
+  [72, 58, 72, 58], // center
+  [58, 72, 58, 72], // right
+];
+
+// Distribute events into 3 columns, max 4 per column
+const columns = [0, 1, 2].map((colIndex) =>
+  events.filter((_, i) => i % 3 === colIndex).slice(0, 4)
+);
+
+function getEventImage(evt: Event, fallbackIndex: number): string {
+  if (evt.image && !evt.image.includes('undefined')) return evt.image;
+  if (evt.imageUrl) return evt.imageUrl;
+  // deterministic fallback using Unsplash
+  const FALLBACKS = [
+    'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=85',
+    'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=85',
+    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&q=85',
+    'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=85',
+    'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=85',
+  ];
+  return FALLBACKS[fallbackIndex % FALLBACKS.length]!;
+}
+
+function formatPrice(price: number | null): string {
+  if (price === null) return t('events.free');
+  return `${price}€`;
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr)
+    .toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
+      day: 'numeric',
+      month: 'short',
+    })
+    .toUpperCase();
+}
+
+const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
+---
+
+<section class="editorial-section" aria-label={locale === 'es' ? 'Archivo de eventos' : 'Event archive'}>
+
+  <!-- Cinematic Header -->
+  <SectionHeader
+    eyebrow="AGENDA"
+    eyebrowYear="2025 — 2026"
+    titleLabel={locale === 'es' ? 'PRÓXIMOS' : 'UPCOMING'}
+    title={locale === 'es' ? 'EVENTOS' : 'EVENTS'}
+    ctaHref={eventsHref}
+    ctaLabel={locale === 'es' ? 'VER TODOS' : 'VIEW ALL'}
+    showDecoration={true}
+  />
+
+  <!-- Masonry Grid — 3 columns -->
+  <div class="masonry-wrapper">
+    {columns.map((colEvents, colIndex) => (
+      <div class={`masonry-col col-${['left','center','right'][colIndex]}`}>
+        {colEvents.map((evt, idx) => {
+          const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
+          const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
+          const imgSrc = getEventImage(evt, colIndex * 50 + idx);
+          const href = `/${locale === 'en' ? 'en/events' : 'eventos'}/${evt.slug}`;
+
+          return (
+            <article class="masonry-item" style={`height: ${heightVh}vh;`}>
+              <a href={href} class="item-link">
+                <img
+                  src={imgSrc}
+                  alt=""
+                  class="item-image"
+                  loading={idx < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+                <div class="item-overlay"></div>
+
+                <div class="date-badge">
+                  <span class="date-text">{formatDate(evt.date)}</span>
+                </div>
+
+                <div class="item-content">
+                  <div class="item-text">
+                    <div class="item-category">{category}</div>
+                    <h3 class="item-title">{evt.title[locale]}</h3>
+                    <div class="item-footer">
+                      <span class="footer-venue">{evt.venue || 'Granada'}</span>
+                      <span class="footer-separator"></span>
+                      <span class="footer-price">{formatPrice(evt.price)}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    ))}
+  </div>
+
+</section>
+
+<style>
+  /* ─── Local palette: warm cream ─── */
+  .editorial-section {
+    --s-cream:    #f5f0ea;
+    --s-ink:      #1a1619;
+    --s-ink-2:    #5a4f47;
+    --s-ink-3:    #8a7f77;
+    --s-orange:   #e8622a;
+    --s-border:   rgba(26, 22, 25, 0.10);
+    --s-border-s: rgba(26, 22, 25, 0.06);
+
+    position: relative;
+    width: 100%;
+    background: var(--s-cream);
+    overflow: hidden;
+  }
+
+  /* ─── Masonry Grid ─── */
+  .masonry-wrapper {
+    display: flex;
+    width: 100%;
+    background: var(--s-border);
+    border-bottom: 1px solid var(--s-border);
+  }
+
+  .masonry-col {
+    display: flex;
+    flex-direction: column;
+    background: var(--s-cream);
+  }
+
+  .col-left   { flex: 1; border-right: 1px solid var(--s-border); }
+  .col-center { flex: 1; border-right: 1px solid var(--s-border); }
+  .col-right  { flex: 1; }
+
+  .masonry-item {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid var(--s-border);
+  }
+
+  .item-link {
+    display: block;
+    width: 100%; height: 100%;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .item-image {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(25%) contrast(1.05) brightness(0.8);
+    transform: scale(1.08);
+    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), filter 0.8s ease;
+  }
+
+  .masonry-item:hover .item-image {
+    transform: scale(1.0);
+    filter: grayscale(0%) contrast(1.02) brightness(0.88);
+  }
+
+  .item-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top,
+      rgba(0,0,0,0.92) 0%,
+      rgba(0,0,0,0.72) 20%,
+      rgba(0,0,0,0.3)  50%,
+      transparent      80%
+    );
+    transition: background 0.4s ease;
+    z-index: 1;
+  }
+
+  .masonry-item:hover .item-overlay {
+    background: linear-gradient(to top,
+      rgba(0,0,0,0.96) 0%,
+      rgba(0,0,0,0.82) 25%,
+      rgba(0,0,0,0.4)  55%,
+      transparent      85%
+    );
+  }
+
+  .item-content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 1.5rem;
+    z-index: 2;
+  }
+
+  /* Date badge: warm cream background, dark text */
+  .date-badge {
+    position: absolute; top: 1rem; right: 1rem; z-index: 3;
+    background: rgba(245, 240, 234, 0.92);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(245, 240, 234, 0.6);
+    padding: 0.55rem 0.9rem;
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--s-ink);
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+
+  .masonry-item:hover .date-badge {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  }
+
+  .date-text { display: block; line-height: 1; }
+
+  .item-text {
+    max-width: 100%;
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+
+  .masonry-item:hover .item-text { transform: translateY(-5px); }
+
+  .item-category {
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent-hover);
+  }
+
+  .item-title {
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0;
+    color: var(--color-text-primary);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  .item-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .footer-separator {
+    width: 4px; height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+  }
+
+  .footer-price { color: var(--color-success); font-weight: 700; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    .masonry-wrapper { flex-direction: column; }
+    .col-left, .col-right { width: 100%; border-right: none; }
+    .masonry-item { height: 50vh !important; }
+  }
+
+  @media (max-width: 480px) {
+    .masonry-item { height: 60vh !important; }
+    .item-title { font-size: 1.25rem; }
+  }
+</style>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  tagTopLeft?: string;
+  tagTopRight?: string;
+  tagBottomLeft?: string;
+  tagBottomRight?: string;
+}
+
+const { tagTopLeft, tagTopRight, tagBottomLeft, tagBottomRight } = Astro.props;
+---
+
+<div class="cin-screen-frame" aria-hidden="true">
+  <div class="cin-corner cin-corner-tl"></div>
+  <div class="cin-corner cin-corner-tr"></div>
+  <div class="cin-corner cin-corner-bl"></div>
+  <div class="cin-corner cin-corner-br"></div>
+  {tagTopLeft && <span class="cin-frame-tag cin-frame-tag-tl">{tagTopLeft}</span>}
+  {tagTopRight && <span class="cin-frame-tag cin-frame-tag-tr">{tagTopRight}</span>}
+  {tagBottomLeft && <span class="cin-frame-tag cin-frame-tag-bl">{tagBottomLeft}</span>}
+  {tagBottomRight && <span class="cin-frame-tag cin-frame-tag-br">{tagBottomRight}</span>}
+</div>

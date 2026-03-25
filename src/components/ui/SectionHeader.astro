@@ -1,0 +1,226 @@
+---
+/**
+ * SectionHeader — shared masthead for home sections (cream palette).
+ * Parent section must define --s-* CSS custom properties for theming.
+ */
+
+interface Props {
+  /** Text inside [brackets] at top */
+  eyebrow: string;
+  /** Optional year / volume label beside eyebrow */
+  eyebrowYear?: string;
+  /** Small label above the main title */
+  titleLabel?: string;
+  /** Main section title (rendered as h2) */
+  title: string;
+  /** If true, title chars are animated one by one (char-rise) */
+  animateTitle?: boolean;
+  /** Optional href for the CTA button */
+  ctaHref?: string;
+  /** CTA button label */
+  ctaLabel?: string;
+  /** Show the dot+line decoration row below the header */
+  showDecoration?: boolean;
+}
+
+const {
+  eyebrow,
+  eyebrowYear,
+  titleLabel,
+  title,
+  animateTitle = false,
+  ctaHref,
+  ctaLabel,
+  showDecoration = false,
+} = Astro.props;
+---
+
+<header class="section-header">
+  <div class="header-top">
+    <div class="header-eyebrow">
+      <span class="eyebrow-bracket">[</span>
+      <span class="eyebrow-text">{eyebrow}</span>
+      <span class="eyebrow-bracket">]</span>
+      {eyebrowYear && <span class="eyebrow-year">{eyebrowYear}</span>}
+    </div>
+  </div>
+
+  <div class="header-main">
+    <div class="title-block">
+      {titleLabel && <span class="title-label">{titleLabel}</span>}
+      <h2 class="section-title" aria-label={title}>
+        {animateTitle
+          ? title.split('').map((ch: string, i: number) => (
+              <span class="title-char anim" style={`--delay: ${i * 0.055}s`}>{ch === ' ' ? '\u00A0' : ch}</span>
+            ))
+          : <span class="title-char">{title}</span>
+        }
+      </h2>
+    </div>
+
+    {ctaHref && ctaLabel && (
+      <a href={ctaHref} class="header-cta desktop-cta">
+        <span class="cta-text">{ctaLabel}</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    )}
+  </div>
+
+  {showDecoration && (
+    <div class="header-decoration">
+      <div class="decoration-line"></div>
+      <div class="decoration-dot"></div>
+      <div class="decoration-line"></div>
+    </div>
+  )}
+
+  <slot />
+</header>
+
+<style>
+  .section-header {
+    position: relative;
+    z-index: 10;
+    background: var(--s-cream);
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .header-top {
+    border-top: 1px solid var(--s-border);
+    padding-top: 2.5rem;
+    padding-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--s-border-s, rgba(26, 22, 25, 0.06));
+  }
+
+  .header-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    animation: cin-fade-in 0.8s ease 0.2s both;
+  }
+
+  .eyebrow-bracket { color: var(--s-orange); font-weight: 700; }
+  .eyebrow-text    { color: var(--s-ink-2); }
+  .eyebrow-year    {
+    color: var(--s-ink-3);
+    font-weight: 400;
+    padding-left: 1rem;
+    border-left: 1px solid var(--s-border);
+  }
+
+  .header-main {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: flex-end;
+    gap: 2rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1rem;
+  }
+
+  .title-block { display: flex; flex-direction: column; gap: 0; }
+
+  .title-label {
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+    margin-bottom: 0.5rem;
+    animation: char-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  }
+
+  .section-title { margin: 0; line-height: 0.88; display: flex; flex-wrap: wrap; }
+
+  .title-char {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: clamp(4rem, 12vw, 8rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--s-ink);
+  }
+
+  /* Animated variant — used when animateTitle=true */
+  .title-char.anim {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: char-rise 1s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
+  }
+
+  /* Non-animated title has its own subtle entrance */
+  .title-char:not(.anim) {
+    animation: char-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+  }
+
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--s-ink);
+    background: transparent;
+    text-decoration: none;
+    padding: 1rem 1.75rem;
+    border: 1.5px solid var(--s-ink);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: cin-fade-in 0.8s ease 0.4s both;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+
+  .header-cta:hover {
+    background: var(--s-orange);
+    border-color: var(--s-orange);
+    color: var(--s-cream);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 rgba(26, 22, 25, 0.12);
+  }
+  .header-cta:hover svg { transform: translateX(4px); }
+  .header-cta svg { transition: transform 0.25s ease; }
+
+  .header-decoration {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--s-border);
+  }
+
+  .decoration-line { flex: 1; height: 1px; background: var(--s-border); }
+  .decoration-dot {
+    width: 5px; height: 5px;
+    background: var(--s-orange);
+    border-radius: 50%;
+    margin: 0 1rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .section-header { padding: 0 1rem; }
+    .header-main { grid-template-columns: 1fr; gap: 1.25rem; padding-top: 1.25rem; }
+    .title-char { font-size: clamp(3rem, 15vw, 5rem) !important; }
+  }
+
+  @media (max-width: 480px) {
+    .header-eyebrow { font-size: 0.6rem; }
+  }
+</style>
