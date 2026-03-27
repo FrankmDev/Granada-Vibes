@@ -7,7 +7,6 @@ export const en: Translations = {
     events: 'Events',
     routes: 'Routes',
     blog: 'Blog',
-    about: 'About us',
     changeLanguage: 'Switch to Español',
     skipToContent: 'Skip to main content',
     guideLabel: 'Cultural Guide',
@@ -145,6 +144,15 @@ export const en: Translations = {
     bestTime: 'Best time',
     shareSuccess: 'URL copied to clipboard',
     shareError: 'Could not share',
+    category: 'Category',
+    neighborhoods: 'Neighborhoods',
+    allRoutes: 'View all routes',
+    allEvents: 'View all events',
+    readingTime: 'Reading time',
+    author: 'Author',
+    publishDate: 'Published',
+    relatedPosts: 'Related articles',
+    allPosts: 'View all articles',
   },
 
   // Filters
@@ -235,30 +243,6 @@ export const en: Translations = {
     },
   },
 
-  // About page
-  about: {
-    title: 'About Granada Vibes',
-    mission: {
-      title: 'Our mission',
-      description:
-        'To connect visitors and locals with Granada\'s rich culture, facilitating the discovery of events, routes, and authentic experiences that celebrate the unique essence of this city.',
-    },
-    values: {
-      title: 'Our values',
-      authentic: {
-        title: 'Authenticity',
-        description: 'We promote genuine experiences, away from tourist traps.',
-      },
-      quality: {
-        title: 'Curated quality',
-        description: 'Every event and route is carefully selected by our team.',
-      },
-      community: {
-        title: 'Community',
-        description: 'We support local creators and businesses in the city.',
-      },
-    },
-  },
 
   // Footer
   footer: {

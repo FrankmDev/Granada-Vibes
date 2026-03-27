@@ -1,8 +1,8 @@
 /**
  * Scraper: Palacio de Congresos de Granada
- * Big shows, musicals, opera, ballet.
- * Structure: img + h5 (title) + h6 (date) + h4 (time)
- * Detail links: ?seccion=evento&idEvento=NUMBER
+ * Each event is in a div.card.card-profile with two col-lg-6 columns:
+ *   - col 1: img[src="/assets/img/curved-images/agenda/{ID}.png"]
+ *   - col 2: card-body with h5 (title), h6.text-info (date), h4 (time), p (desc), a[href*="idEvento"]
  */
 import { fetchHTML } from '../utils/scraper-helpers.js';
 import { parseSpanishDate, parseSpanishTime } from '../utils/date-parser.js';
@@ -24,90 +24,90 @@ export async function fetchPalacioEvents(): Promise<PalacioEvent[]> {
   const events: PalacioEvent[] = [];
   const seen = new Set<string>();
 
-  // The page lists events with: img, h5 (title), h6 (date), h4 (time)
-  // and links with "Ver información del Evento"
-  // Strategy: find all images in the agenda section and extract siblings
+  // Each event card: div.card.card-profile (or div.card.hoverCard)
+  // Structure: .card > .row > .col-lg-6 (img) + .col-lg-6 (.card-body h5 h6 h4)
+  $('div.card').each((_, cardEl) => {
+    const $card = $(cardEl);
 
-  // Try to find event blocks by looking for links to event detail pages
-  $('a[href*="idEvento"]').each((_, el) => {
-    const $link = $(el);
-    const href = $link.attr('href') ?? '';
-
-    // Get the parent container
-    const $container = $link.parent();
-
-    // Look for title, date, time in siblings or parent context
-    const $section = $container.closest('div, section, td');
-    const allText = $section.text();
-
-    // Find h5 for title
-    const title =
-      $section.find('h5').first().text().trim() ||
-      $section.find('h4').first().text().trim() ||
-      $link.text().trim();
-
-    if (!title || title === 'Ver información del Evento' || seen.has(title)) return;
+    // Title from h5 within card
+    const title = $card.find('h5').first().text().replace(/\s+/g, ' ').trim();
+    if (!title || title.length < 2 || seen.has(title)) return;
     seen.add(title);
 
-    // Find date in h6
-    const dateText = $section.find('h6').first().text().trim();
-    // Handle multi-date: "20 y 21 Marzo 2026" — take the first date
+    // Skip cancelled events
+    if (/cancelad/i.test($card.find('h5').first().html() ?? '')) return;
+
+    // Date from h6.text-info
+    const dateText = $card.find('h6').first().text().trim();
+    // Handle multi-date: "20 y 21 Marzo 2026" — take first
     const cleanDate = dateText.replace(/\s+y\s+\d+/g, '');
     const date = parseSpanishDate(cleanDate) ?? parseSpanishDate(dateText) ?? '';
+    if (!date) return;
 
-    // Find time in h4 or text
-    const timeText =
-      $section.find('h4').first().text().trim() || allText;
+    // Time from h4
+    const timeText = $card.find('h4').first().text().trim() || $card.text();
     const time = parseSpanishTime(timeText);
 
-    // Image
-    const img = $section.find('img').first().attr('src');
-    const imageUrl = img
-      ? img.startsWith('http') ? img : `${BASE_URL}/${img.replace(/^\.\//, '')}`
-      : undefined;
-
-    // Extract description from section paragraphs
-    const descText = $section.find('p').first().text().trim();
-    const description = descText && descText.length > 5
-      ? descText.slice(0, 300)
-      : undefined;
-
-    // Full URL
-    const fullUrl = href.startsWith('http') ? href : `${BASE_URL}/${href.replace(/^\.\//, '')}`;
-
-    events.push({
-      title,
-      date,
-      time,
-      url: fullUrl,
-      imageUrl,
-      description,
+    // Image: find the agenda image (curved-images/agenda path)
+    let imageUrl: string | undefined;
+    $card.find('img').each((_, imgEl) => {
+      const src = $(imgEl).attr('src') ?? '';
+      if (src.includes('curved-images/agenda')) {
+        imageUrl = src.startsWith('http')
+          ? src
+          : `${BASE_URL}/${src.replace(/^\.\//, '')}`;
+        return false; // stop iteration
+      }
     });
+
+    // Event detail URL from link with idEvento
+    let fullUrl = LISTING_URL;
+    $card.find('a[href*="idEvento"]').each((_, aEl) => {
+      const href = $(aEl).attr('href') ?? '';
+      if (href) {
+        fullUrl = href.startsWith('http')
+          ? href
+          : `${BASE_URL}/${href.replace(/^\.\//, '')}`;
+        return false;
+      }
+    });
+
+    // Description from paragraph
+    const descText = $card.find('p').first().text().trim();
+    const description = descText && descText.length > 5 ? descText.slice(0, 300) : undefined;
+
+    events.push({ title, date, time, url: fullUrl, imageUrl, description });
   });
 
-  // If link-based approach found nothing, try a broader scan
+  // Fallback: h5-based scan if card approach found nothing
   if (events.length === 0) {
     $('h5').each((_, el) => {
       const $h5 = $(el);
-      const title = $h5.text().trim();
-      if (!title || seen.has(title)) return;
+      const title = $h5.text().replace(/\s+/g, ' ').trim();
+      if (!title || title.length < 2 || seen.has(title)) return;
       seen.add(title);
 
-      // Look at siblings
-      const dateText = $h5.siblings('h6').first().text().trim() ||
-        $h5.next('h6').text().trim();
-      const timeText = $h5.siblings('h4').first().text().trim() ||
-        $h5.nextAll('h4').first().text().trim();
+      const $section = $h5.closest('div[class*="col"]').parent().parent();
+      const dateText = $section.find('h6').first().text().trim();
+      const date = parseSpanishDate(dateText.replace(/\s+y\s+\d+/g, '')) ?? '';
+      if (!date) return;
 
-      const date = parseSpanishDate(dateText) ?? '';
-      const time = parseSpanishTime(timeText);
+      const time = parseSpanishTime($section.find('h4').first().text().trim() || $section.text());
 
-      events.push({
-        title,
-        date,
-        time,
-        url: LISTING_URL,
-      });
+      let imageUrl: string | undefined;
+      const imgSrc = $section.find('img[src*="agenda"]').first().attr('src');
+      if (imgSrc) {
+        imageUrl = imgSrc.startsWith('http') ? imgSrc : `${BASE_URL}/${imgSrc.replace(/^\.\//, '')}`;
+      }
+
+      let fullUrl = LISTING_URL;
+      const href = $section.find('a[href*="idEvento"]').first().attr('href') ?? '';
+      if (href) fullUrl = href.startsWith('http') ? href : `${BASE_URL}/${href.replace(/^\.\//, '')}`;
+
+      const descText = $section.find('p').first().text().trim();
+      const description = descText && descText.length > 5 ? descText.slice(0, 300) : undefined;
+
+      events.push({ title, date, time, url: fullUrl, imageUrl, description });
     });
   }
 

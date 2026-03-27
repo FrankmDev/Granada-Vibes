@@ -1,6 +1,8 @@
 ---
 /**
- * Interactive venue map using Leaflet + CartoDB Dark Matter tiles.
+ * Interactive venue map using Leaflet + CartoDB tiles.
+ * theme="dark"  → Dark Matter tiles (hero/dark contexts)
+ * theme="light" → Positron tiles (cream/editorial contexts)
  * Loads Leaflet from CDN — no npm dependency needed.
  */
 interface Props {
@@ -8,29 +10,31 @@ interface Props {
   lng: number;
   venueName: string;
   zoom?: number;
+  theme?: 'dark' | 'light';
 }
 
-const { lat, lng, venueName, zoom = 15 } = Astro.props;
+const { lat, lng, venueName, zoom = 15, theme = 'dark' } = Astro.props;
+const isLight = theme === 'light';
 ---
 
-<div class="venue-map-container relative rounded-2xl overflow-hidden border border-edge">
+<div class:list={['venue-map-wrap', isLight ? 'is-light' : 'is-dark']}>
   <div
     id="venue-map"
-    class="w-full aspect-video"
+    style="width:100%;height:280px;"
     data-lat={lat}
     data-lng={lng}
     data-venue={venueName}
     data-zoom={zoom}
+    data-theme={theme}
   ></div>
 
-  <!-- Directions link overlay -->
   <a
     href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`}
     target="_blank"
     rel="noopener noreferrer"
-    class="absolute bottom-4 right-4 z-[1000] flex items-center gap-2 px-4 py-2.5 bg-base-card/90 backdrop-blur-sm text-surface text-sm font-medium rounded-xl border border-edge hover:border-terra/50 hover:text-terra transition-all duration-300"
+    class="directions-btn"
   >
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
@@ -42,79 +46,62 @@ const { lat, lng, venueName, zoom = 15 } = Astro.props;
 
 <script is:inline>
   (function() {
-    const mapEl = document.getElementById('venue-map');
+    var mapEl = document.getElementById('venue-map');
     if (!mapEl) return;
 
-    const lat = parseFloat(mapEl.dataset.lat);
-    const lng = parseFloat(mapEl.dataset.lng);
-    const venue = mapEl.dataset.venue;
-    const zoom = parseInt(mapEl.dataset.zoom, 10);
+    var lat = parseFloat(mapEl.dataset.lat);
+    var lng = parseFloat(mapEl.dataset.lng);
+    var venue = mapEl.dataset.venue;
+    var zoom = parseInt(mapEl.dataset.zoom, 10);
+    var isLight = mapEl.dataset.theme === 'light';
 
     function initMap() {
-      if (typeof L === 'undefined') return;
-
-      const map = L.map('venue-map', {
+      var map = L.map('venue-map', {
         center: [lat, lng],
         zoom: zoom,
         scrollWheelZoom: false,
         attributionControl: false,
+        zoomControl: true,
       });
 
-      // CartoDB Dark Matter tiles — matches our dark theme
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        subdomains: 'abcd',
-      }).addTo(map);
+      var tileUrl = isLight
+        ? 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 
-      // Attribution (required but styled small)
-      L.control.attribution({
-        position: 'bottomleft',
-        prefix: false,
-      }).addTo(map).addAttribution(
-        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OSM</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
-      );
+      L.tileLayer(tileUrl, { maxZoom: 19, subdomains: 'abcd' }).addTo(map);
 
-      // Custom terra-colored marker using SVG
-      const markerIcon = L.divIcon({
+      L.control.attribution({ position: 'bottomleft', prefix: false })
+        .addTo(map)
+        .addAttribution('&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OSM</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>');
+
+      var markerBorder = isLight ? '#f5f0ea' : '#080808';
+      var markerIcon = L.divIcon({
         className: 'venue-marker',
-        html: `<div style="
-          width: 32px; height: 32px;
-          background: var(--color-accent, #e8622a);
-          border: 3px solid var(--color-bg, #080808);
-          border-radius: 50% 50% 50% 0;
-          transform: rotate(-45deg);
-          box-shadow: 0 4px 12px rgba(232, 98, 42, 0.4);
-        "></div>`,
+        html: '<div style="width:32px;height:32px;background:#e8622a;border:3px solid ' + markerBorder + ';border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(232,98,42,0.45)"></div>',
         iconSize: [32, 32],
         iconAnchor: [16, 32],
-        popupAnchor: [0, -32],
+        popupAnchor: [0, -36],
       });
 
-      const marker = L.marker([lat, lng], { icon: markerIcon }).addTo(map);
-
+      var popupTextColor = isLight ? '#1a1619' : '#f0ede8';
+      var marker = L.marker([lat, lng], { icon: markerIcon }).addTo(map);
       marker.bindPopup(
-        `<div style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #f0ede8; padding: 4px 0;">${venue}</div>`,
+        '<div style="font-family:\'DM Sans\',sans-serif;font-size:13px;font-weight:600;color:' + popupTextColor + ';padding:2px 0;white-space:nowrap">' + venue + '</div>',
         {
-          className: 'venue-popup',
+          className: isLight ? 'venue-popup venue-popup-light' : 'venue-popup',
           closeButton: false,
           offset: [0, -4],
         }
       );
 
-      // Enable scroll zoom on click
-      map.on('click', function() {
-        map.scrollWheelZoom.enable();
-      });
-
-      // Invalidate size after a short delay to handle layout shifts
-      setTimeout(function() { map.invalidateSize(); }, 200);
+      map.on('click', function() { map.scrollWheelZoom.enable(); });
+      setTimeout(function() { map.invalidateSize(); }, 300);
     }
 
-    // Load Leaflet JS dynamically
     if (typeof L !== 'undefined') {
       initMap();
     } else {
-      const script = document.createElement('script');
+      var script = document.createElement('script');
       script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
       script.onload = initMap;
       document.head.appendChild(script);
@@ -123,19 +110,61 @@ const { lat, lng, venueName, zoom = 15 } = Astro.props;
 </script>
 
 <style>
-  /* Dark popup styling */
-  :global(.venue-popup .leaflet-popup-content-wrapper) {
-    background: var(--color-bg-card, #171717);
-    border: 1px solid var(--color-border, #242424);
+  .venue-map-wrap {
+    position: relative;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
   }
 
-  :global(.venue-popup .leaflet-popup-tip) {
-    background: var(--color-bg-card, #171717);
-    border: 1px solid var(--color-border, #242424);
-    border-top: none;
-    border-left: none;
+  .venue-map-wrap.is-dark {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .venue-map-wrap.is-light {
+    border: 1px solid rgba(26, 22, 25, 0.12);
+  }
+
+  .directions-btn {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    backdrop-filter: blur(12px);
+  }
+
+  .is-dark .directions-btn {
+    background: rgba(8, 8, 8, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f0ede8;
+  }
+
+  .is-dark .directions-btn:hover {
+    background: rgba(232, 98, 42, 0.15);
+    border-color: rgba(232, 98, 42, 0.4);
+    color: #e8622a;
+  }
+
+  .is-light .directions-btn {
+    background: rgba(245, 240, 234, 0.92);
+    border: 1px solid rgba(26, 22, 25, 0.14);
+    color: #1a1619;
+  }
+
+  .is-light .directions-btn:hover {
+    background: rgba(232, 98, 42, 0.08);
+    border-color: rgba(232, 98, 42, 0.35);
+    color: #e8622a;
   }
 
   :global(.venue-marker) {
@@ -143,15 +172,44 @@ const { lat, lng, venueName, zoom = 15 } = Astro.props;
     border: none !important;
   }
 
+  :global(.venue-popup .leaflet-popup-content-wrapper) {
+    background: #171717;
+    border: 1px solid #242424;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    padding: 8px 14px;
+  }
+
+  :global(.venue-popup .leaflet-popup-tip) {
+    background: #171717;
+  }
+
+  :global(.venue-popup-light .leaflet-popup-content-wrapper) {
+    background: #faf8f5;
+    border: 1px solid rgba(26, 22, 25, 0.14);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(26, 22, 25, 0.12);
+    padding: 8px 14px;
+  }
+
+  :global(.venue-popup-light .leaflet-popup-tip) {
+    background: #faf8f5;
+  }
+
+  :global(.venue-popup .leaflet-popup-content),
+  :global(.venue-popup-light .leaflet-popup-content) {
+    margin: 0;
+  }
+
   :global(.leaflet-control-attribution) {
-    background: rgba(8, 8, 8, 0.7) !important;
-    color: var(--color-text-muted, #5a5550) !important;
+    background: rgba(245, 240, 234, 0.85) !important;
+    color: #8a7f77 !important;
     font-size: 10px !important;
     padding: 2px 6px !important;
-    border-radius: 4px !important;
+    border-radius: 4px 0 0 0 !important;
   }
 
   :global(.leaflet-control-attribution a) {
-    color: var(--color-text-secondary, #9a9490) !important;
+    color: #5a5550 !important;
   }
 </style>

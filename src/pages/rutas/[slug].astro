@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
-import Icon from '@components/ui/Icon.astro';
-import { getAllRoutes, getRouteBySlug } from '@data/index.js';
+import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
+import RouteDetailContent from '@components/routes/RouteDetailContent.astro';
+import { getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
 import { formatDuration, formatDistance } from '@utils/dates';
 import type { RouteDifficulty } from '@types';
@@ -19,456 +19,481 @@ const { route } = Astro.props;
 const locale = 'es';
 const t = useTranslations(locale);
 
-const breadcrumbs = [
-  { label: t('nav.home'), href: '/' },
-  { label: t('nav.routes'), href: '/rutas' },
-  { label: route.title[locale] },
-];
-
-// Difficulty color mapping
-const difficultyColors: Record<RouteDifficulty, { bg: string; text: string; bar: string; label: string }> = {
-  easy:        { bg: 'bg-emerald-500/15',    text: 'text-emerald-400',    bar: 'bg-emerald-400',    label: 'Fácil' },
-  moderate:    { bg: 'bg-[#F59E0B]/15',      text: 'text-[#F59E0B]',      bar: 'bg-[#F59E0B]',      label: 'Moderada' },
-  challenging: { bg: 'bg-[#E84D27]/15',      text: 'text-[#E84D27]',      bar: 'bg-[#E84D27]',      label: 'Exigente' },
-};
-
-const difficultyConfig = difficultyColors[route.difficulty];
-
-// Difficulty bars (1-3 segments)
 const difficultyBars: Record<RouteDifficulty, number> = {
-  easy:        1,
-  moderate:    2,
-  challenging: 3,
+  easy: 1, moderate: 2, challenging: 3,
 };
 
-// Time of day icon
-const timeOfDayIcons = {
-  morning: 'sun',
-  afternoon: 'sun',
-  sunset: 'sunset',
-  evening: 'moon',
-  any: 'sun',
-};
+// Clean sequential block numbering
+let blockNum = 0;
+function nextBlock(): string {
+  blockNum += 1;
+  return blockNum.toString().padStart(2, '0');
+}
 
-// Get related routes (same category or difficulty)
+const difficultyColor: Record<RouteDifficulty, string> = {
+  easy: '#4a9e6b', moderate: '#d4873a', challenging: '#c94a4a',
+};
+const diffColor = difficultyColor[route.difficulty];
+const diffBars  = difficultyBars[route.difficulty];
+
 const relatedRoutes = getAllRoutes()
   .filter(r => r.category === route.category && r.id !== route.id)
   .slice(0, 2);
 
 if (relatedRoutes.length < 2) {
-  const moreRoutes = getAllRoutes()
+  const more = getAllRoutes()
     .filter(r => r.difficulty === route.difficulty && r.id !== route.id && !relatedRoutes.find(rr => rr.id === r.id))
     .slice(0, 2 - relatedRoutes.length);
-  relatedRoutes.push(...moreRoutes);
+  relatedRoutes.push(...more);
 }
 
-// OG Image
-const ogImage = 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+Rutas';
+const routeImage = route.imageUrl || route.image;
+const ogImage = routeImage || 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+Rutas';
+
+const neighborhoodList = route.neighborhoods.map(n => t(`neighborhoods.${n}`)).join(', ');
+const seoDescription = `Ruta "${route.title[locale]}" por ${neighborhoodList} en Granada — ${formatDuration(route.duration, locale)} de ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`;
 ---
 
-<BaseLayout 
+<BaseLayout
   locale={locale}
   title={route.title[locale]}
-  description={`Ruta de ${t(`categories.${route.category}`)} por ${route.neighborhoods.map(n => t(`neighborhoods.${n}`)).join(', ')} en Granada: ${formatDuration(route.duration, locale)}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}`)}. Consejos, highlights y mejor momento.`}
+  description={seoDescription}
   ogImage={ogImage}
   schemaType="route"
   schemaData={route}
 >
-  {/* Background decorations */}
-  <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-[#F59E0B]/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
-  <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E84D27]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+  <RouteDetailHero route={route} locale={locale} />
 
-  <article class="container pt-28 pb-20 lg:pt-32 relative z-10">
-    <Breadcrumbs items={breadcrumbs} />
+  <RouteDetailContent>
+  <div class="det-page">
+    <div class="det-content-wrap">
+      <div class="det-layout">
 
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 mt-8">
-      <!-- Columna Principal (70%) -->
-      <div class="order-2 lg:order-1">
-        <!-- Hero de la ruta -->
-        <header class="mb-10">
-          <!-- Badges -->
-          <div class="flex flex-wrap items-center gap-3 mb-5">
-            <span class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider bg-[#F59E0B]/10 text-[#F59E0B] rounded-full border border-[#F59E0B]/30">
-              {t(`categories.${route.category}`)}
-            </span>
-            <span class:list={[
-              'px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full border',
-              difficultyConfig.bg,
-              difficultyConfig.text,
-              'border-white/[0.1]'
-            ]}>
-              {t(`difficulty.${route.difficulty}`)}
-            </span>
-            {route.featured && (
-              <span class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider bg-[#E84D27]/10 text-[#E84D27] rounded-full border border-[#E84D27]/30">
-                Destacada
-              </span>
-            )}
-          </div>
+        <!-- MAIN (70%) -->
+        <main id="main-content" class="det-main">
 
-          <!-- Headline -->
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-0.02em] text-white mb-6 leading-[1.1]">
-            {route.title[locale]}
-          </h1>
-
-          <!-- Descripción -->
-          <p class="text-lg lg:text-xl text-white/50 leading-relaxed max-w-2xl">
-            {route.description[locale]}
-          </p>
-        </header>
-
-        <!-- Barra de métricas visual -->
-        <div class="p-6 bg-white/[0.04] rounded-2xl border border-white/[0.06] mb-10">
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Duración -->
-            <div class="text-center">
-              <div class="w-12 h-12 bg-[#F59E0B]/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                <svg class="w-6 h-6 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <p class="text-2xl font-black text-white">
-                {Math.round(route.duration / 60)}h
-              </p>
-              <p class="text-xs text-white/30 uppercase tracking-wider mt-1">Duración</p>
-            </div>
-
-            <!-- Distancia -->
-            <div class="text-center">
-              <div class="w-12 h-12 bg-[#F59E0B]/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                <svg class="w-6 h-6 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
-                </svg>
-              </div>
-              <p class="text-2xl font-black text-white">
-                {route.distance} km
-              </p>
-              <p class="text-xs text-white/30 uppercase tracking-wider mt-1">Distancia</p>
-            </div>
-
-            <!-- Dificultad -->
-            <div class="text-center">
-              <div class:list={['w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3', difficultyConfig.bg]}>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" class:list={[difficultyConfig.text]}>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <p class:list={['text-2xl font-black', difficultyConfig.text]}>
-                {difficultyConfig.label}
-              </p>
-              <p class="text-xs text-white/30 uppercase tracking-wider mt-1">Dificultad</p>
-            </div>
-
-            <!-- Mejor momento -->
-            <div class="text-center">
-              <div class="w-12 h-12 bg-[#F59E0B]/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                {route.timeOfDay === 'evening' || route.timeOfDay === 'sunset' ? (
-                  <svg class="w-6 h-6 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          <!-- Block 01: Métricas -->
+          <article class="det-block" data-reveal>
+            <header class="det-block-head">
+              <span class="det-block-num">{nextBlock()}</span>
+              <div class="det-block-divider"></div>
+              <span class="det-block-eyebrow">[ Resumen ]</span>
+            </header>
+            <h2 class="det-block-title">De un vistazo</h2>
+            <p class="det-lead">{route.description[locale]}</p>
+            <div class="rut-metrics" style={`--dc: ${diffColor}`}>
+              <div class="rut-metric-cell">
+                <div class="rut-metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
-                ) : (
-                  <svg class="w-6 h-6 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                )}
+                </div>
+                <span class="rut-metric-val">{formatDuration(route.duration, locale)}</span>
+                <span class="rut-metric-label">{t('detail.duration')}</span>
               </div>
-              <p class="text-2xl font-black text-white">
-                {t(`timeOfDay.${route.timeOfDay}`)}
-              </p>
-              <p class="text-xs text-white/30 uppercase tracking-wider mt-1">Mejor momento</p>
+              <div class="rut-metric-cell">
+                <div class="rut-metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 7m0 13V7"/>
+                  </svg>
+                </div>
+                <span class="rut-metric-val">{formatDistance(route.distance, locale)}</span>
+                <span class="rut-metric-label">{t('detail.distance')}</span>
+              </div>
+              <div class="rut-metric-cell">
+                <div class="rut-diff-bars" aria-hidden="true">
+                  {[1,2,3].map(n => (
+                    <span class:list={['rut-diff-bar', n <= diffBars && 'active']} style={`--dc: ${diffColor}`}></span>
+                  ))}
+                </div>
+                <span class="rut-metric-val is-diff" style={`--dc: ${diffColor}`}>{t(`difficulty.${route.difficulty}`)}</span>
+                <span class="rut-metric-label">{t('detail.difficulty')}</span>
+              </div>
+              <div class="rut-metric-cell">
+                <div class="rut-metric-icon" aria-hidden="true">
+                  {(route.timeOfDay === 'evening' || route.timeOfDay === 'sunset') ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                  )}
+                </div>
+                <span class="rut-metric-val">{t(`timeOfDay.${route.timeOfDay}`)}</span>
+                <span class="rut-metric-label">{t('detail.bestTime')}</span>
+              </div>
             </div>
-          </div>
-        </div>
+            <div class="det-hover-corners" aria-hidden="true">
+              <span class="hc tl"></span><span class="hc tr"></span>
+              <span class="hc bl"></span><span class="hc br"></span>
+            </div>
+          </article>
 
-        <!-- Descripción larga si existe -->
-        {route.longDescription && (
-          <section class="mb-12" aria-labelledby="description-heading">
-            <h2 id="description-heading" class="text-2xl lg:text-3xl font-bold text-white mb-5">
-              Sobre esta ruta
-            </h2>
-            <p class="text-white/50 leading-relaxed">
-              {route.longDescription[locale]}
-            </p>
-          </section>
-        )}
+          <!-- Block 02: Descripción larga -->
+          {route.longDescription && (
+            <article class="det-block" data-reveal>
+              <header class="det-block-head">
+                <span class="det-block-num">{nextBlock()}</span>
+                <div class="det-block-divider"></div>
+                <span class="det-block-eyebrow">[ La ruta ]</span>
+              </header>
+              <h2 class="det-block-title">Sobre este itinerario</h2>
+              <div class="rut-long-desc-wrap">
+                <span class="rut-long-desc-quote" aria-hidden="true">"</span>
+                <p class="det-lead">{route.longDescription[locale]}</p>
+              </div>
+              <div class="det-hover-corners" aria-hidden="true">
+                <span class="hc tl"></span><span class="hc tr"></span>
+                <span class="hc bl"></span><span class="hc br"></span>
+              </div>
+            </article>
+          )}
 
-        <!-- Puntos del recorrido (Timeline) -->
-        {route.highlights.length > 0 && (
-          <section class="mb-12" aria-labelledby="highlights-heading">
-            <h2 id="highlights-heading" class="text-2xl lg:text-3xl font-bold text-white mb-8">
-              Puntos del recorrido
-            </h2>
-            <div class="relative">
-              {/* Línea vertical */}
-              <div class="absolute left-5 top-0 bottom-0 w-px bg-white/[0.1]" />
-              
-              <div class="space-y-8">
-                {route.highlights.map((highlight, index) => (
-                  <div class="relative flex items-start gap-6">
-                    {/* Círculo numerado */}
-                    <div class="relative z-10 w-10 h-10 rounded-full bg-[#E84D27] flex items-center justify-center flex-shrink-0">
-                      <span class="text-white font-black text-sm">{index + 1}</span>
-                    </div>
-                    <div class="flex-1 pt-2">
-                      <h3 class="text-lg font-bold text-white mb-2">
-                        {highlight.title[locale]}
-                      </h3>
-                      <p class="text-white/50 leading-relaxed">
-                        {highlight.description[locale]}
-                      </p>
-                    </div>
+          <!-- Block 03: Highlights timeline -->
+          {route.highlights.length > 0 && (
+            <article class="det-block" data-reveal>
+              <header class="det-block-head">
+                <span class="det-block-num">{nextBlock()}</span>
+                <div class="det-block-divider"></div>
+                <span class="det-block-eyebrow">[ Recorrido ]</span>
+              </header>
+              <h2 class="det-block-title">Puntos del trayecto</h2>
+              <div class="rut-timeline">
+                {route.highlights.map((hl, i) => (
+                  <div class="rut-tl-item" style={`--ti: ${i}`}>
+                    <span class="rut-tl-marker" aria-hidden="true">
+                      <span class="rut-tl-num">{(i + 1).toString().padStart(2, '0')}</span>
+                    </span>
+                    <p class="rut-tl-title">{hl.title[locale]}</p>
+                    <p class="rut-tl-desc">{hl.description[locale]}</p>
                   </div>
                 ))}
               </div>
-            </div>
-          </section>
-        )}
+              <div class="det-hover-corners" aria-hidden="true">
+                <span class="hc tl"></span><span class="hc tr"></span>
+                <span class="hc bl"></span><span class="hc br"></span>
+              </div>
+            </article>
+          )}
 
-        <!-- Consejos -->
-        {route.tips.length > 0 && (
-          <section class="mb-12" aria-labelledby="tips-heading">
-            <h2 id="tips-heading" class="text-2xl lg:text-3xl font-bold text-white mb-6">
-              Consejos
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {route.tips.map((tip) => (
-                <div class="p-5 bg-white/[0.04] rounded-2xl border border-white/[0.06]">
-                  <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-[#F59E0B]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <svg class="w-5 h-5 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 class="text-base font-bold text-white mb-1">
-                        {tip.title[locale]}
-                      </h3>
-                      <p class="text-sm text-white/50 leading-relaxed">
-                        {tip.content[locale]}
-                      </p>
-                    </div>
+          <!-- Block 04: Tips grid -->
+          {route.tips.length > 0 && (
+            <article class="det-block" data-reveal>
+              <header class="det-block-head">
+                <span class="det-block-num">{nextBlock()}</span>
+                <div class="det-block-divider"></div>
+                <span class="det-block-eyebrow">[ Recomendaciones ]</span>
+              </header>
+              <h2 class="det-block-title">Consejos prácticos</h2>
+              <div class="rut-tips-grid">
+                {route.tips.map((tip, i) => (
+                  <div class="rut-tip-card" style={`--tc: ${i}`}>
+                    <p class="rut-tip-title">{tip.title[locale]}</p>
+                    <p class="rut-tip-text">{tip.content[locale]}</p>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                ))}
+              </div>
+              <div class="det-hover-corners" aria-hidden="true">
+                <span class="hc tl"></span><span class="hc tr"></span>
+                <span class="hc bl"></span><span class="hc br"></span>
+              </div>
+            </article>
+          )}
 
-        <!-- Qué llevar -->
-        {route.whatToBring && route.whatToBring[locale]?.length > 0 && (
-          <section class="mb-12" aria-labelledby="what-to-bring-heading">
-            <h2 id="what-to-bring-heading" class="text-2xl lg:text-3xl font-bold text-white mb-6">
-              Qué llevar
-            </h2>
-            <div class="p-6 bg-white/[0.04] rounded-2xl border border-white/[0.06]">
-              <ul class="space-y-3">
+          <!-- Block 05: Qué llevar -->
+          {route.whatToBring && route.whatToBring[locale]?.length > 0 && (
+            <article class="det-block" data-reveal>
+              <header class="det-block-head">
+                <span class="det-block-num">—</span>
+                <div class="det-block-divider"></div>
+                <span class="det-block-eyebrow">[ Equipaje ]</span>
+              </header>
+              <h2 class="det-block-title">{t('detail.whatToBring')}</h2>
+              <ul class="rut-bring-list" role="list">
                 {route.whatToBring[locale]?.map((item) => (
-                  <li class="flex items-center gap-3">
-                    <svg class="w-5 h-5 text-[#F59E0B] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span class="text-white/50">{item}</span>
+                  <li class="rut-bring-item">
+                    <span class="rut-bring-check" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </span>
+                    {item}
                   </li>
                 ))}
               </ul>
-            </div>
-          </section>
-        )}
-
-        <!-- Tags -->
-        {route.tags.length > 0 && (
-          <section aria-labelledby="tags-heading">
-            <h2 id="tags-heading" class="sr-only">Etiquetas</h2>
-            <div class="flex flex-wrap gap-2">
-              {route.tags.map((tag) => (
-                <span class="px-4 py-2 text-sm text-white/50 bg-white/[0.04] rounded-full border border-white/[0.06]">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
-
-      <!-- Sidebar (30%) -->
-      <aside class="order-1 lg:order-2">
-        <div class="lg:sticky lg:top-28 space-y-6">
-          <!-- Card de info sticky -->
-          <div class="p-6 lg:p-8 bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] rounded-2xl">
-            <!-- Dificultad con barra visual -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-3">Dificultad</p>
-              <div class="flex items-center gap-3">
-                <div class="flex gap-1">
-                  {[1, 2, 3].map((bar) => (
-                    <div 
-                      class:list={[
-                        'w-8 h-2 rounded-full',
-                        bar <= difficultyBars[route.difficulty] ? difficultyConfig.bar : 'bg-white/[0.05]'
-                      ]} 
-                    />
-                  ))}
-                </div>
-                <span class:list={['text-sm font-medium', difficultyConfig.text]}>
-                  {t(`difficulty.${route.difficulty}`)}
-                </span>
+              <div class="det-hover-corners" aria-hidden="true">
+                <span class="hc tl"></span><span class="hc tr"></span>
+                <span class="hc bl"></span><span class="hc br"></span>
               </div>
-            </div>
+            </article>
+          )}
 
-            <!-- Duración -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-1">Duración</p>
-              <p class="text-xl font-black text-white">
-                {formatDuration(route.duration, locale)}
-              </p>
-            </div>
-
-            <!-- Distancia -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-1">Distancia</p>
-              <p class="text-xl font-black text-white">
-                {formatDistance(route.distance, locale)}
-              </p>
-            </div>
-
-            <!-- Mejor momento -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-1">Mejor momento</p>
-              <div class="flex items-center gap-2">
-                {route.timeOfDay === 'evening' || route.timeOfDay === 'sunset' ? (
-                  <svg class="w-5 h-5 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                  </svg>
-                ) : (
-                  <svg class="w-5 h-5 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                )}
-                <p class="font-medium text-white">
-                  Mejor al {t(`timeOfDay.${route.timeOfDay}`).toLowerCase()}
-                </p>
-              </div>
-            </div>
-
-            <!-- Barrios -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-3">Barrios</p>
-              <div class="flex flex-wrap gap-2">
-                {route.neighborhoods.map((n) => (
-                  <span class="px-3 py-1.5 text-xs font-medium bg-white/[0.05] text-white/50 rounded-full border border-white/[0.08]">
-                    {t(`neighborhoods.${n}`)}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <!-- Mejores meses -->
-            {route.bestMonths && route.bestMonths.length > 0 && (
-              <div class="mb-6">
-                <p class="text-sm text-white/40 mb-3">Mejores meses</p>
-                <div class="flex flex-wrap gap-1">
-                  {route.bestMonths.map((month) => (
-                    <span class="px-2 py-1 text-xs text-white/30 capitalize">
-                      {month}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <!-- Separador -->
-            <div class="h-px bg-white/[0.06] my-6" />
-
-            <!-- Botón compartir -->
-            <button 
-              id="share-button"
-              class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-transparent text-white/50 font-medium text-sm rounded-xl border border-white/[0.08] hover:border-white/[0.2] hover:text-white transition-all duration-200"
-              data-title={route.title[locale]}
-              data-url={Astro.url.href}
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
-              Compartir ruta
-            </button>
-          </div>
-
-          <!-- Rutas similares -->
-          {relatedRoutes.length > 0 && (
-            <div class="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-              <h3 class="text-lg font-bold text-white mb-4">
-                Rutas similares
-              </h3>
-              <div class="space-y-4">
-                {relatedRoutes.map((relatedRoute) => (
-                  <a 
-                    href={`/rutas/${relatedRoute.slug}`}
-                    class="block group"
-                  >
-                    <div class="flex items-start gap-3">
-                      <div class="w-12 h-12 bg-white/[0.05] rounded-xl flex items-center justify-center flex-shrink-0 border border-white/[0.08] group-hover:border-[#F59E0B]/30 transition-colors">
-                        <svg class="w-5 h-5 text-white/30 group-hover:text-[#F59E0B] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.447-.894L15 7m0 13V7" />
-                        </svg>
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <p class="font-medium text-white text-sm group-hover:text-[#F59E0B] transition-colors line-clamp-2">
-                          {relatedRoute.title[locale]}
-                        </p>
-                        <p class="text-xs text-white/30 mt-1">
-                          {formatDuration(relatedRoute.duration, locale)} · {t(`difficulty.${relatedRoute.difficulty}`)}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
+          <!-- Tags -->
+          {route.tags.length > 0 && (
+            <div class="det-tags" data-reveal>
+              <span class="det-tags-eyebrow">[ {t('detail.tags')} ]</span>
+              <div class="det-tags-flow">
+                {route.tags.map((tag, i) => (
+                  <span class="det-tag-pill" style={`--ti: ${i}`}>#{tag}</span>
                 ))}
               </div>
             </div>
           )}
-        </div>
-      </aside>
+
+        </main>
+
+        <!-- SIDEBAR (30%) -->
+        <aside>
+          <div class="det-sidebar-sticky">
+
+            <!-- Info card -->
+            <div class="det-sidebar-card" data-reveal>
+              <div class="det-sc-head">
+                <span class="det-sc-eyebrow">[ {locale === 'es' ? 'Información' : 'Information'} ]</span>
+                <div class="det-sc-line"></div>
+              </div>
+
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.difficulty')}</span>
+                <div class="rut-sb-diff" style={`--dc: ${diffColor}`}>
+                  <div class="rut-sb-bars">
+                    {[1,2,3].map(n => (
+                      <span class:list={['rut-sb-bar', n <= diffBars && 'active']}></span>
+                    ))}
+                  </div>
+                  <span class="rut-sb-diff-label">{t(`difficulty.${route.difficulty}`)}</span>
+                </div>
+              </div>
+              <div class="det-info-sep"></div>
+
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.duration')}</span>
+                <span class="det-info-val">{formatDuration(route.duration, locale)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.distance')}</span>
+                <span class="det-info-val">{formatDistance(route.distance, locale)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.bestTime')}</span>
+                <span class="det-info-val">{t(`timeOfDay.${route.timeOfDay}`)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.neighborhoods')}</span>
+                <div class="rut-neigh-flow" style="justify-content: flex-end;">
+                  {route.neighborhoods.map(n => (
+                    <span class="rut-neigh-pill">{t(`neighborhoods.${n}`)}</span>
+                  ))}
+                </div>
+              </div>
+
+              {route.bestMonths && route.bestMonths.length > 0 && (
+                <>
+                  <div class="det-info-sep"></div>
+                  <div class="det-info-row">
+                    <span class="det-info-label">{t('detail.bestMonths')}</span>
+                    <div class="rut-months-flow" style="justify-content: flex-end;">
+                      {route.bestMonths.map(m => (
+                        <span class="rut-month-tag">{m}</span>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <button
+                id="share-btn"
+                class="rut-btn-share"
+                data-title={route.title[locale]}
+                data-url={Astro.url.href}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                </svg>
+                <span class="share-label" aria-live="polite">{t('detail.share')}</span>
+              </button>
+            </div>
+
+            <!-- Related routes -->
+            {relatedRoutes.length > 0 && (
+              <div class="det-sidebar-card" data-reveal>
+                <div class="det-sc-head">
+                  <span class="det-sc-eyebrow">[ {t('detail.similarRoutes')} ]</span>
+                  <div class="det-sc-line"></div>
+                </div>
+                <div class="det-related-list">
+                  {relatedRoutes.map((rel, i) => (
+                    <a
+                      href={`/rutas/${rel.slug}`}
+                      class="det-related-item"
+                      style={`--ri: ${i}`}
+                      aria-label={rel.title[locale]}
+                    >
+                      <div class="det-rel-thumb">
+                        {(rel.imageUrl || rel.image) ? (
+                          <img src={rel.imageUrl || rel.image} alt="" loading="lazy" />
+                        ) : (
+                          <div class="det-rel-thumb-fallback">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                              <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 7m0 13V7"/>
+                            </svg>
+                          </div>
+                        )}
+                        <div class="det-rel-thumb-overlay"></div>
+                      </div>
+                      <div class="det-rel-info">
+                        <span class="det-rel-title">{rel.title[locale]}</span>
+                        <span class="det-rel-meta">{formatDuration(rel.duration, locale)} · {t(`difficulty.${rel.difficulty}`)}</span>
+                      </div>
+                      <svg class="det-rel-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+                <a href="/rutas" class="det-all-link">
+                  {t('detail.allRoutes')}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            )}
+
+          </div>
+        </aside>
+
+      </div>
     </div>
-  </article>
 
-  <!-- Share functionality -->
-  <script is:inline>
-    (function() {
-      const shareButton = document.getElementById('share-button');
-      if (!shareButton) return;
+    <!-- Footer ornament -->
+    <div class="det-footer-orn" aria-hidden="true">
+      <span class="det-orn-line"></span>
+      <span class="det-orn-diamond"></span>
+      <span class="det-orn-star">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/>
+        </svg>
+      </span>
+      <span class="det-orn-diamond"></span>
+      <span class="det-orn-line"></span>
+    </div>
 
-      const title = shareButton.dataset.title;
-      const url = shareButton.dataset.url;
+  </div>
+  </RouteDetailContent>
 
-      shareButton.addEventListener('click', async function() {
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: title,
-              text: `Descubre la ruta "${title}" en Granada Vibes`,
-              url: url
-            });
-            return;
-          } catch (err) {
-            // User cancelled or share failed, fall back to clipboard
-          }
-        }
-
-        try {
-          await navigator.clipboard.writeText(url);
-          const originalText = shareButton.innerHTML;
-          shareButton.innerHTML = `
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
-            </svg>
-            Enlace copiado
-          `;
-          setTimeout(() => {
-            shareButton.innerHTML = originalText;
-          }, 2000);
-        } catch (err) {
-          console.error('Failed to copy:', err);
-        }
-      });
-    })();
-  </script>
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('share-btn');
+    if (!btn) return;
+    btn.addEventListener('click', async function () {
+      const title = btn.dataset.title;
+      const url   = btn.dataset.url;
+      const label = btn.querySelector('.share-label');
+      if (navigator.share) {
+        try { await navigator.share({ title, text: 'Descubre la ruta "' + title + '" en Granada Vibes', url }); return; }
+        catch (_) {}
+      }
+      try {
+        await navigator.clipboard.writeText(url ?? '');
+        if (label) {
+          const orig = label.textContent;
+          label.textContent = '¡Enlace copiado!';
+          setTimeout(() => { label.textContent = orig; }, 2000);
+        }
+      } catch (_) {}
+    });
+  })();
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+  });
+</script>
+
+<!-- Reading progress bar -->
+<script>
+  (function () {
+    const bar = document.createElement('div');
+    bar.id = 'read-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          bar.style.setProperty('--scroll-progress', `${progress}%`);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+</script>
+
+<style is:global>
+  #read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--scroll-progress, 0%);
+    height: 2px;
+    background: #c9a84c;
+    z-index: 9999;
+    transition: width 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* Enhanced neighborhood pills for routes sidebar */
+  .rut-neigh-pill {
+    padding: 0.45rem 1.1rem !important;
+    font-size: 0.68rem !important;
+    background: rgba(201,168,76,0.14) !important;
+    border: 1px solid rgba(201,168,76,0.35) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .rut-neigh-pill:hover {
+    background: rgba(201,168,76,0.22) !important;
+    border-color: rgba(201,168,76,0.5) !important;
+  }
+
+  /* Editorial decorative quote for long description */
+  .rut-long-desc-wrap {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .rut-long-desc-quote {
+    position: absolute;
+    left: -0.25rem;
+    top: -1rem;
+    font-family: var(--font-body, 'Fraunces', serif);
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(201,168,76,0.18);
+    font-weight: 300;
+    pointer-events: none;
+    user-select: none;
+  }
+</style>

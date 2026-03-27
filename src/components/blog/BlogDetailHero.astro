@@ -1,0 +1,69 @@
+---
+/**
+ * BlogDetailHero — cinematic hero for blog post detail pages.
+ * Thin wrapper of CinematicHero with blog-specific dock: reading time | author | date | category.
+ */
+import type { BlogPost, Locale } from '@types';
+import { useTranslations } from '../../i18n/utils';
+import CinematicHero from '@components/shared/CinematicHero.astro';
+
+interface Props {
+  post: BlogPost;
+  locale: Locale;
+  formattedDate: string;
+}
+
+const { post, locale, formattedDate } = Astro.props;
+const t = useTranslations(locale);
+
+const year = new Date(post.publishDate).getFullYear();
+// Derive a stable 3-digit code from the slug if id is non-numeric
+const numericId = parseInt(post.id, 10);
+const refNum = isNaN(numericId)
+  ? post.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) % 1000
+  : numericId;
+const refCode = `BLOG / ${refNum.toString().padStart(3, '0')} · ${year}`;
+
+const backHref   = locale === 'es' ? '/blog' : '/en/blog';
+const backLabel  = locale === 'es' ? '← BLOG' : '← BLOG';
+const catLabel   = t(`blog.categories.${post.category}`).toUpperCase();
+const dockLabel  = locale === 'es' ? 'Información del artículo' : 'Article information';
+
+const readingDisplay = t('blog.readingTime', { minutes: post.readingTime });
+---
+
+<CinematicHero
+  locale={locale}
+  backHref={backHref}
+  backLabel={backLabel}
+  refCode={refCode}
+  title={post.title[locale]}
+  imageUrl={post.image}
+  eyebrowText={catLabel}
+  featuredLabel={post.featured ? (locale === 'es' ? 'DESTACADO' : 'FEATURED') : undefined}
+  dockAriaLabel={dockLabel}
+>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.readingTime')}</span>
+    <span class="cin-dock-value">{readingDisplay}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.author')}</span>
+    <span class="cin-dock-value blg-dock-author">{post.author}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.publishDate')}</span>
+    <span class="cin-dock-value"><time datetime={post.publishDate}>{formattedDate}</time></span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.category')}</span>
+    <span class="cin-dock-value">{t(`blog.categories.${post.category}`)}</span>
+  </div>
+</CinematicHero>
+
+<style>
+  .blg-dock-author { font-size: 0.8rem; }
+</style>

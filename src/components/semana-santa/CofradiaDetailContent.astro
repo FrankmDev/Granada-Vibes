@@ -1,0 +1,223 @@
+---
+/**
+ * CofradiaDetailContent — wraps DetailContent with ss-* global CSS classes
+ * for Semana Santa cofradía detail pages.
+ */
+import DetailContent from '@components/shared/DetailContent.astro';
+---
+
+<DetailContent>
+  <slot />
+</DetailContent>
+
+<style is:global>
+  /* ============================================
+     SEMANA SANTA — cofradía detail page styles
+     ss-* prefix, cream editorial palette
+     ============================================ */
+
+  /* Paso cards (Block 02) */
+  .ss-paso-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--s-border-s);
+    align-items: start;
+  }
+
+  .ss-paso-card:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .ss-paso-tipo {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .ss-paso-tipo.is-misterio,
+  .ss-paso-tipo.is-palio {
+    background: rgba(201, 168, 76, 0.12);
+    color: var(--s-gold);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+  }
+
+  .ss-paso-tipo.is-cristo {
+    background: rgba(232, 98, 42, 0.10);
+    color: var(--s-orange);
+    border: 1px solid rgba(232, 98, 42, 0.25);
+  }
+
+  .ss-paso-nombre {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: var(--s-ink);
+    line-height: 1.3;
+    margin-bottom: 0.4rem;
+  }
+
+  .ss-paso-desc {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--s-ink-2);
+  }
+
+  /* Horario table (Block 03) */
+  .ss-horario-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--s-border-s);
+  }
+
+  .ss-horario-row {
+    display: contents;
+  }
+
+  .ss-horario-key,
+  .ss-horario-val {
+    padding: 0.85rem 1.25rem;
+    background: var(--s-bg);
+  }
+
+  .ss-horario-key {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--s-ink-2);
+  }
+
+  .ss-horario-val {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--s-ink);
+    letter-spacing: 0.02em;
+    text-align: right;
+  }
+
+  /* Highlighted rows (salida, tribunaOficial, encierro) */
+  .ss-horario-row.is-highlight .ss-horario-key {
+    font-weight: 700;
+    color: var(--s-ink);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .ss-horario-row.is-highlight .ss-horario-val {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--s-gold);
+  }
+
+  .ss-horario-row.is-highlight .ss-horario-key,
+  .ss-horario-row.is-highlight .ss-horario-val {
+    background: var(--s-bg-hi);
+  }
+
+  /* Itinerario (Block 04) */
+  .ss-itinerario-text {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--s-ink-2);
+    max-width: 65ch;
+  }
+
+  /* Música (Block 05) */
+  .ss-musica-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--s-border-s);
+  }
+
+  .ss-musica-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--s-bg);
+    align-items: start;
+  }
+
+  .ss-musica-role {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+    padding-top: 0.15rem;
+  }
+
+  .ss-musica-banda {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--s-ink);
+    line-height: 1.5;
+  }
+
+  /* Curiosidades callout (appears inside Block 01) */
+  .ss-curiosidades-block {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--s-bg-hi);
+    border-left: 3px solid var(--s-orange);
+  }
+
+  .ss-curiosidades-label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--s-orange);
+    margin-bottom: 0.6rem;
+  }
+
+  .ss-curiosidades-text {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--s-ink-2);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .ss-horario-table {
+      grid-template-columns: 1fr;
+    }
+
+    .ss-horario-key {
+      padding-bottom: 0.25rem;
+    }
+
+    .ss-horario-val {
+      text-align: left;
+      padding-top: 0.25rem;
+      padding-bottom: 0.85rem;
+    }
+
+    .ss-paso-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

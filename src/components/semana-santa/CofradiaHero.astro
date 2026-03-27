@@ -1,0 +1,64 @@
+---
+import type { Locale } from '@types';
+import type { CofradiaWithDia } from '@data/semana-santa/index.js';
+import CinematicHero from '@components/shared/CinematicHero.astro';
+
+interface Props {
+  cofradia: CofradiaWithDia;
+  locale: Locale;
+}
+
+const { cofradia, locale } = Astro.props;
+
+const refCode = `SS / ${cofradia.id.toUpperCase().slice(0, 3).padEnd(3, '0')} · 2026`;
+const backHref = '/semana-santa';
+const backLabel = '← SEMANA SANTA';
+const eyebrowText = cofradia.dia.nombre.toUpperCase();
+
+const salidaTime =
+  (cofradia.horario as Record<string, string>).salida ??
+  (cofradia.horario as Record<string, string>).salidaCasaHermandad ??
+  '—';
+---
+
+<CinematicHero
+  locale={locale}
+  backHref={backHref}
+  backLabel={backLabel}
+  refCode={refCode}
+  title={cofradia.nombrePopular}
+  eyebrowText={eyebrowText}
+  dockAriaLabel="Información de la cofradía"
+>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">DÍA</span>
+    <span class="cin-dock-value">{cofradia.dia.nombre}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">BARRIO</span>
+    <span class="cin-dock-value">{cofradia.barrio}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">PASOS</span>
+    <span class="cin-dock-value">
+      {cofradia.numeroPasos} paso{cofradia.numeroPasos !== 1 ? 's' : ''}
+    </span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">SALIDA</span>
+    <span class="cin-dock-value ss-dock-salida">{salidaTime}</span>
+  </div>
+</CinematicHero>
+
+<style>
+  .ss-dock-salida {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: #c9a84c;
+  }
+</style>

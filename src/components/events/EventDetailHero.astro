@@ -1,0 +1,106 @@
+---
+import type { Event, Locale } from '@types';
+import { useTranslations } from '../../i18n/utils';
+import { formatFullDate, formatTime, getTemporalProximity } from '@utils/dates';
+import CinematicHero from '@components/shared/CinematicHero.astro';
+
+interface Props {
+  event: Event;
+  locale: Locale;
+}
+
+const { event, locale } = Astro.props;
+const t = useTranslations(locale);
+
+const temporalProximity = getTemporalProximity(event.date);
+const proximityLabels: Record<string, string> = {
+  'today':     locale === 'es' ? 'HOY'        : 'TODAY',
+  'tomorrow':  locale === 'es' ? 'MAÑANA'     : 'TOMORROW',
+  'this-week': locale === 'es' ? 'ESTA SEMANA': 'THIS WEEK',
+};
+const proximityLabel = temporalProximity ? (proximityLabels[temporalProximity] ?? null) : null;
+const isToday = temporalProximity === 'today';
+
+const eventImage    = event.imageUrl || event.image;
+const refCode       = `EVT / ${event.id.toString().padStart(3, '0')} · ${new Date(event.date).getFullYear()}`;
+const backHref      = locale === 'es' ? '/eventos'  : '/en/events';
+const backLabel     = locale === 'es' ? '← AGENDA'  : '← EVENTS';
+const catLabel      = t(`categories.${event.category}`).toUpperCase();
+const featuredLabel = event.featured ? (locale === 'es' ? 'DESTACADO' : 'FEATURED') : undefined;
+const dockLabel     = locale === 'es' ? 'Información del evento' : 'Event information';
+
+const priceDisplay  = event.price === null
+  ? (locale === 'es' ? 'ENTRADA LIBRE' : 'FREE ENTRY')
+  : `${event.price}€`;
+---
+
+<CinematicHero
+  locale={locale}
+  backHref={backHref}
+  backLabel={backLabel}
+  refCode={refCode}
+  title={event.title[locale]}
+  imageUrl={eventImage}
+  eyebrowText={catLabel}
+  featuredLabel={featuredLabel}
+  dockAriaLabel={dockLabel}
+>
+  {proximityLabel && (
+    <span
+      slot="eyebrow-extra"
+      class:list={['evt-proximity-badge', isToday && 'is-today']}
+    >{proximityLabel}</span>
+  )}
+
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.date')}</span>
+    <span class="cin-dock-value">{formatFullDate(event.date, locale)}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.time')}</span>
+    <span class="cin-dock-value">{formatTime(event.time, locale)}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.venue')}</span>
+    <span class="cin-dock-value evt-dock-venue">{event.venue}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.price')}</span>
+    <span class:list={['cin-dock-value', 'evt-dock-price', event.price === null && 'is-free']}>{priceDisplay}</span>
+  </div>
+</CinematicHero>
+
+<style>
+  .evt-proximity-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.8rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #f0ede8;
+    border-radius: 100px;
+    backdrop-filter: blur(12px);
+  }
+
+  .evt-proximity-badge.is-today {
+    background: rgba(232,98,42,0.85);
+    border-color: rgba(232,98,42,0.4);
+    animation: pulse-today 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-today {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,98,42,0.4); }
+    50%       { box-shadow: 0 0 0 8px rgba(232,98,42,0); }
+  }
+
+  .evt-dock-venue { font-size: 0.78rem; white-space: normal; line-height: 1.3; }
+  .evt-dock-price.is-free { color: #6cba8a; }
+</style>

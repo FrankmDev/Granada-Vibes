@@ -9,6 +9,7 @@ export interface PasoRaw {
   nombre: string;
   tipo: 'misterio' | 'cristo' | 'palio';
   descripcion?: string;
+  imagen?: string | null;
 }
 
 export interface HorarioRaw {
@@ -24,6 +25,7 @@ export interface CofradiaRaw {
   barrio: string;
   pasos: PasoRaw[];
   horario?: HorarioRaw & Record<string, unknown>;
+  imagenIglesia?: string | null;
 }
 
 export interface DiaRaw {
@@ -38,6 +40,7 @@ export type PasoTipo = 'Misterio' | 'Cristo' | 'Palio';
 
 export interface ProcessedPaso {
   id: string;
+  cofradiaId: string;
   nombre: string;
   tipo: PasoTipo;
   hermandad: string;
@@ -45,6 +48,7 @@ export interface ProcessedPaso {
   iglesia: string;
   barrio: string;
   originalIndex: number;
+  imagen: string | null;
 }
 
 export interface ColData {
@@ -67,12 +71,13 @@ export const TYPE_COLORS: Record<PasoTipo, string> = {
   Cristo:   '#e8622a', // --color-accent
 };
 
+// Fallback images (Wikimedia Commons, Semana Santa de Granada) for pasos without a specific image
 export const PASO_IMAGES = [
-  'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=900&q=85',
-  'https://images.unsplash.com/photo-1548013146-72479768bada?w=900&q=85',
-  'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=900&q=85',
-  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=900&q=85',
-  'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=900&q=85',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Cortejo_de_palmas_de_la_Borriquilla_en_Granada.jpg/960px-Cortejo_de_palmas_de_la_Borriquilla_en_Granada.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Gitanos_de_Granada.jpg/960px-Gitanos_de_Granada.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Hermandad_del_Cristo_de_San_Agust%C3%ADn.jpg/960px-Hermandad_del_Cristo_de_San_Agust%C3%ADn.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/SANT%C3%8DSIMO_CRISTO_DE_LA_REDENCI%C3%93N_EN_SU_SAGRADO_DESCENDIMIENTO.jpg/960px-SANT%C3%8DSIMO_CRISTO_DE_LA_REDENCI%C3%93N_EN_SU_SAGRADO_DESCENDIMIENTO.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Lanzada_Granada.JPG/960px-Lanzada_Granada.JPG',
 ];
 
 // ── Pure helpers ─────────────────────────────────────────────
@@ -119,6 +124,7 @@ export function buildProcessedDias(dias: DiaRaw[]): ProcessedDia[] {
       cofradia.pasos.forEach((paso, index) => {
         allPasos.push({
           id: `${cofradia.id}-${index}`,
+          cofradiaId: cofradia.id,
           nombre: paso.nombre,
           tipo: normalizeTipo(paso.tipo),
           hermandad: cofradia.nombrePopular,
@@ -126,6 +132,7 @@ export function buildProcessedDias(dias: DiaRaw[]): ProcessedDia[] {
           iglesia: cofradia.iglesiaSalida,
           barrio: cofradia.barrio,
           originalIndex: allPasos.length,
+          imagen: paso.imagen ?? null,
         });
       });
     });

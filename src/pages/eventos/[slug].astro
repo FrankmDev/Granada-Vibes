@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
-import Icon from '@components/ui/Icon.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
-import { getAllEvents, getEventBySlug } from '@data/index.js';
+import EventDetailHero from '@components/events/EventDetailHero.astro';
+import EventDetailContent from '@components/events/EventDetailContent.astro';
+import { getAllEvents } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
-import { formatDate, formatFullDate, formatTime, getTemporalProximity } from '@utils/dates';
+import { formatFullDate, formatTime } from '@utils/dates';
 
 export function getStaticPaths() {
   const events = getAllEvents();
@@ -20,369 +22,392 @@ const { event } = Astro.props;
 const locale = 'es';
 const t = useTranslations(locale);
 
-const breadcrumbs = [
-  { label: t('nav.home'), href: '/' },
-  { label: t('nav.events'), href: '/eventos' },
-  { label: event.title[locale] },
-];
-
-// Get temporal proximity for badge
-const temporalProximity = getTemporalProximity(event.date);
-const proximityLabels = {
-  'today': 'HOY',
-  'tomorrow': 'MAÑANA',
-  'this-week': 'ESTA SEMANA',
-  'future': null,
-};
-
-// Get venue coordinates for map
 const venueCoords = getVenueCoordinates(event.venue, event.neighborhood);
-
-// Get related events (same category, different event)
 const relatedEvents = getAllEvents()
   .filter(e => e.category === event.category && e.id !== event.id)
   .slice(0, 3);
 
-// Event image (from scraper or mock)
 const eventImage = event.imageUrl || event.image;
-
-// OG Image
 const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
+
+const priceText = event.price === null ? 'Entrada libre.' : `Desde ${event.price}€.`;
+const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${priceText} Descubre todos los detalles en Granada Vibes.`;
 ---
 
-<BaseLayout 
+<BaseLayout
   locale={locale}
   title={event.title[locale]}
-  description={`${event.title[locale]} en Granada — ${formatDate(event.date, locale)}. ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. Precio: ${event.price === null ? 'Gratis' : event.price + '€'}. Compra entradas y descubre más en Granada Vibes.`}
+  description={seoDescription}
   ogImage={ogImage}
   schemaType="event"
   schemaData={event}
 >
-  {/* Background decorations */}
-  <div class="absolute top-0 left-1/4 w-[800px] h-[800px] bg-[#E84D27]/5 rounded-full blur-[180px] pointer-events-none -z-10"></div>
-  <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#F59E0B]/5 rounded-full blur-[150px] pointer-events-none -z-10"></div>
+  <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
-  <article class="container pt-28 pb-20 lg:pt-32 relative z-10">
-    <Breadcrumbs items={breadcrumbs} />
+  <!-- DARK CINEMATIC HERO -->
+  <EventDetailHero event={event} locale={locale} />
 
-    {/* Hero image */}
-    {eventImage && (
-      <div class="relative w-full aspect-[21/9] rounded-2xl overflow-hidden mt-6 mb-10 border border-white/[0.06]">
-        <img
-          src={eventImage}
-          alt={event.title[locale]}
-          class="absolute inset-0 w-full h-full object-cover"
-          loading="eager"
-          decoding="async"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-      </div>
-    )}
+  <!-- CREAM EDITORIAL CONTENT -->
+  <EventDetailContent>
+  <div class="det-page">
 
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-12 lg:gap-16 mt-8">
-      <!-- Columna Principal (70%) -->
-      <div class="order-2 lg:order-1">
-        <!-- Hero del evento -->
-        <header class="mb-10">
-          <!-- Badges -->
-          <div class="flex flex-wrap items-center gap-3 mb-5">
-            <span class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider bg-[#E84D27]/10 text-[#E84D27] rounded-full border border-[#E84D27]/30">
-              {t(`categories.${event.category}`)}
-            </span>
-            {temporalProximity && proximityLabels[temporalProximity] && (
-              <span class:list={[
-                'px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-full border animate-pulse',
-                temporalProximity === 'today' 
-                  ? 'bg-[#E84D27] text-white border-[#E84D27]' 
-                  : temporalProximity === 'tomorrow'
-                    ? 'bg-[#F59E0B]/20 text-[#F59E0B] border-[#F59E0B]/30'
-                    : 'bg-white/[0.05] text-white/60 border-white/[0.1]'
-              ]}>
-                {proximityLabels[temporalProximity]}
-              </span>
+    <div class="det-content-wrap">
+      <div class="det-layout">
+
+        <!-- MAIN COLUMN (70%) -->
+        <main id="main-content" class="det-main">
+
+          <!-- Description block -->
+          <article class="det-block" data-reveal>
+            <header class="det-block-head">
+              <span class="det-block-num">01</span>
+              <div class="det-block-divider"></div>
+              <span class="det-block-eyebrow">[ Sobre el evento ]</span>
+            </header>
+            <h2 class="det-block-title">Descripción</h2>
+            <p class="det-lead">{event.description[locale]}</p>
+            <div class="det-hover-corners" aria-hidden="true">
+              <span class="hc tl"></span><span class="hc tr"></span>
+              <span class="hc bl"></span><span class="hc br"></span>
+            </div>
+          </article>
+
+          <!-- Venue block -->
+          <article class="det-block" data-reveal>
+            <header class="det-block-head">
+              <span class="det-block-num">02</span>
+              <div class="det-block-divider"></div>
+              <span class="det-block-eyebrow">[ Ubicación ]</span>
+            </header>
+            <h2 class="det-block-title">{event.venue}</h2>
+            <div class="evt-venue-meta">
+              <span class="evt-neighborhood-tag">{t(`neighborhoods.${event.neighborhood}`)}</span>
+              {event.address && <span class="evt-address">{event.address}</span>}
+            </div>
+            {event.venueDescription && (
+              <p class="evt-venue-desc">{event.venueDescription[locale]}</p>
             )}
-            {event.featured && (
-              <span class="px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider bg-[#E84D27]/10 text-[#E84D27] rounded-full border border-[#E84D27]/30">
-                Destacado
-              </span>
-            )}
-          </div>
-
-          <!-- Headline -->
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-[-0.02em] text-white mb-6 leading-[1.1]">
-            {event.title[locale]}
-          </h1>
-
-          <!-- Descripción -->
-          <p class="text-lg lg:text-xl text-white/50 leading-relaxed max-w-2xl">
-            {event.description[locale]}
-          </p>
-        </header>
-
-        <!-- Línea separadora -->
-        <div class="h-px bg-gradient-to-r from-[#E84D27]/30 via-white/[0.06] to-transparent mb-10" />
-
-        <!-- Sección "El lugar" -->
-        <section class="mb-12" aria-labelledby="venue-heading">
-          <h2 id="venue-heading" class="text-2xl lg:text-3xl font-bold text-white mb-5">
-            {event.venue}
-          </h2>
-          
-          <div class="flex items-center gap-2 mb-5">
-            <span class="px-3 py-1 text-xs font-medium bg-white/[0.05] text-white/60 rounded-full border border-white/[0.08]">
-              {t(`neighborhoods.${event.neighborhood}`)}
-            </span>
-            {event.address && (
-              <span class="text-sm text-white/40">{event.address}</span>
-            )}
-          </div>
-
-          {event.venueDescription && (
-            <p class="text-white/50 leading-relaxed mb-8">
-              {event.venueDescription[locale]}
-            </p>
-          )}
-
-          {venueCoords ? (
-            <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} />
-          ) : (
-            <div class="aspect-video bg-white/[0.03] rounded-2xl border border-white/[0.06] flex items-center justify-center">
-              <div class="text-center">
-                <div class="w-16 h-16 bg-white/[0.05] rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-8 h-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            <div class="evt-map-frame">
+              <div class="evt-map-label" aria-hidden="true">[ {locale === 'es' ? 'MAPA DEL VENUE' : 'VENUE MAP'} ]</div>
+              {venueCoords ? (
+                <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} theme="light" />
+              ) : (
+                <div class="evt-map-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
+                  <p>{t('detail.mapComingSoon')}</p>
                 </div>
-                <p class="text-white/30 text-sm">Ubicación no disponible</p>
-              </div>
-            </div>
-          )}
-        </section>
-
-        <!-- Sección "Qué esperar" -->
-        {event.highlights && event.highlights[locale]?.length > 0 && (
-          <section class="mb-12" aria-labelledby="highlights-heading">
-            <h2 id="highlights-heading" class="text-2xl lg:text-3xl font-bold text-white mb-6">
-              Qué esperar
-            </h2>
-            <ul class="space-y-4">
-              {event.highlights[locale]?.map((highlight) => (
-                <li class="flex items-start gap-4">
-                  <span class="w-2 h-2 rounded-full bg-[#E84D27] mt-2.5 flex-shrink-0" />
-                  <span class="text-white/50 leading-relaxed">{highlight}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
-
-        <!-- Sección "Consejos prácticos" -->
-        {event.tips && (
-          <section class="mb-12" aria-labelledby="tips-heading">
-            <div class="p-6 bg-white/[0.03] rounded-2xl border border-white/[0.06]">
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-[#E84D27]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <svg class="w-5 h-5 text-[#E84D27]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="text-lg font-bold text-white mb-2">Consejos prácticos</h3>
-                  <p class="text-white/50 leading-relaxed">{event.tips[locale]}</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-
-        <!-- Tags -->
-        {event.tags.length > 0 && (
-          <section aria-labelledby="tags-heading">
-            <h2 id="tags-heading" class="sr-only">Etiquetas</h2>
-            <div class="flex flex-wrap gap-2">
-              {event.tags.map((tag) => (
-                <span class="px-4 py-2 text-sm text-white/50 bg-white/[0.04] rounded-full border border-white/[0.06]">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
-
-      <!-- Sidebar (30%) -->
-      <aside class="order-1 lg:order-2">
-        <div class="lg:sticky lg:top-28 space-y-6">
-          <!-- Card de info principal -->
-          <div class="p-6 lg:p-8 bg-white/[0.04] backdrop-blur-xl border border-white/[0.06] rounded-2xl">
-            <!-- Fecha completa -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-1">Fecha</p>
-              <p class="text-2xl font-black text-white">
-                {formatFullDate(event.date, locale)}
-              </p>
-              {event.endDate && event.endDate !== event.date && (
-                <p class="text-sm text-white/40 mt-1">
-                  Hasta {formatDate(event.endDate, locale)}
-                </p>
               )}
             </div>
+            <div class="det-hover-corners" aria-hidden="true">
+              <span class="hc tl"></span><span class="hc tr"></span>
+              <span class="hc bl"></span><span class="hc br"></span>
+            </div>
+          </article>
 
-            <!-- Hora -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-1">Hora</p>
-              <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-[#E84D27]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <p class="text-xl font-black text-white">
-                  {formatTime(event.time, locale)}
-                </p>
+          <!-- Highlights block -->
+          {event.highlights && event.highlights[locale] && event.highlights[locale]!.length > 0 && (
+            <article class="det-block" data-reveal>
+              <header class="det-block-head">
+                <span class="det-block-num">03</span>
+                <div class="det-block-divider"></div>
+                <span class="det-block-eyebrow">[ Experiencia ]</span>
+              </header>
+              <h2 class="det-block-title">Qué esperar</h2>
+              <ul class="evt-highlights" role="list">
+                {event.highlights[locale]!.map((item, i) => (
+                  <li class="evt-highlight-item" style={`--stagger: ${i * 0.08}s`}>
+                    <span class="evt-hl-marker" aria-hidden="true">
+                      <span class="evt-hl-num">{(i + 1).toString().padStart(2, '0')}</span>
+                      <span class="evt-hl-bar"></span>
+                    </span>
+                    <span class="evt-hl-text">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="det-hover-corners" aria-hidden="true">
+                <span class="hc tl"></span><span class="hc tr"></span>
+                <span class="hc bl"></span><span class="hc br"></span>
               </div>
-            </div>
+            </article>
+          )}
 
-            <!-- Precio -->
-            <div class="mb-6">
-              <p class="text-sm text-white/40 mb-1">Precio</p>
-              <p class:list={[
-                'text-3xl font-black',
-                event.price === null ? 'text-emerald-400' : 'text-white'
-              ]}>
-                {event.price === null ? 'Gratis' : `${event.price}€`}
-              </p>
-            </div>
+          <!-- Tips block -->
+          {event.tips && (
+            <article class="det-block evt-tips-block" data-reveal>
+              <header class="det-block-head">
+                <span class="det-block-num">04</span>
+                <div class="det-block-divider"></div>
+                <span class="det-block-eyebrow">[ Recomendación ]</span>
+              </header>
+              <h2 class="det-block-title">Consejos prácticos</h2>
+              <div class="evt-tips-inner">
+                <div class="evt-tips-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <p class="evt-tips-text">{event.tips[locale]}</p>
+              </div>
+            </article>
+          )}
 
-            <!-- CTA -->
-            {(event.ticketsUrl || event.sourceUrl) ? (
-              <a
-                href={event.ticketsUrl || event.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[#E84D27] text-white font-bold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(232,77,39,0.3)] hover:scale-[1.02]"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                </svg>
-                Comprar entradas
-              </a>
-            ) : (
-              <button 
-                class="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[#E84D27] text-white font-bold text-sm uppercase tracking-wider rounded-xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(232,77,39,0.3)] hover:scale-[1.02]"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                {event.price === null ? 'Confirmar asistencia' : 'Reservar plaza'}
-              </button>
-            )}
-
-            <!-- Separador -->
-            <div class="h-px bg-white/[0.06] my-6" />
-
-            <!-- Lugar -->
-            <div class="mb-4">
-              <p class="text-sm text-white/40 mb-1">Lugar</p>
-              <p class="font-medium text-white">{event.venue}</p>
-              <p class="text-sm text-white/40">{t(`neighborhoods.${event.neighborhood}`)}</p>
-            </div>
-
-            <!-- Separador -->
-            <div class="h-px bg-white/[0.06] my-6" />
-
-            <!-- Botón compartir -->
-            <button 
-              id="share-button"
-              class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-transparent text-white/50 font-medium text-sm rounded-xl border border-white/[0.08] hover:border-white/[0.2] hover:text-white transition-all duration-200"
-              data-title={event.title[locale]}
-              data-url={Astro.url.href}
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
-              Compartir evento
-            </button>
-          </div>
-
-          <!-- Eventos relacionados -->
-          {relatedEvents.length > 0 && (
-            <div class="p-6 bg-white/[0.03] border border-white/[0.06] rounded-2xl">
-              <h3 class="text-lg font-bold text-white mb-4">
-                Eventos similares
-              </h3>
-              <div class="space-y-4">
-                {relatedEvents.map((relatedEvent) => (
-                  <a 
-                    href={`/eventos/${relatedEvent.slug}`}
-                    class="block group"
-                  >
-                    <div class="flex items-start gap-3">
-                      <div class="w-12 h-12 bg-white/[0.05] rounded-xl flex items-center justify-center flex-shrink-0 border border-white/[0.08] group-hover:border-[#E84D27]/30 transition-colors">
-                        <svg class="w-5 h-5 text-white/30 group-hover:text-[#E84D27] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <div class="flex-1 min-w-0">
-                        <p class="font-medium text-white text-sm group-hover:text-[#E84D27] transition-colors line-clamp-2">
-                          {relatedEvent.title[locale]}
-                        </p>
-                        <p class="text-xs text-white/30 mt-1">
-                          {formatDate(relatedEvent.date, locale)}
-                        </p>
-                        <p class="text-xs text-white/30">
-                          {relatedEvent.price === null ? 'Gratis' : `${relatedEvent.price}€`}
-                        </p>
-                      </div>
-                    </div>
-                  </a>
+          <!-- Tags -->
+          {event.tags.length > 0 && (
+            <div class="det-tags" data-reveal>
+              <span class="det-tags-eyebrow">[ Etiquetas ]</span>
+              <div class="det-tags-flow">
+                {event.tags.map((tag, i) => (
+                  <span class="det-tag-pill" style={`--ti: ${i}`}>#{tag}</span>
                 ))}
               </div>
             </div>
           )}
-        </div>
-      </aside>
+
+        </main>
+
+        <!-- SIDEBAR (30%) -->
+        <aside>
+          <div class="det-sidebar-sticky">
+
+            <!-- Info card -->
+            <div class="det-sidebar-card det-info-card" data-reveal>
+              <div class="det-sc-head">
+                <span class="det-sc-eyebrow">[ Información ]</span>
+                <div class="det-sc-line"></div>
+              </div>
+
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.date')}</span>
+                <span class="det-info-val evt-info-date">{formatFullDate(event.date, locale)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.time')}</span>
+                <span class="det-info-val">{formatTime(event.time, locale)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.category')}</span>
+                <span class="det-info-val">{t(`categories.${event.category}`)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+              <div class="det-info-row">
+                <span class="det-info-label">{t('events.filters.neighborhood')}</span>
+                <span class="det-info-val">{t(`neighborhoods.${event.neighborhood}`)}</span>
+              </div>
+              <div class="det-info-sep"></div>
+              <div class="det-info-row">
+                <span class="det-info-label">{t('detail.price')}</span>
+                <span class:list={['det-info-val', 'evt-info-price', event.price === null && 'is-free']}>
+                  {event.price === null ? t('detail.free') : `${event.price}€`}
+                </span>
+              </div>
+
+              <div class="evt-info-actions">
+                {(event.ticketsUrl || event.sourceUrl) ? (
+                  <a
+                    href={event.ticketsUrl || event.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="evt-btn-primary"
+                  >
+                    <span>{t('detail.getTickets')}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                ) : (
+                  <div class="evt-btn-primary">
+                    <span>{event.price === null ? t('detail.free') : t('detail.bookPlace')}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                )}
+                <button id="share-btn" class="evt-btn-secondary"
+                  data-title={event.title[locale]}
+                  data-url={Astro.url.href}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                  </svg>
+                  <span class="share-label" aria-live="polite">Compartir evento</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Related events -->
+            {relatedEvents.length > 0 && (
+              <div class="det-sidebar-card det-related-card" data-reveal>
+                <div class="det-sc-head">
+                  <span class="det-sc-eyebrow">[ {locale === 'es' ? 'Próximos eventos' : 'Upcoming events'} ]</span>
+                  <div class="det-sc-line"></div>
+                </div>
+                <div class="det-related-list">
+                  {relatedEvents.map((rel, i) => (
+                    <a
+                      href={`/eventos/${rel.slug}`}
+                      class="det-related-item"
+                      style={`--ri: ${i}`}
+                      aria-label={rel.title[locale]}
+                    >
+                      <div class="det-rel-thumb">
+                        {(rel.imageUrl || rel.image) ? (
+                          <img src={rel.imageUrl || rel.image} alt="" loading="lazy" />
+                        ) : (
+                          <div class="det-rel-thumb-fallback">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                              <rect x="3" y="3" width="18" height="18" rx="2"/>
+                              <circle cx="8.5" cy="8.5" r="1.5"/>
+                              <path d="M21 15l-5-5L5 21"/>
+                            </svg>
+                          </div>
+                        )}
+                        <div class="det-rel-thumb-overlay"></div>
+                      </div>
+                      <div class="det-rel-info">
+                        <span class="det-rel-title">{rel.title[locale]}</span>
+                        <span class="det-rel-meta">
+                          {formatFullDate(rel.date, locale)} · {rel.price === null ? t('detail.free') : `${rel.price}€`}
+                        </span>
+                      </div>
+                      <svg class="det-rel-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+                <a href="/eventos" class="det-all-link">
+                  {t('detail.allEvents')}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            )}
+
+          </div>
+        </aside>
+      </div>
     </div>
-  </article>
 
-  <!-- Share functionality -->
-  <script is:inline>
-    (function() {
-      const shareButton = document.getElementById('share-button');
-      if (!shareButton) return;
+    <!-- Footer ornament -->
+    <div class="det-footer-orn" aria-hidden="true">
+      <span class="det-orn-line"></span>
+      <span class="det-orn-diamond"></span>
+      <span class="det-orn-star">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/>
+        </svg>
+      </span>
+      <span class="det-orn-diamond"></span>
+      <span class="det-orn-line"></span>
+    </div>
 
-      const title = shareButton.dataset.title;
-      const url = shareButton.dataset.url;
+  </div>
+  </EventDetailContent>
 
-      shareButton.addEventListener('click', async function() {
-        if (navigator.share) {
-          try {
-            await navigator.share({
-              title: title,
-              text: `Descubre "${title}" en Granada Vibes`,
-              url: url
-            });
-            return;
-          } catch (err) {
-            // User cancelled or share failed, fall back to clipboard
-          }
-        }
-
-        try {
-          await navigator.clipboard.writeText(url);
-          const originalText = shareButton.innerHTML;
-          shareButton.innerHTML = `
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
-            </svg>
-            Enlace copiado
-          `;
-          setTimeout(() => {
-            shareButton.innerHTML = originalText;
-          }, 2000);
-        } catch (err) {
-          console.error('Failed to copy:', err);
-        }
-      });
-    })();
-  </script>
+  <Footer slot="footer" locale={locale} />
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('share-btn');
+    if (!btn) return;
+    btn.addEventListener('click', async function () {
+      const title = btn.dataset.title;
+      const url   = btn.dataset.url;
+      const label = btn.querySelector('.share-label');
+      if (navigator.share) {
+        try { await navigator.share({ title, text: 'Descubre "' + title + '" en Granada Vibes', url }); return; }
+        catch (_) {}
+      }
+      try {
+        await navigator.clipboard.writeText(url ?? '');
+        if (label) {
+          const orig = label.textContent;
+          label.textContent = '¡Copiado!';
+          setTimeout(() => { label.textContent = orig; }, 2000);
+        }
+      } catch (_) {}
+    });
+  })();
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+  });
+</script>
+
+<!-- Reading progress bar -->
+<script>
+  (function () {
+    const bar = document.createElement('div');
+    bar.id = 'read-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          bar.style.setProperty('--scroll-progress', `${progress}%`);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+</script>
+
+<style is:global>
+  #read-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--scroll-progress, 0%);
+    height: 2px;
+    background: #c9a84c;
+    z-index: 9999;
+    transition: width 0.1s linear;
+    pointer-events: none;
+  }
+
+  /* Prominent free price badge */
+  .evt-info-price.is-free {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem !important;
+    background: rgba(74,158,107,0.12) !important;
+    border: 1px solid rgba(74,158,107,0.3) !important;
+    border-radius: 2px;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.04em;
+  }
+
+  /* Venue map editorial label */
+  .evt-map-label {
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--s-ink-3, #8a7f77);
+    padding: 0.75rem 1rem 0.4rem;
+    border-bottom: 1px solid var(--s-border, rgba(26,22,25,0.10));
+    background: var(--s-bg-hi, #faf8f5);
+  }
+</style>

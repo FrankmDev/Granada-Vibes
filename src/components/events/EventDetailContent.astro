@@ -1,0 +1,204 @@
+---
+/**
+ * EventDetailContent — event-specific CSS wrapper.
+ * Shared layout CSS lives in DetailContent.astro (.det-* classes).
+ * This component adds only event-specific styles.
+ */
+import DetailContent from '@components/shared/DetailContent.astro';
+---
+<DetailContent>
+  <slot />
+</DetailContent>
+
+<style is:global>
+  /* ── Event-specific styles ── */
+
+  /* Sidebar info row modifiers */
+  .evt-info-date  { font-family: var(--font-body); font-size: 0.95rem; font-weight: 400; }
+  .evt-info-price { font-weight: 600; font-size: 1rem; }
+  .evt-info-price.is-free { color: #4a9e6b; }
+
+  /* Action buttons */
+  .evt-info-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--s-border);
+  }
+
+  .evt-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: var(--s-ink);
+    color: var(--s-bg);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .evt-btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--s-orange);
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .evt-btn-primary:hover::before { transform: translateX(0); }
+  .evt-btn-primary span, .evt-btn-primary svg { position: relative; z-index: 1; }
+  .evt-btn-primary svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+  .evt-btn-primary:hover svg { transform: translateX(4px); }
+
+  .evt-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--s-border);
+    color: var(--s-ink-2);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .evt-btn-secondary:hover { border-color: var(--s-ink-2); color: var(--s-ink); }
+  .evt-btn-secondary svg { width: 16px; height: 16px; }
+
+  /* Venue block */
+  .evt-venue-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .evt-neighborhood-tag {
+    display: inline-flex;
+    padding: 0.35rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--s-gold);
+    border-radius: 2px;
+  }
+
+  .evt-address {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--s-ink-3);
+  }
+
+  .evt-venue-desc {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--s-ink-2);
+    margin-bottom: 1.5rem;
+    max-width: 60ch;
+  }
+
+  .evt-map-frame {
+    width: 100%;
+    border: 1px solid var(--s-border);
+    overflow: hidden;
+    border-radius: 2px;
+  }
+
+  .evt-map-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    height: 200px;
+    color: var(--s-ink-3);
+    background: var(--s-bg-hi);
+  }
+
+  .evt-map-placeholder svg { width: 32px; height: 32px; }
+  .evt-map-placeholder p { font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-3); }
+
+  /* Highlights */
+  .evt-highlights { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .evt-highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s var(--ease-expo) var(--stagger, 0s);
+  }
+
+  .det-block.is-visible .evt-highlight-item { opacity: 1; transform: translateX(0); }
+
+  .evt-hl-marker { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; margin-top: 0.3rem; }
+
+  .evt-hl-num {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--s-orange);
+    min-width: 24px;
+  }
+
+  .evt-hl-bar { width: 20px; height: 1px; background: var(--s-orange); opacity: 0.5; }
+
+  .evt-hl-text { font-family: var(--font-display); font-size: 0.95rem; line-height: 1.65; color: var(--s-ink-2); }
+
+  /* Tips block */
+  .evt-tips-block { border-left: 3px solid var(--s-orange); }
+
+  .evt-tips-inner {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: rgba(232,98,42,0.04);
+    border: 1px solid rgba(232,98,42,0.12);
+    border-radius: 2px;
+  }
+
+  .evt-tips-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(232,98,42,0.1);
+    color: var(--s-orange);
+    flex-shrink: 0;
+    border-radius: 2px;
+  }
+
+  .evt-tips-icon svg { width: 20px; height: 20px; }
+  .evt-tips-text { font-family: var(--font-display); font-size: 0.95rem; line-height: 1.7; color: var(--s-ink-2); }
+
+  @media (max-width: 640px) {
+    .evt-tips-inner { flex-direction: column; }
+  }
+</style>

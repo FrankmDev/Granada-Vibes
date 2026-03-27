@@ -1,81 +1,55 @@
 /* ============================================
    GRANADA VIBES — DESIGN TOKENS
-   Sacrom Monochrome — Inter + Lora + 2px strokes
+   Alhambra Noir — Fraunces + DM Sans
    ============================================ */
 
 :root {
-  /* ── Surfaces — Brutalist Archive ── */
-  --color-bg:                     #FCF9F4; /* warm paper */
-  --color-bg-raised:              #f6f3ee;
-  --color-bg-card:                #FCF9F4;
-  --color-bg-subtle:              #dcdad5;
-  --color-bg-dark:                #000000;
+  /* ── Surfaces ── */
+  --color-bg:             #080808;
+  --color-bg-raised:      #111111;
+  --color-bg-card:        #171717;
+  --color-bg-subtle:      #1e1e1e;
+  --color-border:         #242424;
+  --color-border-subtle:  #1a1a1a;
 
-  /* Legacy surface aliases */
-  --color-surface:                var(--color-bg);
-  --color-surface-low:            var(--color-bg-subtle);
-  --color-surface-lowest:         #ebe8e3;
-  --color-surface-high:           #ffffff;
-  --color-surface-highest:        #ffffff;
+  /* ── Text ── */
+  --color-text-primary:   #f0ede8;
+  --color-text-secondary: #9a9490;
+  --color-text-muted:     #5a5550;
+  --color-text-inverse:   #080808;
 
-  /* ── Borders — Heavy 2px solid ── */
-  --color-border:                 #000000;
-  --color-border-subtle:          #474747;
-  --color-outline:                var(--color-border);
-  --color-outline-variant:        var(--color-border-subtle);
+  /* ── Accent — terracota (granada el fruto) ── */
+  --color-accent:         #e8622a;
+  --color-accent-hover:   #f07040;
+  --color-accent-muted:   rgba(232, 98, 42, 0.10);
 
-  /* ── Text — Pure ink black ── */
-  --color-text-primary:           #000000;
-  --color-text-secondary:         #474747;
-  --color-text-muted:             #777777;
-  --color-text-inverse:           #ffffff;
-
-  /* Legacy text aliases */
-  --color-on-surface:             var(--color-text-primary);
-  --color-on-surface-variant:     var(--color-text-secondary);
-  --color-on-surface-muted:       var(--color-text-muted);
-
-  /* ── Accent — Stark Monochrome ── */
-  --color-accent:                 #000000;
-  --color-accent-hover:           #1C1C19;
-  --color-accent-muted:           rgba(0,0,0,0.12);
-
-  /* Legacy primary aliases */
-  --color-primary:                var(--color-accent);
-  --color-primary-container:      var(--color-accent);
-  --color-on-primary-container:   #ffffff;
-
-  /* ── Secondary — Architectural Grays ── */
-  --color-gold:                   #5F5E5E; /* Legacy name for semantic gray */
-  --color-gold-muted:             #dcdad5;
-  --color-secondary:              #5F5E5E;
+  /* ── Gold — Alhambra ── */
+  --color-gold:           #c9a84c;
+  --color-gold-text:      #e6c587;
+  --color-gold-dim:       rgba(201, 162, 39, 0.45);
+  --color-gold-muted:     rgba(201, 168, 76, 0.10);
 
   /* ── Semantic ── */
-  --color-success:                #1a7a3a;
-  --color-error:                  #ba1a1a;
+  --color-success:        #4a9e6b;
+  --color-error:          #c94a4a;
 
   /* ── Difficulty ── */
-  --color-difficulty-easy:        #5F5E5E;
-  --color-difficulty-moderate:    #474747;
-  --color-difficulty-hard:        #000000;
+  --color-difficulty-easy:       var(--color-success);
+  --color-difficulty-moderate:   #d4873a;
+  --color-difficulty-hard:       var(--color-error);
 
-  /* ── Typography — Dual Family ── */
-  --font-display: 'Inter', sans-serif;
-  --font-body:    'Lora', serif;
+  /* ── Typography ── */
+  --font-display: 'DM Sans', sans-serif;
+  --font-body:    'Fraunces', serif;
 
   /* ── Layout ── */
-  --container-max:                100%;
-  --header-height:                72px; /* Matches sticky top value in code.html */
-  --header-height-mobile:         64px;
+  --header-height:        64px;
 
-  /* ── Border Radius — Brutalist = sharp edges ── */
-  --radius-xs:    0px;
-  --radius-sm:    0px;
-  --radius-md:    0px;
-  --radius-lg:    0px;
-  --radius-xl:    0px;
-  --radius-2xl:   0px;
-  --radius-full:  0px;
+  /* ── Border Radius ── */
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-lg:    12px;
+  --radius-full:  9999px;
 
   /* ── Transitions ── */
   --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
@@ -86,5 +60,5 @@
   --duration-fast:   100ms;
   --duration-normal: 200ms;
   --duration-slow:   300ms;
-  --duration-slower: 700ms; /* Use for the slow image hovers */
+  --duration-slower: 700ms;
 }

@@ -1,8 +1,8 @@
 /**
  * Scraper: ConciertosenGranada.es
  * 100% live music. Small venues like Planta Baja, Sala Riff, Lemon Rock.
- * Structure: <a href="/conciertos/..."> contains title, venue, and short date
- * separated by whitespace/newlines.
+ * Structure: li[itemscope] with Schema.org MusicEvent microdata
+ * Images: accessed via data-src on img.lazy, or meta[itemprop="image"] in div.microdatos
  */
 import { fetchHTML } from '../utils/scraper-helpers.js';
 
@@ -52,84 +52,106 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
   const events: ConciertosGranadaEvent[] = [];
   const seen = new Set<string>();
 
-  $('a[href^="/conciertos/"]').each((_, el) => {
-    const $link = $(el);
-    const href = $link.attr('href') ?? '';
-    if (href === '/conciertos/' || href === '/conciertos') return;
-    // Skip genre/category filter links (e.g. /conciertos/genero/pop)
-    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+  // Each event is in an li[itemscope] with Schema.org MusicEvent data
+  $('li[itemscope][itemtype*="MusicEvent"]').each((_, el) => {
+    const $li = $(el);
 
-    // Strip query params like ?link=banner for dedup
+    // ── Image ── best source: meta[itemprop="image"] in div.microdatos
+    const metaImage = $li.find('meta[itemprop="image"]').attr('content');
+    // Fallback: data-src on lazy img (thumbnail, but usable)
+    const imgDataSrc = $li.find('img.lazy').attr('data-src');
+    // Convert thumbnail to full-size if it matches the thumbnail pattern
+    // e.g. /doc/cp/2026/c_xxx_p.jpg → /doc/c/2026/c_xxx.jpg
+    //      /doc/ap/2017/a_xxx_p.jpg → /doc/a/2017/a_xxx.jpg
+    let imageUrl: string | undefined = metaImage;
+    if (!imageUrl && imgDataSrc && !imgDataSrc.includes('nofoto')) {
+      // Attempt to convert thumbnail to full-size
+      imageUrl = imgDataSrc
+        .replace('/doc/cp/', '/doc/c/')
+        .replace('/doc/ap/', '/doc/a/')
+        .replace(/_p\.jpg$/, '.jpg');
+    }
+
+    // ── Title ── first itemprop="name" within microdatos, or anchor text
+    const metaName = $li.find('meta[itemprop="name"]').attr('content');
+    // Also try the visible anchor text
+    const anchorTitle = $li.find('a.nombre strong').map((_, s) => $(s).text().trim()).get().join(' ').trim();
+    const title = metaName || anchorTitle;
+    if (!title || title.length < 2) return;
+
+    // ── URL ──
+    const href = $li.find('a[href^="/conciertos/"]').first().attr('href') ?? '';
+    if (!href || href === '/conciertos/' || href === '/conciertos') return;
     const cleanHref = href.split('?')[0]!;
-    // Normalize: strip trailing timestamp segments (/1773946800)
     const normalizedHref = cleanHref.replace(/\/\d{10,}$/, '');
     if (seen.has(normalizedHref)) return;
     seen.add(normalizedHref);
 
-    // The link text contains: "Title \n\n Venue \n ShortDate"
-    const rawText = $link.text();
-    const lines = rawText
-      .split('\n')
-      .map(l => l.trim())
-      .filter(l => l.length > 0);
-
-    if (lines.length === 0) return;
-
-    // First non-empty line is the title
-    const title = lines[0]!;
-    if (title.length < 2) return;
-
-    // Try to find venue and date from remaining lines
-    let venue = 'Granada';
+    // ── Date ──
+    // Try Schema.org startDate first (most reliable)
+    const metaDate = $li.find('meta[itemprop="startDate"]').attr('content');
     let dateStr = '';
+    if (metaDate) {
+      // Format: "2026-03-24T20:30" → "2026-03-24"
+      dateStr = metaDate.split('T')[0] ?? '';
+    }
 
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i]!;
-      const parsed = parseShortDate(line);
-      if (parsed) {
-        dateStr = parsed;
-      } else if (line.length > 2 && !dateStr) {
-        // Lines before the date line are venue info
-        venue = line.replace(/\.\s*(granada|motril|monachil|almuñécar|loja)$/i, '').trim();
+    // Fallback: parse visible date text from the link
+    if (!dateStr) {
+      const rawText = $li.find('a[href^="/conciertos/"]').first().text();
+      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      for (const line of lines) {
+        const parsed = parseShortDate(line);
+        if (parsed) { dateStr = parsed; break; }
       }
     }
 
-    // Extract image from parent
-    const $parent = $link.parent();
-    const img = $parent.find('img').first();
-    const imgSrc = img.attr('src') ?? '';
-    const imageUrl =
-      imgSrc && !imgSrc.includes('nofoto')
-        ? imgSrc.startsWith('http')
-          ? imgSrc
-          : `${BASE_URL}${imgSrc}`
-        : undefined;
+    if (!dateStr) return;
 
-    // Extract description from parent text (extra info beyond title/venue/date)
-    const $descEl = $parent.find('p, .description, .info, .resumen').first();
-    const description = $descEl.length
-      ? $descEl.text().trim().slice(0, 300)
-      : undefined;
+    // ── Time ──
+    const metaStartDate = $li.find('meta[itemprop="startDate"]').attr('content');
+    let time = 'Por confirmar';
+    if (metaStartDate && metaStartDate.includes('T')) {
+      const timePart = metaStartDate.split('T')[1];
+      if (timePart) time = timePart.slice(0, 5);
+    }
 
-    // Extract genre/price from parent text
-    const parentText = $parent.text();
+    // ── Venue ──
+    const venueMeta = $li.find('[itemprop="location"] [itemprop="name"]').first().attr('content')
+      || $li.find('[itemprop="location"] [itemprop="name"]').first().text().trim();
+    let venue = venueMeta || 'Granada';
+    if (!venue || venue.trim().length < 2) {
+      // Fallback: parse from visible text
+      const rawText = $li.find('a[href^="/conciertos/"]').first().text();
+      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i]!;
+        if (!parseShortDate(line) && line.length > 2) {
+          venue = line.replace(/\.\s*(granada|motril|monachil|almuñécar|loja)$/i, '').trim();
+          break;
+        }
+      }
+    }
+
+    // ── Genre ──
+    const parentText = $li.text();
     const genreMatch = parentText.match(
-      /\b(Rock|Metal|Pop|Jazz|Swing|Indie|Electr[oó]nica|Folk|Flamenco|Hip[- ]?[Hh]op|Reggae|Blues|Soul|Funk|Punk|Ska|Rap|Trap|Techno|House|Rumba|Latin|Cl[aá]sica|World|Mestizaje|Fusión|Singer[\s-]?Songwriter)\b/i
+      /\b(Rock|Metal|Pop|Jazz|Swing|Indie|Electr[oó]nica|Folk|Flamenco|Hip[- ]?[Hh]op|Reggae|Blues|Soul|Funk|Punk|Ska|Rap|Trap|Techno|House|Rumba|Latin|Cl[aá]sica|World|Mestizaje|Fusión|Singer[\s-]?Songwriter)(\s*\/\s*\S+)?/i
     );
     const genre = genreMatch ? genreMatch[1]! : '';
 
+    // ── Price ──
     const priceMatch = parentText.match(/(\d+[,.]?\d*)\s*€|entrada\s+libre|gratis/i);
     const price = priceMatch ? priceMatch[0].trim() : '';
 
-    if (!dateStr) {
-      // No date found, skip event
-      return;
-    }
+    // ── Description ──
+    const descEl = $li.find('p, .description, .info, .resumen').first();
+    const description = descEl.length ? descEl.text().trim().slice(0, 300) : undefined;
 
     events.push({
       title,
       date: dateStr,
-      time: 'Por confirmar',
+      time,
       venue,
       genre,
       price,
@@ -138,6 +160,64 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
       description,
     });
   });
+
+  // Fallback: if structured data approach found nothing, revert to link-based scraping
+  if (events.length === 0) {
+    $('a[href^="/conciertos/"]').each((_, el) => {
+      const $link = $(el);
+      const href = $link.attr('href') ?? '';
+      if (href === '/conciertos/' || href === '/conciertos') return;
+      if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+
+      const cleanHref = href.split('?')[0]!;
+      const normalizedHref = cleanHref.replace(/\/\d{10,}$/, '');
+      if (seen.has(normalizedHref)) return;
+      seen.add(normalizedHref);
+
+      const rawText = $link.text();
+      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      if (lines.length === 0) return;
+
+      const title = lines[0]!;
+      if (title.length < 2) return;
+
+      let venue = 'Granada';
+      let dateStr = '';
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i]!;
+        const parsed = parseShortDate(line);
+        if (parsed) {
+          dateStr = parsed;
+        } else if (line.length > 2 && !dateStr) {
+          venue = line.replace(/\.\s*(granada|motril|monachil|almuñécar|loja)$/i, '').trim();
+        }
+      }
+
+      const $parent = $link.parent();
+      const img = $parent.find('img').first();
+      const imgSrc = img.attr('data-src') ?? img.attr('src') ?? '';
+      const imageUrl =
+        imgSrc && !imgSrc.includes('nofoto')
+          ? imgSrc.startsWith('http')
+            ? imgSrc
+            : `${BASE_URL}${imgSrc}`
+          : undefined;
+
+      if (!dateStr) return;
+
+      events.push({
+        title,
+        date: dateStr,
+        time: 'Por confirmar',
+        venue,
+        genre: '',
+        price: '',
+        url: cleanHref.startsWith('http') ? cleanHref : `${BASE_URL}${cleanHref}`,
+        imageUrl,
+      });
+    });
+  }
 
   return events;
 }

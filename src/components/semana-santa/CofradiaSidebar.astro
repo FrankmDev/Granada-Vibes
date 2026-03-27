@@ -1,0 +1,158 @@
+---
+/**
+ * CofradiaSidebar — sticky sidebar for cofradía detail page.
+ * Info card + same-day related cofradías + share button.
+ */
+import type { CofradiaWithDia } from '@data/semana-santa/index.js';
+import { formatFullDate } from '@utils/dates';
+
+interface RelCofradia extends CofradiaWithDia {
+  salidaDisplay: string;
+}
+
+interface Props {
+  cofradia: CofradiaWithDia;
+  sameDayCofradias: RelCofradia[];
+  currentUrl: string;
+}
+
+const { cofradia, sameDayCofradias, currentUrl } = Astro.props;
+const dia = cofradia.dia;
+---
+
+<div class="det-sidebar-sticky">
+
+  <!-- Info card -->
+  <div class="det-sidebar-card det-info-card" data-reveal>
+    <div class="det-sc-head">
+      <span class="det-sc-eyebrow">[ Información ]</span>
+      <div class="det-sc-line"></div>
+    </div>
+    <div class="det-info-row">
+      <span class="det-info-label">Día</span>
+      <span class="det-info-val">{dia.nombre}</span>
+    </div>
+    <div class="det-info-sep"></div>
+    <div class="det-info-row">
+      <span class="det-info-label">Fecha</span>
+      <span class="det-info-val">{formatFullDate(dia.fecha, 'es')}</span>
+    </div>
+    <div class="det-info-sep"></div>
+    <div class="det-info-row">
+      <span class="det-info-label">Iglesia</span>
+      <span class="det-info-val ss-iglesia-val">{cofradia.iglesiaSalida}</span>
+    </div>
+    <div class="det-info-sep"></div>
+    <div class="det-info-row">
+      <span class="det-info-label">Barrio</span>
+      <span class="det-info-val">{cofradia.barrio}</span>
+    </div>
+    <div class="det-info-sep"></div>
+    <div class="det-info-row">
+      <span class="det-info-label">Pasos</span>
+      <span class="det-info-val">{cofradia.numeroPasos}</span>
+    </div>
+
+    <div class="ss-share-wrap">
+      <button
+        id="share-btn"
+        class="ss-btn-share"
+        data-title={cofradia.nombrePopular}
+        data-url={currentUrl}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+        </svg>
+        <span class="share-label" aria-live="polite">Compartir</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Same-day cofradías -->
+  {sameDayCofradias.length > 0 && (
+    <div class="det-sidebar-card det-related-card" data-reveal>
+      <div class="det-sc-head">
+        <span class="det-sc-eyebrow">[ Mismo día ]</span>
+        <div class="det-sc-line"></div>
+      </div>
+      <div class="det-related-list">
+        {sameDayCofradias.map((rel, i) => (
+          <a
+            href={`/semana-santa/${rel.id}`}
+            class="det-related-item"
+            style={`--ri: ${i}`}
+            aria-label={rel.nombrePopular}
+          >
+            <div class="det-rel-thumb">
+              <div class="det-rel-thumb-fallback">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                  <path d="M12 3c0 0-4 3-4 8s4 8 4 8 4-3 4-8-4-8-4-8z" stroke-linecap="round"/>
+                  <circle cx="12" cy="11" r="2"/>
+                </svg>
+              </div>
+              <div class="det-rel-thumb-overlay"></div>
+            </div>
+            <div class="det-rel-info">
+              <span class="det-rel-title">{rel.nombrePopular}</span>
+              <span class="det-rel-meta">{rel.barrio} · {rel.salidaDisplay}</span>
+            </div>
+            <svg class="det-rel-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+      <a href="/semana-santa" class="det-all-link">
+        Toda la Semana Santa
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  )}
+
+</div>
+
+<style>
+  .ss-iglesia-val {
+    text-align: right;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    max-width: 18ch;
+  }
+
+  .ss-share-wrap {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--s-border-s, rgba(26,22,25,0.06));
+  }
+
+  .ss-btn-share {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--s-ink-2, #5a4f47);
+    background: var(--s-bg-hi, #faf8f5);
+    border: 1px solid var(--s-border, rgba(26,22,25,0.10));
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .ss-btn-share:hover {
+    background: var(--s-bg, #f5f0ea);
+    color: var(--s-orange, #e8622a);
+  }
+
+  .ss-btn-share svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+</style>

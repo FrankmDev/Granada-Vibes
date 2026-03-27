@@ -2,12 +2,17 @@
 interface Props {
   title: string;
   subtitle?: string;
-  accent?: 'primary' | 'secondary' | 'tertiary' | 'success';
+  accent?: 'primary' | 'secondary' | 'success';
   centered?: boolean;
   variant?: 'default' | 'large' | 'minimal';
   overline?: string;
   backgroundVideo?: boolean;
   backgroundImage?: string;
+  frameTagTopLeft?: string;
+  frameTagTopRight?: string;
+  frameTagBottomLeft?: string;
+  frameTagBottomRight?: string;
+  showParallax?: boolean;
 }
 
 const {
@@ -19,150 +24,550 @@ const {
   overline,
   backgroundVideo = false,
   backgroundImage,
+  frameTagTopLeft = 'GV',
+  frameTagTopRight = '37°10′28″N',
+  frameTagBottomLeft,
+  frameTagBottomRight = '2026',
+  showParallax = true,
 } = Astro.props;
 
-const accentColorMap = {
-  primary: '#e8622a',
-  secondary: '#c9a84c',
-  tertiary: '#06b6d4',
-  success: '#4a9e6b',
+const accentTokenMap = {
+  primary: 'var(--color-accent)',
+  secondary: 'var(--color-gold)',
+  success: 'var(--color-success)',
 };
 
-const accentColor = accentColorMap[accent];
+const accentToken = accentTokenMap[accent];
 
-const sizeClasses = {
-  minimal: { height: 'min-h-[40vh]', padding: 'py-16', title: 'text-3xl md:text-4xl lg:text-5xl' },
-  default: { height: 'min-h-[55vh]', padding: 'py-20 md:py-28', title: 'text-4xl md:text-5xl lg:text-6xl xl:text-7xl' },
-  large: { height: 'min-h-[70vh]', padding: 'py-24 md:py-36', title: 'text-5xl md:text-6xl lg:text-7xl xl:text-8xl' },
+const variantMap = {
+  minimal: { minHeight: '40vh', paddingTop: 'calc(var(--header-height) + 3rem)', paddingBottom: '2.5rem' },
+  default: { minHeight: '55vh', paddingTop: 'calc(var(--header-height) + 4rem)', paddingBottom: '3.5rem' },
+  large:   { minHeight: '78vh', paddingTop: 'calc(var(--header-height) + 5rem)', paddingBottom: '4.5rem' },
 };
+
+const v = variantMap[variant];
+
+// Split title for char animation with word grouping
+const titleWords = title.split(' ');
 ---
 
 <section
-  class:list={['page-header', sizeClasses[variant].height]}
-  style={`--accent: ${accentColor}`}
+  class:list={['page-header', `page-header--${variant}`, centered && 'page-header--centered']}
+  style={`--ph-accent: ${accentToken}; --ph-min-height: ${v.minHeight}; --ph-pt: ${v.paddingTop}; --ph-pb: ${v.paddingBottom};`}
   aria-labelledby="page-title"
+  data-parallax={showParallax}
 >
-  <!-- Capa 1: Background -->
-  {backgroundVideo ? (
-    <div class="page-header__video-layer" aria-hidden="true">
-      <video 
-        class="page-header__video" 
-        autoplay 
-        muted 
-        loop 
-        playsinline
-      >
-        <source src="/heroVideo.mp4" type="video/mp4" />
-      </video>
-      <div class="page-header__video-vignette"></div>
+  <!-- Organic Cinematic Frame -->
+  <div class="ph-frame" aria-hidden="true">
+    <div class="ph-frame-layer ph-frame-layer--outer"></div>
+    <div class="ph-frame-layer ph-frame-layer--inner"></div>
+    
+    <!-- Corner Elements -->
+    <div class="ph-corner ph-corner--tl">
+      <span class="corner-line corner-line--h"></span>
+      <span class="corner-line corner-line--v"></span>
+      <span class="corner-dot"></span>
     </div>
-  ) : backgroundImage ? (
-    <div class="page-header__image-layer" aria-hidden="true">
-      <img src={backgroundImage} alt="" class="page-header__image" />
-      <div class="page-header__image-vignette"></div>
+    <div class="ph-corner ph-corner--tr">
+      <span class="corner-line corner-line--h"></span>
+      <span class="corner-line corner-line--v"></span>
+      <span class="corner-dot"></span>
     </div>
-  ) : (
-    <div class="page-header__gradient-bg" aria-hidden="true"></div>
-  )}
-  
-  <!-- Capa 2: Glows atmosfericos -->
-  <div class="page-header__atmosphere" aria-hidden="true">
-    <div class="page-header__glow page-header__glow--1"></div>
-    <div class="page-header__glow page-header__glow--2"></div>
+    <div class="ph-corner ph-corner--bl">
+      <span class="corner-line corner-line--h"></span>
+      <span class="corner-line corner-line--v"></span>
+      <span class="corner-dot"></span>
+    </div>
+    <div class="ph-corner ph-corner--br">
+      <span class="corner-line corner-line--h"></span>
+      <span class="corner-line corner-line--v"></span>
+      <span class="corner-dot"></span>
+    </div>
+    
+    <!-- Frame Tags with Animation -->
+    {frameTagTopLeft && (
+      <span class="ph-frame-tag ph-frame-tag--tl">
+        <span class="tag-bracket">[</span>
+        <span class="tag-text">{frameTagTopLeft}</span>
+        <span class="tag-bracket">]</span>
+      </span>
+    )}
+    {frameTagTopRight && (
+      <span class="ph-frame-tag ph-frame-tag--tr">
+        <span class="tag-text">{frameTagTopRight}</span>
+      </span>
+    )}
+    {frameTagBottomLeft && (
+      <span class="ph-frame-tag ph-frame-tag--bl">
+        <span class="tag-text">{frameTagBottomLeft}</span>
+      </span>
+    )}
+    {frameTagBottomRight && (
+      <span class="ph-frame-tag ph-frame-tag--br">
+        <span class="tag-bracket">[</span>
+        <span class="tag-text">{frameTagBottomRight}</span>
+        <span class="tag-bracket">]</span>
+      </span>
+    )}
   </div>
 
-  <!-- Capa 3: Particulas sutiles -->
-  <div class="page-header__particles" aria-hidden="true">
-    {[...Array(15)].map((_, i) => (
-      <div 
+  <!-- Anamorphic Grid Overlay -->
+  <div class="ph-anamorphic-grid" aria-hidden="true">
+    <div class="ana-line ana-line--thirds ana-line--h-1"></div>
+    <div class="ana-line ana-line--thirds ana-line--h-2"></div>
+    <div class="ana-line ana-line--thirds ana-line--v-1"></div>
+    <div class="ana-line ana-line--thirds ana-line--v-2"></div>
+    <div class="ana-crosshair ana-crosshair--center">
+      <span class="crosshair-h"></span>
+      <span class="crosshair-v"></span>
+    </div>
+  </div>
+
+  <!-- Background Layers -->
+  {backgroundVideo ? (
+    <div class="ph-bg-layer ph-bg-layer--video" aria-hidden="true">
+      <video class="ph-bg-media" autoplay muted loop playsinline>
+        <source src="/heroVideo.mp4" type="video/mp4" />
+      </video>
+      <div class="ph-bg-vignette ph-bg-vignette--cinematic"></div>
+      <div class="ph-bg-bleach"></div>
+    </div>
+  ) : backgroundImage ? (
+    <div class="ph-bg-layer ph-bg-layer--image" aria-hidden="true">
+      <img src={backgroundImage} alt="" class="ph-bg-media" />
+      <div class="ph-bg-vignette ph-bg-vignette--cinematic"></div>
+      <div class="ph-bg-bleach"></div>
+    </div>
+  ) : (
+    <div class="ph-bg-layer ph-bg-layer--gradient" aria-hidden="true">
+      <div class="ph-bg-aurora"></div>
+      <div class="ph-bg-noise-bg"></div>
+    </div>
+  )}
+
+  <!-- Volumetric Light Rays -->
+  <div class="ph-light-rays" aria-hidden="true">
+    <div class="light-ray light-ray--1"></div>
+    <div class="light-ray light-ray--2"></div>
+    <div class="light-ray light-ray--3"></div>
+    <div class="light-ray light-ray--4"></div>
+  </div>
+
+  <!-- Atmospheric Glows -->
+  <div class="ph-atmosphere" aria-hidden="true">
+    <div class="ph-glow ph-glow--primary"></div>
+    <div class="ph-glow ph-glow--secondary"></div>
+    <div class="ph-glow ph-glow--tertiary"></div>
+    <div class="ph-glow ph-glow--ambient"></div>
+  </div>
+
+  <!-- Floating Particles -->
+  <div class="ph-particles" aria-hidden="true">
+    {Array.from({ length: 12 }).map((_, i) => (
+      <span 
         class="particle" 
-        style={`--delay: ${Math.random() * 5}s; --duration: ${20 + Math.random() * 15}s; --size: ${1 + Math.random() * 3}px; --x: ${Math.random() * 100}%`}
-      />
+        style={`--p-x: ${20 + Math.random() * 60}%; --p-y: ${20 + Math.random() * 60}%; --p-delay: ${i * 0.3}s; --p-duration: ${8 + Math.random() * 8}s;`}
+      ></span>
     ))}
   </div>
 
-  <!-- Capa 4: Gradiente de profundidad -->
-  <div class="page-header__depth" aria-hidden="true"></div>
+  <!-- Texture Layers -->
+  <div class="ph-texture ph-texture--grain" aria-hidden="true"></div>
+  <div class="ph-texture ph-texture--dust" aria-hidden="true"></div>
+  <div class="ph-texture ph-texture--scanlines" aria-hidden="true"></div>
 
-  <!-- Contenido -->
-  <div class="page-header__content">
-    <div class:list={['page-header__inner', centered && 'items-center text-center', !centered && 'items-start text-left']}>
-      
+  <!-- Depth & Fog -->
+  <div class="ph-depth" aria-hidden="true">
+    <div class="depth-layer depth-layer--foreground"></div>
+    <div class="depth-layer depth-layer--mid"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="ph-content">
+    <div class="ph-inner">
+
       {overline && (
-        <div class="page-header__tag-wrapper">
-          <span class="page-header__tag-dot"></span>
-          <span class="page-header__overline">{overline}</span>
+        <div class="ph-eyebrow" aria-label={overline}>
+          <span class="eyebrow-line eyebrow-line--left"></span>
+          <span class="eyebrow-bracket eyebrow-bracket--open">[</span>
+          <span class="eyebrow-text">{overline}</span>
+          <span class="eyebrow-bracket eyebrow-bracket--close">]</span>
+          <span class="eyebrow-line eyebrow-line--right"></span>
         </div>
       )}
 
-      <h1 
-        id="page-title" 
-        class:list={['page-header__title', sizeClasses[variant].title]}
-      >
-        {title}
+      <h1 id="page-title" class="ph-title">
+        {titleWords.map((word, wIndex) => (
+          <span class="title-word" style={`--word-delay: ${wIndex * 0.15}s`}>
+            {word.split('').map((char, cIndex) => (
+              <span 
+                class="title-char" 
+                style={`--char-delay: ${wIndex * 0.15 + cIndex * 0.04}s`}
+                class:list={[{ 'title-char--special': char === 'A' || char === 'O' || char === 'G' }]}
+              >
+                {char}
+              </span>
+            ))}
+          </span>
+        ))}
       </h1>
 
       {subtitle && (
-        <p class="page-header__subtitle">
-          {subtitle}
-        </p>
+        <div class="ph-subtitle-wrapper">
+          <div class="subtitle-line subtitle-line--left"></div>
+          <p class="ph-subtitle">
+            <span class="subtitle-text">{subtitle}</span>
+          </p>
+          <div class="subtitle-line subtitle-line--right"></div>
+        </div>
       )}
 
-      <div class="page-header__accent"></div>
+      <!-- Decorative Separator -->
+      <div class="ph-separator" aria-hidden="true">
+        <div class="sep-line sep-line--long sep-line--left"></div>
+        <div class="sep-ornament">
+          <span class="orn-diamond"></span>
+          <span class="orn-circle"></span>
+          <span class="orn-diamond orn-diamond--small"></span>
+        </div>
+        <div class="sep-line sep-line--long sep-line--right"></div>
+      </div>
+
+      <slot name="meta" />
+
     </div>
   </div>
 
-  <!-- Bottom Bar -->
-  <div class="page-header__bottom-bar">
-    <slot name="bottom-bar" />
+  <!-- Glass Bottom Dock -->
+  <div class="ph-dock">
+    <div class="dock-glass">
+      <div class="dock-content">
+        <slot name="bottom-bar" />
+      </div>
+      <div class="dock-highlight"></div>
+    </div>
   </div>
 </section>
 
 <style>
+  /* ============================================
+     BASE & VARIABLES
+     ============================================ */
   .page-header {
+    --ph-accent: var(--color-accent);
+    --ph-min-height: 55vh;
+    --ph-pt: calc(var(--header-height) + 4rem);
+    --ph-pb: 3.5rem;
+    --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-dramatic: cubic-bezier(0.87, 0, 0.13, 1);
+    --ease-elastic: cubic-bezier(0.68, -0.3, 0.265, 1.3);
+
     position: relative;
     width: 100%;
+    min-height: var(--ph-min-height);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     overflow: hidden;
-    background: #050505;
+    background: var(--color-bg);
+    isolation: isolate;
   }
 
-  .page-header__video-layer,
-  .page-header__image-layer {
+  /* ============================================
+     ORGANIC CINEMATIC FRAME
+     ============================================ */
+  .ph-frame {
+    position: absolute;
+    inset: 1rem;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .ph-frame-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    opacity: 0;
+    animation: frame-appear 1.2s var(--ease-cinematic) 0.3s forwards;
+  }
+
+  .ph-frame-layer--outer {
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    inset: 0;
+  }
+
+  .ph-frame-layer--inner {
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    inset: 4px;
+  }
+
+  @keyframes frame-appear {
+    from { opacity: 0; transform: scale(1.02); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Corner Elements */
+  .ph-corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+  }
+
+  .corner-line {
+    position: absolute;
+    background: var(--color-gold-dim);
+    opacity: 0;
+    animation: corner-draw 0.6s var(--ease-cinematic) 0.8s forwards;
+  }
+
+  .corner-line--h {
+    height: 1px;
+    width: 0;
+    animation: corner-draw-h 0.5s var(--ease-cinematic) 0.8s forwards;
+  }
+
+  .corner-line--v {
+    width: 1px;
+    height: 0;
+    animation: corner-draw-v 0.5s var(--ease-cinematic) 1s forwards;
+  }
+
+  @keyframes corner-draw-h {
+    to { width: 16px; opacity: 0.6; }
+  }
+
+  @keyframes corner-draw-v {
+    to { height: 16px; opacity: 0.6; }
+  }
+
+  .corner-dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--ph-accent);
+    border-radius: 50%;
+    opacity: 0;
+    animation: dot-appear 0.4s ease 1.3s forwards;
+  }
+
+  @keyframes dot-appear {
+    to { opacity: 0.8; transform: scale(1); }
+  }
+
+  .ph-corner--tl { top: 0; left: 0; }
+  .ph-corner--tl .corner-line--h { top: 0; left: 0; }
+  .ph-corner--tl .corner-line--v { top: 0; left: 0; }
+  .ph-corner--tl .corner-dot { top: -1px; left: -1px; transform: scale(0); }
+
+  .ph-corner--tr { top: 0; right: 0; }
+  .ph-corner--tr .corner-line--h { top: 0; right: 0; }
+  .ph-corner--tr .corner-line--v { top: 0; right: 0; }
+  .ph-corner--tr .corner-dot { top: -1px; right: -1px; transform: scale(0); }
+
+  .ph-corner--bl { bottom: 0; left: 0; }
+  .ph-corner--bl .corner-line--h { bottom: 0; left: 0; }
+  .ph-corner--bl .corner-line--v { bottom: 0; left: 0; }
+  .ph-corner--bl .corner-dot { bottom: -1px; left: -1px; transform: scale(0); }
+
+  .ph-corner--br { bottom: 0; right: 0; }
+  .ph-corner--br .corner-line--h { bottom: 0; right: 0; }
+  .ph-corner--br .corner-line--v { bottom: 0; right: 0; }
+  .ph-corner--br .corner-dot { bottom: -1px; right: -1px; transform: scale(0); }
+
+  /* Frame Tags */
+  .ph-frame-tag {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-display);
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: tag-slide 0.7s var(--ease-cinematic) 1.2s forwards;
+  }
+
+  @keyframes tag-slide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .ph-frame-tag--tl { top: 0.6rem; left: 0.75rem; }
+  .ph-frame-tag--tr { top: 0.6rem; right: 0.75rem; color: rgba(255,255,255,0.3); }
+  .ph-frame-tag--bl { bottom: 0.6rem; left: 0.75rem; color: rgba(255,255,255,0.25); }
+  .ph-frame-tag--br { bottom: 0.6rem; right: 0.75rem; }
+
+  .tag-bracket {
+    color: var(--ph-accent);
+    font-weight: 300;
+    opacity: 0.7;
+  }
+
+  .tag-text {
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ============================================
+     ANAMORPHIC GRID
+     ============================================ */
+  .ph-anamorphic-grid {
+    position: absolute;
+    inset: 5%;
+    pointer-events: none;
+    z-index: 8;
+    opacity: 0;
+    animation: grid-fade 1.5s ease 2s forwards;
+  }
+
+  @keyframes grid-fade {
+    to { opacity: 0.15; }
+  }
+
+  .ana-line {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .ana-line--thirds.ana-line--h-1 { top: 33.333%; left: 0; right: 0; height: 1px; }
+  .ana-line--thirds.ana-line--h-2 { top: 66.666%; left: 0; right: 0; height: 1px; }
+  .ana-line--thirds.ana-line--v-1 { left: 33.333%; top: 0; bottom: 0; width: 1px; }
+  .ana-line--thirds.ana-line--v-2 { left: 66.666%; top: 0; bottom: 0; width: 1px; }
+
+  .ana-crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+  }
+
+  .crosshair-h,
+  .crosshair-v {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .crosshair-h { width: 100%; height: 1px; }
+  .crosshair-v { width: 1px; height: 100%; }
+
+  /* ============================================
+     BACKGROUND LAYERS
+     ============================================ */
+  .ph-bg-layer {
     position: absolute;
     inset: 0;
     z-index: 1;
     overflow: hidden;
   }
 
-  .page-header__video,
-  .page-header__image {
+  .ph-bg-media {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
     object-fit: cover;
     object-position: center;
-    opacity: 0.7;
-    filter: contrast(1.1) saturate(1.1);
+    opacity: 0;
+    filter: contrast(1.1) saturate(1.08) brightness(0.85);
+    animation: media-enter 2s var(--ease-cinematic) 0.1s forwards;
+    transform: scale(1.15);
   }
 
-  .page-header__video-vignette,
-  .page-header__image-vignette {
+  @keyframes media-enter {
+    to { 
+      opacity: 0.6;
+      transform: scale(1.05);
+    }
+  }
+
+  .ph-bg-vignette--cinematic {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(5, 5, 5, 0.98) 0%, rgba(5, 5, 5, 0.8) 40%, rgba(5, 5, 5, 0.6) 70%, rgba(5, 5, 5, 0.75) 100%);
+    background: 
+      radial-gradient(ellipse 80% 60% at 50% 100%, var(--color-bg) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,0,0,0.5) 0%, transparent 50%),
+      linear-gradient(to top, var(--color-bg) 0%, transparent 40%, rgba(0,0,0,0.3) 100%);
   }
 
-  .page-header__gradient-bg {
+  .ph-bg-bleach {
     position: absolute;
     inset: 0;
-    z-index: 1;
-    background: linear-gradient(135deg, #0a0a0a 0%, #050505 50%, #080808 100%);
+    background: radial-gradient(ellipse 50% 30% at 50% 20%, rgba(255,255,255,0.03) 0%, transparent 70%);
+    mix-blend-mode: overlay;
   }
 
-  .page-header__atmosphere {
+  /* Gradient Background */
+  .ph-bg-aurora {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 100% 80% at 20% 80%, rgba(232, 98, 42, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 80% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 45%),
+      radial-gradient(ellipse 60% 40% at 50% 50%, rgba(139, 69, 19, 0.06) 0%, transparent 40%),
+      linear-gradient(165deg, #0c0c0c 0%, #080808 50%, #0a0808 100%);
+  }
+
+  .ph-bg-noise-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light;
+    opacity: 0.6;
+  }
+
+  /* ============================================
+     VOLUMETRIC LIGHT RAYS
+     ============================================ */
+  .ph-light-rays {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+    animation: rays-fade 2s ease 0.5s forwards;
+  }
+
+  @keyframes rays-fade {
+    to { opacity: 0.4; }
+  }
+
+  .light-ray {
+    position: absolute;
+    width: 2px;
+    height: 150%;
+    background: linear-gradient(to bottom, 
+      transparent 0%, 
+      rgba(232, 98, 42, 0.15) 20%, 
+      rgba(201, 168, 76, 0.1) 50%, 
+      rgba(232, 98, 42, 0.08) 80%, 
+      transparent 100%
+    );
+    filter: blur(1px);
+    transform-origin: top center;
+    animation: ray-sway 8s ease-in-out infinite;
+  }
+
+  .light-ray--1 { left: 25%; top: -25%; transform: rotate(15deg); animation-delay: 0s; }
+  .light-ray--2 { left: 45%; top: -25%; transform: rotate(-8deg); animation-delay: 2s; }
+  .light-ray--3 { left: 65%; top: -25%; transform: rotate(12deg); animation-delay: 4s; }
+  .light-ray--4 { left: 80%; top: -25%; transform: rotate(-15deg); animation-delay: 6s; }
+
+  @keyframes ray-sway {
+    0%, 100% { opacity: 0.3; transform: rotate(var(--rot, 0deg)) translateX(0); }
+    50% { opacity: 0.6; transform: rotate(var(--rot, 0deg)) translateX(10px); }
+  }
+
+  /* ============================================
+     ATMOSPHERIC GLOWS
+     ============================================ */
+  .ph-atmosphere {
     position: absolute;
     inset: 0;
     z-index: 2;
@@ -170,195 +575,520 @@ const sizeClasses = {
     overflow: hidden;
   }
 
-  .page-header__glow {
+  .ph-glow {
     position: absolute;
     border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.3;
-    animation: glow-pulse 10s ease-in-out infinite;
+    filter: blur(80px);
+    opacity: 0;
   }
 
-  .page-header__glow--1 {
+  .ph-glow--primary {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(232, 98, 42, 0.22) 0%, transparent 70%);
+    top: -10%;
+    right: -5%;
+    animation: glow-enter 1.5s ease 0.3s forwards, glow-drift-1 15s ease-in-out infinite alternate;
+  }
+
+  .ph-glow--secondary {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, transparent 65%);
+    bottom: 5%;
+    left: -8%;
+    animation: glow-enter 1.5s ease 0.5s forwards, glow-drift-2 18s ease-in-out infinite alternate-reverse;
+  }
+
+  .ph-glow--tertiary {
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(232, 98, 42, 0.25) 0%, transparent 70%);
-    top: -5%;
-    right: -5%;
-    animation-delay: 0s;
+    background: radial-gradient(circle, rgba(139, 69, 19, 0.12) 0%, transparent 60%);
+    bottom: -15%;
+    right: 15%;
+    animation: glow-enter 1.5s ease 0.7s forwards, glow-drift-3 20s ease-in-out infinite alternate;
   }
 
-  .page-header__glow--2 {
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(201, 168, 76, 0.2) 0%, transparent 70%);
-    bottom: 10%;
-    left: -5%;
-    animation-delay: -5s;
+  .ph-glow--ambient {
+    width: 600px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: glow-enter 2s ease 0.4s forwards;
   }
 
-  @keyframes glow-pulse {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.15); opacity: 0.5; }
+  @keyframes glow-enter {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
   }
 
-  .page-header__particles {
+  @keyframes glow-drift-1 {
+    to { transform: translate(25px, -20px) scale(1.1); }
+  }
+
+  @keyframes glow-drift-2 {
+    to { transform: translate(-15px, 25px) scale(1.15); }
+  }
+
+  @keyframes glow-drift-3 {
+    to { transform: translate(20px, -10px) scale(1.08); }
+  }
+
+  /* ============================================
+     FLOATING PARTICLES
+     ============================================ */
+  .ph-particles {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 5;
     pointer-events: none;
     overflow: hidden;
   }
 
   .particle {
     position: absolute;
-    width: var(--size);
-    height: var(--size);
-    left: var(--x);
-    bottom: -10px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(201, 168, 76, 0.4) 50%, transparent 100%);
+    left: var(--p-x);
+    top: var(--p-y);
+    width: 2px;
+    height: 2px;
+    background: rgba(201, 168, 76, 0.6);
     border-radius: 50%;
-    animation: particle-float var(--duration) ease-in-out infinite;
-    animation-delay: var(--delay);
     opacity: 0;
+    animation: 
+      particle-fade 1s ease var(--p-delay) forwards,
+      particle-float var(--p-duration) ease-in-out infinite;
+    animation-delay: var(--p-delay), calc(var(--p-delay) + 1s);
+  }
+
+  .particle:nth-child(3n) {
+    width: 3px;
+    height: 3px;
+    background: rgba(232, 98, 42, 0.5);
+  }
+
+  .particle:nth-child(5n) {
+    width: 1px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  @keyframes particle-fade {
+    to { opacity: 0.8; }
   }
 
   @keyframes particle-float {
-    0% {
-      transform: translateY(0);
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.6;
-    }
-    90% {
-      opacity: 0.6;
-    }
-    100% {
-      transform: translateY(-100vh);
-      opacity: 0;
-    }
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    25% { transform: translateY(-20px) translateX(5px); opacity: 0.8; }
+    50% { transform: translateY(-10px) translateX(-5px); opacity: 0.5; }
+    75% { transform: translateY(-30px) translateX(3px); opacity: 0.7; }
   }
 
-  .page-header__depth {
+  /* ============================================
+     TEXTURE LAYERS
+     ============================================ */
+  .ph-texture {
     position: absolute;
     inset: 0;
-    z-index: 4;
-    background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.6) 100%);
     pointer-events: none;
   }
 
-  .page-header__content {
+  .ph-texture--grain {
+    z-index: 6;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.7;
+  }
+
+  .ph-texture--dust {
+    z-index: 7;
+    background: radial-gradient(ellipse at 30% 20%, rgba(201, 168, 76, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(232, 98, 42, 0.02) 0%, transparent 40%);
+  }
+
+  .ph-texture--scanlines {
+    z-index: 7;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.02) 3px,
+      rgba(0, 0, 0, 0.02) 6px
+    );
+    opacity: 0.4;
+  }
+
+  /* ============================================
+     DEPTH LAYERS
+     ============================================ */
+  .ph-depth {
+    position: absolute;
+    inset: 0;
+    z-index: 9;
+    pointer-events: none;
+  }
+
+  .depth-layer {
+    position: absolute;
+    inset: 0;
+  }
+
+  .depth-layer--foreground {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      transparent 20%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+
+  .depth-layer--mid {
+    background: radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.3) 0%, transparent 60%);
+  }
+
+  /* ============================================
+     CONTENT
+     ============================================ */
+  .ph-content {
     position: relative;
-    z-index: 10;
+    z-index: 20;
     flex: 1;
     display: flex;
     align-items: flex-end;
-    padding: clamp(2rem, 5vw, 4rem);
-    padding-top: calc(var(--nav-height, 80px) + 2rem);
+    padding: var(--ph-pt) clamp(1.25rem, 4vw, 4rem) var(--ph-pb);
   }
 
-  .page-header__inner {
+  .ph-inner {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     max-width: 900px;
-    animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
   }
 
-  @keyframes fade-in-up {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+  .page-header--centered .ph-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
-  .page-header__tag-wrapper {
+  .page-header--centered .ph-inner {
+    align-items: center;
+    max-width: 800px;
+  }
+
+  /* Eyebrow */
+  .ph-eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.25em;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.6);
-    padding: 0.625rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(10px);
-    width: fit-content;
-    animation: fade-in 0.6s ease 0.1s both;
+    opacity: 0;
+    animation: eyebrow-enter 0.8s var(--ease-cinematic) 0.6s forwards;
   }
 
-  .page-header__tag-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.7; }
-  }
-
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(10px); }
+  @keyframes eyebrow-enter {
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .page-header__title {
+  .eyebrow-line {
+    width: 24px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--ph-accent), transparent);
+  }
+
+  .eyebrow-line--right {
+    background: linear-gradient(90deg, transparent, var(--ph-accent));
+  }
+
+  .eyebrow-bracket {
+    color: var(--ph-accent);
+    font-weight: 300;
+    opacity: 0.8;
+  }
+
+  .eyebrow-text {
+    color: var(--color-text-secondary);
+    letter-spacing: 0.22em;
+  }
+
+  /* Title with Word & Char Animation */
+  .ph-title {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    font-weight: 900;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-weight: 300;
+    letter-spacing: -0.025em;
     line-height: 0.95;
-    color: #fff;
-    animation: slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-size: clamp(2.6rem, 7.5vw, 5.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
   }
 
-  @keyframes slide-up {
-    from { opacity: 0; transform: translateY(40px); }
+  .page-header--large .ph-title {
+    font-size: clamp(3rem, 9vw, 7.5rem);
+  }
+
+  .page-header--minimal .ph-title {
+    font-size: clamp(2rem, 5.5vw, 4rem);
+  }
+
+  .title-word {
+    display: flex;
+    overflow: hidden;
+  }
+
+  .title-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(100%) rotateX(-50deg);
+    transform-origin: center bottom;
+    animation: char-reveal 1s var(--ease-cinematic) var(--char-delay) forwards;
+  }
+
+  .title-char--special {
+    color: var(--ph-accent);
+    text-shadow: 0 0 40px rgba(232, 98, 42, 0.3);
+  }
+
+  @keyframes char-reveal {
+    to {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+    }
+  }
+
+  /* Subtitle */
+  .ph-subtitle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: subtitle-wrapper-enter 1s var(--ease-cinematic) 1.2s forwards;
+  }
+
+  @keyframes subtitle-wrapper-enter {
+    to { opacity: 1; }
+  }
+
+  .subtitle-line {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.5), transparent);
+    animation: line-expand 0.8s var(--ease-cinematic) 1.4s forwards;
+  }
+
+  @keyframes line-expand {
+    to { width: 40px; }
+  }
+
+  .ph-subtitle {
+    margin: 0;
+    max-width: 540px;
+    overflow: hidden;
+  }
+
+  .page-header--centered .ph-subtitle-wrapper {
+    justify-content: center;
+  }
+
+  .subtitle-text {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+    font-weight: 400;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: text-reveal 0.9s var(--ease-cinematic) 1.3s forwards;
+  }
+
+  @keyframes text-reveal {
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .page-header__subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
-    font-weight: 400;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0.5rem 0 0;
-    max-width: 600px;
-    animation: fade-in 0.6s ease 0.3s both;
+  /* Separator */
+  .ph-separator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    opacity: 0;
+    animation: sep-enter 0.8s ease 1.6s forwards;
   }
 
-  .page-header__accent {
-    width: 80px;
+  @keyframes sep-enter {
+    to { opacity: 1; }
+  }
+
+  .page-header--centered .ph-separator {
+    justify-content: center;
+  }
+
+  .sep-line {
+    height: 1px;
+  }
+
+  .sep-line--long {
+    width: 0;
+    background: linear-gradient(90deg, var(--ph-accent), rgba(201, 168, 76, 0.5));
+    animation: sep-line-grow 0.7s var(--ease-cinematic) 1.7s forwards;
+  }
+
+  .sep-line--right {
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.5), var(--ph-accent));
+  }
+
+  @keyframes sep-line-grow {
+    to { width: 50px; }
+  }
+
+  .sep-ornament {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .orn-diamond {
+    width: 5px;
+    height: 5px;
+    background: var(--ph-accent);
+    transform: rotate(45deg);
+  }
+
+  .orn-diamond--small {
+    width: 3px;
     height: 3px;
-    background: linear-gradient(90deg, var(--accent), rgba(201, 168, 76, 0.8), transparent);
-    margin-top: 1.5rem;
-    animation: accent-grow 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+    opacity: 0.5;
+    background: var(--color-gold);
   }
 
-  @keyframes accent-grow {
-    from { transform: scaleX(0); transform-origin: left; }
-    to { transform: scaleX(1); transform-origin: left; }
+  .orn-circle {
+    width: 4px;
+    height: 4px;
+    border: 1px solid rgba(201, 168, 76, 0.5);
+    border-radius: 50%;
   }
 
-  .page-header__inner.items-center .page-header__accent {
-    transform-origin: center;
-  }
-
-  .page-header__bottom-bar {
+  /* ============================================
+     GLASS DOCK
+     ============================================ */
+  .ph-dock {
     position: relative;
-    z-index: 10;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(5, 5, 5, 0.8);
-    backdrop-filter: blur(20px);
+    z-index: 20;
+    padding: 0 clamp(1.25rem, 4vw, 4rem) 1.25rem;
   }
 
-  .page-header__bottom-bar:empty {
+  .dock-glass {
+    position: relative;
+    background: rgba(8, 8, 8, 0.5);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: dock-enter 1s var(--ease-cinematic) 1.8s forwards;
+    overflow: hidden;
+  }
+
+  @keyframes dock-enter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .dock-content {
+    padding: 1rem 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .dock-content:empty {
     display: none;
+  }
+
+  .dock-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.1) 20%, 
+      rgba(255, 255, 255, 0.15) 50%, 
+      rgba(255, 255, 255, 0.1) 80%, 
+      transparent 100%
+    );
+  }
+
+  /* ============================================
+     REDUCED MOTION
+     ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .ph-frame-layer,
+    .corner-line,
+    .corner-dot,
+    .ph-frame-tag,
+    .ph-anamorphic-grid,
+    .ph-bg-media,
+    .ph-light-rays,
+    .ph-glow,
+    .particle,
+    .ph-eyebrow,
+    .title-char,
+    .ph-subtitle-wrapper,
+    .subtitle-line,
+    .subtitle-text,
+    .ph-separator,
+    .sep-line,
+    .dock-glass {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 768px) {
+    .ph-frame {
+      inset: 0.6rem;
+    }
+
+    .ph-corner {
+      width: 16px;
+      height: 16px;
+    }
+
+    .ph-anamorphic-grid {
+      display: none;
+    }
+
+    .ph-content {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .ph-dock {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .light-ray {
+      display: none;
+    }
+
+    .particle:nth-child(n+7) {
+      display: none;
+    }
   }
 </style>

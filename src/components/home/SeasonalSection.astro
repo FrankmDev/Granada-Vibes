@@ -87,9 +87,9 @@ const coords     = '37.177°N';
             <div class={`masonry-col col-${['left','center','right'][colIndex]}`}>
               {colData.items.map((paso, idx) => (
                 <article class="masonry-item" style={`height: ${colData.heights[idx]}vh; --card-index: ${paso.originalIndex}`}>
-                  <a href={ctaLink} class="paso-link">
+                  <a href={`/semana-santa/${paso.cofradiaId}`} class="paso-link">
                     <img
-                      src={PASO_IMAGES[paso.originalIndex % PASO_IMAGES.length]}
+                      src={paso.imagen ?? PASO_IMAGES[paso.originalIndex % PASO_IMAGES.length]}
                       alt={paso.nombre}
                       class="paso-img"
                       loading="lazy"

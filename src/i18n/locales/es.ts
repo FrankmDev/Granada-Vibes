@@ -5,7 +5,6 @@ export const es = {
     events: 'Eventos',
     routes: 'Rutas',
     blog: 'Blog',
-    about: 'Sobre nosotros',
     changeLanguage: 'Cambiar a English',
     skipToContent: 'Saltar al contenido principal',
     guideLabel: 'Guía Cultural de Granada',
@@ -143,6 +142,15 @@ export const es = {
     bestTime: 'Mejor momento',
     shareSuccess: 'URL copiada al portapapeles',
     shareError: 'No se pudo compartir',
+    category: 'Categoría',
+    neighborhoods: 'Barrios',
+    allRoutes: 'Ver todas las rutas',
+    allEvents: 'Ver todos los eventos',
+    readingTime: 'Tiempo de lectura',
+    author: 'Autor',
+    publishDate: 'Publicación',
+    relatedPosts: 'Artículos relacionados',
+    allPosts: 'Ver todos los artículos',
   },
 
   // Filters
@@ -233,30 +241,6 @@ export const es = {
     },
   },
 
-  // About page
-  about: {
-    title: 'Sobre Granada Vibes',
-    mission: {
-      title: 'Nuestra misión',
-      description:
-        'Somos un equipo de granadinos y adoptados que creamos la guía cultural que nos hubiera gustado tener. Sin algoritmos, sin pagos por posicionamiento: solo recomendaciones honestas de locales.',
-    },
-    values: {
-      title: 'Nuestros valores',
-      authentic: {
-        title: 'Autenticidad',
-        description: 'Solo recomendamos lo que le diríamos a un amigo. Sin trampas turísticas ni pagos ocultos.',
-      },
-      quality: {
-        title: 'Calidad curada',
-        description: 'Cada evento y ruta es seleccionado a mano. Preferimos menos opciones que realmente valgan la pena.',
-      },
-      community: {
-        title: 'Comunidad local',
-        description: 'Apoyamos a creadores locales, artistas y pequeños negocios que hacen Granada especial.',
-      },
-    },
-  },
 
   // Footer
   footer: {

@@ -1,0 +1,65 @@
+---
+import type { Route, Locale } from '@types';
+import { useTranslations } from '../../i18n/utils';
+import { formatDuration, formatDistance } from '@utils/dates';
+import CinematicHero from '@components/shared/CinematicHero.astro';
+
+interface Props {
+  route: Route;
+  locale: Locale;
+}
+
+const { route, locale } = Astro.props;
+const t = useTranslations(locale);
+
+const routeImage    = route.imageUrl || route.image;
+const refCode       = `RUT / ${route.id.toString().padStart(3, '0')} · ${new Date().getFullYear()}`;
+const backHref      = locale === 'es' ? '/rutas'    : '/en/routes';
+const backLabel     = locale === 'es' ? '← RUTAS'   : '← ROUTES';
+const catLabel      = t(`categories.${route.category}`).toUpperCase();
+const featuredLabel = route.featured ? (locale === 'es' ? 'DESTACADA' : 'FEATURED') : undefined;
+const dockLabel     = locale === 'es' ? 'Información de la ruta' : 'Route information';
+
+const difficultyColor: Record<string, string> = {
+  easy: '#4a9e6b', moderate: '#d4873a', challenging: '#c94a4a',
+};
+const diffColor = difficultyColor[route.difficulty] ?? '#4a9e6b';
+---
+
+<CinematicHero
+  locale={locale}
+  backHref={backHref}
+  backLabel={backLabel}
+  refCode={refCode}
+  title={route.title[locale]}
+  imageUrl={routeImage}
+  eyebrowText={catLabel}
+  featuredLabel={featuredLabel}
+  dockAriaLabel={dockLabel}
+>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.duration')}</span>
+    <span class="cin-dock-value">{formatDuration(route.duration, locale)}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.distance')}</span>
+    <span class="cin-dock-value">{formatDistance(route.distance, locale)}</span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.difficulty')}</span>
+    <span class="cin-dock-value rut-dock-diff" style={`--dc: ${diffColor}`}>
+      {t(`difficulty.${route.difficulty}`)}
+    </span>
+  </div>
+  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+  <div slot="dock" class="cin-dock-cell">
+    <span class="cin-dock-label">{t('detail.bestTime')}</span>
+    <span class="cin-dock-value">{t(`timeOfDay.${route.timeOfDay}`)}</span>
+  </div>
+</CinematicHero>
+
+<style>
+  .rut-dock-diff { color: var(--dc, #f0ede8); font-weight: 600; }
+</style>

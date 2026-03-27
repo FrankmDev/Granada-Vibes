@@ -42,7 +42,7 @@ autenticación y funcionalidades de IA en Fase 3.
 - Tailwind CSS v3 — clases utilitarias + design tokens en CSS custom properties
 - Sin React, Vue ni ningún framework de componentes
 - Interactividad: Astro Islands + JS/TS vanilla únicamente
-- Fuentes: Fraunces (display/headings) + DM Sans (body/UI) vía @fontsource
+- Fuentes: Fraunces (headlines/display) + DM Sans (body/UI) vía @fontsource
 - Iconos: astro-icon con Lucide
 
 ---
@@ -97,13 +97,13 @@ Todos los tipos compartidos exportados desde aquí:
 - `Locale` — `'es' | 'en'`
 - `LocalizedText` — `{ es: string; en: string }`
 - `SEOMetadata`, `SiteConfig` — shapes de configuración del sitio
-- `EventCategory` — union: `'concierto' | 'exposicion' | 'festival' | 'mercado' | 'teatro' | 'taller' | 'visita-guiada'`
-- `Neighborhood` — union: `'Albaicín' | 'Centro' | 'Realejo' | 'Sacromonte' | 'Alhambra' | 'Cartuja' | 'Zaidín' | 'Otro'`
-- `Difficulty` — union: `'fácil' | 'moderada' | 'difícil'`
-- `RouteType` — union: `'miradores' | 'tapeo' | 'monumentos' | 'senderismo' | 'fotografía' | 'secretos' | 'historia' | 'flamenco'`
-- `BestTime` — union: `'mañana' | 'tarde' | 'atardecer' | 'noche'`
+- `EventCategory` — union: `'concert' | 'exhibition' | 'festival' | 'market' | 'theater' | 'workshop' | 'guided-tour' | 'cinema' | 'other'`
+- `Neighborhood` — union: `'albaicin' | 'sacromonte' | 'centro' | 'realejo' | 'alhambra' | 'cartuja' | 'zaidin' | 'otro'` (lowercase)
+- `RouteDifficulty` — union: `'easy' | 'moderate' | 'challenging'`
+- `RouteCategory` — union: `'viewpoint' | 'tapas' | 'monuments' | 'hiking' | 'photography' | 'secrets' | 'history' | 'flamenco'`
+- `TimeOfDay` — union: `'morning' | 'afternoon' | 'sunset' | 'evening' | 'any'`
 - `Event` — eventos culturales con venue, precio, categoría, barrio
-- `Route` — rutas con dificultad, duración, distancia, highlights
+- `Route` — rutas con difficulty, duration (min), distance (km), timeOfDay, neighborhoods[], highlights[], tips[]
 
 Nunca strings libres para categorías, dificultades o barrios. Siempre union types.
 
@@ -130,8 +130,8 @@ Al añadir campos, extender siempre con opcionales. No romper tipos existentes.
 props de SEO y `schemaType`/`schemaData` opcionales para JSON-LD structured data.
 
 Los design tokens están en `src/styles/tokens.css` como CSS custom properties
-(tema oscuro "Alhambra Noir": negros cálidos, terracota accent, dorado gold).
-Usar siempre variables de token, nunca colores hardcodeados.
+(tema oscuro "Alhambra Noir" para el hero + paleta crema editorial para el resto).
+Usar siempre variables de token o variables locales del componente, nunca colores hardcodeados.
 
 ### Path Aliases (tsconfig.json)
 
@@ -141,10 +141,10 @@ Usar siempre variables de token, nunca colores hardcodeados.
 
 ---
 
-## Design Tokens
+## Design Tokens (src/styles/tokens.css)
 
 ```css
-/* Fondos */
+/* Fondos oscuros (hero, NavBar) */
 --color-bg:             #080808;
 --color-bg-raised:      #111111;
 --color-bg-card:        #171717;
@@ -156,6 +156,7 @@ Usar siempre variables de token, nunca colores hardcodeados.
 --color-text-primary:   #f0ede8;
 --color-text-secondary: #9a9490;
 --color-text-muted:     #5a5550;
+--color-text-inverse:   #080808;
 
 /* Acento naranja (granada, el fruto) */
 --color-accent:         #e8622a;
@@ -164,6 +165,8 @@ Usar siempre variables de token, nunca colores hardcodeados.
 
 /* Acento dorado (Alhambra) */
 --color-gold:           #c9a84c;
+--color-gold-text:      #e6c587;
+--color-gold-dim:       rgba(201, 162, 39, 0.45);
 --color-gold-muted:     rgba(201, 168, 76, 0.10);
 
 /* Semánticos */
@@ -174,19 +177,240 @@ Usar siempre variables de token, nunca colores hardcodeados.
 --color-difficulty-easy:     var(--color-success);
 --color-difficulty-moderate: #d4873a;
 --color-difficulty-hard:     var(--color-error);
+
+/* Tipografía (OJO: naming invertido respecto a convención) */
+--font-display: 'DM Sans', sans-serif;   /* UI, body, labels */
+--font-body:    'Fraunces', serif;       /* headlines, display */
+
+/* Layout */
+--header-height: 64px;
+
+/* Easing */
+--ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+--ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+--ease-smooth:     cubic-bezier(0.4, 0, 0.2, 1);
+--ease-editorial:  cubic-bezier(0.65, 0, 0.35, 1);
 ```
 
 ---
 
-## Tipografía — regla estricta
+## Estética cinemática — Identidad visual
 
-- **Fraunces**: hero headlines (mín. 64px desktop / 40px mobile, weight 900,
-  letter-spacing -0.02em), títulos de sección grandes, números destacados
-  (stats, precios, métricas).
-- **DM Sans**: absolutamente todo lo demás — body, UI, labels, botones, nav,
-  descripciones, filtros, badges.
+Las secciones home siguen una estética de **archivo editorial cinematográfico**.
+Inspiración: archivo fotográfico, portal arquitectónico, ficha de película.
 
-Si es número grande o título importante → Fraunces. Si es UI funcional → DM Sans.
+### Dos paletas en home
+
+**Hero (oscuro):** fondo negro puro `#000000`, text crema, gold accent.
+**Todas las demás secciones (claro):** paleta local crema:
+```css
+--s-bg:      #f5f0ea;   /* fondo crema */
+--s-ink:     #1a1619;   /* texto principal */
+--s-orange:  #e8622a;   /* accent naranja */
+--s-gold:    #c9a84c;   /* accent dorado */
+--s-border:  rgba(26, 22, 25, 0.12);
+```
+
+### Tipografía — regla estricta
+
+- **Fraunces** (`--font-body`): hero headlines (mín. 64px desktop / 40px mobile),
+  títulos de sección grandes, números destacados. Weight 300–900, letter-spacing -0.02em.
+- **DM Sans** (`--font-display`): absolutamente todo lo demás — body, UI, labels,
+  botones, nav, descripciones, filtros, badges, eyebrows.
+
+Si es número grande o título de sección → Fraunces. Si es UI funcional → DM Sans.
+
+### Regla de CSS en secciones home
+
+Componentes de sección home: **CSS puro en `<style>`**, sin clases Tailwind.
+Cada sección define sus propias CSS custom properties locales (`--s-*`).
+
+---
+
+## Patrones visuales (global.css)
+
+### Screen Frame
+
+Clase global `.cin-screen-frame` + componente `ScreenFrame.astro` (wraps the classes):
+
+```css
+.cin-screen-frame {
+  position: absolute;
+  top: 1.5rem; left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  pointer-events: none;
+  z-index: 20;
+}
+```
+
+Corners (`.cin-corner` + modificador posición):
+```css
+.cin-corner::before { width: 12px; height: 1px; background: var(--color-gold-dim); }
+.cin-corner::after  { width: 1px; height: 12px; background: var(--color-gold-dim); }
+/* Posicionados a -1px offset por esquina */
+```
+
+Frame tags (`.cin-frame-tag`):
+```css
+font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em;
+text-transform: uppercase; color: rgba(255,255,255,0.25);
+```
+
+### Glass morphism (docks, pills, CTAs flotantes)
+
+```css
+background: rgba(255,255,255,0.03–0.08);
+backdrop-filter: blur(20–40px) saturate(140%);
+border: 1px solid rgba(255,255,255,0.08–0.15);
+border-radius: 100px; /* pills */
+```
+
+### Char-by-char title reveal
+
+```astro
+{title.split('').map((char, i) => (
+  <span class="title-char" style={`--delay: ${i * 0.1}s`}>{char === ' ' ? '\u00A0' : char}</span>
+))}
+```
+```css
+.title-char {
+  display: inline-block; opacity: 0; transform: translateY(40px);
+  animation: char-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+}
+```
+
+### Cell Grid (grids con 1px gap como separador)
+
+```css
+.grid {
+  display: grid; gap: 1px;
+  background: rgba(26,22,25,0.12); /* el gap visible es el fondo */
+}
+.cell { background: var(--s-bg); }
+```
+
+### Corner Brackets (en cards al hover)
+
+```css
+.corner-bracket {
+  position: absolute; width: 18px; height: 18px;
+  border-color: white; border-style: solid; border-width: 0;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.card:hover .corner-bracket { opacity: 0.8; }
+/* top-left: border-top-width: 1px; border-left-width: 1px; etc. */
+```
+
+### Imágenes en cards
+
+```css
+/* Reposo: */
+filter: grayscale(25%) contrast(1.05) brightness(0.8);
+transform: scale(1.08);
+/* Hover: */
+filter: grayscale(0%) brightness(0.88);
+transform: scale(1.0);
+transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+```
+
+### Grain texture
+
+```css
+.cin-grain {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,...feTurbulence...");
+  mix-blend-mode: soft-light; opacity: 0.03;
+}
+```
+
+---
+
+## Keyframes globales (global.css)
+
+- `char-rise`: opacity 0 + translateY(40px) → 1 + 0
+- `cell-reveal`: opacity 0 + translateY(20px) → 1 + 0, con `--card-index` stagger
+- `portal-reveal`: opacity 0 + scale(0.95) + translateY(20px) → 1 + scale(1) + 0
+- `dock-rise`: opacity 0 + translateX(-50%) + translateY(40px) → 1 + translateX(-50%) + 0
+- `cin-fade-in`: opacity 0 → 1
+- `fadeInUp`: opacity 0 + translateY(20px) → 1 + 0
+- `fade-in-panel`: opacity 0 + translateY(10px) + blur(4px) → 1 + 0
+
+---
+
+## Home — secciones actuales (index.astro)
+
+```
+src/pages/index.astro
+  ├── HeroSection.astro        ← portal arquitectónico oscuro
+  ├── EventsGridSection.astro  ← masonry de eventos, fondo crema
+  ├── SeasonalSection.astro    ← destaque Semana Santa con tabs, fondo crema
+  ├── RoutesGridSection.astro  ← acordeón flex de rutas, fondo crema
+  └── HomeCTA.astro            ← CTA final con estrella nazarí, fondo crema
+```
+
+### 1. HeroSection (`src/components/home/HeroSection.astro`)
+
+Portal cinematográfico oscuro. Fondo negro, video ambiental blur.
+- Título colosal con `char-rise` (delay 0.1s por char)
+- Portal lens: `border-radius: 40vw` arriba, `box-shadow` con gold glow
+- Glass dock: reloj en vivo (Europe/Madrid), clima (Open-Meteo API), CTA
+- Parallax + glare con mouse move (desktop only, IntersectionObserver)
+- Animaciones: `cin-fade-in`, `portal-reveal`, `dock-rise`
+
+### 2. EventsGridSection (`src/components/home/EventsGridSection.astro`)
+
+Masonry 3 columnas, fondo crema, estética de archivo editorial.
+- Eyebrow `[AGENDA / 2025 — 2026]`, título "EVENTOS"/"EVENTS" en Fraunces
+- Columnas con alturas variables: left/right [58,72,58,72]vh, center [72,58,72,58]vh
+- Cada item: imagen (grayscale hover), date badge (glass crema), overlay gradient, categoría, título, venue+precio
+- Overlays: `linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 80%)`
+
+### 3. SeasonalSection (`src/components/home/SeasonalSection.astro`)
+
+Destaque editorial de Semana Santa. Fondo crema.
+- Eyebrow `[TEMPORADA / VOL. I · 2026]`, tabs por día de procesión
+- Status badge por tab: HOY / PRÓXIMO DÍA / FINALIZADO / PRÓXIMAMENTE
+- Masonry 3 cols de pasos. Tipo badge con `--tc` CSS var (Misterio=gold, Palio=gold, Cristo=orange)
+- Animación panel: `fade-in-panel` 0.6s. Cards: `cell-reveal` con `--card-index` stagger
+- **Nota:** esta sección es estacional — en otras épocas deberá sustituirse o mostrarse vacía
+
+### 4. RoutesGridSection (`src/components/home/RoutesGridSection.astro`)
+
+Acordeón flex cinemático. Fondo crema.
+- Eyebrow `[CARTOGRAFÍA / RUTAS / ATLAS URBANO]`, masthead en Fraunces
+- Desktop: 5 rutas como flex items, 75vh altura. Hover/click expande a `flex: 7` (inactivas `flex: 1`)
+- Inactiva: imagen en `grayscale(100%) brightness(0.5)`, label vertical (`writing-mode: vertical-rl`)
+- Activa: imagen color, HUD completo con glass metadata (duración, distancia, dificultad)
+- Transición: 0.9s `cubic-bezier(0.19, 1, 0.22, 1)`
+
+### 5. HomeCTA (`src/components/home/HomeCTA.astro`)
+
+CTA final. Fondo crema con grain.
+- Headline con char reveal en dos filas, chars coloreados (muted/bright/accent)
+- Estrella nazarí SVG decorativa
+- CTA secundario: "Ver rutas"
+- Ornamento inferior con diamante
+
+---
+
+## Sección pendiente: Rutas por tiempo disponible
+
+**Estado:** NO implementada aún. Planificada para después de que las secciones actuales estén terminadas.
+
+**Concepto:** sección interactiva en home que permite al usuario seleccionar cuánto
+tiempo libre tiene (30 min / 1h / 2h / medio día) y recibe rutas curadas ajustadas
+a ese filtro. Responde a la intención de búsqueda "qué hacer en Granada en X tiempo".
+
+**Posición en home:** entre `RoutesGridSection` y `HomeCTA`.
+
+**Nombre de componente previsto:** `TimeRoutesSection.astro`
+
+**Consideraciones de diseño:**
+- Misma paleta crema y estética editorial que el resto de secciones
+- Selector de tiempo: pills interactivos (glass morphism), sin librerías JS
+- Grid de rutas filtradas: mismo patrón visual que `RoutesGridSection`
+- Filtrado: JS vanilla + `data-duration` en cada card, similar a FilterBar
+- Los datos de duración ya existen en el tipo `Route` (`duration` en minutos)
 
 ---
 
@@ -197,7 +421,13 @@ src/
 ├── components/
 │   ├── events/        ← EventCard, EventDetail, WeekEvents
 │   ├── routes/        ← RouteCard, RouteDetail
-│   ├── ui/            ← Button, Badge, Card, Tag, Divider (sin lógica de negocio)
+│   ├── home/          ← secciones de la página principal
+│   │   ├── HeroSection.astro
+│   │   ├── EventsGridSection.astro
+│   │   ├── SeasonalSection.astro
+│   │   ├── RoutesGridSection.astro
+│   │   └── HomeCTA.astro
+│   ├── ui/            ← Button, Badge, Card, Tag, Divider, ScreenFrame (sin lógica de negocio)
 │   └── layout/        ← NavBar, Footer, FilterBar
 ├── config/
 │   └── site.ts        ← nombre, URL, redes, idiomas — única fuente de verdad
@@ -225,7 +455,7 @@ src/
 │   ├── aviso-legal.astro
 │   └── en/            ← mirror exacto de todas las páginas
 ├── styles/
-│   ├── global.css     ← reset, tipografía base, animaciones, scrollbar
+│   ├── global.css     ← reset, tipografía base, keyframes cin-*, scrollbar
 │   └── tokens.css     ← SOLO variables CSS
 ├── types/
 │   └── index.ts
@@ -278,17 +508,6 @@ resultados — nunca mostrar grid vacío.
 
 ---
 
-## Home — secciones en orden
-
-1. **Hero** — headline editorial Fraunces + grain texture + stats con count-up al entrar en viewport
-2. **Esta semana** — 3-4 eventos con fecha más próxima a hoy (`WeekEvents.astro`)
-3. **Eventos destacados** — grid asimétrico: 1 card grande (60%) + 2 apiladas (40%)
-4. **Granada en números** — stats tipográficos sin cards sobre `--color-bg-raised`
-5. **Rutas destacadas** — grid asimétrico invertido: 2 apiladas (40%) + 1 grande (60%)
-6. **CTA final** — "La Alhambra ya la conoces. Granada todavía no."
-
----
-
 ## SEO
 
 `BaseLayout.astro` genera: `title`, `meta description`, `canonical`, `og:title`,
@@ -304,21 +523,22 @@ en dos páginas.
 
 ---
 
-## Animaciones (global.css, CSS puro, sin librerías)
+## Animaciones (CSS puro, sin librerías)
 
-- `fadeInUp`: opacity 0→1 + translateY(20px→0), 0.5s ease-out, delay `nth-child × 0.1s`
-- Hover cards: `translateY(-2px)` + shadow elevada, 0.2s ease
-- Hover botón primario: `scale(1.02)`, 0.15s ease
-- Grain hero: `::after` con SVG `feTurbulence`, opacity 0.035, pointer-events none
-- Badge HOY: `@keyframes pulse` en opacity
-- Count-up en stats: IntersectionObserver + incremento por requestAnimationFrame
+Solo `IntersectionObserver` para activar clases. Cero scroll listeners. Cero librerías de animación.
+
+Todos los keyframes cinemáticos viven en `global.css` con prefijo `cin-` o nombre descriptivo.
+Stagger via CSS custom property `--delay` o `--card-index` en cada elemento.
+
+`@media (prefers-reduced-motion: reduce)` en global.css reduce todas las duraciones a 0.01ms.
 
 ---
 
 ## Reglas de código
 
 - Cero `any` — si el tipo es desconocido: `unknown` + narrowing explícito
-- Cero colores hardcodeados — siempre `var(--color-*)`
+- Cero colores hardcodeados — siempre `var(--color-*)` o variables locales del componente (`--s-*`)
+- Componentes de sección home: CSS puro en `<style>`, sin clases Tailwind
 - Cero strings literales para categorías/tipos/barrios — siempre union types
 - Cero `console.log` en código final
 - Cero librerías JS externas para interactividad — vanilla TS únicamente

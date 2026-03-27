@@ -1,161 +1,1107 @@
 ---
 import type { Locale } from '@types';
-import { SITE_CONFIG, LOCALE_PATHS } from '@config/site';
-import { useTranslations } from '@i18n/utils';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
 
-interface Props { locale: Locale; }
+interface Props { 
+  locale: Locale; 
+}
 
 const { locale } = Astro.props;
-const t = useTranslations(locale);
-const localePath = LOCALE_PATHS[locale];
 const currentYear = new Date().getFullYear();
 
-const exploreLinks = [
-  { href: `${localePath}/eventos`, label: t('nav.events') },
-  { href: `${localePath}/rutas`,   label: t('nav.routes') },
-  { href: `${localePath}/sobre`,   label: t('nav.about') },
-];
+const content = {
+  es: {
+    eyebrow: 'NAVEGACIÓN',
+    vol: 'VOL. I · 2026',
+    coords: '37°10′28″N',
+    altCoords: '03°35′56″W',
+    sections: {
+      brand: {
+        title: 'GRANADA',
+        subtitle: 'VIBES',
+        desc: 'Tu guía cultural para descubrir la ciudad. Desde la Alhambra hasta el Albaicín, eventos y rutas auténticas.'
+      },
+      explore: {
+        title: 'EXPLORAR',
+        links: [
+          { label: 'Eventos', href: '/eventos', num: '01' },
+          { label: 'Rutas', href: '/rutas', num: '02' },
+          { label: 'Semana Santa', href: '/semana-santa', num: '03' },
+          { label: 'Blog', href: '/blog', num: '04' }
+        ]
+      },
+      legal: {
+        title: 'LEGAL',
+        links: [
+          { label: 'Privacidad', href: '/privacidad', num: '01' },
+          { label: 'Aviso Legal', href: '/aviso-legal', num: '02' }
+        ]
+      },
+      contact: {
+        title: 'CONTACTO',
+        email: 'hola@granadavibes.com'
+      }
+    },
+    meta: {
+      founded: '2024',
+      location: 'Granada, España',
+      status: 'En línea'
+    },
+    copyright: `© ${currentYear} Granada Vibes. Todos los derechos reservados.`,
+    backToTop: 'ARRIBA'
+  },
+  en: {
+    eyebrow: 'NAVIGATION',
+    vol: 'VOL. I · 2026',
+    coords: '37°10′28″N',
+    altCoords: '03°35′56″W',
+    sections: {
+      brand: {
+        title: 'GRANADA',
+        subtitle: 'VIBES',
+        desc: 'Your cultural guide to discover the city. From the Alhambra to the Albaicín, events and authentic routes.'
+      },
+      explore: {
+        title: 'EXPLORE',
+        links: [
+          { label: 'Events', href: '/en/events', num: '01' },
+          { label: 'Routes', href: '/en/routes', num: '02' }
+        ]
+      },
+      legal: {
+        title: 'LEGAL',
+        links: [
+          { label: 'Privacy', href: '/en/privacy', num: '01' },
+          { label: 'Legal Notice', href: '/en/legal', num: '02' }
+        ]
+      },
+      contact: {
+        title: 'CONTACT',
+        email: 'hola@granadavibes.com'
+      }
+    },
+    meta: {
+      founded: '2024',
+      location: 'Granada, Spain',
+      status: 'Online'
+    },
+    copyright: `© ${currentYear} Granada Vibes. All rights reserved.`,
+    backToTop: 'TOP'
+  }
+};
 
-const legalLinks = [
-  { href: `${localePath}/privacidad`,  label: t('footer.links.privacy') },
-  { href: `${localePath}/aviso-legal`, label: t('footer.links.legalNotice') },
-];
+const t = content[locale];
+
+// Wordmark chars for animation
+const wordmarkChars = t.sections.brand.title.split('');
 ---
 
-<footer class="sacrom-footer">
-  <div class="sacrom-footer-inner">
-    <div class="sacrom-footer-top">
-      <div class="sacrom-footer-desc-col">
-        <p class="sacrom-footer-desc">
-          {locale === 'es'
-            ? 'Sacrom es un repositorio digital dedicado a la preservación y difusión de la herencia viva de Granada. Desde las cumbres de Sierra Nevada hasta las profundidades del Albaicín.'
-            : 'Sacrom is a digital repository dedicated to the preservation and dissemination of Granada\'s living heritage. From the peaks of Sierra Nevada to the depths of the Albayzín.'}
-        </p>
+<footer class="site-footer">
+  <ScreenFrame tagTopLeft={t.eyebrow} tagTopRight={t.vol} tagBottomLeft="GV" tagBottomRight={t.coords} />
+  
+  <!-- Ambient Effects -->
+  <div class="ambient-grain" aria-hidden="true"></div>
+  <div class="ambient-vignette" aria-hidden="true"></div>
+  
+  <!-- Decorative Grid Lines -->
+  <div class="footer-grid-lines" aria-hidden="true">
+    <div class="grid-line grid-line--v grid-line--vl"></div>
+    <div class="grid-line grid-line--v grid-line--vr"></div>
+    <div class="grid-line grid-line--h grid-line--hc"></div>
+  </div>
+
+  <!-- Top Ornament Bar -->
+  <div class="top-ornament">
+    <div class="orn-line orn-line--left"></div>
+    <div class="orn-center">
+      <span class="orn-diamond"></span>
+      <span class="orn-star" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
+          <path d="M12 2 L13.2 8.8 L20 7 L15 12 L20 17 L13.2 15.2 L12 22 L10.8 15.2 L4 17 L9 12 L4 7 L10.8 8.8 Z" 
+                fill="var(--s-orange)" fill-opacity="0.5"/>
+        </svg>
+      </span>
+      <span class="orn-diamond"></span>
+    </div>
+    <div class="orn-line orn-line--right"></div>
+  </div>
+
+  <!-- Main Footer Content -->
+  <div class="footer-container">
+    
+    <!-- Masthead -->
+    <div class="footer-masthead">
+      <div class="masthead-eyebrow">
+        <span class="eyebrow-bracket">[</span>
+        <span class="eyebrow-text">{t.eyebrow}</span>
+        <span class="eyebrow-bracket">]</span>
+        <span class="eyebrow-divider">—</span>
+        <span class="eyebrow-year">{t.vol}</span>
       </div>
+    </div>
+
+    <!-- Content Grid with Cell Separation -->
+    <div class="footer-content">
       
-      <div class="sacrom-footer-links-grid">
-        {exploreLinks.map((link) => (
-          <a href={link.href} class="sacrom-footer-link">{link.label}</a>
-        ))}
-        {legalLinks.map((link) => (
-          <a href={link.href} class="sacrom-footer-link">{link.label}</a>
-        ))}
-        <a href="mailto:hola@granadavibes.com" class="sacrom-footer-link">CONTACT</a>
-        {SITE_CONFIG.social.instagram && (
-          <a href={SITE_CONFIG.social.instagram} class="sacrom-footer-link" target="_blank" rel="noopener noreferrer">
-            INSTAGRAM
+      <!-- Brand Column -->
+      <div class="footer-col brand-col">
+        <div class="col-header brand-header">
+          <div class="brand-wordmark">
+            <span class="brand-title">{t.sections.brand.title}</span>
+            <span class="brand-subtitle">{t.sections.brand.subtitle}</span>
+          </div>
+          <div class="brand-accent-line"></div>
+        </div>
+        <p class="brand-desc">{t.sections.brand.desc}</p>
+        <div class="brand-meta">
+          <div class="meta-pill">
+            <span class="meta-dot"></span>
+            <span class="meta-text">{t.meta.status}</span>
+          </div>
+          <span class="meta-divider">·</span>
+          <span class="meta-year">{t.meta.founded}</span>
+        </div>
+      </div>
+
+      <!-- Links Column -->
+      <div class="footer-col links-col">
+        <div class="col-header">
+          <span class="col-bracket">[</span>
+          <span class="col-title">{t.sections.explore.title}</span>
+          <span class="col-bracket">]</span>
+        </div>
+        <nav class="footer-nav">
+          {t.sections.explore.links.map((link, i) => (
+            <a href={link.href} class="nav-link" style={`--index: ${i}`}>
+              <span class="link-line"></span>
+              <span class="link-num">{link.num}</span>
+              <span class="link-label">{link.label}</span>
+              <span class="link-arrow">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7M17 7H7M17 7V17" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Legal & Contact Column -->
+      <div class="footer-col legal-col">
+        <div class="legal-section">
+          <div class="col-header">
+            <span class="col-bracket">[</span>
+            <span class="col-title">{t.sections.legal.title}</span>
+            <span class="col-bracket">]</span>
+          </div>
+          <nav class="footer-nav footer-nav--compact">
+            {t.sections.legal.links.map((link, i) => (
+              <a href={link.href} class="nav-link" style={`--index: ${i}`}>
+                <span class="link-line"></span>
+                <span class="link-num">{link.num}</span>
+                <span class="link-label">{link.label}</span>
+              </a>
+            ))}
+          </nav>
+        </div>
+        
+        <div class="contact-section">
+          <div class="col-header">
+            <span class="col-bracket">[</span>
+            <span class="col-title">{t.sections.contact.title}</span>
+            <span class="col-bracket">]</span>
+          </div>
+          <a href={`mailto:${t.sections.contact.email}`} class="contact-email">
+            <span class="email-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            {t.sections.contact.email}
           </a>
-        )}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Large Wordmark Section -->
+    <div class="wordmark-section">
+      <div class="wordmark-grid" aria-hidden="true">
+        <div class="wm-grid-line wm-grid-line--h"></div>
+        <div class="wm-grid-line wm-grid-line--v"></div>
+      </div>
+      <div class="wordmark-display">
+        {wordmarkChars.map((char, i) => (
+          <span class="wordmark-char" style={`--char-index: ${i}`}>{char}</span>
+        ))}
+      </div>
+      <div class="coordinates-display">
+        <div class="coord-group">
+          <span class="coord-label">LAT</span>
+          <span class="coord-val">{t.coords}</span>
+        </div>
+        <div class="coord-divider">
+          <svg viewBox="0 0 10 10" width="10" height="10">
+            <polygon points="5,0 10,5 5,10 0,5" fill="var(--s-ink-3)"/>
+          </svg>
+        </div>
+        <div class="coord-group">
+          <span class="coord-label">LNG</span>
+          <span class="coord-val">{t.altCoords}</span>
+        </div>
       </div>
     </div>
-    
-    <span class="sacrom-footer-huge">
-      SAKROM
-    </span>
-    
-    <div class="sacrom-footer-bottom">
-      <span>© {currentYear} SACROM MONOCHROME.</span>
-      <span>ARCHIVAL DATA 37.1773° N, 3.5986° W.</span>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="bottom-content">
+        <div class="bottom-left">
+          <span class="copyright">{t.copyright}</span>
+        </div>
+        <div class="bottom-center">
+          <div class="location-pill">
+            <span class="loc-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="loc-text">{t.meta.location}</span>
+          </div>
+        </div>
+        <div class="bottom-right">
+          <button class="back-to-top" id="back-to-top" aria-label={locale === 'es' ? 'Volver arriba' : 'Back to top'}>
+            <span class="top-line"></span>
+            <span class="top-text">{t.backToTop}</span>
+            <span class="top-arrow">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
     </div>
+
   </div>
 </footer>
 
 <style>
-  .sacrom-footer {
-    background-color: var(--color-bg);
-    width: 100%;
+  /* ============================================
+     DESIGN TOKENS
+     ============================================ */
+  .site-footer {
+    --s-bg:        #f5f0ea;
+    --s-bg-2:      #ede8e0;
+    --s-bg-3:      #e8e2d8;
+    --s-ink:       #1a1619;
+    --s-ink-2:     #3a3532;
+    --s-ink-3:     #5a4f47;
+    --s-ink-4:     #8a7f77;
+    --s-orange:    #e8622a;
+    --s-gold:      #c9a84c;
+    --s-border:    rgba(26, 22, 25, 0.1);
+    --s-border-s:  rgba(26, 22, 25, 0.06);
+    --s-success:   #4a9e6b;
+    --s-shadow:    rgba(26, 22, 25, 0.04);
+
     position: relative;
-    border-top: 2px solid var(--color-border);
+    width: 100%;
+    background: var(--s-bg);
+    overflow: hidden;
+    border-top: 1px solid var(--s-border);
   }
 
-  .sacrom-footer-inner {
+  /* Screen Frame Override */
+  .site-footer :global(.cin-screen-frame) { 
+    border-color: var(--s-border); 
+    opacity: 0.7;
+  }
+  .site-footer :global(.cin-corner::before),
+  .site-footer :global(.cin-corner::after) { 
+    background: var(--s-ink); 
+    opacity: 0.15; 
+  }
+  .site-footer :global(.cin-frame-tag) { 
+    color: var(--s-ink-4); 
+    font-size: 0.55rem;
+  }
+
+  /* ============================================
+     AMBIENT EFFECTS
+     ============================================ */
+  .ambient-grain {
+    position: absolute; 
+    inset: 0; 
+    z-index: 1; 
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+
+  .ambient-vignette {
+    position: absolute; 
+    inset: 0; 
+    z-index: 2; 
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(26, 22, 25, 0.02) 100%);
+  }
+
+  /* Grid Lines */
+  .footer-grid-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .grid-line {
+    position: absolute;
+    background: var(--s-border-s);
+  }
+
+  .grid-line--v {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+  }
+
+  .grid-line--vl { left: 33.333%; }
+  .grid-line--vr { left: 66.667%; }
+
+  .grid-line--h {
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  .grid-line--hc { 
+    top: 50%;
+    opacity: 0.5;
+  }
+
+  /* ============================================
+     TOP ORNAMENT
+     ============================================ */
+  .top-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2.5rem clamp(1.25rem, 5vw, 4rem) 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .orn-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--s-border), transparent);
+  }
+
+  .orn-line--left,
+  .orn-line--right {
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .orn-center {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .orn-diamond {
+    width: 5px;
+    height: 5px;
+    background: var(--s-orange);
+    transform: rotate(45deg);
+    opacity: 0.6;
+  }
+
+  .orn-star {
+    opacity: 0.7;
+  }
+
+  /* ============================================
+     CONTAINER
+     ============================================ */
+  .footer-container {
+    position: relative;
+    z-index: 10;
+    padding: 2rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
+  }
+
+  /* ============================================
+     MASTHEAD
+     ============================================ */
+  .footer-masthead {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--s-border);
+    margin-bottom: 2.5rem;
+  }
+
+  .masthead-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fade-in-up 0.8s ease 0.2s forwards;
+  }
+
+  .eyebrow-bracket {
+    color: var(--s-orange);
+    font-weight: 700;
+    font-size: 0.7rem;
+  }
+
+  .eyebrow-text {
+    color: var(--s-ink-3);
+  }
+
+  .eyebrow-divider {
+    color: var(--s-border);
+    font-weight: 400;
+  }
+
+  .eyebrow-year {
+    color: var(--s-ink-4);
+    font-weight: 500;
+  }
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============================================
+     CONTENT GRID
+     ============================================ */
+  .footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0;
+    margin-bottom: 3rem;
+    border: 1px solid var(--s-border);
+    background: var(--s-bg);
+  }
+
+  .footer-col {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    padding: 5rem 1.5rem;
-    gap: 3rem;
+    gap: 1.25rem;
+    padding: 2rem;
+    position: relative;
   }
 
-  .sacrom-footer-top {
+  .footer-col:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 1rem;
+    bottom: 1rem;
+    width: 1px;
+    background: var(--s-border-s);
+  }
+
+  /* Brand Column */
+  .brand-col {
+    background: linear-gradient(135deg, var(--s-bg) 0%, var(--s-bg-2) 100%);
+  }
+
+  .brand-header {
+    margin-bottom: 0.25rem;
+  }
+
+  .brand-wordmark {
     display: flex;
-    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .brand-title {
+    font-family: var(--font-body);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--s-ink);
+    text-transform: uppercase;
+  }
+
+  .brand-subtitle {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--s-orange);
+  }
+
+  .brand-accent-line {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--s-orange), var(--s-gold), transparent);
+    margin-top: 0.75rem;
+  }
+
+  .brand-desc {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--s-ink-3);
+    margin: 0;
+    max-width: 300px;
+  }
+
+  .brand-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--s-shadow);
+    border: 1px solid var(--s-border-s);
+    border-radius: 100px;
+  }
+
+  .meta-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--s-success);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  .meta-text {
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+  }
+
+  .meta-divider {
+    color: var(--s-border);
+    font-size: 0.8rem;
+  }
+
+  .meta-year {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--s-ink-4);
+  }
+
+  /* Column Header */
+  .col-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .col-bracket {
+    color: var(--s-orange);
+    font-weight: 400;
+    opacity: 0.6;
+  }
+
+  .col-title {
+    color: var(--s-ink-3);
+  }
+
+  /* Navigation Links */
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer-nav--compact {
+    gap: 0.15rem;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0;
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--s-ink-2);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    transform: translateX(-12px);
+    animation: link-reveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--index) * 0.08s + 0.3s) forwards;
+  }
+
+  @keyframes link-reveal {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .link-line {
+    position: absolute;
+    left: -2rem;
+    top: 50%;
+    width: 0;
+    height: 1px;
+    background: var(--s-orange);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-num {
+    font-family: var(--font-body);
+    font-size: 0.55rem;
+    font-weight: 500;
+    color: var(--s-ink-4);
+    min-width: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .link-label {
+    position: relative;
+  }
+
+  .link-label::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--s-orange);
+    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-arrow {
+    margin-left: auto;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: var(--s-orange);
+  }
+
+  .nav-link:hover {
+    color: var(--s-ink);
+    padding-left: 0.25rem;
+  }
+
+  .nav-link:hover .link-line {
+    width: 12px;
+  }
+
+  .nav-link:hover .link-num {
+    color: var(--s-orange);
+  }
+
+  .nav-link:hover .link-label::after {
+    width: 100%;
+  }
+
+  .nav-link:hover .link-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Contact Section */
+  .contact-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--s-border-s);
+  }
+
+  .contact-email {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--s-ink-3);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.4rem 0;
+  }
+
+  .email-icon {
+    color: var(--s-orange);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+
+  .contact-email:hover {
+    color: var(--s-orange);
+  }
+
+  .contact-email:hover .email-icon {
+    opacity: 1;
+  }
+
+  /* ============================================
+     WORDMARK SECTION
+     ============================================ */
+  .wordmark-section {
+    position: relative;
+    padding: 3rem 0;
+    border-top: 1px solid var(--s-border);
+    border-bottom: 1px solid var(--s-border);
+    margin-bottom: 2rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .wordmark-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .wm-grid-line {
+    position: absolute;
+    background: var(--s-border-s);
+  }
+
+  .wm-grid-line--h {
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  .wm-grid-line--v {
+    left: 50%;
+    top: 20%;
+    bottom: 20%;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+
+  .wordmark-display {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    gap: 0.05em;
+    font-family: var(--font-body);
+    font-size: clamp(3.5rem, 12vw, 8rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--s-ink);
+  }
+
+  .wordmark-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: char-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--char-index) * 0.04s + 0.4s) forwards;
+  }
+
+  @keyframes char-reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Coordinates */
+  .coordinates-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .coord-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .coord-label {
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--s-ink-4);
+  }
+
+  .coord-val {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--s-orange);
+  }
+
+  .coord-divider {
+    opacity: 0.4;
+  }
+
+  /* ============================================
+     FOOTER BOTTOM
+     ============================================ */
+  .footer-bottom {
+    padding-top: 1.25rem;
+  }
+
+  .bottom-content {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
     gap: 2rem;
   }
 
-  .sacrom-footer-desc-col {
-    max-width: 28rem;
-  }
-
-  .sacrom-footer-desc {
-    font-family: var(--font-body); /* Lora serif */
-    font-style: italic;
-    font-size: clamp(1.5rem, 3vw, 1.875rem);
-    line-height: 1.2;
-    color: var(--color-text-primary);
-    margin: 0;
-  }
-
-  .sacrom-footer-links-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem 3rem;
-  }
-
-  @media (min-width: 768px) {
-    .sacrom-footer-links-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .sacrom-footer-link {
+  .copyright {
     font-family: var(--font-display);
-    font-weight: 900;
-    text-transform: uppercase;
-    font-size: 0.875rem;
-    color: var(--color-text-primary);
-    text-decoration: none;
-    transition: all 0.3s ease;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--s-ink-4);
   }
 
-  .sacrom-footer-link:hover {
-    font-style: italic;
-  }
-
-  .sacrom-footer-huge {
-    font-family: var(--font-display);
-    font-size: 18vw;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -0.08em; /* kerning-v-tight */
-    text-transform: uppercase;
-    display: block;
-    width: 100%;
-    text-align: center;
-    border-top: 2px solid var(--color-border);
-    padding-top: 2rem;
-    color: var(--color-text-primary);
-  }
-
-  .sacrom-footer-bottom {
+  .location-pill {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--s-shadow);
+    border: 1px solid var(--s-border-s);
+    border-radius: 100px;
+  }
+
+  .loc-icon {
+    color: var(--s-orange);
+    display: flex;
+    align-items: center;
+  }
+
+  .loc-text {
     font-family: var(--font-display);
     font-size: 0.6rem;
-    font-weight: 900;
-    letter-spacing: 0.3em; /* kerning-widest */
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-text-primary);
+    color: var(--s-ink-3);
   }
 
-  @media (max-width: 640px) {
-    .sacrom-footer-bottom {
+  .back-to-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 100px;
+  }
+
+  .top-line {
+    width: 0;
+    height: 1px;
+    background: var(--s-orange);
+    transition: width 0.3s ease;
+  }
+
+  .top-arrow {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+    color: var(--s-orange);
+    opacity: 0.7;
+  }
+
+  .back-to-top:hover {
+    color: var(--s-orange);
+    border-color: var(--s-border);
+    background: var(--s-shadow);
+    gap: 0.75rem;
+  }
+
+  .back-to-top:hover .top-line {
+    width: 12px;
+  }
+
+  .back-to-top:hover .top-arrow {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 1024px) {
+    .footer-content {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .brand-col {
+      grid-column: 1 / -1;
+    }
+
+    .brand-col::after {
+      display: none;
+    }
+
+    .footer-col:not(:last-child)::after {
+      display: none;
+    }
+
+    .links-col::after {
+      content: '' !important;
+      display: block !important;
+      position: absolute;
+      right: 0;
+      top: 1rem;
+      bottom: 1rem;
+      width: 1px;
+      background: var(--s-border-s);
+    }
+
+    .bottom-content {
       flex-direction: column;
-      gap: 0.5rem;
-      align-items: center;
+      gap: 1.25rem;
       text-align: center;
     }
   }
+
+  @media (max-width: 768px) {
+    .footer-grid-lines {
+      display: none;
+    }
+
+    .footer-content {
+      grid-template-columns: 1fr;
+      border: none;
+      gap: 2rem;
+    }
+
+    .footer-col {
+      padding: 0;
+      border-bottom: 1px solid var(--s-border-s);
+      padding-bottom: 2rem;
+    }
+
+    .footer-col::after {
+      display: none !important;
+    }
+
+    .footer-col:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .brand-col {
+      background: transparent;
+    }
+
+    .legal-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .contact-section {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .wordmark-section {
+      padding: 2rem 0;
+    }
+
+    .coordinates-display {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .coord-divider {
+      transform: rotate(45deg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .legal-col {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-link {
+      padding: 0.5rem 0;
+    }
+
+    .link-line {
+      display: none;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .masthead-eyebrow,
+    .nav-link,
+    .wordmark-char {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .meta-dot {
+      animation: none;
+    }
+  }
 </style>
+
+<script>
+  // Back to top functionality
+  const backToTopBtn = document.getElementById('back-to-top');
+  
+  backToTopBtn?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Keyboard accessibility
+  backToTopBtn?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+</script>

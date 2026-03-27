@@ -1,54 +1,85 @@
 [
   {
-    "id": "cg-o0dgwy",
-    "slug": "la-perra-blanco",
+    "id": "cg-qv65ho",
+    "slug": "borja-pico",
     "title": {
-      "es": "La Perra Blanco",
-      "en": "La Perra Blanco"
+      "es": "Borja Picó",
+      "en": "Borja Picó"
     },
     "description": {
       "es": "",
       "en": ""
     },
     "category": "concert",
-    "date": "2026-03-22",
-    "time": "Por confirmar",
-    "venue": "Planta Baja",
+    "date": "2026-03-26",
+    "time": "21:00",
+    "venue": "JJ Taberna",
     "neighborhood": "centro",
-    "price": null,
+    "price": 10,
     "currency": "EUR",
     "tags": [],
     "featured": false,
     "source": "conciertos-granada",
-    "sourceId": "o0dgwy",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115028-la-perra-blanco",
-    "imageUrl": "https://conciertos.club/doc/ban/L/ban_laperrablanco.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "sourceId": "qv65ho",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115732-borja-pico",
+    "imageUrl": "https://conciertos.club/doc/a/2025/a_borjapico.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
-    "id": "pc-tmz7zk",
-    "slug": "david-navarro-no-tengo-remedio",
+    "id": "cg-3bfxce",
+    "slug": "mateo-ortega",
     "title": {
-      "es": "David Navarro - No tengo remedio",
-      "en": "David Navarro - No tengo remedio"
+      "es": "Mateo Ortega",
+      "en": "Mateo Ortega"
     },
     "description": {
       "es": "",
       "en": ""
     },
-    "category": "other",
-    "date": "2026-03-22",
-    "time": "18:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
+    "category": "concert",
+    "date": "2026-03-26",
+    "time": "21:30",
+    "venue": "Lemon Rock",
+    "neighborhood": "centro",
+    "price": 7,
+    "currency": "EUR",
+    "tags": [
+      "Blues"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "3bfxce",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/114992-mateo-ortega",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_mateoortega2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-cj2k04",
+    "slug": "orgullo-follonero",
+    "title": {
+      "es": "Orgullo Follonero",
+      "en": "Orgullo Follonero"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-26",
+    "time": "22:00",
+    "venue": "Rocknrolla",
+    "neighborhood": "centro",
     "price": null,
     "currency": "EUR",
-    "tags": [],
+    "tags": [
+      "Rock"
+    ],
     "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "tmz7zk",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "source": "conciertos-granada",
+    "sourceId": "cj2k04",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115045-orgullo-follonero-negozio",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_orgullof2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-qzuo6e",
@@ -58,8 +89,8 @@
       "en": "Cal Poly - Arab Music Ensemble"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "El Arab Music Ensemble interpreta el arte y la música popular de una amplia gama de sociedades de habla árabe, centrándose especialmente en las zonas del Mediterráneo oriental. El repertorio del Conjunto de Música Árabe comprende piezas que van des...",
+      "en": "El Arab Music Ensemble interpreta el arte y la música popular de una amplia gama de sociedades de habla árabe, centrándose especialmente en las zonas del Mediterráneo oriental. El repertorio del Conjunto de Música Árabe comprende piezas que van des..."
     },
     "category": "other",
     "date": "2026-03-26",
@@ -73,7 +104,8 @@
     "source": "palacio-congresos",
     "sourceId": "qzuo6e",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/481.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-qlpwvi",
@@ -83,8 +115,8 @@
       "en": "Pasión - Hakuna Group Music"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Hakuna Group Music presenta en concierto \"Pasión\", un Vía Crucis joven y cercano que pretende transmitir la Pasión de Nuestro Señor Jesucristo acompañada de música y letra. Pasión es una representación artística que une m&uacut...",
+      "en": "Hakuna Group Music presenta en concierto \"Pasión\", un Vía Crucis joven y cercano que pretende transmitir la Pasión de Nuestro Señor Jesucristo acompañada de música y letra. Pasión es una representación artística que une m&uacut..."
     },
     "category": "other",
     "date": "2026-03-26",
@@ -98,7 +130,338 @@
     "source": "palacio-congresos",
     "sourceId": "qlpwvi",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/486.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-kwhhyr",
+    "slug": "a-trio",
+    "title": {
+      "es": "A-Trío",
+      "en": "A-Trío"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "18:00",
+    "venue": "Ganivet Granada",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "kwhhyr",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116112-a-trio",
+    "imageUrl": "https://conciertos.club/doc/a/2026/a_atrio.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-byou01",
+    "slug": "presentacion-rustic-festival",
+    "title": {
+      "es": "Presentación Rustic Festival.",
+      "en": "Presentación Rustic Festival."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "20:00",
+    "venue": "JJ Taberna",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "Mestizaje"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "byou01",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/112896-presentacion-rustic-festival",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_rusticfestival2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-2l6vni",
+    "slug": "orquesta-academica-de-granada",
+    "title": {
+      "es": "Orquesta Académica de Granada",
+      "en": "Orquesta Académica de Granada"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "20:00",
+    "venue": "Auditorio Manuel de Falla",
+    "neighborhood": "alhambra",
+    "price": 15.8,
+    "currency": "EUR",
+    "tags": [
+      "Clásica"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "2l6vni",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116007-orquesta-academica-de-granada-coro-ciudad-de-granada",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_orquestaacademicadegranada.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-l2cxpl",
+    "slug": "juanlu-montoya",
+    "title": {
+      "es": "Juanlu Montoya",
+      "en": "Juanlu Montoya"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "20:30",
+    "venue": "Palacio de Congresos y Exposiciones",
+    "neighborhood": "zaidin",
+    "price": 41.8,
+    "currency": "EUR",
+    "tags": [
+      "Mestizaje"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "l2cxpl",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/112160-juanlu-montoya",
+    "imageUrl": "https://conciertos.club/doc/a/2021/a_juanlumontoya.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-yvh2z3",
+    "slug": "rafa-sanchez-la-union",
+    "title": {
+      "es": "Rafa Sánchez (La Unión)",
+      "en": "Rafa Sánchez (La Unión)"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "21:00",
+    "venue": "Palacio de Congresos y Exposiciones",
+    "neighborhood": "zaidin",
+    "price": 42.9,
+    "currency": "EUR",
+    "tags": [
+      "Pop"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "yvh2z3",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/112159-rafa-sanchez-la-union",
+    "imageUrl": "https://conciertos.club/doc/a/2021/a_rafasanchez.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-k46m3i",
+    "slug": "commando-9mm",
+    "title": {
+      "es": "Commando 9mm",
+      "en": "Commando 9mm"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "21:00",
+    "venue": "Sala Riff",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "Punk"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "k46m3i",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115141-commando-9mm-pegamento-blaupunk",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_commando9mm2604.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-9m4aco",
+    "slug": "tango",
+    "title": {
+      "es": "Tango",
+      "en": "Tango"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 5,
+    "currency": "EUR",
+    "tags": [
+      "World"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "9m4aco",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115157-tango",
+    "imageUrl": "https://conciertos.club/doc/lp/l_LaLolaina_Gra_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-n1sr28",
+    "slug": "atomic-lemons",
+    "title": {
+      "es": "Atomic Lemons",
+      "en": "Atomic Lemons"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "21:30",
+    "venue": "Lemon Rock",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "Pop"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "n1sr28",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115464-atomic-lemons",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_atomiclemons.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-ai4k9e",
+    "slug": "no-konforme",
+    "title": {
+      "es": "No Konforme",
+      "en": "No Konforme"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "22:00",
+    "venue": "Rocknrolla",
+    "neighborhood": "centro",
+    "price": 16.5,
+    "currency": "EUR",
+    "tags": [
+      "Punk"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "ai4k9e",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115043-no-konforme-maldito-matas",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_nokonforme2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-vyncmj",
+    "slug": "fernandevich-friends",
+    "title": {
+      "es": "Fernandevich & Friends.",
+      "en": "Fernandevich & Friends."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "22:00",
+    "venue": "El Acorde",
+    "neighborhood": "centro",
+    "price": 5,
+    "currency": "EUR",
+    "tags": [
+      "Blues"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "vyncmj",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115233-fernandevich-friends",
+    "imageUrl": "https://conciertos.club/doc/lp/l_ElAcorde_Gra_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-xwprxi",
+    "slug": "paco-chica-2",
+    "title": {
+      "es": "Paco Chica",
+      "en": "Paco Chica"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "22:30",
+    "venue": "Carlota Braun",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "xwprxi",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116052-paco-chica",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_pacochica.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-85xey9",
+    "slug": "elegante-y-embustero",
+    "title": {
+      "es": "Elegante y embustero",
+      "en": "Elegante y embustero"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-27",
+    "time": "23:30",
+    "venue": "New Chicago",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "85xey9",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116132-elegante-y-embustero",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-1m13ir",
@@ -108,8 +471,8 @@
       "en": "El Show de la Fantasy House"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "El Show de la Fantasy House es una inmersión total en el universo del TEAM FANTASY, compuesto por los exitosos Youtubers Animalize21, AlesGF, PabletePablitor y los diferentes personajes que encarnan en sus vídeos como El Rulas, El Ruso y Pablete entre otros, tan queridos por su p&uacut...",
+      "en": "El Show de la Fantasy House es una inmersión total en el universo del TEAM FANTASY, compuesto por los exitosos Youtubers Animalize21, AlesGF, PabletePablitor y los diferentes personajes que encarnan en sus vídeos como El Rulas, El Ruso y Pablete entre otros, tan queridos por su p&uacut..."
     },
     "category": "other",
     "date": "2026-03-27",
@@ -123,7 +486,8 @@
     "source": "palacio-congresos",
     "sourceId": "1m13ir",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/479.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-hg4iuy",
@@ -133,8 +497,8 @@
       "en": "Rafa Sánchez - Biografía"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "BIOGRAFÍA es un recorrido cronológico por las canciones más icónicas de LA UNIÓN ilustradas por sus vivencias durante los treinta y seis años que estuvo vigente la banda, de como un chico de barrio estudiante de arquitectura, de la noche a la mañana, ...",
+      "en": "BIOGRAFÍA es un recorrido cronológico por las canciones más icónicas de LA UNIÓN ilustradas por sus vivencias durante los treinta y seis años que estuvo vigente la banda, de como un chico de barrio estudiante de arquitectura, de la noche a la mañana, ..."
     },
     "category": "other",
     "date": "2026-03-27",
@@ -148,7 +512,393 @@
     "source": "palacio-congresos",
     "sourceId": "hg4iuy",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/428.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-448a8y",
+    "slug": "lex-luciferi",
+    "title": {
+      "es": "Lex Luciferi",
+      "en": "Lex Luciferi"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "17:00",
+    "venue": "Carpa Municipal",
+    "neighborhood": "centro",
+    "price": 20,
+    "currency": "EUR",
+    "tags": [
+      "Metal"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "448a8y",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/105431-lex-luciferi-war-dogs-balmog-omission-silver",
+    "imageUrl": "https://conciertos.club/doc/c/2025/c_metalmaurel2509.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-q4turt",
+    "slug": "homenaje-a-joe-strummer",
+    "title": {
+      "es": "HOMENAJE A JOE STRUMMER.",
+      "en": "HOMENAJE A JOE STRUMMER."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "17:00",
+    "venue": "Lemon Rock",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "q4turt",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115465-homenaje-a-joe-strummer",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_joestrummer2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-xh84lj",
+    "slug": "d-rockados",
+    "title": {
+      "es": "D'Rockados",
+      "en": "D'Rockados"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "18:00",
+    "venue": "Tarambana Plaza",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "xh84lj",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116111-d-rockados",
+    "imageUrl": "https://conciertos.club/doc/a/2025/a_drockados.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-pc97j2",
+    "slug": "maniacs",
+    "title": {
+      "es": "Maniacs",
+      "en": "Maniacs"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "19:00",
+    "venue": "Rocknrolla",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "pc97j2",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115044-maniacs",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_maniacs2603.jpeg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-1pfv6z",
+    "slug": "wacken-metal-battle",
+    "title": {
+      "es": "WACKEN METAL BATTLE.",
+      "en": "WACKEN METAL BATTLE."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "19:00",
+    "venue": "Sala Riff",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "METAL"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "1pfv6z",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115142-wacken-metal-battle",
+    "imageUrl": "https://conciertos.club/doc/lp/l_SalaRiff_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-k8bbj7",
+    "slug": "great-straits-tributo-a-dire-straits",
+    "title": {
+      "es": "Great Straits. Tributo a Dire Straits",
+      "en": "Great Straits. Tributo a Dire Straits"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "20:30",
+    "venue": "Palacio de Congresos y Exposiciones",
+    "neighborhood": "zaidin",
+    "price": 55,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "k8bbj7",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/112161-great-straits-tributo-a-dire-straits",
+    "imageUrl": "https://conciertos.club/doc/lp/l_Palacio_Congresos_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-b5g3l3",
+    "slug": "compota-de-manana",
+    "title": {
+      "es": "Compota de Manana",
+      "en": "Compota de Manana"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "21:00",
+    "venue": "El Tren",
+    "neighborhood": "centro",
+    "price": 19.8,
+    "currency": "EUR",
+    "tags": [
+      "Latin"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "b5g3l3",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/114994-compota-de-manana",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_compota2604.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-414ygf",
+    "slug": "capitan-kirk",
+    "title": {
+      "es": "Capitán Kirk.",
+      "en": "Capitán Kirk."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "21:00",
+    "venue": "Kiosko El Parque",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Pop"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "414ygf",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115928-capitan-kirk",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-1cf4hb",
+    "slug": "go-cactus",
+    "title": {
+      "es": "Go Cactus",
+      "en": "Go Cactus"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "21:30",
+    "venue": "JJ Taberna",
+    "neighborhood": "centro",
+    "price": 13.23,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "1cf4hb",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/114123-go-cactus",
+    "imageUrl": "https://conciertos.club/doc/lp/l_JJ2_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-baw981",
+    "slug": "sosoritnem",
+    "title": {
+      "es": "Sosoritnem",
+      "en": "Sosoritnem"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 5,
+    "currency": "EUR",
+    "tags": [
+      "Pop"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "baw981",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115158-sosoritnem",
+    "imageUrl": "https://conciertos.club/doc/a/2025/a_sosortinem.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-f3mj6v",
+    "slug": "minino",
+    "title": {
+      "es": "Miniño",
+      "en": "Miniño"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "22:00",
+    "venue": "Aliatar",
+    "neighborhood": "centro",
+    "price": 12,
+    "currency": "EUR",
+    "tags": [
+      "Pop"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "f3mj6v",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/114200-minino",
+    "imageUrl": "https://conciertos.club/doc/a/2025/a_minino.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-brb2lz",
+    "slug": "diego-barber-david-sancho",
+    "title": {
+      "es": "Diego Barber & David Sancho.",
+      "en": "Diego Barber & David Sancho."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "22:00",
+    "venue": "Ool Ya Koo",
+    "neighborhood": "centro",
+    "price": 10,
+    "currency": "EUR",
+    "tags": [
+      "Jazz"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "brb2lz",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115053-diego-barber-david-sancho",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-pjh7cg",
+    "slug": "elegante-y-embustero-2",
+    "title": {
+      "es": "Elegante y embustero",
+      "en": "Elegante y embustero"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "22:00",
+    "venue": "La Compañía Bar",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "pjh7cg",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116133-elegante-y-embustero",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-m472th",
+    "slug": "cover-s-2",
+    "title": {
+      "es": "Cover's 2.",
+      "en": "Cover's 2."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-28",
+    "time": "22:30",
+    "venue": "Carlota Braun",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "m472th",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116053-cover-s-2",
+    "imageUrl": "https://conciertos.club/doc/lp/l_CarlotaBraunMusica_Gra_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-2d3lhw",
@@ -158,8 +908,8 @@
       "en": "Hasta el (ch)ocho - M"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "El espectáculo \"Hasta el (ch)ocho - M\" es un show feminista protagonizado por: Júlia Salander, Patricia Espejo y Carla Galeote. En esta propuesta, las tres activistas abordamos las violencias que las mujeres atravesamos en la actualidad, pero con un enfoque único e int...",
+      "en": "El espectáculo \"Hasta el (ch)ocho - M\" es un show feminista protagonizado por: Júlia Salander, Patricia Espejo y Carla Galeote. En esta propuesta, las tres activistas abordamos las violencias que las mujeres atravesamos en la actualidad, pero con un enfoque único e int..."
     },
     "category": "other",
     "date": "2026-03-28",
@@ -173,7 +923,8 @@
     "source": "palacio-congresos",
     "sourceId": "2d3lhw",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/444.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-7c93ii",
@@ -183,8 +934,8 @@
       "en": "gREAT sTRAITS - The great songs of dIRE sTRAITS"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "¿Quién no ha escuchado alguna vez “Sultans of swing”, “Romeo and Juliet”, “Brothers in arms”, “Tunnel of love” o “Money for nothing” de dIRE sTRAITS?\n“The great songs of dIRE sTRAITS” es el nuevo espect&a...",
+      "en": "¿Quién no ha escuchado alguna vez “Sultans of swing”, “Romeo and Juliet”, “Brothers in arms”, “Tunnel of love” o “Money for nothing” de dIRE sTRAITS?\n“The great songs of dIRE sTRAITS” es el nuevo espect&a..."
     },
     "category": "other",
     "date": "2026-03-28",
@@ -198,7 +949,120 @@
     "source": "palacio-congresos",
     "sourceId": "7c93ii",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/406.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-tr8xg3",
+    "slug": "kakemono",
+    "title": {
+      "es": "KAKEMONO.",
+      "en": "KAKEMONO."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-29",
+    "time": "18:00",
+    "venue": "Lemon Rock",
+    "neighborhood": "centro",
+    "price": 5,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "tr8xg3",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115466-kakemono",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_kakemono2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-ecgs4v",
+    "slug": "candlelight",
+    "title": {
+      "es": "Candlelight",
+      "en": "Candlelight"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-29",
+    "time": "19:00",
+    "venue": "Hotel Palacio De Santa Paula",
+    "neighborhood": "centro",
+    "price": 46,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "ecgs4v",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/110304-candlelight",
+    "imageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-4q3sas",
+    "slug": "garfo",
+    "title": {
+      "es": "Garfo.",
+      "en": "Garfo."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-29",
+    "time": "20:00",
+    "venue": "Ool Ya Koo",
+    "neighborhood": "centro",
+    "price": 12,
+    "currency": "EUR",
+    "tags": [
+      "Jazz"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "4q3sas",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115054-garfo",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2603.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-7ial4",
+    "slug": "musica-cubana",
+    "title": {
+      "es": "Música Cubana",
+      "en": "Música Cubana"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-29",
+    "time": "20:00",
+    "venue": "JJ Taberna",
+    "neighborhood": "centro",
+    "price": 12,
+    "currency": "EUR",
+    "tags": [
+      "World"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "7ial4",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115733-musica-cubana",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_IMG-20260224-WA0017_2026_cc01.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-2ftfm3",
@@ -208,8 +1072,8 @@
       "en": "Los Brincos - 60 aniversario"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "LOS BRINCOS LLEGAN A GRANADA EL DIA 29 DE MARZO DE 2026 CON UN ESPERADO NUEVO CONCIERTO TRAS AGOTAR ENTRADAS EN SU CONCIERTO ANTERIOR\nLOS BRINCOS el grupo que revolucionó la escena musical de nuestro país celebran en gira su 60 aniversario.\nEl concierto será un homenaje a M...",
+      "en": "LOS BRINCOS LLEGAN A GRANADA EL DIA 29 DE MARZO DE 2026 CON UN ESPERADO NUEVO CONCIERTO TRAS AGOTAR ENTRADAS EN SU CONCIERTO ANTERIOR\nLOS BRINCOS el grupo que revolucionó la escena musical de nuestro país celebran en gira su 60 aniversario.\nEl concierto será un homenaje a M..."
     },
     "category": "other",
     "date": "2026-03-29",
@@ -223,14 +1087,71 @@
     "source": "palacio-congresos",
     "sourceId": "2ftfm3",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/468.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-oifywy",
+    "slug": "guillermo-crovetto",
+    "title": {
+      "es": "Guillermo Crovetto",
+      "en": "Guillermo Crovetto"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-03-31",
+    "time": "21:30",
+    "venue": "Lemon Rock",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "oifywy",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115467-guillermo-crovetto",
+    "imageUrl": "https://conciertos.club/doc/a/2023/a_guillermocrovetto.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-6tqtby",
+    "slug": "la-blues-band-de-granada",
+    "title": {
+      "es": "La Blues Band de Granada",
+      "en": "La Blues Band de Granada"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-01",
+    "time": "21:30",
+    "venue": "Lemon Rock",
+    "neighborhood": "centro",
+    "price": 10,
+    "currency": "EUR",
+    "tags": [
+      "Blues"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "6tqtby",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115943-la-blues-band-de-granada",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_labluesband2604.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "cg-xlifqs",
-    "slug": "remojon-granaino-fest-ganzer-red-soul-community-darro-river-rockies-el-extrano-caso-de-carmen-dorado-mr-man-the-small-frying-pan-smokin-mary-plant-bloody-kalma-the-micronovas",
+    "slug": "ganzer",
     "title": {
-      "es": "Remojón Granaíno Fest: Ganzer + Red Soul Community + Darro River Rockies + El extraño caso de Carmen Dorado + Mr. Man & The Small Frying Pan + Smokin Mary Plant + Bloody Kalma + The Micronovas",
-      "en": "Remojón Granaíno Fest: Ganzer + Red Soul Community + Darro River Rockies + El extraño caso de Carmen Dorado + Mr. Man & The Small Frying Pan + Smokin Mary Plant + Bloody Kalma + The Micronovas"
+      "es": "Ganzer",
+      "en": "Ganzer"
     },
     "description": {
       "es": "",
@@ -238,10 +1159,10 @@
     },
     "category": "concert",
     "date": "2026-04-03",
-    "time": "Por confirmar",
+    "time": "19:00",
     "venue": "Planta Baja",
     "neighborhood": "centro",
-    "price": null,
+    "price": 10,
     "currency": "EUR",
     "tags": [
       "Soul"
@@ -250,8 +1171,172 @@
     "source": "conciertos-granada",
     "sourceId": "xlifqs",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115192-ganzer-red-soul-community-darro-river-rockies-el-extrano-caso-de-carmen-dorado-mr-man-the-small-frying-pan-smokin-mary-plant-bloody-kalma-the-micronovas",
-    "imageUrl": "https://conciertos.club/doc/ban/G/ban_ganzer.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_remojongranaino2604.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-7rsihn",
+    "slug": "william-mcshepard",
+    "title": {
+      "es": "William McShepard",
+      "en": "William McShepard"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-04",
+    "time": "21:00",
+    "venue": "Sala Riff",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "7rsihn",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116045-william-mcshepard-sunset-boulevard",
+    "imageUrl": "https://conciertos.club/doc/a/2026/a_williammcshepard.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-t1suaa",
+    "slug": "agustin-carbonell-el-bola-trio",
+    "title": {
+      "es": "Agustín Carbonell \"El Bola\" Trío.",
+      "en": "Agustín Carbonell \"El Bola\" Trío."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-04",
+    "time": "21:30",
+    "venue": "JJ Taberna",
+    "neighborhood": "centro",
+    "price": 12.37,
+    "currency": "EUR",
+    "tags": [
+      "Mestizaje"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "t1suaa",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115734-agustin-carbonell-el-bola-trio",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_Cartel_Imagen_2026_8d8a.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-k1qb3a",
+    "slug": "baile-swing-con-kanikles",
+    "title": {
+      "es": "Baile Swing con Kanikles.",
+      "en": "Baile Swing con Kanikles."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-04",
+    "time": "22:00",
+    "venue": "Ool Ya Koo",
+    "neighborhood": "centro",
+    "price": 10,
+    "currency": "EUR",
+    "tags": [
+      "Swing"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "k1qb3a",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116124-baile-swing-con-kanikles",
+    "imageUrl": "https://conciertos.club/doc/lp/l_OolYaKoo_Gra_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-rebiz7",
+    "slug": "gus-matheus",
+    "title": {
+      "es": "Gus Matheus",
+      "en": "Gus Matheus"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-04",
+    "time": "22:30",
+    "venue": "Carlota Braun",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "rebiz7",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116054-gus-matheus",
+    "imageUrl": "https://conciertos.club/doc/a/2022/a_gusmatheus.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-c79jx3",
+    "slug": "candlelight-2",
+    "title": {
+      "es": "Candlelight",
+      "en": "Candlelight"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-05",
+    "time": "19:00",
+    "venue": "Hotel Palacio De Santa Paula",
+    "neighborhood": "centro",
+    "price": 39,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "c79jx3",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/113167-candlelight",
+    "imageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-8mssd2",
+    "slug": "esperanto",
+    "title": {
+      "es": "Esperanto",
+      "en": "Esperanto"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-05",
+    "time": "19:00",
+    "venue": "Planta Baja",
+    "neighborhood": "centro",
+    "price": 10,
+    "currency": "EUR",
+    "tags": [
+      "Rock"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "8mssd2",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115223-esperanto",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_esperanto2604.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "cg-kifmu2",
@@ -266,18 +1351,48 @@
     },
     "category": "concert",
     "date": "2026-04-05",
-    "time": "Por confirmar",
+    "time": "20:00",
     "venue": "JJ Taberna",
     "neighborhood": "centro",
-    "price": null,
+    "price": 10.12,
     "currency": "EUR",
-    "tags": [],
+    "tags": [
+      "Mestizaje"
+    ],
     "featured": false,
     "source": "conciertos-granada",
     "sourceId": "kifmu2",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115735-elsa-bhor",
-    "imageUrl": "https://conciertos.club/doc/ban/E/ban_elsabhor.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://conciertos.club/doc/a/2023/a_elsabhor2.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "cg-i1stdt",
+    "slug": "hector-tejedo-trio",
+    "title": {
+      "es": "Héctor Tejedo Trío.",
+      "en": "Héctor Tejedo Trío."
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-05",
+    "time": "20:00",
+    "venue": "Ool Ya Koo",
+    "neighborhood": "centro",
+    "price": 12,
+    "currency": "EUR",
+    "tags": [
+      "Jazz"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "i1stdt",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116125-hector-tejedo-trio",
+    "imageUrl": "https://conciertos.club/doc/lp/l_OolYaKoo_Gra_pp.jpg",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-13zjg9",
@@ -287,8 +1402,8 @@
       "en": "Patricia Benito - Gira Teatros 2026"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Patricia Benito es reconocida como una de las poetas españolas más destacadas de la actualidad. Croupier de profesión, terminó cambiando los naipes y la ruleta por la literatura. Autopublicó con gran éxito su primera obra, Primero de poeta, y desde entonces,...",
+      "en": "Patricia Benito es reconocida como una de las poetas españolas más destacadas de la actualidad. Croupier de profesión, terminó cambiando los naipes y la ruleta por la literatura. Autopublicó con gran éxito su primera obra, Primero de poeta, y desde entonces,..."
     },
     "category": "other",
     "date": "2026-04-10",
@@ -302,7 +1417,8 @@
     "source": "palacio-congresos",
     "sourceId": "13zjg9",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/463.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-omphzb",
@@ -312,8 +1428,8 @@
       "en": "El Arrebato Gira El viaje inesperado 2026"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "EL ARREBATO EMPRENDE EL VIAJE INESPERADO, un espectáculo que celebra el presente y la capacidad de encontrar la belleza en lo impredecible.\n“El viaje inesperado para mí es la vida misma. Son las vueltas que da el destino cuando tú creías tener el mapa claro, y de pr...",
+      "en": "EL ARREBATO EMPRENDE EL VIAJE INESPERADO, un espectáculo que celebra el presente y la capacidad de encontrar la belleza en lo impredecible.\n“El viaje inesperado para mí es la vida misma. Son las vueltas que da el destino cuando tú creías tener el mapa claro, y de pr..."
     },
     "category": "other",
     "date": "2026-04-10",
@@ -327,7 +1443,8 @@
     "source": "palacio-congresos",
     "sourceId": "omphzb",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/445.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "cg-lmxmbx",
@@ -363,8 +1480,8 @@
       "en": "Marta Sánchez"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "NUEVO ALBUM Y GIRA \"40 AÑOS 1985-2025\"\nEn 2025, la carrera de Marta cumple 40 años, consolidándola como la “Reina del Pop Español” y una de las artistas más importantes de las últimas décadas con más de 10 millones de disc...",
+      "en": "NUEVO ALBUM Y GIRA \"40 AÑOS 1985-2025\"\nEn 2025, la carrera de Marta cumple 40 años, consolidándola como la “Reina del Pop Español” y una de las artistas más importantes de las últimas décadas con más de 10 millones de disc..."
     },
     "category": "other",
     "date": "2026-04-11",
@@ -378,7 +1495,34 @@
     "source": "palacio-congresos",
     "sourceId": "nzeqdk",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/449.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "pc-hz2jy4",
+    "slug": "los-humanos-martinez-ares",
+    "title": {
+      "es": "Los humanos - Martínez Ares",
+      "en": "Los humanos - Martínez Ares"
+    },
+    "description": {
+      "es": "La comparsa de Antonio Martinez Ares vuelve al Coac 2026 después de un año de descanso, en el 2026 se llamaran Los humanos.",
+      "en": "La comparsa de Antonio Martinez Ares vuelve al Coac 2026 después de un año de descanso, en el 2026 se llamaran Los humanos."
+    },
+    "category": "other",
+    "date": "2026-04-11",
+    "time": "21:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "hz2jy4",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/394.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-d5cwww",
@@ -388,8 +1532,8 @@
       "en": "Shado el mago CLEPTÓMAGO"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Shado, el ilusionista que dejó sin palabras a Risto Mejide en Got Talent, llega con su espectáculo Cleptómago, un show donde la magia se vive al límite.\nPickpocket, mentalismo y magia urbana se fusionan en una experiencia donde lo imposible sucede ante tus propios ojos. C...",
+      "en": "Shado, el ilusionista que dejó sin palabras a Risto Mejide en Got Talent, llega con su espectáculo Cleptómago, un show donde la magia se vive al límite.\nPickpocket, mentalismo y magia urbana se fusionan en una experiencia donde lo imposible sucede ante tus propios ojos. C..."
     },
     "category": "other",
     "date": "2026-04-12",
@@ -403,7 +1547,8 @@
     "source": "palacio-congresos",
     "sourceId": "d5cwww",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/460.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "cg-nrya5p",
@@ -491,8 +1636,8 @@
       "en": "Film Symphony Orchestra - TOON STORY"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "TOON STORY: la gran aventura musical del cine de animación\nLa Film Symphony Orchestra (FSO), la orquesta más peliculera del país, aterriza en el Palacio de Congresos con TOON STORY, en Granada. El domingo, 19 de abril - 18:30h.\nUn vibrante homenaje a las bandas sonoras que han m...",
+      "en": "TOON STORY: la gran aventura musical del cine de animación\nLa Film Symphony Orchestra (FSO), la orquesta más peliculera del país, aterriza en el Palacio de Congresos con TOON STORY, en Granada. El domingo, 19 de abril - 18:30h.\nUn vibrante homenaje a las bandas sonoras que han m..."
     },
     "category": "cinema",
     "date": "2026-04-19",
@@ -506,7 +1651,8 @@
     "source": "palacio-congresos",
     "sourceId": "jvjopx",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/458.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-k11k3b",
@@ -516,8 +1662,8 @@
       "en": "Universo Cádi"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "En un mundo al borde de la destrucción, la humanidad se tambalea, ante su final, seres de otros planetas emprenden una misión de rescate¿ llevarse a los personajes más pintorescos de Cádi, aquellos cuya esencia – auténtica, imperfecta – podr&iacu...",
+      "en": "En un mundo al borde de la destrucción, la humanidad se tambalea, ante su final, seres de otros planetas emprenden una misión de rescate¿ llevarse a los personajes más pintorescos de Cádi, aquellos cuya esencia – auténtica, imperfecta – podr&iacu..."
     },
     "category": "other",
     "date": "2026-04-19",
@@ -531,7 +1677,8 @@
     "source": "palacio-congresos",
     "sourceId": "k11k3b",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/487.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-6vz3s7",
@@ -541,8 +1688,8 @@
       "en": "Borja Niso - Dark Tour"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "DARK TOUR – BORJA NISO\nLUDOVICO EINAUDI SESSIONS\n\nBorja Niso renace en la oscuridad. Tras cinco años de espectáculos teatrales y musicales, el pianista atraviesa una profunda transformación y regresa a sus raíces.\n\nEste Tour marca un retorno a lo esencial: el P...",
+      "en": "DARK TOUR – BORJA NISO\nLUDOVICO EINAUDI SESSIONS\n\nBorja Niso renace en la oscuridad. Tras cinco años de espectáculos teatrales y musicales, el pianista atraviesa una profunda transformación y regresa a sus raíces.\n\nEste Tour marca un retorno a lo esencial: el P..."
     },
     "category": "other",
     "date": "2026-04-24",
@@ -556,7 +1703,8 @@
     "source": "palacio-congresos",
     "sourceId": "6vz3s7",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/470.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-fujpsp",
@@ -566,8 +1714,8 @@
       "en": "Paco Candela - Gira 30"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Paco Candela celebra por todo lo alto sus 30 años de carrera con una nueva gira que será la más importante y emocionante para el artista. Una serie de conciertos únicos, rodeado por un gran elenco de músicos que hacen de cada noche una nueva fiesta interpretan...",
+      "en": "Paco Candela celebra por todo lo alto sus 30 años de carrera con una nueva gira que será la más importante y emocionante para el artista. Una serie de conciertos únicos, rodeado por un gran elenco de músicos que hacen de cada noche una nueva fiesta interpretan..."
     },
     "category": "other",
     "date": "2026-04-24",
@@ -581,7 +1729,8 @@
     "source": "palacio-congresos",
     "sourceId": "fujpsp",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/459.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-be50ec",
@@ -591,8 +1740,8 @@
       "en": "David Cepo - No cruces los brazos"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "¿Estáis preparados para explotar de la risa con el nuevo espectáculo de la estrella cómica del momento? David Cepo cómico de nacimiento e influencer por sorpresa, se ha convertido en la nueva sensación en redes sociales gracias a su espontaneidad y cercan&ia...",
+      "en": "¿Estáis preparados para explotar de la risa con el nuevo espectáculo de la estrella cómica del momento? David Cepo cómico de nacimiento e influencer por sorpresa, se ha convertido en la nueva sensación en redes sociales gracias a su espontaneidad y cercan&ia..."
     },
     "category": "other",
     "date": "2026-04-25",
@@ -606,7 +1755,8 @@
     "source": "palacio-congresos",
     "sourceId": "be50ec",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/475.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-iid8ph",
@@ -631,7 +1781,8 @@
     "source": "palacio-congresos",
     "sourceId": "iid8ph",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/492.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-bla7le",
@@ -641,8 +1792,8 @@
       "en": "Petite Lorena - Tremenda"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Cada vez que Petite Lorena se mueve sobre un escenario, recorre con soltura el precipicio que separa lo políticamente correcto de lo incorrecto, por cierto ahora más resbaladizo que nunca. TREMENDA es un espectáculo que está muy por encima de las engañifas posmoder...",
+      "en": "Cada vez que Petite Lorena se mueve sobre un escenario, recorre con soltura el precipicio que separa lo políticamente correcto de lo incorrecto, por cierto ahora más resbaladizo que nunca. TREMENDA es un espectáculo que está muy por encima de las engañifas posmoder..."
     },
     "category": "other",
     "date": "2026-05-29",
@@ -656,7 +1807,8 @@
     "source": "palacio-congresos",
     "sourceId": "bla7le",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/482.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-i7oey4",
@@ -681,7 +1833,8 @@
     "source": "palacio-congresos",
     "sourceId": "i7oey4",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/456.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-an5ku5",
@@ -691,8 +1844,8 @@
       "en": "TARZÁN EL MUSICAL by Theatre Properties"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "En el Londres victoriano, la familia Porter se reúne para escuchar la leyenda de Tarzán, el niño criado por gorilas en una selva mágica y misteriosa. Isabella, la nodriza y chamana sabia que ha cuidado de Jane desde su infancia, narra esta historia llena de magia y secret...",
+      "en": "En el Londres victoriano, la familia Porter se reúne para escuchar la leyenda de Tarzán, el niño criado por gorilas en una selva mágica y misteriosa. Isabella, la nodriza y chamana sabia que ha cuidado de Jane desde su infancia, narra esta historia llena de magia y secret..."
     },
     "category": "theater",
     "date": "2026-07-11",
@@ -706,7 +1859,8 @@
     "source": "palacio-congresos",
     "sourceId": "an5ku5",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/490.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-ym4sks",
@@ -731,7 +1885,8 @@
     "source": "palacio-congresos",
     "sourceId": "ym4sks",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/488.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-zh9xhd",
@@ -741,8 +1896,8 @@
       "en": "Morricone y otros grandes del cine"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Morricone y otros grandes del cine\n\nUn tributo sinfónico a las bandas sonoras más inolvidables de la historia\nRevive la emoción de las mejores películas de todos los tiempos con este espectacular concierto sinfónico que rinde homenaje al genio de Ennio Morricone y ...",
+      "en": "Morricone y otros grandes del cine\n\nUn tributo sinfónico a las bandas sonoras más inolvidables de la historia\nRevive la emoción de las mejores películas de todos los tiempos con este espectacular concierto sinfónico que rinde homenaje al genio de Ennio Morricone y ..."
     },
     "category": "cinema",
     "date": "2026-10-04",
@@ -756,7 +1911,8 @@
     "source": "palacio-congresos",
     "sourceId": "zh9xhd",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/483.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-f20tw2",
@@ -781,7 +1937,8 @@
     "source": "palacio-congresos",
     "sourceId": "f20tw2",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/489.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-waujn9",
@@ -791,8 +1948,8 @@
       "en": "Antonio Carmona - Gira 20 Aniversario"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Antonio Carmona, referente indiscutible del flamenco contemporáneo y voz histórica de Ketama, celebra dos décadas de carrera en solitario con un espectáculo único y emotivo. Tras marcar una época fundamental en la música española al frente de K...",
+      "en": "Antonio Carmona, referente indiscutible del flamenco contemporáneo y voz histórica de Ketama, celebra dos décadas de carrera en solitario con un espectáculo único y emotivo. Tras marcar una época fundamental en la música española al frente de K..."
     },
     "category": "other",
     "date": "2026-10-16",
@@ -806,7 +1963,8 @@
     "source": "palacio-congresos",
     "sourceId": "waujn9",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/476.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-unmxe2",
@@ -816,8 +1974,8 @@
       "en": "Mentes peligrosas"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "De la escuela de la comedia nacional han salido algunas de las mentes más afiladas, originales, creativas y… peligrosas de España. Y ya iba siendo hora de que tuviesen una fiesta a su altura. Tras vender más de 140.000 entradas desde su estreno, Mentes Peligrosas afronta ...",
+      "en": "De la escuela de la comedia nacional han salido algunas de las mentes más afiladas, originales, creativas y… peligrosas de España. Y ya iba siendo hora de que tuviesen una fiesta a su altura. Tras vender más de 140.000 entradas desde su estreno, Mentes Peligrosas afronta ..."
     },
     "category": "other",
     "date": "2026-10-24",
@@ -831,7 +1989,34 @@
     "source": "palacio-congresos",
     "sourceId": "unmxe2",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/448.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "pc-9qm0u2",
+    "slug": "juan-davila-el-palacio-del-pecado",
+    "title": {
+      "es": "Juan Dávila - El Palacio del Pecado",
+      "en": "Juan Dávila - El Palacio del Pecado"
+    },
+    "description": {
+      "es": "JUAN DÁVILA vuelve a Granada con ¡EL PALACIO DEL PECADO!\nVive la actuación más gamberra y atrevida con nuestro ángel caído, Juan Dávila. Un auténtico showman, maestro del momento presente capaz de improvisar en directo el espectáculo m&aa...",
+      "en": "JUAN DÁVILA vuelve a Granada con ¡EL PALACIO DEL PECADO!\nVive la actuación más gamberra y atrevida con nuestro ángel caído, Juan Dávila. Un auténtico showman, maestro del momento presente capaz de improvisar en directo el espectáculo m&aa..."
+    },
+    "category": "other",
+    "date": "2026-10-30",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "9qm0u2",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/493.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-du06th",
@@ -841,8 +2026,8 @@
       "en": "Techno Pop"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "UN VIAJE POR LOS CLÁSICOS DEL TECHNO POP DE LOS 80-90\n\nUn espectáculo para volver a disfrutar de las canciones de aquellas bandas y artistas que siguen presentes en nuestro día a día:\n\nDepeche Mode, Talk Talk, David Bowie, U2, Omd, Soft Cell, Spandau Ballet, Yazoo, The Sm...",
+      "en": "UN VIAJE POR LOS CLÁSICOS DEL TECHNO POP DE LOS 80-90\n\nUn espectáculo para volver a disfrutar de las canciones de aquellas bandas y artistas que siguen presentes en nuestro día a día:\n\nDepeche Mode, Talk Talk, David Bowie, U2, Omd, Soft Cell, Spandau Ballet, Yazoo, The Sm..."
     },
     "category": "other",
     "date": "2026-11-28",
@@ -856,7 +2041,8 @@
     "source": "palacio-congresos",
     "sourceId": "du06th",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/491.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
     "id": "pc-6dl395",
@@ -866,8 +2052,8 @@
       "en": "Misión: Impro-sible. Aguilera y Mení"
     },
     "description": {
-      "es": "",
-      "en": ""
+      "es": "Dos hermanos gemelos de Cádiz (Los únicos hermanos gemelos que existen en el mundo de diferente padre) y parados, deciden entrar en una organización para robar una Joya y poder salir de la pobreza.\nAmbos tendrán que ir superando pruebas, que una voz misteriosa le ir&aacut...",
+      "en": "Dos hermanos gemelos de Cádiz (Los únicos hermanos gemelos que existen en el mundo de diferente padre) y parados, deciden entrar en una organización para robar una Joya y poder salir de la pobreza.\nAmbos tendrán que ir superando pruebas, que una voz misteriosa le ir&aacut..."
     },
     "category": "other",
     "date": "2026-12-11",
@@ -881,6 +2067,33 @@
     "source": "palacio-congresos",
     "sourceId": "6dl395",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/485.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+  },
+  {
+    "id": "pc-fjn7w3",
+    "slug": "la-bella-durmiente-ballet-clasico-internacional",
+    "title": {
+      "es": "La Bella Durmiente - Ballet Clásico Internacional",
+      "en": "La Bella Durmiente - Ballet Clásico Internacional"
+    },
+    "description": {
+      "es": "La bruja Carabosse, enfadada por no haber sido invitada a la fiesta del bautizo de la princesa Aurora, lanza una maldición: cuando cumpla dieciséis años se pinchará con una aguja y se dormirá para siempre. Sin embargo, las hadas madrinas de Aurora la proteger&aacut...",
+      "en": "La bruja Carabosse, enfadada por no haber sido invitada a la fiesta del bautizo de la princesa Aurora, lanza una maldición: cuando cumpla dieciséis años se pinchará con una aguja y se dormirá para siempre. Sin embargo, las hadas madrinas de Aurora la proteger&aacut..."
+    },
+    "category": "theater",
+    "date": "2026-12-30",
+    "time": "20:00",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "fjn7w3",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/494.png",
+    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   }
 ]

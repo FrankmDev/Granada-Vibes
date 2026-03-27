@@ -138,3 +138,28 @@ export function getAllCofradiasByDay(): Record<HolyWeekDay, Cofradia[]> {
   }
   return result as Record<HolyWeekDay, Cofradia[]>;
 }
+
+// ————————————————————————————————————————
+// Flat list helpers for detail pages
+// ————————————————————————————————————————
+
+export interface CofradiaWithDia extends Cofradia {
+  dia: { id: string; nombre: string; fecha: string };
+}
+
+export function getAllCofradias(): CofradiaWithDia[] {
+  const result: CofradiaWithDia[] = [];
+  for (const day of semanaSantaData.dias) {
+    for (const cofradia of day.cofradias) {
+      result.push({
+        ...cofradia,
+        dia: { id: day.id, nombre: day.nombre, fecha: day.fecha },
+      });
+    }
+  }
+  return result;
+}
+
+export function getCofradiaBySlug(slug: string): CofradiaWithDia | undefined {
+  return getAllCofradias().find((c) => c.id === slug);
+}

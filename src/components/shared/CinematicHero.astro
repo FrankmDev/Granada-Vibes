@@ -1,0 +1,334 @@
+---
+/**
+ * CinematicHero — shared full-bleed dark hero for event and route detail pages.
+ * Dock content is passed via <div slot="dock">…</div> from the caller.
+ * Optional eyebrow extras (proximity badge, etc.) via slot="eyebrow-extra".
+ */
+interface Props {
+  locale: 'es' | 'en';
+  backHref: string;
+  backLabel: string;
+  refCode: string;       // e.g. "EVT / 001 · 2026"
+  title: string;
+  imageUrl?: string;
+  eyebrowText: string;   // category label, already uppercased
+  featuredLabel?: string;
+  dockAriaLabel?: string;
+}
+
+const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabel, dockAriaLabel } = Astro.props;
+---
+
+<section class="cin-hero" aria-label={title}>
+
+  <a href={backHref} class="cin-back">{backLabel}</a>
+
+  <div class="cin-frame" aria-hidden="true">
+    <span class="cin-corner tl"></span>
+    <span class="cin-corner tr"></span>
+    <span class="cin-corner bl"></span>
+    <span class="cin-corner br"></span>
+    <span class="cin-frame-tag left">[{refCode}]</span>
+    <span class="cin-frame-tag right">GRANADA VIBES</span>
+  </div>
+
+  <div class="cin-canvas" aria-hidden="true">
+    {imageUrl
+      ? <img src={imageUrl} alt="" class="cin-bg-img" loading="eager" fetchpriority="high" will-change="transform" />
+      : <div class="cin-bg-fallback"></div>
+    }
+    <div class="cin-overlay-base"></div>
+    <div class="cin-overlay-vignette"></div>
+    <div class="cin-overlay-bottom"></div>
+    <div class="cin-grain"></div>
+  </div>
+
+  <div class="cin-eyebrow" aria-hidden="true">
+    <span class="cin-eyebrow-bracket">[</span>
+    <span class="cin-eyebrow-text">{eyebrowText}</span>
+    <span class="cin-eyebrow-bracket">]</span>
+    {featuredLabel && (
+      <span class="cin-featured-badge">
+        <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+          <path d="M6 0l1.5 4.5H12L8.5 7l1.5 5L6 9.5 2 12l1.5-5L0 4.5h4.5z"/>
+        </svg>
+        {featuredLabel}
+      </span>
+    )}
+    <slot name="eyebrow-extra" />
+  </div>
+
+  <h1 class="cin-title" aria-label={title}>
+    {title.split('').map((char, i) => (
+      <span class="cin-char" style={`--delay: ${0.3 + i * 0.045}s`}>
+        {char === ' ' ? '\u00A0' : char}
+      </span>
+    ))}
+  </h1>
+
+  <div class="cin-dock" role="region" aria-label={dockAriaLabel}>
+    <slot name="dock" />
+  </div>
+
+  <div class="cin-bottom-rule" aria-hidden="true">
+    <span class="cin-rule-line"></span>
+    <span class="cin-rule-diamond"></span>
+    <span class="cin-rule-line"></span>
+  </div>
+
+</section>
+
+<style>
+  .cin-hero {
+    --h-gold:     #c9a84c;
+    --h-gold-dim: rgba(201, 162, 39, 0.45);
+    --h-orange:   #e8622a;
+    --h-cream:    #f0ede8;
+    --h-muted:    rgba(240, 237, 232, 0.45);
+    --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    overflow: hidden;
+    contain: layout;
+    padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(5rem, 10vh, 7rem);
+  }
+
+  .cin-back {
+    position: absolute;
+    top: calc(var(--header-height, 64px) + 1.5rem);
+    left: clamp(1.5rem, 5vw, 4rem);
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--h-muted);
+    text-decoration: none;
+    z-index: 30;
+    transition: color 0.3s ease;
+    animation: cin-fade-in 0.8s ease 0.1s both;
+  }
+  .cin-back:hover { color: var(--h-cream); }
+
+  .cin-frame {
+    position: absolute;
+    inset: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .cin-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: var(--h-gold-dim);
+    border-style: solid;
+    border-width: 0;
+  }
+  .cin-corner.tl { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+  .cin-corner.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
+  .cin-corner.bl { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
+  .cin-corner.br { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .cin-frame-tag {
+    position: absolute;
+    top: -0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    padding: 0 0.5rem;
+    background: #000;
+  }
+  .cin-frame-tag.left  { left: 1.5rem; }
+  .cin-frame-tag.right { right: 1.5rem; }
+
+  .cin-canvas { position: absolute; inset: 0; z-index: 0; }
+
+  .cin-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(20%) contrast(1.05) brightness(0.55);
+    transform: scale(1.06);
+    will-change: transform;
+    animation: hero-settle 3s var(--ease-expo) forwards;
+  }
+
+  @keyframes hero-settle {
+    to { transform: scale(1); filter: grayscale(10%) contrast(1.02) brightness(0.5); }
+  }
+
+  .cin-bg-fallback {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(232,98,42,0.04) 0%, transparent 50%),
+                #0a0a0a;
+  }
+
+  .cin-overlay-base     { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
+  .cin-overlay-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.6) 100%); }
+  .cin-overlay-bottom   { position: absolute; bottom: 0; left: 0; right: 0; height: 70%; background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.85) 30%, transparent 100%); }
+
+  .cin-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .cin-eyebrow {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s var(--ease-expo) 0.4s both;
+  }
+
+  .cin-eyebrow-bracket { color: var(--h-gold); font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; }
+
+  .cin-eyebrow-text {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--h-muted);
+  }
+
+  .cin-featured-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    background: rgba(201,168,76,0.2);
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--h-gold);
+    border-radius: 100px;
+  }
+  .cin-featured-badge svg { width: 10px; height: 10px; }
+
+  .cin-title {
+    position: relative;
+    z-index: 10;
+    font-family: var(--font-body);
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-weight: 300;
+    letter-spacing: -0.025em;
+    line-height: 1.0;
+    color: var(--h-cream);
+    margin: 0 0 3rem;
+    max-width: 900px;
+    perspective: 1200px;
+  }
+
+  .cin-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: char-rise 1.4s var(--ease-expo) var(--delay) forwards;
+  }
+
+  .cin-dock {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    animation: fadeInUp 1s var(--ease-expo) 0.8s both;
+    max-width: 700px;
+    width: 100%;
+  }
+
+  /* Dock cell styles — used by callers via :global or matching class names */
+  :global(.cin-dock-cell) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.25rem 1.75rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  :global(.cin-dock-sep) {
+    width: 1px;
+    background: rgba(255,255,255,0.08);
+    flex-shrink: 0;
+    margin: 0.75rem 0;
+  }
+
+  :global(.cin-dock-label) {
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.4);
+  }
+
+  :global(.cin-dock-value) {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #f0ede8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cin-bottom-rule {
+    position: absolute;
+    bottom: 2rem;
+    right: clamp(1.5rem, 5vw, 4rem);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10;
+    opacity: 0.4;
+    animation: cin-fade-in 1.2s ease 1.2s both;
+  }
+
+  .cin-rule-line    { width: 40px; height: 1px; background: var(--h-gold-dim); }
+  .cin-rule-diamond { width: 6px; height: 6px; background: var(--h-gold); transform: rotate(45deg); opacity: 0.6; }
+
+  @media (max-width: 768px) {
+    .cin-hero { min-height: 100svh; padding-bottom: 4rem; }
+    .cin-frame, .cin-frame-tag { display: none; }
+    .cin-dock { flex-direction: column; max-width: 100%; }
+    :global(.cin-dock-sep) { width: 100%; height: 1px; margin: 0; }
+    :global(.cin-dock-cell) { flex-direction: row; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; }
+    .cin-title { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 2rem; }
+    .cin-bottom-rule { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .cin-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
+    :global(.cin-dock-cell) { padding: 0.75rem 1rem; }
+  }
+</style>

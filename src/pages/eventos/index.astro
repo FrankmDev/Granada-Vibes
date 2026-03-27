@@ -27,7 +27,23 @@ const ogImage = 'https://placehold.co/1200x630/D4704A/FFFFFF?text=Granada+Vibes+
     title={t('events.title')}
     subtitle={t('events.subtitle')}
     accent="primary"
-  />
+  >
+    <div slot="bottom-bar" class="flex items-center gap-4">
+      <a href="#eventos" class="flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.12em] bg-[#E84D27] text-white rounded-full hover:bg-[#c93f1f] transition-all duration-300">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Ver agenda
+      </a>
+      <a href="/rutas" class="flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.12em] text-white/80 border border-white/20 rounded-full hover:border-white/40 hover:text-white transition-all duration-300">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Explorar rutas
+      </a>
+    </div>
+  </PageHeader>
 
   {/* Filters Bar */}
   <div class="relative border-y border-white/[0.06] bg-[#0a0a0a]">
