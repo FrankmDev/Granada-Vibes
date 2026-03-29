@@ -2,8 +2,8 @@
 import type { Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 
-interface Props { 
-  locale: Locale; 
+interface Props {
+  locale: Locale;
 }
 
 const { locale } = Astro.props;
@@ -47,7 +47,7 @@ const content = {
       location: 'Granada, España',
       status: 'En línea'
     },
-    copyright: `© ${currentYear} Granada Vibes. Todos los derechos reservados.`,
+    copyright: `© ${currentYear} Granada Vibes.`,
     backToTop: 'ARRIBA'
   },
   en: {
@@ -97,12 +97,17 @@ const wordmarkChars = t.sections.brand.title.split('');
 ---
 
 <footer class="site-footer">
+  <!-- Transition from previous section -->
+  <div class="footer-transition" aria-hidden="true">
+    <div class="transition-line"></div>
+  </div>
+
   <ScreenFrame tagTopLeft={t.eyebrow} tagTopRight={t.vol} tagBottomLeft="GV" tagBottomRight={t.coords} />
-  
+
   <!-- Ambient Effects -->
   <div class="ambient-grain" aria-hidden="true"></div>
   <div class="ambient-vignette" aria-hidden="true"></div>
-  
+
   <!-- Decorative Grid Lines -->
   <div class="footer-grid-lines" aria-hidden="true">
     <div class="grid-line grid-line--v grid-line--vl"></div>
@@ -117,7 +122,7 @@ const wordmarkChars = t.sections.brand.title.split('');
       <span class="orn-diamond"></span>
       <span class="orn-star" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
-          <path d="M12 2 L13.2 8.8 L20 7 L15 12 L20 17 L13.2 15.2 L12 22 L10.8 15.2 L4 17 L9 12 L4 7 L10.8 8.8 Z" 
+          <path d="M12 2 L13.2 8.8 L20 7 L15 12 L20 17 L13.2 15.2 L12 22 L10.8 15.2 L4 17 L9 12 L4 7 L10.8 8.8 Z"
                 fill="var(--s-orange)" fill-opacity="0.5"/>
         </svg>
       </span>
@@ -128,7 +133,7 @@ const wordmarkChars = t.sections.brand.title.split('');
 
   <!-- Main Footer Content -->
   <div class="footer-container">
-    
+
     <!-- Masthead -->
     <div class="footer-masthead">
       <div class="masthead-eyebrow">
@@ -142,7 +147,7 @@ const wordmarkChars = t.sections.brand.title.split('');
 
     <!-- Content Grid with Cell Separation -->
     <div class="footer-content">
-      
+
       <!-- Brand Column -->
       <div class="footer-col brand-col">
         <div class="col-header brand-header">
@@ -204,7 +209,7 @@ const wordmarkChars = t.sections.brand.title.split('');
             ))}
           </nav>
         </div>
-        
+
         <div class="contact-section">
           <div class="col-header">
             <span class="col-bracket">[</span>
@@ -260,15 +265,14 @@ const wordmarkChars = t.sections.brand.title.split('');
           <span class="copyright">{t.copyright}</span>
         </div>
         <div class="bottom-center">
-          <div class="location-pill">
-            <span class="loc-icon">
+          <a href="https://www.frnq.studio" target="_blank" rel="noopener noreferrer" class="developer-badge">
+            <span class="dev-icon">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
-            <span class="loc-text">{t.meta.location}</span>
-          </div>
+            <span class="dev-text">Desarrollado por FRN.Q</span>
+          </a>
         </div>
         <div class="bottom-right">
           <button class="back-to-top" id="back-to-top" aria-label={locale === 'es' ? 'Volver arriba' : 'Back to top'}>
@@ -311,20 +315,43 @@ const wordmarkChars = t.sections.brand.title.split('');
     background: var(--s-bg);
     overflow: hidden;
     border-top: 1px solid var(--s-border);
+    margin-top: 3rem;
+  }
+
+  /* Smooth transition from HomeCTA */
+  .footer-transition {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--s-bg));
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .transition-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--s-border));
   }
 
   /* Screen Frame Override */
-  .site-footer :global(.cin-screen-frame) { 
-    border-color: var(--s-border); 
+  .site-footer :global(.cin-screen-frame) {
+    border-color: var(--s-border);
     opacity: 0.7;
   }
   .site-footer :global(.cin-corner::before),
-  .site-footer :global(.cin-corner::after) { 
-    background: var(--s-ink); 
-    opacity: 0.15; 
+  .site-footer :global(.cin-corner::after) {
+    background: var(--s-ink);
+    opacity: 0.15;
   }
-  .site-footer :global(.cin-frame-tag) { 
-    color: var(--s-ink-4); 
+  .site-footer :global(.cin-frame-tag) {
+    color: var(--s-ink-4);
     font-size: 0.55rem;
   }
 
@@ -332,18 +359,18 @@ const wordmarkChars = t.sections.brand.title.split('');
      AMBIENT EFFECTS
      ============================================ */
   .ambient-grain {
-    position: absolute; 
-    inset: 0; 
-    z-index: 1; 
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
     mix-blend-mode: multiply;
   }
 
   .ambient-vignette {
-    position: absolute; 
-    inset: 0; 
-    z-index: 2; 
+    position: absolute;
+    inset: 0;
+    z-index: 2;
     pointer-events: none;
     background: radial-gradient(ellipse at center, transparent 50%, rgba(26, 22, 25, 0.02) 100%);
   }
@@ -376,7 +403,7 @@ const wordmarkChars = t.sections.brand.title.split('');
     height: 1px;
   }
 
-  .grid-line--hc { 
+  .grid-line--hc {
     top: 50%;
     opacity: 0.5;
   }
@@ -389,7 +416,7 @@ const wordmarkChars = t.sections.brand.title.split('');
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    padding: 2.5rem clamp(1.25rem, 5vw, 4rem) 0;
+    padding: 4rem clamp(1.25rem, 5vw, 4rem) 0;
     position: relative;
     z-index: 10;
   }
@@ -429,16 +456,16 @@ const wordmarkChars = t.sections.brand.title.split('');
   .footer-container {
     position: relative;
     z-index: 10;
-    padding: 2rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
+    padding: 3rem clamp(1.25rem, 5vw, 4rem) 2rem;
   }
 
   /* ============================================
      MASTHEAD
      ============================================ */
   .footer-masthead {
-    padding-bottom: 2rem;
+    padding-bottom: 2.5rem;
     border-bottom: 1px solid var(--s-border);
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;
   }
 
   .masthead-eyebrow {
@@ -486,7 +513,7 @@ const wordmarkChars = t.sections.brand.title.split('');
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 0;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
     border: 1px solid var(--s-border);
     background: var(--s-bg);
   }
@@ -494,8 +521,8 @@ const wordmarkChars = t.sections.brand.title.split('');
   .footer-col {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    padding: 2rem;
+    gap: 1.5rem;
+    padding: 2.5rem;
     position: relative;
   }
 
@@ -771,10 +798,10 @@ const wordmarkChars = t.sections.brand.title.split('');
      ============================================ */
   .wordmark-section {
     position: relative;
-    padding: 3rem 0;
+    padding: 4rem 0;
     border-top: 1px solid var(--s-border);
     border-bottom: 1px solid var(--s-border);
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     text-align: center;
     overflow: hidden;
   }
@@ -873,7 +900,7 @@ const wordmarkChars = t.sections.brand.title.split('');
      FOOTER BOTTOM
      ============================================ */
   .footer-bottom {
-    padding-top: 1.25rem;
+    padding-top: 1.5rem;
   }
 
   .bottom-content {
@@ -891,29 +918,47 @@ const wordmarkChars = t.sections.brand.title.split('');
     color: var(--s-ink-4);
   }
 
-  .location-pill {
-    display: flex;
+  .developer-badge {
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     background: var(--s-shadow);
     border: 1px solid var(--s-border-s);
     border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.3s ease;
   }
 
-  .loc-icon {
+  .developer-badge:hover {
+    border-color: var(--s-orange);
+    background: rgba(232, 98, 42, 0.04);
+    transform: translateY(-1px);
+  }
+
+  .dev-icon {
     color: var(--s-orange);
     display: flex;
     align-items: center;
+    transition: transform 0.3s ease;
   }
 
-  .loc-text {
+  .developer-badge:hover .dev-icon {
+    transform: rotate(15deg);
+  }
+
+  .dev-text {
     font-family: var(--font-display);
     font-size: 0.6rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--s-ink-3);
+    transition: color 0.3s ease;
+  }
+
+  .developer-badge:hover .dev-text {
+    color: var(--s-orange);
   }
 
   .back-to-top {
@@ -969,6 +1014,23 @@ const wordmarkChars = t.sections.brand.title.split('');
      RESPONSIVE
      ============================================ */
   @media (max-width: 1024px) {
+    .site-footer {
+      margin-top: 2rem;
+    }
+
+    .footer-transition {
+      height: 60px;
+      top: -60px;
+    }
+
+    .top-ornament {
+      padding-top: 3rem;
+    }
+
+    .footer-container {
+      padding: 2rem clamp(1.25rem, 5vw, 4rem) 1.5rem;
+    }
+
     .footer-content {
       grid-template-columns: 1fr 1fr;
     }
@@ -1001,11 +1063,41 @@ const wordmarkChars = t.sections.brand.title.split('');
       gap: 1.25rem;
       text-align: center;
     }
+
+    .bottom-left {
+      order: 2;
+    }
+
+    .bottom-center {
+      order: 1;
+    }
+
+    .bottom-right {
+      order: 3;
+    }
   }
 
   @media (max-width: 768px) {
+    .footer-transition {
+      height: 40px;
+      top: -40px;
+    }
+
+    .transition-line {
+      height: 30px;
+    }
+
+    .top-ornament {
+      padding-top: 2.5rem;
+    }
+
     .footer-grid-lines {
       display: none;
+    }
+
+    .footer-masthead {
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .footer-content {
@@ -1046,7 +1138,7 @@ const wordmarkChars = t.sections.brand.title.split('');
     }
 
     .wordmark-section {
-      padding: 2rem 0;
+      padding: 2.5rem 0;
     }
 
     .coordinates-display {
@@ -1092,7 +1184,7 @@ const wordmarkChars = t.sections.brand.title.split('');
 <script>
   // Back to top functionality
   const backToTopBtn = document.getElementById('back-to-top');
-  
+
   backToTopBtn?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });

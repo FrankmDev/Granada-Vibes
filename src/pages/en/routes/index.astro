@@ -1,14 +1,15 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PageHeader from '@components/layout/PageHeader.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
 import RouteCard from '@components/routes/RouteCard.astro';
-import { getAllRoutes } from '@data';
+import { getAllRoutes, getAllMixedRoutes } from '@data';
 import { useTranslations } from '@i18n/utils';
 import type { RouteCategory, RouteDifficulty, TimeOfDay } from '@types';
 
 const locale = 'en';
 const t = useTranslations(locale);
 const routes = getAllRoutes();
+const mixedRoutes = getAllMixedRoutes();
 
 const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
 const difficulties: RouteDifficulty[] = ['easy', 'moderate', 'challenging'];
@@ -21,19 +22,37 @@ const difficultyColors = {
 };
 
 const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+Routes';
+
+// Hero metadata
+const heroMetadata = [
+  { label: t('routes.heroMetaTotalLabel'), value: routes.length.toString() },
+  { label: t('routes.heroMetaCategoriesLabel'), value: categories.length.toString() },
+  { label: t('routes.heroMetaDifficultiesLabel'), value: mixedRoutes.length.toString() },
+];
 ---
 
 <BaseLayout 
   locale={locale} 
   title={t('routes.title')}
-  description="Guided routes through Granada: Albaicín viewpoints, traditional tapas with free tapas, hiking along the Darro and Realejo secrets. Original plans created by locals."
+  description={t('routes.pageDescription')}
   ogImage={ogImage}
 >
-  <!-- Page Header -->
-  <PageHeader
-    title={t('routes.title')}
-    subtitle={t('routes.subtitle')}
-    accent="secondary"
+  <!-- CINEMATIC HERO -->
+  <SubpageHero
+    locale={locale}
+    title={t('routes.heroTitle')}
+    subtitle={t('routes.heroSubtitle')}
+    eyebrow={t('routes.heroEyebrow')}
+    eyebrowRight={t('routes.heroEyebrowRight')}
+    description={t('routes.heroDescription')}
+    ctaText={t('routes.heroCta')}
+    ctaLink="#routes-grid"
+    secondaryCtaText={t('routes.heroSecondaryCta')}
+    secondaryCtaLink="/en/routes/by-time"
+    pageNumber="02"
+    coordinates="37°11′N 3°36′W"
+    metadata={heroMetadata}
+    variant="default"
   />
 
   <!-- Mixed Routes CTA Banner -->
@@ -108,13 +127,13 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
       <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-edge">
         {/* Difficulty chips */}
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-sm text-surface-muted mr-1 font-medium">Difficulty:</span>
-          <button 
+          <span class="text-sm text-surface-muted mr-1 font-medium">{t('filters.difficulty')}:</span>
+          <button
             class="filter-difficulty px-4 py-2 text-xs font-bold rounded-full border transition-all duration-300 bg-terra text-base border-amber shadow-lg shadow-amber/20"
             data-difficulty="all"
             aria-pressed="true"
           >
-            All
+            {t('filters.all')}
           </button>
           {difficulties.map((diff) => (
             <button 
@@ -137,12 +156,12 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
           <select 
             id="filter-duration"
             class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-amber cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
-            aria-label="Filter by duration"
+            aria-label={t('filters.anyDuration')}
           >
-            <option value="all">Any duration</option>
-            <option value="short">Less than 2h</option>
-            <option value="medium">2-4h</option>
-            <option value="long">More than 4h</option>
+            <option value="all">{t('filters.anyDuration')}</option>
+            <option value="short">{t('filters.short')}</option>
+            <option value="medium">{t('filters.medium')}</option>
+            <option value="long">{t('filters.long')}</option>
           </select>
           <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-muted pointer-events-none transition-colors group-hover:text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -154,9 +173,9 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
           <select 
             id="filter-time"
             class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-amber cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
-            aria-label="Filter by best time"
+            aria-label={t('filters.anyTime')}
           >
-            <option value="all">Any time</option>
+            <option value="all">{t('filters.anyTime')}</option>
             {timeOfDayOptions.map((time) => (
               <option value={time}>{t(`timeOfDay.${time}`)}</option>
             ))}
@@ -176,7 +195,7 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
-          Clear filters
+          {t('filters.clearFilters')}
         </button>
       </div>
     </div>
@@ -186,12 +205,12 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
   <div class="container py-6">
     <div class="flex items-center gap-2 text-sm text-surface-muted">
       <span class="w-2 h-2 rounded-full bg-amber animate-pulse"></span>
-      Showing <span id="results-count" class="font-bold text-surface">{routes.length}</span> routes
+      <span id="results-count" class="font-bold text-surface">{routes.length}</span> {t('routes.routesCountLabel')}
     </div>
   </div>
 
   {/* Routes Grid */}
-  <section class="container pb-20" aria-labelledby="routes-heading">
+  <section id="routes-grid" class="container pb-20" aria-labelledby="routes-heading">
     <h2 id="routes-heading" class="sr-only">{t('routes.title')}</h2>
     
     <div id="routes-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 stagger-children">
@@ -220,14 +239,14 @@ const ogImage = 'https://placehold.co/1200x630/F5A623/0F0E0C?text=Granada+Vibes+
         </div>
       </div>
       <h3 class="font-display text-2xl font-semibold text-surface mb-3">
-        No routes for these filters
+        {t('routes.emptyTitle')}
       </h3>
-      <p class="text-surface-secondary mb-8 max-w-md mx-auto">Try changing the filters or view all available routes in Granada</p>
-      <button 
+      <p class="text-surface-secondary mb-8 max-w-md mx-auto">{t('routes.emptyText')}</p>
+      <button
         id="empty-clear-filters"
         class="inline-flex items-center gap-2 px-6 py-3 bg-terra text-base font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_rgba(232,158,58,0.25)] hover:-translate-y-0.5"
       >
-        Clear filters
+        {t('routes.emptyBtn')}
       </button>
     </div>
   </section>

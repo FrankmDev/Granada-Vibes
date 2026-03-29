@@ -2,6 +2,7 @@
 import type { Locale } from '../../types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import { useTranslations } from '../../i18n/utils';
 import semanaSantaData from '../../data/semana-santa/pasos.json';
 import {
   type DiaRaw,
@@ -18,19 +19,20 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const t = useTranslations(locale);
 
 const processedDias: ProcessedDia[] = buildProcessedDias(semanaSantaData.dias as DiaRaw[]);
 
 const ctaLink    = locale === 'es' ? '/eventos' : '/en/events';
-const todasLabel = locale === 'es' ? 'Ver todas las procesiones' : 'View all processions';
+const todasLabel = t('home.sections.seasonalCtaLabel');
 const edicion    = 'No. 001';
 const vol        = 'VOL. I · 2026';
 const coords     = '37.177°N';
 ---
 
-<section class="seasonal" aria-label={locale === 'es' ? 'Semana Santa' : 'Holy Week'}>
+<section class="seasonal" aria-label={t('home.sections.seasonalAriaLabel')}>
   <ScreenFrame
-    tagTopLeft={locale === 'es' ? 'PROCESIONES' : 'PROCESSIONS'}
+    tagTopLeft={t('home.sections.seasonalFrameTag')}
     tagTopRight={edicion}
     tagBottomRight={coords}
   />
@@ -38,10 +40,10 @@ const coords     = '37.177°N';
 
   <!-- ══ SECTION HEADER ══ -->
   <SectionHeader
-    eyebrow={locale === 'es' ? 'TEMPORADA' : 'SEASONAL'}
+    eyebrow={t('home.sections.seasonalEyebrow')}
     eyebrowYear={vol}
     titleLabel={edicion}
-    title={locale === 'es' ? 'SEMANA SANTA' : 'HOLY WEEK'}
+    title={t('home.sections.seasonalTitle')}
     animateTitle={true}
     ctaHref={ctaLink}
     ctaLabel={todasLabel}
@@ -63,10 +65,10 @@ const coords     = '37.177°N';
 
   <!-- i18n config for client script -->
   <div id="ss-config"
-       data-hoy={locale === 'es' ? 'HOY' : 'TODAY'}
-       data-proximo={locale === 'es' ? 'PRÓXIMO DÍA' : 'NEXT DAY'}
-       data-pasado={locale === 'es' ? 'FINALIZADO' : 'COMPLETED'}
-       data-futuro={locale === 'es' ? 'PRÓXIMAMENTE' : 'UPCOMING'}
+       data-hoy={t('home.sections.seasonalStatusToday')}
+       data-proximo={t('home.sections.seasonalStatusNext')}
+       data-pasado={t('home.sections.seasonalStatusPast')}
+       data-futuro={t('home.sections.seasonalStatusSoon')}
        aria-hidden="true"></div>
 
   <!-- ══ DAY PANELS ══ -->
@@ -198,7 +200,7 @@ const coords     = '37.177°N';
       }
     });
 
-    function activateTab(id: string | undefined) {
+    function activateTab(id: string | undefined, scrollToBtn = false) {
       if (!id) return;
       panels.forEach((p) => {
         const isActive = p.dataset.id === id;
@@ -208,12 +210,29 @@ const coords     = '37.177°N';
       buttons.forEach((btn) => {
         const isActive = btn.dataset.id === id;
         btn.classList.toggle('active', isActive);
-        if (isActive) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        if (isActive && scrollToBtn) btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       });
     }
 
-    buttons.forEach((btn) => btn.addEventListener('click', () => activateTab(btn.dataset.id)));
+    buttons.forEach((btn) => btn.addEventListener('click', () => activateTab(btn.dataset.id, true)));
     activateTab(targetId);
+
+    // Scroll indicator logic for day tabs
+    const daysNav = document.querySelector<HTMLElement>('.days-nav');
+    if (daysNav) {
+      function updateScrollIndicators() {
+        const hasOverflow = daysNav.scrollWidth > daysNav.clientWidth;
+        const atStart = daysNav.scrollLeft <= 5;
+        const atEnd = daysNav.scrollLeft >= daysNav.scrollWidth - daysNav.clientWidth - 5;
+        
+        daysNav.classList.toggle('has-overflow-left', hasOverflow && !atStart);
+        daysNav.classList.toggle('has-overflow-right', hasOverflow && !atEnd);
+      }
+      
+      daysNav.addEventListener('scroll', updateScrollIndicators, { passive: true });
+      window.addEventListener('resize', updateScrollIndicators, { passive: true });
+      updateScrollIndicators();
+    }
   }
 
   document.addEventListener('DOMContentLoaded', initSemanaSantaTabs);
@@ -235,6 +254,8 @@ const coords     = '37.177°N';
     width: 100%;
     background: var(--s-cream);
     overflow: hidden;
+    padding-top: 5rem;
+    margin-top: 4rem;
   }
 
   .seasonal :global(.cin-screen-frame) { border-color: var(--s-border); }
@@ -251,40 +272,168 @@ const coords     = '37.177°N';
 
   /* Mobile CTA wrapper — only needed in this section */
   .mobile-cta-wrapper { display: none; padding: 2rem 1.5rem; border-top: 1px solid var(--s-border); }
-  .mobile-cta { width: 100%; justify-content: center; animation: none; }
+  .mobile-cta {
+    display: inline-flex; align-items: center; gap: 0.75rem; width: 100%; justify-content: center;
+    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink);
+    background: transparent; text-decoration: none; padding: 1rem 1.75rem;
+    border: 1.5px solid var(--s-ink); transition: all 0.25s var(--ease-out-expo);
+  }
+  .mobile-cta:hover {
+    background: var(--s-orange); border-color: var(--s-orange); color: var(--s-cream);
+  }
+  .mobile-cta svg { transition: transform 0.25s ease; }
+  .mobile-cta:hover svg { transform: translateX(4px); }
 
-  /* Day filter tabs */
+  /* Day filter tabs - refined UI */
   .days-nav {
-    width: 100%; border-bottom: 1px solid var(--s-border);
-    padding: 0 clamp(1.5rem, 5vw, 4rem) 2rem;
-    overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    width: 100%;
+    margin-top: 3.5rem;
+    padding: 1.5rem clamp(1.5rem, 5vw, 4rem) 2.5rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--s-border) transparent;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
   }
-  .days-nav::-webkit-scrollbar { display: none; }
-  .days-track { display: flex; gap: 1rem; min-width: max-content; padding-bottom: 0.5rem; }
+  
+  .days-nav::-webkit-scrollbar {
+    height: 4px;
+  }
+  .days-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .days-nav::-webkit-scrollbar-thumb {
+    background: var(--s-border);
+    border-radius: 2px;
+  }
+  
+  /* Gradient fade indicators for scroll */
+  .days-nav::before,
+  .days-nav::after {
+    content: '';
+    position: absolute;
+    top: 1.5rem;
+    bottom: 2.5rem;
+    width: 60px;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .days-nav::before {
+    left: 0;
+    background: linear-gradient(to right, var(--s-cream) 0%, transparent 100%);
+  }
+  .days-nav::after {
+    right: 0;
+    background: linear-gradient(to left, var(--s-cream) 0%, transparent 100%);
+  }
+  .days-nav.has-overflow-left::before,
+  .days-nav.has-overflow-right::after {
+    opacity: 1;
+  }
+  
+  .days-track {
+    display: flex;
+    gap: 0.75rem;
+    min-width: max-content;
+    padding: 0.5rem 0.25rem 1rem;
+  }
+  
   .day-btn {
-    background: transparent; border: 1px solid var(--s-border); border-radius: 12px;
-    padding: 0.85rem 1.5rem; cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    min-width: 160px; text-align: left; position: relative; overflow: hidden;
+    background: rgba(245, 240, 234, 0.6);
+    border: 1px solid var(--s-border);
+    border-radius: 16px;
+    padding: 1rem 1.75rem;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 170px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
-  .day-btn-inner { display: flex; flex-direction: column; gap: 0.4rem; position: relative; z-index: 2; }
-  .day-btn-date { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-orange); transition: color 0.4s ease; }
-  .day-btn-name { font-family: var(--font-body); font-size: 1.15rem; font-weight: 400; color: var(--s-ink-2); line-height: 1.1; transition: color 0.4s ease; }
-  .day-btn:hover { border-color: rgba(26, 22, 25, 0.25); background: rgba(26, 22, 25, 0.02); transform: translateY(-2px); }
+  
+  .day-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .day-btn-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .day-btn-date {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--s-orange);
+    transition: all 0.35s ease;
+    text-transform: uppercase;
+  }
+  
+  .day-btn-name {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--s-ink-2);
+    line-height: 1.15;
+    transition: all 0.35s ease;
+    letter-spacing: -0.01em;
+  }
+  
+  .day-btn:hover {
+    border-color: rgba(26, 22, 25, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(26, 22, 25, 0.08), 0 4px 12px rgba(26, 22, 25, 0.04);
+  }
+  
+  .day-btn:hover::before {
+    opacity: 1;
+  }
+  
   .day-btn.active {
-    background: var(--s-ink); border-color: var(--s-ink);
+    background: var(--s-ink);
+    border-color: var(--s-ink);
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 24px rgba(26, 22, 25, 0.18);
+    box-shadow: 
+      0 20px 40px rgba(26, 22, 25, 0.18),
+      0 8px 16px rgba(26, 22, 25, 0.1),
+      inset 0 1px 0 rgba(255,255,255,0.1);
   }
-  .day-btn.active .day-btn-date { color: var(--s-orange); }
-  .day-btn.active .day-btn-name { color: var(--s-cream); }
+  
+  .day-btn.active::before {
+    opacity: 0;
+  }
+  
+  .day-btn.active .day-btn-date {
+    color: var(--s-orange);
+    text-shadow: 0 0 20px rgba(232, 98, 42, 0.4);
+  }
+  
+  .day-btn.active .day-btn-name {
+    color: var(--s-cream);
+    font-weight: 500;
+  }
 
   /* Day panels */
   .day-panels-wrapper { position: relative; z-index: 2; }
-  .day-panel { display: none; animation: fade-in-panel 0.6s ease forwards; }
+  .day-panel { display: none; animation: fade-in-panel 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   @keyframes fade-in-panel {
-    from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
-    to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   .panel-header {
@@ -381,7 +530,8 @@ const coords     = '37.177°N';
   .type-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tc, var(--s-gold)); flex-shrink: 0; }
 
   .paso-time {
-    font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; color: var(--s-ink);
+    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.05em; font-variant-numeric: tabular-nums; color: var(--s-ink);
     background: rgba(245, 240, 234, 0.92); backdrop-filter: blur(12px) saturate(140%);
     -webkit-backdrop-filter: blur(12px) saturate(140%);
     padding: 0.4rem 0.75rem; border-radius: 4px; white-space: nowrap;
@@ -412,17 +562,52 @@ const coords     = '37.177°N';
 
   /* Responsive */
   @media (max-width: 768px) {
+    .seasonal { padding-top: 3rem; margin-top: 2.5rem; }
     .mobile-cta-wrapper { display: flex; }
     .panel-header { padding: 2.5rem 1.5rem 2rem; }
     .panel-day-title { font-size: clamp(2.2rem, 10vw, 3rem); }
     .masonry-wrapper { flex-direction: column; border: none; }
     .col-left, .col-center, .col-right { width: 100%; border-right: none; }
     .masonry-item { height: 45vh !important; }
+    
+    /* Day tabs - tablet */
+    .days-nav {
+      margin-top: 2.5rem;
+      padding: 1rem 1.25rem 2rem;
+    }
+    .days-nav::before,
+    .days-nav::after {
+      top: 1rem;
+      bottom: 2rem;
+      width: 40px;
+    }
+    .days-track {
+      gap: 0.6rem;
+      padding: 0.25rem 0.25rem 0.75rem;
+    }
+    .day-btn {
+      min-width: 145px;
+      padding: 0.85rem 1.25rem;
+      border-radius: 14px;
+    }
+    .day-btn-name {
+      font-size: 1.05rem;
+    }
   }
 
   @media (max-width: 480px) {
+    .seasonal { padding-top: 2.5rem; margin-top: 2rem; }
     .masonry-item { height: 50vh !important; }
-    .day-btn { min-width: 130px; padding: 0.7rem 1rem; }
+    .days-nav {
+      margin-top: 2rem;
+      padding: 0.75rem 1rem 1.5rem;
+    }
+    .day-btn {
+      min-width: 130px;
+      padding: 0.75rem 1.1rem;
+      border-radius: 12px;
+    }
     .day-btn-name { font-size: 1rem; }
+    .day-btn-date { font-size: 0.55rem; letter-spacing: 0.15em; }
   }
 </style>

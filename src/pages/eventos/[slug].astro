@@ -58,14 +58,19 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
         <main id="main-content" class="det-main">
 
           <!-- Description block -->
-          <article class="det-block" data-reveal>
+          <article class="det-block det-block-premium" data-reveal>
             <header class="det-block-head">
               <span class="det-block-num">01</span>
               <div class="det-block-divider"></div>
               <span class="det-block-eyebrow">[ Sobre el evento ]</span>
             </header>
             <h2 class="det-block-title">Descripción</h2>
-            <p class="det-lead">{event.description[locale]}</p>
+            <div class="det-block-body">
+              <p class="det-lead">{event.description[locale]}</p>
+            </div>
+            <div class="det-block-footer">
+              <span class="det-block-accent-line"></span>
+            </div>
             <div class="det-hover-corners" aria-hidden="true">
               <span class="hc tl"></span><span class="hc tr"></span>
               <span class="hc bl"></span><span class="hc br"></span>
@@ -73,22 +78,44 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
           </article>
 
           <!-- Venue block -->
-          <article class="det-block" data-reveal>
+          <article class="det-block det-block-premium" data-reveal>
             <header class="det-block-head">
               <span class="det-block-num">02</span>
               <div class="det-block-divider"></div>
               <span class="det-block-eyebrow">[ Ubicación ]</span>
             </header>
             <h2 class="det-block-title">{event.venue}</h2>
-            <div class="evt-venue-meta">
-              <span class="evt-neighborhood-tag">{t(`neighborhoods.${event.neighborhood}`)}</span>
-              {event.address && <span class="evt-address">{event.address}</span>}
+            <div class="det-block-body">
+              <div class="evt-venue-meta">
+                <span class="evt-neighborhood-tag">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  {t(`neighborhoods.${event.neighborhood}`)}
+                </span>
+                {event.address && (
+                  <span class="evt-address">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                    {event.address}
+                  </span>
+                )}
+              </div>
+              {event.venueDescription && (
+                <p class="evt-venue-desc">{event.venueDescription[locale]}</p>
+              )}
             </div>
-            {event.venueDescription && (
-              <p class="evt-venue-desc">{event.venueDescription[locale]}</p>
-            )}
             <div class="evt-map-frame">
-              <div class="evt-map-label" aria-hidden="true">[ {locale === 'es' ? 'MAPA DEL VENUE' : 'VENUE MAP'} ]</div>
+              <div class="evt-map-label" aria-hidden="true">
+                <span class="evt-map-label-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 7m0 13V7"/>
+                  </svg>
+                </span>
+                [ {locale === 'es' ? 'MAPA DEL VENUE' : 'VENUE MAP'} ]
+              </div>
               {venueCoords ? (
                 <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} theme="light" />
               ) : (
@@ -101,6 +128,9 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
                 </div>
               )}
             </div>
+            <div class="det-block-footer">
+              <span class="det-block-accent-line"></span>
+            </div>
             <div class="det-hover-corners" aria-hidden="true">
               <span class="hc tl"></span><span class="hc tr"></span>
               <span class="hc bl"></span><span class="hc br"></span>
@@ -109,24 +139,29 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
 
           <!-- Highlights block -->
           {event.highlights && event.highlights[locale] && event.highlights[locale]!.length > 0 && (
-            <article class="det-block" data-reveal>
+            <article class="det-block det-block-premium" data-reveal>
               <header class="det-block-head">
                 <span class="det-block-num">03</span>
                 <div class="det-block-divider"></div>
                 <span class="det-block-eyebrow">[ Experiencia ]</span>
               </header>
               <h2 class="det-block-title">Qué esperar</h2>
-              <ul class="evt-highlights" role="list">
-                {event.highlights[locale]!.map((item, i) => (
-                  <li class="evt-highlight-item" style={`--stagger: ${i * 0.08}s`}>
-                    <span class="evt-hl-marker" aria-hidden="true">
-                      <span class="evt-hl-num">{(i + 1).toString().padStart(2, '0')}</span>
-                      <span class="evt-hl-bar"></span>
-                    </span>
-                    <span class="evt-hl-text">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div class="det-block-body">
+                <ul class="evt-highlights" role="list">
+                  {event.highlights[locale]!.map((item, i) => (
+                    <li class="evt-highlight-item" style={`--stagger: ${i * 0.08}s`}>
+                      <span class="evt-hl-marker" aria-hidden="true">
+                        <span class="evt-hl-num">{(i + 1).toString().padStart(2, '0')}</span>
+                        <span class="evt-hl-bar"></span>
+                      </span>
+                      <span class="evt-hl-text">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="det-block-footer">
+                <span class="det-block-accent-line"></span>
+              </div>
               <div class="det-hover-corners" aria-hidden="true">
                 <span class="hc tl"></span><span class="hc tr"></span>
                 <span class="hc bl"></span><span class="hc br"></span>
@@ -136,27 +171,37 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
 
           <!-- Tips block -->
           {event.tips && (
-            <article class="det-block evt-tips-block" data-reveal>
+            <article class="det-block det-block-premium evt-tips-block" data-reveal>
               <header class="det-block-head">
                 <span class="det-block-num">04</span>
                 <div class="det-block-divider"></div>
                 <span class="det-block-eyebrow">[ Recomendación ]</span>
               </header>
               <h2 class="det-block-title">Consejos prácticos</h2>
-              <div class="evt-tips-inner">
-                <div class="evt-tips-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
+              <div class="det-block-body">
+                <div class="evt-tips-inner">
+                  <div class="evt-tips-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div class="evt-tips-content">
+                    <p class="evt-tips-text">{event.tips[locale]}</p>
+                    <div class="evt-tips-decoration">
+                      <span class="evt-tips-quote">"</span>
+                    </div>
+                  </div>
                 </div>
-                <p class="evt-tips-text">{event.tips[locale]}</p>
+              </div>
+              <div class="det-block-footer">
+                <span class="det-block-accent-line"></span>
               </div>
             </article>
           )}
 
           <!-- Tags -->
           {event.tags.length > 0 && (
-            <div class="det-tags" data-reveal>
+            <div class="det-tags det-tags-premium" data-reveal>
               <span class="det-tags-eyebrow">[ Etiquetas ]</span>
               <div class="det-tags-flow">
                 {event.tags.map((tag, i) => (
@@ -173,37 +218,71 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
           <div class="det-sidebar-sticky">
 
             <!-- Info card -->
-            <div class="det-sidebar-card det-info-card" data-reveal>
+            <div class="det-sidebar-card det-info-card det-card-premium" data-reveal>
               <div class="det-sc-head">
                 <span class="det-sc-eyebrow">[ Información ]</span>
                 <div class="det-sc-line"></div>
               </div>
 
-              <div class="det-info-row">
-                <span class="det-info-label">{t('detail.date')}</span>
-                <span class="det-info-val evt-info-date">{formatFullDate(event.date, locale)}</span>
+              <div class="det-info-section">
+                <div class="det-info-row">
+                  <span class="det-info-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    {t('detail.date')}
+                  </span>
+                  <span class="det-info-val evt-info-date">{formatFullDate(event.date, locale)}</span>
+                </div>
+                <div class="det-info-sep"></div>
+                <div class="det-info-row">
+                  <span class="det-info-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {t('detail.time')}
+                  </span>
+                  <span class="det-info-val">{formatTime(event.time, locale)}</span>
+                </div>
               </div>
-              <div class="det-info-sep"></div>
-              <div class="det-info-row">
-                <span class="det-info-label">{t('detail.time')}</span>
-                <span class="det-info-val">{formatTime(event.time, locale)}</span>
+
+              <div class="det-info-section">
+                <div class="det-info-sep"></div>
+                <div class="det-info-row">
+                  <span class="det-info-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                    </svg>
+                    {t('detail.category')}
+                  </span>
+                  <span class="det-info-val">{t(`categories.${event.category}`)}</span>
+                </div>
+                <div class="det-info-sep"></div>
+                <div class="det-info-row">
+                  <span class="det-info-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {t('events.filters.neighborhood')}
+                  </span>
+                  <span class="det-info-val">{t(`neighborhoods.${event.neighborhood}`)}</span>
+                </div>
               </div>
-              <div class="det-info-sep"></div>
-              <div class="det-info-row">
-                <span class="det-info-label">{t('detail.category')}</span>
-                <span class="det-info-val">{t(`categories.${event.category}`)}</span>
-              </div>
-              <div class="det-info-sep"></div>
-              <div class="det-info-row">
-                <span class="det-info-label">{t('events.filters.neighborhood')}</span>
-                <span class="det-info-val">{t(`neighborhoods.${event.neighborhood}`)}</span>
-              </div>
-              <div class="det-info-sep"></div>
-              <div class="det-info-row">
-                <span class="det-info-label">{t('detail.price')}</span>
-                <span class:list={['det-info-val', 'evt-info-price', event.price === null && 'is-free']}>
-                  {event.price === null ? t('detail.free') : `${event.price}€`}
-                </span>
+
+              <div class="det-info-section det-info-price-section">
+                <div class="det-info-sep"></div>
+                <div class="det-info-row">
+                  <span class="det-info-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {t('detail.price')}
+                  </span>
+                  <span class:list={['det-info-val', 'evt-info-price', event.price === null && 'is-free']}>
+                    {event.price === null ? t('detail.free') : `${event.price}€`}
+                  </span>
+                </div>
               </div>
 
               <div class="evt-info-actions">
@@ -241,7 +320,7 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
 
             <!-- Related events -->
             {relatedEvents.length > 0 && (
-              <div class="det-sidebar-card det-related-card" data-reveal>
+              <div class="det-sidebar-card det-related-card det-card-premium" data-reveal>
                 <div class="det-sc-head">
                   <span class="det-sc-eyebrow">[ {locale === 'es' ? 'Próximos eventos' : 'Upcoming events'} ]</span>
                   <div class="det-sc-line"></div>
@@ -271,6 +350,9 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
                       <div class="det-rel-info">
                         <span class="det-rel-title">{rel.title[locale]}</span>
                         <span class="det-rel-meta">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                          </svg>
                           {formatFullDate(rel.date, locale)} · {rel.price === null ? t('detail.free') : `${rel.price}€`}
                         </span>
                       </div>
@@ -377,28 +459,101 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
     top: 0;
     left: 0;
     width: var(--scroll-progress, 0%);
-    height: 2px;
-    background: #c9a84c;
+    height: 3px;
+    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
     z-index: 9999;
     transition: width 0.1s linear;
     pointer-events: none;
+    box-shadow: 0 2px 10px rgba(201, 168, 76, 0.4);
   }
 
-  /* Prominent free price badge */
-  .evt-info-price.is-free {
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Premium block styling */
+  .det-block-premium {
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  }
+
+  .det-block-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .det-block-body {
+    position: relative;
+  }
+
+  .det-block-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(26, 22, 25, 0.06);
+  }
+
+  .det-block-accent-line {
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, #c9a84c, transparent);
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .det-block-premium:hover .det-block-accent-line {
+    width: 80px;
+  }
+
+  /* Enhanced venue meta */
+  .evt-venue-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .evt-neighborhood-tag,
+  .evt-address {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.3rem 0.75rem !important;
-    background: rgba(74,158,107,0.12) !important;
-    border: 1px solid rgba(74,158,107,0.3) !important;
-    border-radius: 2px;
-    font-weight: 700 !important;
-    font-size: 0.9rem !important;
-    letter-spacing: 0.04em;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border-radius: 4px;
+    transition: all 0.3s ease;
   }
 
-  /* Venue map editorial label */
+  .evt-neighborhood-tag {
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    color: #8a6d3b;
+  }
+
+  .evt-neighborhood-tag:hover {
+    background: rgba(201, 168, 76, 0.2);
+    border-color: rgba(201, 168, 76, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .evt-address {
+    background: rgba(26, 22, 25, 0.04);
+    border: 1px solid rgba(26, 22, 25, 0.08);
+    color: var(--s-ink-2, #5a5550);
+  }
+
+  .evt-neighborhood-tag svg,
+  .evt-address svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+  }
+
+  /* Enhanced map label */
   .evt-map-label {
     font-family: var(--font-display, 'DM Sans', sans-serif);
     font-size: 0.55rem;
@@ -409,5 +564,236 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
     padding: 0.75rem 1rem 0.4rem;
     border-bottom: 1px solid var(--s-border, rgba(26,22,25,0.10));
     background: var(--s-bg-hi, #faf8f5);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .evt-map-label-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+  }
+
+  .evt-map-label-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Prominent free price badge */
+  .evt-info-price.is-free {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem !important;
+    background: linear-gradient(135deg, rgba(74,158,107,0.15), rgba(74,158,107,0.08)) !important;
+    border: 1px solid rgba(74,158,107,0.35) !important;
+    border-radius: 20px;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.02em;
+    color: #3a7a52;
+    box-shadow: 0 2px 8px rgba(74, 158, 107, 0.15);
+  }
+
+  /* Enhanced tips block */
+  .evt-tips-block {
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.03), rgba(201, 168, 76, 0.01));
+    border-left: 3px solid rgba(201, 168, 76, 0.4);
+  }
+
+  .evt-tips-inner {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .evt-tips-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.05));
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c9a84c;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+  }
+
+  .evt-tips-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(201, 168, 76, 0.25);
+  }
+
+  .evt-tips-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .evt-tips-content {
+    flex: 1;
+    position: relative;
+  }
+
+  .evt-tips-decoration {
+    position: absolute;
+    top: -1.5rem;
+    right: 0;
+    pointer-events: none;
+  }
+
+  .evt-tips-quote {
+    font-family: var(--font-body, 'Fraunces', serif);
+    font-size: 6rem;
+    line-height: 1;
+    color: rgba(201, 168, 76, 0.1);
+    font-weight: 300;
+    user-select: none;
+  }
+
+  .evt-tips-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--s-ink-1, #1a1619);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Enhanced tags */
+  .det-tags-premium {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(26, 22, 25, 0.02), rgba(26, 22, 25, 0.005));
+    border-radius: 8px;
+    border: 1px solid rgba(26, 22, 25, 0.06);
+  }
+
+  .det-tag-pill {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .det-tag-pill:hover {
+    transform: translateY(-2px);
+    background: rgba(201, 168, 76, 0.15);
+    border-color: rgba(201, 168, 76, 0.4);
+    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.15);
+  }
+
+  /* Premium sidebar cards */
+  .det-card-premium {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .det-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .det-info-section {
+    padding: 0.5rem 0;
+  }
+
+  .det-info-section:first-of-type {
+    padding-top: 0;
+  }
+
+  .det-info-price-section {
+    background: rgba(26, 22, 25, 0.02);
+    margin: 0 -1.25rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(26, 22, 25, 0.06);
+    border-bottom: 1px solid rgba(26, 22, 25, 0.06);
+  }
+
+  .det-info-label svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .det-info-row:hover .det-info-label svg {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+
+  /* Enhanced related items */
+  .det-related-item {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .det-related-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #c9a84c, #e6c587);
+    transform: scaleY(0);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .det-related-item:hover {
+    background: rgba(201, 168, 76, 0.04);
+    transform: translateX(4px);
+  }
+
+  .det-related-item:hover::before {
+    transform: scaleY(1);
+  }
+
+  .det-rel-meta svg {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+  }
+
+  /* Enhanced hover corners */
+  .hc {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .det-block-premium:hover .hc {
+    border-color: rgba(201, 168, 76, 0.5);
+  }
+
+  /* Highlight items enhanced */
+  .evt-highlight-item {
+    transition: all 0.3s ease;
+  }
+
+  .evt-highlight-item:hover {
+    transform: translateX(4px);
+  }
+
+  .evt-hl-marker {
+    transition: all 0.3s ease;
+  }
+
+  .evt-highlight-item:hover .evt-hl-marker {
+    transform: scale(1.1);
+  }
+
+  .evt-hl-bar {
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .evt-highlight-item:hover .evt-hl-bar {
+    background: linear-gradient(180deg, #c9a84c, #e6c587);
   }
 </style>

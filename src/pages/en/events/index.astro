@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PageHeader from '@components/layout/PageHeader.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
 import EventCard from '@components/events/EventCard.astro';
-import Button from '@components/ui/Button.astro';
 import { getAllEvents } from '@data';
 import { useTranslations } from '@i18n/utils';
 import type { EventCategory, Neighborhood } from '@types';
@@ -14,20 +13,38 @@ const events = getAllEvents();
 const categories: EventCategory[] = ['concert', 'exhibition', 'festival', 'market', 'theater', 'workshop', 'guided-tour', 'cinema', 'other'];
 const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'zaidin', 'otro'];
 
-const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+Events';
+const ogImage = 'https://placehold.co/1200x630/080808/f0ede8?text=Granada+Vibes+Events';
+
+// Hero metadata
+const heroMetadata = [
+  { label: t('events.heroMetaTotalLabel'), value: events.length.toString() },
+  { label: t('events.heroMetaCategoriesLabel'), value: '9' },
+  { label: t('events.heroMetaNeighborhoodsLabel'), value: '8' },
+];
 ---
 
 <BaseLayout 
   locale={locale} 
   title={t('events.title')}
-  description="Granada 2025 cultural agenda: concerts at the Generalife, exhibitions, flamenco festivals, theater and more. Discover free and paid events in Albaicín, Centro and Sacromonte."
+  description={t('events.pageDescription')}
   ogImage={ogImage}
 >
-  <!-- Page Header -->
-  <PageHeader 
-    title={t('events.title')}
-    subtitle={t('events.subtitle')}
-    accent="primary"
+  <!-- CINEMATIC HERO -->
+  <SubpageHero
+    locale={locale}
+    title={t('events.heroTitle')}
+    subtitle={t('events.heroSubtitle')}
+    eyebrow="GRANADA VIBES"
+    eyebrowRight="ED. 2025"
+    description={t('events.heroDescription')}
+    ctaText={t('events.heroCta')}
+    ctaLink="#events-grid"
+    secondaryCtaText={t('events.heroSecondaryCta')}
+    secondaryCtaLink="/en/routes"
+    pageNumber="03"
+    coordinates="37°10′N 3°36′W"
+    metadata={heroMetadata}
+    variant="default"
   />
 
   {/* Filters Bar - Dark theme */}
@@ -59,12 +76,12 @@ const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+
       <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-edge">
         {/* Neighborhood Dropdown */}
         <div class="relative group">
-          <select 
+          <select
             id="filter-neighborhood"
             class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-terra cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
-            aria-label="Filter by neighborhood"
+            aria-label={t('events.filters.neighborhood')}
           >
-            <option value="all">All neighborhoods</option>
+            <option value="all">{t('events.filters.allNeighborhoods')}</option>
             {neighborhoods.map((n) => (
               <option value={n}>{t(`neighborhoods.${n}`)}</option>
             ))}
@@ -76,16 +93,16 @@ const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+
 
         {/* Date Dropdown */}
         <div class="relative group">
-          <select 
+          <select
             id="filter-date"
             class="appearance-none px-5 py-2.5 pr-12 text-sm text-surface bg-base-card border border-edge rounded-xl focus:outline-none focus:border-terra cursor-pointer transition-all duration-300 hover:border-edge-hover min-w-[160px]"
-            aria-label="Filter by date"
+            aria-label={t('events.filters.date')}
           >
-            <option value="all">Any date</option>
-            <option value="today">Today</option>
-            <option value="week">This week</option>
-            <option value="weekend">This weekend</option>
-            <option value="month">This month</option>
+            <option value="all">{t('events.filters.anyDate')}</option>
+            <option value="today">{t('filters.today')}</option>
+            <option value="week">{t('filters.thisWeek')}</option>
+            <option value="weekend">{t('filters.thisWeekend')}</option>
+            <option value="month">{t('filters.thisMonth')}</option>
           </select>
           <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-surface-muted pointer-events-none transition-colors group-hover:text-terra" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -99,7 +116,7 @@ const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+
             id="filter-free"
             class="w-4 h-4 rounded border-edge text-terra focus:ring-terra bg-base-card cursor-pointer"
           />
-          <span class="text-sm text-surface-secondary group-hover:text-surface transition-colors font-medium">Free only</span>
+          <span class="text-sm text-surface-secondary group-hover:text-surface transition-colors font-medium">{t('filters.onlyFree')}</span>
         </label>
 
         <div class="flex-1"></div>
@@ -112,7 +129,7 @@ const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
-          Clear filters
+          {t('filters.clearFilters')}
         </button>
       </div>
     </div>
@@ -122,12 +139,12 @@ const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+
   <div class="container py-6">
     <div class="flex items-center gap-2 text-sm text-surface-muted">
       <span class="w-2 h-2 rounded-full bg-terra animate-pulse"></span>
-      Showing <span id="results-count" class="font-bold text-surface">{events.length}</span> events
+      <span id="results-count" class="font-bold text-surface">{events.length}</span> {t('events.resultsLabel')}
     </div>
   </div>
 
   {/* Events Grid */}
-  <section class="container pb-20" aria-labelledby="events-heading">
+  <section id="events-grid" class="container pb-20" aria-labelledby="events-heading">
     <h2 id="events-heading" class="sr-only">{t('events.title')}</h2>
     
     <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
@@ -155,14 +172,14 @@ const ogImage = 'https://placehold.co/1200x630/E85A3C/FFFFFF?text=Granada+Vibes+
         </div>
       </div>
       <h3 class="font-display text-2xl font-semibold text-surface mb-3">
-        No results for these filters
+        {t('filters.noResults')}
       </h3>
-      <p class="text-surface-secondary mb-8 max-w-md mx-auto">Try changing the filters or view all available events in Granada</p>
-      <button 
+      <p class="text-surface-secondary mb-8 max-w-md mx-auto">{t('filters.noResultsDesc')}</p>
+      <button
         id="empty-clear-filters"
         class="inline-flex items-center gap-2 px-6 py-3 bg-terra text-surface font-semibold text-sm rounded-xl transition-all duration-300 hover:shadow-[0_4px_20px_rgba(232,90,60,0.25)] hover:-translate-y-0.5"
       >
-        Clear filters
+        {t('filters.clearFilters')}
       </button>
     </div>
   </section>

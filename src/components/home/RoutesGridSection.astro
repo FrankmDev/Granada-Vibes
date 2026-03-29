@@ -55,17 +55,17 @@ const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: strin
 const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
 ---
 
-<section class="routes-section" aria-label={locale === 'es' ? 'Rutas destacadas' : 'Featured routes'}>
+<section class="routes-section" aria-label={t('home.sections.routesAriaLabel')}>
   <div class="cin-grain" aria-hidden="true"></div>
   <ScreenFrame tagTopLeft="37°N" tagTopRight="03°W" />
 
   <!-- ─── Masthead Header ─── -->
   <SectionHeader
-    eyebrow={locale === 'es' ? 'CARTOGRAFÍA' : 'CARTOGRAPHY'}
-    titleLabel={locale === 'es' ? 'ATLAS URBANO' : 'URBAN ATLAS'}
-    title={locale === 'es' ? 'RUTAS' : 'ROUTES'}
+    eyebrow={t('home.sections.routesEyebrow')}
+    titleLabel={t('home.sections.routesTitleLabel')}
+    title={t('nav.routes').toUpperCase()}
     ctaHref={routesHref}
-    ctaLabel={locale === 'es' ? 'VER TODAS' : 'VIEW ALL'}
+    ctaLabel={t('actions.viewAll').toUpperCase()}
   />
 
   <!-- ─── Cinematic Flex Accordion ─── -->
@@ -127,7 +127,7 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
 
   <div class="mobile-cta-wrapper">
     <a href={routesHref} class="header-cta mobile-cta">
-      <span class="cta-text">{locale === 'es' ? 'VER TODAS' : 'VIEW ALL'}</span>
+      <span class="cta-text">{t('actions.viewAll').toUpperCase()}</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -174,7 +174,10 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
     --s-border-s: rgba(26, 22, 25, 0.08);
 
     position: relative; width: 100%; box-sizing: border-box;
-    background: var(--s-cream); padding-bottom: 6rem;
+    background: var(--s-cream); 
+    padding-top: 5rem;
+    padding-bottom: 6rem;
+    margin-top: 4rem;
   }
 
   .routes-section :global(.cin-screen-frame) { border-color: rgba(26, 22, 25, 0.12); }
@@ -190,7 +193,19 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
 
   /* Mobile CTA — only needed in this section */
   .mobile-cta-wrapper { display: none; padding: 2rem 1.5rem; border-top: 1px solid var(--s-border); position: relative; z-index: 10; }
-  .mobile-cta { width: 100%; justify-content: center; }
+  .mobile-cta {
+    display: inline-flex; align-items: center; gap: 0.75rem; width: 100%; justify-content: center;
+    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink);
+    background: transparent; text-decoration: none; padding: 1rem 1.75rem;
+    border: 1.5px solid var(--s-ink); transition: all 0.25s var(--ease-out-expo);
+  }
+  .mobile-cta:hover {
+    background: var(--s-orange); border-color: var(--s-orange); color: var(--s-cream);
+    transform: translate(-2px, -2px); box-shadow: 4px 4px 0 rgba(26, 22, 25, 0.12);
+  }
+  .mobile-cta svg { transition: transform 0.25s ease; }
+  .mobile-cta:hover svg { transform: translateX(4px); }
 
   /* ─── Cinematic Flex Accordion Gallery ─── */
   .accordion-container {
@@ -202,7 +217,10 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
   .routes-accordion {
     display: flex;
     width: 100%; height: 75vh; min-height: 600px; max-height: 900px;
-    gap: 4px;
+    gap: 1px;
+    background: var(--s-border);
+    border-radius: 4px;
+    overflow: hidden;
   }
 
   .route-pane {
@@ -303,6 +321,7 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
 
   /* ─── Responsive ─── */
   @media (max-width: 1024px) {
+    .routes-section { padding-top: 3rem; margin-top: 2.5rem; }
     .routes-accordion { flex-direction: column; height: auto; min-height: auto; max-height: none; gap: 2rem; }
     .route-pane { flex: none; height: 50vh; min-height: 400px; }
     .route-pane.is-active { flex: none; }
@@ -316,12 +335,13 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
   }
 
   @media (max-width: 768px) {
+    .routes-section { padding-top: 2.5rem; margin-top: 2rem; }
     .mobile-cta-wrapper { display: flex; }
     .accordion-container { padding: 0 1rem; }
   }
 
   @media (max-width: 480px) {
-    .header-eyebrow { font-size: 0.6rem; }
+    .routes-section { padding-top: 2rem; margin-top: 1.5rem; }
     .route-pane { height: 55vh; }
   }
 </style>

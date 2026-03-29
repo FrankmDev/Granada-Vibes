@@ -1,322 +1,2192 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PageHeader from '@components/layout/PageHeader.astro';
-import RouteCard from '@components/routes/RouteCard.astro';
-import { getAllRoutes } from '@data/index';
+import SubpageHero from '@components/shared/SubpageHero.astro';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import { getAllRoutes, getAllMixedRoutes } from '@data/index';
 import { useTranslations } from '@i18n/utils';
-import type { RouteType, RouteDifficulty, Neighborhood } from '@types';
+import type { Route, RouteCategory, RouteDifficulty } from '@types';
 
 const locale = 'es';
 const t = useTranslations(locale);
-const routes = getAllRoutes();
+const allRoutes = getAllRoutes();
+const mixedRoutes = getAllMixedRoutes();
 
-const types: RouteType[] = ['viewpoints', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
+const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
 const difficulties: RouteDifficulty[] = ['easy', 'moderate', 'challenging'];
-const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra'];
 
-const ogImage = 'https://placehold.co/1200x630/D4A853/FFFFFF?text=Granada+Vibes+Rutas';
+const difficultyLabels: Record<RouteDifficulty, string> = {
+  easy:        t('difficulty.easy'),
+  moderate:    t('difficulty.moderate'),
+  challenging: t('difficulty.challenging'),
+};
+
+const difficultyColors: Record<RouteDifficulty, string> = {
+  easy:        '#4a9e6b',
+  moderate:    '#d4873a',
+  challenging: '#c94a4a',
+};
+
+const categoryLabels: Record<RouteCategory, string> = {
+  viewpoint:   t('categories.viewpoint'),
+  tapas:       t('categories.tapas'),
+  monuments:   t('categories.monuments'),
+  hiking:      t('categories.hiking'),
+  photography: t('categories.photography'),
+  secrets:     t('categories.secrets'),
+  history:     t('categories.history'),
+  flamenco:    t('categories.flamenco'),
+};
+
+const categoryIcons: Record<RouteCategory, string> = {
+  viewpoint:   '○',
+  tapas:       '◐',
+  monuments:   '◈',
+  hiking:      '△',
+  photography: '◉',
+  secrets:     '◆',
+  history:     '◫',
+  flamenco:    '◎',
+};
+
+function formatDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return h > 0 ? `${h}H${m > 0 ? ` ${m}M` : ''}` : `${m}M`;
+}
+
+// Featured routes for hero accordion
+const featuredRoutes = allRoutes.slice(0, 5);
+const remainingRoutes = allRoutes.slice(5);
+
+// Hero metadata
+const heroMetadata = [
+  { label: t('routes.heroMetaTotalLabel'), value: allRoutes.length.toString() },
+  { label: t('routes.heroMetaCategoriesLabel'), value: categories.length.toString() },
+  { label: t('routes.heroMetaDifficultiesLabel'), value: difficulties.length.toString() },
+];
+
+const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: string } = {
+  tapas:       'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=1000&fit=crop',
+  monuments:   'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=1000&fit=crop',
+  hiking:      'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=1000&fit=crop',
+  photography: 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&h=1000&fit=crop',
+  viewpoint:   'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
+  secrets:     'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1000&fit=crop',
+  history:     'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=1000&fit=crop',
+  flamenco:    'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=1000&fit=crop',
+  default:     'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
+};
+
+const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+Rutas';
 ---
 
 <BaseLayout 
   locale={locale} 
   title={t('routes.title')}
-  description="Rutas y planes alternativos por Granada: miradores secretos, tapas locales, paseos por el Albaicín y Sacromonte. Guías creadas por granadinos."
+  description={t('routes.pageDescription')}
   ogImage={ogImage}
 >
-  <!-- Page Header -->
-  <PageHeader
-    title={t('routes.title')}
-    subtitle={t('routes.subtitle')}
-    accent="secondary"
+  <!-- CINEMATIC HERO -->
+  <SubpageHero
+    locale={locale}
+    title={t('routes.heroTitle')}
+    subtitle={t('routes.heroSubtitle')}
+    eyebrow={t('routes.heroEyebrow')}
+    eyebrowRight={t('routes.heroEyebrowRight')}
+    description={t('routes.heroDescription')}
+    ctaText={t('routes.heroCta')}
+    ctaLink="#routes-grid"
+    secondaryCtaText={t('routes.heroSecondaryCta')}
+    secondaryCtaLink="#time-plans"
+    pageNumber="02"
+    coordinates="37°11′N 3°36′W"
+    metadata={heroMetadata}
+    variant="default"
   />
 
-  <!-- Mixed Routes CTA Banner -->
-  <section class="relative bg-[#050505] border-b border-white/[0.06] overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#FF3366]/5 via-transparent to-[#FF9933]/5" aria-hidden="true"></div>
-    <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-[#FF3366]/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"></div>
-
-    <div class="container relative py-10 lg:py-12">
-      <a
-        href="/rutas/por-tiempo"
-        class="group flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-6 lg:p-8 bg-white/[0.03] border border-white/[0.08] rounded-2xl hover:border-[#FF3366]/30 hover:bg-white/[0.05] transition-all duration-500 hover:-translate-y-0.5"
-      >
-        <div class="flex items-center gap-5">
-          <div class="w-14 h-14 rounded-2xl bg-[#FF3366]/10 border border-[#FF3366]/20 flex items-center justify-center shrink-0">
-            <svg class="w-7 h-7 text-[#FF3366]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <div>
-            <h3 class="font-display text-xl lg:text-2xl font-bold text-white mb-1 group-hover:text-[#FF3366] transition-colors">
-              {t('mixedRoutes.sectionTitle')}
-            </h3>
-            <p class="text-sm text-white/50 max-w-lg">
-              {t('mixedRoutes.subtitle')}
-            </p>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4 shrink-0">
-          <div class="hidden lg:flex items-center gap-2">
-            {['2h', '6h', '12h', '1d', '2d', '3d'].map((label) => (
-              <span class="px-3 py-1.5 text-xs font-bold text-white/40 bg-white/[0.05] border border-white/[0.08] rounded-lg">
-                {label}
-              </span>
-            ))}
-          </div>
-          <div class="w-10 h-10 rounded-full bg-[#FF3366]/10 border border-[#FF3366]/20 flex items-center justify-center group-hover:bg-[#FF3366]/20 transition-colors">
-            <svg class="w-5 h-5 text-[#FF3366] group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </div>
-      </a>
+  <!-- CINEMATIC ACCORDION SECTION -->
+  <section class="accordion-section" id="featured-routes">
+    <div class="section-accent">
+      <span class="accent-line"></span>
+      <span class="accent-dot"></span>
+      <span class="accent-text">{t('routes.accordionEyebrow')}</span>
+      <span class="accent-dot"></span>
+      <span class="accent-line"></span>
     </div>
-  </section>
 
-  {/* Filters Bar */}
-  <div class="relative border-y border-white/[0.06] bg-[#0a0a0a]">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#F59E0B]/[0.03] via-transparent to-[#F59E0B]/[0.03]" aria-hidden="true"></div>
-    
-    <div class="container relative py-8 lg:py-10">
-      {/* Fila 1 - Tipo de ruta */}
-      <div class="flex flex-wrap items-center gap-3 mb-6" role="group" aria-label="Filtrar por tipo">
-        <button 
-          class="filter-type px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] bg-[#F59E0B] text-white rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-[#F59E0B]/20"
-          data-type="all"
-          aria-pressed="true"
-        >
-          Todas
-        </button>
-        {types.map((type) => (
-          <button 
-            class="filter-type px-6 py-3 text-xs font-bold uppercase tracking-[0.1em] text-white/70 bg-white/[0.05] border border-white/[0.08] rounded-full hover:border-[#F59E0B]/30 hover:text-[#F59E0B] transition-all duration-300"
-            data-type={type}
-            aria-pressed="false"
-          >
-            {t(`categories.${type}`)}
-          </button>
-        ))}
-      </div>
+    <div class="accordion-container">
+      <div class="routes-accordion" id="routes-accordion">
+        {featuredRoutes.map((route, idx) => {
+          const href = `/rutas/${route.slug}`;
+          const bgImage = ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
+          const diffLabel = difficultyLabels[route.difficulty] ?? route.difficulty;
+          const catLabel = categoryLabels[route.category];
+          const catIcon = categoryIcons[route.category];
 
-      {/* Fila 2 - Filtros secundarios */}
-      <div class="flex flex-wrap items-center gap-4 pt-6 border-t border-[var(--color-border)]">
-        {/* Dropdown Dificultad */}
-        <div class="relative group">
-          <select 
-            id="filter-difficulty"
-            class="appearance-none px-5 py-3 pr-12 text-sm text-[var(--color-text-primary)] bg-white border border-[var(--color-border)] rounded-xl focus:outline-none focus:border-[var(--color-secondary)] cursor-pointer transition-all duration-300 hover:border-[var(--color-secondary)]/30 min-w-[180px]"
-            aria-label="Filtrar por dificultad"
-          >
-            <option value="all">Todas las dificultades</option>
-            {difficulties.map((d) => (
-              <option value={d}>{t(`difficulty.${d}`)}</option>
-            ))}
-          </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none transition-colors group-hover:text-[var(--color-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+          return (
+            <a 
+              href={href} 
+              class={`accordion-pane ${idx === 0 ? 'is-active' : ''}`} 
+              data-index={idx}
+              style={`--pane-index: ${idx}`}
+            >
+              <div class="pane-media">
+                <img
+                  src={bgImage}
+                  alt={route.title[locale]}
+                  class="pane-img"
+                  loading={idx < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+                <div class="pane-gradient"></div>
+              </div>
 
-        {/* Dropdown Barrio */}
-        <div class="relative group">
-          <select 
-            id="filter-neighborhood"
-            class="appearance-none px-5 py-3 pr-12 text-sm text-[var(--color-text-primary)] bg-white border border-[var(--color-border)] rounded-xl focus:outline-none focus:border-[var(--color-secondary)] cursor-pointer transition-all duration-300 hover:border-[var(--color-secondary)]/30 min-w-[180px]"
-            aria-label="Filtrar por barrio"
-          >
-            <option value="all">Todos los barrios</option>
-            {neighborhoods.map((n) => (
-              <option value={n}>{t(`neighborhoods.${n}`)}</option>
-            ))}
-          </select>
-          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)] pointer-events-none transition-colors group-hover:text-[var(--color-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
+              <!-- Inactive State: Minimal -->
+              <div class="pane-minimal">
+                <span class="minimal-index">0{idx + 1}</span>
+                <span class="minimal-line"></span>
+                <span class="minimal-icon">{catIcon}</span>
+              </div>
 
-        <div class="flex-1"></div>
+              <!-- Active State: Full Content -->
+              <div class="pane-full">
+                <div class="full-header">
+                  <span class="full-category">
+                    <span class="cat-icon">{catIcon}</span>
+                    {catLabel}
+                  </span>
+                  <span class="full-number">{String(idx + 1).padStart(2, '0')}</span>
+                </div>
 
-        {/* Botón Limpiar filtros */}
-        <button 
-          id="clear-filters"
-          class="hidden items-center gap-2 px-5 py-3 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-secondary)] transition-all duration-300 rounded-xl hover:bg-[var(--color-secondary-muted)] font-medium"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          Limpiar filtros
-        </button>
+                <div class="full-content">
+                  <h3 class="full-title">{route.title[locale]}</h3>
+                  
+                  <div class="full-meta">
+                    <div class="meta-item">
+                      <span class="meta-label">{t('routes.accordionMetaDuration')}</span>
+                      <span class="meta-value">{formatDuration(route.duration)}</span>
+                    </div>
+                    <div class="meta-divider"></div>
+                    <div class="meta-item">
+                      <span class="meta-label">{t('routes.accordionMetaDistance')}</span>
+                      <span class="meta-value">{route.distance} KM</span>
+                    </div>
+                    <div class="meta-divider"></div>
+                    <div class="meta-item">
+                      <span class="meta-label">{t('routes.accordionMetaDifficulty')}</span>
+                      <span class={`meta-value diff-${route.difficulty}`}>{diffLabel}</span>
+                    </div>
+                  </div>
+
+                  <div class="full-cta">
+                    <span>{t('routes.viewRoute')}</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hover Indicator -->
+              <div class="pane-indicator">
+                <div class="indicator-bar"></div>
+              </div>
+            </a>
+          );
+        })}
       </div>
     </div>
-  </div>
 
-  {/* Results counter */}
-  <div class="container py-8">
-    <div class="flex items-center gap-3 text-sm text-[var(--color-text-secondary)]">
-      <span class="w-2 h-2 rounded-full bg-[var(--color-secondary)] animate-pulse"></span>
-      Mostrando <span id="results-count" class="font-bold text-[var(--color-text-primary)]">{routes.length}</span> rutas
-    </div>
-  </div>
-
-  {/* Routes Grid */}
-  <section class="container pb-24" aria-labelledby="routes-heading">
-    <h2 id="routes-heading" class="sr-only">{t('routes.title')}</h2>
-    
-    <div id="routes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {routes.map((route, index) => (
-        <div 
-          class="route-card-wrapper scroll-animate"
-          data-type={route.category}
-          data-difficulty={route.difficulty}
-          data-neighborhoods={route.neighborhoods.join(',')}
-        >
-          <RouteCard route={route} locale={locale} t={t} index={index} variant="grid" />
-        </div>
+    <!-- Mobile Navigation -->
+    <div class="accordion-nav">
+      {featuredRoutes.map((_, idx) => (
+        <button class="nav-dot" data-index={idx} aria-label={t('routes.routeAriaLabel').replace('{{number}}', String(idx + 1))}></button>
       ))}
     </div>
-    
-    {/* Empty state */}
-    <div id="empty-state" class="hidden text-center py-24">
-      <div class="relative w-24 h-24 mx-auto mb-8">
-        <div class="absolute inset-0 bg-[var(--color-secondary)]/20 rounded-2xl blur-xl"></div>
-        <div class="relative w-full h-full bg-[var(--color-bg-cream)] border border-[var(--color-secondary)]/20 rounded-2xl flex items-center justify-center">
-          <svg class="w-12 h-12 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+  </section>
+
+  <!-- FILTER SECTION -->
+  <section class="filter-section" id="routes-grid">
+    <div class="filter-backdrop">
+      <div class="backdrop-pattern"></div>
+    </div>
+
+    <div class="filter-container">
+      <div class="filter-header">
+        <div class="filter-title-group">
+          <div class="filter-eyebrow-wrapper">
+            <span class="eyebrow-bracket">[</span>
+            <span class="filter-eyebrow">{t('routes.catalogueEyebrow')}</span>
+            <span class="eyebrow-bracket">]</span>
+          </div>
+          <h2 class="filter-title">
+            {t('routes.allRoutes').split('').map((char: string) => (
+              char === ' '
+                ? <span class="title-space"></span>
+                : <span class="title-char">{char}</span>
+            ))}
+          </h2>
+        </div>
+        <div class="filter-count">
+          <span class="count-value" id="route-count">{allRoutes.length}</span>
+          <span class="count-divider"></span>
+          <span class="count-label">{t('routes.routesCountLabel')}</span>
         </div>
       </div>
-      <h3 class="text-2xl font-bold text-[var(--color-text-primary)] mb-3">
-        Sin resultados para estos filtros
-      </h3>
-      <p class="text-[var(--color-text-secondary)] mb-8 max-w-md mx-auto">Prueba a cambiar los filtros o ver todas las rutas disponibles</p>
-      <button 
-        id="empty-clear-filters"
-        class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-secondary)] text-white font-semibold rounded-full hover:bg-[var(--color-secondary-dark)] transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-secondary)]/25"
-      >
-        Limpiar filtros
-      </button>
+
+      <div class="filter-bar-wrapper">
+        <div class="filter-bar" id="filter-bar">
+          <div class="filter-track">
+            <button class="filter-chip active" data-filter="all">
+              <span class="chip-glow"></span>
+              <span class="chip-content">
+                <span class="chip-icon">◎</span>
+                <span class="chip-label">{t('filters.all')}</span>
+                <span class="chip-count">{allRoutes.length}</span>
+              </span>
+            </button>
+            
+            {categories.map((cat) => {
+              const count = allRoutes.filter(r => r.category === cat).length;
+              return (
+                <button class="filter-chip" data-filter={cat}>
+                  <span class="chip-glow"></span>
+                  <span class="chip-content">
+                    <span class="chip-icon">{categoryIcons[cat]}</span>
+                    <span class="chip-label">{categoryLabels[cat]}</span>
+                    <span class="chip-count">{count}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        
+        <div class="filter-scroll-hint left" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="filter-scroll-hint right" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <button class="filter-reset" id="filter-reset" style="display: none;">
+          <span class="reset-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 3v5h5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span>{t('routes.resetFilter')}</span>
+        </button>
+      </div>
+
+      <!-- Archive Grid -->
+      <div class="archive-grid" id="routes-grid-container">
+        {remainingRoutes.map((route, idx) => {
+          const href = `/rutas/${route.slug}`;
+          const bgImage = ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
+          const diffColor = difficultyColors[route.difficulty];
+          const catIcon = categoryIcons[route.category];
+          
+          // Expedition number with leading zeros
+          const expeditionNum = String(idx + 1).padStart(2, '0');
+
+          return (
+            <article 
+              class="expedition-card" 
+              data-category={route.category}
+              data-index={idx}
+              style={`--card-index: ${idx}; --diff-color: ${diffColor}`}
+            >
+              <a href={href} class="expedition-link">
+                {/* Expedition Number Stamp */}
+                <div class="expedition-stamp">
+                  <span class="stamp-prefix">EXP.</span>
+                  <span class="stamp-number">{expeditionNum}</span>
+                </div>
+
+                {/* Main Visual */}
+                <div class="expedition-visual">
+                  <div class="visual-frame">
+                    <img
+                      src={bgImage}
+                      alt={route.title[locale]}
+                      class="expedition-img"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div class="visual-vignette"></div>
+                    
+                    {/* Corner Markers */}
+                    <div class="corner-marker tl"></div>
+                    <div class="corner-marker tr"></div>
+                    <div class="corner-marker bl"></div>
+                    <div class="corner-marker br"></div>
+                  </div>
+                  
+                  {/* Category Tag */}
+                  <div class="legend-tag">
+                    <span class="legend-symbol">{catIcon}</span>
+                    <span class="legend-text">{categoryLabels[route.category]}</span>
+                  </div>
+                  
+                  {/* Difficulty Stamp */}
+                  <div class="difficulty-stamp" style={`--stamp-color: ${diffColor}`}>
+                    <div class="stamp-ring">
+                      <div class="stamp-dot"></div>
+                    </div>
+                    <span class="stamp-label">{difficultyLabels[route.difficulty]}</span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div class="field-notes">
+                  {/* Stats Header */}
+                  <div class="coordinates-header">
+                    <div class="coord-line">
+                      <span class="coord-label">DIST.</span>
+                      <span class="coord-value">{route.distance}km</span>
+                    </div>
+                    <div class="coord-divider"></div>
+                    <div class="coord-line">
+                      <span class="coord-label">TIEMPO</span>
+                      <span class="coord-value">{formatDuration(route.duration)}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 class="expedition-title">
+                    {route.title[locale]}
+                  </h3>
+                </div>
+                
+                {/* Hover Reveal */}
+                <div class="compass-reveal" aria-hidden="true">
+                  <div class="compass-container">
+                    <svg viewBox="0 0 100 100" class="compass-svg">
+                      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+                      <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+                      <path d="M50 10 L55 45 L90 50 L55 55 L50 90 L45 55 L10 50 L45 45 Z" fill="currentColor" opacity="0.8"/>
+                      <circle cx="50" cy="50" r="4" fill="currentColor"/>
+                    </svg>
+                    <span class="compass-text">{t('routes.explore')}</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M8 8l8 8M16 8l-8 8"/>
+          </svg>
+        </div>
+        <h3 class="empty-title">{t('routes.emptyTitle')}</h3>
+        <p class="empty-text">{t('routes.emptyText')}</p>
+        <button class="empty-btn" id="empty-reset">{t('routes.emptyBtn')}</button>
+      </div>
     </div>
   </section>
 
-  <script is:inline>
-    (function() {
-      const typeButtons = document.querySelectorAll('.filter-type');
-      const difficultySelect = document.getElementById('filter-difficulty');
-      const neighborhoodSelect = document.getElementById('filter-neighborhood');
-      const clearFiltersBtn = document.getElementById('clear-filters');
-      const emptyClearFiltersBtn = document.getElementById('empty-clear-filters');
-      const resultsCount = document.getElementById('results-count');
-      const emptyState = document.getElementById('empty-state');
-      const routesGrid = document.getElementById('routes-grid');
-      const routeCards = document.querySelectorAll('.route-card-wrapper');
+  <!-- TIME PLANS SECTION -->
+  <section class="time-section" id="time-plans">
+    <div class="time-container">
+      <div class="time-header">
+        <div class="header-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span class="eyebrow-text">{t('routes.timePlansEyebrow')}</span>
+          <span class="eyebrow-line"></span>
+        </div>
+        <h2 class="header-title">{t('routes.timePlansTitle')}</h2>
+        <p class="header-subtitle">{t('routes.timePlansSubtitle')}</p>
+      </div>
 
-      let filters = {
-        type: 'all',
-        difficulty: 'all',
-        neighborhood: 'all'
+      <div class="time-grid">
+        {mixedRoutes.map((plan, idx) => (
+          <a href={`/rutas/por-tiempo/${plan.slug}`} class="time-card" style={`--card-index: ${idx}`}>
+            <div class="time-card-header">
+              <span class="time-duration">{plan.duration}</span>
+              <div class="time-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="time-content">
+              <h3 class="time-title">{plan.title[locale]}</h3>
+              <p class="time-description">{plan.description[locale]}</p>
+            </div>
+
+            <div class="time-footer">
+              <span class="time-cta">
+                {t('routes.explore')}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <div class="cta-visual">
+        <div class="visual-star">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 0L61.8 38.2L100 50L61.8 61.8L50 100L38.2 61.8L0 50L38.2 38.2L50 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="cta-content">
+        <h2 class="cta-title">{t('routes.ctaTitle')}</h2>
+        <p class="cta-text">{t('routes.ctaText')}</p>
+        <a href="/eventos" class="cta-button">
+          <span>{t('routes.ctaBtn')}</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <ScreenFrame tagTopLeft="37°N" tagTopRight="03°W" />
+  </section>
+
+  <script>
+    // Accordion functionality
+    function initAccordion() {
+      const accordion = document.getElementById('routes-accordion');
+      const panes = accordion?.querySelectorAll<HTMLElement>('.accordion-pane');
+      const navDots = document.querySelectorAll<HTMLElement>('.nav-dot');
+
+      if (!panes?.length) return;
+
+      // Set initial active state
+      panes.forEach((p, i) => {
+        if (i === 0) {
+          p.classList.add('is-active');
+          navDots[i]?.classList.add('is-active');
+        }
+      });
+
+      // Desktop: hover to activate
+      panes.forEach((pane, idx) => {
+        pane.addEventListener('mouseenter', () => {
+          if (window.innerWidth <= 1024) return;
+          
+          panes.forEach((p) => p.classList.remove('is-active'));
+          navDots.forEach((d) => d.classList.remove('is-active'));
+          
+          pane.classList.add('is-active');
+          navDots[idx]?.classList.add('is-active');
+        });
+
+        // Mobile: click to activate
+        pane.addEventListener('click', (e) => {
+          if (window.innerWidth > 1024) return;
+          
+          const isActive = pane.classList.contains('is-active');
+          
+          if (!isActive) {
+            e.preventDefault();
+            panes.forEach((p) => p.classList.remove('is-active'));
+            navDots.forEach((d) => d.classList.remove('is-active'));
+            pane.classList.add('is-active');
+            navDots[idx]?.classList.add('is-active');
+          }
+        });
+      });
+
+      // Nav dots
+      navDots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+          panes.forEach((p) => p.classList.remove('is-active'));
+          navDots.forEach((d) => d.classList.remove('is-active'));
+          panes[idx]?.classList.add('is-active');
+          dot.classList.add('is-active');
+          
+          panes[idx]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+      });
+    }
+
+    // Filter functionality
+    function initFilters() {
+      const filterChips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
+      const routeCards = document.querySelectorAll<HTMLElement>('.expedition-card');
+      const routeCount = document.getElementById('route-count');
+      const filterReset = document.getElementById('filter-reset');
+      const emptyState = document.getElementById('empty-state');
+      const gridContainer = document.getElementById('routes-grid-container');
+      const emptyReset = document.getElementById('empty-reset');
+      const filterBar = document.getElementById('filter-bar');
+      const filterBarWrapper = filterBar?.parentElement;
+
+      // Scroll indicators for filter bar
+      if (filterBar && filterBarWrapper) {
+        function updateScrollIndicators() {
+          const hasOverflow = filterBar.scrollWidth > filterBar.clientWidth;
+          const atStart = filterBar.scrollLeft <= 10;
+          const atEnd = filterBar.scrollLeft >= filterBar.scrollWidth - filterBar.clientWidth - 10;
+          
+          filterBarWrapper.classList.toggle('has-scroll-left', hasOverflow && !atStart);
+          filterBarWrapper.classList.toggle('has-scroll-right', hasOverflow && !atEnd);
+        }
+
+        filterBar.addEventListener('scroll', updateScrollIndicators, { passive: true });
+        window.addEventListener('resize', updateScrollIndicators, { passive: true });
+        updateScrollIndicators();
+      }
+
+      function updateCount(count: number) {
+        if (routeCount) {
+          routeCount.textContent = count.toString();
+          routeCount.classList.add('count-pulse');
+          setTimeout(() => routeCount.classList.remove('count-pulse'), 300);
+        }
+      }
+
+      function resetFilters() {
+        filterChips.forEach((c) => c.classList.remove('active'));
+        filterChips[0]?.classList.add('active');
+        
+        routeCards.forEach((card) => {
+          card.classList.remove('hidden');
+          card.style.display = '';
+        });
+
+        updateCount(routeCards.length);
+        filterReset?.style.setProperty('display', 'none');
+        emptyState?.style.setProperty('display', 'none');
+        gridContainer?.style.setProperty('display', '');
+      }
+
+      filterChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const filter = chip.dataset.filter;
+
+          // Update active state
+          filterChips.forEach((c) => c.classList.remove('active'));
+          chip.classList.add('active');
+
+          // Filter logic
+          let visibleCount = 0;
+          
+          routeCards.forEach((card) => {
+            const category = card.dataset.category;
+            const shouldShow = filter === 'all' || category === filter;
+
+            if (shouldShow) {
+              card.classList.remove('hidden');
+              card.style.display = '';
+              visibleCount++;
+            } else {
+              card.classList.add('hidden');
+              card.style.display = 'none';
+            }
+          });
+
+          updateCount(visibleCount);
+
+          // Show/hide reset button
+          if (filter !== 'all') {
+            filterReset?.style.setProperty('display', 'flex');
+          } else {
+            filterReset?.style.setProperty('display', 'none');
+          }
+
+          // Empty state
+          if (visibleCount === 0) {
+            gridContainer?.style.setProperty('display', 'none');
+            emptyState?.style.setProperty('display', 'flex');
+          } else {
+            gridContainer?.style.setProperty('display', '');
+            emptyState?.style.setProperty('display', 'none');
+          }
+        });
+      });
+
+      filterReset?.addEventListener('click', resetFilters);
+      emptyReset?.addEventListener('click', resetFilters);
+    }
+
+    // Scroll animations
+    function initScrollAnimations() {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -50px 0px',
+        threshold: 0.1,
       };
 
-      function applyFilters() {
-        let visibleCount = 0;
-        
-        routeCards.forEach(card => {
-          const type = card.dataset.type;
-          const difficulty = card.dataset.difficulty;
-          const neighborhoods = card.dataset.neighborhoods?.split(',') || [];
-          
-          const matchesType = filters.type === 'all' || type === filters.type;
-          const matchesDifficulty = filters.difficulty === 'all' || difficulty === filters.difficulty;
-          const matchesNeighborhood = filters.neighborhood === 'all' || neighborhoods.includes(filters.neighborhood);
-          
-          const isVisible = matchesType && matchesDifficulty && matchesNeighborhood;
-          
-          if (isVisible) {
-            card.style.display = '';
-            visibleCount++;
-          } else {
-            card.style.display = 'none';
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
           }
         });
-        
-        resultsCount.textContent = visibleCount;
-        
-        if (visibleCount === 0) {
-          routesGrid.classList.add('hidden');
-          emptyState.classList.remove('hidden');
-        } else {
-          routesGrid.classList.remove('hidden');
-          emptyState.classList.add('hidden');
-        }
-        
-        const hasActiveFilters = filters.type !== 'all' || 
-                                 filters.difficulty !== 'all' || 
-                                 filters.neighborhood !== 'all';
-        
-        if (hasActiveFilters) {
-          clearFiltersBtn.classList.remove('hidden');
-          clearFiltersBtn.classList.add('inline-flex');
-        } else {
-          clearFiltersBtn.classList.add('hidden');
-          clearFiltersBtn.classList.remove('inline-flex');
-        }
-      }
+      }, observerOptions);
 
-      typeButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          typeButtons.forEach(b => {
-            b.classList.remove('bg-[var(--color-secondary)]', 'text-white');
-            b.classList.add('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
-            b.setAttribute('aria-pressed', 'false');
-          });
-          btn.classList.remove('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
-          btn.classList.add('bg-[var(--color-secondary)]', 'text-white');
-          btn.setAttribute('aria-pressed', 'true');
-          
-          filters.type = btn.dataset.type;
-          applyFilters();
-        });
+      document.querySelectorAll('.expedition-card, .time-card').forEach((el) => {
+        observer.observe(el);
       });
+    }
 
-      difficultySelect?.addEventListener('change', (e) => {
-        filters.difficulty = e.target.value;
-        applyFilters();
-      });
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initAccordion();
+      initFilters();
+      initScrollAnimations();
+    });
 
-      neighborhoodSelect?.addEventListener('change', (e) => {
-        filters.neighborhood = e.target.value;
-        applyFilters();
-      });
-
-      function clearFilters() {
-        filters = {
-          type: 'all',
-          difficulty: 'all',
-          neighborhood: 'all'
-        };
-        
-        typeButtons.forEach(b => {
-          if (b.dataset.type === 'all') {
-            b.classList.remove('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
-            b.classList.add('bg-[var(--color-secondary)]', 'text-white');
-            b.setAttribute('aria-pressed', 'true');
-          } else {
-            b.classList.remove('bg-[var(--color-secondary)]', 'text-white');
-            b.classList.add('text-[var(--color-text-primary)]', 'bg-white', 'border', 'border-[var(--color-border)]');
-            b.setAttribute('aria-pressed', 'false');
-          }
-        });
-        
-        difficultySelect.value = 'all';
-        neighborhoodSelect.value = 'all';
-        
-        applyFilters();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      clearFiltersBtn?.addEventListener('click', clearFilters);
-      emptyClearFiltersBtn?.addEventListener('click', clearFilters);
-    })();
+    document.addEventListener('astro:page-load', () => {
+      initAccordion();
+      initFilters();
+      initScrollAnimations();
+    });
   </script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       VARIABLES & BASE
+       ═══════════════════════════════════════════════════════════════ */
+    :root {
+      --r-cream:    #f5f0ea;
+      --r-cream-2:  #faf7f3;
+      --r-ink:      #1a1619;
+      --r-ink-2:    #3d3632;
+      --r-ink-3:    #6b6058;
+      --r-orange:   #e8622a;
+      --r-orange-2: #f07040;
+      --r-gold:     #c9a84c;
+      --r-gold-2:   #e6c587;
+      --r-border:   rgba(26, 22, 25, 0.08);
+      --r-border-2: rgba(26, 22, 25, 0.12);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ACCORDION SECTION
+       ═══════════════════════════════════════════════════════════════ */
+    .accordion-section {
+      position: relative;
+      background: var(--r-cream);
+      padding: 6rem 0 4rem;
+      overflow: hidden;
+    }
+
+    .section-accent {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .accent-line {
+      flex: 1;
+      max-width: 100px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--r-border-2), transparent);
+    }
+
+    .accent-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--r-orange);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .accent-text {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--r-ink-3);
+      text-transform: uppercase;
+    }
+
+    .accordion-container {
+      padding: 0 clamp(1rem, 4vw, 3rem);
+    }
+
+    .routes-accordion {
+      display: flex;
+      gap: 8px;
+      height: 70vh;
+      min-height: 500px;
+      max-height: 800px;
+    }
+
+    .accordion-pane {
+      position: relative;
+      flex: 1;
+      overflow: hidden;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      background: var(--r-ink);
+      transition: flex 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .accordion-pane.is-active {
+      flex: 5;
+    }
+
+    .pane-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .pane-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(80%) contrast(1.1) brightness(0.6);
+      transform: scale(1.1);
+      transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .accordion-pane.is-active .pane-img {
+      filter: grayscale(0%) contrast(1.05) brightness(0.85);
+      transform: scale(1);
+    }
+
+    .pane-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.6) 40%,
+        rgba(0, 0, 0, 0.2) 100%
+      );
+      transition: opacity 0.6s ease;
+    }
+
+    .accordion-pane.is-active .pane-gradient {
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.1) 100%
+      );
+    }
+
+    /* Inactive State */
+    .pane-minimal {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      z-index: 2;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    .accordion-pane.is-active .pane-minimal {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .minimal-index {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 200;
+      color: var(--r-gold);
+      opacity: 0.8;
+    }
+
+    .minimal-line {
+      width: 1px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .minimal-icon {
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Active State */
+    .pane-full {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .accordion-pane.is-active .pane-full {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.15s;
+    }
+
+    .full-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .full-category {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--r-ink);
+    }
+
+    .cat-icon {
+      font-size: 0.9rem;
+    }
+
+    .full-number {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .full-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .full-title {
+      font-family: var(--font-body);
+      font-size: clamp(1.5rem, 3vw, 3rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: white;
+      margin: 0;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .full-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .meta-label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .meta-value.diff-easy { color: #4a9e6b; }
+    .meta-value.diff-moderate { color: #d4873a; }
+    .meta-value.diff-challenging { color: #c94a4a; }
+
+    .meta-divider {
+      width: 1px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .full-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--r-orange);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: white;
+      width: fit-content;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-pane:hover .full-cta {
+      background: var(--r-orange-2);
+      transform: translateX(4px);
+    }
+
+    /* Indicator Bar */
+    .pane-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      z-index: 4;
+    }
+
+    .indicator-bar {
+      height: 100%;
+      width: 0;
+      background: var(--r-orange);
+      transition: width 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .accordion-pane.is-active .indicator-bar {
+      width: 100%;
+    }
+
+    /* Mobile Nav */
+    .accordion-nav {
+      display: none;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 2rem;
+      padding: 0 1.5rem;
+    }
+
+    .nav-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--r-border-2);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-dot.is-active {
+      background: var(--r-orange);
+      border-color: var(--r-orange);
+      transform: scale(1.2);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FILTER SECTION - Editorial Cinematic
+       ═══════════════════════════════════════════════════════════════ */
+    .filter-section {
+      position: relative;
+      background: var(--r-cream-2);
+      padding: 6rem 0 4rem;
+      overflow: hidden;
+    }
+
+    .filter-backdrop {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .backdrop-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(232, 98, 42, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(201, 168, 76, 0.03) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 100%, rgba(26, 22, 25, 0.02) 0%, transparent 60%);
+    }
+
+    .filter-container {
+      position: relative;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--r-border);
+    }
+
+    .filter-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .filter-eyebrow-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-bracket {
+      color: var(--r-orange);
+      font-weight: 700;
+    }
+
+    .filter-eyebrow {
+      color: var(--r-ink-3);
+    }
+
+    .filter-title {
+      font-family: var(--font-body);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 400;
+      color: var(--r-ink);
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .title-char {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .title-space {
+      display: inline-block;
+      width: 0.3em;
+    }
+
+    .title-accent {
+      color: var(--r-orange);
+    }
+
+    .filter-count {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--r-border);
+      border-radius: 12px;
+    }
+
+    .count-value {
+      font-family: var(--font-body);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--r-orange);
+      line-height: 1;
+      transition: transform 0.3s ease;
+    }
+
+    .count-value.count-pulse {
+      animation: count-pulse 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes count-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    .count-divider {
+      width: 1px;
+      height: 1.5rem;
+      background: var(--r-border-2);
+    }
+
+    .count-label {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--r-ink-3);
+      text-transform: uppercase;
+    }
+
+    /* Filter Bar with Scroll Indicators */
+    .filter-bar-wrapper {
+      position: relative;
+      margin-bottom: 3.5rem;
+    }
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--r-border) transparent;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 0.25rem 1rem;
+      margin: -0.5rem -0.25rem -1rem;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .filter-bar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .filter-bar::-webkit-scrollbar-thumb {
+      background: var(--r-border);
+      border-radius: 2px;
+    }
+
+    .filter-track {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: nowrap;
+      padding-right: 2rem;
+    }
+
+    .filter-scroll-hint {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to right, var(--r-cream-2), transparent);
+      color: var(--r-ink-3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .filter-scroll-hint.left {
+      left: 0;
+      background: linear-gradient(to right, var(--r-cream-2) 30%, transparent 100%);
+    }
+
+    .filter-scroll-hint.right {
+      right: 0;
+      background: linear-gradient(to left, var(--r-cream-2) 30%, transparent 100%);
+    }
+
+    .filter-bar-wrapper.has-scroll-left .filter-scroll-hint.left,
+    .filter-bar-wrapper.has-scroll-right .filter-scroll-hint.right {
+      opacity: 1;
+    }
+
+    /* Cinematic Filter Chips */
+    .filter-chip {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--r-border);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .chip-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, var(--r-orange) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .filter-chip:hover .chip-glow,
+    .filter-chip.active .chip-glow {
+      opacity: 0.08;
+    }
+
+    .chip-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.25rem;
+      z-index: 2;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--r-orange);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(232, 98, 42, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-chip.active {
+      background: var(--r-ink);
+      border-color: var(--r-ink);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(26, 22, 25, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .chip-icon {
+      font-size: 1rem;
+      opacity: 0.9;
+      transition: transform 0.3s ease;
+    }
+
+    .filter-chip:hover .chip-icon {
+      transform: scale(1.1);
+    }
+
+    .chip-label {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .chip-count {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      background: var(--r-cream);
+      border-radius: 100px;
+      color: var(--r-ink-3);
+      transition: all 0.3s ease;
+    }
+
+    .filter-chip:hover .chip-count {
+      background: rgba(232, 98, 42, 0.1);
+      color: var(--r-orange);
+    }
+
+    .filter-chip.active .chip-count {
+      background: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Reset Button */
+    .filter-reset {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.25rem;
+      background: transparent;
+      border: 1.5px dashed var(--r-border-2);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--r-ink-3);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .filter-reset:hover {
+      border-color: var(--r-orange);
+      border-style: solid;
+      color: var(--r-orange);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(232, 98, 42, 0.1);
+    }
+
+    .reset-icon {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .filter-reset:hover .reset-icon {
+      transform: rotate(-180deg);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ARCHIVE GRID - Expedition Cards
+       Professional cartographer aesthetic aligned with site design
+       ═══════════════════════════════════════════════════════════════ */
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 2rem;
+      padding: 1rem 0;
+    }
+
+    .expedition-card {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 
+        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .expedition-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .expedition-card:nth-child(1) { transition-delay: 0s; }
+    .expedition-card:nth-child(2) { transition-delay: 0.08s; }
+    .expedition-card:nth-child(3) { transition-delay: 0.16s; }
+    .expedition-card:nth-child(4) { transition-delay: 0.24s; }
+    .expedition-card:nth-child(5) { transition-delay: 0.32s; }
+    .expedition-card:nth-child(6) { transition-delay: 0.4s; }
+
+    /* Card Link - Clean Surface */
+    .expedition-link {
+      display: block;
+      position: relative;
+      text-decoration: none;
+      color: inherit;
+      background: var(--r-cream-2);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 
+        0 2px 4px rgba(26, 22, 25, 0.04),
+        0 8px 24px rgba(26, 22, 25, 0.06);
+      transition: 
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .expedition-link:hover {
+      transform: translateY(-6px);
+      box-shadow: 
+        0 12px 32px rgba(26, 22, 25, 0.12),
+        0 4px 12px rgba(26, 22, 25, 0.08);
+    }
+
+    /* Expedition Number Stamp */
+    .expedition-stamp {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.5rem 0.75rem;
+      background: var(--r-ink);
+      border: 1px solid var(--r-gold);
+      border-radius: 4px;
+      transform: rotate(-1deg);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .expedition-link:hover .expedition-stamp {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    .stamp-prefix {
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--r-gold);
+    }
+
+    .stamp-number {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--r-cream);
+      line-height: 1;
+    }
+
+    /* Visual Container */
+    .expedition-visual {
+      position: relative;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      background: var(--r-ink);
+    }
+
+    .visual-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 0.75rem;
+      box-sizing: border-box;
+    }
+
+    .expedition-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%) contrast(1.05) brightness(0.9);
+      border-radius: 8px;
+      transition: 
+        filter 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+        transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .expedition-link:hover .expedition-img {
+      filter: grayscale(0%) contrast(1.02) brightness(1);
+      transform: scale(1.03);
+    }
+
+    .visual-vignette {
+      position: absolute;
+      inset: 0.75rem;
+      background: 
+        linear-gradient(
+          to bottom,
+          transparent 50%,
+          rgba(26, 22, 25, 0.4) 100%
+        );
+      pointer-events: none;
+      border-radius: 8px;
+    }
+
+    /* Corner Markers */
+    .corner-marker {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-color: rgba(201, 168, 76, 0.5);
+      border-style: solid;
+      border-width: 0;
+      transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .corner-marker.tl { 
+      top: 0.5rem; left: 0.5rem; 
+      border-top-width: 2px; border-left-width: 2px;
+    }
+    .corner-marker.tr { 
+      top: 0.5rem; right: 0.5rem; 
+      border-top-width: 2px; border-right-width: 2px;
+    }
+    .corner-marker.bl { 
+      bottom: 0.5rem; left: 0.5rem; 
+      border-bottom-width: 2px; border-left-width: 2px;
+    }
+    .corner-marker.br { 
+      bottom: 0.5rem; right: 0.5rem; 
+      border-bottom-width: 2px; border-right-width: 2px;
+    }
+
+    .expedition-link:hover .corner-marker {
+      border-color: var(--r-gold);
+    }
+
+    /* Legend Tag */
+    .legend-tag {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--r-ink);
+      z-index: 5;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(8px);
+    }
+
+    .expedition-link:hover .legend-tag {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .legend-symbol {
+      font-size: 0.85rem;
+      color: var(--r-orange);
+    }
+
+    /* Difficulty Stamp */
+    .difficulty-stamp {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      z-index: 5;
+      padding: 0.3rem 0.625rem;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--stamp-color);
+      border-radius: 100px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(8px);
+    }
+
+    .expedition-link:hover .difficulty-stamp {
+      transform: scale(1.02);
+    }
+
+    .stamp-ring {
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--stamp-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stamp-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--stamp-color);
+      border-radius: 50%;
+    }
+
+    .stamp-label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--r-ink);
+    }
+
+    /* Field Notes Content */
+    .field-notes {
+      position: relative;
+      padding: 1.25rem;
+      background: var(--r-cream-2);
+      z-index: 3;
+    }
+
+    /* Stats Header */
+    .coordinates-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.875rem;
+      padding-bottom: 0.625rem;
+      border-bottom: 1px solid var(--r-border);
+    }
+
+    .coord-line {
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+    }
+
+    .coord-label {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--r-ink-3);
+    }
+
+    .coord-value {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--r-ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .coord-divider {
+      width: 1px;
+      height: 10px;
+      background: var(--r-border-2);
+    }
+
+    /* Expedition Title */
+    .expedition-title {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--r-ink);
+      margin: 0;
+      letter-spacing: -0.01em;
+      position: relative;
+      padding-bottom: 0.625rem;
+    }
+
+    .expedition-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--r-gold), transparent);
+      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .expedition-link:hover .expedition-title::after {
+      width: 60px;
+    }
+
+    /* Compass Reveal on Hover */
+    .compass-reveal {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(26, 22, 25, 0.85);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 15;
+    }
+
+    .expedition-link:hover .compass-reveal {
+      opacity: 1;
+    }
+
+    .compass-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.875rem;
+    }
+
+    .compass-svg {
+      width: 52px;
+      height: 52px;
+      color: var(--r-gold);
+      transform: scale(0.6) rotate(-90deg);
+      opacity: 0;
+      transition: 
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s,
+        opacity 0.4s ease 0.08s;
+    }
+
+    .expedition-link:hover .compass-svg {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+
+    .compass-text {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--r-cream);
+      transform: translateY(12px);
+      opacity: 0;
+      transition: 
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+        opacity 0.4s ease 0.15s;
+    }
+
+    .expedition-link:hover .compass-text {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Empty State */
+    .empty-state {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .empty-icon {
+      color: var(--r-border-2);
+    }
+
+    .empty-title {
+      font-family: var(--font-body);
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--r-ink);
+      margin: 0;
+    }
+
+    .empty-text {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--r-ink-3);
+      margin: 0;
+    }
+
+    .empty-btn {
+      padding: 0.875rem 1.5rem;
+      background: var(--r-ink);
+      border: none;
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .empty-btn:hover {
+      background: var(--r-orange);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TIME PLANS SECTION
+       ═══════════════════════════════════════════════════════════════ */
+    .time-section {
+      position: relative;
+      background: var(--r-cream);
+      padding: 6rem 0;
+      overflow: hidden;
+    }
+
+    .time-container {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .time-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .header-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .eyebrow-line {
+      width: 60px;
+      height: 1px;
+      background: var(--r-border-2);
+    }
+
+    .eyebrow-text {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--r-orange);
+      text-transform: uppercase;
+    }
+
+    .header-title {
+      font-family: var(--font-body);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      color: var(--r-ink);
+      margin: 0 0 0.75rem;
+    }
+
+    .header-subtitle {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--r-ink-3);
+      margin: 0;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .time-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 1.75rem;
+      background: var(--r-cream-2);
+      border: 1px solid var(--r-border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .time-card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .time-card:nth-child(1) { transition-delay: 0.1s; }
+    .time-card:nth-child(2) { transition-delay: 0.18s; }
+    .time-card:nth-child(3) { transition-delay: 0.26s; }
+    .time-card:nth-child(4) { transition-delay: 0.34s; }
+
+    .time-card:hover {
+      transform: translateY(-4px);
+      border-color: transparent;
+      box-shadow: 0 20px 40px rgba(26, 22, 25, 0.1);
+    }
+
+    .time-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .time-duration {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--r-orange);
+      padding: 0.4rem 0.875rem;
+      background: rgba(232, 98, 42, 0.08);
+      border-radius: 100px;
+    }
+
+    .time-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--r-cream);
+      border-radius: 10px;
+      color: var(--r-ink-3);
+      transition: all 0.3s ease;
+    }
+
+    .time-card:hover .time-icon {
+      background: var(--r-ink);
+      color: var(--r-gold);
+    }
+
+    .time-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    .time-title {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--r-ink);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .time-description {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--r-ink-3);
+      margin: 0;
+    }
+
+    .time-footer {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--r-border);
+    }
+
+    .time-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--r-ink);
+      transition: color 0.3s ease;
+    }
+
+    .time-card:hover .time-cta {
+      color: var(--r-orange);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CTA SECTION
+       ═══════════════════════════════════════════════════════════════ */
+    .cta-section {
+      position: relative;
+      background: var(--r-ink);
+      padding: 8rem clamp(1.5rem, 5vw, 3rem);
+      overflow: hidden;
+    }
+
+    .cta-section :global(.cin-screen-frame) {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .cta-section :global(.cin-corner::before),
+    .cta-section :global(.cin-corner::after) {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .cta-container {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cta-visual {
+      margin-bottom: 2rem;
+    }
+
+    .visual-star {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      color: var(--r-gold);
+      animation: rotate-star 20s linear infinite;
+    }
+
+    @keyframes rotate-star {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cta-title {
+      font-family: var(--font-body);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      color: white;
+      margin: 0 0 1rem;
+      line-height: 1.2;
+    }
+
+    .cta-text {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 0 2.5rem;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.125rem 2rem;
+      background: var(--r-orange);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cta-button:hover {
+      background: var(--r-orange-2);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(232, 98, 42, 0.4);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .accordion-section {
+        padding: 4rem 0;
+      }
+
+      .routes-accordion {
+        flex-direction: row;
+        height: 60vh;
+        min-height: 400px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+      }
+
+      .routes-accordion::-webkit-scrollbar {
+        display: none;
+      }
+
+      .accordion-pane {
+        flex: 0 0 85vw;
+        scroll-snap-align: center;
+      }
+
+      .accordion-pane.is-active {
+        flex: 0 0 85vw;
+      }
+
+      .accordion-nav {
+        display: flex;
+      }
+
+      .filter-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+
+      .filter-count {
+        padding: 0.875rem 1.25rem;
+      }
+
+      .count-value {
+        font-size: 2.5rem;
+      }
+
+      .filter-scroll-hint {
+        display: none;
+      }
+
+      .archive-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .filter-section {
+        padding: 4rem 0 3rem;
+      }
+
+      .filter-title {
+        font-size: clamp(1.75rem, 7vw, 2.5rem);
+      }
+
+      .accordion-pane {
+        flex: 0 0 90vw;
+      }
+
+      .accordion-pane.is-active {
+        flex: 0 0 90vw;
+      }
+
+      .archive-grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      .expedition-link:hover {
+        transform: translateY(-4px);
+      }
+
+      .expedition-title {
+        font-size: 1.15rem;
+      }
+
+      .visual-frame {
+        padding: 0.5rem;
+      }
+
+      .expedition-stamp {
+        padding: 0.4rem 0.625rem;
+        top: 0.75rem;
+        left: 0.75rem;
+      }
+
+      .stamp-number {
+        font-size: 0.875rem;
+      }
+
+      .difficulty-stamp {
+        top: 0.75rem;
+        right: 0.75rem;
+      }
+
+      .legend-tag {
+        left: 0.75rem;
+        bottom: 0.75rem;
+      }
+
+      .time-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-bar {
+        padding-bottom: 0.5rem;
+      }
+
+      .filter-chip {
+        padding: 0.6rem 1rem;
+      }
+
+      .chip-content {
+        padding: 0.6rem 1rem;
+        gap: 0.4rem;
+      }
+
+      .compass-svg {
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      .title-char,
+      .hero-subtitle,
+      .hero-description,
+      .cta-group,
+      .info-panel,
+      .expedition-card,
+      .time-card,
+      .badge-pulse {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
 </BaseLayout>

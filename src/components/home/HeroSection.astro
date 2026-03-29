@@ -10,26 +10,14 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-const heroContent = {
-  es: {
-    supra: 'Patrimonio de la Humanidad',
-    title: 'GRANADA',
-    cta: t('home.hero.ctaEvents'),
-    ctaLink: '/eventos',
-    label: 'DESTINO PATRIMONIAL',
-    ariaLabel: 'La Puerta a Granada',
-  },
-  en: {
-    supra: 'World Heritage Site',
-    title: 'GRANADA',
-    cta: t('home.hero.ctaEvents'),
-    ctaLink: '/en/events',
-    label: 'HERITAGE DESTINATION',
-    ariaLabel: 'The Gateway to Granada',
-  },
+const c = {
+  supra: t('home.hero.worldHeritage'),
+  title: 'GRANADA',
+  cta: t('home.hero.ctaEvents'),
+  ctaLink: locale === 'es' ? '/eventos' : '/en/events',
+  label: t('home.hero.heritageDestination'),
+  ariaLabel: t('home.hero.gatewayLabel'),
 };
-
-const c = heroContent[locale];
 ---
 
 <section class="portal-hero" aria-label={c.ariaLabel}>

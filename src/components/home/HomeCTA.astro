@@ -20,8 +20,8 @@ const content = {
     line1: 'Más que una guía.',
     line2: 'Una invitación',
     line3: 'a descubrir',
-    ctaPrimary: 'Explorar Eventos',
-    ctaSecondary: 'Ver Rutas',
+    ctaPrimary: t('home.hero.ctaEvents'),
+    ctaSecondary: t('home.hero.ctaRoutes'),
     ctaPrimaryLink: '/eventos',
     ctaSecondaryLink: '/rutas',
     vol: 'VOL. I · 2026',
@@ -41,8 +41,8 @@ const content = {
     line1: 'More than a guide.',
     line2: 'An invitation',
     line3: 'to discover',
-    ctaPrimary: 'Explore Events',
-    ctaSecondary: 'View Routes',
+    ctaPrimary: t('home.hero.ctaEvents'),
+    ctaSecondary: t('home.hero.ctaRoutes'),
     ctaPrimaryLink: '/en/events',
     ctaSecondaryLink: '/en/routes',
     vol: 'VOL. I · 2026',
@@ -62,7 +62,10 @@ const splitText = (text: string, baseDelay = 0) =>
   text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.03 }));
 ---
 
-<section class="cta-hero" aria-label={locale === 'es' ? 'Descubre Granada' : 'Discover Granada'}>
+<section class="cta-hero" aria-label={t('home.sections.ctaAriaLabel')}>
+  <!-- Transition spacer from previous section -->
+  <div class="section-transition" aria-hidden="true"></div>
+  
   <ScreenFrame tagTopLeft={c.supraLeft} tagTopRight={c.vol} tagBottomLeft="GV" tagBottomRight={c.coords} />
   
   <!-- Ambient Grain & Texture -->
@@ -112,17 +115,17 @@ const splitText = (text: string, baseDelay = 0) =>
       <!-- Left: Metadata Panel -->
       <aside class="meta-panel">
         <div class="meta-item">
-          <span class="meta-label">{locale === 'es' ? 'FUNDADO' : 'FOUNDED'}</span>
+          <span class="meta-label">{t('home.cta.founded')}</span>
           <span class="meta-value">{c.meta.founded}</span>
         </div>
         <div class="meta-divider" aria-hidden="true"></div>
         <div class="meta-item">
-          <span class="meta-label">{locale === 'es' ? 'ALTITUD' : 'ALTITUDE'}</span>
+          <span class="meta-label">{t('home.cta.altitude')}</span>
           <span class="meta-value">{c.meta.altitude}</span>
         </div>
         <div class="meta-divider" aria-hidden="true"></div>
         <div class="meta-item">
-          <span class="meta-label">{locale === 'es' ? 'POBLACIÓN' : 'POPULATION'}</span>
+          <span class="meta-label">{t('home.cta.population')}</span>
           <span class="meta-value">{c.meta.population}</span>
         </div>
       </aside>
@@ -228,12 +231,26 @@ const splitText = (text: string, baseDelay = 0) =>
 
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    /* Increased height for better presence and breathing room */
+    min-height: 90vh;
     background: var(--s-cream);
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-top: 1px solid var(--s-border);
+  }
+
+  /* Smooth transition from previous section */
+  .section-transition {
+    position: absolute;
+    top: -80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--s-cream));
+    z-index: 5;
+    pointer-events: none;
   }
 
   .cta-hero :global(.cin-screen-frame) { border-color: var(--s-border); }
@@ -301,26 +318,27 @@ const splitText = (text: string, baseDelay = 0) =>
     to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   }
 
-  /* Container */
+  /* Container - increased spacing */
   .cta-container {
     position: relative;
     z-index: 10;
     width: 100%;
     max-width: 1400px;
-    padding: 6rem clamp(1.5rem, 5vw, 4rem);
+    padding: 7rem clamp(1.5rem, 6vw, 5rem) 6rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4rem;
   }
 
-  /* Masthead */
+  /* Masthead - refined spacing */
   .cta-masthead {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
     text-align: center;
+    padding-top: 1rem;
   }
 
   .masthead-eyebrow {
@@ -329,12 +347,25 @@ const splitText = (text: string, baseDelay = 0) =>
     gap: 1rem;
     opacity: 0;
     animation: cin-fade-in 1s ease 0.2s forwards;
+    animation-play-state: paused;
+  }
+
+  .cta-hero.in-view .masthead-eyebrow,
+  .cta-hero.in-view .title-char,
+  .cta-hero.in-view .title-divider,
+  .cta-hero.in-view .meta-panel,
+  .cta-hero.in-view .coords-panel,
+  .cta-hero.in-view .hl-char,
+  .cta-hero.in-view .nazari-decoration,
+  .cta-hero.in-view .cta-actions,
+  .cta-hero.in-view .bottom-bar {
+    animation-play-state: running;
   }
 
   .eyebrow-line {
-    width: 40px;
+    width: 60px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--s-border), transparent);
+    background: linear-gradient(90deg, transparent, var(--s-border) 50%, transparent);
   }
 
   .eyebrow-text {
@@ -369,6 +400,7 @@ const splitText = (text: string, baseDelay = 0) =>
     opacity: 0;
     transform: translateY(60px);
     animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+    animation-play-state: paused;
   }
 
   .title-char-primary {
@@ -388,15 +420,18 @@ const splitText = (text: string, baseDelay = 0) =>
     color: var(--s-border);
     opacity: 0;
     animation: cin-fade-in 1s ease 1s forwards;
+    animation-play-state: paused;
   }
 
-  /* Content Grid */
+  /* Content Grid - improved spacing */
   .content-grid {
     display: grid;
-    grid-template-columns: 180px 1fr 180px;
-    gap: 3rem;
+    grid-template-columns: 200px 1fr 200px;
+    gap: 4rem;
     width: 100%;
+    max-width: 1200px;
     align-items: center;
+    padding: 1rem 0;
   }
 
   /* Meta Panel */
@@ -406,6 +441,7 @@ const splitText = (text: string, baseDelay = 0) =>
     gap: 1.5rem;
     opacity: 0;
     animation: slide-in-left 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+    animation-play-state: paused;
   }
 
   .meta-item {
@@ -437,13 +473,14 @@ const splitText = (text: string, baseDelay = 0) =>
     background: var(--s-border);
   }
 
-  /* Headline Center */
+  /* Headline Center - better spacing */
   .headline-center {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    gap: 3.5rem;
     text-align: center;
+    padding: 1.5rem 0;
   }
 
   .headline-text {
@@ -468,6 +505,7 @@ const splitText = (text: string, baseDelay = 0) =>
     opacity: 0;
     transform: translateY(30px);
     animation: char-rise 1s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+    animation-play-state: paused;
   }
 
   .hl-muted { color: var(--s-ink-4); }
@@ -478,24 +516,27 @@ const splitText = (text: string, baseDelay = 0) =>
   .nazari-decoration {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
     width: 100%;
-    max-width: 300px;
+    max-width: 340px;
     opacity: 0;
     animation: cin-fade-in 1.5s ease 1.2s forwards;
+    animation-play-state: paused;
+    padding: 0.5rem 0;
   }
 
   .deco-line {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--s-border), transparent);
+    background: linear-gradient(90deg, transparent, var(--s-border) 30%, var(--s-border) 70%, transparent);
   }
 
   .nazari-star {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     flex-shrink: 0;
-    animation: star-rotate 20s linear infinite;
+    animation: star-rotate 25s linear infinite;
+    filter: drop-shadow(0 0 20px rgba(232, 98, 42, 0.15));
   }
 
   @keyframes star-rotate {
@@ -511,6 +552,7 @@ const splitText = (text: string, baseDelay = 0) =>
     align-items: flex-end;
     opacity: 0;
     animation: slide-in-right 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+    animation-play-state: paused;
   }
 
   .coord-display {
@@ -530,14 +572,15 @@ const splitText = (text: string, baseDelay = 0) =>
   }
 
   .coord-value {
-    font-family: 'SF Mono', monospace;
+    font-family: var(--font-display);
     font-size: 0.85rem;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
     letter-spacing: 0.05em;
     color: var(--s-ink-2);
   }
 
-  /* CTA Actions */
+  /* CTA Actions - enhanced */
   .cta-actions {
     display: flex;
     gap: 1.5rem;
@@ -545,6 +588,8 @@ const splitText = (text: string, baseDelay = 0) =>
     justify-content: center;
     opacity: 0;
     animation: fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
+    animation-play-state: paused;
+    padding: 1rem 0;
   }
 
   .cta-button {
@@ -568,11 +613,12 @@ const splitText = (text: string, baseDelay = 0) =>
     background: var(--s-ink);
     color: var(--s-cream);
     border: 1px solid var(--s-ink);
+    box-shadow: 0 4px 20px rgba(26, 22, 25, 0.1);
   }
 
   .cta-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 20px 40px rgba(26, 22, 25, 0.25);
+    box-shadow: 0 20px 50px rgba(26, 22, 25, 0.3), 0 0 0 1px rgba(232, 98, 42, 0.2);
   }
 
   .cta-secondary {
@@ -610,15 +656,18 @@ const splitText = (text: string, baseDelay = 0) =>
     opacity: 1;
   }
 
-  /* Bottom Bar */
+  /* Bottom Bar - refined */
   .bottom-bar {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     opacity: 0;
     animation: cin-fade-in 1s ease 1.8s forwards;
+    animation-play-state: paused;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   .bar-line {
@@ -647,17 +696,7 @@ const splitText = (text: string, baseDelay = 0) =>
     opacity: 0.5;
   }
 
-  /* Animations */
-  @keyframes char-rise {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes cin-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
+  /* Local animations not defined in global.css */
   @keyframes fade-in-up {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -675,9 +714,14 @@ const splitText = (text: string, baseDelay = 0) =>
 
   /* Responsive */
   @media (max-width: 1024px) {
+    .cta-container {
+      padding: 5rem clamp(1.5rem, 5vw, 4rem) 4rem;
+      gap: 3rem;
+    }
+
     .content-grid {
       grid-template-columns: 1fr;
-      gap: 2.5rem;
+      gap: 3rem;
     }
 
     .meta-panel {
@@ -707,9 +751,22 @@ const splitText = (text: string, baseDelay = 0) =>
   }
 
   @media (max-width: 768px) {
+    .cta-hero {
+      min-height: auto;
+    }
+
+    .section-transition {
+      height: 40px;
+      top: -40px;
+    }
+
     .cta-container {
-      padding: 4rem 1.5rem;
-      gap: 3rem;
+      padding: 4rem 1.5rem 3rem;
+      gap: 2.5rem;
+    }
+
+    .cta-masthead {
+      padding-top: 0;
     }
 
     .masthead-title {
@@ -764,6 +821,23 @@ const splitText = (text: string, baseDelay = 0) =>
 </style>
 
 <script>
+  // Intersection Observer for scroll-triggered animations
+  const ctaSection = document.querySelector('.cta-hero');
+  if (ctaSection) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    observer.observe(ctaSection);
+  }
+
   // Mouse glow effect for primary CTA
   document.querySelectorAll('.cta-primary').forEach(btn => {
     btn.addEventListener('mousemove', (e) => {

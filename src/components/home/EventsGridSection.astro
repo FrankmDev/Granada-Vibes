@@ -67,16 +67,16 @@ function formatDate(dateStr: string): string {
 const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
 ---
 
-<section class="editorial-section" aria-label={locale === 'es' ? 'Archivo de eventos' : 'Event archive'}>
+<section class="editorial-section" aria-label={t('home.sections.eventsAriaLabel')}>
 
   <!-- Cinematic Header -->
   <SectionHeader
-    eyebrow="AGENDA"
+    eyebrow={t('home.sections.eventsEyebrow')}
     eyebrowYear="2025 — 2026"
-    titleLabel={locale === 'es' ? 'PRÓXIMOS' : 'UPCOMING'}
-    title={locale === 'es' ? 'EVENTOS' : 'EVENTS'}
+    titleLabel={t('events.upcoming').toUpperCase()}
+    title={t('nav.events').toUpperCase()}
     ctaHref={eventsHref}
-    ctaLabel={locale === 'es' ? 'VER TODOS' : 'VIEW ALL'}
+    ctaLabel={t('actions.viewAll').toUpperCase()}
     showDecoration={true}
   />
 
@@ -142,6 +142,7 @@ const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
     width: 100%;
     background: var(--s-cream);
     overflow: hidden;
+    padding-top: 5rem;
   }
 
   /* ─── Masonry Grid ─── */
@@ -298,12 +299,14 @@ const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
 
   /* ─── Responsive ─── */
   @media (max-width: 768px) {
+    .editorial-section { padding-top: 3rem; }
     .masonry-wrapper { flex-direction: column; }
-    .col-left, .col-right { width: 100%; border-right: none; }
+    .col-left, .col-center, .col-right { width: 100%; border-right: none; }
     .masonry-item { height: 50vh !important; }
   }
 
   @media (max-width: 480px) {
+    .editorial-section { padding-top: 2.5rem; }
     .masonry-item { height: 60vh !important; }
     .item-title { font-size: 1.25rem; }
   }

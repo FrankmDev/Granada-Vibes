@@ -2,6 +2,7 @@
 /**
  * CofradiaSidebar — sticky sidebar for cofradía detail page.
  * Info card + same-day related cofradías + share button.
+ * Enhanced with premium styling, animations, and shimmer effects.
  */
 import type { CofradiaWithDia } from '@data/semana-santa/index.js';
 import { formatFullDate } from '@utils/dates';
@@ -20,37 +21,80 @@ const { cofradia, sameDayCofradias, currentUrl } = Astro.props;
 const dia = cofradia.dia;
 ---
 
-<div class="det-sidebar-sticky">
+<div class="det-sidebar-sticky ss-sidebar">
 
   <!-- Info card -->
-  <div class="det-sidebar-card det-info-card" data-reveal>
+  <div class="det-sidebar-card det-card-premium ss-info-card" data-reveal>
+    <div class="ss-card-shimmer" aria-hidden="true"></div>
     <div class="det-sc-head">
       <span class="det-sc-eyebrow">[ Información ]</span>
       <div class="det-sc-line"></div>
     </div>
-    <div class="det-info-row">
-      <span class="det-info-label">Día</span>
-      <span class="det-info-val">{dia.nombre}</span>
-    </div>
-    <div class="det-info-sep"></div>
-    <div class="det-info-row">
-      <span class="det-info-label">Fecha</span>
-      <span class="det-info-val">{formatFullDate(dia.fecha, 'es')}</span>
-    </div>
-    <div class="det-info-sep"></div>
-    <div class="det-info-row">
-      <span class="det-info-label">Iglesia</span>
-      <span class="det-info-val ss-iglesia-val">{cofradia.iglesiaSalida}</span>
-    </div>
-    <div class="det-info-sep"></div>
-    <div class="det-info-row">
-      <span class="det-info-label">Barrio</span>
-      <span class="det-info-val">{cofradia.barrio}</span>
-    </div>
-    <div class="det-info-sep"></div>
-    <div class="det-info-row">
-      <span class="det-info-label">Pasos</span>
-      <span class="det-info-val">{cofradia.numeroPasos}</span>
+    
+    <div class="ss-info-grid">
+      <div class="ss-info-item">
+        <span class="ss-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </span>
+        <div class="ss-info-content">
+          <span class="ss-info-label">Día</span>
+          <span class="ss-info-val">{dia.nombre}</span>
+        </div>
+      </div>
+
+      <div class="ss-info-item">
+        <span class="ss-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+          </svg>
+        </span>
+        <div class="ss-info-content">
+          <span class="ss-info-label">Fecha</span>
+          <span class="ss-info-val">{formatFullDate(dia.fecha, 'es')}</span>
+        </div>
+      </div>
+
+      <div class="ss-info-item ss-info-item-wide">
+        <span class="ss-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z"/>
+          </svg>
+        </span>
+        <div class="ss-info-content">
+          <span class="ss-info-label">Iglesia</span>
+          <span class="ss-info-val ss-iglesia-val">{cofradia.iglesiaSalida}</span>
+        </div>
+      </div>
+
+      <div class="ss-info-item">
+        <span class="ss-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </span>
+        <div class="ss-info-content">
+          <span class="ss-info-label">Barrio</span>
+          <span class="ss-info-val ss-barrio-val">{cofradia.barrio}</span>
+        </div>
+      </div>
+
+      <div class="ss-info-item">
+        <span class="ss-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
+          </svg>
+        </span>
+        <div class="ss-info-content">
+          <span class="ss-info-label">Pasos</span>
+          <span class="ss-info-val ss-pasos-val">
+            {cofradia.numeroPasos}
+            <span class="ss-pasos-text">paso{cofradia.numeroPasos !== 1 ? 's' : ''}</span>
+          </span>
+        </div>
+      </div>
     </div>
 
     <div class="ss-share-wrap">
@@ -61,7 +105,7 @@ const dia = cofradia.dia;
         data-url={currentUrl}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+          <path d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/>
         </svg>
         <span class="share-label" aria-live="polite">Compartir</span>
       </button>
@@ -70,20 +114,21 @@ const dia = cofradia.dia;
 
   <!-- Same-day cofradías -->
   {sameDayCofradias.length > 0 && (
-    <div class="det-sidebar-card det-related-card" data-reveal>
+    <div class="det-sidebar-card det-card-premium ss-related-card" data-reveal>
+      <div class="ss-card-shimmer" aria-hidden="true"></div>
       <div class="det-sc-head">
         <span class="det-sc-eyebrow">[ Mismo día ]</span>
         <div class="det-sc-line"></div>
       </div>
-      <div class="det-related-list">
+      <div class="det-related-list ss-related-list">
         {sameDayCofradias.map((rel, i) => (
           <a
             href={`/semana-santa/${rel.id}`}
-            class="det-related-item"
+            class="det-related-item ss-related-item"
             style={`--ri: ${i}`}
             aria-label={rel.nombrePopular}
           >
-            <div class="det-rel-thumb">
+            <div class="det-rel-thumb ss-rel-thumb">
               <div class="det-rel-thumb-fallback">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
                   <path d="M12 3c0 0-4 3-4 8s4 8 4 8 4-3 4-8-4-8-4-8z" stroke-linecap="round"/>
@@ -96,16 +141,16 @@ const dia = cofradia.dia;
               <span class="det-rel-title">{rel.nombrePopular}</span>
               <span class="det-rel-meta">{rel.barrio} · {rel.salidaDisplay}</span>
             </div>
-            <svg class="det-rel-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="det-rel-arrow ss-rel-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M8.25 4.5l7.5 7.5-7.5 7.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
         ))}
       </div>
-      <a href="/semana-santa" class="det-all-link">
-        Toda la Semana Santa
+      <a href="/semana-santa" class="det-all-link ss-all-link">
+        <span>Toda la Semana Santa</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
     </div>
@@ -114,45 +159,291 @@ const dia = cofradia.dia;
 </div>
 
 <style>
-  .ss-iglesia-val {
-    text-align: right;
-    font-size: 0.82rem;
-    line-height: 1.4;
-    max-width: 18ch;
+  /* Premium card with shimmer */
+  .ss-card-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+    border-radius: 0;
   }
 
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .ss-sidebar {
+    gap: 1.5rem;
+  }
+
+  /* Enhanced info card */
+  .ss-info-card {
+    padding: 1.75rem;
+  }
+
+  .ss-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ss-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid rgba(26, 22, 25, 0.04);
+    transition: all 0.3s ease;
+  }
+
+  .ss-info-item:last-child {
+    border-bottom: none;
+  }
+
+  .ss-info-item:hover {
+    background: rgba(201, 168, 76, 0.03);
+    margin: 0 -1.75rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  .ss-info-item-wide {
+    align-items: flex-start;
+  }
+
+  .ss-info-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(201, 168, 76, 0.1);
+    border: 1px solid rgba(201, 168, 76, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--s-gold);
+    flex-shrink: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .ss-info-item:hover .ss-info-icon {
+    transform: scale(1.1) rotate(-5deg);
+    background: rgba(201, 168, 76, 0.18);
+    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.15);
+  }
+
+  .ss-info-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .ss-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ss-info-label {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+  }
+
+  .ss-info-val {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--s-ink);
+    line-height: 1.3;
+  }
+
+  .ss-iglesia-val {
+    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .ss-barrio-val {
+    color: var(--s-gold);
+    font-weight: 600;
+  }
+
+  .ss-pasos-val {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .ss-pasos-text {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--s-ink-3);
+  }
+
+  /* Enhanced share button */
   .ss-share-wrap {
     margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--s-border-s, rgba(26,22,25,0.06));
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(26, 22, 25, 0.08);
   }
 
   .ss-btn-share {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    justify-content: center;
+    gap: 0.75rem;
     width: 100%;
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.5rem;
     font-family: var(--font-display);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--s-ink-2, #5a4f47);
-    background: var(--s-bg-hi, #faf8f5);
-    border: 1px solid var(--s-border, rgba(26,22,25,0.10));
+    color: var(--s-ink-2);
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.08), rgba(201, 168, 76, 0.04));
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ss-btn-share::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.08));
+    opacity: 0;
+    transition: opacity 0.4s ease;
   }
 
   .ss-btn-share:hover {
-    background: var(--s-bg, #f5f0ea);
-    color: var(--s-orange, #e8622a);
+    border-color: rgba(201, 168, 76, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201, 168, 76, 0.15);
+    color: var(--s-gold);
+  }
+
+  .ss-btn-share:hover::before {
+    opacity: 1;
   }
 
   .ss-btn-share svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .ss-btn-share:hover svg {
+    transform: scale(1.15) rotate(15deg);
+  }
+
+  /* Enhanced related card */
+  .ss-related-card {
+    padding: 1.75rem;
+  }
+
+  .ss-related-list {
+    margin: 0 -1.75rem;
+  }
+
+  .ss-related-item {
+    padding: 1rem 1.75rem;
+    position: relative;
+  }
+
+  .ss-related-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.1), transparent);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ss-related-item:hover::before {
+    width: 100%;
+  }
+
+  .ss-rel-thumb {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .ss-related-item:hover .ss-rel-thumb {
+    transform: scale(1.05);
+  }
+
+  .ss-rel-arrow {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ss-related-item:hover .ss-rel-arrow {
+    transform: translateX(4px);
+    color: var(--s-gold);
+  }
+
+  .ss-all-link {
+    margin: 0.5rem 0 0;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    transition: all 0.3s ease;
+  }
+
+  .ss-all-link:hover {
+    color: var(--s-gold);
+  }
+
+  .ss-all-link svg {
     width: 16px;
     height: 16px;
-    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .ss-all-link:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .ss-sidebar {
+      gap: 1rem;
+    }
+
+    .ss-info-card,
+    .ss-related-card {
+      padding: 1.5rem;
+    }
+
+    .ss-info-item:hover {
+      margin: 0 -1.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .ss-related-list {
+      margin: 0 -1.5rem;
+    }
+
+    .ss-related-item {
+      padding: 1rem 1.5rem;
+    }
   }
 </style>

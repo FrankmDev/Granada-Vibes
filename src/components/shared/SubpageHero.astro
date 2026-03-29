@@ -1,0 +1,732 @@
+---
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import type { Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  subtitle?: string;
+  eyebrow?: string;
+  eyebrowRight?: string;
+  description?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+  backgroundImage?: string;
+  pageNumber?: string;
+  coordinates?: string;
+  metadata?: { label: string; value: string }[];
+  variant?: 'default' | 'compact';
+}
+
+const {
+  locale,
+  title,
+  subtitle,
+  eyebrow,
+  eyebrowRight,
+  description,
+  ctaText,
+  ctaLink = '#',
+  secondaryCtaText,
+  secondaryCtaLink = '#',
+  backgroundImage = '/images/hero-fallback.jpg',
+  pageNumber = '01',
+  coordinates = '37°N · 3°W',
+  metadata = [],
+  variant = 'default',
+} = Astro.props;
+
+const titleWords = title.split(' ');
+---
+
+<section 
+  class="subpage-hero" 
+  aria-label={title}
+  data-hero-variant={variant}
+>
+  <!-- Background with layers -->
+  <div class="hero-bg">
+    <div class="bg-image" style={`background-image: url('${backgroundImage}')`}></div>
+    <div class="bg-overlay"></div>
+    <div class="bg-vignette"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <!-- Decorative corner accents -->
+  <div class="corner-accent top-left"></div>
+  <div class="corner-accent top-right"></div>
+  <div class="corner-accent bottom-left"></div>
+  <div class="corner-accent bottom-right"></div>
+
+  <!-- Screen Frame -->
+  <ScreenFrame 
+    tagTopLeft={eyebrow || 'GRANADA VIBES'}
+    tagTopRight={eyebrowRight || coordinates}
+    tagBottomLeft={`PG. ${pageNumber}`}
+    tagBottomRight={locale === 'es' ? 'ED. 2025' : 'ED. 2025'}
+  />
+
+  <!-- Main Content -->
+  <div class="hero-content">
+    <div class="content-wrapper">
+      <!-- Left side: Main content -->
+      <div class="main-content">
+        {subtitle && (
+          <div class="eyebrow-row">
+            <span class="eyebrow-line"></span>
+            <span class="eyebrow-text">{subtitle}</span>
+          </div>
+        )}
+        
+        <h1 class="hero-title">
+          {titleWords.map((word, wordIndex) => (
+            <span class="title-word">
+              {word.split('').map((char, charIndex) => (
+                <span 
+                  class="title-char" 
+                  style={`animation-delay: ${0.2 + (wordIndex * 0.06) + (charIndex * 0.025)}s`}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))}
+            </span>
+          ))}
+        </h1>
+
+        {description && (
+          <p class="hero-description">{description}</p>
+        )}
+
+        <div class="cta-row">
+          {ctaText && (
+            <a href={ctaLink} class="hero-cta primary">
+              <span class="cta-text">{ctaText}</span>
+              <span class="cta-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          )}
+          
+          {secondaryCtaText && (
+            <a href={secondaryCtaLink} class="hero-cta secondary">
+              <span class="cta-text">{secondaryCtaText}</span>
+            </a>
+          )}
+        </div>
+      </div>
+
+      <!-- Right side: Metadata panel -->
+      {metadata.length > 0 && (
+        <div class="meta-panel">
+          <div class="meta-header">
+            <span class="meta-dot"></span>
+            <span class="meta-label-header">INFO</span>
+          </div>
+          <div class="meta-divider"></div>
+          <div class="meta-list">
+            {metadata.map((item, idx) => (
+              <div class="meta-item" style={`animation-delay: ${0.5 + (idx * 0.1)}s`}>
+                <span class="meta-item-label">{item.label}</span>
+                <span class="meta-item-value">{item.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Bottom bar with decorative elements -->
+  <div class="hero-bottom">
+    <div class="bottom-content">
+      <div class="bottom-line left"></div>
+      <div class="bottom-ornament">
+        <div class="ornament-line"></div>
+        <div class="ornament-diamond">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L22 12L12 22L2 12Z"/>
+          </svg>
+        </div>
+        <div class="ornament-line"></div>
+      </div>
+      <div class="bottom-line right"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .subpage-hero {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* Heights */
+  [data-hero-variant="default"] {
+    min-height: 65vh;
+    min-height: 65dvh;
+  }
+
+  [data-hero-variant="compact"] {
+    min-height: 50vh;
+    min-height: 50dvh;
+  }
+
+  /* Background Layers */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .bg-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.3) saturate(1.1) contrast(1.05);
+  }
+
+  .bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 25% 0%, rgba(232, 98, 42, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 75% 100%, rgba(201, 168, 76, 0.12) 0%, transparent 45%),
+      linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%);
+    z-index: 2;
+  }
+
+  .bg-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+    z-index: 3;
+  }
+
+  .bg-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light;
+    z-index: 4;
+    opacity: 0.4;
+  }
+
+  /* Corner Accents */
+  .corner-accent {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .corner-accent::before,
+  .corner-accent::after {
+    content: '';
+    position: absolute;
+    background: rgba(201, 168, 76, 0.15);
+  }
+
+  .corner-accent::before {
+    width: 1px;
+    height: 100%;
+  }
+
+  .corner-accent::after {
+    width: 100%;
+    height: 1px;
+  }
+
+  .corner-accent.top-left {
+    top: 2rem;
+    left: 2rem;
+  }
+
+  .corner-accent.top-left::before { left: 0; }
+  .corner-accent.top-left::after { top: 0; }
+
+  .corner-accent.top-right {
+    top: 2rem;
+    right: 2rem;
+    transform: rotate(90deg);
+  }
+
+  .corner-accent.bottom-left {
+    bottom: 2rem;
+    left: 2rem;
+    transform: rotate(-90deg);
+  }
+
+  .corner-accent.bottom-right {
+    bottom: 2rem;
+    right: 2rem;
+    transform: rotate(180deg);
+  }
+
+  /* Screen Frame overrides */
+  .subpage-hero :global(.cin-screen-frame) {
+    z-index: 10;
+  }
+
+  .subpage-hero :global(.cin-corner::before),
+  .subpage-hero :global(.cin-corner::after) {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .subpage-hero :global(.cin-frame-tag) {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    font-weight: 600;
+  }
+
+  /* Main Content - MUCHO MÁS ESPACIO SUPERIOR */
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--header-height) + 6rem) clamp(2rem, 8vw, 6rem) 4rem;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    gap: 5rem;
+  }
+
+  /* Main Content Left */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 650px;
+  }
+
+  /* Eyebrow */
+  .eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeSlideIn 0.6s ease 0.15s forwards;
+  }
+
+  .eyebrow-line {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, rgba(201, 168, 76, 0.6), transparent);
+  }
+
+  .eyebrow-text {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-gold-text);
+  }
+
+  @keyframes fadeSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Title - más grande y dramático */
+  .hero-title {
+    font-family: var(--font-body);
+    font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    margin: 0;
+    color: var(--color-text-primary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2em;
+    letter-spacing: -0.025em;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .title-word {
+    display: inline-flex;
+    overflow: hidden;
+  }
+
+  .title-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(110%);
+    animation: charReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes charReveal {
+    from {
+      opacity: 0;
+      transform: translateY(110%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Description */
+  .hero-description {
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 500px;
+    margin: 0.5rem 0 0;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* CTAs - mejor estilizado */
+  .cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.65s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.875rem 1.75rem;
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-cta.primary {
+    background: var(--color-accent);
+    color: white;
+    border: 1px solid var(--color-accent);
+    box-shadow: 0 4px 20px rgba(232, 98, 42, 0.25);
+  }
+
+  .hero-cta.primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .hero-cta.primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(232, 98, 42, 0.4);
+  }
+
+  .hero-cta.primary:hover::before {
+    left: 100%;
+  }
+
+  .hero-cta.primary .cta-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .hero-cta.primary:hover .cta-icon {
+    transform: translateX(3px);
+  }
+
+  .hero-cta.secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .hero-cta.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Metadata Panel - más completo */
+  .meta-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+  }
+
+  .meta-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .meta-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.9); }
+  }
+
+  .meta-label-header {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .meta-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  .meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .meta-item-label {
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .meta-item-value {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Bottom Bar */
+  .hero-bottom {
+    position: relative;
+    z-index: 5;
+    padding: 2rem;
+  }
+
+  .bottom-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 800px;
+    margin: 0 auto;
+    gap: 1.5rem;
+  }
+
+  .bottom-line {
+    flex: 1;
+    height: 1px;
+    max-width: 120px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
+  }
+
+  .bottom-ornament {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .ornament-line {
+    width: 30px;
+    height: 1px;
+    background: rgba(201, 168, 76, 0.3);
+  }
+
+  .ornament-diamond {
+    color: rgba(201, 168, 76, 0.5);
+    animation: rotate 8s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    [data-hero-variant="default"],
+    [data-hero-variant="compact"] {
+      min-height: auto;
+    }
+
+    .hero-content {
+      padding: calc(var(--header-height) + 4rem) 1.5rem 2rem;
+    }
+
+    .content-wrapper {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 2.5rem;
+    }
+
+    .main-content {
+      align-items: center;
+      max-width: 100%;
+    }
+
+    .hero-title {
+      justify-content: center;
+      font-size: clamp(2rem, 8vw, 4rem);
+    }
+
+    .eyebrow-row {
+      justify-content: center;
+    }
+
+    .eyebrow-line {
+      background: linear-gradient(to right, transparent, rgba(201, 168, 76, 0.6), transparent);
+    }
+
+    .hero-description {
+      text-align: center;
+    }
+
+    .cta-row {
+      justify-content: center;
+    }
+
+    .meta-panel {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .corner-accent {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-content {
+      padding: calc(var(--header-height) + 3rem) 1.25rem 1.5rem;
+    }
+
+    .hero-title {
+      font-size: clamp(1.75rem, 10vw, 3rem);
+      line-height: 1.1;
+    }
+
+    .eyebrow-text {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+    }
+
+    .hero-description {
+      font-size: 0.85rem;
+      max-width: 100%;
+    }
+
+    .cta-row {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .hero-cta {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .meta-panel {
+      padding: 1.5rem;
+    }
+
+    .meta-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .meta-item {
+      align-items: center;
+    }
+
+    .hero-bottom {
+      padding: 1.5rem 1rem;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .title-char,
+    .eyebrow-row,
+    .hero-description,
+    .cta-row,
+    .meta-item,
+    .ornament-diamond,
+    .meta-dot {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

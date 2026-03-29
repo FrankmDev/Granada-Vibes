@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PageHeader from '@components/layout/PageHeader.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
 import BlogCard from '@components/blog/BlogCard.astro';
 import { getAllPosts } from '@data/index';
 import { useTranslations } from '@i18n/utils';
@@ -10,6 +10,13 @@ const t = useTranslations(locale);
 const posts = getAllPosts();
 
 const ogImage = 'https://placehold.co/1200x630/D4704A/FFFFFF?text=Granada+Vibes+Blog';
+
+// Hero metadata
+const heroMetadata = [
+  { label: 'ARTICLES', value: posts.length.toString() },
+  { label: 'EDITORIAL', value: 'LOCAL' },
+  { label: 'UPDATED', value: '2025' },
+];
 ---
 
 <BaseLayout
@@ -18,13 +25,26 @@ const ogImage = 'https://placehold.co/1200x630/D4704A/FFFFFF?text=Granada+Vibes+
   description="Granada Vibes Blog: local guides, practical tips, secret routes and everything you need to experience Granada like a local."
   ogImage={ogImage}
 >
-  <PageHeader
-    title={t('blog.title')}
-    subtitle={t('blog.subtitle')}
-    accent="primary"
+  <!-- CINEMATIC HERO -->
+  <SubpageHero
+    locale={locale}
+    title="EDITORIAL"
+    subtitle="BLOG"
+    eyebrow="GRANADA VIBES"
+    eyebrowRight="ED. 2025"
+    description="Stories, guides and tips written by locals. Discover the city's best kept secrets."
+    ctaText="READ ARTICLES"
+    ctaLink="#articles"
+    secondaryCtaText="VIEW ROUTES"
+    secondaryCtaLink="/en/routes"
+    backgroundImage="https://images.unsplash.com/photo-1548013146-72479768bada?w=1600&h=1200&fit=crop"
+    pageNumber="04"
+    coordinates="37°10′N 3°36′W"
+    metadata={heroMetadata}
+    variant="compact"
   />
 
-  <section class="container py-16 lg:py-24" aria-labelledby="blog-heading">
+  <section id="articles" class="container py-16 lg:py-24" aria-labelledby="blog-heading">
     <h2 id="blog-heading" class="sr-only">{t('blog.allPosts')}</h2>
 
     {posts.length > 0 ? (

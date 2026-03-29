@@ -2,6 +2,7 @@ import type { BlogPost } from '@types';
 import { semanaSantaContent } from './content/semana-santa.js';
 import { finDeSemanaContent } from './content/fin-de-semana.js';
 import { miradoresContent } from './content/miradores.js';
+import { tapasContent } from './content/tapas.js';
 
 export const posts: BlogPost[] = [
   {
@@ -59,6 +60,25 @@ export const posts: BlogPost[] = [
     tags: ['miradores', 'albaicín', 'fotografía', 'atardecer', 'granada'],
     author: 'Granada Vibes',
     readingTime: 10,
+    featured: false,
+  },
+  {
+    id: 'blog-004',
+    slug: 'mejores-tapas-granada-ruta-bares',
+    title: {
+      es: 'Las mejores tapas de Granada: ruta por los bares imprescindibles',
+      en: 'The Best Tapas in Granada: A Route Through Essential Bars',
+    },
+    description: {
+      es: 'Recorrido por los bares donde los locales de verdad van a tapear. Desde la mítica Calle Navas hasta el auténtico barrio de La Chana. Dónde comer gratis y bien en Granada.',
+      en: 'A tour of the bars where real locals go for tapas. From the mythical Calle Navas to the authentic La Chana neighborhood. Where to eat free and well in Granada.',
+    },
+    content: tapasContent,
+    publishDate: '2026-03-25',
+    category: 'gastronomia',
+    tags: ['tapas', 'gastronomía', 'bares', 'calles nava', 'realejo'],
+    author: 'Granada Vibes',
+    readingTime: 11,
     featured: false,
   },
 ];
