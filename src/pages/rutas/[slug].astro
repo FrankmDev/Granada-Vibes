@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
-import RouteDetailContent from '@components/routes/RouteDetailContent.astro';
+import Footer from '@components/layout/Footer.astro';
 import { getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
 import { formatDuration, formatDistance } from '@utils/dates';
@@ -19,39 +19,35 @@ const { route } = Astro.props;
 const locale = 'es';
 const t = useTranslations(locale);
 
-const difficultyBars: Record<RouteDifficulty, number> = {
-  easy: 1, moderate: 2, challenging: 3,
-};
-
-// Clean sequential block numbering
-let blockNum = 0;
-function nextBlock(): string {
-  blockNum += 1;
-  return blockNum.toString().padStart(2, '0');
-}
-
-const difficultyColor: Record<RouteDifficulty, string> = {
-  easy: '#4a9e6b', moderate: '#d4873a', challenging: '#c94a4a',
-};
-const diffColor = difficultyColor[route.difficulty];
-const diffBars  = difficultyBars[route.difficulty];
-
 const relatedRoutes = getAllRoutes()
   .filter(r => r.category === route.category && r.id !== route.id)
-  .slice(0, 2);
+  .slice(0, 3);
 
-if (relatedRoutes.length < 2) {
+if (relatedRoutes.length < 3) {
   const more = getAllRoutes()
     .filter(r => r.difficulty === route.difficulty && r.id !== route.id && !relatedRoutes.find(rr => rr.id === r.id))
-    .slice(0, 2 - relatedRoutes.length);
+    .slice(0, 3 - relatedRoutes.length);
   relatedRoutes.push(...more);
 }
 
-const routeImage = route.imageUrl || route.image;
+const routeImage = route.image;
 const ogImage = routeImage || 'https://placehold.co/1200x630/0a0a0a/f2cc8f?text=Granada+Vibes+Rutas';
 
-const neighborhoodList = route.neighborhoods.map(n => t(`neighborhoods.${n}`)).join(', ');
-const seoDescription = `Ruta "${route.title[locale]}" por ${neighborhoodList} en Granada — ${formatDuration(route.duration, locale)} de ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`;
+const neighborhoodList = route.neighborhoods.map((n: string) => t(`neighborhoods.${n}` as any)).join(', ');
+const seoDescription = `Ruta "${route.title[locale]}" por ${neighborhoodList} en Granada — ${formatDuration(route.duration, locale)} de ${t(`categories.${route.category}` as any).toLowerCase()}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}` as any).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`;
+
+const monthsEs = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const monthsShort = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+// Extraer el número de distancia para destacar
+const distString = formatDistance(route.distance, locale);
+const distValue = distString.replace(/[^\d.,]/g, '').trim();
+const distUnit = distString.replace(/[\d.,]/g, '').trim();
+
+// Icono helper según hora del día
+const timeIcon = (route.timeOfDay === 'evening' || route.timeOfDay === 'sunset') 
+  ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>'
+  : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
 ---
 
 <BaseLayout
@@ -64,386 +60,216 @@ const seoDescription = `Ruta "${route.title[locale]}" por ${neighborhoodList} en
 >
   <RouteDetailHero route={route} locale={locale} />
 
-  <RouteDetailContent>
-  <div class="det-page">
+  <!-- CREAM EDITORIAL CONTENT WITH UPGRADED UI -->
+  <div class="det-page route-page-override">
+
     <div class="det-content-wrap">
-      <div class="det-layout">
+      <div class="det-layout upgraded-layout">
 
-        <!-- MAIN (70%) -->
-        <main id="main-content" class="det-main">
+        <!-- MAIN CONTENT (LEFT) -->
+        <main id="main-content" class="det-main upgraded-main">
 
-          <!-- Block 01: Métricas -->
-          <article class="det-block det-block-premium rut-metrics-block" data-reveal>
-            <header class="det-block-head">
-              <span class="det-block-num">{nextBlock()}</span>
-              <div class="det-block-divider"></div>
-              <span class="det-block-eyebrow">[ Resumen ]</span>
+          <!-- 1. Description Block -->
+          <article class="upg-block" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">01</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">[ Sobre la ruta ]</span>
             </header>
-            <h2 class="det-block-title">De un vistazo</h2>
-            <p class="det-lead">{route.description[locale]}</p>
-            <div class="rut-metrics" style={`--dc: ${diffColor}`}>
-              <div class="rut-metric-cell">
-                <div class="rut-metric-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-                <span class="rut-metric-val">{formatDuration(route.duration, locale)}</span>
-                <span class="rut-metric-label">{t('detail.duration')}</span>
-              </div>
-              <div class="rut-metric-cell">
-                <div class="rut-metric-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 7m0 13V7"/>
-                  </svg>
-                </div>
-                <span class="rut-metric-val">{formatDistance(route.distance, locale)}</span>
-                <span class="rut-metric-label">{t('detail.distance')}</span>
-              </div>
-              <div class="rut-metric-cell">
-                <div class="rut-diff-bars" aria-hidden="true">
-                  {[1,2,3].map(n => (
-                    <span class:list={['rut-diff-bar', n <= diffBars && 'active']} style={`--dc: ${diffColor}`}></span>
+            
+            <h2 class="upg-title">Descripción</h2>
+            
+            <div class="upg-body content-rich">
+              <p class="upg-lead">{route.description[locale]}</p>
+              {route.longDescription && <p class="upg-text-secondary">{route.longDescription[locale]}</p>}
+            </div>
+            
+            <!-- Neighborhood tags -->
+            {route.neighborhoods && route.neighborhoods.length > 0 && (
+              <div class="upg-route-neighs">
+                <span class="upg-rn-label">Barrios:</span>
+                <div class="upg-tags-list">
+                  {route.neighborhoods.map((n: string) => (
+                    <span class="upg-badge ghost">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      {t(`neighborhoods.${n}` as any)}
+                    </span>
                   ))}
                 </div>
-                <span class="rut-metric-val is-diff" style={`--dc: ${diffColor}`}>{t(`difficulty.${route.difficulty}`)}</span>
-                <span class="rut-metric-label">{t('detail.difficulty')}</span>
               </div>
-              <div class="rut-metric-cell">
-                <div class="rut-metric-icon" aria-hidden="true">
-                  {(route.timeOfDay === 'evening' || route.timeOfDay === 'sunset') ? (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                    </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                    </svg>
-                  )}
-                </div>
-                <span class="rut-metric-val">{t(`timeOfDay.${route.timeOfDay}`)}</span>
-                <span class="rut-metric-label">{t('detail.bestTime')}</span>
-              </div>
-            </div>
-            <div class="det-block-footer">
-              <span class="det-block-accent-line"></span>
-            </div>
-            <div class="det-hover-corners" aria-hidden="true">
-              <span class="hc tl"></span><span class="hc tr"></span>
-              <span class="hc bl"></span><span class="hc br"></span>
-            </div>
+            )}
           </article>
 
-          <!-- Block 02: Descripción larga -->
-          {route.longDescription && (
-            <article class="det-block det-block-premium" data-reveal>
-              <header class="det-block-head">
-                <span class="det-block-num">{nextBlock()}</span>
-                <div class="det-block-divider"></div>
-                <span class="det-block-eyebrow">[ La ruta ]</span>
+          <!-- 2. Tour Highlights (like Events Qué Esperar/Experiencia) -->
+          {route.highlights && route.highlights.length > 0 && (
+            <article class="upg-block" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">02</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ RECORRIDO ]</span>
               </header>
-              <h2 class="det-block-title">Sobre este itinerario</h2>
-              <div class="rut-long-desc-wrap">
-                <span class="rut-long-desc-quote" aria-hidden="true">"</span>
-                <p class="det-lead">{route.longDescription[locale]}</p>
-              </div>
-              <div class="det-block-footer">
-                <span class="det-block-accent-line"></span>
-              </div>
-              <div class="det-hover-corners" aria-hidden="true">
-                <span class="hc tl"></span><span class="hc tr"></span>
-                <span class="hc bl"></span><span class="hc br"></span>
-              </div>
-            </article>
-          )}
-
-          <!-- Block 03: Highlights timeline -->
-          {route.highlights.length > 0 && (
-            <article class="det-block det-block-premium rut-timeline-block" data-reveal>
-              <header class="det-block-head">
-                <span class="det-block-num">{nextBlock()}</span>
-                <div class="det-block-divider"></div>
-                <span class="det-block-eyebrow">[ Recorrido ]</span>
-              </header>
-              <h2 class="det-block-title">Puntos del trayecto</h2>
-              <div class="rut-timeline">
-                {route.highlights.map((hl, i) => (
-                  <div class="rut-tl-item" style={`--ti: ${i}`}>
-                    <span class="rut-tl-marker" aria-hidden="true">
-                      <span class="rut-tl-num">{(i + 1).toString().padStart(2, '0')}</span>
-                      <span class="rut-tl-connector"></span>
-                    </span>
-                    <div class="rut-tl-content">
-                      <p class="rut-tl-title">{hl.title[locale]}</p>
-                      <p class="rut-tl-desc">{hl.description[locale]}</p>
+              <h2 class="upg-title">El itinerario</h2>
+              
+              <div class="upg-highlights">
+                {route.highlights.map((hl: any, idx: number) => (
+                  <div class="upg-hl-item" style={`--hl-delay: ${idx * 0.1}s`}>
+                    <div class="upg-hl-num-wrap">
+                      <span class="upg-hl-num">{(idx + 1).toString().padStart(2, '0')}</span>
+                    </div>
+                    <div class="upg-hl-content">
+                      <h3 class="tl-title" style="margin-bottom:0.4rem; font-family: var(--font-display); font-size:1.1rem; color:var(--s-ink);">{hl.title[locale]}</h3>
+                      <p class="upg-hl-text" style="padding-top:0;">{hl.description[locale]}</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <div class="det-block-footer">
-                <span class="det-block-accent-line"></span>
-              </div>
-              <div class="det-hover-corners" aria-hidden="true">
-                <span class="hc tl"></span><span class="hc tr"></span>
-                <span class="hc bl"></span><span class="hc br"></span>
-              </div>
             </article>
           )}
 
-          <!-- Block 04: Tips grid -->
-          {route.tips.length > 0 && (
-            <article class="det-block det-block-premium rut-tips-block" data-reveal>
-              <header class="det-block-head">
-                <span class="det-block-num">{nextBlock()}</span>
-                <div class="det-block-divider"></div>
-                <span class="det-block-eyebrow">[ Recomendaciones ]</span>
+          <!-- 3. Local Tips Block -->
+          {route.tips && route.tips.length > 0 && (
+            <article class="upg-block block-tips" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">03</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ Recomendación ]</span>
               </header>
-              <h2 class="det-block-title">Consejos prácticos</h2>
-              <div class="rut-tips-grid">
-                {route.tips.map((tip, i) => (
-                  <div class="rut-tip-card" style={`--tc: ${i}`}>
-                    <div class="rut-tip-header">
-                      <span class="rut-tip-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                        </svg>
-                      </span>
-                      <span class="rut-tip-num">{(i + 1).toString().padStart(2, '0')}</span>
+              <h2 class="upg-title">Tips de local</h2>
+              
+              <div class="upg-tips-content" style="flex-direction: column;">
+                {route.tips.map((tip: any, i: number) => (
+                  <div style="display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2rem;">
+                    <div class="upg-tips-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
-                    <p class="rut-tip-title">{tip.title[locale]}</p>
-                    <p class="rut-tip-text">{tip.content[locale]}</p>
+                    <div>
+                      <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--s-ink);">{tip.title[locale]}</h3>
+                      <p class="upg-tips-text" style="font-style: normal;">{tip.content[locale]}</p>
+                    </div>
                   </div>
                 ))}
-              </div>
-              <div class="det-block-footer">
-                <span class="det-block-accent-line"></span>
-              </div>
-              <div class="det-hover-corners" aria-hidden="true">
-                <span class="hc tl"></span><span class="hc tr"></span>
-                <span class="hc bl"></span><span class="hc br"></span>
-              </div>
-            </article>
-          )}
-
-          <!-- Block 05: Qué llevar -->
-          {route.whatToBring && route.whatToBring[locale]?.length > 0 && (
-            <article class="det-block det-block-premium rut-bring-block" data-reveal>
-              <header class="det-block-head">
-                <span class="det-block-num">—</span>
-                <div class="det-block-divider"></div>
-                <span class="det-block-eyebrow">[ Equipaje ]</span>
-              </header>
-              <h2 class="det-block-title">{t('detail.whatToBring')}</h2>
-              <div class="rut-bring-visual">
-                <div class="rut-bring-icon-large">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                  </svg>
-                </div>
-                <ul class="rut-bring-list" role="list">
-                  {route.whatToBring[locale]?.map((item, i) => (
-                    <li class="rut-bring-item" style={`--bi: ${i}`}>
-                      <span class="rut-bring-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                        </svg>
-                      </span>
-                      <span class="rut-bring-text">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div class="det-block-footer">
-                <span class="det-block-accent-line"></span>
-              </div>
-              <div class="det-hover-corners" aria-hidden="true">
-                <span class="hc tl"></span><span class="hc tr"></span>
-                <span class="hc bl"></span><span class="hc br"></span>
               </div>
             </article>
           )}
 
           <!-- Tags -->
-          {route.tags.length > 0 && (
-            <div class="det-tags det-tags-premium" data-reveal>
-              <span class="det-tags-eyebrow">[ {t('detail.tags')} ]</span>
-              <div class="det-tags-flow">
-                {route.tags.map((tag, i) => (
-                  <span class="det-tag-pill" style={`--ti: ${i}`}>#{tag}</span>
-                ))}
-              </div>
-            </div>
+          {route.tags && route.tags.length > 0 && (
+             <div class="upg-tags" data-reveal>
+               <span class="upg-tags-title">[ Etiquetas ]</span>
+               <div class="upg-tags-list">
+                 {route.tags.map((tag: string) => (
+                   <span class="upg-tag">#{tag}</span>
+                 ))}
+               </div>
+             </div>
           )}
 
         </main>
 
-        <!-- SIDEBAR (30%) -->
-        <aside>
-          <div class="det-sidebar-sticky">
+        <!-- ENHANCED SIDEBAR (RIGHT) -->
+        <aside class="upg-sidebar">
+          <div class="upg-sidebar-sticky">
 
-            <!-- Info card -->
-            <div class="det-sidebar-card det-card-premium" data-reveal>
-              <div class="det-sc-head">
-                <span class="det-sc-eyebrow">[ {locale === 'es' ? 'Información' : 'Information'} ]</span>
-                <div class="det-sc-line"></div>
-              </div>
-
-              <div class="det-info-section">
-                <div class="det-info-row">
-                  <span class="det-info-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                    {t('detail.difficulty')}
+            <!-- Premium Ticket Card - IDENTICAL TO EVENTS TICKET -->
+            <div class="upg-ticket-card" data-reveal>
+              <div class="upg-ticket-glass"></div>
+              
+              <!-- Ticket Header -->
+              <div class="upg-tc-header">
+                <div class="upg-tc-date-box">
+                  <span class="tc-day" style="font-size: 1rem; font-weight:600; font-family:var(--font-display);">{t(`timeOfDay.${route.timeOfDay}` as any).slice(0,3).toUpperCase()}</span>
+                  <span class="tc-month">HORARIO</span>
+                </div>
+                <div class="upg-tc-info">
+                  <span class="tc-time" style="color:var(--s-ink);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    {formatDuration(route.duration, locale)}
                   </span>
-                  <div class="rut-sb-diff" style={`--dc: ${diffColor}`}>
-                    <div class="rut-sb-bars">
-                      {[1,2,3].map(n => (
-                        <span class:list={['rut-sb-bar', n <= diffBars && 'active']}></span>
-                      ))}
-                    </div>
-                    <span class="rut-sb-diff-label">{t(`difficulty.${route.difficulty}`)}</span>
-                  </div>
+                  <span class="tc-category">{t(`categories.${route.category}`)}</span>
                 </div>
               </div>
-              <div class="det-info-sep"></div>
 
-              <div class="det-info-section">
-                <div class="det-info-row">
-                  <span class="det-info-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    {t('detail.duration')}
-                  </span>
-                  <span class="det-info-val">{formatDuration(route.duration, locale)}</span>
-                </div>
-                <div class="det-info-sep"></div>
-                <div class="det-info-row">
-                  <span class="det-info-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 7m0 13V7"/>
-                    </svg>
-                    {t('detail.distance')}
-                  </span>
-                  <span class="det-info-val">{formatDistance(route.distance, locale)}</span>
-                </div>
-                <div class="det-info-sep"></div>
-                <div class="det-info-row">
-                  <span class="det-info-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                      {(route.timeOfDay === 'evening' || route.timeOfDay === 'sunset') ? (
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-                      ) : (
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-                      )}
-                    </svg>
-                    {t('detail.bestTime')}
-                  </span>
-                  <span class="det-info-val">{t(`timeOfDay.${route.timeOfDay}`)}</span>
-                </div>
+              <!-- Huge Number Box (Distance instead of Price) -->
+              <div class="upg-tc-price-wrap">
+                <span class="tc-price-label">{t('detail.distance')}</span>
+                <span class="tc-price-val">
+                  {distValue}<span style="font-size:1.5rem; margin-left:5px;">{distUnit}</span>
+                </span>
               </div>
-              <div class="det-info-sep"></div>
+              
+              <!-- Difficulty Sub-label injected below big number -->
+              <div style="padding: 0 2.5rem 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                 <span style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--s-orange);">{t(`difficulty.${route.difficulty}` as any)}</span>
+                 <div style="flex:1; height: 1px; background: var(--s-border);"></div>
+              </div>
 
-              <div class="det-info-section">
-                <div class="det-info-row">
-                  <span class="det-info-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    {t('detail.neighborhoods')}
-                  </span>
-                  <div class="rut-neigh-flow">
-                    {route.neighborhoods.map(n => (
-                      <span class="rut-neigh-pill">{t(`neighborhoods.${n}`)}</span>
+              <!-- What to Bring embedded in ticket conditionally -->
+              {route.whatToBring && (
+                <div style="padding: 0 2.5rem 1rem;">
+                  <span class="tc-price-label" style="display:block; margin-bottom:0.75rem;">QUÉ LLEVAR</span>
+                  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+                    {route.whatToBring[locale].map((item: string) => (
+                      <li style="display:flex; align-items:flex-start; gap:0.5rem; font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2);">
+                        <span style="color:#d4873a; margin-top:-2px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
+                        {item}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
-              </div>
-
-              {route.bestMonths && route.bestMonths.length > 0 && (
-                <>
-                  <div class="det-info-sep"></div>
-                  <div class="det-info-section">
-                    <div class="det-info-row">
-                      <span class="det-info-label">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        {t('detail.bestMonths')}
-                      </span>
-                      <div class="rut-months-flow">
-                        {route.bestMonths.map(m => (
-                          <span class="rut-month-tag">{m}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </>
               )}
 
-              <button
-                id="share-btn"
-                class="rut-btn-share"
-                data-title={route.title[locale]}
-                data-url={Astro.url.href}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                  <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                </svg>
-                <span class="share-label" aria-live="polite">{t('detail.share')}</span>
-              </button>
+              <div class="upg-tc-divider">
+                <span class="tcd-hole left"></span>
+                <div class="tcd-dashed"></div>
+                <span class="tcd-hole right"></span>
+              </div>
+
+              <!-- Actions -->
+              <div class="upg-tc-actions">
+                <button id="upg-share-btn" class="upg-btn-primary"
+                  data-title={route.title[locale]}
+                  data-url={Astro.url.href}
+                >
+                  <span>Compartir ruta</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                </button>
+              </div>
+
             </div>
 
-            <!-- Related routes -->
+            <!-- Related Events Bento -->
             {relatedRoutes.length > 0 && (
-              <div class="det-sidebar-card det-card-premium" data-reveal>
-                <div class="det-sc-head">
-                  <span class="det-sc-eyebrow">[ {t('detail.similarRoutes')} ]</span>
-                  <div class="det-sc-line"></div>
+              <div class="upg-related-bento" data-reveal>
+                <div class="upg-rb-header">
+                  <span class="upg-rb-title">[ {locale === 'es' ? 'Rutas similares' : 'Similar routes'} ]</span>
+                  <a href="/rutas" class="upg-rb-all">Ver todas →</a>
                 </div>
-                <div class="det-related-list">
+                
+                <div class="upg-rb-list">
                   {relatedRoutes.map((rel, i) => (
-                    <a
-                      href={`/rutas/${rel.slug}`}
-                      class="det-related-item"
-                      style={`--ri: ${i}`}
-                      aria-label={rel.title[locale]}
-                    >
-                      <div class="det-rel-thumb">
+                    <a href={`/rutas/${rel.slug}`} class="upg-rel-item" style={`--rd: ${i * 0.15}s`}>
+                      <div class="uri-thumb">
                         {(rel.imageUrl || rel.image) ? (
                           <img src={rel.imageUrl || rel.image} alt="" loading="lazy" />
                         ) : (
-                          <div class="det-rel-thumb-fallback">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                              <path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.447-.894L15 7m0 13V7"/>
-                            </svg>
-                          </div>
+                          <div class="uri-thumb-fallback"></div>
                         )}
-                        <div class="det-rel-thumb-overlay"></div>
                       </div>
-                      <div class="det-rel-info">
-                        <span class="det-rel-title">{rel.title[locale]}</span>
-                        <span class="det-rel-meta">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                          </svg>
-                          {formatDuration(rel.duration, locale)} · {t(`difficulty.${rel.difficulty}`)}
+                      <div class="uri-content">
+                        <span class="uri-title">{rel.title[locale]}</span>
+                        <span class="uri-meta">
+                           {formatDuration(rel.duration, locale)}
                         </span>
                       </div>
-                      <svg class="det-rel-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                        <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
+                      <div class="uri-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
                     </a>
                   ))}
                 </div>
-                <a href="/rutas" class="det-all-link">
-                  {t('detail.allRoutes')}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </a>
               </div>
             )}
 
@@ -453,41 +279,34 @@ const seoDescription = `Ruta "${route.title[locale]}" por ${neighborhoodList} en
       </div>
     </div>
 
-    <!-- Footer ornament -->
-    <div class="det-footer-orn" aria-hidden="true">
-      <span class="det-orn-line"></span>
-      <span class="det-orn-diamond"></span>
-      <span class="det-orn-star">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/>
-        </svg>
-      </span>
-      <span class="det-orn-diamond"></span>
-      <span class="det-orn-line"></span>
+    <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
+      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+      <span style="color: var(--s-gold);"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
     </div>
 
   </div>
-  </RouteDetailContent>
 
+  <Footer slot="footer" locale={locale} />
 </BaseLayout>
 
 <script is:inline>
   (function () {
-    const btn = document.getElementById('share-btn');
+    const btn = document.getElementById('upg-share-btn');
     if (!btn) return;
     btn.addEventListener('click', async function () {
       const title = btn.dataset.title;
       const url   = btn.dataset.url;
-      const label = btn.querySelector('.share-label');
+      const label = btn.querySelector('span');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Descubre la ruta "' + title + '" en Granada Vibes', url }); return; }
+        try { await navigator.share({ title, text: 'Descubre "' + title + '" en Granada Vibes', url }); return; }
         catch (_) {}
       }
       try {
         await navigator.clipboard.writeText(url ?? '');
         if (label) {
           const orig = label.textContent;
-          label.textContent = '¡Enlace copiado!';
+          label.textContent = '¡Copiado!';
           setTimeout(() => { label.textContent = orig; }, 2000);
         }
       } catch (_) {}
@@ -499,689 +318,210 @@ const seoDescription = `Ruta "${route.title[locale]}" por ${neighborhoodList} en
   document.addEventListener('DOMContentLoaded', () => {
     const io = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
     );
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
   });
 </script>
 
-<!-- Reading progress bar -->
-<script>
-  (function () {
-    const bar = document.createElement('div');
-    bar.id = 'read-progress';
-    bar.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(bar);
-
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollTop = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-          bar.style.setProperty('--scroll-progress', `${progress}%`);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
-  })();
-</script>
-
 <style is:global>
-  #read-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--scroll-progress, 0%);
-    height: 3px;
-    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-    z-index: 9999;
-    transition: width 0.1s linear;
-    pointer-events: none;
-    box-shadow: 0 2px 10px rgba(201, 168, 76, 0.4);
-  }
-
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  /* Premium block styling */
-  .det-block-premium {
+  /* BASE DE PAGINA */
+  .route-page-override {
+    --s-bg:       #f5f0ea;
+    --s-bg-hi:    #faf8f5;
+    --s-ink:      #1a1619;
+    --s-ink-2:    #5a4f47;
+    --s-ink-3:    #8a7f77;
+    --s-orange:   #e8622a;
+    --s-gold:     #c9a84c;
+    --s-border:   rgba(26,22,25,0.10);
+    
+    background: var(--s-bg);
     position: relative;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    padding-bottom: 0rem;
+  }
+  .route-page-override::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; mix-blend-mode: multiply; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  .det-block-premium:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
-  }
+  /* UPGRADED LAYOUT */
+  .det-content-wrap { max-width: 1440px; margin: 0 auto; padding: 4rem clamp(1.5rem, 5vw, 4rem) 2rem; position: relative; z-index: 2; }
+  .upgraded-layout { gap: 5rem; grid-template-columns: 1fr 380px; max-width: 1300px; margin: 0 auto; display: grid; align-items: start; }
 
-  .det-block-footer {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(26, 22, 25, 0.06);
-  }
+  /* LEFT TRACK: MAIN */
+  .upgraded-main { display: flex; flex-direction: column; background: transparent; gap: 3rem; }
 
-  .det-block-accent-line {
-    display: block;
-    width: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, #c9a84c, transparent);
-    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  .upg-block {
+    position: relative; padding: 3rem; background: var(--s-bg-hi);
+    border: 1px solid var(--s-border); border-radius: 20px; opacity: 0; transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 20px rgba(0,0,0,0.015);
   }
+  .upg-block:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
+  .upg-block.is-visible { opacity: 1; transform: translateY(0); }
 
-  .det-block-premium:hover .det-block-accent-line {
-    width: 80px;
+  .upg-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .upg-num { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-orange); }
+  .upg-line { height: 1px; flex: 1; max-width: 60px; background: linear-gradient(90deg, var(--s-orange), transparent); opacity: 0.5; }
+  .upg-eyebrow { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-ink-3); }
+
+  .upg-title { font-family: var(--font-body); font-size: 2.2rem; font-weight: 300; letter-spacing: -0.02em; color: var(--s-ink); margin-bottom: 1.5rem; line-height: 1.2; }
+  .upg-lead { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.8; color: var(--s-ink-2); max-width: 68ch; }
+  .upg-text-secondary { font-family: var(--font-display); font-size: 1rem; line-height: 1.8; color: var(--s-ink-2); max-width: 70ch; margin-top: 1rem; }
+
+  .upg-route-neighs { margin-top: 2rem; display: flex; align-items: center; gap: 1rem; padding-top: 2rem; border-top: 1px dashed var(--s-border); }
+  .upg-rn-label { font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--s-ink-3); text-transform: uppercase; }
+
+  .upg-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem;
+    border-radius: 8px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em;
+    background: rgba(201,168,76,0.15); color: #8a6d3b; border: 1px solid rgba(201,168,76,0.3);
   }
+  .upg-badge.ghost { background: transparent; border-color: var(--s-border); color: var(--s-ink-2); }
+  .upg-badge svg { width: 14px; height: 14px; }
 
-  /* Enhanced metrics block */
-  .rut-metrics-block {
-    background: linear-gradient(135deg, rgba(26, 22, 25, 0.02), rgba(26, 22, 25, 0.005));
+  /* HIGHLIGHTS Upgrades */
+  .upg-highlights { display: flex; flex-direction: column; gap: 1.5rem; }
+  .upg-hl-item {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    opacity: 0; transform: translateX(-20px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) var(--hl-delay);
   }
-
-  .rut-metrics {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-    margin-top: 1.5rem;
+  .upg-block.is-visible .upg-hl-item { opacity: 1; transform: translateX(0); }
+  
+  .upg-hl-num-wrap {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--s-bg); border: 1px solid var(--s-border);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
+  .upg-hl-num { font-family: var(--font-display); font-size: 0.8rem; font-weight: 600; color: var(--s-ink); }
+  .upg-hl-text { font-family: var(--font-display); font-size: 1.05rem; line-height: 1.6; color: var(--s-ink-2); padding-top: 0.45rem; }
 
-  @media (min-width: 640px) {
-    .rut-metrics {
-      grid-template-columns: repeat(4, 1fr);
-    }
+  /* TIPS */
+  .block-tips {
+    background: linear-gradient(135deg, rgba(232,98,42,0.05), transparent);
+    border-color: rgba(232,98,42,0.15);
   }
-
-  .rut-metric-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(26, 22, 25, 0.08);
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  .upg-tips-content { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .upg-tips-icon {
+    width: 48px; height: 48px; border-radius: 12px; background: rgba(232,98,42,0.1);
+    color: var(--s-orange); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
+  .upg-tips-icon svg { width: 24px; height: 24px; }
+  .upg-tips-text { font-size: 1.1rem; line-height: 1.7; color: var(--s-ink-2); font-style: italic; }
 
-  .rut-metric-cell:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-    border-color: rgba(201, 168, 76, 0.25);
-  }
-
-  .rut-metric-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(201, 168, 76, 0.1);
-    border: 1px solid rgba(201, 168, 76, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-    color: #c9a84c;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .rut-metric-cell:hover .rut-metric-icon {
-    transform: scale(1.15);
-    background: rgba(201, 168, 76, 0.2);
-    box-shadow: 0 4px 15px rgba(201, 168, 76, 0.2);
-  }
-
-  .rut-metric-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .rut-metric-val {
-    font-family: var(--font-body, 'Fraunces', serif);
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--s-ink-1, #1a1619);
-    margin-bottom: 0.25rem;
-  }
-
-  .rut-metric-val.is-diff {
-    color: var(--dc, #c9a84c);
-  }
-
-  .rut-metric-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--s-ink-3, #8a7f77);
-  }
-
-  .rut-diff-bars {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 0.75rem;
-  }
-
-  .rut-diff-bar {
-    width: 8px;
-    height: 24px;
-    background: rgba(26, 22, 25, 0.1);
-    border-radius: 2px;
+  /* TAGS */
+  .upg-tags { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; margin-left: 1rem; }
+  .upg-tags.is-visible { opacity: 1; transform: translateY(0); }
+  .upg-tags-title { display: block; font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; color: var(--s-ink-3); margin-bottom: 1rem; letter-spacing: 0.1em; }
+  .upg-tags-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .upg-tag {
+    padding: 0.5rem 1rem; background: rgba(26,22,25,0.03); border-radius: 100px;
+    font-family: var(--font-display); font-size: 0.75rem; color: var(--s-ink-2);
     transition: all 0.3s ease;
   }
+  .upg-tag:hover { background: var(--s-ink); color: #fff; }
 
-  .rut-diff-bar.active {
-    background: var(--dc, #c9a84c);
-    box-shadow: 0 2px 8px var(--dc, rgba(201, 168, 76, 0.3));
-  }
+  /* RIGHT TRACK: SIDEBAR */
+  .upg-sidebar-sticky { position: sticky; top: calc(var(--header-height, 64px) + 2rem); display: flex; flex-direction: column; gap: 2rem; }
 
-  /* Enhanced timeline */
-  .rut-timeline-block {
+  /* Premium Ticket Card */
+  .upg-ticket-card {
     position: relative;
-  }
-
-  .rut-timeline {
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .rut-timeline::before {
-    content: '';
-    position: absolute;
-    left: 0.75rem;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, rgba(201, 168, 76, 0.4), rgba(201, 168, 76, 0.1));
-  }
-
-  .rut-tl-item {
-    position: relative;
-    padding-bottom: 1.5rem;
-    padding-left: 1.5rem;
-  }
-
-  .rut-tl-item:last-child {
-    padding-bottom: 0;
-  }
-
-  .rut-tl-item:last-child .rut-tl-connector {
-    display: none;
-  }
-
-  .rut-tl-marker {
-    position: absolute;
-    left: -1.75rem;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .rut-tl-num {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #c9a84c, #e6c587);
-    color: white;
-    font-family: var(--font-display, 'DM Sans', sans-serif);
-    font-size: 0.7rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .rut-tl-item:hover .rut-tl-num {
-    transform: scale(1.15);
-  }
-
-  .rut-tl-connector {
-    width: 2px;
-    flex: 1;
-    min-height: 40px;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(201, 168, 76, 0.3),
-      rgba(201, 168, 76, 0.3) 4px,
-      transparent 4px,
-      transparent 8px
-    );
-    margin-top: 4px;
-  }
-
-  .rut-tl-content {
-    padding: 1rem 1.25rem;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(26, 22, 25, 0.08);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  }
-
-  .rut-tl-item:hover .rut-tl-content {
-    transform: translateX(4px);
-    border-color: rgba(201, 168, 76, 0.25);
-    box-shadow: 0 4px 15px rgba(201, 168, 76, 0.1);
-  }
-
-  .rut-tl-title {
-    font-family: var(--font-body, 'Fraunces', serif);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--s-ink-1, #1a1619);
-    margin-bottom: 0.25rem;
-  }
-
-  .rut-tl-desc {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--s-ink-2, #5a5550);
-  }
-
-  /* Enhanced tips grid */
-  .rut-tips-block {
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.03), rgba(201, 168, 76, 0.01));
-  }
-
-  .rut-tips-grid {
-    display: grid;
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .rut-tips-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .rut-tip-card {
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(26, 22, 25, 0.08);
-    border-radius: 8px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .rut-tip-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(201, 168, 76, 0.3);
-    box-shadow: 0 8px 25px rgba(201, 168, 76, 0.1);
-  }
-
-  .rut-tip-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-  }
-
-  .rut-tip-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(201, 168, 76, 0.15);
-    border: 1px solid rgba(201, 168, 76, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #c9a84c;
-  }
-
-  .rut-tip-icon svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .rut-tip-num {
-    font-family: var(--font-display, 'DM Sans', sans-serif);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: rgba(201, 168, 76, 0.5);
-  }
-
-  .rut-tip-title {
-    font-family: var(--font-body, 'Fraunces', serif);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--s-ink-1, #1a1619);
-    margin-bottom: 0.4rem;
-  }
-
-  .rut-tip-text {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--s-ink-2, #5a5550);
-  }
-
-  /* Enhanced bring list */
-  .rut-bring-block {
-    background: linear-gradient(135deg, rgba(74, 158, 107, 0.03), rgba(74, 158, 107, 0.01));
-    border-left: 3px solid rgba(74, 158, 107, 0.4);
-  }
-
-  .rut-bring-visual {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    margin-top: 1.5rem;
-  }
-
-  .rut-bring-icon-large {
-    flex-shrink: 0;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(74, 158, 107, 0.15), rgba(74, 158, 107, 0.05));
-    border: 1px solid rgba(74, 158, 107, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #4a9e6b;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .rut-bring-icon-large:hover {
-    transform: scale(1.1) rotate(5deg);
-  }
-
-  .rut-bring-icon-large svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  .rut-bring-list {
-    flex: 1;
-    display: grid;
-    gap: 0.75rem;
-  }
-
-  @media (min-width: 640px) {
-    .rut-bring-list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .rut-bring-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.6rem 0.75rem;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(26, 22, 25, 0.06);
-    border-radius: 6px;
-    transition: all 0.3s ease;
-  }
-
-  .rut-bring-item:hover {
-    transform: translateX(4px);
-    border-color: rgba(74, 158, 107, 0.3);
-    background: rgba(74, 158, 107, 0.05);
-  }
-
-  .rut-bring-check {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: rgba(74, 158, 107, 0.15);
-    border: 1px solid rgba(74, 158, 107, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #4a9e6b;
-    flex-shrink: 0;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .rut-bring-item:hover .rut-bring-check {
-    transform: scale(1.2);
-    background: rgba(74, 158, 107, 0.25);
-  }
-
-  .rut-bring-check svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  .rut-bring-text {
-    font-size: 0.9rem;
-    color: var(--s-ink-1, #1a1619);
-  }
-
-  /* Premium sidebar cards */
-  .det-card-premium {
-    position: relative;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
     overflow: hidden;
+    opacity: 0; transform: translateY(40px) scale(0.98);
+    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .upg-ticket-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  
+  .upg-tc-header { padding: 2.5rem 2.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; }
+  .upg-tc-date-box {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 64px; height: 64px; border-radius: 16px; background: rgba(201,168,76,0.15); color: #8a6d3b;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .tc-day { font-family: var(--font-body); font-size: 1.5rem; font-weight: 400; line-height: 1; }
+  .tc-month { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; margin-top: 0.2rem; }
+  
+  .upg-tc-info { display: flex; flex-direction: column; gap: 0.4rem; }
+  .tc-time { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--s-ink); }
+  .tc-time svg { width: 16px; height: 16px; color: var(--s-orange); }
+  .tc-category { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.05em; color: var(--s-ink-3); text-transform: uppercase; }
+
+  .upg-tc-price-wrap { padding: 0 2.5rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .tc-price-label { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
+  .tc-price-val { font-family: var(--font-body); font-size: 3.5rem; font-weight: 300; color: var(--s-ink); line-height: 1; letter-spacing: -0.03em; }
+
+  /* Ticket divider (dashed with holes) */
+  .upg-tc-divider {
+    position: relative; display: flex; align-items: center; height: 32px;
+  }
+  .tcd-hole {
+    width: 32px; height: 32px; background: var(--s-bg); border-radius: 50%;
+    position: absolute; top: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+  }
+  .tcd-hole.left { left: -16px; }
+  .tcd-hole.right { right: -16px; }
+  .tcd-dashed { flex: 1; margin: 0 20px; border-top: 2px dashed rgba(26,22,25,0.1); }
+
+  .upg-tc-actions { padding: 2rem 2.5rem 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  
+  .upg-btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    padding: 1.25rem 1.5rem; border-radius: 12px; background: var(--s-ink); color: #fff;
+    font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden; border: none; cursor: pointer;
+  }
+  .upg-btn-primary:not(.inert):hover { transform: scale(1.02); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
+  .upg-btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
+  .upg-btn-primary:not(.inert):hover svg { transform: translateX(4px); }
+
+  /* Related Events Bento */
+  .upg-related-bento {
+    background: transparent;
+    opacity: 0; transform: translateY(20px); transition: all 0.8s ease;
+  }
+  .upg-related-bento.is-visible { opacity: 1; transform: translateY(0); }
+  
+  .upg-rb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-left: 0.5rem; }
+  .upg-rb-title { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-ink-3); text-transform: uppercase; }
+  .upg-rb-all { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-orange); text-decoration: none; transition: opacity 0.3s; }
+  .upg-rb-all:hover { opacity: 0.7; }
+
+  .upg-rb-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .upg-rel-item {
+    display: flex; align-items: center; gap: 1rem; padding: 0.75rem;
+    background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 16px;
+    text-decoration: none; transition: all 0.3s ease;
+  }
+  .upg-rel-item:hover { transform: translateX(4px); box-shadow: 0 8px 24px rgba(0,0,0,0.04); border-color: rgba(201,168,76,0.3); }
+
+  .uri-thumb { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: rgba(26,22,25,0.04); }
+  .uri-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; filter: grayscale(20%); }
+  .upg-rel-item:hover .uri-thumb img { transform: scale(1.05); filter: grayscale(0%); }
+  
+  .uri-content { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+  .uri-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; color: var(--s-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+  .uri-meta { font-family: var(--font-display); font-size: 0.7rem; color: var(--s-ink-3); }
+  
+  .uri-arrow { width: 32px; height: 32px; border-radius: 50%; background: transparent; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
+  .uri-arrow svg { width: 16px; height: 16px; }
+  .upg-rel-item:hover .uri-arrow { background: var(--s-orange); color: #fff; }
+
+  @media (max-width: 1024px) {
+    .upgraded-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .upg-sidebar-sticky { position: static; }
   }
 
-  .det-card-premium::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
-    background-size: 200% 100%;
-    animation: shimmer 3s linear infinite;
-  }
-
-  .det-info-section {
-    padding: 0.5rem 0;
-  }
-
-  .det-info-section:first-of-type {
-    padding-top: 0;
-  }
-
-  .det-info-label svg {
-    width: 16px;
-    height: 16px;
-    opacity: 0.5;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .det-info-row:hover .det-info-label svg {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
-
-  /* Enhanced difficulty in sidebar */
-  .rut-sb-diff {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.4rem;
-  }
-
-  .rut-sb-bars {
-    display: flex;
-    gap: 3px;
-  }
-
-  .rut-sb-bar {
-    width: 6px;
-    height: 18px;
-    background: rgba(26, 22, 25, 0.1);
-    border-radius: 2px;
-  }
-
-  .rut-sb-bar.active {
-    background: var(--dc, #c9a84c);
-    box-shadow: 0 2px 6px var(--dc, rgba(201, 168, 76, 0.3));
-  }
-
-  .rut-sb-diff-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--dc, #c9a84c);
-  }
-
-  /* Enhanced neighborhoods */
-  .rut-neigh-flow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    justify-content: flex-end;
-  }
-
-  .rut-neigh-pill {
-    padding: 0.35rem 0.75rem;
-    background: rgba(201, 168, 76, 0.12);
-    border: 1px solid rgba(201, 168, 76, 0.25);
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: #8a6d3b;
-    transition: all 0.3s ease;
-  }
-
-  .rut-neigh-pill:hover {
-    background: rgba(201, 168, 76, 0.2);
-    border-color: rgba(201, 168, 76, 0.4);
-    transform: translateY(-1px);
-  }
-
-  /* Enhanced months */
-  .rut-months-flow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    justify-content: flex-end;
-  }
-
-  .rut-month-tag {
-    padding: 0.3rem 0.6rem;
-    background: rgba(26, 22, 25, 0.05);
-    border: 1px solid rgba(26, 22, 25, 0.1);
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--s-ink-2, #5a5550);
-    transition: all 0.2s ease;
-  }
-
-  .rut-month-tag:hover {
-    background: rgba(201, 168, 76, 0.1);
-    border-color: rgba(201, 168, 76, 0.25);
-  }
-
-  /* Enhanced share button */
-  .rut-btn-share {
-    width: 100%;
-    margin-top: 1.25rem;
-    padding: 0.9rem 1.25rem;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), rgba(201, 168, 76, 0.05));
-    border: 1px solid rgba(201, 168, 76, 0.25);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #8a6d3b;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .rut-btn-share:hover {
-    background: rgba(201, 168, 76, 0.15);
-    border-color: rgba(201, 168, 76, 0.4);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.15);
-  }
-
-  .rut-btn-share svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* Enhanced related items */
-  .det-related-item {
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .det-related-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, #c9a84c, #e6c587);
-    transform: scaleY(0);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .det-related-item:hover {
-    background: rgba(201, 168, 76, 0.04);
-    transform: translateX(4px);
-  }
-
-  .det-related-item:hover::before {
-    transform: scaleY(1);
-  }
-
-  .det-rel-meta svg {
-    width: 12px;
-    height: 12px;
-    opacity: 0.5;
-  }
-
-  /* Hover corners enhanced */
-  .hc {
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .det-block-premium:hover .hc {
-    border-color: rgba(201, 168, 76, 0.5);
-  }
-
-  /* Enhanced tags */
-  .det-tags-premium {
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(26, 22, 25, 0.02), rgba(26, 22, 25, 0.005));
-    border-radius: 8px;
-    border: 1px solid rgba(26, 22, 25, 0.06);
-  }
-
-  .det-tag-pill {
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .det-tag-pill:hover {
-    transform: translateY(-2px);
-    background: rgba(201, 168, 76, 0.15);
-    border-color: rgba(201, 168, 76, 0.4);
-    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.15);
-  }
-
-  /* Editorial decorative quote */
-  .rut-long-desc-wrap {
-    position: relative;
-    padding-left: 2rem;
-  }
-
-  .rut-long-desc-quote {
-    position: absolute;
-    left: -0.25rem;
-    top: -1rem;
-    font-family: var(--font-body, 'Fraunces', serif);
-    font-size: 5rem;
-    line-height: 1;
-    color: rgba(201, 168, 76, 0.18);
-    font-weight: 300;
-    pointer-events: none;
-    user-select: none;
+  @media (max-width: 640px) {
+    .upg-block { padding: 2rem 1.5rem; }
+    .upg-venue-info { padding: 0 1.5rem 2rem; }
+    .upg-venue-block .upg-header { padding: 2rem 1.5rem 0; }
+    .upg-tc-header, .upg-tc-price-wrap, .upg-tc-actions { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .tc-price-val { font-size: 2.8rem; }
+    .upg-title { font-size: 1.8rem; }
   }
 </style>

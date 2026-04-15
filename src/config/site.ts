@@ -26,4 +26,4 @@ export const LOCALE_PATHS: Record<Locale, string> = {
   en: '/en',
 };
 
-export const DEFAULT_OG_IMAGE = '/og-default.jpg';
+export const DEFAULT_OG_IMAGE = 'https://placehold.co/1200x630/080808/f0ede8?text=Granada+Vibes';

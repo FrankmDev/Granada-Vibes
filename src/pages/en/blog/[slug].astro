@@ -28,15 +28,17 @@ const formattedDate = new Date(post.publishDate).toLocaleDateString('en-GB', {
 const categoryLabel = t(`blog.categories.${post.category}`);
 const ogImage = post.image ?? 'https://placehold.co/1200x630/D4704A/FFFFFF?text=Granada+Vibes+Blog';
 
-const schemaData = {
+const articleSchema = JSON.stringify({
+  '@context': 'https://schema.org',
   '@type': 'Article',
   headline: post.title[locale],
   description: post.description[locale],
   datePublished: post.publishDate,
   author: { '@type': 'Person', name: post.author },
-  publisher: { '@type': 'Organization', name: 'Granada Vibes' },
+  publisher: { '@type': 'Organization', name: 'Granada Vibes', url: 'https://granadavibes.com' },
   image: ogImage,
-};
+  url: Astro.url.href,
+});
 ---
 
 <BaseLayout
@@ -45,9 +47,10 @@ const schemaData = {
   description={post.description[locale]}
   ogImage={ogImage}
   ogType="article"
-  schemaType="website"
-  schemaData={schemaData}
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={articleSchema} />
+  </Fragment>
   {/* Breadcrumbs */}
   <div class="container pt-28 lg:pt-36 pb-4">
     <nav class="flex items-center gap-2 text-sm text-[var(--color-text-muted)]" aria-label="Breadcrumb">

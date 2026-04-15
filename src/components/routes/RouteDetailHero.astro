@@ -12,7 +12,7 @@ interface Props {
 const { route, locale } = Astro.props;
 const t = useTranslations(locale);
 
-const routeImage    = route.imageUrl || route.image;
+const routeImage    = route.image;
 const refCode       = `RUT / ${route.id.toString().padStart(3, '0')} · ${new Date().getFullYear()}`;
 const backHref      = locale === 'es' ? '/rutas'    : '/en/routes';
 const backLabel     = locale === 'es' ? '← RUTAS'   : '← ROUTES';

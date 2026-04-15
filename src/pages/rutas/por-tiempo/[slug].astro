@@ -86,51 +86,31 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
 
       <h1 class="mx-hero-title">{plan.title[locale]}</h1>
       <p class="mx-hero-desc">{plan.description[locale]}</p>
-
-      {plan.bestFor && (
-        <div class="mx-best-for">
-          <span class="mx-best-for-label">{t('mixedRoutes.bestFor')}:</span>
-          <span class="mx-best-for-text">{plan.bestFor[locale]}</span>
-        </div>
-      )}
-    </div>
-
-    <div class="mx-hero-dock">
-      <div class="mx-dock-item">
-        <span class="mx-dock-label">{t('mixedRoutes.dockStops')}</span>
-        <span class="mx-dock-value">{totalStops}</span>
-      </div>
-      <div class="mx-dock-sep"></div>
-      <div class="mx-dock-item">
-        <span class="mx-dock-label">{t('mixedRoutes.dockDuration')}</span>
-        <span class="mx-dock-value">{getDurationLabel(plan.duration)}</span>
-      </div>
-      <div class="mx-dock-sep"></div>
-      <div class="mx-dock-item">
-        <span class="mx-dock-label">{t('mixedRoutes.dockZones')}</span>
-        <span class="mx-dock-value">{plan.neighborhoods.length}</span>
-      </div>
     </div>
   </section>
 
+  <!-- CREAM EDITORIAL CONTENT WITH UPGRADED UI -->
   <DetailContent>
-    <div class="det-page mx-page">
-      <div class="det-content-wrap">
-        <div class="det-layout mx-layout">
+    <div class="det-page mx-page-override">
+      <div class="det-content-wrap mt-pull">
+        <div class="det-layout upgraded-layout">
 
-          <main id="main-content" class="det-main mx-main">
+          <!-- MAIN CONTENT (LEFT) -->
+          <main id="main-content" class="det-main upgraded-main">
             {plan.days.map((day, dayIndex) => (
-              <div class="mx-day-section" style={`--day-delay: ${dayIndex * 0.15}s`}>
+              <article class="upg-block mx-day-section" data-reveal style={`--day-delay: ${dayIndex * 0.15}s`}>
+                <div class="upg-block-bg"></div>
+                
                 {day.label && (
-                  <div class="mx-day-header" data-reveal>
-                    <div class="mx-day-line"></div>
-                    <h2 class="mx-day-title">{day.label[locale]}</h2>
-                    <div class="mx-day-line"></div>
-                  </div>
+                  <header class="upg-header">
+                    <span class="upg-num">{(dayIndex + 1).toString().padStart(2, '0')}</span>
+                    <div class="upg-line"></div>
+                    <span class="upg-eyebrow">[ {day.label[locale]} ]</span>
+                  </header>
                 )}
 
                 {day.blocks.map((block, blockIndex) => (
-                  <div class="mx-block" data-reveal style={`--block-delay: ${(blockIndex + 1) * 0.1}s`}>
+                  <div class="mx-block" data-reveal-inner style={`--block-delay: ${(blockIndex + 1) * 0.1}s; margin-top:2rem;`}>
                     <!-- Time block header -->
                     <div class="mx-block-header">
                       <div class="mx-block-icon">
@@ -138,7 +118,7 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
                           <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                       </div>
-                      <h3 class="mx-block-title">{block.label[locale]}</h3>
+                      <h3 class="mx-block-title" style="font-family:var(--font-display);font-size:1.1rem;color:var(--s-ink);">{block.label[locale]}</h3>
                       <div class="mx-block-divider"></div>
                     </div>
 
@@ -182,119 +162,141 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
                     </div>
                   </div>
                 ))}
-              </div>
+              </article>
             ))}
 
             <!-- Essential tips -->
             {plan.essentialTips && plan.essentialTips.length > 0 && (
-              <div class="mx-tips-section" data-reveal>
-                <div class="mx-tips-header">
-                  <span class="mx-tips-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                  <h2 class="mx-tips-title">{t('mixedRoutes.essentialTips')}</h2>
-                </div>
-                <div class="mx-tips-grid">
+              <article class="upg-block block-tips" data-reveal>
+                <div class="upg-block-bg"></div>
+                <header class="upg-header">
+                  <span class="upg-num">X</span>
+                  <div class="upg-line"></div>
+                  <span class="upg-eyebrow">[ EXPERIENCIA ]</span>
+                </header>
+                <h2 class="upg-title">{t('mixedRoutes.essentialTips')}</h2>
+                
+                <div class="upg-tips-grid" style="display:grid; grid-template-columns: repeat(2,1fr); gap:1.5rem; margin-top:2rem;">
                   {plan.essentialTips.map((tip, i) => (
-                    <div class="mx-tip-card" style={`--tip-delay: ${i * 0.1}s`}>
-                      <span class="mx-tip-num">{(i + 1).toString().padStart(2, '0')}</span>
-                      <p class="mx-tip-text">{tip[locale]}</p>
+                    <div style="background:#fff; padding:2rem; border-radius:16px; border:1px solid var(--s-border);">
+                      <span style="font-family:var(--font-body); font-size:2.5rem; font-weight:300; color:rgba(201,168,76,0.3); display:block; margin-bottom:1rem; line-height:1;">{(i + 1).toString().padStart(2, '0')}</span>
+                      <p style="font-family:var(--font-display); font-size:0.95rem; line-height:1.6; color:var(--s-ink-2);">{tip[locale]}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </article>
             )}
           </main>
 
-          <aside class="mx-sidebar">
-            <div class="det-sidebar-sticky">
-              <!-- Stats card -->
-              <div class="det-sidebar-card det-card-premium mx-stats-card" data-reveal>
-                <div class="mx-card-shimmer"></div>
-                <div class="det-sc-head">
-                  <span class="det-sc-eyebrow">[ Resumen ]</span>
-                  <div class="det-sc-line"></div>
+          <!-- ENHANCED SIDEBAR (RIGHT) -->
+          <aside class="upg-sidebar">
+            <div class="upg-sidebar-sticky">
+
+              <!-- Premium Ticket Card - IDENTICAL STYLE -->
+              <div class="upg-ticket-card" data-reveal>
+                <div class="upg-ticket-glass"></div>
+                
+                <!-- Ticket Header -->
+                <div class="upg-tc-header">
+                  <div class="upg-tc-date-box" style="background: rgba(232, 98, 42, 0.1); border-color: rgba(232, 98, 42, 0.3); color: var(--s-orange);">
+                    <span class="tc-day" style="font-size: 1.4rem;">{plan.neighborhoods.length}</span>
+                    <span class="tc-month" style="opacity:0.8;">ZONAS</span>
+                  </div>
+                  <div class="upg-tc-info">
+                    <span class="tc-time" style="color:var(--s-ink);">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      {getDurationLabel(plan.duration)}
+                    </span>
+                    <span class="tc-category">Por Tiempo</span>
+                  </div>
+                </div>
+
+                <!-- Huge Number Box (Total Stops) -->
+                <div class="upg-tc-price-wrap">
+                  <span class="tc-price-label">PUNTOS DE INTERÉS</span>
+                  <span class="tc-price-val">
+                    {totalStops}<span style="font-size:1.5rem; margin-left:8px; opacity:0.8;">STP</span>
+                  </span>
                 </div>
                 
-                <div class="mx-stats-grid">
-                  <div class="mx-stat-item">
-                    <span class="mx-stat-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </span>
-                    <div class="mx-stat-content">
-                      <span class="mx-stat-val">{getDurationLabel(plan.duration)}</span>
-                      <span class="mx-stat-label">{t('mixedRoutes.statDuration')}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="mx-stat-item">
-                    <span class="mx-stat-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </span>
-                    <div class="mx-stat-content">
-                      <span class="mx-stat-val">{totalStops}</span>
-                      <span class="mx-stat-label">{t('mixedRoutes.statStops')}</span>
-                    </div>
-                  </div>
-
-                  <div class="mx-stat-item">
-                    <span class="mx-stat-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </span>
-                    <div class="mx-stat-content">
-                      <span class="mx-stat-val">{plan.neighborhoods.length}</span>
-                      <span class="mx-stat-label">{t('mixedRoutes.statNeighborhoods')}</span>
-                    </div>
-                  </div>
-                </div>
-
+                <!-- Best For Sub-label injected below big number -->
                 {plan.bestFor && (
-                  <div class="mx-best-for-card">
-                    <span class="mx-best-for-label-small">{t('mixedRoutes.idealFor')}</span>
-                    <p class="mx-best-for-card-text">{plan.bestFor[locale]}</p>
+                  <div style="padding: 0 2.5rem 1.5rem; display: flex; flex-direction:column; gap:0.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
+                       <span style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--s-orange);">IDEAL PARA</span>
+                       <div style="flex:1; height: 1px; background: var(--s-border);"></div>
+                    </div>
+                    <p style="font-family:var(--font-display); font-size:0.9rem; line-height:1.5; color:var(--s-ink-2);">{plan.bestFor[locale]}</p>
                   </div>
                 )}
+
+                <div class="upg-tc-divider">
+                  <span class="tcd-hole left"></span>
+                  <div class="tcd-dashed"></div>
+                  <span class="tcd-hole right"></span>
+                </div>
+
+                <!-- Actions -->
+                <div class="upg-tc-actions">
+                  <button id="upg-share-btn" class="upg-btn-primary"
+                    data-title={plan.title[locale]}
+                    data-url={Astro.url.href}
+                  >
+                    <span>Compartir ruta</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                  </button>
+
+                  <a href="/rutas/por-tiempo" class="upg-btn-secondary" style="margin-top:0.5rem; text-decoration:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span class="upg-share-label">Volver a rutas por tiempo</span>
+                  </a>
+                </div>
+
               </div>
 
-              <!-- Back link -->
-              <div class="mx-back-card" data-reveal>
-                <a href="/rutas/por-tiempo" class="mx-back-btn">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <span>{t('mixedRoutes.backToAll')}</span>
-                </a>
-              </div>
             </div>
           </aside>
 
         </div>
       </div>
 
-      <div class="det-footer-orn" aria-hidden="true">
-        <span class="det-orn-line"></span>
-        <span class="det-orn-diamond"></span>
-        <span class="det-orn-star">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/>
-          </svg>
-        </span>
-        <span class="det-orn-diamond"></span>
-        <span class="det-orn-line"></span>
+      <!-- Footer ornament -->
+      <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
+        <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+        <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
+        <span style="color: var(--s-gold); margin: 0 0.5rem;"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+        <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
+        <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
       </div>
+
     </div>
   </DetailContent>
 
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('upg-share-btn');
+    if (!btn) return;
+    btn.addEventListener('click', async function () {
+      const title = btn.dataset.title;
+      const url   = btn.dataset.url;
+      const label = btn.querySelector('span');
+      if (navigator.share) {
+        try { await navigator.share({ title, text: 'Ruta "' + title + '" en Granada Vibes', url }); return; }
+        catch (_) {}
+      }
+      try {
+        await navigator.clipboard.writeText(url ?? '');
+        if (label) {
+          const orig = label.textContent;
+          label.textContent = '¡Copiado!';
+          setTimeout(() => { label.textContent = orig; }, 2000);
+        }
+      } catch (_) {}
+    });
+  })();
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
@@ -303,7 +305,6 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
         if (e.isIntersecting) {
           e.target.classList.add('is-visible');
           
-          // Trigger inner animations
           if (e.target.hasAttribute('data-reveal-inner')) {
             const parent = e.target.closest('.mx-stops-list');
             if (parent) {
@@ -323,7 +324,6 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
     document.querySelectorAll('[data-reveal-inner]').forEach(el => io.observe(el));
     
-    // Also trigger stops when their parent block is visible
     document.querySelectorAll('.mx-stop').forEach(stop => {
       stop.classList.add('is-visible');
     });
@@ -356,850 +356,179 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
 
 <style is:global>
   #read-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--scroll-progress, 0%);
-    height: 3px;
-    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-    z-index: 9999;
-    transition: width 0.1s linear;
-    pointer-events: none;
-    box-shadow: 0 2px 10px rgba(201, 168, 76, 0.4);
+    position: fixed; top: 0; left: 0; width: var(--scroll-progress, 0%);
+    height: 3px; background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
+    background-size: 200% 100%; animation: shimmer 2s linear infinite; z-index: 9999;
+    transition: width 0.1s linear; pointer-events: none; box-shadow: 0 2px 10px rgba(201, 168, 76, 0.4);
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* OVERRIDE */
+  .mx-page-override {
+    --s-bg:       #f5f0ea;
+    --s-bg-hi:    #faf8f5;
+    --s-ink:      #1a1619;
+    --s-ink-2:    #5a4f47;
+    --s-ink-3:    #8a7f77;
+    --s-orange:   #e8622a;
+    --s-gold:     #c9a84c;
+    --s-border:   rgba(26,22,25,0.10);
+    
+    background: var(--s-bg);
+    position: relative;
+    padding-bottom: 0rem;
+  }
+  .mx-page-override::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; mix-blend-mode: multiply; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-</style>
+  /* UPGRADED LAYOUT */
+  .mt-pull { margin-top: -6rem; }
+  .det-content-wrap { max-width: 1440px; margin: 0 auto; padding: 4rem clamp(1.5rem, 5vw, 4rem) 2rem; position: relative; z-index: 2; }
+  .upgraded-layout { gap: 5rem; grid-template-columns: 1fr 380px; max-width: 1300px; margin: 0 auto; display: grid; align-items: start; }
 
-<style>
-  /* ============================================
-     MIXED ROUTES DETAIL PAGE — Editorial Cream Style
-     Premium blocks with animations and micro-interactions
-     ============================================ */
+  /* LEFT TRACK: MAIN */
+  .upgraded-main { display: flex; flex-direction: column; background: transparent; gap: 3rem; }
+
+  .upg-block {
+    position: relative; padding: 3.5rem 3rem; background: var(--s-bg-hi);
+    border: 1px solid var(--s-border); border-radius: 20px; opacity: 0; transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 20px rgba(0,0,0,0.015);
+  }
+  .upg-block:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
+  .upg-block.is-visible { opacity: 1; transform: translateY(0); }
+
+  .upg-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .upg-num { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-orange); }
+  .upg-line { height: 1px; flex: 1; max-width: 60px; background: linear-gradient(90deg, var(--s-orange), transparent); opacity: 0.5; }
+  .upg-eyebrow { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-ink-3); }
+
+  .upg-title { font-family: var(--font-body); font-size: 2.2rem; font-weight: 300; letter-spacing: -0.02em; color: var(--s-ink); margin-bottom: 1.5rem; line-height: 1.2; }
+
+  .block-tips { background: linear-gradient(135deg, rgba(232,98,42,0.05), transparent); border-color: rgba(232,98,42,0.15); }
+
+  /* RIGHT TRACK: SIDEBAR */
+  .upg-sidebar-sticky { position: sticky; top: calc(var(--header-height, 64px) + 2rem); display: flex; flex-direction: column; gap: 2rem; }
+
+  /* Premium Ticket Card */
+  .upg-ticket-card {
+    position: relative; background: #fff; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+    overflow: hidden; opacity: 0; transform: translateY(40px) scale(0.98); transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .upg-ticket-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+  
+  .upg-tc-header { padding: 2.5rem 2.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; }
+  .upg-tc-date-box {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 64px; height: 64px; border-radius: 16px; background: rgba(201,168,76,0.15); color: #8a6d3b;
+    border: 1px solid rgba(201,168,76,0.3);
+  }
+  .tc-day { font-family: var(--font-body); font-size: 1.5rem; font-weight: 400; line-height: 1; }
+  .tc-month { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; margin-top: 0.2rem; }
+  
+  .upg-tc-info { display: flex; flex-direction: column; gap: 0.4rem; }
+  .tc-time { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--s-ink); }
+  .tc-time svg { width: 16px; height: 16px; color: var(--s-orange); }
+  .tc-category { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.05em; color: var(--s-ink-3); text-transform: uppercase; }
+
+  .upg-tc-price-wrap { padding: 0 2.5rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .tc-price-label { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
+  .tc-price-val { font-family: var(--font-body); font-size: 3.5rem; font-weight: 300; color: var(--s-ink); line-height: 1; letter-spacing: -0.03em; }
+
+  /* Ticket divider (dashed with holes) */
+  .upg-tc-divider { position: relative; display: flex; align-items: center; height: 32px; }
+  .tcd-hole { width: 32px; height: 32px; background: var(--s-bg); border-radius: 50%; position: absolute; top: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02); }
+  .tcd-hole.left { left: -16px; }
+  .tcd-hole.right { right: -16px; }
+  .tcd-dashed { flex: 1; margin: 0 20px; border-top: 2px dashed rgba(26,22,25,0.1); }
+
+  .upg-tc-actions { padding: 2rem 2.5rem 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  
+  .upg-btn-primary {
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    padding: 1.25rem 1.5rem; border-radius: 12px; background: var(--s-ink); color: #fff;
+    font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden; border: none; cursor: pointer;
+  }
+  .upg-btn-primary:hover { transform: scale(1.02); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
+  .upg-btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
+  .upg-btn-primary:hover svg { transform: translateX(4px); }
+
+  .upg-btn-secondary {
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    padding: 1rem 1.5rem; border-radius: 12px; background: rgba(26,22,25,0.03); color: var(--s-ink-2);
+    font-family: var(--font-display); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; border: none; cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .upg-btn-secondary:hover { background: rgba(26,22,25,0.06); color: var(--s-ink); }
+  .upg-btn-secondary svg { width: 16px; height: 16px; }
 
   /* Hero Section */
-  .mx-hero {
-    position: relative;
-    padding: 8rem 2rem 4rem;
-    background: linear-gradient(180deg, #1a1619 0%, #0a0a0a 100%);
-    overflow: hidden;
-  }
+  .mx-hero { position: relative; padding: 8rem 2rem 4rem; background: linear-gradient(180deg, #1a1619 0%, #0a0a0a 100%); overflow: hidden; }
+  .mx-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+  .mx-hero-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(232, 98, 42, 0.05) 0%, transparent 40%); }
+  .mx-hero-glow { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(201, 168, 76, 0.06), transparent 70%); filter: blur(60px); }
+  .mx-hero-content { position: relative; max-width: 900px; margin: 0 auto; z-index: 2; padding-bottom: 2rem; }
+  .mx-back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(240, 237, 232, 0.5); text-decoration: none; margin-bottom: 2rem; transition: all 0.3s ease; }
+  .mx-back-link:hover { color: var(--s-gold); gap: 0.75rem; }
+  .mx-back-link svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
+  .mx-back-link:hover svg { transform: translateX(-4px); }
+  .mx-hero-meta { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .mx-duration-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(201, 168, 76, 0.15); border: 1px solid rgba(201, 168, 76, 0.3); border-radius: 100px; font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--s-gold); }
+  .mx-duration-badge svg { width: 16px; height: 16px; }
+  .mx-hero-stats { font-family: var(--font-display); font-size: 0.82rem; color: rgba(240, 237, 232, 0.4); }
+  .mx-hero-title { font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; letter-spacing: -0.03em; line-height: 1.1; color: #f0ede8; margin-bottom: 1.5rem; }
+  .mx-hero-desc { font-family: var(--font-display); font-size: 1.15rem; line-height: 1.7; color: rgba(240, 237, 232, 0.6); max-width: 65ch; margin-bottom: 1.5rem; }
 
-  .mx-hero-bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
+  /* MX Stops Nested Layout */
+  .mx-block-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .mx-block-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.2); display: flex; align-items: center; justify-content: center; color: var(--s-gold); transition: all 0.4s ease; }
+  .mx-block:hover .mx-block-icon { transform: scale(1.1) rotate(-5deg); box-shadow: 0 8px 25px rgba(201,168,76,0.2); }
+  .mx-block-icon svg { width: 22px; height: 22px; }
+  .mx-block-divider { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(26,22,25,0.1), transparent); }
 
-  .mx-hero-gradient {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 30% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 60%, rgba(232, 98, 42, 0.05) 0%, transparent 40%);
-  }
+  .mx-stops-list { display: flex; flex-direction: column; gap: 1rem; padding-left: 1.25rem; border-left: 2px solid rgba(201,168,76,0.15); margin-left: 1rem; }
+  .mx-stop { display: flex; gap: 1.5rem; opacity: 0; transform: translateX(-20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); transition-delay: var(--stop-delay); }
+  .mx-stop.is-visible { opacity: 1; transform: translateX(0); }
+  
+  .mx-stop-marker { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .mx-stop-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--dot-color, var(--s-gold)); border: 3px solid #f5f0ea; box-shadow: 0 0 0 2px var(--dot-color, var(--s-gold)), 0 4px 12px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; }
+  .mx-stop:hover .mx-stop-dot { transform: scale(1.3); box-shadow: 0 0 0 4px rgba(201,168,76,0.2), 0 6px 20px rgba(0,0,0,0.15); }
+  .mx-stop-line { width: 2px; flex: 1; min-height: 30px; background: repeating-linear-gradient(to bottom, rgba(201,168,76,0.3), rgba(201,168,76,0.3) 4px, transparent 4px, transparent 8px); margin-top: 0.5rem; }
+  .mx-stop:last-child .mx-stop-line { display: none; }
 
-  .mx-hero-glow {
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(ellipse, rgba(201, 168, 76, 0.06), transparent 70%);
-    filter: blur(60px);
-  }
-
-  .mx-hero-content {
-    position: relative;
-    max-width: 900px;
-    margin: 0 auto;
-    z-index: 2;
-  }
-
-  .mx-back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(240, 237, 232, 0.5);
-    text-decoration: none;
-    margin-bottom: 2rem;
-    transition: all 0.3s ease;
-  }
-
-  .mx-back-link:hover {
-    color: var(--s-gold);
-    gap: 0.75rem;
-  }
-
-  .mx-back-link svg {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
-  }
-
-  .mx-back-link:hover svg {
-    transform: translateX(-4px);
-  }
-
-  .mx-hero-meta {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .mx-duration-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(201, 168, 76, 0.15);
-    border: 1px solid rgba(201, 168, 76, 0.3);
-    border-radius: 100px;
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--s-gold);
-  }
-
-  .mx-duration-badge svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .mx-hero-stats {
-    font-family: var(--font-display);
-    font-size: 0.82rem;
-    color: rgba(240, 237, 232, 0.4);
-  }
-
-  .mx-hero-title {
-    font-family: var(--font-body);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 300;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    color: #f0ede8;
-    margin-bottom: 1.5rem;
-  }
-
-  .mx-hero-desc {
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: rgba(240, 237, 232, 0.6);
-    max-width: 65ch;
-    margin-bottom: 1.5rem;
-  }
-
-  .mx-best-for {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.25rem;
-    background: rgba(240, 237, 232, 0.05);
-    border: 1px solid rgba(240, 237, 232, 0.1);
-    border-radius: 8px;
-  }
-
-  .mx-best-for-label {
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: rgba(240, 237, 232, 0.5);
-  }
-
-  .mx-best-for-text {
-    font-family: var(--font-display);
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: #f0ede8;
-  }
-
-  /* Hero Dock */
-  .mx-hero-dock {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    max-width: 600px;
-    margin: 3rem auto 0;
-    padding: 1.5rem 2rem;
-    background: rgba(240, 237, 232, 0.03);
-    border: 1px solid rgba(240, 237, 232, 0.08);
-    border-radius: 16px;
-    backdrop-filter: blur(20px);
-  }
-
-  .mx-dock-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .mx-dock-label {
-    font-family: var(--font-display);
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(240, 237, 232, 0.4);
-  }
-
-  .mx-dock-value {
-    font-family: var(--font-body);
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: #f0ede8;
-  }
-
-  .mx-dock-sep {
-    width: 1px;
-    height: 40px;
-    background: rgba(240, 237, 232, 0.1);
-  }
-
-  /* Page Layout */
-  .mx-page {
-    --s-bg: #f5f0ea;
-    --s-ink: #1a1619;
-  }
-
-  .mx-layout {
-    gap: 3rem;
-  }
-
-  .mx-main {
-    gap: 2rem;
-  }
-
-  /* Day Sections */
-  .mx-day-section {
-    margin-bottom: 2rem;
-  }
-
-  .mx-day-header {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--day-delay);
-  }
-
-  .mx-day-header.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .mx-day-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(201, 168, 76, 0.3), transparent);
-  }
-
-  .mx-day-line:last-child {
-    background: linear-gradient(270deg, rgba(201, 168, 76, 0.3), transparent);
-  }
-
-  .mx-day-title {
-    font-family: var(--font-body);
-    font-size: 1.5rem;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    color: var(--s-ink);
-    white-space: nowrap;
-  }
-
-  /* Block */
-  .mx-block {
-    margin-bottom: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--block-delay);
-  }
-
-  .mx-block.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .mx-block-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .mx-block-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.15), rgba(201, 168, 76, 0.05));
-    border: 1px solid rgba(201, 168, 76, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--s-gold);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .mx-block:hover .mx-block-icon {
-    transform: scale(1.1) rotate(-5deg);
-    box-shadow: 0 8px 25px rgba(201, 168, 76, 0.2);
-  }
-
-  .mx-block-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .mx-block-title {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--s-ink);
-  }
-
-  .mx-block-divider {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(26, 22, 25, 0.1), transparent);
-  }
-
-  /* Stops List */
-  .mx-stops-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-left: 1.25rem;
-    border-left: 2px solid rgba(201, 168, 76, 0.15);
-    margin-left: 1rem;
-  }
-
-  .mx-stop {
-    display: flex;
-    gap: 1.5rem;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--stop-delay);
-  }
-
-  .mx-stop.is-visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .mx-stop-marker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .mx-stop-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--dot-color, var(--s-gold));
-    border: 3px solid #f5f0ea;
-    box-shadow: 0 0 0 2px var(--dot-color, var(--s-gold)),
-                0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .mx-stop:hover .mx-stop-dot {
-    transform: scale(1.3);
-    box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.2),
-                0 6px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .mx-stop-line {
-    width: 2px;
-    flex: 1;
-    min-height: 30px;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(201, 168, 76, 0.3),
-      rgba(201, 168, 76, 0.3) 4px,
-      transparent 4px,
-      transparent 8px
-    );
-    margin-top: 0.5rem;
-  }
-
-  .mx-stop:last-child .mx-stop-line {
-    display: none;
-  }
-
-  /* Stop Card */
   .mx-stop-card {
-    flex: 1;
-    padding: 1.5rem;
-    background: #faf8f5;
-    border: 1px solid rgba(26, 22, 25, 0.06);
-    border-radius: 12px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
+    flex: 1; padding: 1.5rem; background: #faf8f5; border: 1px solid rgba(26,22,25,0.06);
+    border-radius: 12px; transition: all 0.4s ease; position: relative; overflow: hidden;
   }
+  .mx-stop-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--card-accent, var(--s-gold)); opacity: 0.6; transition: opacity 0.3s ease; }
+  .mx-stop-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04); border-color: rgba(201,168,76,0.2); }
+  .mx-stop-card:hover::before { opacity: 1; }
 
-  .mx-stop-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--card-accent, var(--s-gold));
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
-  }
+  .mx-stop-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+  .mx-stop-category { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; font-family: var(--font-display); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 4px; border: 1px solid; }
+  .mx-stop-category svg { width: 14px; height: 14px; }
+  .mx-stop-zone { font-family: var(--font-display); font-size: 0.7rem; font-weight: 500; color: rgba(26,22,25,0.5); }
+  .mx-stop-duration { margin-left: auto; font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; color: rgba(26,22,25,0.4); }
 
-  .mx-stop-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08),
-                0 4px 12px rgba(0, 0, 0, 0.04);
-    border-color: rgba(201, 168, 76, 0.2);
-  }
+  .mx-stop-name { font-family: var(--font-body); font-size: 1.15rem; font-weight: 400; letter-spacing: -0.01em; color: var(--s-ink); margin-bottom: 0.5rem; }
+  .mx-stop-desc { font-family: var(--font-display); font-size: 0.92rem; line-height: 1.7; color: rgba(26,22,25,0.6); }
 
-  .mx-stop-card:hover::before {
-    opacity: 1;
-  }
+  .mx-stop-tip { display: flex; align-items: flex-start; gap: 0.75rem; margin-top: 1rem; padding: 0.875rem 1rem; background: rgba(26,22,25,0.03); border-radius: 8px; }
+  .mx-stop-tip svg { width: 18px; height: 18px; color: var(--tip-color, var(--s-orange)); flex-shrink: 0; margin-top: 0.1rem; }
+  .mx-stop-tip span { font-family: var(--font-display); font-size: 0.85rem; line-height: 1.6; color: rgba(26,22,25,0.7); }
 
-  .mx-stop-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .mx-stop-category {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.75rem;
-    font-family: var(--font-display);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border-radius: 4px;
-    border: 1px solid;
-    transition: all 0.3s ease;
-  }
-
-  .mx-stop-category svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .mx-stop-zone {
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: rgba(26, 22, 25, 0.5);
-  }
-
-  .mx-stop-duration {
-    margin-left: auto;
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: rgba(26, 22, 25, 0.4);
-  }
-
-  .mx-stop-name {
-    font-family: var(--font-body);
-    font-size: 1.15rem;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: var(--s-ink);
-    margin-bottom: 0.5rem;
-  }
-
-  .mx-stop-desc {
-    font-family: var(--font-display);
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: rgba(26, 22, 25, 0.6);
-  }
-
-  .mx-stop-tip {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    padding: 0.875rem 1rem;
-    background: rgba(26, 22, 25, 0.03);
-    border-radius: 8px;
-    transition: all 0.3s ease;
-  }
-
-  .mx-stop-tip svg {
-    width: 18px;
-    height: 18px;
-    color: var(--tip-color, var(--s-orange));
-    flex-shrink: 0;
-    margin-top: 0.1rem;
-  }
-
-  .mx-stop-tip span {
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: rgba(26, 22, 25, 0.7);
-  }
-
-  /* Tips Section */
-  .mx-tips-section {
-    padding: 2.5rem;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.05), rgba(201, 168, 76, 0.02));
-    border: 1px solid rgba(201, 168, 76, 0.15);
-    border-radius: 12px;
-    margin-top: 2rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .mx-tips-section.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .mx-tips-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .mx-tips-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(201, 168, 76, 0.2), rgba(201, 168, 76, 0.08));
-    border: 1px solid rgba(201, 168, 76, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--s-gold);
-  }
-
-  .mx-tips-icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .mx-tips-title {
-    font-family: var(--font-body);
-    font-size: 1.5rem;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    color: var(--s-ink);
-  }
-
-  .mx-tips-grid {
-    display: grid;
-    gap: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .mx-tips-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  .mx-tip-card {
-    display: flex;
-    gap: 1rem;
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1px solid rgba(26, 22, 25, 0.06);
-    border-radius: 8px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--tip-delay);
-  }
-
-  .mx-tip-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-    border-color: rgba(201, 168, 76, 0.2);
-  }
-
-  .mx-tip-num {
-    font-family: var(--font-body);
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: rgba(201, 168, 76, 0.4);
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  .mx-tip-text {
-    font-family: var(--font-display);
-    font-size: 0.92rem;
-    line-height: 1.6;
-    color: rgba(26, 22, 25, 0.75);
-  }
-
-  /* Sidebar */
-  .mx-sidebar {
-    position: relative;
-  }
-
-  .mx-sidebar .det-sidebar-sticky {
-    gap: 1.5rem;
-  }
-
-  /* Stats Card */
-  .mx-stats-card {
-    position: relative;
-    overflow: hidden;
-    padding: 1.75rem;
-  }
-
-  .mx-card-shimmer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #c9a84c, #e6c587, #c9a84c);
-    background-size: 200% 100%;
-    animation: shimmer 3s linear infinite;
-  }
-
-  .mx-stats-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .mx-stat-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(26, 22, 25, 0.06);
-    transition: all 0.3s ease;
-  }
-
-  .mx-stat-item:last-child {
-    border-bottom: none;
-  }
-
-  .mx-stat-item:hover {
-    background: rgba(201, 168, 76, 0.03);
-    margin: 0 -1.75rem;
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
-  }
-
-  .mx-stat-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: rgba(201, 168, 76, 0.12);
-    border: 1px solid rgba(201, 168, 76, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--s-gold);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .mx-stat-item:hover .mx-stat-icon {
-    transform: scale(1.1) rotate(-5deg);
-  }
-
-  .mx-stat-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .mx-stat-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-  }
-
-  .mx-stat-val {
-    font-family: var(--font-body);
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: var(--s-ink);
-  }
-
-  .mx-stat-label {
-    font-family: var(--font-display);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(26, 22, 25, 0.5);
-  }
-
-  .mx-best-for-card {
-    padding: 1rem;
-    background: rgba(201, 168, 76, 0.06);
-    border: 1px solid rgba(201, 168, 76, 0.15);
-    border-radius: 8px;
-  }
-
-  .mx-best-for-label-small {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--s-gold);
-    margin-bottom: 0.4rem;
-  }
-
-  .mx-best-for-card-text {
-    font-family: var(--font-display);
-    font-size: 0.88rem;
-    line-height: 1.5;
-    color: var(--s-ink);
-  }
-
-  /* Back Card */
-  .mx-back-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .mx-back-card.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .mx-back-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 1rem 1.5rem;
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(26, 22, 25, 0.6);
-    background: rgba(26, 22, 25, 0.03);
-    border: 1px solid rgba(26, 22, 25, 0.08);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .mx-back-btn:hover {
-    color: var(--s-gold);
-    background: rgba(201, 168, 76, 0.08);
-    border-color: rgba(201, 168, 76, 0.2);
-    transform: translateY(-2px);
-  }
-
-  .mx-back-btn svg {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
-  }
-
-  .mx-back-btn:hover svg {
-    transform: translateX(-4px);
-  }
-
-  /* Responsive */
   @media (max-width: 1024px) {
-    .mx-layout {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .mx-sidebar {
-      order: -1;
-    }
-
-    .mx-sidebar .det-sidebar-sticky {
-      position: static;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-
-    .mx-stats-card,
-    .mx-back-card {
-      flex: 1;
-      min-width: 280px;
-    }
-
-    .mx-hero {
-      padding: 6rem 1.5rem 3rem;
-    }
-
-    .mx-hero-dock {
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-    }
-
-    .mx-dock-sep {
-      display: none;
-    }
+    .upgraded-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .upg-sidebar-sticky { position: static; }
   }
 
   @media (max-width: 640px) {
-    .mx-stops-list {
-      padding-left: 0.75rem;
-      margin-left: 0.5rem;
-    }
-
-    .mx-stop {
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .mx-stop-marker {
-      flex-direction: row;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .mx-stop-line {
-      display: none;
-    }
-
-    .mx-block-header {
-      flex-wrap: wrap;
-    }
-
-    .mx-tips-grid {
-      grid-template-columns: 1fr;
-    }
+    .mx-stops-list { padding-left: 0.75rem; margin-left: 0.5rem; }
+    .mx-stop { flex-direction: column; gap: 0.75rem; }
+    .mx-stop-marker { flex-direction: row; align-items: center; gap: 0.75rem; }
+    .mx-stop-line { display: none; }
+    .upg-block { padding: 2rem 1.5rem; }
   }
 </style>

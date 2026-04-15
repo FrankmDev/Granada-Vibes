@@ -38,10 +38,10 @@ const heroMetadata = [
 const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+Blog';
 
 const BLOG_IMAGES: Record<string, string> = {
-  'blog-001': 'https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=1200&h=800&fit=crop',
   'blog-002': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&h=800&fit=crop',
   'blog-003': 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=800&fit=crop',
   'blog-004': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=800&fit=crop',
+  'blog-005': 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=800&fit=crop',
   default: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=800&fit=crop',
 };
 ---
@@ -222,7 +222,7 @@ const BLOG_IMAGES: Record<string, string> = {
           <div class="posts-grid" id="posts-grid">
             {remainingPosts.map((post, idx) => (
               <article 
-                class="post-card" 
+                class={`post-card ${post.featured ? 'is-featured' : ''}`}
                 data-category={post.category}
                 style={`--card-index: ${idx}; --cat-color: ${categoryData[post.category].color}`}
               >
@@ -237,15 +237,33 @@ const BLOG_IMAGES: Record<string, string> = {
                     />
                     <div class="card-overlay"></div>
                     
+                    <!-- Featured Badge (like routes) -->
+                    {post.featured && (
+                      <div class="card-featured-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span>Destacado</span>
+                      </div>
+                    )}
+                    
                     <div class="card-category-badge" style={`background: ${categoryData[post.category].color}`}>
                       <span>{categoryData[post.category].icon}</span>
                     </div>
 
-                    <!-- Corner Brackets -->
+                    <!-- Corner Brackets - Enhanced -->
                     <span class="card-bracket bracket-tl"></span>
                     <span class="card-bracket bracket-tr"></span>
                     <span class="card-bracket bracket-bl"></span>
                     <span class="card-bracket bracket-br"></span>
+                    
+                    <!-- Hover Hint -->
+                    <div class="card-hover-hint">
+                      <span>Leer artículo</span>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
                   </div>
 
                   <div class="card-content">
@@ -909,93 +927,110 @@ const BLOG_IMAGES: Record<string, string> = {
     }
 
     /* ═══════════════════════════════════════════════════════════════
-       FILTER SECTION
+       FILTER SECTION - Redesigned like Routes
        ═══════════════════════════════════════════════════════════════ */
     .filter-section {
-      margin-bottom: 3rem;
+      margin-bottom: 3.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1.5px solid rgba(26, 22, 25, 0.08);
     }
 
     .filter-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.25rem;
-      padding: 0 0.25rem;
+      margin-bottom: 1.5rem;
     }
 
     .filter-label {
       font-family: var(--font-display);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--e-ink-3);
+      color: #6b6058 !important;
     }
 
     .filter-results {
       display: flex;
       align-items: baseline;
-      gap: 0.4rem;
+      gap: 0.5rem;
       font-family: var(--font-display);
-      font-size: 0.85rem;
-      color: var(--e-ink-3);
+      font-size: 0.9rem;
+      color: #6b6058 !important;
     }
 
     .filter-results strong {
       font-family: var(--font-body);
-      font-size: 1.5rem;
+      font-size: 2rem;
       font-weight: 400;
       color: var(--e-orange);
       transition: opacity 0.3s ease;
+      line-height: 1;
     }
 
     .filter-bar {
       display: flex;
-      gap: 0.625rem;
+      gap: 0.75rem;
       overflow-x: auto;
-      scrollbar-width: none;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(26, 22, 25, 0.15) transparent;
       -webkit-overflow-scrolling: touch;
-      padding: 0.5rem 0.25rem;
+      padding: 0.5rem 0.25rem 1rem;
       margin: 0 -0.25rem;
     }
 
     .filter-bar::-webkit-scrollbar {
-      display: none;
+      height: 4px;
     }
 
+    .filter-bar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .filter-bar::-webkit-scrollbar-thumb {
+      background: rgba(26, 22, 25, 0.15);
+      border-radius: 2px;
+    }
+
+    /* Filter Chips - Redesigned like Routes */
     .filter-chip {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1.25rem;
-      background: white;
-      border: 1px solid var(--e-border);
+      background: #ffffff;
+      border: 2px solid var(--e-border-2);
       border-radius: 100px;
       cursor: pointer;
-      transition: all 0.4s var(--ease-out-expo);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
       font-family: var(--font-display);
       flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(26, 22, 25, 0.04);
     }
 
     .filter-chip:hover {
-      border-color: var(--e-ink-2);
+      border-color: var(--e-orange);
+      background: #ffffff;
       transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 8px 20px rgba(232, 98, 42, 0.15), 0 4px 8px rgba(0, 0, 0, 0.06);
     }
 
     .filter-chip.active {
       background: var(--e-ink);
       border-color: var(--e-ink);
       color: white;
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(26, 22, 25, 0.2);
     }
 
     .chip-indicator {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--e-border-2);
+      background: rgba(26, 22, 25, 0.15);
       transition: all 0.3s ease;
     }
 
@@ -1004,50 +1039,65 @@ const BLOG_IMAGES: Record<string, string> = {
     }
 
     .chip-icon {
-      font-size: 0.85rem;
-      opacity: 0.9;
+      font-size: 0.9rem;
+      color: #1a1619 !important;
+      transition: transform 0.3s ease;
     }
 
     .filter-chip.active .chip-icon {
-      color: var(--cat-color, var(--e-orange));
+      color: #ffffff !important;
+    }
+
+    .filter-chip:hover .chip-icon {
+      transform: scale(1.1);
     }
 
     .chip-label {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       letter-spacing: 0.02em;
+      color: #1a1619 !important;
+    }
+
+    .filter-chip.active .chip-label {
+      color: #ffffff !important;
     }
 
     .chip-count {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      padding: 0.2rem 0.6rem;
-      background: var(--e-cream-dark);
+      padding: 0.25rem 0.6rem;
+      background: rgba(26, 22, 25, 0.06);
       border-radius: 100px;
-      color: var(--e-ink-3);
+      color: #3d3632 !important;
       transition: all 0.3s ease;
       min-width: 24px;
       text-align: center;
     }
 
+    .filter-chip:hover .chip-count {
+      background: rgba(232, 98, 42, 0.1);
+      color: var(--e-orange) !important;
+    }
+
     .filter-chip.active .chip-count {
-      background: rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff !important;
     }
 
     /* ═══════════════════════════════════════════════════════════════
-       POSTS GRID
+       POSTS GRID - Redesigned like Routes
        ═══════════════════════════════════════════════════════════════ */
     .posts-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
+      gap: 2.5rem;
     }
 
     .post-card {
       opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.7s var(--ease-out-expo);
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       transition-delay: calc(var(--card-index, 0) * 0.08s);
     }
 
@@ -1061,123 +1111,207 @@ const BLOG_IMAGES: Record<string, string> = {
       flex-direction: column;
       text-decoration: none;
       color: inherit;
-      background: white;
-      border-radius: 20px;
+      background: #ffffff;
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid var(--e-border);
-      transition: all 0.5s var(--ease-out-expo);
+      border: 1px solid rgba(26, 22, 25, 0.06);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       height: 100%;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 4px 6px rgba(26, 22, 25, 0.02), 0 12px 24px rgba(26, 22, 25, 0.04);
     }
 
     .post-link:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-xl);
-      border-color: transparent;
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 24px 50px rgba(26, 22, 25, 0.12), 0 10px 24px rgba(26, 22, 25, 0.08);
+      border-color: rgba(26, 22, 25, 0.12);
     }
 
-    /* Card Visual */
+    /* Card Visual - Enhanced with Routes-style hover */
     .card-visual {
       position: relative;
       aspect-ratio: 16/10;
       overflow: hidden;
+      background: #1a1619;
     }
 
     .card-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(20%) contrast(1.05) brightness(0.9);
-      transform: scale(1.08);
-      transition: all 0.9s var(--ease-out-expo);
+      filter: grayscale(25%) contrast(1.05) brightness(0.88);
+      transform: scale(1.05);
+      transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     .post-link:hover .card-image {
-      filter: grayscale(0%) contrast(1) brightness(0.98);
-      transform: scale(1);
+      filter: grayscale(0%) contrast(1.02) brightness(0.95);
+      transform: scale(1.12);
     }
 
     .card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
+      background: linear-gradient(to bottom, transparent 40%, rgba(26, 22, 25, 0.45) 100%);
+      pointer-events: none;
+      transition: all 0.4s ease;
     }
 
     .post-link:hover .card-overlay {
-      opacity: 1;
+      background: linear-gradient(to bottom, transparent 20%, rgba(26, 22, 25, 0.6) 100%);
     }
 
+    /* Featured Badge - Routes style */
+    .card-featured-badge {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.875rem;
+      background: var(--e-orange);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: white;
+      z-index: 5;
+      box-shadow: 0 4px 14px rgba(232, 98, 42, 0.35);
+      animation: pulse-subtle 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-subtle {
+      0%, 100% { box-shadow: 0 4px 14px rgba(232, 98, 42, 0.35); }
+      50% { box-shadow: 0 4px 20px rgba(232, 98, 42, 0.55); }
+    }
+
+    /* Category Badge - Redesigned */
     .card-category-badge {
       position: absolute;
-      top: 1rem;
-      left: 1rem;
-      width: 38px;
-      height: 38px;
+      top: 1.25rem;
+      left: 1.25rem;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      font-size: 1rem;
+      font-size: 1.1rem;
       color: white;
-      z-index: 3;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition: transform 0.3s var(--ease-spring);
+      z-index: 5;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(255, 255, 255, 0.15);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .post-link:hover .card-category-badge {
-      transform: scale(1.1);
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(255, 255, 255, 0.2);
     }
 
-    /* Card Corner Brackets */
+    /* Card Corner Brackets - Routes style */
     .card-bracket {
       position: absolute;
-      width: 20px;
-      height: 20px;
-      border-color: rgba(255, 255, 255, 0.9);
+      width: 24px;
+      height: 24px;
+      border-color: rgba(201, 168, 76, 0.6);
       border-style: solid;
       border-width: 0;
       opacity: 0;
-      transition: all 0.5s ease;
+      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
     }
 
-    .post-link:hover .card-bracket { opacity: 0.9; }
+    .post-link:hover .card-bracket { 
+      opacity: 1; 
+      border-color: var(--e-gold);
+    }
 
-    .bracket-tl { top: 1rem; left: 1rem; border-top-width: 2px; border-left-width: 2px; }
-    .bracket-tr { top: 1rem; right: 1rem; border-top-width: 2px; border-right-width: 2px; }
-    .bracket-bl { bottom: 1rem; left: 1rem; border-bottom-width: 2px; border-left-width: 2px; }
-    .bracket-br { bottom: 1rem; right: 1rem; border-bottom-width: 2px; border-right-width: 2px; }
+    .bracket-tl { top: 0.875rem; left: 0.875rem; border-top-width: 3px; border-left-width: 3px; }
+    .bracket-tr { top: 0.875rem; right: 0.875rem; border-top-width: 3px; border-right-width: 3px; }
+    .bracket-bl { bottom: 0.875rem; left: 0.875rem; border-bottom-width: 3px; border-left-width: 3px; }
+    .bracket-br { bottom: 0.875rem; right: 0.875rem; border-bottom-width: 3px; border-right-width: 3px; }
 
-    /* Card Content */
+    /* Hover Hint - Appears on hover like Routes */
+    .card-hover-hint {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--e-ink);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 4;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+    }
+
+    .card-hover-hint svg {
+      color: var(--e-orange);
+      transition: transform 0.3s ease;
+    }
+
+    .post-link:hover .card-hover-hint {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .post-link:hover .card-hover-hint svg {
+      transform: translateX(3px);
+    }
+
+    /* Featured card variation */
+    .post-card.is-featured .post-link {
+      border-color: rgba(232, 98, 42, 0.2);
+      box-shadow: 0 4px 6px rgba(26, 22, 25, 0.02), 0 12px 24px rgba(26, 22, 25, 0.04), 0 0 0 1px rgba(232, 98, 42, 0.1);
+    }
+
+    .post-card.is-featured .post-link:hover {
+      border-color: rgba(232, 98, 42, 0.35);
+      box-shadow: 0 16px 50px rgba(232, 98, 42, 0.15), 0 6px 20px rgba(26, 22, 25, 0.08);
+    }
+
+    /* Card Content - Redesigned */
     .card-content {
       padding: 1.75rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
       flex: 1;
+      background: #faf7f3;
     }
 
     .card-header {
       display: flex;
       flex-direction: column;
-      gap: 0.625rem;
+      gap: 0.75rem;
     }
 
     .card-meta {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       font-family: var(--font-display);
       font-size: 0.75rem;
-      color: var(--e-ink-4);
+      color: #6b6058 !important;
       letter-spacing: 0.02em;
     }
 
     .meta-separator {
-      opacity: 0.4;
+      color: #d4cfc9;
+      font-weight: 400;
     }
 
     .reading-time {
@@ -1188,10 +1322,10 @@ const BLOG_IMAGES: Record<string, string> = {
 
     .card-title {
       font-family: var(--font-body);
-      font-size: 1.2rem;
-      font-weight: 500;
-      line-height: 1.35;
-      color: var(--e-ink);
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: #1a1619 !important;
       margin: 0;
       transition: color 0.3s ease;
       display: -webkit-box;
@@ -1201,14 +1335,14 @@ const BLOG_IMAGES: Record<string, string> = {
     }
 
     .post-link:hover .card-title {
-      color: var(--e-orange);
+      color: var(--e-orange) !important;
     }
 
     .card-excerpt {
       font-family: var(--font-display);
       font-size: 0.9rem;
-      line-height: 1.65;
-      color: var(--e-ink-3);
+      line-height: 1.6;
+      color: #3d3632 !important;
       margin: 0;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -1219,22 +1353,26 @@ const BLOG_IMAGES: Record<string, string> = {
     .card-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.5rem;
+      margin: 0.25rem 0;
     }
 
     .tag-pill {
       font-family: var(--font-display);
-      font-size: 0.7rem;
-      color: var(--e-ink-4);
-      padding: 0.2rem 0.6rem;
-      background: var(--e-cream);
-      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #3d3632 !important;
+      padding: 0.3rem 0.75rem;
+      background: rgba(26, 22, 25, 0.04);
+      border: 1px solid rgba(26, 22, 25, 0.08);
+      border-radius: 6px;
       transition: all 0.3s ease;
     }
 
     .tag-pill:hover {
       background: var(--e-orange);
-      color: white;
+      color: #ffffff !important;
+      border-color: var(--e-orange);
     }
 
     .card-footer {
@@ -1243,7 +1381,7 @@ const BLOG_IMAGES: Record<string, string> = {
       justify-content: space-between;
       margin-top: auto;
       padding-top: 1rem;
-      border-top: 1px solid var(--e-border);
+      border-top: 1.5px solid rgba(26, 22, 25, 0.08);
     }
 
     .card-author {
@@ -1251,34 +1389,37 @@ const BLOG_IMAGES: Record<string, string> = {
       align-items: center;
       gap: 0.5rem;
       font-family: var(--font-display);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      color: var(--e-ink-2);
+      color: #3d3632 !important;
     }
 
     .author-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       background: var(--cat-color, var(--e-orange));
       border-radius: 50%;
     }
 
     .card-action {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--e-cream);
+      background: rgba(26, 22, 25, 0.04);
       border-radius: 50%;
-      color: var(--e-ink-3);
-      transition: all 0.4s var(--ease-spring);
+      color: #6b6058 !important;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid rgba(26, 22, 25, 0.06);
     }
 
     .post-link:hover .card-action {
       background: var(--e-orange);
-      color: white;
-      transform: translateX(4px);
+      color: #ffffff !important;
+      transform: translateX(6px) scale(1.1);
+      border-color: var(--e-orange);
+      box-shadow: 0 6px 16px rgba(232, 98, 42, 0.35);
     }
 
     /* ═══════════════════════════════════════════════════════════════

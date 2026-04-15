@@ -2,9 +2,10 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import RoutesGridSection from '@components/home/RoutesGridSection.astro';
 import { getAllRoutes, getAllMixedRoutes } from '@data/index';
 import { useTranslations } from '@i18n/utils';
-import type { Route, RouteCategory, RouteDifficulty } from '@types';
+import type { RouteCategory, RouteDifficulty } from '@types';
 
 const locale = 'es';
 const t = useTranslations(locale);
@@ -54,8 +55,6 @@ function formatDuration(minutes: number): string {
   return h > 0 ? `${h}H${m > 0 ? ` ${m}M` : ''}` : `${m}M`;
 }
 
-// Featured routes for hero accordion
-const featuredRoutes = allRoutes.slice(0, 5);
 const remainingRoutes = allRoutes.slice(5);
 
 // Hero metadata
@@ -95,7 +94,7 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     eyebrowRight={t('routes.heroEyebrowRight')}
     description={t('routes.heroDescription')}
     ctaText={t('routes.heroCta')}
-    ctaLink="#routes-grid"
+    ctaLink="#featured-routes"
     secondaryCtaText={t('routes.heroSecondaryCta')}
     secondaryCtaLink="#time-plans"
     pageNumber="02"
@@ -104,106 +103,10 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     variant="default"
   />
 
-  <!-- CINEMATIC ACCORDION SECTION -->
-  <section class="accordion-section" id="featured-routes">
-    <div class="section-accent">
-      <span class="accent-line"></span>
-      <span class="accent-dot"></span>
-      <span class="accent-text">{t('routes.accordionEyebrow')}</span>
-      <span class="accent-dot"></span>
-      <span class="accent-line"></span>
-    </div>
-
-    <div class="accordion-container">
-      <div class="routes-accordion" id="routes-accordion">
-        {featuredRoutes.map((route, idx) => {
-          const href = `/rutas/${route.slug}`;
-          const bgImage = ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
-          const diffLabel = difficultyLabels[route.difficulty] ?? route.difficulty;
-          const catLabel = categoryLabels[route.category];
-          const catIcon = categoryIcons[route.category];
-
-          return (
-            <a 
-              href={href} 
-              class={`accordion-pane ${idx === 0 ? 'is-active' : ''}`} 
-              data-index={idx}
-              style={`--pane-index: ${idx}`}
-            >
-              <div class="pane-media">
-                <img
-                  src={bgImage}
-                  alt={route.title[locale]}
-                  class="pane-img"
-                  loading={idx < 2 ? 'eager' : 'lazy'}
-                  decoding="async"
-                />
-                <div class="pane-gradient"></div>
-              </div>
-
-              <!-- Inactive State: Minimal -->
-              <div class="pane-minimal">
-                <span class="minimal-index">0{idx + 1}</span>
-                <span class="minimal-line"></span>
-                <span class="minimal-icon">{catIcon}</span>
-              </div>
-
-              <!-- Active State: Full Content -->
-              <div class="pane-full">
-                <div class="full-header">
-                  <span class="full-category">
-                    <span class="cat-icon">{catIcon}</span>
-                    {catLabel}
-                  </span>
-                  <span class="full-number">{String(idx + 1).padStart(2, '0')}</span>
-                </div>
-
-                <div class="full-content">
-                  <h3 class="full-title">{route.title[locale]}</h3>
-                  
-                  <div class="full-meta">
-                    <div class="meta-item">
-                      <span class="meta-label">{t('routes.accordionMetaDuration')}</span>
-                      <span class="meta-value">{formatDuration(route.duration)}</span>
-                    </div>
-                    <div class="meta-divider"></div>
-                    <div class="meta-item">
-                      <span class="meta-label">{t('routes.accordionMetaDistance')}</span>
-                      <span class="meta-value">{route.distance} KM</span>
-                    </div>
-                    <div class="meta-divider"></div>
-                    <div class="meta-item">
-                      <span class="meta-label">{t('routes.accordionMetaDifficulty')}</span>
-                      <span class={`meta-value diff-${route.difficulty}`}>{diffLabel}</span>
-                    </div>
-                  </div>
-
-                  <div class="full-cta">
-                    <span>{t('routes.viewRoute')}</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Hover Indicator -->
-              <div class="pane-indicator">
-                <div class="indicator-bar"></div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-
-    <!-- Mobile Navigation -->
-    <div class="accordion-nav">
-      {featuredRoutes.map((_, idx) => (
-        <button class="nav-dot" data-index={idx} aria-label={t('routes.routeAriaLabel').replace('{{number}}', String(idx + 1))}></button>
-      ))}
-    </div>
-  </section>
+  <!-- CINEMATIC ACCORDION SECTION - Using RoutesGridSection from home -->
+  <div id="featured-routes">
+    <RoutesGridSection routes={allRoutes} locale={locale} />
+  </div>
 
   <!-- FILTER SECTION -->
   <section class="filter-section" id="routes-grid">
@@ -288,12 +191,34 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       <div class="archive-grid" id="routes-grid-container">
         {remainingRoutes.map((route, idx) => {
           const href = `/rutas/${route.slug}`;
-          const bgImage = ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
+          const bgImage = route.image ?? ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
           const diffColor = difficultyColors[route.difficulty];
           const catIcon = categoryIcons[route.category];
           
           // Expedition number with leading zeros
           const expeditionNum = String(idx + 1).padStart(2, '0');
+          
+          // Get time of day icon
+          const timeOfDayIcons = {
+            morning: '☀',
+            afternoon: '☀',
+            sunset: '☾',
+            evening: '☾',
+            any: '◐'
+          };
+          const timeLabel = t(`timeOfDay.${route.timeOfDay}`);
+          
+          // Neighborhood labels
+          const neighborhoodLabels = {
+            albaicin: 'Albaicín',
+            sacromonte: 'Sacromonte', 
+            centro: 'Centro',
+            realejo: 'Realejo',
+            alhambra: 'Alhambra',
+            cartuja: 'Cartuja',
+            zaidin: 'Zaidín',
+            otro: 'Otro'
+          };
 
           return (
             <article 
@@ -341,20 +266,38 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
                     </div>
                     <span class="stamp-label">{difficultyLabels[route.difficulty]}</span>
                   </div>
+                  
+                  {/* Featured Badge */}
+                  {route.featured && (
+                    <div class="featured-badge">
+                      <span class="featured-star">★</span>
+                      <span class="featured-text">{t('routes.featured')}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
                 <div class="field-notes">
-                  {/* Stats Header */}
-                  <div class="coordinates-header">
-                    <div class="coord-line">
-                      <span class="coord-label">DIST.</span>
-                      <span class="coord-value">{route.distance}km</span>
+                  {/* Top Row: Time + Stats */}
+                  <div class="notes-header">
+                    <div class="time-badge">
+                      <span class="time-icon">{timeOfDayIcons[route.timeOfDay]}</span>
+                      <span class="time-text">{timeLabel}</span>
                     </div>
-                    <div class="coord-divider"></div>
-                    <div class="coord-line">
-                      <span class="coord-label">TIEMPO</span>
-                      <span class="coord-value">{formatDuration(route.duration)}</span>
+                    <div class="stats-row">
+                      <span class="stat-item">
+                        <span class="stat-value">{route.distance}</span>
+                        <span class="stat-unit">km</span>
+                      </span>
+                      <span class="stat-divider">·</span>
+                      <span class="stat-item">
+                        <span class="stat-value">{formatDuration(route.duration)}</span>
+                      </span>
+                      <span class="stat-divider">·</span>
+                      <span class="stat-item">
+                        <span class="stat-value">{route.highlights.length}</span>
+                        <span class="stat-unit">{t('routes.stops')}</span>
+                      </span>
                     </div>
                   </div>
                   
@@ -362,6 +305,31 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
                   <h3 class="expedition-title">
                     {route.title[locale]}
                   </h3>
+                  
+                  {/* Description */}
+                  <p class="expedition-description">
+                    {route.description[locale].length > 120 
+                      ? route.description[locale].slice(0, 120) + '...' 
+                      : route.description[locale]}
+                  </p>
+                  
+                  {/* Neighborhoods */}
+                  <div class="neighborhoods-row">
+                    {route.neighborhoods.slice(0, 3).map((nb) => (
+                      <span class="neighborhood-tag">{neighborhoodLabels[nb]}</span>
+                    ))}
+                  </div>
+                  
+                  {/* Difficulty Bar */}
+                  <div class="difficulty-bar">
+                    <div class="difficulty-track">
+                      <div 
+                        class="difficulty-fill" 
+                        style={`width: ${route.difficulty === 'easy' ? '33%' : route.difficulty === 'moderate' ? '66%' : '100%'}; background: ${diffColor}`}
+                      ></div>
+                    </div>
+                    <span class="difficulty-text">{difficultyLabels[route.difficulty]}</span>
+                  </div>
                 </div>
                 
                 {/* Hover Reveal */}
@@ -469,63 +437,6 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
   </section>
 
   <script>
-    // Accordion functionality
-    function initAccordion() {
-      const accordion = document.getElementById('routes-accordion');
-      const panes = accordion?.querySelectorAll<HTMLElement>('.accordion-pane');
-      const navDots = document.querySelectorAll<HTMLElement>('.nav-dot');
-
-      if (!panes?.length) return;
-
-      // Set initial active state
-      panes.forEach((p, i) => {
-        if (i === 0) {
-          p.classList.add('is-active');
-          navDots[i]?.classList.add('is-active');
-        }
-      });
-
-      // Desktop: hover to activate
-      panes.forEach((pane, idx) => {
-        pane.addEventListener('mouseenter', () => {
-          if (window.innerWidth <= 1024) return;
-          
-          panes.forEach((p) => p.classList.remove('is-active'));
-          navDots.forEach((d) => d.classList.remove('is-active'));
-          
-          pane.classList.add('is-active');
-          navDots[idx]?.classList.add('is-active');
-        });
-
-        // Mobile: click to activate
-        pane.addEventListener('click', (e) => {
-          if (window.innerWidth > 1024) return;
-          
-          const isActive = pane.classList.contains('is-active');
-          
-          if (!isActive) {
-            e.preventDefault();
-            panes.forEach((p) => p.classList.remove('is-active'));
-            navDots.forEach((d) => d.classList.remove('is-active'));
-            pane.classList.add('is-active');
-            navDots[idx]?.classList.add('is-active');
-          }
-        });
-      });
-
-      // Nav dots
-      navDots.forEach((dot, idx) => {
-        dot.addEventListener('click', () => {
-          panes.forEach((p) => p.classList.remove('is-active'));
-          navDots.forEach((d) => d.classList.remove('is-active'));
-          panes[idx]?.classList.add('is-active');
-          dot.classList.add('is-active');
-          
-          panes[idx]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-        });
-      });
-    }
-
     // Filter functionality
     function initFilters() {
       const filterChips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
@@ -649,13 +560,11 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      initAccordion();
       initFilters();
       initScrollAnimations();
     });
 
     document.addEventListener('astro:page-load', () => {
-      initAccordion();
       initFilters();
       initScrollAnimations();
     });
@@ -677,337 +586,6 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       --r-gold-2:   #e6c587;
       --r-border:   rgba(26, 22, 25, 0.08);
       --r-border-2: rgba(26, 22, 25, 0.12);
-    }
-
-    /* ═══════════════════════════════════════════════════════════════
-       ACCORDION SECTION
-       ═══════════════════════════════════════════════════════════════ */
-    .accordion-section {
-      position: relative;
-      background: var(--r-cream);
-      padding: 6rem 0 4rem;
-      overflow: hidden;
-    }
-
-    .section-accent {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 3rem;
-      padding: 0 1.5rem;
-    }
-
-    .accent-line {
-      flex: 1;
-      max-width: 100px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--r-border-2), transparent);
-    }
-
-    .accent-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--r-orange);
-      border-radius: 50%;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 0.5; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.2); }
-    }
-
-    .accent-text {
-      font-family: var(--font-display);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.25em;
-      color: var(--r-ink-3);
-      text-transform: uppercase;
-    }
-
-    .accordion-container {
-      padding: 0 clamp(1rem, 4vw, 3rem);
-    }
-
-    .routes-accordion {
-      display: flex;
-      gap: 8px;
-      height: 70vh;
-      min-height: 500px;
-      max-height: 800px;
-    }
-
-    .accordion-pane {
-      position: relative;
-      flex: 1;
-      overflow: hidden;
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      background: var(--r-ink);
-      transition: flex 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .accordion-pane.is-active {
-      flex: 5;
-    }
-
-    .pane-media {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
-    .pane-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(80%) contrast(1.1) brightness(0.6);
-      transform: scale(1.1);
-      transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .accordion-pane.is-active .pane-img {
-      filter: grayscale(0%) contrast(1.05) brightness(0.85);
-      transform: scale(1);
-    }
-
-    .pane-gradient {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.95) 0%,
-        rgba(0, 0, 0, 0.6) 40%,
-        rgba(0, 0, 0, 0.2) 100%
-      );
-      transition: opacity 0.6s ease;
-    }
-
-    .accordion-pane.is-active .pane-gradient {
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.9) 0%,
-        rgba(0, 0, 0, 0.4) 50%,
-        rgba(0, 0, 0, 0.1) 100%
-      );
-    }
-
-    /* Inactive State */
-    .pane-minimal {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      z-index: 2;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    .accordion-pane.is-active .pane-minimal {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .minimal-index {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      font-weight: 200;
-      color: var(--r-gold);
-      opacity: 0.8;
-    }
-
-    .minimal-line {
-      width: 1px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .minimal-icon {
-      font-size: 1.5rem;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    /* Active State */
-    .pane-full {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 2rem;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .accordion-pane.is-active .pane-full {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.15s;
-    }
-
-    .full-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-
-    .full-category {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 100px;
-      font-family: var(--font-display);
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--r-ink);
-    }
-
-    .cat-icon {
-      font-size: 0.9rem;
-    }
-
-    .full-number {
-      font-family: var(--font-display);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .full-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .full-title {
-      font-family: var(--font-body);
-      font-size: clamp(1.5rem, 3vw, 3rem);
-      font-weight: 400;
-      line-height: 1.1;
-      color: white;
-      margin: 0;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    }
-
-    .full-meta {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .meta-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .meta-label {
-      font-family: var(--font-display);
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: rgba(255, 255, 255, 0.5);
-      text-transform: uppercase;
-    }
-
-    .meta-value {
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: white;
-    }
-
-    .meta-value.diff-easy { color: #4a9e6b; }
-    .meta-value.diff-moderate { color: #d4873a; }
-    .meta-value.diff-challenging { color: #c94a4a; }
-
-    .meta-divider {
-      width: 1px;
-      height: 30px;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .full-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
-      background: var(--r-orange);
-      border-radius: 100px;
-      font-family: var(--font-display);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: white;
-      width: fit-content;
-      transition: all 0.3s ease;
-    }
-
-    .accordion-pane:hover .full-cta {
-      background: var(--r-orange-2);
-      transform: translateX(4px);
-    }
-
-    /* Indicator Bar */
-    .pane-indicator {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.1);
-      z-index: 4;
-    }
-
-    .indicator-bar {
-      height: 100%;
-      width: 0;
-      background: var(--r-orange);
-      transition: width 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .accordion-pane.is-active .indicator-bar {
-      width: 100%;
-    }
-
-    /* Mobile Nav */
-    .accordion-nav {
-      display: none;
-      justify-content: center;
-      gap: 0.75rem;
-      margin-top: 2rem;
-      padding: 0 1.5rem;
-    }
-
-    .nav-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 2px solid var(--r-border-2);
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-dot.is-active {
-      background: var(--r-orange);
-      border-color: var(--r-orange);
-      transform: scale(1.2);
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1047,9 +625,9 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--r-border);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1.5px solid rgba(26, 22, 25, 0.1);
     }
 
     .filter-title-group {
@@ -1063,9 +641,9 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       align-items: center;
       gap: 0.5rem;
       font-family: var(--font-display);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
     }
 
@@ -1075,14 +653,14 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     }
 
     .filter-eyebrow {
-      color: var(--r-ink-3);
+      color: #6b6058;
     }
 
     .filter-title {
       font-family: var(--font-body);
       font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 400;
-      color: var(--r-ink);
+      color: #1a1619 !important;
       margin: 0;
       line-height: 1.1;
       letter-spacing: -0.02em;
@@ -1107,16 +685,16 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       align-items: baseline;
       gap: 0.75rem;
       padding: 1rem 1.5rem;
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--r-border);
+      background: #ffffff;
+      border: 1.5px solid rgba(26, 22, 25, 0.08);
       border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(26, 22, 25, 0.04);
     }
 
     .count-value {
       font-family: var(--font-body);
-      font-size: 3rem;
-      font-weight: 300;
+      font-size: 2.75rem;
+      font-weight: 400;
       color: var(--r-orange);
       line-height: 1;
       transition: transform 0.3s ease;
@@ -1133,17 +711,17 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     }
 
     .count-divider {
-      width: 1px;
+      width: 1.5px;
       height: 1.5rem;
-      background: var(--r-border-2);
+      background: rgba(26, 22, 25, 0.12);
     }
 
     .count-label {
       font-family: var(--font-display);
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--r-ink-3);
+      letter-spacing: 0.08em;
+      color: #6b6058 !important;
       text-transform: uppercase;
     }
 
@@ -1223,15 +801,84 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       display: flex;
       align-items: center;
       padding: 0;
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid var(--r-border);
+      background: #ffffff;
+      border: 2px solid var(--r-border-2);
       border-radius: 100px;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       white-space: nowrap;
       overflow: hidden;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 2px 6px rgba(26, 22, 25, 0.04);
+    }
+
+    .chip-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      z-index: 2;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--r-orange);
+      background: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(232, 98, 42, 0.15), 0 4px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-chip.active {
+      background: var(--r-ink);
+      border-color: var(--r-ink);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(26, 22, 25, 0.2);
+    }
+
+    .chip-icon {
+      font-size: 1rem;
+      transition: transform 0.3s ease;
+      color: #1a1619 !important;
+    }
+
+    .filter-chip.active .chip-icon {
+      color: #ffffff !important;
+    }
+
+    .filter-chip:hover .chip-icon {
+      transform: scale(1.1);
+    }
+
+    .chip-label {
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #1a1619 !important;
+    }
+
+    .filter-chip.active .chip-label {
+      color: #ffffff !important;
+    }
+
+    .chip-count {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      background: rgba(26, 22, 25, 0.06);
+      border-radius: 100px;
+      color: #3d3632 !important;
+      transition: all 0.3s ease;
+    }
+
+    .filter-chip:hover .chip-count {
+      background: rgba(232, 98, 42, 0.1);
+      color: var(--r-orange) !important;
+    }
+
+    .filter-chip.active .chip-count {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff !important;
     }
 
     .chip-glow {
@@ -1247,92 +894,33 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       opacity: 0.08;
     }
 
-    .chip-content {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.25rem;
-      z-index: 2;
-    }
-
-    .filter-chip:hover {
-      border-color: var(--r-orange);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(232, 98, 42, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
-    }
-
-    .filter-chip.active {
-      background: var(--r-ink);
-      border-color: var(--r-ink);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 16px 32px rgba(26, 22, 25, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .chip-icon {
-      font-size: 1rem;
-      opacity: 0.9;
-      transition: transform 0.3s ease;
-    }
-
-    .filter-chip:hover .chip-icon {
-      transform: scale(1.1);
-    }
-
-    .chip-label {
-      font-family: var(--font-display);
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-
-    .chip-count {
-      font-family: var(--font-display);
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      background: var(--r-cream);
-      border-radius: 100px;
-      color: var(--r-ink-3);
-      transition: all 0.3s ease;
-    }
-
-    .filter-chip:hover .chip-count {
-      background: rgba(232, 98, 42, 0.1);
-      color: var(--r-orange);
-    }
-
-    .filter-chip.active .chip-count {
-      background: rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.9);
-    }
-
     /* Reset Button */
     .filter-reset {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.7rem 1.25rem;
-      background: transparent;
-      border: 1.5px dashed var(--r-border-2);
+      padding: 0.75rem 1.25rem;
+      background: #ffffff;
+      border: 2px dashed rgba(26, 22, 25, 0.2);
       border-radius: 100px;
       font-family: var(--font-display);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      color: var(--r-ink-3);
+      letter-spacing: 0.02em;
+      color: #6b6058 !important;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
+      margin-left: 0.5rem;
     }
 
     .filter-reset:hover {
       border-color: var(--r-orange);
       border-style: solid;
-      color: var(--r-orange);
+      color: var(--r-orange) !important;
+      background: #ffffff;
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(232, 98, 42, 0.1);
+      box-shadow: 0 8px 20px rgba(232, 98, 42, 0.12);
     }
 
     .reset-icon {
@@ -1346,19 +934,18 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     /* ═══════════════════════════════════════════════════════════════
        ARCHIVE GRID - Expedition Cards
-       Professional cartographer aesthetic aligned with site design
        ═══════════════════════════════════════════════════════════════ */
     .archive-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 2rem;
-      padding: 1rem 0;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 2.5rem;
+      padding: 1.5rem 0;
     }
 
     .expedition-card {
       opacity: 0;
       transform: translateY(30px);
-      transition: 
+      transition:
         opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
         transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -1375,46 +962,48 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     .expedition-card:nth-child(5) { transition-delay: 0.32s; }
     .expedition-card:nth-child(6) { transition-delay: 0.4s; }
 
-    /* Card Link - Clean Surface */
+    /* Card Link */
     .expedition-link {
       display: block;
       position: relative;
       text-decoration: none;
       color: inherit;
-      background: var(--r-cream-2);
-      border-radius: 12px;
+      background: #ffffff;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 
-        0 2px 4px rgba(26, 22, 25, 0.04),
-        0 8px 24px rgba(26, 22, 25, 0.06);
-      transition: 
-        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow:
+        0 4px 6px rgba(26, 22, 25, 0.02),
+        0 12px 24px rgba(26, 22, 25, 0.04);
+      transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(26, 22, 25, 0.06);
     }
 
     .expedition-link:hover {
-      transform: translateY(-6px);
-      box-shadow: 
-        0 12px 32px rgba(26, 22, 25, 0.12),
-        0 4px 12px rgba(26, 22, 25, 0.08);
+      transform: translateY(-4px);
+      box-shadow:
+        0 16px 40px rgba(26, 22, 25, 0.1),
+        0 6px 16px rgba(26, 22, 25, 0.06);
+      border-color: rgba(26, 22, 25, 0.1);
     }
 
     /* Expedition Number Stamp */
     .expedition-stamp {
       position: absolute;
-      top: 1rem;
-      left: 1rem;
+      top: 1.25rem;
+      left: 1.25rem;
       z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      padding: 0.5rem 0.75rem;
-      background: var(--r-ink);
-      border: 1px solid var(--r-gold);
-      border-radius: 4px;
+      padding: 0.5rem 0.875rem;
+      background: #1a1619;
+      border: 1.5px solid var(--r-gold);
+      border-radius: 6px;
       transform: rotate(-1deg);
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     }
 
     .expedition-link:hover .expedition-stamp {
@@ -1423,18 +1012,18 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     .stamp-prefix {
       font-family: var(--font-display);
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       font-weight: 700;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.18em;
       color: var(--r-gold);
     }
 
     .stamp-number {
       font-family: var(--font-display);
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
-      color: var(--r-cream);
+      letter-spacing: 0.04em;
+      color: #f5f0ea;
       line-height: 1;
     }
 
@@ -1443,14 +1032,14 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       position: relative;
       aspect-ratio: 16/10;
       overflow: hidden;
-      background: var(--r-ink);
+      background: #1a1619;
     }
 
     .visual-frame {
       position: relative;
       width: 100%;
       height: 100%;
-      padding: 0.75rem;
+      padding: 1rem;
       box-sizing: border-box;
     }
 
@@ -1458,9 +1047,9 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: grayscale(30%) contrast(1.05) brightness(0.9);
-      border-radius: 8px;
-      transition: 
+      filter: grayscale(20%) contrast(1.05) brightness(0.92);
+      border-radius: 10px;
+      transition:
         filter 0.6s cubic-bezier(0.19, 1, 0.22, 1),
         transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     }
@@ -1472,101 +1061,81 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     .visual-vignette {
       position: absolute;
-      inset: 0.75rem;
-      background: 
+      inset: 1rem;
+      background:
         linear-gradient(
           to bottom,
-          transparent 50%,
-          rgba(26, 22, 25, 0.4) 100%
+          transparent 40%,
+          rgba(26, 22, 25, 0.35) 100%
         );
       pointer-events: none;
-      border-radius: 8px;
+      border-radius: 10px;
     }
 
     /* Corner Markers */
     .corner-marker {
       position: absolute;
-      width: 16px;
-      height: 16px;
-      border-color: rgba(201, 168, 76, 0.5);
+      width: 18px;
+      height: 18px;
+      border-color: rgba(201, 168, 76, 0.45);
       border-style: solid;
       border-width: 0;
       transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .corner-marker.tl { 
-      top: 0.5rem; left: 0.5rem; 
-      border-top-width: 2px; border-left-width: 2px;
-    }
-    .corner-marker.tr { 
-      top: 0.5rem; right: 0.5rem; 
-      border-top-width: 2px; border-right-width: 2px;
-    }
-    .corner-marker.bl { 
-      bottom: 0.5rem; left: 0.5rem; 
-      border-bottom-width: 2px; border-left-width: 2px;
-    }
-    .corner-marker.br { 
-      bottom: 0.5rem; right: 0.5rem; 
-      border-bottom-width: 2px; border-right-width: 2px;
+      pointer-events: none;
     }
 
     .expedition-link:hover .corner-marker {
+      opacity: 1;
       border-color: var(--r-gold);
     }
+
+    .corner-marker.tl { top: 0.75rem; left: 0.75rem; border-top-width: 2px; border-left-width: 2px; }
+    .corner-marker.tr { top: 0.75rem; right: 0.75rem; border-top-width: 2px; border-right-width: 2px; }
+    .corner-marker.bl { bottom: 0.75rem; left: 0.75rem; border-bottom-width: 2px; border-left-width: 2px; }
+    .corner-marker.br { bottom: 0.75rem; right: 0.75rem; border-bottom-width: 2px; border-right-width: 2px; }
 
     /* Legend Tag */
     .legend-tag {
       position: absolute;
       bottom: 1rem;
       left: 1rem;
+      z-index: 10;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.35rem 0.75rem;
-      background: rgba(255, 255, 255, 0.95);
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(245, 240, 234, 0.95);
       border-radius: 100px;
       font-family: var(--font-display);
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       color: var(--r-ink);
-      z-index: 5;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       backdrop-filter: blur(8px);
-    }
-
-    .expedition-link:hover .legend-tag {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     }
 
     .legend-symbol {
-      font-size: 0.85rem;
-      color: var(--r-orange);
+      font-size: 1rem;
+    }
+
+    .legend-text {
+      text-transform: uppercase;
     }
 
     /* Difficulty Stamp */
     .difficulty-stamp {
       position: absolute;
-      top: 1rem;
+      bottom: 1rem;
       right: 1rem;
+      z-index: 10;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      z-index: 5;
-      padding: 0.3rem 0.625rem;
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--stamp-color);
+      gap: 0.5rem;
+      padding: 0.5rem 0.875rem;
+      background: #1a1619;
       border-radius: 100px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: blur(8px);
-    }
-
-    .expedition-link:hover .difficulty-stamp {
-      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     .stamp-ring {
@@ -1580,93 +1149,177 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     }
 
     .stamp-dot {
-      width: 3px;
-      height: 3px;
+      width: 4px;
+      height: 4px;
       background: var(--stamp-color);
       border-radius: 50%;
     }
 
     .stamp-label {
       font-family: var(--font-display);
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--r-ink);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #f5f0ea;
     }
 
-    /* Field Notes Content */
-    .field-notes {
-      position: relative;
-      padding: 1.25rem;
-      background: var(--r-cream-2);
-      z-index: 3;
-    }
-
-    /* Stats Header */
-    .coordinates-header {
+    /* Featured Badge */
+    .featured-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 0.875rem;
-      padding-bottom: 0.625rem;
-      border-bottom: 1px solid var(--r-border);
-    }
-
-    .coord-line {
-      display: flex;
-      align-items: baseline;
-      gap: 0.3rem;
-    }
-
-    .coord-label {
+      gap: 0.35rem;
+      padding: 0.5rem 0.875rem;
+      background: var(--r-orange);
+      border-radius: 100px;
       font-family: var(--font-display);
-      font-size: 0.6rem;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--r-ink-3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: white;
+      box-shadow: 0 4px 16px rgba(232, 98, 42, 0.4);
     }
 
-    .coord-value {
+    .featured-star {
+      font-size: 0.8rem;
+    }
+
+    /* Field Notes - Content */
+    .field-notes {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .time-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.4rem 0.75rem;
+      background: rgba(26, 22, 25, 0.04);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--r-ink-2);
+    }
+
+    .time-icon {
+      font-size: 0.9rem;
+    }
+
+    .stats-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-family: var(--font-display);
       font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.02em;
+      color: var(--r-ink-3);
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: baseline;
+      gap: 0.15rem;
+    }
+
+    .stat-value {
       color: var(--r-ink);
-      font-variant-numeric: tabular-nums;
+      font-weight: 700;
     }
 
-    .coord-divider {
-      width: 1px;
-      height: 10px;
-      background: var(--r-border-2);
+    .stat-unit {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      opacity: 0.7;
     }
 
-    /* Expedition Title */
+    .stat-divider {
+      opacity: 0.4;
+    }
+
     .expedition-title {
       font-family: var(--font-body);
-      font-size: 1.25rem;
-      font-weight: 500;
-      line-height: 1.3;
+      font-size: 1.35rem;
+      font-weight: 600;
       color: var(--r-ink);
       margin: 0;
+      line-height: 1.2;
       letter-spacing: -0.01em;
-      position: relative;
-      padding-bottom: 0.625rem;
     }
 
-    .expedition-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 32px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--r-gold), transparent);
-      transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    .expedition-description {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--r-ink-2);
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
-    .expedition-link:hover .expedition-title::after {
-      width: 60px;
+    .neighborhoods-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .neighborhood-tag {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.35rem 0.75rem;
+      background: rgba(26, 22, 25, 0.04);
+      border-radius: 100px;
+      color: var(--r-ink-3);
+    }
+
+    .difficulty-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(26, 22, 25, 0.06);
+    }
+
+    .difficulty-track {
+      flex: 1;
+      height: 4px;
+      background: rgba(26, 22, 25, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .difficulty-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .difficulty-text {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--r-ink-3);
     }
 
     /* Compass Reveal on Hover */
@@ -1676,11 +1329,11 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(26, 22, 25, 0.85);
+      background: rgba(26, 22, 25, 0.9);
       backdrop-filter: blur(6px);
       opacity: 0;
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 15;
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 20;
     }
 
     .expedition-link:hover .compass-reveal {
@@ -1691,42 +1344,29 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.875rem;
+      gap: 1rem;
+      color: var(--r-cream);
     }
 
     .compass-svg {
-      width: 52px;
-      height: 52px;
+      width: 60px;
+      height: 60px;
       color: var(--r-gold);
-      transform: scale(0.6) rotate(-90deg);
-      opacity: 0;
-      transition: 
-        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s,
-        opacity 0.4s ease 0.08s;
+      animation: compass-rotate 8s linear infinite;
     }
 
-    .expedition-link:hover .compass-svg {
-      transform: scale(1) rotate(0deg);
-      opacity: 1;
+    @keyframes compass-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .compass-text {
       font-family: var(--font-display);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--r-cream);
-      transform: translateY(12px);
-      opacity: 0;
-      transition: 
-        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
-        opacity 0.4s ease 0.15s;
-    }
-
-    .expedition-link:hover .compass-text {
-      transform: translateY(0);
-      opacity: 1;
     }
 
     /* Empty State */
@@ -1734,67 +1374,73 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       flex-direction: column;
       align-items: center;
       gap: 1.5rem;
-      padding: 4rem 2rem;
+      padding: 6rem 2rem;
       text-align: center;
+      display: none;
     }
 
     .empty-icon {
-      color: var(--r-border-2);
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(26, 22, 25, 0.04);
+      border-radius: 50%;
+      color: var(--r-ink-3);
     }
 
     .empty-title {
       font-family: var(--font-body);
       font-size: 1.5rem;
-      font-weight: 500;
+      font-weight: 400;
       color: var(--r-ink);
       margin: 0;
     }
 
     .empty-text {
       font-family: var(--font-display);
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--r-ink-3);
       margin: 0;
     }
 
     .empty-btn {
-      padding: 0.875rem 1.5rem;
+      padding: 1rem 2rem;
       background: var(--r-ink);
       border: none;
       border-radius: 100px;
       font-family: var(--font-display);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
       color: white;
       cursor: pointer;
       transition: all 0.3s ease;
+      margin-top: 1rem;
     }
 
     .empty-btn:hover {
       background: var(--r-orange);
+      transform: translateY(-2px);
     }
 
     /* ═══════════════════════════════════════════════════════════════
        TIME PLANS SECTION
        ═══════════════════════════════════════════════════════════════ */
     .time-section {
-      position: relative;
       background: var(--r-cream);
       padding: 6rem 0;
-      overflow: hidden;
     }
 
     .time-container {
-      position: relative;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 0 clamp(1.5rem, 5vw, 3rem);
     }
 
     .time-header {
       text-align: center;
-      margin-bottom: 3.5rem;
+      margin-bottom: 4rem;
     }
 
     .header-eyebrow {
@@ -1802,75 +1448,72 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .eyebrow-line {
       width: 60px;
       height: 1px;
-      background: var(--r-border-2);
+      background: linear-gradient(90deg, transparent, var(--r-border-2), transparent);
     }
 
     .eyebrow-text {
       font-family: var(--font-display);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.25em;
-      color: var(--r-orange);
+      letter-spacing: 0.2em;
       text-transform: uppercase;
+      color: var(--r-ink-3);
     }
 
     .header-title {
       font-family: var(--font-body);
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 300;
       color: var(--r-ink);
-      margin: 0 0 0.75rem;
+      margin: 0 0 1rem;
+      line-height: 1.1;
     }
 
     .header-subtitle {
       font-family: var(--font-display);
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       color: var(--r-ink-3);
-      margin: 0;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
     .time-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
     }
 
     .time-card {
-      position: relative;
       display: flex;
       flex-direction: column;
-      padding: 1.75rem;
-      background: var(--r-cream-2);
+      padding: 1.5rem;
+      background: #ffffff;
       border: 1px solid var(--r-border);
-      border-radius: 12px;
+      border-radius: 16px;
       text-decoration: none;
       color: inherit;
-      overflow: hidden;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(26, 22, 25, 0.04);
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
     }
 
     .time-card.is-visible {
       opacity: 1;
       transform: translateY(0);
+      transition-delay: calc(var(--card-index, 0) * 0.1s);
     }
 
-    .time-card:nth-child(1) { transition-delay: 0.1s; }
-    .time-card:nth-child(2) { transition-delay: 0.18s; }
-    .time-card:nth-child(3) { transition-delay: 0.26s; }
-    .time-card:nth-child(4) { transition-delay: 0.34s; }
-
     .time-card:hover {
-      transform: translateY(-4px);
-      border-color: transparent;
-      box-shadow: 0 20px 40px rgba(26, 22, 25, 0.1);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(26, 22, 25, 0.1);
+      border-color: rgba(26, 22, 25, 0.15);
     }
 
     .time-card-header {
@@ -1882,76 +1525,67 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     .time-duration {
       font-family: var(--font-display);
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--r-orange);
-      padding: 0.4rem 0.875rem;
-      background: rgba(232, 98, 42, 0.08);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--r-ink-3);
+      padding: 0.5rem 1rem;
+      background: var(--r-cream-2);
       border-radius: 100px;
     }
 
     .time-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--r-cream);
-      border-radius: 10px;
-      color: var(--r-ink-3);
-      transition: all 0.3s ease;
-    }
-
-    .time-card:hover .time-icon {
-      background: var(--r-ink);
-      color: var(--r-gold);
+      color: var(--r-orange);
     }
 
     .time-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 0.625rem;
+      gap: 0.5rem;
     }
 
     .time-title {
       font-family: var(--font-body);
       font-size: 1.25rem;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--r-ink);
       margin: 0;
-      line-height: 1.3;
+      line-height: 1.2;
     }
 
     .time-description {
       font-family: var(--font-display);
       font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--r-ink-3);
+      line-height: 1.5;
+      color: var(--r-ink-2);
       margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .time-footer {
-      margin-top: 1.25rem;
-      padding-top: 1.25rem;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
       border-top: 1px solid var(--r-border);
     }
 
     .time-cta {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 0.5rem;
       font-family: var(--font-display);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      color: var(--r-ink);
-      transition: color 0.3s ease;
+      color: var(--r-orange);
+      transition: all 0.3s ease;
     }
 
     .time-card:hover .time-cta {
-      color: var(--r-orange);
+      gap: 0.75rem;
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -1962,15 +1596,6 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       background: var(--r-ink);
       padding: 8rem clamp(1.5rem, 5vw, 3rem);
       overflow: hidden;
-    }
-
-    .cta-section :global(.cin-screen-frame) {
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .cta-section :global(.cin-corner::before),
-    .cta-section :global(.cin-corner::after) {
-      background: rgba(255, 255, 255, 0.2);
     }
 
     .cta-container {
@@ -1990,7 +1615,7 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       height: 80px;
       margin: 0 auto;
       color: var(--r-gold);
-      animation: rotate-star 20s linear infinite;
+      animation: rotate-star 25s linear infinite;
     }
 
     @keyframes rotate-star {
@@ -2000,11 +1625,11 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     .cta-title {
       font-family: var(--font-body);
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 300;
       color: white;
       margin: 0 0 1rem;
-      line-height: 1.2;
+      line-height: 1.1;
     }
 
     .cta-text {
@@ -2019,7 +1644,7 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       display: inline-flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 1.125rem 2rem;
+      padding: 1rem 2rem;
       background: var(--r-orange);
       border-radius: 100px;
       font-family: var(--font-display);
@@ -2034,44 +1659,12 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
 
     .cta-button:hover {
       background: var(--r-orange-2);
-      transform: translateY(-2px);
-      box-shadow: 0 15px 40px rgba(232, 98, 42, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 40px rgba(232, 98, 42, 0.4);
     }
 
-    /* ═══════════════════════════════════════════════════════════════
-       RESPONSIVE
-       ═══════════════════════════════════════════════════════════════ */
+    /* Responsive */
     @media (max-width: 1024px) {
-      .accordion-section {
-        padding: 4rem 0;
-      }
-
-      .routes-accordion {
-        flex-direction: row;
-        height: 60vh;
-        min-height: 400px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-      }
-
-      .routes-accordion::-webkit-scrollbar {
-        display: none;
-      }
-
-      .accordion-pane {
-        flex: 0 0 85vw;
-        scroll-snap-align: center;
-      }
-
-      .accordion-pane.is-active {
-        flex: 0 0 85vw;
-      }
-
-      .accordion-nav {
-        display: flex;
-      }
-
       .filter-header {
         flex-direction: column;
         align-items: flex-start;
@@ -2079,38 +1672,30 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
       }
 
       .filter-count {
-        padding: 0.875rem 1.25rem;
-      }
-
-      .count-value {
-        font-size: 2.5rem;
-      }
-
-      .filter-scroll-hint {
-        display: none;
+        align-self: flex-end;
       }
 
       .archive-grid {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
         gap: 1.5rem;
       }
     }
 
     @media (max-width: 768px) {
       .filter-section {
-        padding: 4rem 0 3rem;
+        padding: 4rem 0;
       }
 
       .filter-title {
-        font-size: clamp(1.75rem, 7vw, 2.5rem);
+        font-size: 1.75rem;
       }
 
-      .accordion-pane {
-        flex: 0 0 90vw;
+      .filter-count {
+        padding: 0.75rem 1rem;
       }
 
-      .accordion-pane.is-active {
-        flex: 0 0 90vw;
+      .count-value {
+        font-size: 2rem;
       }
 
       .archive-grid {
@@ -2118,74 +1703,29 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
         gap: 1.25rem;
       }
 
-      .expedition-link:hover {
-        transform: translateY(-4px);
-      }
-
-      .expedition-title {
-        font-size: 1.15rem;
-      }
-
-      .visual-frame {
-        padding: 0.5rem;
-      }
-
-      .expedition-stamp {
-        padding: 0.4rem 0.625rem;
-        top: 0.75rem;
-        left: 0.75rem;
-      }
-
-      .stamp-number {
-        font-size: 0.875rem;
-      }
-
-      .difficulty-stamp {
-        top: 0.75rem;
-        right: 0.75rem;
-      }
-
-      .legend-tag {
-        left: 0.75rem;
-        bottom: 0.75rem;
+      .expedition-visual {
+        aspect-ratio: 16/9;
       }
 
       .time-grid {
         grid-template-columns: 1fr;
       }
 
-      .filter-bar {
-        padding-bottom: 0.5rem;
-      }
-
-      .filter-chip {
-        padding: 0.6rem 1rem;
-      }
-
-      .chip-content {
-        padding: 0.6rem 1rem;
-        gap: 0.4rem;
-      }
-
-      .compass-svg {
-        width: 44px;
-        height: 44px;
+      .cta-section {
+        padding: 5rem 1.5rem;
       }
     }
 
-    /* Reduced Motion */
     @media (prefers-reduced-motion: reduce) {
-      .title-char,
-      .hero-subtitle,
-      .hero-description,
-      .cta-group,
-      .info-panel,
       .expedition-card,
-      .time-card,
-      .badge-pulse {
-        animation: none;
+      .time-card {
         opacity: 1;
         transform: none;
+        transition: none;
+      }
+
+      .visual-star {
+        animation: none;
       }
     }
   </style>

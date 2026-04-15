@@ -153,7 +153,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
   .cin-frame-tag.left  { left: 1.5rem; }
   .cin-frame-tag.right { right: 1.5rem; }
 
-  .cin-canvas { position: absolute; inset: 0; z-index: 0; }
+  .cin-canvas { position: absolute; inset: 0; z-index: 1; }
 
   .cin-bg-img {
     position: absolute;
@@ -161,14 +161,14 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(20%) contrast(1.05) brightness(0.55);
+    filter: grayscale(10%) contrast(1.05) brightness(0.9);
     transform: scale(1.06);
     will-change: transform;
     animation: hero-settle 3s var(--ease-expo) forwards;
   }
 
   @keyframes hero-settle {
-    to { transform: scale(1); filter: grayscale(10%) contrast(1.02) brightness(0.5); }
+    to { transform: scale(1); filter: grayscale(5%) contrast(1.02) brightness(0.85); }
   }
 
   .cin-bg-fallback {
@@ -179,9 +179,9 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
                 #0a0a0a;
   }
 
-  .cin-overlay-base     { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
-  .cin-overlay-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.6) 100%); }
-  .cin-overlay-bottom   { position: absolute; bottom: 0; left: 0; right: 0; height: 70%; background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.85) 30%, transparent 100%); }
+  .cin-overlay-base     { position: absolute; inset: 0; background: rgba(0,0,0,0.2); }
+  .cin-overlay-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%); }
+  .cin-overlay-bottom   { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
 
   .cin-grain {
     position: absolute;
@@ -194,7 +194,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
 
   .cin-eyebrow {
     position: relative;
-    z-index: 10;
+    z-index: 5;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -230,7 +230,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
 
   .cin-title {
     position: relative;
-    z-index: 10;
+    z-index: 5;
     font-family: var(--font-body);
     font-size: clamp(2.5rem, 6vw, 5.5rem);
     font-weight: 300;
@@ -251,55 +251,143 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
 
   .cin-dock {
     position: relative;
-    z-index: 10;
+    z-index: 5;
     display: flex;
     align-items: stretch;
     gap: 0;
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(24px) saturate(140%);
-    -webkit-backdrop-filter: blur(24px) saturate(140%);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 4px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 20px;
     overflow: hidden;
     animation: fadeInUp 1s var(--ease-expo) 0.8s both;
-    max-width: 700px;
+    max-width: 900px;
     width: 100%;
+    box-shadow: 
+      0 25px 80px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(201,168,76,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .cin-dock::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(201,168,76,0.6) 15%, 
+      rgba(201,168,76,0.9) 50%, 
+      rgba(201,168,76,0.6) 85%, 
+      transparent 100%
+    );
+    border-radius: 20px 20px 0 0;
   }
 
   /* Dock cell styles — used by callers via :global or matching class names */
   :global(.cin-dock-cell) {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    padding: 1.25rem 1.75rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 2rem 2rem 2rem 1.75rem;
     flex: 1;
     min-width: 0;
+    position: relative;
+    transition: all 0.3s var(--ease-expo);
+  }
+
+  :global(.cin-dock-cell:hover) {
+    background: rgba(255,255,255,0.06);
+  }
+
+  :global(.cin-dock-cell-icon) {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--h-gold);
+    flex-shrink: 0;
+    box-shadow: 
+      0 4px 12px rgba(201,168,76,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  :global(.cin-dock-cell-icon svg) {
+    width: 22px;
+    height: 22px;
+  }
+
+  :global(.cin-dock-cell-icon.date) {
+    background: linear-gradient(135deg, rgba(232,98,42,0.2), rgba(232,98,42,0.08));
+    border-color: rgba(232,98,42,0.4);
+    color: var(--h-orange);
+    box-shadow: 
+      0 4px 12px rgba(232,98,42,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  :global(.cin-dock-cell-icon.time) {
+    background: linear-gradient(135deg, rgba(240,237,232,0.18), rgba(240,237,232,0.06));
+    border-color: rgba(240,237,232,0.3);
+    color: rgba(240,237,232,0.95);
+    box-shadow: 
+      0 4px 12px rgba(240,237,232,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  :global(.cin-dock-cell-icon.price) {
+    background: linear-gradient(135deg, rgba(108,186,138,0.2), rgba(108,186,138,0.08));
+    border-color: rgba(108,186,138,0.4);
+    color: #7dd693;
+    box-shadow: 
+      0 4px 12px rgba(108,186,138,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   :global(.cin-dock-sep) {
     width: 1px;
-    background: rgba(255,255,255,0.08);
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      rgba(255,255,255,0.2) 20%, 
+      rgba(255,255,255,0.2) 80%, 
+      transparent 100%
+    );
     flex-shrink: 0;
-    margin: 0.75rem 0;
   }
 
   :global(.cin-dock-label) {
     font-family: var(--font-display);
-    font-size: 0.55rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(240,237,232,0.4);
+    color: rgba(240,237,232,0.55);
   }
 
   :global(.cin-dock-value) {
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #f0ede8;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-family: var(--font-body);
+    font-size: 1.35rem;
+    font-weight: 200;
+    color: #ffffff;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  :global(.cin-dock-value.sub) {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 200;
+    color: rgba(240,237,232,0.75);
+    letter-spacing: -0.01em;
   }
 
   .cin-bottom-rule {
@@ -317,18 +405,56 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
   .cin-rule-line    { width: 40px; height: 1px; background: var(--h-gold-dim); }
   .cin-rule-diamond { width: 6px; height: 6px; background: var(--h-gold); transform: rotate(45deg); opacity: 0.6; }
 
+  @media (max-width: 1024px) {
+    :global(.cin-dock-cell) { padding: 1.75rem 1.5rem; }
+    :global(.cin-dock-value) { font-size: 1.15rem; }
+    :global(.cin-dock-cell-icon) { width: 40px; height: 40px; }
+    :global(.cin-dock-cell-icon svg) { width: 20px; height: 20px; }
+  }
+
+  @media (max-width: 900px) {
+    .cin-dock { border-radius: 16px; }
+    :global(.cin-dock-cell) { padding: 1.5rem 1.25rem; }
+    :global(.cin-dock-value) { font-size: 1.05rem; }
+  }
+
   @media (max-width: 768px) {
     .cin-hero { min-height: 100svh; padding-bottom: 4rem; }
     .cin-frame, .cin-frame-tag { display: none; }
-    .cin-dock { flex-direction: column; max-width: 100%; }
-    :global(.cin-dock-sep) { width: 100%; height: 1px; margin: 0; }
-    :global(.cin-dock-cell) { flex-direction: row; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; }
+    .cin-dock { 
+      flex-direction: row; 
+      flex-wrap: wrap; 
+      max-width: 100%; 
+      border-radius: 16px;
+    }
+    :global(.cin-dock-sep) { display: none; }
+    :global(.cin-dock-cell) { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 1.5rem 1.25rem; 
+      flex: 1 1 calc(50% - 1px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      gap: 0.6rem;
+    }
+    :global(.cin-dock-cell:nth-child(odd)) {
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    :global(.cin-dock-cell:nth-last-child(-n+2)) {
+      border-bottom: none;
+    }
+    :global(.cin-dock-cell-icon) { width: 38px; height: 38px; }
+    :global(.cin-dock-cell-icon svg) { width: 19px; height: 19px; }
+    :global(.cin-dock-label) { font-size: 0.65rem; }
     .cin-title { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 2rem; }
     .cin-bottom-rule { display: none; }
   }
 
   @media (max-width: 480px) {
     .cin-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
-    :global(.cin-dock-cell) { padding: 0.75rem 1rem; }
+    :global(.cin-dock-cell) { padding: 1.25rem 1rem; gap: 0.5rem; }
+    :global(.cin-dock-cell-icon) { width: 34px; height: 34px; border-radius: 10px; }
+    :global(.cin-dock-cell-icon svg) { width: 17px; height: 17px; }
+    :global(.cin-dock-value) { font-size: 1rem; }
+    :global(.cin-dock-label) { font-size: 0.6rem; }
   }
 </style>

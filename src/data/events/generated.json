@@ -1,1556 +1,5 @@
 [
   {
-    "id": "cg-qv65ho",
-    "slug": "borja-pico",
-    "title": {
-      "es": "Borja Picó",
-      "en": "Borja Picó"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-26",
-    "time": "21:00",
-    "venue": "JJ Taberna",
-    "neighborhood": "centro",
-    "price": 10,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "qv65ho",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115732-borja-pico",
-    "imageUrl": "https://conciertos.club/doc/a/2025/a_borjapico.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-3bfxce",
-    "slug": "mateo-ortega",
-    "title": {
-      "es": "Mateo Ortega",
-      "en": "Mateo Ortega"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-26",
-    "time": "21:30",
-    "venue": "Lemon Rock",
-    "neighborhood": "centro",
-    "price": 7,
-    "currency": "EUR",
-    "tags": [
-      "Blues"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "3bfxce",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/114992-mateo-ortega",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_mateoortega2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-cj2k04",
-    "slug": "orgullo-follonero",
-    "title": {
-      "es": "Orgullo Follonero",
-      "en": "Orgullo Follonero"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-26",
-    "time": "22:00",
-    "venue": "Rocknrolla",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "cj2k04",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115045-orgullo-follonero-negozio",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_orgullof2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-qzuo6e",
-    "slug": "cal-poly-arab-music-ensemble",
-    "title": {
-      "es": "Cal Poly - Arab Music Ensemble",
-      "en": "Cal Poly - Arab Music Ensemble"
-    },
-    "description": {
-      "es": "El Arab Music Ensemble interpreta el arte y la música popular de una amplia gama de sociedades de habla árabe, centrándose especialmente en las zonas del Mediterráneo oriental. El repertorio del Conjunto de Música Árabe comprende piezas que van des...",
-      "en": "El Arab Music Ensemble interpreta el arte y la música popular de una amplia gama de sociedades de habla árabe, centrándose especialmente en las zonas del Mediterráneo oriental. El repertorio del Conjunto de Música Árabe comprende piezas que van des..."
-    },
-    "category": "other",
-    "date": "2026-03-26",
-    "time": "20:00",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "qzuo6e",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/481.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-qlpwvi",
-    "slug": "pasion-hakuna-group-music",
-    "title": {
-      "es": "Pasión - Hakuna Group Music",
-      "en": "Pasión - Hakuna Group Music"
-    },
-    "description": {
-      "es": "Hakuna Group Music presenta en concierto \"Pasión\", un Vía Crucis joven y cercano que pretende transmitir la Pasión de Nuestro Señor Jesucristo acompañada de música y letra. Pasión es una representación artística que une m&uacut...",
-      "en": "Hakuna Group Music presenta en concierto \"Pasión\", un Vía Crucis joven y cercano que pretende transmitir la Pasión de Nuestro Señor Jesucristo acompañada de música y letra. Pasión es una representación artística que une m&uacut..."
-    },
-    "category": "other",
-    "date": "2026-03-26",
-    "time": "20:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "qlpwvi",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/486.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-kwhhyr",
-    "slug": "a-trio",
-    "title": {
-      "es": "A-Trío",
-      "en": "A-Trío"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "18:00",
-    "venue": "Ganivet Granada",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "kwhhyr",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116112-a-trio",
-    "imageUrl": "https://conciertos.club/doc/a/2026/a_atrio.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-byou01",
-    "slug": "presentacion-rustic-festival",
-    "title": {
-      "es": "Presentación Rustic Festival.",
-      "en": "Presentación Rustic Festival."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "20:00",
-    "venue": "JJ Taberna",
-    "neighborhood": "centro",
-    "price": 15,
-    "currency": "EUR",
-    "tags": [
-      "Mestizaje"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "byou01",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/112896-presentacion-rustic-festival",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_rusticfestival2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-2l6vni",
-    "slug": "orquesta-academica-de-granada",
-    "title": {
-      "es": "Orquesta Académica de Granada",
-      "en": "Orquesta Académica de Granada"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "20:00",
-    "venue": "Auditorio Manuel de Falla",
-    "neighborhood": "alhambra",
-    "price": 15.8,
-    "currency": "EUR",
-    "tags": [
-      "Clásica"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "2l6vni",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116007-orquesta-academica-de-granada-coro-ciudad-de-granada",
-    "imageUrl": "https://conciertos.club/doc/a/2017/a_orquestaacademicadegranada.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-l2cxpl",
-    "slug": "juanlu-montoya",
-    "title": {
-      "es": "Juanlu Montoya",
-      "en": "Juanlu Montoya"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "20:30",
-    "venue": "Palacio de Congresos y Exposiciones",
-    "neighborhood": "zaidin",
-    "price": 41.8,
-    "currency": "EUR",
-    "tags": [
-      "Mestizaje"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "l2cxpl",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/112160-juanlu-montoya",
-    "imageUrl": "https://conciertos.club/doc/a/2021/a_juanlumontoya.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-yvh2z3",
-    "slug": "rafa-sanchez-la-union",
-    "title": {
-      "es": "Rafa Sánchez (La Unión)",
-      "en": "Rafa Sánchez (La Unión)"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "21:00",
-    "venue": "Palacio de Congresos y Exposiciones",
-    "neighborhood": "zaidin",
-    "price": 42.9,
-    "currency": "EUR",
-    "tags": [
-      "Pop"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "yvh2z3",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/112159-rafa-sanchez-la-union",
-    "imageUrl": "https://conciertos.club/doc/a/2021/a_rafasanchez.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-k46m3i",
-    "slug": "commando-9mm",
-    "title": {
-      "es": "Commando 9mm",
-      "en": "Commando 9mm"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "21:00",
-    "venue": "Sala Riff",
-    "neighborhood": "centro",
-    "price": 15,
-    "currency": "EUR",
-    "tags": [
-      "Punk"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "k46m3i",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115141-commando-9mm-pegamento-blaupunk",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_commando9mm2604.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-9m4aco",
-    "slug": "tango",
-    "title": {
-      "es": "Tango",
-      "en": "Tango"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "21:30",
-    "venue": "La Lolaina",
-    "neighborhood": "centro",
-    "price": 5,
-    "currency": "EUR",
-    "tags": [
-      "World"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "9m4aco",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115157-tango",
-    "imageUrl": "https://conciertos.club/doc/lp/l_LaLolaina_Gra_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-n1sr28",
-    "slug": "atomic-lemons",
-    "title": {
-      "es": "Atomic Lemons",
-      "en": "Atomic Lemons"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "21:30",
-    "venue": "Lemon Rock",
-    "neighborhood": "centro",
-    "price": 15,
-    "currency": "EUR",
-    "tags": [
-      "Pop"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "n1sr28",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115464-atomic-lemons",
-    "imageUrl": "https://conciertos.club/doc/a/2017/a_atomiclemons.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-ai4k9e",
-    "slug": "no-konforme",
-    "title": {
-      "es": "No Konforme",
-      "en": "No Konforme"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "22:00",
-    "venue": "Rocknrolla",
-    "neighborhood": "centro",
-    "price": 16.5,
-    "currency": "EUR",
-    "tags": [
-      "Punk"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "ai4k9e",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115043-no-konforme-maldito-matas",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_nokonforme2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-vyncmj",
-    "slug": "fernandevich-friends",
-    "title": {
-      "es": "Fernandevich & Friends.",
-      "en": "Fernandevich & Friends."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "22:00",
-    "venue": "El Acorde",
-    "neighborhood": "centro",
-    "price": 5,
-    "currency": "EUR",
-    "tags": [
-      "Blues"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "vyncmj",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115233-fernandevich-friends",
-    "imageUrl": "https://conciertos.club/doc/lp/l_ElAcorde_Gra_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-xwprxi",
-    "slug": "paco-chica-2",
-    "title": {
-      "es": "Paco Chica",
-      "en": "Paco Chica"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "22:30",
-    "venue": "Carlota Braun",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "xwprxi",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116052-paco-chica",
-    "imageUrl": "https://conciertos.club/doc/a/2017/a_pacochica.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-85xey9",
-    "slug": "elegante-y-embustero",
-    "title": {
-      "es": "Elegante y embustero",
-      "en": "Elegante y embustero"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-27",
-    "time": "23:30",
-    "venue": "New Chicago",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "85xey9",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116132-elegante-y-embustero",
-    "imageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-1m13ir",
-    "slug": "el-show-de-la-fantasy-house",
-    "title": {
-      "es": "El Show de la Fantasy House",
-      "en": "El Show de la Fantasy House"
-    },
-    "description": {
-      "es": "El Show de la Fantasy House es una inmersión total en el universo del TEAM FANTASY, compuesto por los exitosos Youtubers Animalize21, AlesGF, PabletePablitor y los diferentes personajes que encarnan en sus vídeos como El Rulas, El Ruso y Pablete entre otros, tan queridos por su p&uacut...",
-      "en": "El Show de la Fantasy House es una inmersión total en el universo del TEAM FANTASY, compuesto por los exitosos Youtubers Animalize21, AlesGF, PabletePablitor y los diferentes personajes que encarnan en sus vídeos como El Rulas, El Ruso y Pablete entre otros, tan queridos por su p&uacut..."
-    },
-    "category": "other",
-    "date": "2026-03-27",
-    "time": "19:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "1m13ir",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/479.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-hg4iuy",
-    "slug": "rafa-sanchez-biografia",
-    "title": {
-      "es": "Rafa Sánchez - Biografía",
-      "en": "Rafa Sánchez - Biografía"
-    },
-    "description": {
-      "es": "BIOGRAFÍA es un recorrido cronológico por las canciones más icónicas de LA UNIÓN ilustradas por sus vivencias durante los treinta y seis años que estuvo vigente la banda, de como un chico de barrio estudiante de arquitectura, de la noche a la mañana, ...",
-      "en": "BIOGRAFÍA es un recorrido cronológico por las canciones más icónicas de LA UNIÓN ilustradas por sus vivencias durante los treinta y seis años que estuvo vigente la banda, de como un chico de barrio estudiante de arquitectura, de la noche a la mañana, ..."
-    },
-    "category": "other",
-    "date": "2026-03-27",
-    "time": "21:00",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "hg4iuy",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/428.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-448a8y",
-    "slug": "lex-luciferi",
-    "title": {
-      "es": "Lex Luciferi",
-      "en": "Lex Luciferi"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "17:00",
-    "venue": "Carpa Municipal",
-    "neighborhood": "centro",
-    "price": 20,
-    "currency": "EUR",
-    "tags": [
-      "Metal"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "448a8y",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/105431-lex-luciferi-war-dogs-balmog-omission-silver",
-    "imageUrl": "https://conciertos.club/doc/c/2025/c_metalmaurel2509.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-q4turt",
-    "slug": "homenaje-a-joe-strummer",
-    "title": {
-      "es": "HOMENAJE A JOE STRUMMER.",
-      "en": "HOMENAJE A JOE STRUMMER."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "17:00",
-    "venue": "Lemon Rock",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "q4turt",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115465-homenaje-a-joe-strummer",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_joestrummer2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-xh84lj",
-    "slug": "d-rockados",
-    "title": {
-      "es": "D'Rockados",
-      "en": "D'Rockados"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "18:00",
-    "venue": "Tarambana Plaza",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "xh84lj",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116111-d-rockados",
-    "imageUrl": "https://conciertos.club/doc/a/2025/a_drockados.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-pc97j2",
-    "slug": "maniacs",
-    "title": {
-      "es": "Maniacs",
-      "en": "Maniacs"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "19:00",
-    "venue": "Rocknrolla",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "pc97j2",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115044-maniacs",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_maniacs2603.jpeg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-1pfv6z",
-    "slug": "wacken-metal-battle",
-    "title": {
-      "es": "WACKEN METAL BATTLE.",
-      "en": "WACKEN METAL BATTLE."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "19:00",
-    "venue": "Sala Riff",
-    "neighborhood": "centro",
-    "price": 15,
-    "currency": "EUR",
-    "tags": [
-      "METAL"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "1pfv6z",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115142-wacken-metal-battle",
-    "imageUrl": "https://conciertos.club/doc/lp/l_SalaRiff_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-k8bbj7",
-    "slug": "great-straits-tributo-a-dire-straits",
-    "title": {
-      "es": "Great Straits. Tributo a Dire Straits",
-      "en": "Great Straits. Tributo a Dire Straits"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "20:30",
-    "venue": "Palacio de Congresos y Exposiciones",
-    "neighborhood": "zaidin",
-    "price": 55,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "k8bbj7",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/112161-great-straits-tributo-a-dire-straits",
-    "imageUrl": "https://conciertos.club/doc/lp/l_Palacio_Congresos_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-b5g3l3",
-    "slug": "compota-de-manana",
-    "title": {
-      "es": "Compota de Manana",
-      "en": "Compota de Manana"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "21:00",
-    "venue": "El Tren",
-    "neighborhood": "centro",
-    "price": 19.8,
-    "currency": "EUR",
-    "tags": [
-      "Latin"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "b5g3l3",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/114994-compota-de-manana",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_compota2604.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-414ygf",
-    "slug": "capitan-kirk",
-    "title": {
-      "es": "Capitán Kirk.",
-      "en": "Capitán Kirk."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "21:00",
-    "venue": "Kiosko El Parque",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Pop"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "414ygf",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115928-capitan-kirk",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-1cf4hb",
-    "slug": "go-cactus",
-    "title": {
-      "es": "Go Cactus",
-      "en": "Go Cactus"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "21:30",
-    "venue": "JJ Taberna",
-    "neighborhood": "centro",
-    "price": 13.23,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "1cf4hb",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/114123-go-cactus",
-    "imageUrl": "https://conciertos.club/doc/lp/l_JJ2_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-baw981",
-    "slug": "sosoritnem",
-    "title": {
-      "es": "Sosoritnem",
-      "en": "Sosoritnem"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "21:30",
-    "venue": "La Lolaina",
-    "neighborhood": "centro",
-    "price": 5,
-    "currency": "EUR",
-    "tags": [
-      "Pop"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "baw981",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115158-sosoritnem",
-    "imageUrl": "https://conciertos.club/doc/a/2025/a_sosortinem.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-f3mj6v",
-    "slug": "minino",
-    "title": {
-      "es": "Miniño",
-      "en": "Miniño"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "22:00",
-    "venue": "Aliatar",
-    "neighborhood": "centro",
-    "price": 12,
-    "currency": "EUR",
-    "tags": [
-      "Pop"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "f3mj6v",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/114200-minino",
-    "imageUrl": "https://conciertos.club/doc/a/2025/a_minino.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-brb2lz",
-    "slug": "diego-barber-david-sancho",
-    "title": {
-      "es": "Diego Barber & David Sancho.",
-      "en": "Diego Barber & David Sancho."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "22:00",
-    "venue": "Ool Ya Koo",
-    "neighborhood": "centro",
-    "price": 10,
-    "currency": "EUR",
-    "tags": [
-      "Jazz"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "brb2lz",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115053-diego-barber-david-sancho",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-pjh7cg",
-    "slug": "elegante-y-embustero-2",
-    "title": {
-      "es": "Elegante y embustero",
-      "en": "Elegante y embustero"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "22:00",
-    "venue": "La Compañía Bar",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "pjh7cg",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116133-elegante-y-embustero",
-    "imageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-m472th",
-    "slug": "cover-s-2",
-    "title": {
-      "es": "Cover's 2.",
-      "en": "Cover's 2."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-28",
-    "time": "22:30",
-    "venue": "Carlota Braun",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "m472th",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116053-cover-s-2",
-    "imageUrl": "https://conciertos.club/doc/lp/l_CarlotaBraunMusica_Gra_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-2d3lhw",
-    "slug": "hasta-el-ch-ocho-m",
-    "title": {
-      "es": "Hasta el (ch)ocho - M",
-      "en": "Hasta el (ch)ocho - M"
-    },
-    "description": {
-      "es": "El espectáculo \"Hasta el (ch)ocho - M\" es un show feminista protagonizado por: Júlia Salander, Patricia Espejo y Carla Galeote. En esta propuesta, las tres activistas abordamos las violencias que las mujeres atravesamos en la actualidad, pero con un enfoque único e int...",
-      "en": "El espectáculo \"Hasta el (ch)ocho - M\" es un show feminista protagonizado por: Júlia Salander, Patricia Espejo y Carla Galeote. En esta propuesta, las tres activistas abordamos las violencias que las mujeres atravesamos en la actualidad, pero con un enfoque único e int..."
-    },
-    "category": "other",
-    "date": "2026-03-28",
-    "time": "19:00",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "2d3lhw",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/444.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-7c93ii",
-    "slug": "great-straits-the-great-songs-of-dire-straits",
-    "title": {
-      "es": "gREAT sTRAITS - The great songs of dIRE sTRAITS",
-      "en": "gREAT sTRAITS - The great songs of dIRE sTRAITS"
-    },
-    "description": {
-      "es": "¿Quién no ha escuchado alguna vez “Sultans of swing”, “Romeo and Juliet”, “Brothers in arms”, “Tunnel of love” o “Money for nothing” de dIRE sTRAITS?\n“The great songs of dIRE sTRAITS” es el nuevo espect&a...",
-      "en": "¿Quién no ha escuchado alguna vez “Sultans of swing”, “Romeo and Juliet”, “Brothers in arms”, “Tunnel of love” o “Money for nothing” de dIRE sTRAITS?\n“The great songs of dIRE sTRAITS” es el nuevo espect&a..."
-    },
-    "category": "other",
-    "date": "2026-03-28",
-    "time": "20:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "7c93ii",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/406.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-tr8xg3",
-    "slug": "kakemono",
-    "title": {
-      "es": "KAKEMONO.",
-      "en": "KAKEMONO."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-29",
-    "time": "18:00",
-    "venue": "Lemon Rock",
-    "neighborhood": "centro",
-    "price": 5,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "tr8xg3",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115466-kakemono",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_kakemono2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-ecgs4v",
-    "slug": "candlelight",
-    "title": {
-      "es": "Candlelight",
-      "en": "Candlelight"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-29",
-    "time": "19:00",
-    "venue": "Hotel Palacio De Santa Paula",
-    "neighborhood": "centro",
-    "price": 46,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "ecgs4v",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/110304-candlelight",
-    "imageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-4q3sas",
-    "slug": "garfo",
-    "title": {
-      "es": "Garfo.",
-      "en": "Garfo."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-29",
-    "time": "20:00",
-    "venue": "Ool Ya Koo",
-    "neighborhood": "centro",
-    "price": 12,
-    "currency": "EUR",
-    "tags": [
-      "Jazz"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "4q3sas",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115054-garfo",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2603.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-7ial4",
-    "slug": "musica-cubana",
-    "title": {
-      "es": "Música Cubana",
-      "en": "Música Cubana"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-29",
-    "time": "20:00",
-    "venue": "JJ Taberna",
-    "neighborhood": "centro",
-    "price": 12,
-    "currency": "EUR",
-    "tags": [
-      "World"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "7ial4",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115733-musica-cubana",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_IMG-20260224-WA0017_2026_cc01.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-2ftfm3",
-    "slug": "los-brincos-60-aniversario",
-    "title": {
-      "es": "Los Brincos - 60 aniversario",
-      "en": "Los Brincos - 60 aniversario"
-    },
-    "description": {
-      "es": "LOS BRINCOS LLEGAN A GRANADA EL DIA 29 DE MARZO DE 2026 CON UN ESPERADO NUEVO CONCIERTO TRAS AGOTAR ENTRADAS EN SU CONCIERTO ANTERIOR\nLOS BRINCOS el grupo que revolucionó la escena musical de nuestro país celebran en gira su 60 aniversario.\nEl concierto será un homenaje a M...",
-      "en": "LOS BRINCOS LLEGAN A GRANADA EL DIA 29 DE MARZO DE 2026 CON UN ESPERADO NUEVO CONCIERTO TRAS AGOTAR ENTRADAS EN SU CONCIERTO ANTERIOR\nLOS BRINCOS el grupo que revolucionó la escena musical de nuestro país celebran en gira su 60 aniversario.\nEl concierto será un homenaje a M..."
-    },
-    "category": "other",
-    "date": "2026-03-29",
-    "time": "19:00",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "2ftfm3",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/468.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-oifywy",
-    "slug": "guillermo-crovetto",
-    "title": {
-      "es": "Guillermo Crovetto",
-      "en": "Guillermo Crovetto"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-03-31",
-    "time": "21:30",
-    "venue": "Lemon Rock",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "oifywy",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115467-guillermo-crovetto",
-    "imageUrl": "https://conciertos.club/doc/a/2023/a_guillermocrovetto.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-6tqtby",
-    "slug": "la-blues-band-de-granada",
-    "title": {
-      "es": "La Blues Band de Granada",
-      "en": "La Blues Band de Granada"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-01",
-    "time": "21:30",
-    "venue": "Lemon Rock",
-    "neighborhood": "centro",
-    "price": 10,
-    "currency": "EUR",
-    "tags": [
-      "Blues"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "6tqtby",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115943-la-blues-band-de-granada",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_labluesband2604.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-xlifqs",
-    "slug": "ganzer",
-    "title": {
-      "es": "Ganzer",
-      "en": "Ganzer"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-03",
-    "time": "19:00",
-    "venue": "Planta Baja",
-    "neighborhood": "centro",
-    "price": 10,
-    "currency": "EUR",
-    "tags": [
-      "Soul"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "xlifqs",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115192-ganzer-red-soul-community-darro-river-rockies-el-extrano-caso-de-carmen-dorado-mr-man-the-small-frying-pan-smokin-mary-plant-bloody-kalma-the-micronovas",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_remojongranaino2604.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-7rsihn",
-    "slug": "william-mcshepard",
-    "title": {
-      "es": "William McShepard",
-      "en": "William McShepard"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-04",
-    "time": "21:00",
-    "venue": "Sala Riff",
-    "neighborhood": "centro",
-    "price": 15,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "7rsihn",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116045-william-mcshepard-sunset-boulevard",
-    "imageUrl": "https://conciertos.club/doc/a/2026/a_williammcshepard.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-t1suaa",
-    "slug": "agustin-carbonell-el-bola-trio",
-    "title": {
-      "es": "Agustín Carbonell \"El Bola\" Trío.",
-      "en": "Agustín Carbonell \"El Bola\" Trío."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-04",
-    "time": "21:30",
-    "venue": "JJ Taberna",
-    "neighborhood": "centro",
-    "price": 12.37,
-    "currency": "EUR",
-    "tags": [
-      "Mestizaje"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "t1suaa",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115734-agustin-carbonell-el-bola-trio",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_Cartel_Imagen_2026_8d8a.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-k1qb3a",
-    "slug": "baile-swing-con-kanikles",
-    "title": {
-      "es": "Baile Swing con Kanikles.",
-      "en": "Baile Swing con Kanikles."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-04",
-    "time": "22:00",
-    "venue": "Ool Ya Koo",
-    "neighborhood": "centro",
-    "price": 10,
-    "currency": "EUR",
-    "tags": [
-      "Swing"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "k1qb3a",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116124-baile-swing-con-kanikles",
-    "imageUrl": "https://conciertos.club/doc/lp/l_OolYaKoo_Gra_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-rebiz7",
-    "slug": "gus-matheus",
-    "title": {
-      "es": "Gus Matheus",
-      "en": "Gus Matheus"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-04",
-    "time": "22:30",
-    "venue": "Carlota Braun",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "rebiz7",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116054-gus-matheus",
-    "imageUrl": "https://conciertos.club/doc/a/2022/a_gusmatheus.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-c79jx3",
-    "slug": "candlelight-2",
-    "title": {
-      "es": "Candlelight",
-      "en": "Candlelight"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-05",
-    "time": "19:00",
-    "venue": "Hotel Palacio De Santa Paula",
-    "neighborhood": "centro",
-    "price": 39,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "c79jx3",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/113167-candlelight",
-    "imageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-8mssd2",
-    "slug": "esperanto",
-    "title": {
-      "es": "Esperanto",
-      "en": "Esperanto"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-05",
-    "time": "19:00",
-    "venue": "Planta Baja",
-    "neighborhood": "centro",
-    "price": 10,
-    "currency": "EUR",
-    "tags": [
-      "Rock"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "8mssd2",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115223-esperanto",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_esperanto2604.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-kifmu2",
-    "slug": "elsa-bhor",
-    "title": {
-      "es": "Elsa Bhör",
-      "en": "Elsa Bhör"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-05",
-    "time": "20:00",
-    "venue": "JJ Taberna",
-    "neighborhood": "centro",
-    "price": 10.12,
-    "currency": "EUR",
-    "tags": [
-      "Mestizaje"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "kifmu2",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115735-elsa-bhor",
-    "imageUrl": "https://conciertos.club/doc/a/2023/a_elsabhor2.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-i1stdt",
-    "slug": "hector-tejedo-trio",
-    "title": {
-      "es": "Héctor Tejedo Trío.",
-      "en": "Héctor Tejedo Trío."
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-05",
-    "time": "20:00",
-    "venue": "Ool Ya Koo",
-    "neighborhood": "centro",
-    "price": 12,
-    "currency": "EUR",
-    "tags": [
-      "Jazz"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "i1stdt",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116125-hector-tejedo-trio",
-    "imageUrl": "https://conciertos.club/doc/lp/l_OolYaKoo_Gra_pp.jpg",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-13zjg9",
-    "slug": "patricia-benito-gira-teatros-2026",
-    "title": {
-      "es": "Patricia Benito - Gira Teatros 2026",
-      "en": "Patricia Benito - Gira Teatros 2026"
-    },
-    "description": {
-      "es": "Patricia Benito es reconocida como una de las poetas españolas más destacadas de la actualidad. Croupier de profesión, terminó cambiando los naipes y la ruleta por la literatura. Autopublicó con gran éxito su primera obra, Primero de poeta, y desde entonces,...",
-      "en": "Patricia Benito es reconocida como una de las poetas españolas más destacadas de la actualidad. Croupier de profesión, terminó cambiando los naipes y la ruleta por la literatura. Autopublicó con gran éxito su primera obra, Primero de poeta, y desde entonces,..."
-    },
-    "category": "other",
-    "date": "2026-04-10",
-    "time": "20:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "13zjg9",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/463.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-omphzb",
-    "slug": "el-arrebato-gira-el-viaje-inesperado-2026",
-    "title": {
-      "es": "El Arrebato Gira El viaje inesperado 2026",
-      "en": "El Arrebato Gira El viaje inesperado 2026"
-    },
-    "description": {
-      "es": "EL ARREBATO EMPRENDE EL VIAJE INESPERADO, un espectáculo que celebra el presente y la capacidad de encontrar la belleza en lo impredecible.\n“El viaje inesperado para mí es la vida misma. Son las vueltas que da el destino cuando tú creías tener el mapa claro, y de pr...",
-      "en": "EL ARREBATO EMPRENDE EL VIAJE INESPERADO, un espectáculo que celebra el presente y la capacidad de encontrar la belleza en lo impredecible.\n“El viaje inesperado para mí es la vida misma. Son las vueltas que da el destino cuando tú creías tener el mapa claro, y de pr..."
-    },
-    "category": "other",
-    "date": "2026-04-10",
-    "time": "21:00",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "omphzb",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/445.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "cg-lmxmbx",
-    "slug": "paula-mattheus",
-    "title": {
-      "es": "Paula Mattheus",
-      "en": "Paula Mattheus"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-11",
-    "time": "Por confirmar",
-    "venue": "El Tren",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "lmxmbx",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/106183-paula-mattheus",
-    "imageUrl": "https://conciertos.club/doc/ban/P/ban_paulamattheus.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
-  },
-  {
-    "id": "pc-nzeqdk",
-    "slug": "marta-sanchez",
-    "title": {
-      "es": "Marta Sánchez",
-      "en": "Marta Sánchez"
-    },
-    "description": {
-      "es": "NUEVO ALBUM Y GIRA \"40 AÑOS 1985-2025\"\nEn 2025, la carrera de Marta cumple 40 años, consolidándola como la “Reina del Pop Español” y una de las artistas más importantes de las últimas décadas con más de 10 millones de disc...",
-      "en": "NUEVO ALBUM Y GIRA \"40 AÑOS 1985-2025\"\nEn 2025, la carrera de Marta cumple 40 años, consolidándola como la “Reina del Pop Español” y una de las artistas más importantes de las últimas décadas con más de 10 millones de disc..."
-    },
-    "category": "other",
-    "date": "2026-04-11",
-    "time": "20:00",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "nzeqdk",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/449.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-hz2jy4",
-    "slug": "los-humanos-martinez-ares",
-    "title": {
-      "es": "Los humanos - Martínez Ares",
-      "en": "Los humanos - Martínez Ares"
-    },
-    "description": {
-      "es": "La comparsa de Antonio Martinez Ares vuelve al Coac 2026 después de un año de descanso, en el 2026 se llamaran Los humanos.",
-      "en": "La comparsa de Antonio Martinez Ares vuelve al Coac 2026 después de un año de descanso, en el 2026 se llamaran Los humanos."
-    },
-    "category": "other",
-    "date": "2026-04-11",
-    "time": "21:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "hz2jy4",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/394.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
-    "id": "pc-d5cwww",
-    "slug": "shado-el-mago-cleptomago",
-    "title": {
-      "es": "Shado el mago CLEPTÓMAGO",
-      "en": "Shado el mago CLEPTÓMAGO"
-    },
-    "description": {
-      "es": "Shado, el ilusionista que dejó sin palabras a Risto Mejide en Got Talent, llega con su espectáculo Cleptómago, un show donde la magia se vive al límite.\nPickpocket, mentalismo y magia urbana se fusionan en una experiencia donde lo imposible sucede ante tus propios ojos. C...",
-      "en": "Shado, el ilusionista que dejó sin palabras a Risto Mejide en Got Talent, llega con su espectáculo Cleptómago, un show donde la magia se vive al límite.\nPickpocket, mentalismo y magia urbana se fusionan en una experiencia donde lo imposible sucede ante tus propios ojos. C..."
-    },
-    "category": "other",
-    "date": "2026-04-12",
-    "time": "19:30",
-    "venue": "Palacio de Congresos de Granada",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "palacio-congresos",
-    "sourceId": "d5cwww",
-    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
-    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/460.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
-  },
-  {
     "id": "cg-nrya5p",
     "slug": "sun-and-snow-festival",
     "title": {
@@ -1574,7 +23,33 @@
     "sourceId": "nrya5p",
     "sourceUrl": "https://conciertosengranada.es/conciertos/112344-sun-and-snow-festival",
     "imageUrl": "https://conciertos.club/doc/ban/S/ban_sunandsnow.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "cg-exai51",
+    "slug": "tanxugueiras-jose-bonaparte",
+    "title": {
+      "es": "Tanxugueiras + José Bonaparte",
+      "en": "Tanxugueiras + José Bonaparte"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-17",
+    "time": "Por confirmar",
+    "venue": "Antiguo Campo de Fútbol Municipal. Santa Fe",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "exai51",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115400-tanxugueiras-jose-bonaparte",
+    "imageUrl": "https://conciertos.club/doc/ban/T/ban_tanxugueiras.jpg",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "cg-ljhion",
@@ -1600,33 +75,7 @@
     "sourceId": "ljhion",
     "sourceUrl": "https://conciertosengranada.es/conciertos/111913-la-cuchilla-analogicos",
     "imageUrl": "https://conciertos.club/doc/ban/L/ban_lacuchilla.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
-  },
-  {
-    "id": "cg-d3vh9i",
-    "slug": "pablo-und-destruktion",
-    "title": {
-      "es": "Pablo Und Destruktion",
-      "en": "Pablo Und Destruktion"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-04-19",
-    "time": "Por confirmar",
-    "venue": "Planta Baja",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "d3vh9i",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/110952-pablo-und-destruktion",
-    "imageUrl": "https://conciertos.club/doc/ban/P/ban_pabloundestruktion.jpg",
-    "lastSyncedAt": "2026-03-19T08:15:30.236Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-jvjopx",
@@ -1655,6 +104,32 @@
     "lastSyncedAt": "2026-03-24T21:37:23.955Z"
   },
   {
+    "id": "cg-d3vh9i",
+    "slug": "pablo-und-destruktion",
+    "title": {
+      "es": "Pablo Und Destruktion",
+      "en": "Pablo Und Destruktion"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-19",
+    "time": "Por confirmar",
+    "venue": "Planta Baja",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "d3vh9i",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/110952-pablo-und-destruktion",
+    "imageUrl": "https://conciertos.club/doc/ban/P/ban_pabloundestruktion.jpg",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
     "id": "pc-k11k3b",
     "slug": "universo-cadi",
     "title": {
@@ -1678,7 +153,33 @@
     "sourceId": "k11k3b",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/487.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "cg-psn17k",
+    "slug": "rustic-festival",
+    "title": {
+      "es": "Rustic Festival:",
+      "en": "Rustic Festival:"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-24",
+    "time": "Por confirmar",
+    "venue": "Parque del Salao. Lanjarón",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "psn17k",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116445-",
+    "imageUrl": "https://conciertos.club/doc/ban/C/ban_carmenxia.jpg",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-6vz3s7",
@@ -1704,7 +205,7 @@
     "sourceId": "6vz3s7",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/470.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-fujpsp",
@@ -1730,7 +231,59 @@
     "sourceId": "fujpsp",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/459.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "cg-h5kkfr",
+    "slug": "atarfe-vega-rock-narco-porretas-sinkope-periferia-maria-del-mal-el-ultimo-ke-zierre",
+    "title": {
+      "es": "Atarfe Vega Rock: Narco + Porretas + Sínkope + Periferia + María del Mal + El Último Ke Zierre",
+      "en": "Atarfe Vega Rock: Narco + Porretas + Sínkope + Periferia + María del Mal + El Último Ke Zierre"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-25",
+    "time": "Por confirmar",
+    "venue": "Coliseo de Atarfe. Atarfe",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "h5kkfr",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/109358-narco-porretas-sinkope-periferia-maria-del-mal-el-ultimo-ke-zierre",
+    "imageUrl": "https://conciertos.club/doc/ban/A/ban_atarfevr2026.jpg",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "cg-r36ene",
+    "slug": "delaossa",
+    "title": {
+      "es": "Delaossa",
+      "en": "Delaossa"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-04-25",
+    "time": "Por confirmar",
+    "venue": "Plaza de Toros",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "r36ene",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/100152-delaossa",
+    "imageUrl": "https://conciertos.club/doc/ban/D/ban_delaossa.jpg",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-be50ec",
@@ -1756,7 +309,7 @@
     "sourceId": "be50ec",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/475.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-iid8ph",
@@ -1782,7 +335,7 @@
     "sourceId": "iid8ph",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/492.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-bla7le",
@@ -1808,7 +361,7 @@
     "sourceId": "bla7le",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/482.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-i7oey4",
@@ -1834,7 +387,7 @@
     "sourceId": "i7oey4",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/456.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-an5ku5",
@@ -1860,7 +413,7 @@
     "sourceId": "an5ku5",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/490.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-ym4sks",
@@ -1886,7 +439,7 @@
     "sourceId": "ym4sks",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/488.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-zh9xhd",
@@ -1912,7 +465,33 @@
     "sourceId": "zh9xhd",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/483.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "pc-949tft",
+    "slug": "miguel-noguera-ultrashow",
+    "title": {
+      "es": "Miguel Noguera - Ultrashow",
+      "en": "Miguel Noguera - Ultrashow"
+    },
+    "description": {
+      "es": "En el Ultrashow explico alrededor de unas 20 o 30 ideas o imágenes mentales, una tras otra y sin importar demasiado el orden. Dura aproximadamente una hora y veinte minutos y estoy solo en escena. Las ideas que utilizo en el espectáculo las selecciono del material de anotaciones y dibu...",
+      "en": "En el Ultrashow explico alrededor de unas 20 o 30 ideas o imágenes mentales, una tras otra y sin importar demasiado el orden. Dura aproximadamente una hora y veinte minutos y estoy solo en escena. Las ideas que utilizo en el espectáculo las selecciono del material de anotaciones y dibu..."
+    },
+    "category": "other",
+    "date": "2026-10-09",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "949tft",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/498.png",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-f20tw2",
@@ -1938,7 +517,33 @@
     "sourceId": "f20tw2",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/489.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "pc-gfseqz",
+    "slug": "ryan-adams",
+    "title": {
+      "es": "Ryan Adams",
+      "en": "Ryan Adams"
+    },
+    "description": {
+      "es": "El artista estadounidense ofrecerá un único concierto en Andalucía el miércoles 14 de octubre en el Palacio de Congresos de Granada, una cita que se perfila como una de las más esperadas del ciclo.\n\nNacido en Carolina del Norte, Ryan Adams comenzó su ca...",
+      "en": "El artista estadounidense ofrecerá un único concierto en Andalucía el miércoles 14 de octubre en el Palacio de Congresos de Granada, una cita que se perfila como una de las más esperadas del ciclo.\n\nNacido en Carolina del Norte, Ryan Adams comenzó su ca..."
+    },
+    "category": "other",
+    "date": "2026-10-14",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "gfseqz",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/497.png",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-waujn9",
@@ -1964,7 +569,7 @@
     "sourceId": "waujn9",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/476.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-unmxe2",
@@ -1990,7 +595,7 @@
     "sourceId": "unmxe2",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/448.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-9qm0u2",
@@ -2016,7 +621,33 @@
     "sourceId": "9qm0u2",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/493.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
+  },
+  {
+    "id": "pc-um6tdc",
+    "slug": "tributo-a-pepe-cespedes-y-paco-calavera",
+    "title": {
+      "es": "Tributo a Pepe Céspedes y Paco Calavera",
+      "en": "Tributo a Pepe Céspedes y Paco Calavera"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-11-27",
+    "time": "20:30",
+    "venue": "Palacio de Congresos de Granada",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "palacio-congresos",
+    "sourceId": "um6tdc",
+    "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
+    "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/496.png",
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-du06th",
@@ -2042,7 +673,7 @@
     "sourceId": "du06th",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/491.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-6dl395",
@@ -2068,7 +699,7 @@
     "sourceId": "6dl395",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/485.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   },
   {
     "id": "pc-fjn7w3",
@@ -2094,6 +725,6 @@
     "sourceId": "fjn7w3",
     "sourceUrl": "https://www.pcgr.org/?seccion=eventosCulturales",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/494.png",
-    "lastSyncedAt": "2026-03-24T21:37:23.955Z"
+    "lastSyncedAt": "2026-04-14T06:08:34.191Z"
   }
 ]

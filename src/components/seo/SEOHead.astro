@@ -39,6 +39,8 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 const esToEnSegments: Record<string, string> = {
   'eventos': 'events',
   'rutas': 'routes',
+  'blog': 'blog',
+  'por-tiempo': 'by-time',
   'sobre': 'about',
   'privacidad': 'privacy',
   'aviso-legal': 'legal',
@@ -49,17 +51,11 @@ const enToEsSegments: Record<string, string> = Object.fromEntries(
 
 function getEsPath(enPath: string): string {
   const withoutPrefix = enPath.replace(/^\/en/, '') || '/';
-  return withoutPrefix.replace(
-    /^\/([^/]+)/,
-    (_, seg) => `/${enToEsSegments[seg] ?? seg}`
-  );
+  return withoutPrefix.split('/').map(seg => enToEsSegments[seg] ?? seg).join('/');
 }
 
 function getEnPath(esPath: string): string {
-  const translated = esPath.replace(
-    /^\/([^/]+)/,
-    (_, seg) => `/${esToEnSegments[seg] ?? seg}`
-  );
+  const translated = esPath.split('/').map(seg => esToEnSegments[seg] ?? seg).join('/');
   return `/en${translated === '/' ? '' : translated}` || '/en';
 }
 

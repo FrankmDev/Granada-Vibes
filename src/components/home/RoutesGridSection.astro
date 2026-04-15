@@ -73,7 +73,7 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
     <div class="routes-accordion">
       {displayRoutes.map((route, idx) => {
         const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
-        const bgImage = ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
+        const bgImage = route.image ?? ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
         const diffLabel = difficultyLabels[route.difficulty] ?? route.difficulty;
         const catLabel = getCategoryLabel(route.category);
 

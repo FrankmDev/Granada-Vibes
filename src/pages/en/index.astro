@@ -6,7 +6,6 @@ import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import HeroSection from '@components/home/HeroSection.astro';
 import EventsGridSection from '@components/home/EventsGridSection.astro';
-import SeasonalSection from '@components/home/SeasonalSection.astro';
 import RoutesGridSection from '@components/home/RoutesGridSection.astro';
 import HomeCTA from '@components/home/HomeCTA.astro';
 
@@ -26,7 +25,7 @@ const displayRoutes = featuredRoutes.slice(0, 7);
 
 <BaseLayout
   locale={locale}
-  title="Granada Vibes — Cultural Guide"
+  title="Cultural Guide to Granada"
   description="The definitive cultural guide to Granada. Events, routes and real experiences without filters."
   schemaType="website"
 >
@@ -34,7 +33,6 @@ const displayRoutes = featuredRoutes.slice(0, 7);
 
   <HeroSection locale={locale} />
   <EventsGridSection events={gridEvents} locale={locale} />
-  <SeasonalSection locale={locale} />
   <RoutesGridSection routes={displayRoutes} locale={locale} />
   <HomeCTA locale={locale} />
 

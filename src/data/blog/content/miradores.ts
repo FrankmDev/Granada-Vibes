@@ -93,6 +93,12 @@ export const miradoresContent = {
 
 <h3 class="text-xl font-semibold text-[var(--color-text-primary)] mt-8 mb-3">Para los que quieren ganarse la vista</h3>
 
+<div class="bg-[var(--color-gold)]/10 border-l-4 border-[var(--color-gold)] p-4 rounded-r-lg my-6">
+  <p class="text-sm text-[var(--color-text-secondary)]">
+    <strong class="text-[var(--color-text-primary)] font-semibold">Horario restringido:</strong> La Silla del Moro solo abre <strong class="text-[var(--color-text-primary)]">sábados y domingos de 10:00 a 14:00</strong>. Si subes entre semana, la cancela estará cerrada. Consulta siempre el calendario del Patronato de la Alhambra antes de planificar la subida.
+  </p>
+</div>
+
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
   Este no es un mirador al que llegas en autobús. La Silla del Moro está en la colina por encima del Generalife, al otro lado del valle del Darro respecto al Albaicín. Para llegar necesitas una caminata de 30 a 40 minutos desde el aparcamiento de la Alhambra, subiendo por un sendero de tierra entre olivos y cipreses.
 </p>
@@ -338,6 +344,12 @@ export const miradoresContent = {
 <h2 class="text-2xl font-bold text-[var(--color-text-primary)] mt-12 mb-4">Mirador de la Silla del Moro and Cerro del Sol</h2>
 
 <h3 class="text-xl font-semibold text-[var(--color-text-primary)] mt-8 mb-3">For those who want to earn the view</h3>
+
+<div class="bg-[var(--color-gold)]/10 border-l-4 border-[var(--color-gold)] p-4 rounded-r-lg my-6">
+  <p class="text-sm text-[var(--color-text-secondary)]">
+    <strong class="text-[var(--color-text-primary)] font-semibold">Restricted hours:</strong> La Silla del Moro only opens <strong class="text-[var(--color-text-primary)]">Saturdays and Sundays from 10:00 to 14:00</strong>. If you hike up on a weekday, the gate will be locked. Always check the Patronato de la Alhambra calendar before planning your visit.
+  </p>
+</div>
 
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
   This is not a viewpoint you reach by bus. La Silla del Moro sits on the hill above the Generalife, on the opposite side of the Darro valley from the Albaicín. To get there you need a 30 to 40-minute hike from the Alhambra parking area, climbing along a dirt trail through olive groves and cypress trees.

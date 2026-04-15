@@ -16,9 +16,9 @@ export const tapasContent = {
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
   El templo del pescaíto frito. Lleva abierto desde 1942 y ha mantenido la receta de la abuela durante generaciones. Con tu cerveza te pondrán un platito con boquerones en adobo, chocos fritos o, si tienes suerte, unas migas. Lo que define a Los Diamantes es la generosidad: las tapas son abundantes y siempre recién hechas. No es raro ver a la gente pedir una segunda ronda solo por la tapa.
 </p>
-<p class="text-[var(--color-text-primary)] font-semibold mb-4">Bar La Riviera</p>
+<p class="text-[var(--color-text-primary)] font-semibold mb-4">Bar La Riviera — Calle Cetti Meriem, 7</p>
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-  Justo enfrente, La Riviera es la especialista en marisco. Sus gambas al ajillo son legendarias, y con cada caña te ponen una tapa que en otros sitios sería media ración. El ambiente es más informal, más de barrio, con gente de pie en la barra charlando con los camareros que llevan allí toda la vida.
+  A dos minutos de Los Diamantes, en la Calle Cetti Meriem (la calle paralela entre Gran Vía y Elvira), La Riviera es la especialista en marisco de la zona. Sus gambas al ajillo son legendarias, y con cada caña te ponen una tapa que en otros sitios sería media ración. El ambiente es informal y de barrio, con gente de pie en la barra charlando con los camareros que llevan allí toda la vida.
 </p>
 
 <div class="bg-[var(--color-primary)]/5 border-l-4 border-[var(--color-primary)] p-4 rounded-r-lg my-6">
@@ -46,9 +46,9 @@ export const tapasContent = {
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
   Si quieres ver dónde tapean los granadinos cuando no están en el centro, tienes que cruzar el río y adentrarte en <strong class="text-[var(--color-text-primary)] font-semibold">La Chana</strong>. Es un barrio obrero, auténtico, sin turistas. Y eso se nota en los precios y en el trato.
 </p>
-<p class="text-[var(--color-text-primary)] font-semibold mb-4">Bar El Santo</p>
+<p class="text-[var(--color-text-primary)] font-semibold mb-4">Bar Teruel — Calle Tablas, La Chana (desde 1982)</p>
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-  Lleva décadas siendo referencia en La Chana. Las tapas son caseras, de la abuela: carne con tomate, migas, ensaladilla... Y las raciones son tan grandes que muchos granadinos vienen aquí a cenar directamente. Con dos cervezas y sus tapas, has cenado.
+  Desde 1982, referencia indiscutible del tapeo en La Chana. Las tapas son caseras, de las de toda la vida: carne con tomate, migas, ensaladilla... Y las raciones son tan generosas que muchos granadinos vienen aquí directamente a cenar. Con dos cervezas y sus tapas, ya has cenado bien y barato.
 </p>
 
 <div class="bg-[var(--color-gold)]/10 border-l-4 border-[var(--color-gold)] p-4 rounded-r-lg my-6">
@@ -62,19 +62,19 @@ export const tapasContent = {
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
   Subir al <strong class="text-[var(--color-text-primary)] font-semibold">Sacromonte</strong> a tapear es una experiencia diferente. Los bares están dispersos entre las cuevas, con vistas espectaculares a la Alhambra. No es zona de tapeo tradicional, pero hay lugares únicos.
 </p>
-<p class="text-[var(--color-text-primary)] font-semibold mb-4">Ventagallo</p>
+<p class="text-[var(--color-text-primary)] font-semibold mb-4">Venta El Gallo — Camino del Sacromonte (desde 1977)</p>
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-  Probablemente el bar con mejores vistas de Granada. Está en lo alto del Sacromonte, y desde su terraza se ve toda la Alhambra, la ciudad y la Sierra Nevada al fondo. Las tapas son sencillas pero buenas, y el sitio merece la pena solo por el atardecer.
+  Fundada en 1977 por Juan Heredia "Juanillo", nieto de la bailaora Antonia "La Gallina", la Venta El Gallo no es un bar de tapas al uso: es un tablao flamenco con restaurante en cueva y terraza con vistas directas a la Alhambra. Probablemente las mejores vistas de Granada desde una mesa. Si vas con presupuesto ajustado, reserva solo para cenar (sin show); si quieres la experiencia completa, el show con cena es lo que los granadinos llevan a sus visitas de fuera.
 </p>
 
-<h2 class="text-2xl font-bold text-[var(--color-text-primary)] mt-12 mb-4">La Alcaicería: el secreto mejor guardado</h2>
+<h2 class="text-2xl font-bold text-[var(--color-text-primary)] mt-12 mb-4">La Alcaicería y los clásicos del centro histórico</h2>
 
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-  Muchos turistas pasan por la <strong class="text-[var(--color-text-primary)] font-semibold">Alcaicería</strong> (el antiguo zoco árabe) sin saber que esconden sus callesjuelas. Más allá de las tiendas de souvenirs, hay bares que llevan generaciones alimentando a granadinos.
+  Muchos turistas pasan por la <strong class="text-[var(--color-text-primary)] font-semibold">Alcaicería</strong> (el antiguo zoco árabe) camino de la Catedral sin saber que en las calles adyacentes hay bares que llevan generaciones alimentando a granadinos. El más veterano y conocido está a un minuto andando.
 </p>
-<p class="text-[var(--color-text-primary)] font-semibold mb-4">Bar La Alcazaba</p>
+<p class="text-[var(--color-text-primary)] font-semibold mb-4">Los Manueles — Calle Reyes Católicos, 61 (desde 1917)</p>
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-  Escondido en una esquina de la Alcaicería, este bar es pequeño, humilde y auténtico. Sus berenjenas con miel son famosas en el barrio, y las tapas vienen sin pedirlas: según el camarero decida. Esa es otra magia del tapeo granadino: la sorpresa de no saber qué te van a poner.
+  Fundado en 1917, Los Manueles es uno de los bares más antiguos de Granada y probablemente el más fotografiado: las paredes están cubiertas de azulejos históricos y barras de jamón colgadas del techo. Sus croquetas caseras y los huevos estrellados con jamón tienen fama de ciudad. Las tapas vienen sin pedirlas y en cantidad generosa. Es el sitio donde los granadinos llevan a quien quieren impresionar sin gastar mucho.
 </p>
 
 <h2 class="text-2xl font-bold text-[var(--color-text-primary)] mt-12 mb-4">Reglas de oro del tapeo granadino</h2>
@@ -122,7 +122,7 @@ export const tapasContent = {
 <h2 class="text-2xl font-bold text-[var(--color-text-primary)] mt-12 mb-4">Sacromonte: Tapas with Views</h2>
 
 <p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
-  Going up to <strong class="text-[var(--color-text-primary)] font-semibold">Sacromonte</strong> for tapas is a different experience. The bars are scattered among the caves, with spectacular views of the Alhambra. Ventagallo probably has the best views in Granada.
+  Going up to <strong class="text-[var(--color-text-primary)] font-semibold">Sacromonte</strong> for tapas is a different experience. The area is primarily known for flamenco rather than traditional tapas bars. <strong class="text-[var(--color-text-primary)] font-semibold">Venta El Gallo</strong> (founded 1977 by Juan Heredia "Juanillo") is a flamenco tablao and restaurant in a cave with a terrace that has some of the best views of the Alhambra in the city. Not your standard tapas stop — but worth it for the experience.
 </p>
 `,
 };

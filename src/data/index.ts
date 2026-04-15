@@ -43,16 +43,3 @@ export {
   getRelatedPosts,
   getPostsByTag,
 } from './blog/index.js';
-
-// Semana Santa
-export {
-  getSemanaSantaData,
-  getMeta,
-  getAllDays,
-  getAllPasos,
-  getPasosByDay,
-  getFeaturedPasos,
-  getPasoBySlug,
-  getCofradiaById,
-  getAllCofradiasByDay,
-} from './semana-santa/index.js';
