@@ -1,4 +1,6 @@
 ---
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+
 /**
  * CinematicHero — shared full-bleed dark hero for event and route detail pages.
  * Dock content is passed via <div slot="dock">…</div> from the caller.
@@ -34,7 +36,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
 
   <div class="cin-canvas" aria-hidden="true">
     {imageUrl
-      ? <img src={imageUrl} alt="" class="cin-bg-img" loading="eager" fetchpriority="high" will-change="transform" />
+      ? <OptimizedImage src={imageUrl} alt="" class="cin-bg-img" loading="eager" sizes="100vw" />
       : <div class="cin-bg-fallback"></div>
     }
     <div class="cin-overlay-base"></div>

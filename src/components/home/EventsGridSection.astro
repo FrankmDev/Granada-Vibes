@@ -2,6 +2,7 @@
 import type { Event, Locale, EventCategory } from '../../types';
 import { useTranslations } from '../../i18n/utils';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
   events: Event[];
@@ -93,12 +94,13 @@ const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
           return (
             <article class="masonry-item" style={`height: ${heightVh}vh;`}>
               <a href={href} class="item-link">
-                <img
+                <OptimizedImage
                   src={imgSrc}
-                  alt=""
+                  alt={evt.title[locale]}
                   class="item-image"
                   loading={idx < 2 ? 'eager' : 'lazy'}
                   decoding="async"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 <div class="item-overlay"></div>
 

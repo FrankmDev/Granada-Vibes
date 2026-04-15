@@ -1,6 +1,7 @@
 ---
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
 
 interface Props {
@@ -87,12 +88,13 @@ function getWordCount(text: string): number {
           <a href={`/blog/${displayPosts[0].slug}`} class="card-link">
             <!-- Visual Layer -->
             <div class="card-visual">
-              <img
+              <OptimizedImage
                 src={displayPosts[0].image || BLOG_IMAGES[displayPosts[0].id] || BLOG_IMAGES.default}
                 alt={displayPosts[0].title[locale]}
                 class="visual-image"
                 loading="eager"
                 decoding="async"
+                sizes="(max-width: 768px) 100vw, 60vw"
               />
               <div class="visual-overlay"></div>
               <div class="visual-gradient" style={`background: linear-gradient(135deg, ${categoryData[displayPosts[0].category].color}20 0%, transparent 60%)`}></div>
@@ -167,12 +169,13 @@ function getWordCount(text: string): number {
             <a href={`/blog/${post.slug}`} class="card-link">
               <!-- Visual Layer -->
               <div class="card-visual visual-secondary">
-                <img
+                <OptimizedImage
                   src={post.image || BLOG_IMAGES[post.id] || BLOG_IMAGES.default}
                   alt={post.title[locale]}
                   class="visual-image"
                   loading="lazy"
                   decoding="async"
+                  sizes="(max-width: 768px) 100vw, 35vw"
                 />
                 <div class="visual-overlay overlay-secondary"></div>
                 <div class="visual-gradient" style={`background: linear-gradient(135deg, ${categoryData[post.category].color}30 0%, transparent 70%)`}></div>

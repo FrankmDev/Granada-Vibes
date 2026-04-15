@@ -2,6 +2,7 @@
 import type { Route, Locale, RouteCategory, RouteDifficulty } from '../../types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '../../i18n/utils';
 
 interface Props {
@@ -79,12 +80,13 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
 
         return (
           <a href={href} class={`route-pane ${idx === 0 ? 'is-active' : ''}`} data-index={idx}>
-            <img
+            <OptimizedImage
               src={bgImage}
               alt={route.title[locale]}
               class="pane-img"
               loading={idx < 3 ? 'eager' : 'lazy'}
               decoding="async"
+              sizes="(max-width: 1024px) 100vw, 40vw"
             />
             <div class="pane-overlay"></div>
 

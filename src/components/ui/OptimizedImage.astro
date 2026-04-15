@@ -1,0 +1,70 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: string | ImageMetadata;
+  alt: string;
+  width?: number;
+  height?: number;
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'async' | 'sync' | 'auto';
+  class?: string;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  sizes,
+  loading = 'lazy',
+  decoding = 'async',
+  class: className = '',
+} = Astro.props;
+
+// Check if src is a remote URL
+const isRemoteImage = typeof src === 'string' && (src.startsWith('http://') || src.startsWith('https://'));
+
+// Check if src is a local image path (from public/)
+const isLocalPath = typeof src === 'string' && src.startsWith('/');
+
+// Default sizes for responsive images
+const defaultSizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
+---
+
+{isRemoteImage ? (
+  /* For remote images - use standard img with optimizations */
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    class={className}
+  />
+) : isLocalPath ? (
+  /* For local public/ images - use standard img (can't optimize these) */
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    class={className}
+  />
+) : (
+  /* For imported images from src/assets/ - use Astro Image component with inferSize */
+  <Image
+    src={src as ImageMetadata}
+    alt={alt}
+    sizes={sizes || defaultSizes}
+    loading={loading}
+    decoding={decoding}
+    class={className}
+    inferSize
+  />
+)}

@@ -1,6 +1,7 @@
 ---
 import type { BlogPost, Locale } from '@types';
 import { LOCALE_PATHS } from '@config/site';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
   post: BlogPost;
@@ -30,11 +31,12 @@ const categoryLabel = t(`blog.categories.${post.category}`);
   {/* Image */}
   <div class="relative aspect-[16/9] overflow-hidden bg-[var(--color-bg-subtle)]">
     {post.image ? (
-      <img
+      <OptimizedImage
         src={post.image}
         alt={post.title[locale]}
         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
       />
     ) : (
       <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-bg-subtle)]">

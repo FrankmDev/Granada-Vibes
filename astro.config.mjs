@@ -12,6 +12,33 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+  // Image optimization configuration
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: {
+        quality: 80,
+        format: 'webp',
+      },
+    },
+    // Domains allowed for remote image optimization
+    domains: ['images.unsplash.com', 'upload.wikimedia.org'],
+    // Remote patterns for external images
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.unsplash.com',
+      },
+    ],
+  },
   vite: {
     resolve: {
       alias: [
@@ -24,10 +51,28 @@ export default defineConfig({
         { find: '@config', replacement: path.resolve('./src/config') },
         { find: '@i18n', replacement: path.resolve('./src/i18n') },
         { find: '@styles', replacement: path.resolve('./src/styles') },
+        { find: '@assets', replacement: path.resolve('./src/assets') },
       ],
     },
     css: {
       postcss: './postcss.config.cjs',
+    },
+    build: {
+      // CSS optimization
+      cssMinify: true,
+      // JS optimization
+      minify: true,
+      // Asset inlining threshold (10KB)
+      assetsInlineLimit: 10240,
+      // Code splitting
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Separate vendor chunks for better caching
+            'vendor': ['astro'],
+          },
+        },
+      },
     },
     server: {
       headers: {
@@ -37,4 +82,8 @@ export default defineConfig({
       },
     },
   },
+  // Build output configuration
+  output: 'static',
+  // Compress HTML in production
+  compressHTML: true,
 });

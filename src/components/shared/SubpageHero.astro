@@ -1,5 +1,6 @@
 ---
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import type { Locale } from '@types';
 
 interface Props {
@@ -48,7 +49,7 @@ const titleWords = title.split(' ');
 >
   <!-- Background with cinematic layers -->
   <div class="hero-bg">
-    <img src={backgroundImage} alt="" class="bg-image" loading="eager" fetchpriority="high" />
+    <OptimizedImage src={backgroundImage} alt="" class="bg-image" loading="eager" sizes="100vw" />
     <div class="bg-overlay"></div>
     <div class="bg-vignette"></div>
     <div class="bg-noise"></div>
