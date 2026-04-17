@@ -13,6 +13,12 @@ const { type, data, locale, path = '' } = Astro.props;
 
 const siteUrl = SITE_CONFIG.url;
 
+function resolveImageUrl(image: string | undefined): string {
+  if (!image) return `${siteUrl}/og-default.jpg`;
+  if (image.startsWith('http://') || image.startsWith('https://')) return image;
+  return `${siteUrl}${image}`;
+}
+
 // Base organization schema
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -82,7 +88,7 @@ switch (type) {
             addressCountry: 'ES',
           },
         },
-        image: eventData.image ? `${siteUrl}${eventData.image}` : `${siteUrl}/og-default.jpg`,
+        image: resolveImageUrl(eventData.image),
         url: `${siteUrl}${path}`,
         offers: eventData.price !== null ? {
           '@type': 'Offer',
@@ -113,7 +119,7 @@ switch (type) {
         '@type': 'TouristAttraction',
         name: routeData.title[locale],
         description: routeData.description[locale],
-        image: routeData.image ? `${siteUrl}${routeData.image}` : `${siteUrl}/og-default.jpg`,
+        image: resolveImageUrl(routeData.image),
         url: `${siteUrl}${path}`,
         touristType: [
           {

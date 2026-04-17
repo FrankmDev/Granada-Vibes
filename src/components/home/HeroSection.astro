@@ -2,6 +2,8 @@
 import type { Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import { useTranslations } from '../../i18n/utils';
+import { getImage } from 'astro:assets';
+import imgAlhambraAtardecer from '@assets/images/routes/alhambra-atardecer.jpg';
 
 interface Props {
   locale: Locale;
@@ -9,6 +11,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+
+const posterImage = await getImage({ src: imgAlhambraAtardecer, format: 'webp', width: 1920, quality: 80 });
+const posterUrl = posterImage.src;
 
 const c = {
   supra: t('home.hero.worldHeritage'),
@@ -27,7 +32,7 @@ const c = {
 
   <!-- 1. The Living Canvas -->
   <div class="ambient-layer">
-    <video class="ambient-video" autoplay muted loop playsinline preload="metadata" poster="/images/routes/alhambra-atardecer.jpg">
+    <video class="ambient-video" autoplay muted loop playsinline preload="metadata" poster={posterUrl}>
       <source src="/heroVideo.mp4" type="video/mp4" />
     </video>
     <div class="ambient-filter"></div>
@@ -56,7 +61,7 @@ const c = {
     <!-- The physical portal lens -->
     <div class="portal" data-parallax="0.05" aria-hidden="true">
       <div class="portal-inner-frame">
-        <video class="sharp-video" autoplay muted loop playsinline preload="metadata" poster="/images/routes/alhambra-atardecer.jpg">
+        <video class="sharp-video" autoplay muted loop playsinline preload="metadata" poster={posterUrl}>
           <source src="/heroVideo.mp4" type="video/mp4" />
         </video>
         <div class="portal-shadows"></div>
@@ -168,7 +173,7 @@ const c = {
   .epic-title {
     font-family: var(--font-body);
     font-size: clamp(4.5rem, 12vw, 15rem);
-    font-weight: 400;
+    font-weight: 200;
     line-height: 1;
     margin: 0;
     display: flex;
@@ -177,7 +182,7 @@ const c = {
     width: 100%;
     color: var(--color-text-primary);
     text-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 120px rgba(0,0,0,0.9);
-    letter-spacing: -0.01em;
+    letter-spacing: 0.02em;
   }
 
   .title-char {

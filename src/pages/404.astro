@@ -1,0 +1,153 @@
+---
+import { getLocaleFromPath } from '@utils/paths';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
+
+const currentPath = Astro.url.pathname;
+const locale = getLocaleFromPath(currentPath);
+
+const content = {
+  es: {
+    code: '404',
+    title: 'Página no encontrada',
+    description: 'La página que buscas no existe o ha sido movida.',
+    cta: 'Volver a inicio',
+    search: 'Buscar eventos',
+    searchPath: '/eventos',
+    routes: 'Explorar rutas',
+    routesPath: '/rutas',
+  },
+  en: {
+    code: '404',
+    title: 'Page not found',
+    description: 'The page you are looking for does not exist or has been moved.',
+    cta: 'Go home',
+    search: 'Find events',
+    searchPath: '/en/events',
+    routes: 'Explore routes',
+    routesPath: '/en/routes',
+  },
+};
+
+const c = content[locale];
+---
+
+<BaseLayout
+  locale={locale}
+  title={locale === 'es' ? 'Página no encontrada — RAWDA' : 'Page not found — RAWDA'}
+  description={c.description}
+  noindex={true}
+>
+  <NavBar slot="header" locale={locale} currentPath={currentPath} />
+
+  <section class="not-found-section">
+    <div class="not-found-container">
+      <div class="not-found-code" aria-hidden="true">{c.code}</div>
+      <h1 class="not-found-title">{c.title}</h1>
+      <p class="not-found-desc">{c.description}</p>
+
+      <div class="not-found-actions">
+        <a href={locale === 'es' ? '/' : '/en/'} class="not-found-btn not-found-btn-primary">
+          {c.cta}
+        </a>
+        <a href={c.searchPath} class="not-found-btn not-found-btn-secondary">
+          {c.search}
+        </a>
+        <a href={c.routesPath} class="not-found-btn not-found-btn-secondary">
+          {c.routes}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" locale={locale} />
+</BaseLayout>
+
+<style>
+  .not-found-section {
+    min-height: calc(100vh - var(--header-height, 64px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    padding: 2rem;
+  }
+
+  .not-found-container {
+    text-align: center;
+    max-width: 36rem;
+  }
+
+  .not-found-code {
+    font-family: var(--font-body, 'Fraunces', serif);
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-accent, #e8622a);
+    opacity: 0.15;
+    letter-spacing: -0.04em;
+    margin-bottom: -1.5rem;
+    user-select: none;
+  }
+
+  .not-found-title {
+    font-family: var(--font-body, 'Fraunces', serif);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--color-text-primary, #f0ede8);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .not-found-desc {
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 1.05rem;
+    color: var(--color-text-secondary, #9a9490);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+  }
+
+  .not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .not-found-btn {
+    font-family: var(--font-display, 'DM Sans', sans-serif);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border-radius: 100px;
+    transition: all 0.3s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .not-found-btn-primary {
+    background: var(--color-accent, #e8622a);
+    color: #fff;
+  }
+
+  .not-found-btn-primary:hover {
+    background: var(--color-accent-hover, #f07040);
+    transform: translateY(-2px);
+  }
+
+  .not-found-btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-text-primary, #f0ede8);
+    border: 1px solid var(--color-border, #242424);
+  }
+
+  .not-found-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--color-text-muted, #5a5550);
+    transform: translateY(-2px);
+  }
+</style>

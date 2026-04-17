@@ -12,10 +12,10 @@ interface Props {
   backLabel: string;
   refCode: string;       // e.g. "EVT / 001 · 2026"
   title: string;
-  imageUrl?: string;
+  imageUrl: string | undefined;
   eyebrowText: string;   // category label, already uppercased
-  featuredLabel?: string;
-  dockAriaLabel?: string;
+  featuredLabel: string | undefined;
+  dockAriaLabel: string | undefined;
 }
 
 const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabel, dockAriaLabel } = Astro.props;
@@ -31,17 +31,18 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     <span class="cin-corner bl"></span>
     <span class="cin-corner br"></span>
     <span class="cin-frame-tag left">[{refCode}]</span>
-    <span class="cin-frame-tag right">GRANADA VIBES</span>
+    <span class="cin-frame-tag right">RAWDA</span>
   </div>
 
   <div class="cin-canvas" aria-hidden="true">
     {imageUrl
-      ? <OptimizedImage src={imageUrl} alt="" class="cin-bg-img" loading="eager" sizes="100vw" />
+      ? <OptimizedImage src={imageUrl} alt="" class="cin-bg-img" loading="eager" sizes="100vw" width={1920} height={1080} />
       : <div class="cin-bg-fallback"></div>
     }
     <div class="cin-overlay-base"></div>
     <div class="cin-overlay-vignette"></div>
     <div class="cin-overlay-bottom"></div>
+    <div class="cin-overlay-diagonal"></div>
     <div class="cin-grain"></div>
   </div>
 
@@ -84,10 +85,12 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
   .cin-hero {
     --h-gold:     #c9a84c;
     --h-gold-dim: rgba(201, 162, 39, 0.45);
+    --h-gold-bright: #e6c587;
     --h-orange:   #e8622a;
     --h-cream:    #f0ede8;
     --h-muted:    rgba(240, 237, 232, 0.45);
     --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     position: relative;
     width: 100%;
@@ -99,7 +102,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     align-items: flex-start;
     overflow: hidden;
     contain: layout;
-    padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(5rem, 10vh, 7rem);
+    padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(6rem, 12vh, 9rem);
   }
 
   .cin-back {
@@ -107,30 +110,40 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     top: calc(var(--header-height, 64px) + 1.5rem);
     left: clamp(1.5rem, 5vw, 4rem);
     font-family: var(--font-display);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--h-muted);
+    color: rgba(240,237,232,0.75);
     text-decoration: none;
     z-index: 30;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     animation: cin-fade-in 0.8s ease 0.1s both;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
   }
-  .cin-back:hover { color: var(--h-cream); }
+  .cin-back:hover { 
+    color: var(--h-cream); 
+    background: rgba(201,168,76,0.15);
+    border-color: rgba(201,168,76,0.3);
+  }
 
   .cin-frame {
     position: absolute;
     inset: 1.5rem;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
     pointer-events: none;
     z-index: 20;
   }
 
   .cin-corner {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-color: var(--h-gold-dim);
     border-style: solid;
     border-width: 0;
@@ -148,7 +161,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.3);
     padding: 0 0.5rem;
     background: #000;
   }
@@ -160,17 +173,16 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
   .cin-bg-img {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(10%) contrast(1.05) brightness(0.9);
+    filter: grayscale(5%) contrast(1.08) brightness(0.92);
     transform: scale(1.06);
     will-change: transform;
     animation: hero-settle 3s var(--ease-expo) forwards;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   @keyframes hero-settle {
-    to { transform: scale(1); filter: grayscale(5%) contrast(1.02) brightness(0.85); }
+    to { transform: scale(1.02); filter: grayscale(2%) contrast(1.05) brightness(0.88); }
   }
 
   .cin-bg-fallback {
@@ -181,9 +193,11 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
                 #0a0a0a;
   }
 
-  .cin-overlay-base     { position: absolute; inset: 0; background: rgba(0,0,0,0.2); }
-  .cin-overlay-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%); }
-  .cin-overlay-bottom   { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); }
+  .cin-overlay-base     { position: absolute; inset: 0; background: rgba(0,0,0,0.15); }
+  .cin-overlay-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%); }
+  .cin-overlay-bottom   { position: absolute; bottom: 0; left: 0; right: 0; height: 65%; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, transparent 100%); }
+  /* Diagonal gradient darker on bottom-left where content sits */
+  .cin-overlay-diagonal { position: absolute; inset: 0; background: linear-gradient(35deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.2) 60%, transparent 100%); pointer-events: none; }
 
   .cin-grain {
     position: absolute;
@@ -202,46 +216,60 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     gap: 0.75rem;
     margin-bottom: 1.5rem;
     animation: fadeInUp 0.8s var(--ease-expo) 0.4s both;
+    flex-wrap: wrap;
   }
 
-  .cin-eyebrow-bracket { color: var(--h-gold); font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; }
+  .cin-eyebrow-bracket { 
+    color: var(--h-gold); 
+    font-family: var(--font-display); 
+    font-size: 0.7rem; 
+    font-weight: 700; 
+  }
 
   .cin-eyebrow-text {
     font-family: var(--font-display);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.2em;
     color: var(--h-muted);
+    text-transform: uppercase;
   }
 
   .cin-featured-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.3rem 0.8rem;
+    padding: 0.35rem 0.8rem;
     font-family: var(--font-display);
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.15em;
-    background: rgba(201,168,76,0.2);
-    border: 1px solid rgba(201,168,76,0.35);
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
     color: var(--h-gold);
     border-radius: 100px;
+    text-transform: uppercase;
   }
-  .cin-featured-badge svg { width: 10px; height: 10px; }
+  .cin-featured-badge svg { 
+    width: 10px; 
+    height: 10px; 
+  }
 
   .cin-title {
     position: relative;
     z-index: 5;
     font-family: var(--font-body);
-    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-size: clamp(2.5rem, 5.5vw, 5rem);
     font-weight: 300;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
     line-height: 1.0;
     color: var(--h-cream);
     margin: 0 0 3rem;
     max-width: 900px;
     perspective: 1200px;
+    text-shadow: 
+      0 2px 20px rgba(0,0,0,0.5),
+      0 4px 40px rgba(0,0,0,0.4);
   }
 
   .cin-char {
@@ -258,9 +286,9 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     align-items: stretch;
     gap: 0;
     background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.15);
     border-radius: 20px;
     overflow: hidden;
     animation: fadeInUp 1s var(--ease-expo) 0.8s both;
@@ -268,8 +296,8 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     width: 100%;
     box-shadow: 
       0 25px 80px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(201,168,76,0.2),
-      inset 0 1px 0 rgba(255,255,255,0.15);
+      0 0 0 1px rgba(201,168,76,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.1);
   }
 
   .cin-dock::before {
@@ -278,89 +306,101 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 1px;
     background: linear-gradient(90deg, 
       transparent 0%, 
-      rgba(201,168,76,0.6) 15%, 
-      rgba(201,168,76,0.9) 50%, 
-      rgba(201,168,76,0.6) 85%, 
+      rgba(201,168,76,0.4) 20%,
+      rgba(201,168,76,0.6) 50%,
+      rgba(201,168,76,0.4) 80%,
       transparent 100%
     );
-    border-radius: 20px 20px 0 0;
   }
 
+  /* Dock cell styles — used by callers via :global or matching class names */
   /* Dock cell styles — used by callers via :global or matching class names */
   :global(.cin-dock-cell) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
-    padding: 2rem 2rem 2rem 1.75rem;
+    gap: 0.6rem;
+    padding: 1.75rem 1.75rem 1.75rem 1.5rem;
     flex: 1;
     min-width: 0;
     position: relative;
-    transition: all 0.3s var(--ease-expo);
+    transition: background 0.3s ease;
   }
 
   :global(.cin-dock-cell:hover) {
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.05);
   }
+  
+  :global(.cin-dock-cell:first-child) { padding-left: 1.75rem; }
+  :global(.cin-dock-cell:last-child) { padding-right: 1.75rem; }
 
   :global(.cin-dock-cell-icon) {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 0.25rem;
-    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
-    border: 1px solid rgba(201,168,76,0.35);
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
     color: var(--h-gold);
     flex-shrink: 0;
-    box-shadow: 
-      0 4px 12px rgba(201,168,76,0.15),
-      inset 0 1px 0 rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+  }
+  
+  :global(.cin-dock-cell:hover .cin-dock-cell-icon) {
+    background: rgba(201,168,76,0.25);
+    border-color: rgba(201,168,76,0.5);
   }
 
   :global(.cin-dock-cell-icon svg) {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 
   :global(.cin-dock-cell-icon.date) {
-    background: linear-gradient(135deg, rgba(232,98,42,0.2), rgba(232,98,42,0.08));
-    border-color: rgba(232,98,42,0.4);
+    background: rgba(232,98,42,0.15);
+    border-color: rgba(232,98,42,0.35);
     color: var(--h-orange);
-    box-shadow: 
-      0 4px 12px rgba(232,98,42,0.15),
-      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  
+  :global(.cin-dock-cell:hover .cin-dock-cell-icon.date) {
+    background: rgba(232,98,42,0.25);
+    border-color: rgba(232,98,42,0.5);
   }
 
   :global(.cin-dock-cell-icon.time) {
-    background: linear-gradient(135deg, rgba(240,237,232,0.18), rgba(240,237,232,0.06));
-    border-color: rgba(240,237,232,0.3);
-    color: rgba(240,237,232,0.95);
-    box-shadow: 
-      0 4px 12px rgba(240,237,232,0.08),
-      inset 0 1px 0 rgba(255,255,255,0.1);
+    background: rgba(240,237,232,0.12);
+    border-color: rgba(240,237,232,0.25);
+    color: var(--h-cream);
+  }
+  
+  :global(.cin-dock-cell:hover .cin-dock-cell-icon.time) {
+    background: rgba(240,237,232,0.2);
+    border-color: rgba(240,237,232,0.4);
   }
 
   :global(.cin-dock-cell-icon.price) {
-    background: linear-gradient(135deg, rgba(108,186,138,0.2), rgba(108,186,138,0.08));
-    border-color: rgba(108,186,138,0.4);
+    background: rgba(108,186,138,0.15);
+    border-color: rgba(108,186,138,0.35);
     color: #7dd693;
-    box-shadow: 
-      0 4px 12px rgba(108,186,138,0.15),
-      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  
+  :global(.cin-dock-cell:hover .cin-dock-cell-icon.price) {
+    background: rgba(108,186,138,0.25);
+    border-color: rgba(108,186,138,0.5);
   }
 
   :global(.cin-dock-sep) {
     width: 1px;
     background: linear-gradient(180deg, 
       transparent 0%, 
-      rgba(255,255,255,0.2) 20%, 
-      rgba(255,255,255,0.2) 80%, 
+      rgba(255,255,255,0.15) 20%, 
+      rgba(255,255,255,0.15) 80%, 
       transparent 100%
     );
     flex-shrink: 0;
@@ -368,7 +408,7 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
 
   :global(.cin-dock-label) {
     font-family: var(--font-display);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -377,19 +417,19 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
 
   :global(.cin-dock-value) {
     font-family: var(--font-body);
-    font-size: 1.35rem;
-    font-weight: 200;
-    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: var(--h-cream);
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 
   :global(.cin-dock-value.sub) {
     font-family: var(--font-body);
     font-size: 1rem;
-    font-weight: 200;
-    color: rgba(240,237,232,0.75);
-    letter-spacing: -0.01em;
+    font-weight: 300;
+    color: rgba(240,237,232,0.8);
+    letter-spacing: 0;
   }
 
   .cin-bottom-rule {
@@ -400,23 +440,27 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     align-items: center;
     gap: 0.75rem;
     z-index: 10;
-    opacity: 0.4;
+    opacity: 0.5;
     animation: cin-fade-in 1.2s ease 1.2s both;
   }
 
-  .cin-rule-line    { width: 40px; height: 1px; background: var(--h-gold-dim); }
+  .cin-rule-line { width: 40px; height: 1px; background: var(--h-gold-dim); }
   .cin-rule-diamond { width: 6px; height: 6px; background: var(--h-gold); transform: rotate(45deg); opacity: 0.6; }
 
   @media (max-width: 1024px) {
-    :global(.cin-dock-cell) { padding: 1.75rem 1.5rem; }
+    :global(.cin-dock-cell) { padding: 1.5rem 1.25rem; }
+    :global(.cin-dock-cell:first-child) { padding-left: 1.5rem; }
+    :global(.cin-dock-cell:last-child) { padding-right: 1.5rem; }
     :global(.cin-dock-value) { font-size: 1.15rem; }
-    :global(.cin-dock-cell-icon) { width: 40px; height: 40px; }
-    :global(.cin-dock-cell-icon svg) { width: 20px; height: 20px; }
+    :global(.cin-dock-cell-icon) { width: 38px; height: 38px; }
+    :global(.cin-dock-cell-icon svg) { width: 18px; height: 18px; }
+    .cin-title { font-size: clamp(2rem, 5vw, 4rem); }
   }
 
   @media (max-width: 900px) {
     .cin-dock { border-radius: 16px; }
-    :global(.cin-dock-cell) { padding: 1.5rem 1.25rem; }
+    .cin-frame { display: none; }
+    :global(.cin-dock-cell) { padding: 1.25rem 1rem; }
     :global(.cin-dock-value) { font-size: 1.05rem; }
   }
 
@@ -433,30 +477,128 @@ const { backHref, backLabel, refCode, title, imageUrl, eyebrowText, featuredLabe
     :global(.cin-dock-cell) { 
       flex-direction: column; 
       align-items: flex-start; 
-      padding: 1.5rem 1.25rem; 
+      padding: 1.25rem; 
       flex: 1 1 calc(50% - 1px);
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
+    :global(.cin-dock-cell:first-child) { padding-left: 1.25rem; }
+    :global(.cin-dock-cell:last-child) { padding-right: 1.25rem; }
     :global(.cin-dock-cell:nth-child(odd)) {
       border-right: 1px solid rgba(255,255,255,0.1);
     }
     :global(.cin-dock-cell:nth-last-child(-n+2)) {
       border-bottom: none;
     }
-    :global(.cin-dock-cell-icon) { width: 38px; height: 38px; }
-    :global(.cin-dock-cell-icon svg) { width: 19px; height: 19px; }
-    :global(.cin-dock-label) { font-size: 0.65rem; }
-    .cin-title { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 2rem; }
+    :global(.cin-dock-cell-icon) { width: 36px; height: 36px; margin-bottom: 0.2rem; }
+    :global(.cin-dock-cell-icon svg) { width: 17px; height: 17px; }
+    :global(.cin-dock-label) { font-size: 0.6rem; letter-spacing: 0.15em; }
+    :global(.cin-dock-value) { font-size: 1rem; }
+    .cin-title { 
+      font-size: clamp(2rem, 8vw, 3rem); 
+      margin-bottom: 2rem; 
+      font-weight: 300;
+    }
     .cin-bottom-rule { display: none; }
+    .cin-overlay-bottom { height: 55%; }
+    .cin-eyebrow { margin-bottom: 1.25rem; }
   }
 
   @media (max-width: 480px) {
     .cin-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
-    :global(.cin-dock-cell) { padding: 1.25rem 1rem; gap: 0.5rem; }
-    :global(.cin-dock-cell-icon) { width: 34px; height: 34px; border-radius: 10px; }
-    :global(.cin-dock-cell-icon svg) { width: 17px; height: 17px; }
-    :global(.cin-dock-value) { font-size: 1rem; }
-    :global(.cin-dock-label) { font-size: 0.6rem; }
+    :global(.cin-dock-cell) { padding: 1rem; gap: 0.4rem; }
+    :global(.cin-dock-cell:first-child) { padding-left: 1rem; }
+    :global(.cin-dock-cell:last-child) { padding-right: 1rem; }
+    :global(.cin-dock-cell-icon) { width: 32px; height: 32px; border-radius: 8px; }
+    :global(.cin-dock-cell-icon svg) { width: 15px; height: 15px; }
+    :global(.cin-dock-value) { font-size: 0.95rem; line-height: 1.2; }
+    :global(.cin-dock-value.sub) { font-size: 0.85rem; }
+    :global(.cin-dock-label) { font-size: 0.55rem; letter-spacing: 0.12em; }
+    .cin-title { 
+      font-size: clamp(1.8rem, 7vw, 2.5rem); 
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+    .cin-back { font-size: 0.6rem; padding: 0.4rem 0.6rem; }
+  }
+
+  @media (max-width: 900px) {
+    .cin-dock { border-radius: 24px; }
+    .cin-frame { display: none; }
+    :global(.cin-dock-cell) { padding: 1.35rem 1.15rem; border-right: none; }
+    :global(.cin-dock-value) { font-size: 1.15rem; }
+  }
+
+  @media (max-width: 768px) {
+    .cin-hero { min-height: 100svh; padding-bottom: 5rem; padding-top: 2rem; }
+    .cin-frame, .cin-frame-tag { display: none; }
+    .cin-dock { 
+      flex-direction: row; 
+      flex-wrap: wrap; 
+      max-width: 100%; 
+      border-radius: 24px;
+      backdrop-filter: blur(40px) saturate(200%);
+      border-width: 1px;
+    }
+    .cin-dock:hover { transform: translateY(-2px); }
+    :global(.cin-dock-sep) { display: none; }
+    :global(.cin-dock-cell) { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      padding: 1.35rem 1.15rem; 
+      flex: 1 1 calc(50% - 1px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-right: none;
+      gap: 0.5rem;
+    }
+    :global(.cin-dock-cell:first-child) { padding-left: 1.35rem; }
+    :global(.cin-dock-cell:last-child) { padding-right: 1.35rem; }
+    :global(.cin-dock-cell:nth-child(odd)) {
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    :global(.cin-dock-cell:nth-last-child(-n+2)) {
+      border-bottom: none;
+    }
+    :global(.cin-dock-cell-icon) { width: 40px; height: 40px; border-radius: 12px; margin-bottom: 0.35rem; }
+    :global(.cin-dock-cell-icon svg) { width: 18px; height: 18px; }
+    :global(.cin-dock-label) { font-size: 0.6rem; letter-spacing: 0.18em; }
+    :global(.cin-dock-value) { font-size: 1.1rem; }
+    .cin-title { 
+      font-size: clamp(2.2rem, 9vw, 3.5rem); 
+      margin-bottom: 2.5rem; 
+      font-weight: 500;
+      line-height: 0.95;
+      background: linear-gradient(180deg, #ffffff 0%, #f0ede8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cin-bottom-rule { display: none; }
+    .cin-overlay-bottom { height: 60%; }
+    .cin-eyebrow { margin-bottom: 1.5rem; gap: 0.6rem; }
+  }
+
+  @media (max-width: 480px) {
+    .cin-eyebrow { flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .cin-eyebrow-text { font-size: 0.65rem; }
+    :global(.cin-dock-cell) { padding: 1.2rem 1rem; gap: 0.4rem; }
+    :global(.cin-dock-cell:first-child) { padding-left: 1.2rem; }
+    :global(.cin-dock-cell:last-child) { padding-right: 1.2rem; }
+    :global(.cin-dock-cell-icon) { width: 36px; height: 36px; border-radius: 10px; }
+    :global(.cin-dock-cell-icon svg) { width: 16px; height: 16px; }
+    :global(.cin-dock-value) { font-size: 1rem; line-height: 1.25; }
+    :global(.cin-dock-value.sub) { font-size: 0.9rem; }
+    :global(.cin-dock-label) { font-size: 0.55rem; letter-spacing: 0.15em; margin-top: 0.1rem; }
+    .cin-title { 
+      font-size: clamp(2rem, 10vw, 2.8rem); 
+      font-weight: 500;
+      margin-bottom: 2rem;
+      line-height: 0.95;
+      background: linear-gradient(180deg, #ffffff 0%, #f0ede8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cin-back { font-size: 0.6rem; padding: 0.4rem 0.6rem; }
   }
 </style>

@@ -4,7 +4,18 @@ import path from 'path';
 
 export default defineConfig({
   site: 'https://granadavibes.com',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'es',
+        locales: {
+          es: 'es',
+          en: 'en',
+        },
+      },
+      lastmod: new Date(),
+    }),
+  ],
   i18n: {
     defaultLocale: 'es',
     locales: ['es', 'en'],
@@ -12,18 +23,15 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  // Image optimization configuration
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
       config: {
-        quality: 80,
+        quality: 65,
         format: 'webp',
       },
     },
-    // Domains allowed for remote image optimization
-    domains: ['images.unsplash.com', 'upload.wikimedia.org'],
-    // Remote patterns for external images
+    domains: ['images.unsplash.com', 'upload.wikimedia.org', 'www.pcgr.org', 'conciertos.club'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -36,6 +44,14 @@ export default defineConfig({
       {
         protocol: 'https',
         hostname: '**.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.pcgr.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'conciertos.club',
       },
     ],
   },

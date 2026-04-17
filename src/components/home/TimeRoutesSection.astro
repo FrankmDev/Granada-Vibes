@@ -1,6 +1,7 @@
 ---
 import type { MixedRoute, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
 
 interface Props {
@@ -164,12 +165,13 @@ function getCategoryName(category: string): string {
             <a href={href} class="card-link">
               <!-- Visual Layer -->
               <div class="card-visual">
-                <img
+                <OptimizedImage
                   src={PLAN_IMAGES[plan.duration] || PLAN_IMAGES['2h']}
                   alt={plan.title[locale]}
                   class="visual-image"
                   loading={index === 0 ? 'eager' : 'lazy'}
                   decoding="async"
+                  sizes="(max-width: 640px) 100vw, 400px"
                 />
                 <div class="visual-overlay"></div>
                 <div class="visual-gradient" style={`background: ${config.gradient}`}></div>
@@ -506,9 +508,6 @@ function getCategoryName(category: string): string {
   .visual-image {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     filter: grayscale(30%) contrast(1.1) brightness(0.75);
     transform: scale(1.05);
     transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);

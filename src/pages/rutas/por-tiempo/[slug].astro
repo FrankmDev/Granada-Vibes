@@ -283,7 +283,7 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
       const url   = btn.dataset.url;
       const label = btn.querySelector('span');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Ruta "' + title + '" en Granada Vibes', url }); return; }
+        try { await navigator.share({ title, text: 'Ruta "' + title + '" en RAWDA', url }); return; }
         catch (_) {}
       }
       try {

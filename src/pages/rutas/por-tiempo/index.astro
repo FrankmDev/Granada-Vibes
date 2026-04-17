@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import CinematicCTA from '@components/shared/CinematicCTA.astro';
 import { getAllMixedRoutes } from '@data';
 import { useTranslations } from '@i18n/utils';
 import type { MixedRoute } from '@types';
@@ -307,33 +308,13 @@ const categoryIcons: Record<string, string> = {
   </section>
 
   <!-- CTA SECTION -->
-  <section class="final-cta">
-    <div class="final-backdrop">
-      <div class="final-gradient"></div>
-      <div class="grain-overlay" aria-hidden="true"></div>
-    </div>
-    
-    <div class="final-container">
-      <div class="final-visual">
-        <div class="final-star">
-          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50 0L61.8 38.2L100 50L61.8 61.8L50 100L38.2 61.8L0 50L38.2 38.2L50 0Z" fill="currentColor"/>
-          </svg>
-        </div>
-      </div>
-      
-      <div class="final-content">
-        <h2 class="final-title">{t('mixedRoutes.ctaTitle')}</h2>
-        <p class="final-text">{t('mixedRoutes.ctaText')}</p>
-        <a href="/rutas" class="final-button">
-          <span>{t('mixedRoutes.ctaBtn')}</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
+  <CinematicCTA 
+    locale={locale}
+    ctaPrimaryText={t('mixedRoutes.ctaBtn')}
+    ctaPrimaryLink="/rutas"
+    ctaSecondaryText="Ver eventos"
+    ctaSecondaryLink="/eventos"
+  />
 
   <script>
     function initScrollAnimations() {

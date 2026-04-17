@@ -2,6 +2,7 @@
 import type { Route, Locale, Neighborhood } from '@types';
 import { formatDuration, formatDistance } from '@utils/dates';
 import { routeCategoryStyles, difficultyStyles, timeOfDayStyles, icons } from '@config/ui';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
   route: Route;
@@ -25,18 +26,34 @@ const diffLevel = diffStyle.bars;
 
       <!-- Image header -->
       <div class="route-grid__header">
-        <div class="route-grid__pattern"></div>
-        <div class="route-grid__gradient" style={`--cat-color: ${catStyle.colorVar}`}></div>
+        {route.image ? (
+          <div class="route-grid__image-wrapper">
+            <OptimizedImage
+              src={route.image}
+              alt={route.title[locale]}
+              class="route-grid__image"
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            />
+            <div class="route-grid__image-overlay"></div>
+          </div>
+        ) : (
+          <div class="route-grid__fallback">
+            <div class="route-grid__pattern"></div>
+            <div class="route-grid__gradient" style={`--cat-color: ${catStyle.colorVar}`}></div>
+          </div>
+        )}
 
         <!-- Decorative icon -->
-        <div class="absolute inset-0 flex items-center justify-center opacity-20">
+        <div class="absolute inset-0 flex items-center justify-center opacity-20 z-[1]">
           <svg class="w-24 h-24" style={`color: ${catStyle.colorVar}`} viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
             <path d="M50 5 L95 50 L50 95 L5 50 Z" /><circle cx="50" cy="50" r="20" />
           </svg>
         </div>
 
         <!-- Category badge -->
-        <div class="absolute top-4 left-4 z-10">
+        <div class="absolute top-4 left-4 z-[2]">
           <span class="badge badge-glass route-grid__cat" style={`--cat-color: ${catStyle.colorVar}`}>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={catStyle.icon} />
@@ -46,7 +63,7 @@ const diffLevel = diffStyle.bars;
         </div>
 
         <!-- Difficulty bars -->
-        <div class="absolute top-4 right-4 z-10">
+        <div class="absolute top-4 right-4 z-[2]">
           <div class="badge-glass flex items-center gap-2 px-3 py-2 rounded-xl">
             <span class="flex gap-1">
               {[1, 2, 3].map(i => (
@@ -60,7 +77,7 @@ const diffLevel = diffStyle.bars;
         </div>
 
         <!-- Time of day -->
-        <div class="absolute bottom-4 right-4 z-10">
+        <div class="absolute bottom-4 right-4 z-[2]">
           <span class="badge badge-glass">
             <svg class="w-4 h-4" style={`color: var(--color-secondary)`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={timeStyle.icon} />
@@ -142,5 +159,34 @@ const diffLevel = diffStyle.bars;
     background: color-mix(in srgb, var(--cat-color) 15%, transparent);
     color: var(--cat-color);
     border-color: color-mix(in srgb, var(--cat-color) 30%, transparent);
+  }
+
+  /* Image styles */
+  .route-grid__image-wrapper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .route-grid__image {
+    transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .group:hover .route-grid__image {
+    transform: scale(1.08);
+  }
+
+  .route-grid__image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+    z-index: 1;
+  }
+
+  .route-grid__fallback {
+    position: absolute;
+    inset: 0;
   }
 </style>

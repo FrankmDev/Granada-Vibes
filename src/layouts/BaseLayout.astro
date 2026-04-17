@@ -63,16 +63,6 @@ const currentPath = Astro.url.pathname;
 
     <!-- Fonts loaded via @fontsource in global.css (DM Sans + Fraunces) -->
 
-    <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://images.unsplash.com" />
-    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-
-    <!-- Preload Critical Fonts -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/dmsans/v15/rP2Yp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAopxRSW3zE_KB.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="https://fonts.gstatic.com/s/fraunces/v31/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk_WBq8U_9v0c2Wa0K7iN7hzFUPJH58nib14c7qv8o.woff2" as="font" type="font/woff2" crossorigin />
-
     <slot name="head" />
   </head>
 

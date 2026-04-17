@@ -3,6 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import EventDetailContent from '@components/events/EventDetailContent.astro';
 import { getAllEvents } from '@data';
@@ -28,9 +29,9 @@ const relatedEvents = getAllEvents()
   .slice(0, 3);
 
 const eventImage = event.imageUrl || event.image;
-const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
+const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=RAWDA';
 
-const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${event.price === null ? 'Free entry.' : `From ${event.price}€.`} Get tickets and discover more on Granada Vibes.`;
+const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${event.price === null ? 'Free entry.' : `From ${event.price}€.`} Get tickets and discover more on RAWDA.`;
 ---
 
 <BaseLayout
@@ -254,7 +255,7 @@ const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(e
                     >
                       <div class="det-rel-thumb">
                         {(rel.imageUrl || rel.image) ? (
-                          <img src={rel.imageUrl || rel.image} alt="" loading="lazy" />
+                          <OptimizedImage src={rel.imageUrl || rel.image} alt="" loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
                         ) : (
                           <div class="det-rel-thumb-fallback">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -320,7 +321,7 @@ const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(e
       const url   = btn.dataset.url;
       const label = btn.querySelector('.share-label');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Discover "' + title + '" on Granada Vibes', url }); return; }
+        try { await navigator.share({ title, text: 'Discover "' + title + '" on RAWDA', url }); return; }
         catch (_) {}
       }
       try {

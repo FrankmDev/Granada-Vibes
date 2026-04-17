@@ -3,6 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { getAllEvents } from '@data/index';
 import { useTranslations } from '@i18n/utils';
 import type { EventCategory, Neighborhood, Event } from '@types';
@@ -97,7 +98,7 @@ const columns = rawColumns;
     locale={locale}
     title={t('events.heroTitle')}
     subtitle={t('events.heroSubtitle')}
-    eyebrow="GRANADA VIBES"
+    eyebrow="RAWDA"
     eyebrowRight="ED. 2025"
     description={t('events.heroDescription')}
     ctaText={t('events.heroCta')}
@@ -232,12 +233,13 @@ const columns = rawColumns;
                   <span class="cb cb-br" aria-hidden="true"></span>
 
                   {evt.image && !evt.image.includes('undefined') ? (
-                    <img
+                    <OptimizedImage
                       src={evt.image}
                       alt=""
                       class="item-image"
                       loading={idx < 2 ? 'eager' : 'lazy'}
                       decoding="async"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
                     <div class="item-image-fallback"></div>

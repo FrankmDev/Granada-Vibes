@@ -2,6 +2,7 @@
 import type { Route, Locale, Neighborhood } from '@types';
 import { formatDuration, formatDistance } from '@utils/dates';
 import { difficultyStyles, icons } from '@config/ui';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
   route: Route;
@@ -21,6 +22,21 @@ const diffLevel = diffStyle.bars;
   <a href={href} class="block">
     <div class="card-base flex flex-col md:flex-row md:items-center gap-5 p-6">
       <div class="accent-bar"></div>
+
+      <!-- Image (visible on mobile, hidden on desktop) -->
+      {route.image && (
+        <div class="route-list__image-wrapper md:hidden">
+          <OptimizedImage
+            src={route.image}
+            alt={route.title[locale]}
+            class="route-list__image"
+            loading="lazy"
+            decoding="async"
+            sizes="100vw"
+          />
+          <div class="route-list__image-overlay"></div>
+        </div>
+      )}
 
       <!-- Index number -->
       <span class="route-list__index hidden md:flex" style={`--cat-color: var(--color-accent)`}>
@@ -97,5 +113,25 @@ const diffLevel = diffStyle.bars;
     background: color-mix(in srgb, var(--diff-color) 10%, transparent);
     color: var(--diff-color);
     border: 1px solid color-mix(in srgb, var(--diff-color) 30%, transparent);
+  }
+
+  /* Mobile image styles */
+  .route-list__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 12rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+
+  .route-list__image {
+    /* object-fit handled by OptimizedImage component */
+  }
+
+  .route-list__image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
   }
 </style>

@@ -3,6 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import EventDetailContent from '@components/events/EventDetailContent.astro';
 import { getAllEvents } from '@data/index.js';
@@ -28,10 +29,10 @@ const relatedEvents = getAllEvents()
   .slice(0, 3);
 
 const eventImage = event.imageUrl || event.image;
-const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=Granada+Vibes';
+const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=RAWDA';
 
 const priceText = event.price === null ? 'Entrada libre.' : `Desde ${event.price}€.`;
-const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${priceText} Descubre todos los detalles en Granada Vibes.`;
+const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${priceText} Descubre todos los detalles en RAWDA.`;
 ---
 
 <BaseLayout
@@ -253,7 +254,7 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
                     <a href={`/eventos/${rel.slug}`} class="upg-rel-item" style={`--rd: ${i * 0.15}s`}>
                       <div class="uri-thumb">
                         {(rel.imageUrl || rel.image) ? (
-                          <img src={rel.imageUrl || rel.image} alt="" loading="lazy" />
+                          <OptimizedImage src={rel.imageUrl || rel.image} alt="" loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
                         ) : (
                           <div class="uri-thumb-fallback"></div>
                         )}
@@ -300,7 +301,7 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
       const url   = btn.dataset.url;
       const label = btn.querySelector('.upg-share-label');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Descubre "' + title + '" en Granada Vibes', url }); return; }
+        try { await navigator.share({ title, text: 'Descubre "' + title + '" en RAWDA', url }); return; }
         catch (_) {}
       }
       try {

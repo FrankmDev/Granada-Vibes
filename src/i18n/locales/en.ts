@@ -404,7 +404,7 @@ ctaAriaLabel: 'Discover Granada',
     newsletterPlaceholder: 'Your email',
     viewAllEvents: 'View all events',
     madeIn: 'Made with ❤ in Granada',
-    copyright: '© {{year}} Granada Vibes. All rights reserved.',
+    copyright: '© {{year}} RAWDA. All rights reserved.',
     allRightsReserved: 'All rights reserved',
   },
 
@@ -429,7 +429,7 @@ ctaAriaLabel: 'Discover Granada',
 
   // Meta
   meta: {
-    siteName: 'Granada Vibes',
+    siteName: 'RAWDA',
     defaultDescription:
       'Your smart cultural guide to Granada. Discover events, routes, and unique experiences in the city of the Alhambra.',
   },

@@ -1,4 +1,6 @@
 ---
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -104,7 +106,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     </div>
   ) : backgroundImage ? (
     <div class="ph-bg" aria-hidden="true">
-      <img src={backgroundImage} alt="" class="ph-bg-media" />
+      <OptimizedImage src={backgroundImage} alt="" class="ph-bg-media" loading="eager" decoding="async" sizes="100vw" />
       <div class="ph-bg-vignette"></div>
     </div>
   ) : (

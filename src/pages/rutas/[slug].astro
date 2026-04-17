@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
 import Footer from '@components/layout/Footer.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
 import { formatDuration, formatDistance } from '@utils/dates';
@@ -253,7 +254,7 @@ const timeIcon = (route.timeOfDay === 'evening' || route.timeOfDay === 'sunset')
                     <a href={`/rutas/${rel.slug}`} class="upg-rel-item" style={`--rd: ${i * 0.15}s`}>
                       <div class="uri-thumb">
                         {(rel.imageUrl || rel.image) ? (
-                          <img src={rel.imageUrl || rel.image} alt="" loading="lazy" />
+                          <OptimizedImage src={rel.imageUrl || rel.image} alt="" loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
                         ) : (
                           <div class="uri-thumb-fallback"></div>
                         )}
@@ -299,7 +300,7 @@ const timeIcon = (route.timeOfDay === 'evening' || route.timeOfDay === 'sunset')
       const url   = btn.dataset.url;
       const label = btn.querySelector('span');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Descubre "' + title + '" en Granada Vibes', url }); return; }
+        try { await navigator.share({ title, text: 'Descubre "' + title + '" en RAWDA', url }); return; }
         catch (_) {}
       }
       try {
