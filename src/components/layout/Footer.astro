@@ -1,5 +1,7 @@
 ---
 import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 
 interface Props {
@@ -7,92 +9,25 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
 
-const content = {
-  es: {
-    eyebrow: 'NAVEGACIÓN',
-    vol: 'VOL. I · 2026',
-    coords: '37°10′28″N',
-    altCoords: '03°35′56″W',
-    sections: {
-      brand: {
-        title: 'GRANADA',
-        subtitle: 'VIBES',
-        desc: 'Tu guía cultural para descubrir la ciudad. Desde la Alhambra hasta el Albaicín, eventos y rutas auténticas.'
-      },
-      explore: {
-        title: 'EXPLORAR',
-        links: [
-          { label: 'Eventos', href: '/eventos', num: '01' },
-          { label: 'Rutas', href: '/rutas', num: '02' },
-          { label: 'Blog', href: '/blog', num: '03' }
-        ]
-      },
-      legal: {
-        title: 'LEGAL',
-        links: [
-          { label: 'Privacidad', href: '/privacidad', num: '01' },
-          { label: 'Aviso Legal', href: '/aviso-legal', num: '02' }
-        ]
-      },
-      contact: {
-        title: 'CONTACTO',
-        email: 'hola@granadavibes.com'
-      }
-    },
-    meta: {
-      founded: '2024',
-      location: 'Granada, España',
-      status: 'En línea'
-    },
-    copyright: `© ${currentYear} GRN INDEX.`,
-    backToTop: 'ARRIBA'
-  },
-  en: {
-    eyebrow: 'NAVIGATION',
-    vol: 'VOL. I · 2026',
-    coords: '37°10′28″N',
-    altCoords: '03°35′56″W',
-    sections: {
-      brand: {
-        title: 'GRANADA',
-        subtitle: 'VIBES',
-        desc: 'Your cultural guide to discover the city. From the Alhambra to the Albaicín, events and authentic routes.'
-      },
-      explore: {
-        title: 'EXPLORE',
-        links: [
-          { label: 'Events', href: '/en/events', num: '01' },
-          { label: 'Routes', href: '/en/routes', num: '02' }
-        ]
-      },
-      legal: {
-        title: 'LEGAL',
-        links: [
-          { label: 'Privacy', href: '/en/privacy', num: '01' },
-          { label: 'Legal Notice', href: '/en/legal', num: '02' }
-        ]
-      },
-      contact: {
-        title: 'CONTACT',
-        email: 'hola@granadavibes.com'
-      }
-    },
-    meta: {
-      founded: '2024',
-      location: 'Granada, Spain',
-      status: 'Online'
-    },
-    copyright: `© ${currentYear} GRN INDEX. All rights reserved.`,
-    backToTop: 'TOP'
-  }
-};
+const coords = '37°10′28″N';
+const altCoords = '03°35′56″W';
 
-const t = content[locale];
+const exploreLinks = [
+  { label: t('nav.events'), href: getRoute('events', locale), num: '01' },
+  { label: t('nav.routes'), href: getRoute('routes', locale), num: '02' },
+  { label: t('nav.blog'),   href: getRoute('blog', locale),   num: '03' },
+];
+
+const legalLinks = [
+  { label: t('footer.links.privacy'),     href: getRoute('privacy', locale), num: '01' },
+  { label: t('footer.links.legalNotice'), href: getRoute('legal', locale),   num: '02' },
+];
 
 // Wordmark chars for animation
-const wordmarkChars = t.sections.brand.title.split('');
+const wordmarkChars = t('footer.brand.title').split('');
 ---
 
 <footer class="site-footer">
@@ -101,7 +36,7 @@ const wordmarkChars = t.sections.brand.title.split('');
     <div class="transition-line"></div>
   </div>
 
-  <ScreenFrame tagTopLeft={t.eyebrow} tagTopRight={t.vol} tagBottomLeft="GV" tagBottomRight={t.coords} />
+  <ScreenFrame tagTopLeft={t('footer.eyebrow')} tagTopRight={t('footer.vol')} tagBottomLeft="GV" tagBottomRight={coords} />
 
   <!-- Ambient Effects -->
   <div class="ambient-grain" aria-hidden="true"></div>
@@ -137,10 +72,10 @@ const wordmarkChars = t.sections.brand.title.split('');
     <div class="footer-masthead">
       <div class="masthead-eyebrow">
         <span class="eyebrow-bracket">[</span>
-        <span class="eyebrow-text">{t.eyebrow}</span>
+        <span class="eyebrow-text">{t('footer.eyebrow')}</span>
         <span class="eyebrow-bracket">]</span>
         <span class="eyebrow-divider">—</span>
-        <span class="eyebrow-year">{t.vol}</span>
+        <span class="eyebrow-year">{t('footer.vol')}</span>
       </div>
     </div>
 
@@ -151,19 +86,19 @@ const wordmarkChars = t.sections.brand.title.split('');
       <div class="footer-col brand-col">
         <div class="col-header brand-header">
           <div class="brand-wordmark">
-            <span class="brand-title">{t.sections.brand.title}</span>
-            <span class="brand-subtitle">{t.sections.brand.subtitle}</span>
+            <span class="brand-title">{t('footer.brand.title')}</span>
+            <span class="brand-subtitle">{t('footer.brand.subtitle')}</span>
           </div>
           <div class="brand-accent-line"></div>
         </div>
-        <p class="brand-desc">{t.sections.brand.desc}</p>
+        <p class="brand-desc">{t('footer.brand.desc')}</p>
         <div class="brand-meta">
           <div class="meta-pill">
             <span class="meta-dot"></span>
-            <span class="meta-text">{t.meta.status}</span>
+            <span class="meta-text">{t('footer.meta.status')}</span>
           </div>
           <span class="meta-divider">·</span>
-          <span class="meta-year">{t.meta.founded}</span>
+          <span class="meta-year">{t('footer.meta.founded')}</span>
         </div>
       </div>
 
@@ -171,11 +106,11 @@ const wordmarkChars = t.sections.brand.title.split('');
       <div class="footer-col links-col">
         <div class="col-header">
           <span class="col-bracket">[</span>
-          <span class="col-title">{t.sections.explore.title}</span>
+          <span class="col-title">{t('footer.explore.title')}</span>
           <span class="col-bracket">]</span>
         </div>
         <nav class="footer-nav">
-          {t.sections.explore.links.map((link, i) => (
+          {exploreLinks.map((link, i) => (
             <a href={link.href} class="nav-link" style={`--index: ${i}`} data-hover={link.label}>
               <span class="link-corner link-corner--tl"></span>
               <span class="link-corner link-corner--tr"></span>
@@ -199,11 +134,11 @@ const wordmarkChars = t.sections.brand.title.split('');
         <div class="legal-section">
           <div class="col-header">
             <span class="col-bracket">[</span>
-            <span class="col-title">{t.sections.legal.title}</span>
+            <span class="col-title">{t('footer.legal.title')}</span>
             <span class="col-bracket">]</span>
           </div>
           <nav class="footer-nav footer-nav--compact">
-            {t.sections.legal.links.map((link, i) => (
+            {legalLinks.map((link, i) => (
               <a href={link.href} class="nav-link nav-link--subtle" style={`--index: ${i}`}>
                 <span class="link-num">{link.num}</span>
                 <span class="link-label">{link.label}</span>
@@ -216,10 +151,10 @@ const wordmarkChars = t.sections.brand.title.split('');
         <div class="contact-section">
           <div class="col-header">
             <span class="col-bracket">[</span>
-            <span class="col-title">{t.sections.contact.title}</span>
+            <span class="col-title">{t('footer.contact.title')}</span>
             <span class="col-bracket">]</span>
           </div>
-          <a href={`mailto:${t.sections.contact.email}`} class="contact-card">
+          <a href="mailto:hola@granadavibes.com" class="contact-card">
             <div class="contact-card__bg"></div>
             <div class="contact-card__content">
               <span class="contact-card__icon">
@@ -229,8 +164,8 @@ const wordmarkChars = t.sections.brand.title.split('');
                 </svg>
               </span>
               <div class="contact-card__text">
-                <span class="contact-card__label">Email</span>
-                <span class="contact-card__value">{t.sections.contact.email}</span>
+                <span class="contact-card__label">{t('footer.contact.emailLabel')}</span>
+                <span class="contact-card__value">hola@granadavibes.com</span>
               </div>
               <span class="contact-card__arrow">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -258,7 +193,7 @@ const wordmarkChars = t.sections.brand.title.split('');
       <div class="coordinates-display">
         <div class="coord-group">
           <span class="coord-label">LAT</span>
-          <span class="coord-val">{t.coords}</span>
+          <span class="coord-val">{coords}</span>
         </div>
         <div class="coord-divider">
           <svg viewBox="0 0 10 10" width="10" height="10">
@@ -267,7 +202,7 @@ const wordmarkChars = t.sections.brand.title.split('');
         </div>
         <div class="coord-group">
           <span class="coord-label">LNG</span>
-          <span class="coord-val">{t.altCoords}</span>
+          <span class="coord-val">{altCoords}</span>
         </div>
       </div>
     </div>
@@ -276,7 +211,7 @@ const wordmarkChars = t.sections.brand.title.split('');
     <div class="footer-bottom">
       <div class="bottom-content">
         <div class="bottom-left">
-          <span class="copyright">{t.copyright}</span>
+          <span class="copyright">{t('footer.copyright', { year: currentYear })}</span>
         </div>
         <div class="bottom-center">
           <a href="https://www.frnq.studio" target="_blank" rel="noopener noreferrer" class="developer-badge">
@@ -289,9 +224,9 @@ const wordmarkChars = t.sections.brand.title.split('');
           </a>
         </div>
         <div class="bottom-right">
-          <button class="back-to-top" id="back-to-top" aria-label={locale === 'es' ? 'Volver arriba' : 'Back to top'}>
+          <button class="back-to-top" id="back-to-top" aria-label={t('common.backToTop')}>
             <span class="top-line"></span>
-            <span class="top-text">{t.backToTop}</span>
+            <span class="top-text">{t('common.backToTop')}</span>
             <span class="top-arrow">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>

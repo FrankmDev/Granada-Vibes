@@ -26,4 +26,4 @@ export const LOCALE_PATHS: Record<Locale, string> = {
   en: '/en',
 };
 
-export const DEFAULT_OG_IMAGE = 'https://placehold.co/1200x630/080808/f0ede8?text=GRN INDEX';
+export const DEFAULT_OG_IMAGE = 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&h=630&fit=crop&q=80';

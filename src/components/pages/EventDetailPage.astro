@@ -1,0 +1,388 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
+import VenueMap from '@components/ui/VenueMap.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import EventDetailHero from '@components/events/EventDetailHero.astro';
+import ShareButton from '@components/ui/ShareButton.astro';
+import { getAllEvents } from '@data/index.js';
+import { getVenueCoordinates } from '@data/venues/coordinates.js';
+import { useTranslations } from '@i18n/utils';
+import { getEventDetailUrl, getRoute } from '@utils/routes';
+import { formatFullDate, formatTime } from '@utils/dates';
+import { formatPriceLabel, getPriceStatus } from '@utils';
+import type { Event, Locale } from '@types';
+import '@styles/pages/event-detail.css';
+
+interface Props {
+  locale: Locale;
+  event: Event;
+}
+
+const { locale, event } = Astro.props;
+const t = useTranslations(locale);
+const isEnglish = locale === 'en';
+
+const copy = isEnglish
+  ? {
+      priceText:
+        getPriceStatus(event) === 'paid'
+          ? `From ${event.price}€.`
+          : getPriceStatus(event) === 'free'
+            ? 'Free entry.'
+            : 'Check price.',
+      breadcrumb: {
+        home: 'Home',
+        listing: 'Events',
+      },
+      sections: {
+        aboutEyebrow: '[ About the event ]',
+        aboutTitle: 'Description',
+        locationEyebrow: '[ Location ]',
+        experienceEyebrow: '[ Experience ]',
+        experienceTitle: 'What to expect',
+        tipsEyebrow: '[ Practical tips ]',
+        tipsTitle: 'Good to know',
+        tags: '[ Tags ]',
+      },
+      faq: {
+        tipsQuestion: `What should I know before going to ${event.title[locale]}?`,
+        priceQuestion: 'How much are the tickets?',
+        priceFree: 'Entry is free.',
+        pricePaid: `Tickets are ${event.price}€.`,
+        priceUnknown: 'Please check the official event website for pricing information.',
+        venueQuestion: 'Where is the event held?',
+        venueAnswer: `The event is held at ${event.venue}, located in the ${t(`neighborhoods.${event.neighborhood}`)} neighborhood in Granada.`,
+      },
+      share: {
+        label: 'Share',
+        copied: 'Copied!',
+      },
+      seoSuffix: 'Discover all the details on GRN INDEX.',
+    }
+  : {
+      priceText:
+        getPriceStatus(event) === 'paid'
+          ? `Desde ${event.price}€.`
+          : getPriceStatus(event) === 'free'
+            ? 'Entrada libre.'
+            : 'Consultar precio.',
+      breadcrumb: {
+        home: 'Inicio',
+        listing: 'Eventos',
+      },
+      sections: {
+        aboutEyebrow: '[ Sobre el evento ]',
+        aboutTitle: 'Descripción',
+        locationEyebrow: '[ Ubicación ]',
+        experienceEyebrow: '[ Experiencia ]',
+        experienceTitle: 'Qué esperar',
+        tipsEyebrow: '[ Recomendación ]',
+        tipsTitle: 'Consejos prácticos',
+        tags: '[ Etiquetas ]',
+      },
+      faq: {
+        tipsQuestion: `¿Qué debo saber antes de ir a ${event.title[locale]}?`,
+        priceQuestion: '¿Cuál es el precio de la entrada?',
+        priceFree: 'La entrada es gratuita.',
+        pricePaid: `El precio es de ${event.price}€.`,
+        priceUnknown: 'Consulta la web oficial del evento para información sobre precios.',
+        venueQuestion: '¿Dónde se celebra el evento?',
+        venueAnswer: `El evento se celebra en ${event.venue}, situado en el barrio de ${t(`neighborhoods.${event.neighborhood}`)} en Granada.`,
+      },
+      share: {
+        label: 'Compartir',
+        copied: '¡Copiado!',
+      },
+      seoSuffix: 'Descubre todos los detalles en GRN INDEX.',
+    };
+
+const venueCoords = getVenueCoordinates(event.venue, event.neighborhood);
+const relatedEvents = getAllEvents()
+  .filter((candidate) => candidate.category === event.category && candidate.id !== event.id)
+  .slice(0, 3);
+
+const eventImage = event.imageUrl || event.image;
+const ogImage = eventImage || 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=1200&h=630&fit=crop&q=80';
+const priceLabel = formatPriceLabel(event, t);
+const seoDescription = isEnglish
+  ? `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${copy.priceText} ${copy.seoSuffix}`
+  : `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${copy.priceText} ${copy.seoSuffix}`;
+
+const breadcrumb = [
+  { name: copy.breadcrumb.home, url: getRoute('home', locale) },
+  { name: copy.breadcrumb.listing, url: getRoute('events', locale) },
+  { name: event.title[locale], url: getEventDetailUrl(event.slug, locale) },
+];
+
+const faq = [];
+
+if (event.tips?.[locale]) {
+  faq.push({
+    question: copy.faq.tipsQuestion,
+    answer: event.tips[locale],
+  });
+}
+
+faq.push({
+  question: copy.faq.priceQuestion,
+  answer:
+    event.price !== null
+      ? event.price === 0
+        ? copy.faq.priceFree
+        : copy.faq.pricePaid
+      : copy.faq.priceUnknown,
+});
+
+if (event.venue) {
+  faq.push({
+    question: copy.faq.venueQuestion,
+    answer: copy.faq.venueAnswer,
+  });
+}
+---
+
+<BaseLayout
+  locale={locale}
+  title={event.title[locale]}
+  description={seoDescription}
+  ogImage={ogImage}
+  schemaType="event"
+  schemaData={event}
+  breadcrumb={breadcrumb}
+  faq={faq.length > 0 ? faq : undefined}
+>
+  <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
+
+  <EventDetailHero event={event} locale={locale} />
+
+  <div class="det-page">
+    <div class="det-content-wrap">
+      <div class="upgraded-layout">
+        <main id="main-content" class="upgraded-main">
+          <article class="upg-block" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">01</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">{copy.sections.aboutEyebrow}</span>
+            </header>
+
+            <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
+
+            <div class="upg-body content-rich">
+              {event.description[locale] && (
+                <p class="upg-lead">{event.description[locale]}</p>
+              )}
+              {event.longDescription?.[locale] && (
+                <div class="upg-long-desc">
+                  {event.longDescription[locale].split('\n\n').map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+
+          <article class="upg-block upg-venue-block" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">02</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">{copy.sections.locationEyebrow}</span>
+            </header>
+
+            <div class="upg-venue-grid">
+              <div class="upg-venue-info">
+                <h2 class="upg-title upg-venue-title">{event.venue}</h2>
+                <div class="upg-venue-badges">
+                  <span class="upg-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {t(`neighborhoods.${event.neighborhood}`)}
+                  </span>
+                  {event.address && (
+                    <span class="upg-badge ghost">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                      {event.address}
+                    </span>
+                  )}
+                </div>
+                {event.venueDescription && (
+                  <p class="upg-venue-desc">{event.venueDescription[locale]}</p>
+                )}
+              </div>
+
+              <div class="upg-venue-map-wrapper">
+                <div class="upg-map-glass-overlay"></div>
+                {venueCoords ? (
+                  <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} theme="light" locale={locale} />
+                ) : (
+                  <div class="upg-map-placeholder">
+                    <span>{t('detail.mapComingSoon')}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+
+          {event.highlights?.[locale] && event.highlights[locale].length > 0 && (
+            <article class="upg-block" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">03</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.sections.experienceEyebrow}</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.experienceTitle}</h2>
+
+              <div class="upg-highlights">
+                {event.highlights[locale].map((item, index) => (
+                  <div class="upg-hl-item" style={`--hl-delay: ${index * 0.1}s`}>
+                    <div class="upg-hl-num-wrap">
+                      <span class="upg-hl-num">{(index + 1).toString().padStart(2, '0')}</span>
+                    </div>
+                    <p class="upg-hl-text">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          )}
+
+          {event.tips?.[locale] && (
+            <article class="upg-block block-tips" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">04</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.sections.tipsEyebrow}</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
+
+              <div class="upg-tips-content">
+                <div class="upg-tips-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <p class="upg-tips-text">{event.tips[locale]}</p>
+              </div>
+            </article>
+          )}
+
+          {event.tags.length > 0 && (
+            <div class="upg-tags" data-reveal>
+              <span class="upg-tags-title">{copy.sections.tags}</span>
+              <div class="upg-tags-list">
+                {event.tags.map((tag) => (
+                  <span class="upg-tag">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </main>
+
+        <aside class="upg-sidebar">
+          <div class="upg-sidebar-sticky">
+            <div class="upg-ticket-card" data-reveal>
+              <div class="upg-ticket-glass"></div>
+
+              <div class="upg-tc-header">
+                <div class="upg-tc-date-box">
+                  <span class="tc-day">{new Date(event.date).getDate().toString().padStart(2, '0')}</span>
+                  <span class="tc-month">
+                    {new Intl.DateTimeFormat(isEnglish ? 'en-GB' : 'es-ES', { month: 'short' }).format(new Date(event.date)).toUpperCase()}
+                  </span>
+                </div>
+                <div class="upg-tc-info">
+                  <span class="tc-time">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {formatTime(event.time, locale)}
+                  </span>
+                  <span class="tc-category">{t(`categories.${event.category}`)}</span>
+                </div>
+              </div>
+
+              <div class="upg-tc-price-wrap">
+                <span class="tc-price-label">{t('detail.price')}</span>
+                <span class:list={['tc-price-val', getPriceStatus(event) === 'free' && 'is-free', getPriceStatus(event) === 'tickets' && 'is-tickets']}>
+                  {priceLabel}
+                </span>
+              </div>
+
+              <div class="upg-tc-divider">
+                <span class="tcd-hole left"></span>
+                <div class="tcd-dashed"></div>
+                <span class="tcd-hole right"></span>
+              </div>
+
+              <div class="upg-tc-actions">
+                {(event.ticketsUrl || event.sourceUrl) ? (
+                  <a
+                    href={event.ticketsUrl || event.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="upg-btn-primary"
+                  >
+                    <span>{t('detail.getTickets')}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </a>
+                ) : (
+                  <div class="upg-btn-primary inert">
+                    <span>{getPriceStatus(event) === 'free' ? t('events.free') : t('detail.unknown')}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                )}
+
+                <ShareButton
+                  title={event.title[locale]}
+                  url={Astro.url.href}
+                  label={copy.share.label}
+                  copiedLabel={copy.share.copied}
+                  class="upg-btn-secondary"
+                  labelClass="upg-share-label"
+                />
+              </div>
+            </div>
+
+            {relatedEvents.length > 0 && (
+              <div class="upg-related-bento" data-reveal>
+                <div class="upg-rb-header">
+                  <span class="upg-rb-title">[ {t('detail.upcomingEvents')} ]</span>
+                  <a href={getRoute('events', locale)} class="upg-rb-all">{t('detail.allEvents')} →</a>
+                </div>
+
+                <div class="upg-rb-list">
+                  {relatedEvents.map((related, index) => (
+                    <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
+                      <div class="uri-thumb">
+                        {(related.imageUrl || related.image) ? (
+                          <OptimizedImage src={related.imageUrl || related.image} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
+                        ) : (
+                          <div class="uri-thumb-fallback"></div>
+                        )}
+                      </div>
+                      <div class="uri-content">
+                        <span class="uri-title">{related.title[locale]}</span>
+                        <span class="uri-meta">{formatFullDate(related.date, locale)}</span>
+                      </div>
+                      <div class="uri-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="det-footer-orn" aria-hidden="true">
+      <span class="det-orn-line"></span>
+      <span class="det-orn-star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span class="det-orn-line"></span>
+    </div>
+  </div>
+
+  <Footer slot="footer" locale={locale} />
+</BaseLayout>

@@ -3,6 +3,7 @@
  * TimePlanCard — Card for mixed route time plans
  */
 import type { MixedRoute, Locale } from '@types';
+import { getPlanDetailUrl } from '@utils/routes';
 
 interface Props {
   plan: MixedRoute;
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const { plan, locale, t, index = 0 } = Astro.props;
-const href = locale === 'es' ? `/rutas/por-tiempo/${plan.slug}` : `/en/routes/by-time/${plan.slug}`;
+const href = getPlanDetailUrl(plan.slug, locale);
 
 const totalStops = plan.days.reduce(
   (acc, day) => acc + day.blocks.reduce((bAcc, block) => bAcc + block.stops.length, 0),

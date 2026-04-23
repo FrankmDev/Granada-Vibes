@@ -1,0 +1,338 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
+import Footer from '@components/layout/Footer.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import ShareButton from '@components/ui/ShareButton.astro';
+import { getAllRoutes } from '@data/index.js';
+import { useTranslations } from '@i18n/utils';
+import { getRoute, getRouteDetailUrl } from '@utils/routes';
+import { formatDistance, formatDuration } from '@utils/dates';
+import type { Locale, Neighborhood, Route, RouteHighlight, RouteTip } from '@types';
+import '@styles/pages/route-detail.css';
+
+interface Props {
+  locale: Locale;
+  route: Route;
+}
+
+const { locale, route } = Astro.props;
+const t = useTranslations(locale);
+const isEnglish = locale === 'en';
+
+const copy = isEnglish
+  ? {
+      breadcrumb: {
+        home: 'Home',
+        listing: 'Routes',
+      },
+      sections: {
+        aboutEyebrow: '[ About the route ]',
+        aboutTitle: 'Description',
+        neighborhoods: 'Neighbourhoods:',
+        itineraryEyebrow: '[ ITINERARY ]',
+        itineraryTitle: 'The itinerary',
+        tipsEyebrow: '[ Recommendation ]',
+        tipsTitle: 'Local tips',
+        tags: '[ Tags ]',
+        timeLabel: 'TIME',
+        bringLabel: 'WHAT TO BRING',
+      },
+      faq: {
+        durationQuestion: 'How long does this route take?',
+        durationAnswer: `The route takes approximately ${formatDuration(route.duration, locale)}.`,
+        difficultyQuestion: 'What is the difficulty level?',
+        difficultyAnswer: `The difficulty level is ${t(`difficulty.${route.difficulty}`)}.`,
+      },
+      share: {
+        label: 'Share route',
+        copied: 'Copied!',
+      },
+      seo:
+        `Route "${route.title[locale]}" through ${route.neighborhoods.map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`)).join(', ')} in Granada — ${formatDuration(route.duration, locale)} of ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Difficulty: ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Discover practical tips, must-see spots and how to prepare the perfect itinerary.`,
+    }
+  : {
+      breadcrumb: {
+        home: 'Inicio',
+        listing: 'Rutas',
+      },
+      sections: {
+        aboutEyebrow: '[ Sobre la ruta ]',
+        aboutTitle: 'Descripción',
+        neighborhoods: 'Barrios:',
+        itineraryEyebrow: '[ RECORRIDO ]',
+        itineraryTitle: 'El itinerario',
+        tipsEyebrow: '[ Recomendación ]',
+        tipsTitle: 'Tips de local',
+        tags: '[ Etiquetas ]',
+        timeLabel: 'HORARIO',
+        bringLabel: 'QUÉ LLEVAR',
+      },
+      faq: {
+        durationQuestion: '¿Cuánto dura esta ruta?',
+        durationAnswer: `La ruta tiene una duración aproximada de ${formatDuration(route.duration, locale)}.`,
+        difficultyQuestion: '¿Qué nivel de dificultad tiene?',
+        difficultyAnswer: `La dificultad es ${t(`difficulty.${route.difficulty}`).toLowerCase()}.`,
+      },
+      share: {
+        label: 'Compartir ruta',
+        copied: '¡Copiado!',
+      },
+      seo:
+        `Ruta "${route.title[locale]}" por ${route.neighborhoods.map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`)).join(', ')} en Granada — ${formatDuration(route.duration, locale)} de ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`,
+    };
+
+const relatedRoutes = getAllRoutes()
+  .filter((candidate) => candidate.category === route.category && candidate.id !== route.id)
+  .slice(0, 3);
+
+if (relatedRoutes.length < 3) {
+  const moreRoutes = getAllRoutes()
+    .filter(
+      (candidate) =>
+        candidate.difficulty === route.difficulty &&
+        candidate.id !== route.id &&
+        !relatedRoutes.some((related) => related.id === candidate.id)
+    )
+    .slice(0, 3 - relatedRoutes.length);
+
+  relatedRoutes.push(...moreRoutes);
+}
+
+const ogImage = route.image || 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
+const breadcrumb = [
+  { name: copy.breadcrumb.home, url: getRoute('home', locale) },
+  { name: copy.breadcrumb.listing, url: getRoute('routes', locale) },
+  { name: route.title[locale], url: getRouteDetailUrl(route.slug, locale) },
+];
+
+const faq = route.tips.slice(0, 2).map((tip: RouteTip) => ({
+  question: tip.title[locale],
+  answer: tip.content[locale],
+}));
+
+faq.push(
+  { question: copy.faq.durationQuestion, answer: copy.faq.durationAnswer },
+  { question: copy.faq.difficultyQuestion, answer: copy.faq.difficultyAnswer },
+);
+
+const distString = formatDistance(route.distance, locale);
+const distValue = distString.replace(/[^\d.,]/g, '').trim();
+const distUnit = distString.replace(/[\d.,]/g, '').trim();
+---
+
+<BaseLayout
+  locale={locale}
+  title={route.title[locale]}
+  description={copy.seo}
+  ogImage={ogImage}
+  schemaType="route"
+  schemaData={route}
+  breadcrumb={breadcrumb}
+  faq={faq.length > 0 ? faq : undefined}
+>
+  <RouteDetailHero route={route} locale={locale} />
+
+  <div class="det-page route-page-override">
+    <div class="det-content-wrap">
+      <div class="upgraded-layout">
+        <main id="main-content" class="upgraded-main">
+          <article class="upg-block" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">01</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">{copy.sections.aboutEyebrow}</span>
+            </header>
+
+            <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
+
+            <div class="upg-body content-rich">
+              <p class="upg-lead">{route.description[locale]}</p>
+              {route.longDescription && <p class="upg-text-secondary">{route.longDescription[locale]}</p>}
+            </div>
+
+            {route.neighborhoods.length > 0 && (
+              <div class="upg-route-neighs">
+                <span class="upg-rn-label">{copy.sections.neighborhoods}</span>
+                <div class="upg-tags-list">
+                  {route.neighborhoods.map((neighborhood: Neighborhood) => (
+                    <span class="upg-badge ghost">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      {t(`neighborhoods.${neighborhood}`)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </article>
+
+          {route.highlights.length > 0 && (
+            <article class="upg-block" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">02</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.sections.itineraryEyebrow}</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.itineraryTitle}</h2>
+
+              <div class="upg-highlights">
+                {route.highlights.map((highlight: RouteHighlight, index: number) => (
+                  <div class="upg-hl-item" style={`--hl-delay: ${index * 0.1}s`}>
+                    <div class="upg-hl-num-wrap">
+                      <span class="upg-hl-num">{(index + 1).toString().padStart(2, '0')}</span>
+                    </div>
+                    <div class="upg-hl-content">
+                      <h3 class="tl-title" style="margin-bottom:0.4rem; font-family: var(--font-display); font-size:1.1rem; color:var(--s-ink);">{highlight.title[locale]}</h3>
+                      <p class="upg-hl-text" style="padding-top:0;">{highlight.description[locale]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          )}
+
+          {route.tips.length > 0 && (
+            <article class="upg-block block-tips" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">03</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.sections.tipsEyebrow}</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
+
+              <div class="upg-tips-content" style="flex-direction: column;">
+                {route.tips.map((tip: RouteTip) => (
+                  <div style="display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2rem;">
+                    <div class="upg-tips-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                      <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--s-ink);">{tip.title[locale]}</h3>
+                      <p class="upg-tips-text" style="font-style: normal;">{tip.content[locale]}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          )}
+
+          {route.tags.length > 0 && (
+            <div class="upg-tags" data-reveal>
+              <span class="upg-tags-title">{copy.sections.tags}</span>
+              <div class="upg-tags-list">
+                {route.tags.map((tag: string) => (
+                  <span class="upg-tag">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </main>
+
+        <aside class="upg-sidebar">
+          <div class="upg-sidebar-sticky">
+            <div class="upg-ticket-card" data-reveal>
+              <div class="upg-ticket-glass"></div>
+
+              <div class="upg-tc-header">
+                <div class="upg-tc-date-box">
+                  <span class="tc-day" style="font-size: 1rem; font-weight:600; font-family:var(--font-display);">{t(`timeOfDay.${route.timeOfDay}`).slice(0, 3).toUpperCase()}</span>
+                  <span class="tc-month">{copy.sections.timeLabel}</span>
+                </div>
+                <div class="upg-tc-info">
+                  <span class="tc-time" style="color:var(--s-ink);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    {formatDuration(route.duration, locale)}
+                  </span>
+                  <span class="tc-category">{t(`categories.${route.category}`)}</span>
+                </div>
+              </div>
+
+              <div class="upg-tc-price-wrap">
+                <span class="tc-price-label">{t('detail.distance')}</span>
+                <span class="tc-price-val">
+                  {distValue}<span style="font-size:1.5rem; margin-left:5px;">{distUnit}</span>
+                </span>
+              </div>
+
+              <div style="padding: 0 2.5rem 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--s-orange);">{t(`difficulty.${route.difficulty}`)}</span>
+                <div style="flex:1; height: 1px; background: var(--s-border);"></div>
+              </div>
+
+              {route.whatToBring && (
+                <div style="padding: 0 2.5rem 1rem;">
+                  <span class="tc-price-label" style="display:block; margin-bottom:0.75rem;">{copy.sections.bringLabel}</span>
+                  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+                    {route.whatToBring[locale].map((item: string) => (
+                      <li style="display:flex; align-items:flex-start; gap:0.5rem; font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2);">
+                        <span style="color:#d4873a; margin-top:-2px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div class="upg-tc-divider">
+                <span class="tcd-hole left"></span>
+                <div class="tcd-dashed"></div>
+                <span class="tcd-hole right"></span>
+              </div>
+
+              <div class="upg-tc-actions">
+                <ShareButton
+                  title={route.title[locale]}
+                  url={Astro.url.href}
+                  label={copy.share.label}
+                  copiedLabel={copy.share.copied}
+                  class="upg-btn-primary"
+                />
+              </div>
+            </div>
+
+            {relatedRoutes.length > 0 && (
+              <div class="upg-related-bento" data-reveal>
+                <div class="upg-rb-header">
+                  <span class="upg-rb-title">[ {t('detail.similarRoutes')} ]</span>
+                  <a href={getRoute('routes', locale)} class="upg-rb-all">{t('detail.allRoutes')} →</a>
+                </div>
+
+                <div class="upg-rb-list">
+                  {relatedRoutes.map((related, index) => (
+                    <a href={getRouteDetailUrl(related.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
+                      <div class="uri-thumb">
+                        {related.image ? (
+                          <OptimizedImage src={related.image} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
+                        ) : (
+                          <div class="uri-thumb-fallback"></div>
+                        )}
+                      </div>
+                      <div class="uri-content">
+                        <span class="uri-title">{related.title[locale]}</span>
+                        <span class="uri-meta">{formatDuration(related.duration, locale)}</span>
+                      </div>
+                      <div class="uri-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
+      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+      <span style="color: var(--s-gold);"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+    </div>
+  </div>
+
+  <Footer slot="footer" locale={locale} />
+</BaseLayout>

@@ -347,6 +347,7 @@ The "in concert" format is usually supported by visual elements as well: althoug
   },
 
   'gastrocata-luxury-granada': {
+    price: 99,
     description: {
       es: '"Gastrocata Luxury Granada" es una experiencia gastro-cultural que combina cata guiada, historia de la ciudad y vistas panorámicas en la terraza del Hotel Monasterio Granada Adults Only, en pleno centro. Durante unas tres horas, los asistentes recorren los sabores más representativos de Granada a través de cuatro bebidas originales de la ciudad, cuatro platos de cocina tradicional, un postre artesano, cava y un cóctel final, todo acompañado por un guía y sommelier dedicado en exclusiva al grupo.',
       en: '"Gastrocata Luxury Granada" is a gastro-cultural experience that combines a guided tasting, city history, and panoramic views from the rooftop of Hotel Monasterio Granada Adults Only, right in the city center. For about three hours, attendees journey through Granada\'s most representative flavors via four original local drinks, four traditional dishes, an artisan dessert, cava, and a final cocktail, all accompanied by a guide and sommelier dedicated exclusively to the group.',
@@ -813,10 +814,6 @@ The Palacio de Congresos, due to its acoustics and format, is an ideal space for
       es: `Con una carrera consolidada a ambos lados del Atlántico, el artista malagueño presenta un espectáculo donde la voz, la guitarra y la emotividad son los pilares fundamentales. El repertorio recorre baladas icónicas, temas de ritmo y las últimas novedades de su discografía, en una puesta en escena cuidada que apuesta por la conexión directa con el público. La Plaza de Toros se transforma en un gran escenario bajo las estrellas, ideal para disfrutar de una velada romántica y llena de grandes éxitos. Para los seguidores granadinos, este concierto representa una ocasión única de ver a uno de los artistas españoles con mayor proyección internacional en un formato grande pero íntimo, donde la voz de Alborán se expande con toda su potencia.`,
       en: `With an established career on both sides of the Atlantic, the Malaga-born artist presents a show where voice, guitar, and emotion are the fundamental pillars. The repertoire goes through iconic ballads, rhythmic songs, and the latest additions to his discography, in a carefully staged production that bets on direct connection with the audience. The Plaza de Toros transforms into a great stage under the stars, ideal for enjoying a romantic evening full of great hits. For Granada followers, this concert represents a unique opportunity to see one of the Spanish artists with the greatest international projection in a large yet intimate format, where Alborán's voice expands with all its power.`,
     },
-  },
-
-  'gastrocata-luxury-granada': {
-    price: 99,
   },
 
 };

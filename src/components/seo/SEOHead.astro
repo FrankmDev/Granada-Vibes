@@ -27,12 +27,17 @@ const {
 const siteUrl = SITE_CONFIG.url;
 const currentPath = path || Astro.url.pathname;
 
+function normalizeUrl(url: string): string {
+  if (url === '/' || url.endsWith('/')) return url;
+  return `${url}/`;
+}
+
 const fullTitle = title
   ? `${title} | ${SITE_CONFIG.name}`
   : `${SITE_CONFIG.name} - ${SITE_CONFIG.description[locale]}`;
 
 const fullDescription = description ?? SITE_CONFIG.description[locale];
-const fullCanonical = canonical ?? `${siteUrl}${currentPath}`;
+const fullCanonical = canonical ?? `${siteUrl}${normalizeUrl(currentPath)}`;
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
 
 // Path segment mapping between locales
@@ -62,10 +67,16 @@ function getEnPath(esPath: string): string {
 // Alternate URLs for hreflang
 const isEnPath = currentPath.startsWith('/en');
 const alternateUrls = {
-  es: `${siteUrl}${isEnPath ? getEsPath(currentPath) : currentPath}`,
-  en: `${siteUrl}${isEnPath ? currentPath : getEnPath(currentPath)}`,
+  es: `${siteUrl}${normalizeUrl(isEnPath ? getEsPath(currentPath) : currentPath)}`,
+  en: `${siteUrl}${normalizeUrl(isEnPath ? currentPath : getEnPath(currentPath))}`,
 };
 ---
+
+<!-- Preconnect for performance -->
+<link rel="preconnect" href="https://images.unsplash.com" />
+<link rel="dns-prefetch" href="https://images.unsplash.com" />
+<link rel="preconnect" href="https://upload.wikimedia.org" />
+<link rel="dns-prefetch" href="https://upload.wikimedia.org" />
 
 <!-- Primary Meta Tags -->
 <title>{fullTitle}</title>

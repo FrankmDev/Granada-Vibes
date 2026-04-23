@@ -7,6 +7,16 @@ import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import '../styles/global.css';
 
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
 interface Props {
   locale: Locale;
   title?: string;
@@ -15,8 +25,10 @@ interface Props {
   ogType?: 'website' | 'article';
   canonical?: string;
   noindex?: boolean;
-  schemaType?: 'website' | 'event' | 'route' | 'organization';
+  schemaType?: 'website' | 'event' | 'route' | 'organization' | 'article';
   schemaData?: Record<string, unknown>;
+  breadcrumb?: BreadcrumbItem[];
+  faq?: FaqItem[];
 }
 
 const {
@@ -29,6 +41,8 @@ const {
   noindex,
   schemaType = 'website',
   schemaData,
+  breadcrumb,
+  faq,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -59,6 +73,8 @@ const currentPath = Astro.url.pathname;
       locale={locale}
       data={schemaData}
       path={currentPath}
+      breadcrumb={breadcrumb}
+      faq={faq}
     />
 
     <!-- Fonts loaded via @fontsource in global.css (DM Sans + Fraunces) -->
@@ -100,7 +116,7 @@ const currentPath = Astro.url.pathname;
           { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
         );
 
-        document.querySelectorAll('.scroll-animate').forEach(function (el) {
+        document.querySelectorAll('.scroll-animate, [data-reveal]').forEach(function (el) {
           revealObserver.observe(el);
         });
 

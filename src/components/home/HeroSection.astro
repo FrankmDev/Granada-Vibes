@@ -1,7 +1,8 @@
 ---
 import type { Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 
 interface Props {
   locale: Locale;
@@ -14,7 +15,7 @@ const c = {
   supra: t('home.hero.worldHeritage'),
   title: 'GRANADA',
   cta: t('home.hero.ctaEvents'),
-  ctaLink: locale === 'es' ? '/eventos' : '/en/events',
+  ctaLink: getRoute('events', locale),
   label: t('home.hero.heritageDestination'),
   ariaLabel: t('home.hero.gatewayLabel'),
 };

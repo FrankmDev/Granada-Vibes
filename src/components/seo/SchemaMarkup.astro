@@ -1,15 +1,27 @@
 ---
 import { SITE_CONFIG } from '@config/site';
-import type { Event, Route } from '@types';
+import type { Event, Route, BlogPost } from '@types';
 
-interface Props {
-  type: 'website' | 'event' | 'route' | 'organization';
-  data?: Event | Route;
-  locale: 'es' | 'en';
-  path?: string;
+interface BreadcrumbItem {
+  name: string;
+  url: string;
 }
 
-const { type, data, locale, path = '' } = Astro.props;
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  type: 'website' | 'event' | 'route' | 'organization' | 'article';
+  data?: Event | Route | BlogPost;
+  locale: 'es' | 'en';
+  path?: string;
+  breadcrumb?: BreadcrumbItem[];
+  faq?: FaqItem[];
+}
+
+const { type, data, locale, path = '', breadcrumb, faq } = Astro.props;
 
 const siteUrl = SITE_CONFIG.url;
 
@@ -54,22 +66,52 @@ const websiteSchema = {
   },
 };
 
+// BreadcrumbList schema
+function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url.startsWith('http') ? item.url : `${siteUrl}${item.url}`,
+    })),
+  };
+}
+
+// FAQPage schema
+function buildFaqSchema(items: FaqItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
 // Generate schema based on type
-let schema = {};
+let primarySchema = {};
 
 switch (type) {
   case 'website':
-    schema = websiteSchema;
+    primarySchema = websiteSchema;
     break;
-    
+
   case 'organization':
-    schema = organizationSchema;
+    primarySchema = organizationSchema;
     break;
-    
+
   case 'event':
     if (data && 'date' in data) {
       const eventData = data as Event;
-      schema = {
+      primarySchema = {
         '@context': 'https://schema.org',
         '@type': 'Event',
         name: eventData.title[locale],
@@ -110,11 +152,11 @@ switch (type) {
       };
     }
     break;
-    
+
   case 'route':
     if (data && 'duration' in data) {
       const routeData = data as Route;
-      schema = {
+      primarySchema = {
         '@context': 'https://schema.org',
         '@type': 'TouristAttraction',
         name: routeData.title[locale],
@@ -162,9 +204,48 @@ switch (type) {
       };
     }
     break;
+
+  case 'article':
+    if (data && 'publishDate' in data) {
+      const postData = data as BlogPost;
+      primarySchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: postData.title[locale],
+        description: postData.description[locale],
+        image: resolveImageUrl(postData.image),
+        url: `${siteUrl}${path}`,
+        datePublished: postData.publishDate,
+        author: {
+          '@type': 'Person',
+          name: postData.author,
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: SITE_CONFIG.name,
+          url: siteUrl,
+          logo: `${siteUrl}/favicon.svg`,
+        },
+        inLanguage: locale,
+      };
+    }
+    break;
 }
 
-const schemaString = JSON.stringify(schema);
+// Build final schema graph
+const graph: unknown[] = [primarySchema];
+if (breadcrumb && breadcrumb.length > 0) {
+  graph.push(buildBreadcrumbSchema(breadcrumb));
+}
+if (faq && faq.length > 0) {
+  graph.push(buildFaqSchema(faq));
+}
+
+const finalSchema = graph.length > 1
+  ? { '@context': 'https://schema.org', '@graph': graph }
+  : primarySchema;
+
+const schemaString = JSON.stringify(finalSchema);
 ---
 
 <script type="application/ld+json" set:html={schemaString} />

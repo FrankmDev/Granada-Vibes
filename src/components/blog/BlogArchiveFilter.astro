@@ -1,0 +1,46 @@
+---
+import type { BlogCategory, BlogPost, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+  categories: BlogCategory[];
+  categoryData: Record<BlogCategory, { icon: string; label: string; color: string }>;
+  allPosts: BlogPost[];
+  remainingPostsCount: number;
+}
+
+const { locale, categories, categoryData, allPosts, remainingPostsCount } = Astro.props;
+const t = useTranslations(locale);
+
+function countByCategory(cat: BlogCategory): number {
+  return allPosts.filter(p => p.category === cat).length;
+}
+---
+
+<div class="filter-section">
+  <div class="filter-header">
+    <span class="filter-label">{t('blog.filterLabel')}</span>
+    <span class="filter-results">
+      <strong id="results-count">{remainingPostsCount}</strong>
+      <span>{t('blog.allPosts').toLowerCase()}</span>
+    </span>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-chip active" data-filter="all">
+      <span class="chip-indicator"></span>
+      <span class="chip-label">{t('filters.all')}</span>
+      <span class="chip-count">{allPosts.length}</span>
+    </button>
+    
+    {categories.map((cat) => (
+      <button class="filter-chip" data-filter={cat} style={`--cat-color: ${categoryData[cat].color}`}>
+        <span class="chip-indicator"></span>
+        <span class="chip-icon">{categoryData[cat].icon}</span>
+        <span class="chip-label">{categoryData[cat].label}</span>
+        <span class="chip-count">{countByCategory(cat)}</span>
+      </button>
+    ))}
+  </div>
+</div>

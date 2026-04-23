@@ -1,13 +1,49 @@
-import type { RouteDifficulty } from '@types';
-import { difficultyStyles } from '@config/ui';
+import type { Locale } from '@types';
 
-export { difficultyStyles };
+const ROUTE_MAP: Record<Locale, Record<string, string>> = {
+  es: {
+    home: '/',
+    events: '/eventos/',
+    routes: '/rutas/',
+    blog: '/blog/',
+    byTime: '/rutas/por-tiempo/',
+    privacy: '/privacidad/',
+    legal: '/aviso-legal/',
+  },
+  en: {
+    home: '/en/',
+    events: '/en/events/',
+    routes: '/en/routes/',
+    blog: '/en/blog/',
+    byTime: '/en/routes/by-time/',
+    privacy: '/en/privacy/',
+    legal: '/en/legal/',
+  },
+};
 
-/**
- * Render the 3-segment difficulty bar as a string.
- * e.g., easy → "■□□", moderate → "■■□", challenging → "■■■"
- */
-export function getDifficultyBars(difficulty: RouteDifficulty): string {
-  const filled = difficultyStyles[difficulty].bars;
-  return Array.from({ length: 3 }, (_, i) => (i < filled ? '■' : '□')).join('');
+export function getRoute(
+  name: 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'privacy' | 'legal',
+  locale: Locale
+): string {
+  return ROUTE_MAP[locale][name];
+}
+
+export function getEventDetailUrl(slug: string, locale: Locale): string {
+  return `${ROUTE_MAP[locale].events}${slug}/`;
+}
+
+export function getRouteDetailUrl(slug: string, locale: Locale): string {
+  return `${ROUTE_MAP[locale].routes}${slug}/`;
+}
+
+export function getBlogDetailUrl(slug: string, locale: Locale): string {
+  return `${ROUTE_MAP[locale].blog}${slug}/`;
+}
+
+export function getPlanDetailUrl(slug: string, locale: Locale): string {
+  return `${ROUTE_MAP[locale].byTime}${slug}/`;
+}
+
+export function getSwitchLangUrl(locale: Locale): string {
+  return locale === 'es' ? '/en/' : '/';
 }

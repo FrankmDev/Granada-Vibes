@@ -1,20 +1,21 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 
 const locale = 'en';
 const t = useTranslations(locale);
 ---
 
-<BaseLayout 
-  locale={locale} 
+<BaseLayout
+  locale={locale}
   title="Legal Notice"
   description="Legal Notice of GRN INDEX."
   noindex={true}
 >
   <section class="container pt-32 pb-20">
     <div class="max-w-2xl mx-auto">
-      <a href="/en" class="inline-flex items-center gap-2 text-surface-muted hover:text-terra transition-colors mb-8">
+      <a href={getRoute('home', locale)} class="inline-flex items-center gap-2 text-surface-muted hover:text-terra transition-colors mb-8">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>

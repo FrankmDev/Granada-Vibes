@@ -1,0 +1,127 @@
+---
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import type { BlogPost, BlogCategory, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+  posts: BlogPost[];
+  categoryData: Record<BlogCategory, { icon: string; label: string; color: string }>;
+  blogImages: Record<string, string>;
+}
+
+const { locale, posts, categoryData, blogImages } = Astro.props;
+const t = useTranslations(locale);
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr)
+    .toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+    .toUpperCase();
+}
+---
+
+<div class="posts-grid" id="posts-grid">
+  {posts.map((post, idx) => (
+    <article 
+      class={`post-card ${post.featured ? 'is-featured' : ''}`}
+      data-category={post.category}
+      style={`--card-index: ${idx}; --cat-color: ${categoryData[post.category].color}`}
+    >
+      <a href={`/blog/${post.slug}/`} class="post-link">
+        <div class="card-visual">
+          <OptimizedImage
+            src={post.image || blogImages[post.id] || blogImages.default}
+            alt={post.title[locale]}
+            class="card-image"
+            loading="lazy"
+            decoding="async"
+            sizes="(max-width: 640px) 100vw, 400px"
+          />
+          <div class="card-overlay"></div>
+          
+          {post.featured && (
+            <div class="card-featured-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              <span>{t('routes.featured')}</span>
+            </div>
+          )}
+          
+          <div class="card-category-badge" style={`background: ${categoryData[post.category].color}`}>
+            <span>{categoryData[post.category].icon}</span>
+          </div>
+
+          <span class="card-bracket bracket-tl"></span>
+          <span class="card-bracket bracket-tr"></span>
+          <span class="card-bracket bracket-bl"></span>
+          <span class="card-bracket bracket-br"></span>
+          
+          <div class="card-hover-hint">
+            <span>{t('blog.readArticle')}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-meta">
+              <time datetime={post.publishDate}>{formatDate(post.publishDate)}</time>
+              <span class="meta-separator">·</span>
+              <span class="reading-time">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                {post.readingTime} min
+              </span>
+            </div>
+            <h3 class="card-title">{post.title[locale]}</h3>
+          </div>
+          
+          <p class="card-excerpt">{post.description[locale]}</p>
+
+          {post.tags && post.tags.length > 0 && (
+            <div class="card-tags">
+              {post.tags.slice(0, 3).map(tag => (
+                <span class="tag-pill">#{tag}</span>
+              ))}
+            </div>
+          )}
+
+          <div class="card-footer">
+            <div class="card-author">
+              <span class="author-dot"></span>
+              <span>{post.author}</span>
+            </div>
+            <span class="card-action">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+    </article>
+  ))}
+</div>
+
+<!-- EMPTY STATE -->
+<div id="empty-state" class="empty-state hidden">
+  <div class="empty-content">
+    <div class="empty-icon">
+      <div class="empty-icon-inner">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+      </div>
+    </div>
+    <h3 class="empty-title">{t('blog.emptyTitle')}</h3>
+    <p class="empty-text">{t('blog.emptyText')}</p>
+    <button id="empty-clear-filters" class="empty-btn">
+      {t('blog.emptyBtn')}
+    </button>
+  </div>
+</div>

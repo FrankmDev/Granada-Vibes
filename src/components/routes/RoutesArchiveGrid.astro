@@ -1,0 +1,186 @@
+---
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import type { Route, RouteCategory, RouteDifficulty, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getRouteDetailUrl } from '@utils/routes';
+
+interface Props {
+  locale: Locale;
+  routes: Route[];
+  categoryLabels: Record<RouteCategory, string>;
+  categoryIcons: Record<RouteCategory, string>;
+  difficultyLabels: Record<RouteDifficulty, string>;
+  difficultyColors: Record<RouteDifficulty, string>;
+  routeFallbacks: Partial<Record<RouteCategory, string>> & { default: string };
+}
+
+const { locale, routes, categoryLabels, categoryIcons, difficultyLabels, difficultyColors, routeFallbacks } = Astro.props;
+const t = useTranslations(locale);
+
+function formatDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return h > 0 ? `${h}H${m > 0 ? ` ${m}M` : ''}` : `${m}M`;
+}
+
+const timeOfDayIcons: Record<string, string> = {
+  morning: '☀',
+  afternoon: '☀',
+  sunset: '☾',
+  evening: '☾',
+  any: '◐'
+};
+---
+
+<div class="archive-grid" id="routes-grid-container">
+  {routes.map((route, idx) => {
+    const href = getRouteDetailUrl(route.slug, locale);
+    const bgImage = route.image ?? routeFallbacks[route.category] ?? routeFallbacks.default;
+    const diffColor = difficultyColors[route.difficulty];
+    const catIcon = categoryIcons[route.category];
+    const expeditionNum = String(idx + 1).padStart(2, '0');
+    const timeLabel = t(`timeOfDay.${route.timeOfDay}`);
+
+    return (
+      <article 
+        class="expedition-card" 
+        data-category={route.category}
+        data-index={idx}
+        style={`--card-index: ${idx}; --diff-color: ${diffColor}`}
+      >
+        <a href={href} class="expedition-link">
+          {/* Expedition Number Stamp */}
+          <div class="expedition-stamp">
+            <span class="stamp-prefix">EXP.</span>
+            <span class="stamp-number">{expeditionNum}</span>
+          </div>
+
+          {/* Main Visual */}
+          <div class="expedition-visual">
+            <div class="visual-frame">
+              <OptimizedImage
+                src={bgImage}
+                alt={route.title[locale]}
+                class="expedition-img"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, 400px"
+              />
+              <div class="visual-vignette"></div>
+              
+              {/* Corner Markers */}
+              <div class="corner-marker tl"></div>
+              <div class="corner-marker tr"></div>
+              <div class="corner-marker bl"></div>
+              <div class="corner-marker br"></div>
+            </div>
+            
+            {/* Category Tag */}
+            <div class="legend-tag">
+              <span class="legend-symbol">{catIcon}</span>
+              <span class="legend-text">{categoryLabels[route.category]}</span>
+            </div>
+            
+            {/* Difficulty Stamp */}
+            <div class="difficulty-stamp" style={`--stamp-color: ${diffColor}`}>
+              <div class="stamp-ring">
+                <div class="stamp-dot"></div>
+              </div>
+              <span class="stamp-label">{difficultyLabels[route.difficulty]}</span>
+            </div>
+            
+            {/* Featured Badge */}
+            {route.featured && (
+              <div class="featured-badge">
+                <span class="featured-star">★</span>
+                <span class="featured-text">{t('routes.featured')}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
+          <div class="field-notes">
+            {/* Top Row: Time + Stats */}
+            <div class="notes-header">
+              <div class="time-badge">
+                <span class="time-icon">{timeOfDayIcons[route.timeOfDay]}</span>
+                <span class="time-text">{timeLabel}</span>
+              </div>
+              <div class="stats-row">
+                <span class="stat-item">
+                  <span class="stat-value">{route.distance}</span>
+                  <span class="stat-unit">km</span>
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                  <span class="stat-value">{formatDuration(route.duration)}</span>
+                </span>
+                <span class="stat-divider">·</span>
+                <span class="stat-item">
+                  <span class="stat-value">{route.highlights.length}</span>
+                  <span class="stat-unit">{t('routes.stops')}</span>
+                </span>
+              </div>
+            </div>
+            
+            {/* Title */}
+            <h3 class="expedition-title">
+              {route.title[locale]}
+            </h3>
+            
+            {/* Description */}
+            <p class="expedition-description">
+              {route.description[locale].length > 120 
+                ? route.description[locale].slice(0, 120) + '...' 
+                : route.description[locale]}
+            </p>
+            
+            {/* Neighborhoods */}
+            <div class="neighborhoods-row">
+              {route.neighborhoods.slice(0, 3).map((nb) => (
+                <span class="neighborhood-tag">{t(`neighborhoods.${nb}`)}</span>
+              ))}
+            </div>
+            
+            {/* Difficulty Bar */}
+            <div class="difficulty-bar">
+              <div class="difficulty-track">
+                <div 
+                  class="difficulty-fill" 
+                  style={`width: ${route.difficulty === 'easy' ? '33%' : route.difficulty === 'moderate' ? '66%' : '100%'}; background: ${diffColor}`}
+                ></div>
+              </div>
+              <span class="difficulty-text">{difficultyLabels[route.difficulty]}</span>
+            </div>
+          </div>
+          
+          {/* Hover Reveal */}
+          <div class="compass-reveal" aria-hidden="true">
+            <div class="compass-container">
+              <svg viewBox="0 0 100 100" class="compass-svg">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+                <path d="M50 10 L55 45 L90 50 L55 55 L50 90 L45 55 L10 50 L45 45 Z" fill="currentColor" opacity="0.8"/>
+                <circle cx="50" cy="50" r="4" fill="currentColor"/>
+              </svg>
+              <span class="compass-text">{t('routes.explore')}</span>
+            </div>
+          </div>
+        </a>
+      </article>
+    );
+  })}
+</div>
+
+<!-- Empty State -->
+<div class="empty-state" id="empty-state" style="display: none;">
+  <div class="empty-icon">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M8 8l8 8M16 8l-8 8"/>
+    </svg>
+  </div>
+  <h3 class="empty-title">{t('routes.emptyTitle')}</h3>
+  <p class="empty-text">{t('routes.emptyText')}</p>
+  <button class="empty-btn" id="empty-reset">{t('routes.emptyBtn')}</button>
+</div>

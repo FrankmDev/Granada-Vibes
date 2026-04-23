@@ -3,6 +3,7 @@ import type { Event, Locale } from '@types';
 import { formatDateShort, formatTime, getTemporalProximity } from '@utils/dates';
 import { truncateTitle } from '@utils/strings';
 import { eventCategoryStyles, icons } from '@config/ui';
+import { getEventDetailUrl } from '@utils/routes';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const { event, locale, t, featured = false } = Astro.props;
-const href = locale === 'es' ? `/eventos/${event.slug}` : `/en/events/${event.slug}`;
+const href = getEventDetailUrl(event.slug, locale);
 const temporalProximity = getTemporalProximity(event.date);
 const catStyle = eventCategoryStyles[event.category] ?? eventCategoryStyles.other;
 const eventImage = event.imageUrl ?? event.image;
@@ -62,7 +63,7 @@ const catColor = catStyle.colorVar;
         {temporalProximity === 'tomorrow' && (
           <div class="absolute top-4 right-4 z-10">
             <span class="badge badge-secondary">
-              {locale === 'es' ? 'MAÑANA' : 'TOMORROW'}
+              {t('events.tomorrow')}
             </span>
           </div>
         )}
@@ -78,7 +79,7 @@ const catColor = catStyle.colorVar;
 
         <div class="absolute bottom-4 right-4 z-10">
           <span class:list={['badge', event.price === null ? 'badge-success' : 'badge-glass']}>
-            {event.price === null ? (locale === 'es' ? 'GRATIS' : 'FREE') : `${event.price}€`}
+            {event.price === null ? t('detail.free').toUpperCase() : `${event.price}€`}
           </span>
         </div>
       </div>

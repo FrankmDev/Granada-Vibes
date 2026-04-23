@@ -1,6 +1,7 @@
 ---
-import type { Event, Locale, EventCategory } from '../../types';
-import { useTranslations } from '../../i18n/utils';
+import type { Event, Locale, EventCategory } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
@@ -65,7 +66,7 @@ function formatDate(dateStr: string): string {
     .toUpperCase();
 }
 
-const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
+const eventsHref = getRoute('events', locale);
 ---
 
 <section class="editorial-section" aria-label={t('home.sections.eventsAriaLabel')}>
@@ -89,7 +90,7 @@ const eventsHref = locale === 'es' ? '/eventos' : '/en/events';
           const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
           const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
           const imgSrc = getEventImage(evt, colIndex * 50 + idx);
-          const href = `/${locale === 'en' ? 'en/events' : 'eventos'}/${evt.slug}`;
+          const href = `/${locale === 'en' ? 'en/events' : 'eventos'}/${evt.slug}/`;
 
           return (
             <article class="masonry-item" style={`height: ${heightVh}vh;`}>

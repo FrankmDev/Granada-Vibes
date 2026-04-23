@@ -1,6 +1,7 @@
 ---
 import type { Route, Locale } from '@types';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 import { formatDuration, formatDistance } from '@utils/dates';
 import CinematicHero from '@components/shared/CinematicHero.astro';
 
@@ -14,11 +15,11 @@ const t = useTranslations(locale);
 
 const routeImage    = route.image;
 const refCode       = `RUT / ${route.id.toString().padStart(3, '0')} · ${new Date().getFullYear()}`;
-const backHref      = locale === 'es' ? '/rutas'    : '/en/routes';
-const backLabel     = locale === 'es' ? 'Rutas'     : 'Routes';
+const backHref      = getRoute('routes', locale);
+const backLabel     = t('nav.routes');
 const catLabel      = t(`categories.${route.category}`).toUpperCase();
-const featuredLabel = route.featured ? (locale === 'es' ? 'DESTACADA' : 'FEATURED') : undefined;
-const dockLabel     = locale === 'es' ? 'Información de la ruta' : 'Route information';
+const featuredLabel = route.featured ? t('routes.featured').toUpperCase() : undefined;
+const dockLabel     = t('detail.routeInfo');
 const description   = route.description[locale];
 
 const difficultyColor: Record<string, string> = {

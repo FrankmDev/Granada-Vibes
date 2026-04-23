@@ -1,0 +1,105 @@
+---
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import type { BlogPost, BlogCategory, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+  post: BlogPost;
+  categoryData: Record<BlogCategory, { icon: string; label: string; color: string }>;
+  blogImages: Record<string, string>;
+}
+
+const { locale, post, categoryData, blogImages } = Astro.props;
+const t = useTranslations(locale);
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr)
+    .toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+    .toUpperCase();
+}
+
+const image = post.image || blogImages[post.id] || blogImages.default;
+const cat = categoryData[post.category];
+---
+
+<article class="featured-post" data-category={post.category}>
+  <a href={`/blog/${post.slug}/`} class="featured-link">
+    <div class="featured-visual">
+      <OptimizedImage
+        src={image}
+        alt={post.title[locale]}
+        class="featured-image"
+        loading="eager"
+        decoding="async"
+        sizes="(max-width: 768px) 100vw, 60vw"
+      />
+      <div class="featured-overlay"></div>
+      
+      <div class="featured-category" style={`--category-color: ${cat.color}`}>
+        <span class="category-icon">{cat.icon}</span>
+        <span class="category-label">{cat.label}</span>
+      </div>
+
+      <div class="floating-meta">
+        <span class="meta-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          {post.readingTime} min
+        </span>
+        {post.featured && (
+          <span class="meta-badge badge-highlight">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            {t('routes.featured')}
+          </span>
+        )}
+      </div>
+    </div>
+
+    <div class="featured-content">
+      <div class="content-eyebrow">
+        <span class="eyebrow-line"></span>
+        <time datetime={post.publishDate}>
+          {formatDate(post.publishDate)}
+        </time>
+      </div>
+
+      <h3 class="featured-title">
+        {post.title[locale]}
+      </h3>
+      
+      <p class="featured-description">{post.description[locale]}</p>
+
+      {post.tags && post.tags.length > 0 && (
+        <div class="featured-tags">
+          {post.tags.slice(0, 3).map((tag) => (
+            <span class="tag-pill">#{tag}</span>
+          ))}
+        </div>
+      )}
+
+      <div class="featured-footer">
+        <div class="author-block">
+          <div class="author-avatar">
+            <span>{post.author.charAt(0)}</span>
+          </div>
+          <div class="author-details">
+            <span class="author-label">{t('blog.writtenBy')}</span>
+            <span class="author-name">{post.author}</span>
+          </div>
+        </div>
+        
+        <span class="featured-cta">
+          {t('blog.readArticle')}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </a>
+</article>

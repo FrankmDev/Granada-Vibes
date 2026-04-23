@@ -1,0 +1,126 @@
+---
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface NavLink {
+  href: string;
+  label: string;
+  num: string;
+}
+
+interface Props {
+  locale: Locale;
+  homeHref: string;
+  altHref: string;
+  altLabel: string;
+  navLinks: NavLink[];
+  currentPath?: string;
+}
+
+const { locale, homeHref, altHref, altLabel, navLinks, currentPath } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     GRAND GATE — Full-screen split overlay
+     ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+<div class="gate" role="dialog" aria-label={t('nav.mainNavLabel')} aria-hidden="true">
+
+  <!-- Curtain panels that slide open -->
+  <div class="gate-curtain gate-curtain--l" aria-hidden="true"></div>
+  <div class="gate-curtain gate-curtain--r" aria-hidden="true"></div>
+
+  <!-- Grain overlay -->
+  <div class="gate-grain" aria-hidden="true"></div>
+
+  <!-- Close button -->
+  <button class="gate-close" data-gate-close aria-label={t('nav.closeMenu')}>
+    <span class="gc-line"></span>
+    <span class="gc-line"></span>
+  </button>
+
+  <!-- Content: two-column split -->
+  <div class="gate-body">
+
+    <!-- Left: Ghost numbers + decorative -->
+    <div class="gate-left" aria-hidden="true">
+      <div class="gate-ghost-nums">
+        <span class="ghost-num" style="--gn: 0">00</span>
+        <span class="ghost-num" style="--gn: 1">01</span>
+        <span class="ghost-num" style="--gn: 2">02</span>
+        <span class="ghost-num" style="--gn: 3">03</span>
+        <span class="ghost-num" style="--gn: 4">04</span>
+      </div>
+      <div class="gate-coord">
+        <span class="coord-line">37°10'N · 3°35'W</span>
+        <span class="coord-line">{t('meta.location').toUpperCase()}</span>
+      </div>
+      <!-- Nazari star watermark -->
+      <svg class="gate-star" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+        <path d="M100 10 L112 46 L150 34 L126 64 L150 90 L112 78 L100 114 L88 78 L50 90 L74 64 L50 34 L88 46 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity="0.15"/>
+        <path d="M100 38 L107 62 L133 54 L115 72 L133 90 L107 82 L100 106 L93 82 L67 90 L85 72 L67 54 L93 62 Z" stroke="currentColor" stroke-width="1" fill="none" stroke-linejoin="round" opacity="0.1"/>
+        <circle cx="100" cy="72" r="8" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+        <!-- Rotating outer ring -->
+        <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.08" class="gate-ring"/>
+      </svg>
+    </div>
+
+    <!-- Right: Navigation links -->
+    <div class="gate-right">
+
+      <!-- Top: Logo -->
+      <div class="gate-header">
+        <span class="gate-header-logo">GRN INDEX</span>
+        <span class="gate-header-sub">{t('nav.guideSubtitle')} · {new Date().getFullYear()}</span>
+      </div>
+
+      <!-- Nav items — full-width rows -->
+      <nav class="gate-nav" aria-label={t('nav.mainNavLabel')}>
+        <div class="gate-item" style="--gi: 0">
+          <a href={homeHref} class="gate-link" data-nav-link>
+            <span class="gi-num">00</span>
+            <span class="gi-label">{t('nav.home')}</span>
+            <span class="gi-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        {navLinks.map((link, i) => {
+          const active = currentPath?.startsWith(link.href) && link.href !== '/';
+          return (
+            <div class="gate-item" style={`--gi: ${i + 1}`}>
+              <a
+                href={link.href}
+                class:list={['gate-link', { 'is-active': active }]}
+                data-nav-link
+                aria-current={active ? 'page' : undefined}
+              >
+                <span class="gi-num">{link.num}</span>
+                <span class="gi-label">{link.label}</span>
+                <span class="gi-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          );
+        })}
+      </nav>
+
+      <!-- Footer: Lang switch + copyright -->
+      <div class="gate-footer">
+        <a href={altHref} class="gf-lang" data-gate-close>
+          <span class="gf-lang-label">{t('nav.switchLanguage')}</span>
+          <span class="gf-lang-val">{altLabel}</span>
+        </a>
+        <p class="gf-copy">© 2026 GRN INDEX</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Decorative corner brackets -->
+  <div class="gate-corners" aria-hidden="true">
+    <span class="gcb gcb--tl"></span>
+    <span class="gcb gcb--tr"></span>
+    <span class="gcb gcb--bl"></span>
+    <span class="gcb gcb--br"></span>
+  </div>
+
+</div>

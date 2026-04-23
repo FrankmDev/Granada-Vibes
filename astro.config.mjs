@@ -111,4 +111,6 @@ export default defineConfig({
   output: 'static',
   // Compress HTML in production
   compressHTML: true,
+  // Enforce trailing slashes for SEO consistency
+  trailingSlash: 'always',
 });

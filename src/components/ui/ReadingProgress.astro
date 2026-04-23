@@ -1,0 +1,31 @@
+---
+/**
+ * ReadingProgress — injects a top fixed bar that tracks scroll progress.
+ * Uses a single scroll listener with requestAnimationFrame throttling.
+ */
+---
+
+<script>
+  (function () {
+    if (document.getElementById('read-progress')) return;
+
+    const bar = document.createElement('div');
+    bar.id = 'read-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+          bar.style.setProperty('--scroll-progress', `${progress}%`);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  })();
+</script>

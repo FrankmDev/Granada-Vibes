@@ -1,5 +1,6 @@
 ---
 import type { Event, Locale } from '@types';
+import { getRoute } from '@utils/routes';
 import EventCard from './EventCard.astro';
 
 interface Props {
@@ -79,7 +80,7 @@ const sortedEvents = events
 
     <!-- Mobile scroll indicator -->
     <div class="flex items-center justify-center gap-2 mt-6 lg:hidden">
-      <span class="text-xs text-white/30">{locale === 'es' ? 'Desliza para ver más' : 'Swipe for more'}</span>
+      <span class="text-xs text-white/30">{t('common.swipeForMore')}</span>
       <svg class="w-4 h-4 text-white/30 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
       </svg>
@@ -88,7 +89,7 @@ const sortedEvents = events
     <!-- View all link -->
     <div class="flex justify-center mt-12 scroll-animate">
       <a
-        href={`${locale === 'es' ? '' : '/en'}/eventos`}
+        href={getRoute('events', locale)}
         class="carousel__view-all group"
       >
         <span>{t('actions.viewAll')}</span>

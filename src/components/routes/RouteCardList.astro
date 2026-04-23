@@ -2,6 +2,7 @@
 import type { Route, Locale, Neighborhood } from '@types';
 import { formatDuration, formatDistance } from '@utils/dates';
 import { difficultyStyles, icons } from '@config/ui';
+import { getRouteDetailUrl } from '@utils/routes';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const { route, locale, t, index = 0 } = Astro.props;
-const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+const href = getRouteDetailUrl(route.slug, locale);
 
 const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;
 const diffLevel = diffStyle.bars;

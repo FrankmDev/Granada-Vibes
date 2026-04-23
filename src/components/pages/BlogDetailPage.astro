@@ -1,0 +1,229 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
+import BlogDetailHero from '@components/blog/BlogDetailHero.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import ShareButton from '@components/ui/ShareButton.astro';
+import ReadingProgress from '@components/ui/ReadingProgress.astro';
+import { getRelatedPosts } from '@data/index.js';
+import { useTranslations } from '@i18n/utils';
+import { getBlogDetailUrl, getRoute } from '@utils/routes';
+import type { BlogPost, Locale } from '@types';
+import '@styles/pages/blog-detail.css';
+
+interface Props {
+  locale: Locale;
+  post: BlogPost;
+}
+
+const { locale, post } = Astro.props as Props;
+const t = useTranslations(locale);
+const isEnglish = locale === 'en';
+const relatedPosts = getRelatedPosts(post, 3);
+
+const publishedDate = new Date(post.publishDate);
+const dateLocale = isEnglish ? 'en-GB' : 'es-ES';
+const formattedDate = publishedDate.toLocaleDateString(dateLocale, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const dayNum = publishedDate.getDate().toString().padStart(2, '0');
+const monthShort = publishedDate.toLocaleDateString(dateLocale, { month: 'short' }).toUpperCase();
+const categoryLabel = t(`blog.categories.${post.category}`);
+const ogImage = post.image ?? 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=630&fit=crop&q=80';
+
+const copy = isEnglish
+  ? {
+      breadcrumb: {
+        home: 'Home',
+        listing: 'Blog',
+      },
+      section: {
+        article: '[ Article ]',
+        authorByline: 'Written by',
+        authorBio: 'GRN INDEX contributor specialising in local culture and experiential travel.',
+        infoLabel: 'INFORMATION',
+        shareLabel: 'Share article',
+        shareCopied: 'Link copied!',
+        tags: '[ Tags ]',
+      },
+      seoDescription: `${post.description[locale]} — ${categoryLabel}. By ${post.author}. ${t('blog.readingTime', { minutes: post.readingTime })}.`,
+    }
+  : {
+      breadcrumb: {
+        home: 'Inicio',
+        listing: 'Blog',
+      },
+      section: {
+        article: '[ Artículo ]',
+        authorByline: 'Escrito por',
+        authorBio: 'Colaborador de GRN INDEX especializado en cultura local y turismo experiencial.',
+        infoLabel: 'INFORMACIÓN',
+        shareLabel: 'Compartir artículo',
+        shareCopied: '¡Enlace copiado!',
+        tags: '[ Etiquetas ]',
+      },
+      seoDescription: `${post.description[locale]} — ${categoryLabel}. Por ${post.author}. ${t('blog.readingTime', { minutes: post.readingTime })}.`,
+    };
+
+const breadcrumb = [
+  { name: copy.breadcrumb.home, url: getRoute('home', locale) },
+  { name: copy.breadcrumb.listing, url: getRoute('blog', locale) },
+  { name: post.title[locale], url: getBlogDetailUrl(post.slug, locale) },
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title={post.title[locale]}
+  description={copy.seoDescription}
+  ogImage={ogImage}
+  ogType="article"
+  schemaType="article"
+  schemaData={post}
+  breadcrumb={breadcrumb}
+>
+  <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
+
+  <BlogDetailHero post={post} locale={locale} formattedDate={formattedDate} />
+
+  <div class="det-page blog-page-override">
+    <div class="det-content-wrap">
+      <div class="upgraded-layout">
+        <main id="main-content" class="upgraded-main">
+          <article class="upg-block" data-reveal aria-label={post.title[locale]}>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">01</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">{copy.section.article}</span>
+            </header>
+
+            <div class="blg-prose content-rich" set:html={post.content[locale]} />
+          </article>
+
+          <article class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+            <div class="upg-block-bg"></div>
+            <div style="display:flex; gap: 1.5rem; align-items: center;">
+              <div class="upg-author-avatar">
+                <span class="upg-author-initial">{post.author.charAt(0)}</span>
+              </div>
+              <div>
+                <span style="font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--s-ink-3); text-transform: uppercase; display: block; margin-bottom: 0.2rem;">{copy.section.authorByline}</span>
+                <span style="font-family: var(--font-body); font-size: 1.5rem; font-weight: 600; color: var(--s-ink); display: block; margin-bottom: 0.4rem;">{post.author}</span>
+                <span style="font-family: var(--font-display); font-size: 0.9rem; color: var(--s-ink-2); line-height: 1.5; display: block;">{copy.section.authorBio}</span>
+              </div>
+            </div>
+          </article>
+
+          {post.tags.length > 0 && (
+            <div class="upg-tags" data-reveal>
+              <span class="upg-tags-title">{copy.section.tags}</span>
+              <div class="upg-tags-list">
+                {post.tags.map((tag: string) => (
+                  <span class="upg-tag">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </main>
+
+        <aside class="upg-sidebar">
+          <div class="upg-sidebar-sticky">
+            <div class="upg-ticket-card" data-reveal>
+              <div class="upg-ticket-glass"></div>
+
+              <div class="upg-tc-header">
+                <div class="upg-tc-date-box">
+                  <span class="tc-day" style="font-size: 1.4rem;">{dayNum}</span>
+                  <span class="tc-month">{monthShort}</span>
+                </div>
+                <div class="upg-tc-info">
+                  <span class="tc-time" style="color:var(--s-ink);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    {t('blog.readingTime', { minutes: post.readingTime })}
+                  </span>
+                  <span class="tc-category">{categoryLabel}</span>
+                </div>
+              </div>
+
+              <div style="padding: 0 2.5rem 1rem;">
+                <span class="tc-price-label" style="display:block; margin-bottom:1rem;">{copy.section.infoLabel}</span>
+                <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                  <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;color:var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <span style="font-family:var(--font-display); font-size:0.85rem; font-weight:600; color:var(--s-ink);">{post.author}</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;color:var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2);">{formattedDate}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="upg-tc-divider">
+                <span class="tcd-hole left"></span>
+                <div class="tcd-dashed"></div>
+                <span class="tcd-hole right"></span>
+              </div>
+
+              <div class="upg-tc-actions">
+                <ShareButton
+                  title={post.title[locale]}
+                  url={Astro.url.href}
+                  label={copy.section.shareLabel}
+                  copiedLabel={copy.section.shareCopied}
+                  class="upg-btn-primary"
+                />
+              </div>
+            </div>
+
+            {relatedPosts.length > 0 && (
+              <div class="upg-related-bento" data-reveal>
+                <div class="upg-rb-header">
+                  <span class="upg-rb-title">[ {t('detail.relatedPosts')} ]</span>
+                  <a href={getRoute('blog', locale)} class="upg-rb-all">{t('detail.allPosts')} →</a>
+                </div>
+
+                <div class="upg-rb-list">
+                  {relatedPosts.map((relatedPost, index) => (
+                    <a href={getBlogDetailUrl(relatedPost.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
+                      <div class="uri-thumb">
+                        {relatedPost.image ? (
+                          <OptimizedImage src={relatedPost.image} alt={relatedPost.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
+                        ) : (
+                          <div class="uri-thumb-fallback"></div>
+                        )}
+                      </div>
+                      <div class="uri-content">
+                        <span class="uri-title">{relatedPost.title[locale]}</span>
+                        <span class="uri-meta">{t('blog.readingTime', { minutes: relatedPost.readingTime })}</span>
+                      </div>
+                      <div class="uri-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
+      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+      <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
+      <span style="color: var(--s-gold); margin: 0 0.5rem;"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
+      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+    </div>
+  </div>
+
+  <Footer slot="footer" locale={locale} />
+</BaseLayout>
+
+<ReadingProgress />

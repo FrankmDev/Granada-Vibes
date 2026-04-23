@@ -1,61 +1,39 @@
 ---
 import { getLocaleFromPath } from '@utils/paths';
+import { getRoute } from '@utils/routes';
+import { useTranslations } from '@i18n/utils';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 
 const currentPath = Astro.url.pathname;
 const locale = getLocaleFromPath(currentPath);
-
-const content = {
-  es: {
-    code: '404',
-    title: 'Página no encontrada',
-    description: 'La página que buscas no existe o ha sido movida.',
-    cta: 'Volver a inicio',
-    search: 'Buscar eventos',
-    searchPath: '/eventos',
-    routes: 'Explorar rutas',
-    routesPath: '/rutas',
-  },
-  en: {
-    code: '404',
-    title: 'Page not found',
-    description: 'The page you are looking for does not exist or has been moved.',
-    cta: 'Go home',
-    search: 'Find events',
-    searchPath: '/en/events',
-    routes: 'Explore routes',
-    routesPath: '/en/routes',
-  },
-};
-
-const c = content[locale];
+const t = useTranslations(locale);
 ---
 
 <BaseLayout
   locale={locale}
-  title={locale === 'es' ? 'Página no encontrada — GRN INDEX' : 'Page not found — GRN INDEX'}
-  description={c.description}
+  title={t('notFound.title')}
+  description={t('notFound.message')}
   noindex={true}
 >
   <NavBar slot="header" locale={locale} currentPath={currentPath} />
 
   <section class="not-found-section">
     <div class="not-found-container">
-      <div class="not-found-code" aria-hidden="true">{c.code}</div>
-      <h1 class="not-found-title">{c.title}</h1>
-      <p class="not-found-desc">{c.description}</p>
+      <div class="not-found-code" aria-hidden="true">404</div>
+      <h1 class="not-found-title">{t('notFound.title').split(' — ')[0]}</h1>
+      <p class="not-found-desc">{t('notFound.message')}</p>
 
       <div class="not-found-actions">
-        <a href={locale === 'es' ? '/' : '/en/'} class="not-found-btn not-found-btn-primary">
-          {c.cta}
+        <a href={getRoute('home', locale)} class="not-found-btn not-found-btn-primary">
+          {t('notFound.goHome')}
         </a>
-        <a href={c.searchPath} class="not-found-btn not-found-btn-secondary">
-          {c.search}
+        <a href={getRoute('events', locale)} class="not-found-btn not-found-btn-secondary">
+          {t('nav.events')}
         </a>
-        <a href={c.routesPath} class="not-found-btn not-found-btn-secondary">
-          {c.routes}
+        <a href={getRoute('routes', locale)} class="not-found-btn not-found-btn-secondary">
+          {t('nav.routes')}
         </a>
       </div>
     </div>

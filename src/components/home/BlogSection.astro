@@ -3,6 +3,7 @@ import type { BlogPost, BlogCategory, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 
 interface Props {
   posts: BlogPost[];
@@ -17,7 +18,7 @@ const featuredPost = posts.find(p => p.featured) || posts[0];
 const otherPosts = posts.filter(p => p.id !== featuredPost?.id).slice(0, 2);
 const displayPosts = [featuredPost, ...otherPosts].filter(Boolean);
 
-const blogHref = locale === 'es' ? '/blog' : '/en/blog';
+const blogHref = getRoute('blog', locale);
 
 const categoryData: Record<BlogCategory, { icon: string; label: string; color: string; accentRgb: string }> = {
   guia: { icon: '◈', label: t('blog.categories.guia'), color: '#e8622a', accentRgb: '232, 98, 42' },
@@ -61,14 +62,14 @@ function formatDate(dateStr: string): string {
     <header class="journal-masthead">
       <div class="masthead-kicker">
         <span class="kicker-line"></span>
-        <span class="kicker-text">EDICIÓN ESPECIAL</span>
+        <span class="kicker-text">{t('blog.specialEdition')}</span>
         <span class="kicker-line"></span>
       </div>
       <h2 class="masthead-title">
-        <span class="title-main">Historias</span>
-        <span class="title-sub">de una ciudad sin tiempo</span>
+        <span class="title-main">{t('blog.storiesTitle')}</span>
+        <span class="title-sub">{t('blog.storiesSubtitle')}</span>
       </h2>
-      <p class="masthead-lead">Relatos, guías y secretos de Granada escritos por quienes la habitan.</p>
+      <p class="masthead-lead">{t('blog.storiesLead')}</p>
     </header>
 
     <!-- Bento Grid Layout -->
@@ -85,7 +86,7 @@ function formatDate(dateStr: string): string {
               class="bento-item item-feature" 
               style={`--accent: ${catData?.color ?? '#e8622a'}; --accent-rgb: ${catData?.accentRgb ?? '232, 98, 42'}`}
             >
-              <a href={`/blog/${post.slug}`} class="feature-link">
+              <a href={`/blog/${post.slug}/`} class="feature-link">
                 {/* Image Background */}
                 <div class="feature-visual">
                   <OptimizedImage
@@ -104,7 +105,7 @@ function formatDate(dateStr: string): string {
                   {/* Category Tag */}
                   <div class="feature-tag">
                     <span class="tag-icon">{catData?.icon ?? '◈'}</span>
-                    <span class="tag-label">{catData?.label ?? 'Guía'}</span>
+                    <span class="tag-label">{catData?.label ?? t('blog.fallbackCategory')}</span>
                   </div>
 
                   {/* Title */}
@@ -153,7 +154,7 @@ function formatDate(dateStr: string): string {
             data-index={idx}
             style={`--card-index: ${idx}; --accent: ${catData?.color ?? '#e8622a'}; --accent-rgb: ${catData?.accentRgb ?? '232, 98, 42'}`}
           >
-            <a href={`/blog/${post.slug}`} class="expedition-link">
+            <a href={`/blog/${post.slug}/`} class="expedition-link">
               {/* Expedition Number Stamp */}
               <div class="expedition-stamp">
                 <span class="stamp-prefix">ART.</span>
@@ -183,7 +184,7 @@ function formatDate(dateStr: string): string {
                 {/* Category Tag */}
                 <div class="legend-tag">
                   <span class="legend-symbol">{catData?.icon ?? '◈'}</span>
-                  <span class="legend-text">{catData?.label ?? 'Artículo'}</span>
+                  <span class="legend-text">{catData?.label ?? t('blog.fallbackArticle')}</span>
                 </div>
                 
                 {/* Featured Badge */}
@@ -248,8 +249,8 @@ function formatDate(dateStr: string): string {
     <div class="journal-footer">
       <a href={blogHref} class="archive-link">
         <span class="archive-line"></span>
-        <span class="archive-text">Explorar archivo completo</span>
-        <span class="archive-count">{posts.length} artículos</span>
+        <span class="archive-text">{t('blog.exploreArchive')}</span>
+        <span class="archive-count">{t('blog.articlesCount', { count: posts.length })}</span>
         <span class="archive-line"></span>
       </a>
     </div>

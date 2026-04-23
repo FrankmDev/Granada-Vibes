@@ -1,9 +1,10 @@
 ---
-import type { Route, Locale, RouteCategory, RouteDifficulty } from '../../types';
+import type { Route, Locale, RouteCategory, RouteDifficulty } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations } from '@i18n/utils';
+import { getRoute, getRouteDetailUrl } from '@utils/routes';
 
 interface Props {
   routes: Route[];
@@ -53,7 +54,7 @@ const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: strin
   default:     'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
 };
 
-const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
+const routesHref = getRoute('routes', locale);
 ---
 
 <section class="routes-section" aria-label={t('home.sections.routesAriaLabel')}>
@@ -73,7 +74,7 @@ const routesHref = locale === 'es' ? '/rutas' : '/en/routes';
   <div class="accordion-container">
     <div class="routes-accordion">
       {displayRoutes.map((route, idx) => {
-        const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+        const href = getRouteDetailUrl(route.slug, locale);
         const bgImage = route.image ?? ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
         const diffLabel = difficultyLabels[route.difficulty] ?? route.difficulty;
         const catLabel = getCategoryLabel(route.category);

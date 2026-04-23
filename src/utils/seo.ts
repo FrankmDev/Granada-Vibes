@@ -47,8 +47,8 @@ export function getRouteMetaDescription(route: Route, locale: Locale): string {
 }
 
 /**
- * Generate OG image URL using the light theme placeholder colors.
+ * Generate OG image URL — returns a branded Granada fallback.
  */
-export function getOgImageUrl(text: string): string {
-  return `https://placehold.co/1200x630/FAF8F5/2C2824?text=${encodeURIComponent(text)}`;
+export function getOgImageUrl(_text: string): string {
+  return 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&h=630&fit=crop&q=80';
 }

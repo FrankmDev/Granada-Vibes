@@ -1,0 +1,62 @@
+---
+import { getAllEvents, getFeaturedRoutes, getAllPosts, getAllMixedRoutes } from '@data/index.js';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import NavBar from '@components/layout/NavBar.astro';
+import Footer from '@components/layout/Footer.astro';
+import HeroSection from '@components/home/HeroSection.astro';
+import EventsGridSection from '@components/home/EventsGridSection.astro';
+import RoutesGridSection from '@components/home/RoutesGridSection.astro';
+import BlogSection from '@components/home/BlogSection.astro';
+import TimeRoutesSection from '@components/home/TimeRoutesSection.astro';
+import HomeCTA from '@components/home/HomeCTA.astro';
+import type { Event, Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const currentPath = Astro.url.pathname;
+const todayStr = new Date().toISOString().split('T')[0] ?? '';
+const allEvents = getAllEvents();
+const featuredRoutes = getFeaturedRoutes();
+const allPosts = getAllPosts();
+const allMixedRoutes = getAllMixedRoutes();
+
+const upcoming = allEvents
+  .filter((event: Event) => event.date >= todayStr)
+  .sort((left: Event, right: Event) => left.date.localeCompare(right.date));
+
+const gridEvents = upcoming.slice(0, 20);
+const displayRoutes = featuredRoutes.slice(0, 7);
+
+const seo = locale === 'es'
+  ? {
+      title: 'Guía Cultural de Granada',
+      description:
+        'Descubre Granada como un local con GRN INDEX. Agenda cultural actualizada, rutas por el Albaicín y Sacromonte, planes por tiempo disponible y secretos de la ciudad. Vive experiencias auténticas fuera de las guías turísticas.',
+    }
+  : {
+      title: 'Cultural Guide to Granada',
+      description:
+        'Discover Granada like a local with GRN INDEX. Upcoming cultural events, curated routes through Albaicín and Sacromonte, time-based itineraries and hidden gems. Authentic experiences beyond the tourist guides.',
+    };
+---
+
+<BaseLayout
+  locale={locale}
+  title={seo.title}
+  description={seo.description}
+  schemaType="website"
+>
+  <NavBar slot="header" locale={locale} currentPath={currentPath} />
+
+  <HeroSection locale={locale} />
+  <EventsGridSection events={gridEvents} locale={locale} />
+  <RoutesGridSection routes={displayRoutes} locale={locale} />
+  <TimeRoutesSection plans={allMixedRoutes} locale={locale} />
+  <BlogSection posts={allPosts} locale={locale} />
+  <HomeCTA locale={locale} />
+
+  <Footer slot="footer" locale={locale} />
+</BaseLayout>

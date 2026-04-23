@@ -1,0 +1,136 @@
+---
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import type { Event, EventCategory, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getEventDetailUrl } from '@utils/routes';
+import { getPriceStatus, formatPriceLabel } from '@utils/index.js';
+
+interface Props {
+  locale: Locale;
+  columns: Event[][];
+  colHeights: number[][];
+  categoryLabels: Record<EventCategory, string>;
+}
+
+const { locale, columns, colHeights, categoryLabels } = Astro.props;
+const t = useTranslations(locale);
+
+function getTemporalProximity(dateStr: string): 'today' | 'tomorrow' | 'this-week' | 'future' | 'past' {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const event = new Date(dateStr);
+  event.setHours(0, 0, 0, 0);
+  const diffDays = Math.ceil((event.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0) return 'past';
+  if (diffDays === 0) return 'today';
+  if (diffDays === 1) return 'tomorrow';
+  if (diffDays <= 7) return 'this-week';
+  return 'future';
+}
+
+function formatMonth(dateStr: string): string {
+  return new Date(dateStr)
+    .toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { month: 'short' })
+    .toUpperCase()
+    .replace(/\./g, '');
+}
+
+function eventHref(slug: string): string {
+  return getEventDetailUrl(slug, locale);
+}
+---
+
+<div class="masonry-wrapper" id="events-grid">
+  {columns.map((colEvents, colIndex) => (
+    <div class={`masonry-col col-${['left','center','right'][colIndex]}`}>
+      {colEvents.map((evt, idx) => {
+        const heightVh = colHeights[colIndex]![idx] ?? 65;
+        const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
+        const href = eventHref(evt.slug);
+        const proximity = getTemporalProximity(evt.date);
+        const hasTemporalBadge = proximity === 'today' || proximity === 'tomorrow';
+
+        return (
+          <article
+            class="archive-item"
+            data-category={evt.category}
+            data-neighborhood={evt.neighborhood}
+            data-price={getPriceStatus(evt) === 'free' ? 'free' : getPriceStatus(evt) === 'paid' ? 'paid' : 'tickets'}
+            data-date={evt.date}
+            style={`--card-index: ${colIndex * 6 + idx}; height: ${heightVh}vh;`}
+          >
+            <a href={href} class="item-link">
+              <span class="cb cb-tl" aria-hidden="true"></span>
+              <span class="cb cb-tr" aria-hidden="true"></span>
+              <span class="cb cb-bl" aria-hidden="true"></span>
+              <span class="cb cb-br" aria-hidden="true"></span>
+
+              {evt.image && !evt.image.includes('undefined') ? (
+                <OptimizedImage
+                  src={evt.image}
+                  alt={evt.title[locale]}
+                  class="item-image"
+                  loading={idx < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              ) : (
+                <div class="item-image-fallback"></div>
+              )}
+
+              <div class="item-overlay"></div>
+
+              {proximity === 'today' && (
+                <div class="temporal-badge badge-today">
+                  <span class="badge-dot"></span>
+                  {t('events.today')}
+                </div>
+              )}
+              {proximity === 'tomorrow' && (
+                <div class="temporal-badge badge-tomorrow">{t('events.tomorrow')}</div>
+              )}
+
+              <div class="category-badge">{category}</div>
+
+              <div class={`date-badge${hasTemporalBadge ? ' date-badge--offset' : ''}`}>
+                <span class="date-day">{new Date(evt.date).getDate()}</span>
+                <span class="date-month">{formatMonth(evt.date)}</span>
+              </div>
+
+              <div class="item-content">
+                <div class="item-text">
+                  <h3 class="item-title">{evt.title[locale]}</h3>
+                  <div class="item-footer">
+                    <span class="footer-venue">{evt.venue || 'Granada'}</span>
+                    <span class="footer-separator"></span>
+                    <span class={`footer-price${getPriceStatus(evt) === 'free' ? ' footer-price--free' : getPriceStatus(evt) === 'tickets' ? ' footer-price--tickets' : ''}`}>
+                      {formatPriceLabel(evt, t)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  ))}
+</div>
+
+<!-- Empty State -->
+<div id="empty-state" class="empty-state hidden">
+  <div class="empty-content">
+    <div class="empty-icon">
+      <div class="empty-icon-inner">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+    </div>
+    <h3 class="empty-title">{t('filters.noResults')}</h3>
+    <p class="empty-text">{t('filters.noResultsDesc')}</p>
+    <button id="empty-clear-filters" class="empty-btn">
+      {t('filters.clearFilters')}
+    </button>
+  </div>
+</div>

@@ -3,6 +3,7 @@ import type { MixedRoute, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 
 interface Props {
   plans: MixedRoute[];
@@ -18,7 +19,7 @@ const displayPlans = selectedDurations
   .map(duration => plans.find(p => p.duration === duration))
   .filter((p): p is MixedRoute => p !== undefined);
 
-const timeRoutesHref = locale === 'es' ? '/rutas/por-tiempo' : '/en/routes/by-time';
+const timeRoutesHref = getRoute('byTime', locale);
 
 // Duration configurations with visual styling
 const durationConfig: Record<string, {
@@ -154,7 +155,7 @@ function getCategoryName(category: string): string {
       {displayPlans.map((plan, index) => {
         const config = durationConfig[plan.duration] || durationConfig['2h'];
         const { totalStops, uniqueCategories } = getPlanStats(plan);
-        const href = `/rutas/por-tiempo/${plan.slug}`;
+        const href = `/rutas/por-tiempo/${plan.slug}/`;
         const isLarge = index === 1; // Middle card is larger
         
         return (

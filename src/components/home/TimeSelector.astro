@@ -5,6 +5,7 @@
  */
 import type { Locale, TimeDuration } from '@types';
 import { getAllMixedRoutes } from '@data';
+import { getPlanDetailUrl, getRoute } from '@utils/routes';
 
 interface Props {
   locale: Locale;
@@ -43,7 +44,7 @@ const timeBlocks: { duration: TimeDuration; label: string; shortLabel: string; c
       <div class="flex items-center justify-center gap-3 mb-5">
         <span class="w-12 h-[1px] bg-gradient-to-r from-transparent to-[#FF3366]/40"></span>
         <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#FF3366]">
-          {locale === 'es' ? 'Planifica tu visita' : 'Plan your visit'}
+          {t('common.planYourVisit')}
         </span>
         <span class="w-12 h-[1px] bg-gradient-to-l from-transparent to-[#FF3366]/40"></span>
       </div>
@@ -60,7 +61,7 @@ const timeBlocks: { duration: TimeDuration; label: string; shortLabel: string; c
       {timeBlocks.map((block, index) => {
         const plan = plans.find(p => p.duration === block.duration);
         if (!plan) return null;
-        const href = locale === 'es' ? `/rutas/por-tiempo/${plan.slug}` : `/en/routes/by-time/${plan.slug}`;
+        const href = getPlanDetailUrl(plan.slug, locale);
         const totalStops = plan.days.reduce(
           (acc, day) => acc + day.blocks.reduce((bAcc, b) => bAcc + b.stops.length, 0), 0
         );
@@ -116,7 +117,7 @@ const timeBlocks: { duration: TimeDuration; label: string; shortLabel: string; c
     <!-- Link to all plans -->
     <div class="text-center mt-12 reveal">
       <a
-        href={locale === 'es' ? '/rutas/por-tiempo' : '/en/routes/by-time'}
+        href={getRoute('byTime', locale)}
         class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FF3366]/30 hover:shadow-lg hover:shadow-[#FF3366]/10 group"
       >
         <span>{t('mixedRoutes.viewPlan')}</span>

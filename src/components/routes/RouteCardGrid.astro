@@ -2,6 +2,7 @@
 import type { Route, Locale, Neighborhood } from '@types';
 import { formatDuration, formatDistance } from '@utils/dates';
 import { routeCategoryStyles, difficultyStyles, timeOfDayStyles, icons } from '@config/ui';
+import { getRouteDetailUrl } from '@utils/routes';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
 }
 
 const { route, locale, t } = Astro.props;
-const href = locale === 'es' ? `/rutas/${route.slug}` : `/en/routes/${route.slug}`;
+const href = getRouteDetailUrl(route.slug, locale);
 
 const catStyle = routeCategoryStyles[route.category] ?? routeCategoryStyles.monuments;
 const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;

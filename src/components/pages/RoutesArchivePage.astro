@@ -1,0 +1,160 @@
+---
+import '@styles/pages/routes-archive.css';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
+import RoutesGridSection from '@components/home/RoutesGridSection.astro';
+import CinematicCTA from '@components/shared/CinematicCTA.astro';
+import RoutesArchiveFilter from '@components/routes/RoutesArchiveFilter.astro';
+import RoutesArchiveGrid from '@components/routes/RoutesArchiveGrid.astro';
+import RoutesTimePlansSection from '@components/routes/RoutesTimePlansSection.astro';
+import { getAllRoutes, getAllMixedRoutes } from '@data/index';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
+import type { RouteCategory, RouteDifficulty, Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const allRoutes = getAllRoutes();
+const mixedRoutes = getAllMixedRoutes();
+
+const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
+const difficulties: RouteDifficulty[] = ['easy', 'moderate', 'challenging'];
+
+const difficultyLabels: Record<RouteDifficulty, string> = {
+  easy:        t('difficulty.easy'),
+  moderate:    t('difficulty.moderate'),
+  challenging: t('difficulty.challenging'),
+};
+
+const difficultyColors: Record<RouteDifficulty, string> = {
+  easy:        '#4a9e6b',
+  moderate:    '#d4873a',
+  challenging: '#c94a4a',
+};
+
+const categoryLabels: Record<RouteCategory, string> = {
+  viewpoint:   t('categories.viewpoint'),
+  tapas:       t('categories.tapas'),
+  monuments:   t('categories.monuments'),
+  hiking:      t('categories.hiking'),
+  photography: t('categories.photography'),
+  secrets:     t('categories.secrets'),
+  history:     t('categories.history'),
+  flamenco:    t('categories.flamenco'),
+};
+
+const categoryIcons: Record<RouteCategory, string> = {
+  viewpoint:   '○',
+  tapas:       '◐',
+  monuments:   '◈',
+  hiking:      '△',
+  photography: '◉',
+  secrets:     '◆',
+  history:     '◫',
+  flamenco:    '◎',
+};
+
+const remainingRoutes = allRoutes.slice(5);
+
+const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: string } = {
+  tapas:       'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=1000&fit=crop',
+  monuments:   'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=1000&fit=crop',
+  hiking:      'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=1000&fit=crop',
+  photography: 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&h=1000&fit=crop',
+  viewpoint:   'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
+  secrets:     'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&h=1000&fit=crop',
+  history:     'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=1000&fit=crop',
+  flamenco:    'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&h=1000&fit=crop',
+  default:     'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
+};
+
+const ogImage = 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
+
+const heroMetadata = [
+  { label: t('routes.heroMetaTotalLabel'), value: allRoutes.length.toString() },
+  { label: t('routes.heroMetaCategoriesLabel'), value: categories.length.toString() },
+  { label: t('routes.heroMetaDifficultiesLabel'), value: difficulties.length.toString() },
+];
+
+const timePlansPath = getRoute('byTime', locale);
+const eventsPath    = getRoute('events', locale);
+---
+
+<BaseLayout 
+  locale={locale} 
+  title={t('routes.title')}
+  description={t('routes.pageDescription')}
+  ogImage={ogImage}
+>
+  <!-- CINEMATIC HERO -->
+  <SubpageHero
+    locale={locale}
+    title={t('routes.heroTitle')}
+    subtitle={t('routes.heroSubtitle')}
+    eyebrow={t('routes.heroEyebrow')}
+    eyebrowRight={t('routes.heroEyebrowRight')}
+    description={t('routes.heroDescription')}
+    ctaText={t('routes.heroCta')}
+    ctaLink="#featured-routes"
+    secondaryCtaText={t('routes.heroSecondaryCta')}
+    secondaryCtaLink={timePlansPath}
+    pageNumber="02"
+    coordinates="37°11′N 3°36′W"
+    metadata={heroMetadata}
+    variant="compact"
+  />
+
+  <!-- CINEMATIC ACCORDION SECTION -->
+  <div id="featured-routes" class="routes-accordion-wrap">
+    <RoutesGridSection routes={allRoutes} locale={locale} />
+  </div>
+
+  <!-- FILTER + GRID SECTION -->
+  <section class="filter-section" id="routes-grid">
+    <div class="filter-backdrop">
+      <div class="backdrop-pattern"></div>
+    </div>
+
+    <RoutesArchiveFilter
+      locale={locale}
+      categories={categories}
+      categoryLabels={categoryLabels}
+      categoryIcons={categoryIcons}
+      allRoutes={allRoutes}
+    />
+
+    <RoutesArchiveGrid
+      locale={locale}
+      routes={remainingRoutes}
+      categoryLabels={categoryLabels}
+      categoryIcons={categoryIcons}
+      difficultyLabels={difficultyLabels}
+      difficultyColors={difficultyColors}
+      routeFallbacks={ROUTE_FALLBACKS}
+    />
+  </section>
+
+  <!-- TIME PLANS SECTION -->
+  <RoutesTimePlansSection
+    locale={locale}
+    mixedRoutes={mixedRoutes}
+    timePlansPath={timePlansPath}
+  />
+
+  <!-- CTA SECTION -->
+  <CinematicCTA 
+    locale={locale}
+    ctaPrimaryText={t('routes.ctaBtn')}
+    ctaPrimaryLink={eventsPath}
+    ctaSecondaryText={t('routes.heroSecondaryCta')}
+    ctaSecondaryLink={timePlansPath}
+  />
+
+  <script>
+    import '../../scripts/pages/routesArchive.ts';
+  </script>
+</BaseLayout>

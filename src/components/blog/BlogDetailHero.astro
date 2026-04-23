@@ -4,7 +4,8 @@
  * Thin wrapper of CinematicHero with blog-specific dock: reading time | author | date | category.
  */
 import type { BlogPost, Locale } from '@types';
-import { useTranslations } from '../../i18n/utils';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 import CinematicHero from '@components/shared/CinematicHero.astro';
 
 interface Props {
@@ -24,10 +25,10 @@ const refNum = isNaN(numericId)
   : numericId;
 const refCode = `BLOG / ${refNum.toString().padStart(3, '0')} · ${year}`;
 
-const backHref   = locale === 'es' ? '/blog' : '/en/blog';
-const backLabel  = locale === 'es' ? 'Blog' : 'Blog';
+const backHref   = getRoute('blog', locale);
+const backLabel  = 'Blog';
 const catLabel   = t(`blog.categories.${post.category}`).toUpperCase();
-const dockLabel  = locale === 'es' ? 'Información del artículo' : 'Article information';
+const dockLabel  = t('detail.articleInfo');
 const description = post.description[locale];
 
 const readingDisplay = t('blog.readingTime', { minutes: post.readingTime });
@@ -41,7 +42,7 @@ const readingDisplay = t('blog.readingTime', { minutes: post.readingTime });
   title={post.title[locale]}
   imageUrl={post.image}
   eyebrowText={catLabel}
-  featuredLabel={post.featured ? (locale === 'es' ? 'DESTACADO' : 'FEATURED') : undefined}
+  featuredLabel={post.featured ? t('routes.featured').toUpperCase() : undefined}
   dockAriaLabel={dockLabel}
   description={description}
 >

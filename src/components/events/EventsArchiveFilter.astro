@@ -1,0 +1,91 @@
+---
+import type { EventCategory, Neighborhood, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+  categories: EventCategory[];
+  eventsCount: number;
+  neighborhoods: Neighborhood[];
+}
+
+const { locale, categories, eventsCount, neighborhoods } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="filter-section">
+  <div class="filter-inner">
+    <div class="filter-bar">
+      <!-- Category Chips -->
+      <div class="filter-chips" role="group" aria-label={t('events.filters.title')}>
+        <button class="filter-chip active" data-category="all" aria-pressed="true">
+          <span class="chip-dot"></span>
+          {t('categories.all')}
+        </button>
+        {categories.map((cat) => (
+          <button class="filter-chip" data-category={cat} aria-pressed="false">
+            <span class="chip-dot"></span>
+            {t(`categories.${cat}`)}
+          </button>
+        ))}
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <!-- Secondary Filters -->
+      <div class="filter-controls">
+        <div class="filter-dropdown">
+          <select id="filter-neighborhood" class="filter-select" aria-label={t('events.filters.neighborhood')}>
+            <option value="all">{t('events.filters.allNeighborhoods')}</option>
+            {neighborhoods.map((n) => (
+              <option value={n}>{t(`neighborhoods.${n}`)}</option>
+            ))}
+          </select>
+          <svg class="filter-select-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+        <div class="filter-dropdown">
+          <select id="filter-date" class="filter-select" aria-label={t('events.filters.date')}>
+            <option value="all">{t('events.filters.anyDate')}</option>
+            <option value="today">{t('filters.today')}</option>
+            <option value="week">{t('filters.thisWeek')}</option>
+            <option value="weekend">{t('filters.thisWeekend')}</option>
+            <option value="month">{t('filters.thisMonth')}</option>
+          </select>
+          <svg class="filter-select-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+
+        <label class="filter-toggle">
+          <input type="checkbox" id="filter-free" class="filter-toggle-input" />
+          <span class="filter-toggle-pill">
+            <span class="toggle-indicator"></span>
+            <span class="toggle-label">{t('filters.onlyFree')}</span>
+          </span>
+        </label>
+
+        <div class="filter-spacer"></div>
+
+        <button id="clear-filters" class="filter-clear hidden">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          <span>{t('actions.clear')}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Counter -->
+    <div class="results-counter">
+      <div class="results-line"></div>
+      <span class="results-text">
+        <span class="results-number" id="results-count">{eventsCount}</span>
+        <span class="results-label">{t('events.resultsLabel')}</span>
+      </span>
+      <div class="results-line"></div>
+    </div>
+  </div>
+</div>

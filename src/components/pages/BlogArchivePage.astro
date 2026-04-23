@@ -1,0 +1,178 @@
+---
+import '@styles/pages/blog-archive.css';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import CinematicCTA from '@components/shared/CinematicCTA.astro';
+import BlogArchiveFeaturedPost from '@components/blog/BlogArchiveFeaturedPost.astro';
+import BlogArchiveFilter from '@components/blog/BlogArchiveFilter.astro';
+import BlogArchiveGrid from '@components/blog/BlogArchiveGrid.astro';
+import { getAllPosts, getFeaturedPosts } from '@data/index';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
+import type { BlogCategory, Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const allPosts = getAllPosts();
+const featuredPosts = getFeaturedPosts();
+const featuredPost = featuredPosts[0] || allPosts[0];
+const remainingPosts = allPosts.filter(p => p.id !== featuredPost?.id);
+
+const categories: BlogCategory[] = ['guia', 'cultura', 'gastronomia', 'barrios', 'consejos'];
+
+const categoryData: Record<BlogCategory, { icon: string; label: string; color: string }> = {
+  guia: { icon: '◈', label: t('blog.categories.guia'), color: '#e8622a' },
+  cultura: { icon: '◎', label: t('blog.categories.cultura'), color: '#c9a84c' },
+  gastronomia: { icon: '◐', label: t('blog.categories.gastronomia'), color: '#d4873a' },
+  barrios: { icon: '○', label: t('blog.categories.barrios'), color: '#4a9e6b' },
+  consejos: { icon: '◆', label: t('blog.categories.consejos'), color: '#6b5a9e' },
+};
+
+const heroMetadata = [
+  { label: t('blog.heroMetaArticlesLabel'), value: allPosts.length.toString() },
+  { label: t('blog.heroMetaCategoriesLabel'), value: categories.length.toString() },
+  { label: t('blog.heroMetaUpdatedLabel'), value: new Date().getFullYear().toString() },
+];
+
+const ogImage = 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=630&fit=crop&q=80';
+
+const BLOG_IMAGES: Record<string, string> = {
+  'blog-002': 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&h=800&fit=crop',
+  'blog-003': 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=800&fit=crop',
+  'blog-004': 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=800&fit=crop',
+  'blog-005': 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=800&fit=crop',
+  default: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=800&fit=crop',
+};
+
+const routesPath = getRoute('routes', locale);
+const eventsPath = getRoute('events', locale);
+---
+
+<BaseLayout
+  locale={locale}
+  title={t('blog.title')}
+  description={t('blog.subtitle')}
+  ogImage={ogImage}
+>
+  <!-- HERO SECTION -->
+  <SubpageHero
+    locale={locale}
+    title="EDITORIAL"
+    subtitle="BLOG"
+    eyebrow="GRN INDEX"
+    eyebrowRight="ED. 2025"
+    description={t('blog.heroDescription')}
+    ctaText={t('blog.heroCta')}
+    ctaLink="#content"
+    secondaryCtaText={t('blog.heroSecondaryCta')}
+    secondaryCtaLink={routesPath}
+    pageNumber="04"
+    coordinates="37°10′N 3°36′W"
+    metadata={heroMetadata}
+    variant="compact"
+  />
+
+  <!-- EDITORIAL SECTION -->
+  <section class="editorial-section" id="content">
+    <div class="editorial-backdrop">
+      <div class="backdrop-gradient gradient-primary"></div>
+      <div class="backdrop-gradient gradient-secondary"></div>
+      <div class="grain-overlay" aria-hidden="true"></div>
+    </div>
+
+    <ScreenFrame
+      tagTopLeft="EDITORIAL"
+      tagTopRight="GRANADA"
+      tagBottomLeft="VOL. 04"
+      tagBottomRight="ED. 2025"
+    />
+
+    <div class="editorial-container">
+      <!-- SECTION HEADER -->
+      <header class="section-header">
+        <div class="header-ornament">
+          <span class="ornament-line"></span>
+          <span class="ornament-dot"></span>
+          <span class="header-eyebrow">[ {t('blog.archiveEyebrow')} ]</span>
+          <span class="ornament-dot"></span>
+          <span class="ornament-line"></span>
+        </div>
+        <h2 class="section-title">
+          <span class="title-word">{t('blog.archiveTitle').split(' · ')[0]}</span>
+          <span class="title-separator">·</span>
+          <span class="title-word title-accent">{t('blog.archiveTitle').split(' · ')[1]}</span>
+        </h2>
+      </header>
+
+      {allPosts.length > 0 ? (
+        <>
+          {featuredPost && (
+            <BlogArchiveFeaturedPost
+              locale={locale}
+              post={featuredPost}
+              categoryData={categoryData}
+              blogImages={BLOG_IMAGES}
+            />
+          )}
+
+          <BlogArchiveFilter
+            locale={locale}
+            categories={categories}
+            categoryData={categoryData}
+            allPosts={allPosts}
+            remainingPostsCount={remainingPosts.length}
+          />
+
+          <BlogArchiveGrid
+            locale={locale}
+            posts={remainingPosts}
+            categoryData={categoryData}
+            blogImages={BLOG_IMAGES}
+          />
+        </>
+      ) : (
+        <!-- NO POSTS STATE -->
+        <div class="no-posts-state">
+          <div class="no-posts-visual">
+            <div class="no-posts-glow"></div>
+            <div class="no-posts-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+            </div>
+          </div>
+          <h3 class="no-posts-title">{t('blog.noPostsTitle')}</h3>
+          <p class="no-posts-text">{t('blog.noPostsText')}</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <CinematicCTA 
+    locale={locale}
+    ctaPrimaryText={t('actions.viewAll')}
+    ctaPrimaryLink={routesPath}
+    ctaSecondaryText={t('actions.viewAll')}
+    ctaSecondaryLink={eventsPath}
+  />
+
+  <!-- Mobile CTA -->
+  <div class="mobile-cta-wrapper">
+    <a href={routesPath} class="mobile-cta">
+      <span>{t('detail.allRoutes')}</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <script>
+    import '../../scripts/pages/blogArchive.ts';
+  </script>
+</BaseLayout>

@@ -1,4 +1,7 @@
 ---
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
 /**
  * Interactive venue map using Leaflet + CartoDB tiles.
  * theme="dark"  → Dark Matter tiles (hero/dark contexts)
@@ -11,9 +14,11 @@ interface Props {
   venueName: string;
   zoom?: number;
   theme?: 'dark' | 'light';
+  locale: Locale;
 }
 
-const { lat, lng, venueName, zoom = 15, theme = 'dark' } = Astro.props;
+const { lat, lng, venueName, zoom = 15, theme = 'dark', locale } = Astro.props;
+const t = useTranslations(locale);
 const isLight = theme === 'light';
 ---
 
@@ -38,7 +43,7 @@ const isLight = theme === 'light';
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
-    Cómo llegar
+    {t('common.directions')}
   </a>
 </div>
 

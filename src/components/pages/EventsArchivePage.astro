@@ -1,0 +1,266 @@
+---
+import '@styles/pages/events-archive.css';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import EventsArchiveFilter from '@components/events/EventsArchiveFilter.astro';
+import EventsArchiveGrid from '@components/events/EventsArchiveGrid.astro';
+import { getAllEvents } from '@data/index.js';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
+import type { EventCategory, Neighborhood, Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const now = new Date();
+now.setHours(0, 0, 0, 0);
+const threeMonthsLater = new Date(now);
+threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
+
+const events = getAllEvents()
+  .filter((e) => {
+    const eventDate = new Date(e.date);
+    eventDate.setHours(0, 0, 0, 0);
+    return eventDate >= now && eventDate <= threeMonthsLater;
+  })
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+const categories = [...new Set(events.map((e) => e.category))].sort() as EventCategory[];
+const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'zaidin', 'otro'];
+
+const ogImage = 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=1200&h=630&fit=crop&q=80';
+
+const heroMetadata = [
+  { label: t('events.heroMetaTotalLabel'), value: events.length.toString(), icon: 'calendar' },
+  { label: t('events.heroMetaCategoriesLabel'), value: categories.length.toString(), icon: 'layers' },
+  { label: t('events.heroMetaNeighborhoodsLabel'), value: '8', icon: 'map-pin' },
+];
+
+const categoryLabels: Record<EventCategory, string> = {
+  concert: t('categories.concert').toUpperCase(),
+  exhibition: t('categories.exhibition').toUpperCase(),
+  festival: t('categories.festival').toUpperCase(),
+  market: t('categories.market').toUpperCase(),
+  theater: t('categories.theater').toUpperCase(),
+  workshop: t('categories.workshop').toUpperCase(),
+  'guided-tour': t('categories.guided-tour').toUpperCase(),
+  cinema: t('categories.cinema').toUpperCase(),
+  other: t('categories.other').toUpperCase(),
+};
+
+function routesHref(): string {
+  return getRoute('routes', locale);
+}
+
+// Alternating heights: left/right start at 58, center starts at 72 (offset effect)
+const BASE_H = [58, 72] as const;
+const COL_STARTS = [0, 1, 0] as const;
+
+const rawColumns = [0, 1, 2].map((ci) =>
+  events.filter((_, i) => i % 3 === ci)
+);
+
+function altSum(n: number, start: number): number {
+  let s = 0;
+  for (let i = 0; i < n; i++) s += BASE_H[(start + i) % 2]!;
+  return s;
+}
+
+const targetH = Math.max(...rawColumns.map((col, ci) => altSum(col.length, COL_STARTS[ci]!)));
+
+const COL_HEIGHTS = rawColumns.map((col, ci) => {
+  const n = col.length;
+  if (n === 0) return [] as number[];
+  const hs: number[] = Array.from({ length: n }, (_, i) => BASE_H[(COL_STARTS[ci]! + i) % 2]!);
+  const sumPrev = hs.slice(0, -1).reduce((a, b) => a + b, 0);
+  hs[n - 1] = Math.max(40, targetH - sumPrev);
+  return hs;
+});
+
+const columns = rawColumns;
+---
+
+<BaseLayout
+  locale={locale}
+  title={t('events.title')}
+  description={t('events.pageDescription')}
+  ogImage={ogImage}
+>
+  <SubpageHero
+    locale={locale}
+    title={t('events.heroTitle')}
+    subtitle={t('events.heroSubtitle')}
+    eyebrow="GRN INDEX"
+    eyebrowRight="ED. 2025"
+    description={t('events.heroDescription')}
+    ctaText={t('events.heroCta')}
+    ctaLink="#archive"
+    secondaryCtaText={t('events.heroSecondaryCta')}
+    secondaryCtaLink={routesHref()}
+    pageNumber="03"
+    coordinates="37°10′N 3°36′W"
+    metadata={heroMetadata}
+    variant="compact"
+  />
+
+  <section class="events-archive" id="archive" aria-label={t('events.archiveAriaLabel')}>
+    <div class="cin-grain" aria-hidden="true"></div>
+    <ScreenFrame
+      tagTopLeft={t('events.archiveFrameTagTopLeft')}
+      tagTopRight={t('events.archiveFrameTagTopRight')}
+      tagBottomLeft={t('events.archiveFrameTagBottomLeft')}
+      tagBottomRight={t('events.archiveFrameTagBottomRight')}
+    />
+
+    <SectionHeader
+      eyebrow={t('events.archiveEyebrow')}
+      eyebrowYear={t('events.archiveEyebrowYear')}
+      titleLabel={t('events.archiveTitleLabel')}
+      title={t('events.heroSubtitle')}
+      animateTitle={true}
+    />
+
+    <EventsArchiveFilter
+      locale={locale}
+      categories={categories}
+      eventsCount={events.length}
+      neighborhoods={neighborhoods}
+    />
+
+    <EventsArchiveGrid
+      locale={locale}
+      columns={columns}
+      colHeights={COL_HEIGHTS}
+      categoryLabels={categoryLabels}
+    />
+
+    <!-- Mobile CTA -->
+    <div class="mobile-cta-wrapper">
+      <a href={routesHref()} class="mobile-cta">
+        <span>{t('detail.allRoutes')}</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function() {
+      const sectionHeader = document.querySelector('.events-archive .section-header');
+      if (sectionHeader) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15 }
+        );
+        io.observe(sectionHeader);
+      }
+
+      const categoryButtons = document.querySelectorAll('.filter-chip');
+      const neighborhoodSelect = document.getElementById('filter-neighborhood');
+      const dateSelect = document.getElementById('filter-date');
+      const freeCheckbox = document.getElementById('filter-free');
+      const clearFiltersBtn = document.getElementById('clear-filters');
+      const emptyClearFiltersBtn = document.getElementById('empty-clear-filters');
+      const resultsCount = document.getElementById('results-count');
+      const emptyState = document.getElementById('empty-state');
+      const eventsGrid = document.getElementById('events-grid');
+      const eventCards = document.querySelectorAll('.archive-item');
+
+      let filters = { category: 'all', neighborhood: 'all', date: 'all', free: false };
+
+      function matchesDateFilter(eventDate, filter) {
+        if (filter === 'all') return true;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const event = new Date(eventDate);
+        event.setHours(0, 0, 0, 0);
+        const diffDays = Math.ceil((event - today) / (1000 * 60 * 60 * 24));
+        switch (filter) {
+          case 'today': return diffDays === 0;
+          case 'week':  return diffDays >= 0 && diffDays <= 7;
+          case 'weekend': {
+            const day = today.getDay();
+            const sat = new Date(today);
+            sat.setDate(today.getDate() + (day === 0 ? 6 : 6 - day));
+            const sun = new Date(sat);
+            sun.setDate(sat.getDate() + 1);
+            return event >= sat && event <= sun;
+          }
+          case 'month': return event.getMonth() === today.getMonth() && event.getFullYear() === today.getFullYear();
+          default: return true;
+        }
+      }
+
+      function applyFilters() {
+        let visibleCount = 0;
+        eventCards.forEach(card => {
+          const match =
+            (filters.category === 'all' || card.dataset.category === filters.category) &&
+            (filters.neighborhood === 'all' || card.dataset.neighborhood === filters.neighborhood) &&
+            (!filters.free || card.dataset.price === 'free') &&
+            matchesDateFilter(card.dataset.date, filters.date);
+          card.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
+        });
+
+        if (resultsCount) resultsCount.textContent = visibleCount;
+
+        if (visibleCount === 0) {
+          eventsGrid && eventsGrid.classList.add('hidden');
+          emptyState && emptyState.classList.remove('hidden');
+        } else {
+          eventsGrid && eventsGrid.classList.remove('hidden');
+          emptyState && emptyState.classList.add('hidden');
+        }
+
+        const hasActive = filters.category !== 'all' || filters.neighborhood !== 'all' ||
+                          filters.date !== 'all' || filters.free;
+        clearFiltersBtn && clearFiltersBtn.classList.toggle('hidden', !hasActive);
+      }
+
+      categoryButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryButtons.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+          filters.category = btn.dataset.category;
+          applyFilters();
+        });
+      });
+
+      neighborhoodSelect?.addEventListener('change', e => { filters.neighborhood = e.target.value; applyFilters(); });
+      dateSelect?.addEventListener('change', e => { filters.date = e.target.value; applyFilters(); });
+      freeCheckbox?.addEventListener('input', e => { filters.free = e.target.checked; applyFilters(); });
+
+      function clearFilters() {
+        filters = { category: 'all', neighborhood: 'all', date: 'all', free: false };
+        categoryButtons.forEach(b => {
+          const isAll = b.dataset.category === 'all';
+          b.classList.toggle('active', isAll);
+          b.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+        });
+        if (neighborhoodSelect) neighborhoodSelect.value = 'all';
+        if (dateSelect) dateSelect.value = 'all';
+        if (freeCheckbox) freeCheckbox.checked = false;
+        applyFilters();
+      }
+
+      clearFiltersBtn?.addEventListener('click', clearFilters);
+      emptyClearFiltersBtn?.addEventListener('click', clearFilters);
+    })();
+  </script>
+</BaseLayout>

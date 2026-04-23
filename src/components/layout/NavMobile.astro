@@ -50,15 +50,15 @@ const localePath = LOCALE_PATHS[locale];
 
     <!-- Footer row -->
     <div class="nav-mobile__footer">
-      <a href={`${localePath}/eventos`} class="nav-mobile__cta">
-        <span>{locale === 'es' ? 'explorar eventos' : 'explore events'}</span>
+      <a href={`${localePath}/eventos/`} class="nav-mobile__cta">
+        <span>{t('common.exploreEvents')}</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </a>
 
       <a href={switchUrl} class="nav-mobile__lang">
-        <span class="nav-mobile__lang-label">{locale === 'es' ? 'Switch to English' : 'Ver en español'}</span>
+        <span class="nav-mobile__lang-label">{t('nav.changeLanguage')}</span>
         <span class="nav-mobile__lang-badge">{locale === 'es' ? 'EN' : 'ES'}</span>
       </a>
     </div>

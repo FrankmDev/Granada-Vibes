@@ -1,4 +1,6 @@
 ---
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 
@@ -12,7 +14,7 @@ import ScreenFrame from '@components/ui/ScreenFrame.astro';
  * Optional 4-corner ScreenFrame tags via frameTag* props.
  */
 interface Props {
-  locale: 'es' | 'en';
+  locale: Locale;
   backHref: string;
   backLabel: string;
   refCode: string;       // e.g. "EVT / 001 · 2026"
@@ -42,6 +44,7 @@ const {
   frameTagBottomLeft,
   frameTagBottomRight,
 } = Astro.props;
+const t = useTranslations(locale);
 
 const hasScreenFrameTags = frameTagTopRight || frameTagBottomLeft || frameTagBottomRight;
 ---
@@ -123,7 +126,7 @@ const hasScreenFrameTags = frameTagTopRight || frameTagBottomLeft || frameTagBot
       <div class="cin-eyebrow">
         <span class="eyebrow-line"></span>
         <span class="eyebrow-text">
-          {locale === 'es' ? 'GRANADA' : 'GRANADA'}
+          {'GRANADA'}
           <span class="eyebrow-slash">/</span>
           {eyebrowText}
         </span>
@@ -210,7 +213,7 @@ const hasScreenFrameTags = frameTagTopRight || frameTagBottomLeft || frameTagBot
           <polygon points="6,0 12,6 6,12 0,6" fill="var(--h-muted)" />
         </svg>
       </span>
-      <span class="bar-item">{locale === 'es' ? 'VOL. I · 2026' : 'VOL. I · 2026'}</span>
+      <span class="bar-item">VOL. I · 2026</span>
       <span class="bar-diamond" aria-hidden="true">
         <svg viewBox="0 0 12 12" width="10" height="10">
           <polygon points="6,0 12,6 6,12 0,6" fill="var(--h-muted)" />
@@ -224,7 +227,7 @@ const hasScreenFrameTags = frameTagTopRight || frameTagBottomLeft || frameTagBot
   <!-- Scroll indicator -->
   <div class="scroll-hint" aria-hidden="true">
     <div class="scroll-line"></div>
-    <span class="scroll-text">{locale === 'es' ? 'Explorar' : 'Explore'}</span>
+    <span class="scroll-text">{t('routes.explore')}</span>
   </div>
 
 </section>
