@@ -102,11 +102,11 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
     pageNumber="02"
     coordinates="37°11′N 3°36′W"
     metadata={heroMetadata}
-    variant="default"
+    variant="compact"
   />
 
   <!-- CINEMATIC ACCORDION SECTION - Using RoutesGridSection from home -->
-  <div id="featured-routes">
+  <div id="featured-routes" class="routes-accordion-wrap">
     <RoutesGridSection routes={allRoutes} locale={locale} />
   </div>
 
@@ -2670,6 +2670,14 @@ const ogImage = 'https://placehold.co/1200x630/f5f0ea/1a1619?text=Granada+Vibes+
         transition: none;
         animation: none;
       }
+    }
+  </style>
+
+  <!-- Override RoutesGridSection spacing when used as subpage content -->
+  <style>
+    .routes-accordion-wrap :global(.routes-section) {
+      margin-top: 0;
+      padding-top: 2rem;
     }
   </style>
 </BaseLayout>

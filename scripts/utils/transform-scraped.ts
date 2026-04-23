@@ -12,70 +12,15 @@ import type { AyuntamientoEvent } from '../sources/ayuntamiento.js';
 import type { ElegirHoyEvent } from '../sources/elegirhoy.js';
 import { detectCategory } from './category-detector.js';
 import { detectNeighborhood } from './venue-neighborhood.js';
+import {
+  type GeneratedEvent,
+  slugify,
+  hashId,
+  parsePrice,
+} from './shared-types.js';
 
-// Mirror of GeneratedEvent from fetch-events.ts
-type EventSource =
-  | 'ticketmaster' | 'eventbrite'
-  | 'yuzin' | 'conciertos-granada' | 'granada-es-cultura' | 'indyrock'
-  | 'ayuntamiento' | 'turgranada' | 'palacio-congresos' | 'elegirhoy'
-  | 'manual' | 'mock';
-
-type EventCategory =
-  | 'concert' | 'exhibition' | 'festival' | 'market'
-  | 'theater' | 'workshop' | 'guided-tour' | 'cinema' | 'other';
-
-type Neighborhood =
-  | 'albaicin' | 'sacromonte' | 'centro' | 'realejo'
-  | 'alhambra' | 'cartuja' | 'zaidin' | 'otro';
-
-export interface GeneratedEvent {
-  id: string;
-  slug: string;
-  title: { es: string; en: string };
-  description: { es: string; en: string };
-  category: EventCategory;
-  date: string;
-  time: string;
-  venue: string;
-  neighborhood: Neighborhood;
-  price: number | null;
-  currency: 'EUR';
-  tags: string[];
-  featured: boolean;
-  source: EventSource;
-  sourceId: string;
-  sourceUrl: string;
-  imageUrl?: string;
-  lastSyncedAt: string;
-}
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-{2,}/g, '-');
-}
-
-function hashId(text: string): string {
-  let hash = 0;
-  for (let i = 0; i < text.length; i++) {
-    hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash).toString(36);
-}
-
-function parsePrice(text: string): number | null {
-  if (!text) return null;
-  if (/gratis|libre|free/i.test(text)) return null;
-  const match = text.match(/(\d+(?:[.,]\d+)?)/);
-  if (match) return parseFloat(match[1]!.replace(',', '.'));
-  return null;
-}
-
-const now = new Date().toISOString();
+// Re-export GeneratedEvent for consumers that import from here
+export type { GeneratedEvent };
 
 export function transformConciertosGranada(raw: ConciertosGranadaEvent): GeneratedEvent {
   // Clean title: strip whitespace pollution from scraping
@@ -99,7 +44,7 @@ export function transformConciertosGranada(raw: ConciertosGranadaEvent): Generat
     sourceId: hashId(raw.url),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -110,7 +55,7 @@ export function transformYuzin(raw: YuzinEvent): GeneratedEvent {
     title: { es: raw.title, en: raw.title },
     description: { es: raw.description, en: raw.description },
     category: raw.category
-      ? (detectCategory(raw.category + ' ' + raw.title) as EventCategory)
+      ? detectCategory(raw.category + ' ' + raw.title)
       : detectCategory(raw.title + ' ' + raw.description),
     date: raw.date,
     time: raw.time,
@@ -124,7 +69,7 @@ export function transformYuzin(raw: YuzinEvent): GeneratedEvent {
     sourceId: hashId(raw.url),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -147,7 +92,7 @@ export function transformGranadaEsCultura(raw: GranadaEsCulturaEvent): Generated
     sourceId: hashId(raw.url),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -170,7 +115,7 @@ export function transformIndyRock(raw: IndyRockEvent): GeneratedEvent {
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -187,7 +132,7 @@ export function transformPalacio(raw: PalacioEvent): GeneratedEvent {
     time: raw.time,
     venue: 'Palacio de Congresos de Granada',
     neighborhood: 'zaidin',
-    price: null,
+    price: parsePrice(raw.price ?? ''),
     currency: 'EUR',
     tags: [],
     featured: false,
@@ -195,7 +140,7 @@ export function transformPalacio(raw: PalacioEvent): GeneratedEvent {
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -218,7 +163,7 @@ export function transformTurgranada(raw: TurgranadaEvent): GeneratedEvent {
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -241,7 +186,7 @@ export function transformAyuntamiento(raw: AyuntamientoEvent): GeneratedEvent {
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }
 
@@ -264,6 +209,6 @@ export function transformElegirHoy(raw: ElegirHoyEvent): GeneratedEvent {
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
     ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
-    lastSyncedAt: now,
+    lastSyncedAt: new Date().toISOString(),
   };
 }

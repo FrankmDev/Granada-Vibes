@@ -1,8 +1,11 @@
 /**
  * Scraper: Palacio de Congresos de Granada
- * Each event is in a div.card.card-profile with two col-lg-6 columns:
- *   - col 1: img[src="/assets/img/curved-images/agenda/{ID}.png"]
- *   - col 2: card-body with h5 (title), h6.text-info (date), h4 (time), p (desc), a[href*="idEvento"]
+ * Each event card has:
+ *   - img src with agenda/{ID}.png — this ID maps to ?seccion=evento&idEvento={ID}
+ *   - h5 (title), h6 (date), h4 (time), p (description)
+ *
+ * Prices live in the detail pages (?seccion=evento&idEvento=X), NOT in the listing cards.
+ * We extract the ID from the image src and fetch each detail page for price info.
  */
 import { fetchHTML } from '../utils/scraper-helpers.js';
 import { parseSpanishDate, parseSpanishTime } from '../utils/date-parser.js';
@@ -12,6 +15,7 @@ export interface PalacioEvent {
   date: string;
   time: string;
   url: string;
+  price?: string;
   imageUrl?: string;
   description?: string;
 }
@@ -19,13 +23,47 @@ export interface PalacioEvent {
 const BASE_URL = 'https://www.pcgr.org';
 const LISTING_URL = `${BASE_URL}/?seccion=eventosCulturales`;
 
+/**
+ * Fetch a detail page for price extraction.
+ * Detail URL: https://www.pcgr.org/?seccion=evento&idEvento=470
+ */
+async function fetchDetailPrice(eventId: string): Promise<string> {
+  try {
+    const url = `${BASE_URL}/?seccion=evento&idEvento=${eventId}`;
+    const $ = await fetchHTML(url, { timeout: 12_000, retries: 1 });
+    const text = $('body').text();
+
+    // Look for price patterns in the detail page
+    const pricePatterns = [
+      /PRECIOS?[\s\S]{0,200}?(\d+(?:[,.]\d+)?)\s*€/i,
+      /precio[s]?[:\s]+(\d+(?:[,.]\d+)?)\s*€/i,
+      /desde\s+(\d+(?:[,.]\d+)?)\s*€/i,
+      /(\d+(?:[,.]\d+)?)\s*€\s*(?:anticipada|general|butaca|platea|anfiteatro|zona)/i,
+    ];
+
+    for (const pattern of pricePatterns) {
+      const match = text.match(pattern);
+      if (match) {
+        return `${match[1]!.replace(',', '.')}€`;
+      }
+    }
+
+    // Check for free
+    if (/\b(entrada\s+libre|gratis|acceso\s+libre|acceso\s+gratuito)\b/i.test(text)) {
+      return 'Gratis';
+    }
+  } catch {
+    // Silent fail — keep without price
+  }
+  return '';
+}
+
 export async function fetchPalacioEvents(): Promise<PalacioEvent[]> {
   const $ = await fetchHTML(LISTING_URL);
   const events: PalacioEvent[] = [];
   const seen = new Set<string>();
 
   // Each event card: div.card.card-profile (or div.card.hoverCard)
-  // Structure: .card > .row > .col-lg-6 (img) + .col-lg-6 (.card-body h5 h6 h4)
   $('div.card').each((_, cardEl) => {
     const $card = $(cardEl);
 
@@ -48,35 +86,44 @@ export async function fetchPalacioEvents(): Promise<PalacioEvent[]> {
     const timeText = $card.find('h4').first().text().trim() || $card.text();
     const time = parseSpanishTime(timeText);
 
-    // Image: find the agenda image (curved-images/agenda path)
+    // Image & Event ID: extract from agenda image src
+    // Pattern: src="./assets/img/curved-images/agenda/470.png"
     let imageUrl: string | undefined;
+    let eventId: string | undefined;
+
     $card.find('img').each((_, imgEl) => {
       const src = $(imgEl).attr('src') ?? '';
       if (src.includes('curved-images/agenda')) {
         imageUrl = src.startsWith('http')
           ? src
           : `${BASE_URL}/${src.replace(/^\.\//, '')}`;
+
+        // Extract the numeric ID from the image filename
+        const idMatch = src.match(/agenda\/(\d+)\.\w+$/);
+        if (idMatch) {
+          eventId = idMatch[1];
+        }
         return false; // stop iteration
       }
     });
 
-    // Event detail URL from link with idEvento
-    let fullUrl = LISTING_URL;
-    $card.find('a[href*="idEvento"]').each((_, aEl) => {
-      const href = $(aEl).attr('href') ?? '';
-      if (href) {
-        fullUrl = href.startsWith('http')
-          ? href
-          : `${BASE_URL}/${href.replace(/^\.\//, '')}`;
-        return false;
-      }
-    });
+    // Build the detail URL from the event ID
+    const detailUrl = eventId
+      ? `${BASE_URL}/?seccion=evento&idEvento=${eventId}`
+      : LISTING_URL;
 
     // Description from paragraph
     const descText = $card.find('p').first().text().trim();
-    const description = descText && descText.length > 5 ? descText.slice(0, 300) : undefined;
+    const description = descText && descText.length > 5 ? descText.slice(0, 400) : undefined;
 
-    events.push({ title, date, time, url: fullUrl, imageUrl, description });
+    events.push({
+      title,
+      date,
+      time,
+      url: detailUrl,
+      imageUrl,
+      description,
+    });
   });
 
   // Fallback: h5-based scan if card approach found nothing
@@ -95,20 +142,47 @@ export async function fetchPalacioEvents(): Promise<PalacioEvent[]> {
       const time = parseSpanishTime($section.find('h4').first().text().trim() || $section.text());
 
       let imageUrl: string | undefined;
+      let eventId: string | undefined;
       const imgSrc = $section.find('img[src*="agenda"]').first().attr('src');
       if (imgSrc) {
         imageUrl = imgSrc.startsWith('http') ? imgSrc : `${BASE_URL}/${imgSrc.replace(/^\.\//, '')}`;
+        const idMatch = imgSrc.match(/agenda\/(\d+)\.\w+$/);
+        if (idMatch) eventId = idMatch[1];
       }
 
-      let fullUrl = LISTING_URL;
-      const href = $section.find('a[href*="idEvento"]').first().attr('href') ?? '';
-      if (href) fullUrl = href.startsWith('http') ? href : `${BASE_URL}/${href.replace(/^\.\//, '')}`;
+      const detailUrl = eventId
+        ? `${BASE_URL}/?seccion=evento&idEvento=${eventId}`
+        : LISTING_URL;
 
       const descText = $section.find('p').first().text().trim();
-      const description = descText && descText.length > 5 ? descText.slice(0, 300) : undefined;
+      const description = descText && descText.length > 5 ? descText.slice(0, 400) : undefined;
 
-      events.push({ title, date, time, url: fullUrl, imageUrl, description });
+      events.push({ title, date, time, url: detailUrl, imageUrl, description });
     });
+  }
+
+  // ── Enrich ALL events with prices from their detail pages ──
+  // Each detail page has the real price that the listing doesn't show
+  const CONCURRENCY = 3;
+
+  for (let i = 0; i < events.length; i += CONCURRENCY) {
+    const batch = events.slice(i, i + CONCURRENCY);
+    await Promise.allSettled(
+      batch.map(async (event) => {
+        // Extract eventId from URL
+        const idMatch = event.url.match(/idEvento=(\d+)/);
+        if (!idMatch) return;
+
+        const price = await fetchDetailPrice(idMatch[1]!);
+        if (price) {
+          event.price = price;
+        }
+      })
+    );
+    // Small delay between batches to avoid hammering
+    if (i + CONCURRENCY < events.length) {
+      await new Promise(r => setTimeout(r, 400));
+    }
   }
 
   return events.filter((e) => e.date.length === 10);

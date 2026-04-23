@@ -31,7 +31,7 @@ export default defineConfig({
         format: 'webp',
       },
     },
-    domains: ['images.unsplash.com', 'upload.wikimedia.org', 'www.pcgr.org', 'conciertos.club'],
+    domains: ['images.unsplash.com', 'upload.wikimedia.org', 'www.pcgr.org', 'conciertos.club', 'img.evbuc.com', 'cdn.dipgra.es', 's1.ticketm.net'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -52,6 +52,18 @@ export default defineConfig({
       {
         protocol: 'https',
         hostname: 'conciertos.club',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.evbuc.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.dipgra.es',
+      },
+      {
+        protocol: 'https',
+        hostname: 's1.ticketm.net',
       },
     ],
   },
@@ -83,10 +95,7 @@ export default defineConfig({
       // Code splitting
       rollupOptions: {
         output: {
-          manualChunks: {
-            // Separate vendor chunks for better caching
-            'vendor': ['astro'],
-          },
+          manualChunks: undefined,
         },
       },
     },

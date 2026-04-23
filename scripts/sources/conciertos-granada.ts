@@ -1,8 +1,17 @@
 /**
  * Scraper: ConciertosenGranada.es
  * 100% live music. Small venues like Planta Baja, Sala Riff, Lemon Rock.
- * Structure: li[itemscope] with Schema.org MusicEvent microdata
- * Images: accessed via data-src on img.lazy, or meta[itemprop="image"] in div.microdatos
+ *
+ * HTML structure (per day section):
+ *   Each event is an `li` containing an `a[href^="/conciertos/"]` with:
+ *     - Visible time (e.g. "21:30")
+ *     - Title via strong/link text
+ *     - Genre (e.g. "/ Jazz/Swing")
+ *     - Venue (e.g. "Lemon Rock. Granada")
+ *     - Price (e.g. "5€", "Entrada libre")
+ *     - Image via img.lazy[data-src] or meta[itemprop="image"]
+ *
+ * We also enrich events that lack price/description by fetching the detail page.
  */
 import { fetchHTML } from '../utils/scraper-helpers.js';
 
@@ -47,66 +56,132 @@ function parseShortDate(text: string): string | null {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
+/** Extract time from text like "21:30" or "22:00" */
+function extractTime(text: string): string {
+  const match = text.match(/(\d{1,2}):(\d{2})/);
+  if (match) {
+    return `${match[1]!.padStart(2, '0')}:${match[2]}`;
+  }
+  return 'Por confirmar';
+}
+
+/** Extract price from text like "5€", "38,50€", "Entrada libre", "12/15€" */
+function extractPrice(text: string): string {
+  if (/entrada\s+libre|gratis|acceso\s+libre/i.test(text)) {
+    return 'Gratis';
+  }
+  // Match first price pattern: "5€", "38,50€", "12,37/15€"
+  const match = text.match(/(\d+(?:[.,]\d+)?)\s*€/);
+  if (match) {
+    return `${match[1]!.replace(',', '.')}€`;
+  }
+  return '';
+}
+
+/** Extract genre from text like "/ Jazz/Swing", "/ Pop-rock/Indie" */
+function extractGenre(text: string): string {
+  const match = text.match(/\/\s*([A-ZÁÉÍÓÚÑa-záéíóúñ][A-Za-záéíóúñÁÉÍÓÚÑ\s/&-]+?)(?:\s*$|\s*\n)/);
+  if (match) {
+    return match[1]!.trim();
+  }
+  return '';
+}
+
+/** Fetch detail page for richer description and fallback price */
+async function fetchDetailInfo(url: string): Promise<{ description?: string; price?: string }> {
+  try {
+    const $ = await fetchHTML(url, { timeout: 10_000, retries: 1 });
+    const result: { description?: string; price?: string } = {};
+
+    // Description: look for the event description block
+    const descEl = $('div.descripcion, .evento-descripcion, article p, .entry-content p').first();
+    if (descEl.length) {
+      const desc = descEl.text().trim();
+      if (desc.length > 10) {
+        result.description = desc.slice(0, 400);
+      }
+    }
+
+    // Price from detail page
+    const text = $.text();
+    const priceMatch = text.match(/Precio[:\s]+([\d.,]+(?:\s*[-/]\s*[\d.,]+)?)\s*€/i);
+    if (priceMatch) {
+      result.price = `${priceMatch[1]!.split(/[-/]/)[0]!.trim().replace(',', '.')}€`;
+    } else if (/\b(entrada\s+libre|gratis|acceso\s+libre)\b/i.test(text)) {
+      result.price = 'Gratis';
+    }
+
+    return result;
+  } catch {
+    return {};
+  }
+}
+
 export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaEvent[]> {
   const $ = await fetchHTML(BASE_URL);
   const events: ConciertosGranadaEvent[] = [];
   const seen = new Set<string>();
 
-  // Each event is in an li[itemscope] with Schema.org MusicEvent data
-  $('li[itemscope][itemtype*="MusicEvent"]').each((_, el) => {
-    const $li = $(el);
+  // ── Current date context for date parsing ──
+  // The page groups events by day with date headers.
+  // We'll track the current date as we iterate.
+  let currentDate = '';
 
-    // ── Image ── best source: meta[itemprop="image"] in div.microdatos
-    const metaImage = $li.find('meta[itemprop="image"]').attr('content');
-    // Fallback: data-src on lazy img (thumbnail, but usable)
-    const imgDataSrc = $li.find('img.lazy').attr('data-src');
-    // Convert thumbnail to full-size if it matches the thumbnail pattern
-    // e.g. /doc/cp/2026/c_xxx_p.jpg → /doc/c/2026/c_xxx.jpg
-    //      /doc/ap/2017/a_xxx_p.jpg → /doc/a/2017/a_xxx.jpg
-    let imageUrl: string | undefined = metaImage;
-    if (!imageUrl && imgDataSrc && !imgDataSrc.includes('nofoto')) {
-      // Attempt to convert thumbnail to full-size
-      imageUrl = imgDataSrc
-        .replace('/doc/cp/', '/doc/c/')
-        .replace('/doc/ap/', '/doc/a/')
-        .replace(/_p\.jpg$/, '.jpg');
-    }
+  // ── Strategy: Walk all list items containing concert links ──
+  // The page uses `li` elements with embedded concert data.
+  // Each li has: time, image, title (in a[href^="/conciertos/"]), genre, venue+price
 
-    // ── Title ── first itemprop="name" within microdatos, or anchor text
-    const metaName = $li.find('meta[itemprop="name"]').attr('content');
-    // Also try the visible anchor text
-    const anchorTitle = $li.find('a.nombre strong').map((_, s) => $(s).text().trim()).get().join(' ').trim();
-    const title = metaName || anchorTitle;
-    if (!title || title.length < 2) return;
+  $('li').each((_, liEl) => {
+    const $li = $(liEl);
 
-    // ── URL ──
-    const href = $li.find('a[href^="/conciertos/"]').first().attr('href') ?? '';
+    // Must contain a concert link
+    const $concertLink = $li.find('a[href^="/conciertos/"]').first();
+    if (!$concertLink.length) return;
+
+    const href = $concertLink.attr('href') ?? '';
     if (!href || href === '/conciertos/' || href === '/conciertos') return;
+    // Skip category/filter links
+    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+
     const cleanHref = href.split('?')[0]!;
+    // Normalize URL to deduplicate events with timestamp suffixes
     const normalizedHref = cleanHref.replace(/\/\d{10,}$/, '');
     if (seen.has(normalizedHref)) return;
     seen.add(normalizedHref);
 
+    // ── Get all text content of this li for extraction ──
+    const liText = $li.text();
+    const liHtml = $li.html() ?? '';
+
+    // ── Title ──
+    // Try Schema.org meta first, then link strong text, then link text
+    const metaName = $li.find('meta[itemprop="name"]').attr('content');
+    const strongText = $concertLink.find('strong').map((_, s) => $(s).text().trim()).get().join(' ').trim();
+    const linkText = $concertLink.text().split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const title = metaName || strongText || linkText[0] || '';
+    if (!title || title.length < 2) return;
+
     // ── Date ──
-    // Try Schema.org startDate first (most reliable)
+    // Try Schema.org startDate first
     const metaDate = $li.find('meta[itemprop="startDate"]').attr('content');
     let dateStr = '';
     if (metaDate) {
-      // Format: "2026-03-24T20:30" → "2026-03-24"
       dateStr = metaDate.split('T')[0] ?? '';
     }
-
-    // Fallback: parse visible date text from the link
+    // Fallback: parse from visible text
     if (!dateStr) {
-      const rawText = $li.find('a[href^="/conciertos/"]').first().text();
-      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-      for (const line of lines) {
+      for (const line of linkText) {
         const parsed = parseShortDate(line);
         if (parsed) { dateStr = parsed; break; }
       }
     }
-
+    // Fallback: use current date context (from day headers)
+    if (!dateStr && currentDate) {
+      dateStr = currentDate;
+    }
     if (!dateStr) return;
+    // Update current date context
+    currentDate = dateStr;
 
     // ── Time ──
     const metaStartDate = $li.find('meta[itemprop="startDate"]').attr('content');
@@ -115,41 +190,70 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
       const timePart = metaStartDate.split('T')[1];
       if (timePart) time = timePart.slice(0, 5);
     }
+    // Fallback: extract from visible text (first occurrence of HH:MM)
+    if (time === 'Por confirmar') {
+      time = extractTime(liText);
+    }
 
     // ── Venue ──
+    // Try Schema.org location
     const venueMeta = $li.find('[itemprop="location"] [itemprop="name"]').first().attr('content')
       || $li.find('[itemprop="location"] [itemprop="name"]').first().text().trim();
-    let venue = venueMeta || 'Granada';
-    if (!venue || venue.trim().length < 2) {
-      // Fallback: parse from visible text
-      const rawText = $li.find('a[href^="/conciertos/"]').first().text();
-      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i]!;
-        if (!parseShortDate(line) && line.length > 2) {
+    let venue = venueMeta || '';
+
+    // Fallback: look for venue links (a[href^="/locales/"])
+    if (!venue || venue.length < 2) {
+      const venueLink = $li.find('a[href*="/locales/"]').first().text().trim();
+      if (venueLink) {
+        // Strip city suffix like ". Granada"
+        venue = venueLink.replace(/\.\s*(granada|motril|monachil|almuñécar|loja|armilla|la zubia|lanjarón|dílar|nigüelas|órgiva|atarfe)\s*$/i, '').trim();
+      }
+    }
+
+    // Fallback: parse from link text lines
+    if (!venue || venue.length < 2) {
+      for (let i = 1; i < linkText.length; i++) {
+        const line = linkText[i]!;
+        if (!parseShortDate(line) && line.length > 2 && !/^\d/.test(line)) {
           venue = line.replace(/\.\s*(granada|motril|monachil|almuñécar|loja)$/i, '').trim();
           break;
         }
       }
     }
+    if (!venue) venue = 'Granada';
 
     // ── Genre ──
-    const parentText = $li.text();
-    const genreMatch = parentText.match(
-      /\b(Rock|Metal|Pop|Jazz|Swing|Indie|Electr[oó]nica|Folk|Flamenco|Hip[- ]?[Hh]op|Reggae|Blues|Soul|Funk|Punk|Ska|Rap|Trap|Techno|House|Rumba|Latin|Cl[aá]sica|World|Mestizaje|Fusión|Singer[\s-]?Songwriter)(\s*\/\s*\S+)?/i
-    );
-    const genre = genreMatch ? genreMatch[1]! : '';
+    const genre = extractGenre(liText);
 
     // ── Price ──
-    const priceMatch = parentText.match(/(\d+[,.]?\d*)\s*€|entrada\s+libre|gratis/i);
-    const price = priceMatch ? priceMatch[0].trim() : '';
+    const price = extractPrice(liText);
+
+    // ── Image ──
+    const metaImage = $li.find('meta[itemprop="image"]').attr('content');
+    const imgDataSrc = $li.find('img.lazy').attr('data-src') ?? $li.find('img').first().attr('data-src');
+    const imgSrc = $li.find('img').first().attr('src');
+    let imageUrl: string | undefined = metaImage;
+    if (!imageUrl && imgDataSrc && !imgDataSrc.includes('nofoto')) {
+      // Convert thumbnail to full-size
+      imageUrl = imgDataSrc
+        .replace('/doc/cp/', '/doc/c/')
+        .replace('/doc/ap/', '/doc/a/')
+        .replace(/_p\.(jpe?g|png)$/i, '.$1');
+    }
+    if (!imageUrl && imgSrc && !imgSrc.includes('nofoto') && !imgSrc.startsWith('data:')) {
+      imageUrl = imgSrc;
+    }
+    // Ensure absolute URL
+    if (imageUrl && !imageUrl.startsWith('http')) {
+      imageUrl = `${BASE_URL}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+    }
 
     // ── Description ──
     const descEl = $li.find('p, .description, .info, .resumen').first();
     const description = descEl.length ? descEl.text().trim().slice(0, 300) : undefined;
 
     events.push({
-      title,
+      title: title.replace(/\s+/g, ' ').trim(),
       date: dateStr,
       time,
       venue,
@@ -161,62 +265,81 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
     });
   });
 
-  // Fallback: if structured data approach found nothing, revert to link-based scraping
-  if (events.length === 0) {
-    $('a[href^="/conciertos/"]').each((_, el) => {
-      const $link = $(el);
-      const href = $link.attr('href') ?? '';
-      if (href === '/conciertos/' || href === '/conciertos') return;
-      if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+  // ── Also scan the "banner" / "destacados" section ──
+  // These are in the top slider and may not appear in the li scan
+  $('a[href^="/conciertos/"]').each((_, el) => {
+    const $link = $(el);
+    const href = $link.attr('href') ?? '';
+    if (!href || href === '/conciertos/' || href === '/conciertos') return;
+    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+    // Skip buy-ticket links
+    if (href.includes('link=banner') === false && $link.closest('li').length) return;
 
-      const cleanHref = href.split('?')[0]!;
-      const normalizedHref = cleanHref.replace(/\/\d{10,}$/, '');
-      if (seen.has(normalizedHref)) return;
-      seen.add(normalizedHref);
+    const cleanHref = href.split('?')[0]!;
+    const normalizedHref = cleanHref.replace(/\/\d{10,}$/, '');
+    if (seen.has(normalizedHref)) return;
+    seen.add(normalizedHref);
 
-      const rawText = $link.text();
-      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-      if (lines.length === 0) return;
+    const rawText = $link.text();
+    const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) return;
 
-      const title = lines[0]!;
-      if (title.length < 2) return;
+    const title = lines[0]!;
+    if (title.length < 2) return;
 
-      let venue = 'Granada';
-      let dateStr = '';
+    let venue = 'Granada';
+    let dateStr = '';
 
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i]!;
-        const parsed = parseShortDate(line);
-        if (parsed) {
-          dateStr = parsed;
-        } else if (line.length > 2 && !dateStr) {
-          venue = line.replace(/\.\s*(granada|motril|monachil|almuñécar|loja)$/i, '').trim();
-        }
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i]!;
+      const parsed = parseShortDate(line);
+      if (parsed) {
+        dateStr = parsed;
+      } else if (line.length > 2 && !dateStr) {
+        venue = line.replace(/\.\s*(granada|motril|monachil|almuñécar|loja|armilla|la zubia|lanjarón|dílar)$/i, '').trim();
       }
+    }
 
-      const $parent = $link.parent();
-      const img = $parent.find('img').first();
-      const imgSrc = img.attr('data-src') ?? img.attr('src') ?? '';
-      const imageUrl =
-        imgSrc && !imgSrc.includes('nofoto')
-          ? imgSrc.startsWith('http')
-            ? imgSrc
-            : `${BASE_URL}${imgSrc}`
-          : undefined;
+    if (!dateStr) return;
 
-      if (!dateStr) return;
+    // Get image from parent container
+    const $parent = $link.parent();
+    const imgSrc = $parent.find('img').first().attr('data-src')
+      ?? $parent.find('img').first().attr('src') ?? '';
+    const imageUrl = imgSrc && !imgSrc.includes('nofoto')
+      ? (imgSrc.startsWith('http') ? imgSrc : `${BASE_URL}${imgSrc}`)
+      : undefined;
 
-      events.push({
-        title,
-        date: dateStr,
-        time: 'Por confirmar',
-        venue,
-        genre: '',
-        price: '',
-        url: cleanHref.startsWith('http') ? cleanHref : `${BASE_URL}${cleanHref}`,
-        imageUrl,
-      });
+    events.push({
+      title: title.replace(/\s+/g, ' ').trim(),
+      date: dateStr,
+      time: 'Por confirmar',
+      venue,
+      genre: '',
+      price: '',
+      url: cleanHref.startsWith('http') ? cleanHref : `${BASE_URL}${cleanHref}`,
+      imageUrl,
     });
+  });
+
+  // ── Enrich events that lack price/description from detail pages ──
+  // Parallelize with concurrency limit to avoid hammering the server
+  const CONCURRENCY = 5;
+  const needsEnrich = events.filter(e => !e.price || !e.description);
+
+  for (let i = 0; i < needsEnrich.length; i += CONCURRENCY) {
+    const batch = needsEnrich.slice(i, i + CONCURRENCY);
+    const results = await Promise.allSettled(
+      batch.map(async (event) => {
+        const info = await fetchDetailInfo(event.url);
+        if (info.price && !event.price) event.price = info.price;
+        if (info.description && !event.description) event.description = info.description;
+      })
+    );
+    // Small delay between batches
+    if (i + CONCURRENCY < needsEnrich.length) {
+      await new Promise(r => setTimeout(r, 300));
+    }
   }
 
   return events;

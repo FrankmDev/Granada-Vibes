@@ -2,53 +2,6 @@ import type { Event } from '@types';
 
 export const mockEvents: Event[] = [
   {
-    id: 'evt-002',
-    slug: 'concierto-rosalia-granada',
-    title: {
-      es: 'Rosalía - Motomami World Tour',
-      en: 'Rosalía - Motomami World Tour',
-    },
-    description: {
-      es: 'La artista catalana más internacional llega al Palacio de Deportes de Granada con su gira Motomami World Tour. Un espectáculo revolucionario que fusiona flamenco, reguetón y experimentalismo electrónico con una puesta en escena de vanguardia. Con más de 20 bailarines, escenografía cinética y un repertorio que abarca desde "Con Altura" hasta "Bizcochito", se espera una noche histórica para la música en Granada.',
-      en: 'Spain\'s most international artist arrives at Granada\'s Sports Palace with her Motomami World Tour. A revolutionary show fusing flamenco, reggaeton, and electronic experimentalism with a cutting-edge staging. With over 20 dancers, kinetic set design, and a repertoire spanning from "Con Altura" to "Bizcochito", a historic night for music in Granada is expected.',
-    },
-    category: 'concert',
-    date: '2026-04-15',
-    time: '20:00',
-    venue: 'Palacio de Deportes',
-    neighborhood: 'cartuja',
-    address: 'Av. de Andalucía, s/n',
-    price: 65,
-    currency: 'EUR',
-    tags: ['pop', 'flamenco', 'concierto', 'internacional'],
-    featured: true,
-    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop',
-    venueDescription: {
-      es: 'El Palacio Municipal de Deportes de Granada es el recinto indoor más grande de la ciudad, con capacidad para 9.500 espectadores. Remodelado recientemente, cuenta con una acústica excepcional y se ha convertido en parada obligada de las giras internacionales. Dispone de parking propio, accesibilidad completa y zona de restauración.',
-      en: 'The Granada Municipal Sports Palace is the largest indoor venue in the city, with capacity for 9,500 spectators. Recently renovated, it features exceptional acoustics and has become a mandatory stop for international tours. It has its own parking, full accessibility, and a food court area.',
-    },
-    highlights: {
-      es: [
-        'Show completo del Motomami World Tour con escenografía original',
-        'Posibles colaboraciones sorpresa con artistas locales',
-        'Merchandising exclusivo de la gira disponible en el recinto',
-        'Zona VIP con meet & greet para los primeros 100 compradores',
-      ],
-      en: [
-        'Complete Motomami World Tour show with original staging',
-        'Possible surprise collaborations with local artists',
-        'Exclusive tour merchandise available at the venue',
-        'VIP area with meet & greet for the first 100 buyers',
-      ],
-    },
-    tips: {
-      es: 'Las puertas abren una hora antes del concierto. El parking se llena rápido: se recomienda usar transporte público (LAC hasta Estación de Autobuses y 10 min andando). No se permite la entrada con cámaras profesionales ni comida del exterior.',
-      en: 'Doors open one hour before the concert. Parking fills up fast: public transport is recommended (LAC bus to the Bus Station and 10 min walk). Professional cameras and outside food are not allowed.',
-    },
-    ticketsUrl: 'https://ticketmaster.es',
-    source: 'mock',
-  },
-  {
     id: 'evt-005',
     slug: 'teatro-federico-garcia-lorca',
     title: {
@@ -69,7 +22,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['teatro', 'lorca', 'clásico', 'cultura'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1503095396549-807759245b35?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/teatro-federico-garcia-lorca/800/600',
     venueDescription: {
       es: 'El Teatro Isabel la Católica es el coliseo municipal de Granada, un espacio art déco inaugurado en 1952 con capacidad para 760 espectadores. Situado en pleno centro, junto a la Acera del Darro, ha acogido los estrenos más importantes de la ciudad y mantiene una programación estable de teatro, danza y música.',
       en: 'Teatro Isabel la Católica is Granada\'s municipal theater, a 1952 art deco space seating 760 people. Located right in the city center by the Acera del Darro, it has hosted the city\'s most important premieres and maintains a regular program of theater, dance, and music.',
@@ -117,7 +70,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['jazz', 'música', 'gratis', 'verano'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/concierto-jazz-plaza-trinidad/800/600',
     venueDescription: {
       es: 'La Plaza de la Trinidad es una plaza recoleta del centro de Granada, flanqueada por la imponente fachada barroca de la Basílica de San Juan de Dios. Su ambiente tranquilo y sus terrazas la convierten en uno de los rincones favoritos de los granadinos, y durante el festival se transforma en un club de jazz al aire libre.',
       en: 'Plaza de la Trinidad is a quiet square in central Granada, flanked by the imposing baroque facade of the Basilica of San Juan de Dios. Its tranquil atmosphere and terraces make it a favorite spot for locals, and during the festival it transforms into an open-air jazz club.',
@@ -164,7 +117,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['fotografía', 'albaicín', 'cultura local', 'gratis'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1509030450996-dd1a26dda07a?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/exposicion-fotografia-albaicin/800/600',
     venueDescription: {
       es: 'El Centro Cultural Gran Capitán es un espacio expositivo municipal situado junto al Paseo del Salón, en pleno centro de Granada. Dispone de varias salas diáfanas con iluminación profesional y accesibilidad completa, y acoge regularmente exposiciones de artistas locales y muestras culturales.',
       en: 'The Gran Capitán Cultural Center is a municipal exhibition space located next to the Paseo del Salón, right in central Granada. It features several open galleries with professional lighting and full accessibility, and regularly hosts exhibitions by local artists and cultural shows.',
@@ -210,7 +163,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['flamenco', 'cante', 'tradición', 'especial'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1604849329182-941ddc906cfd?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/concierto-carmen-linares/800/600',
     venueDescription: {
       es: 'El Teatro del Generalife es un anfiteatro al aire libre situado en los jardines de la Alhambra, con capacidad para 1.300 espectadores. Inaugurado en 1952 para el Festival Internacional, ofrece una acústica natural excepcional y un telón de fondo formado por los cipreses y setos centenarios del Generalife.',
       en: 'The Generalife Theatre is an open-air amphitheater in the Alhambra gardens, seating 1,300 spectators. Opened in 1952 for the International Festival, it offers exceptional natural acoustics and a backdrop of centuries-old cypresses and hedges of the Generalife.',
@@ -237,52 +190,6 @@ export const mockEvents: Event[] = [
     source: 'mock',
   },
   {
-    id: 'evt-011',
-    slug: 'mercado-alimentacion-saludable',
-    title: {
-      es: 'Mercado de Alimentación Saludable',
-      en: 'Healthy Food Market',
-    },
-    description: {
-      es: 'Productores locales de la Alpujarra y la Vega de Granada se dan cita en la Plaza del Carmen con sus mejores productos ecológicos, artesanales y de temporada. Aceite de oliva virgen extra de Montefrío, quesos de cabra de la Sierra de Huétor, miel de la Alpujarra, embutidos de cerdo ibérico de Trevélez y frutas de la Vega. Incluye talleres de cocina saludable, catas guiadas y un rincón infantil con actividades de huerto urbano.',
-      en: 'Local producers from the Alpujarra and the Vega de Granada gather at Plaza del Carmen with their best organic, artisanal, and seasonal products. Extra virgin olive oil from Montefrío, goat cheese from Sierra de Huétor, Alpujarra honey, Iberian cured meats from Trevélez, and fruits from the Vega. Includes healthy cooking workshops, guided tastings, and a children\'s corner with urban garden activities.',
-    },
-    category: 'market',
-    date: '2026-04-20',
-    time: '10:00',
-    venue: 'Plaza del Carmen',
-    neighborhood: 'centro',
-    address: 'Plaza del Carmen, s/n',
-    price: null,
-    currency: 'EUR',
-    tags: ['gastronomía', 'ecológico', 'local', 'mercado'],
-    featured: false,
-    image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&h=600&fit=crop',
-    venueDescription: {
-      es: 'La Plaza del Carmen es el corazón administrativo de Granada, frente al Ayuntamiento. Su amplia explanada se transforma regularmente en mercado al aire libre, con espacio para más de 40 puestos y fácil acceso desde cualquier punto del centro.',
-      en: 'Plaza del Carmen is Granada\'s administrative heart, facing City Hall. Its wide esplanade regularly transforms into an open-air market, with room for over 40 stalls and easy access from anywhere in the center.',
-    },
-    highlights: {
-      es: [
-        'Más de 40 productores locales de la provincia de Granada',
-        'Catas guiadas de aceite, queso y vino de la tierra',
-        'Talleres de cocina saludable con chefs locales (inscripción gratuita)',
-        'Rincón infantil con actividades de huerto urbano',
-      ],
-      en: [
-        'Over 40 local producers from Granada province',
-        'Guided tastings of local olive oil, cheese, and wine',
-        'Healthy cooking workshops with local chefs (free registration)',
-        'Children\'s corner with urban garden activities',
-      ],
-    },
-    tips: {
-      es: 'Lleva tu propia bolsa reutilizable. Los mejores productos se agotan antes de mediodía. Trae efectivo: no todos los puestos aceptan tarjeta. Horario: 10:00–15:00.',
-      en: 'Bring your own reusable bag. The best products sell out before noon. Bring cash: not all stalls accept cards. Hours: 10 AM–3 PM.',
-    },
-    source: 'mock',
-  },
-  {
     id: 'evt-012',
     slug: 'taller-escritura-creativa',
     title: {
@@ -303,7 +210,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['escritura', 'creatividad', 'literatura', 'albaicín'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/taller-escritura-creativa/800/600',
     venueDescription: {
       es: 'El Carmen de la Victoria es uno de los cármenes más hermosos del Albaicín, propiedad de la Universidad de Granada. Sus jardines aterrazados ofrecen una de las vistas más espectaculares de la Alhambra y Sierra Nevada, y su interior conserva la arquitectura doméstica nazarí con salones íntimos ideales para talleres.',
       en: 'Carmen de la Victoria is one of the most beautiful carmenes in the Albaicín, owned by the University of Granada. Its terraced gardens offer one of the most spectacular views of the Alhambra and Sierra Nevada, and its interior preserves Nasrid domestic architecture with intimate rooms ideal for workshops.',
@@ -349,7 +256,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['flamenco', 'tablao', 'cultura', 'espectáculo'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/noche-flamenca-tablaos/800/600',
     venueDescription: {
       es: 'Venta El Gallo es uno de los tablaos flamencos más históricos del Sacromonte, excavado en la roca de la montaña. Su cueva principal, con capacidad para 50 personas, conserva las paredes encaladas y los bancos de mampostería originales. Generaciones de artistas gitanos han actuado aquí desde los años 50, manteniendo viva la tradición de la zambra granadina.',
       en: 'Venta El Gallo is one of Sacromonte\'s most historic flamenco tablaos, carved into the mountainside rock. Its main cave, seating 50 people, preserves the original whitewashed walls and masonry benches. Generations of Roma artists have performed here since the 1950s, keeping the tradition of Granada\'s zambra alive.',
@@ -397,7 +304,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['música antigua', 'patrimonio', 'concierto', 'cultura'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/ciclo-musica-antigua/800/600',
     venueDescription: {
       es: 'El Corral del Carbón es el monumento nazarí mejor conservado del centro de Granada y la única alhóndiga islámica que permanece en pie en la península. Su patio porticado de tres alturas, construido en el siglo XIV, ofrece una acústica natural perfecta para la música de cámara y un marco histórico incomparable.',
       en: 'The Corral del Carbón is the best-preserved Nasrid monument in central Granada and the only Islamic alhóndiga still standing in the peninsula. Its three-story arcaded courtyard, built in the 14th century, offers perfect natural acoustics for chamber music and an incomparable historic setting.',
@@ -443,7 +350,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['fotografía', 'taller', 'albaicín', 'experiencia'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/taller-fotografia-nocturna/800/600',
     venueDescription: {
       es: 'El Mirador de San Nicolás ofrece la vista más icónica de Granada: la Alhambra recortada contra las cumbres nevadas de Sierra Nevada. Al anochecer, cuando la Alhambra se ilumina y las últimas luces del día tiñen el cielo de naranja y violeta, se convierte en uno de los mejores puntos de fotografía de toda España.',
       en: 'San Nicolás Viewpoint offers Granada\'s most iconic view: the Alhambra silhouetted against the snow-capped peaks of Sierra Nevada. At nightfall, when the Alhambra lights up and the last daylight tinges the sky orange and violet, it becomes one of the best photography spots in all of Spain.',
@@ -489,7 +396,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['música clásica', 'latinoamericana', 'concierto'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/concierto-camerata-andina/800/600',
     venueDescription: {
       es: 'El Auditorio Manuel de Falla, situado en la ladera del Mauror junto a la Alhambra, es la sala de conciertos más importante de Granada. Inaugurado en 1978 y nombrado en honor al compositor ganadino, tiene capacidad para 1.500 espectadores y una acústica considerada entre las mejores de España.',
       en: 'The Manuel de Falla Auditorium, set on the Mauror hillside near the Alhambra, is Granada\'s most important concert hall. Opened in 1978 and named after the Granadan composer, it seats 1,500 and has acoustics considered among the best in Spain.',
@@ -536,7 +443,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['cine', 'festival', 'gratis', 'cultura'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/festival-cine-europeo/800/600',
     venueDescription: {
       es: 'La Plaza de la Universidad es uno de los espacios más emblemáticos del centro de Granada, rodeada por la fachada barroca de la antigua universidad y edificios históricos. Durante el festival, se transforma en una sala de cine al aire libre con capacidad para 500 espectadores sentados y pantalla de 12 metros.',
       en: 'Plaza de la Universidad is one of central Granada\'s most emblematic spaces, surrounded by the baroque facade of the old university and historic buildings. During the festival, it transforms into an open-air cinema seating 500 with a 12-meter screen.',
@@ -582,7 +489,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['teatro', 'clásico', 'alhambra', 'patrimonio'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1568797629516-9e1f5c533151?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/teatro-federico-garcia-lorca/800/600',
     venueDescription: {
       es: 'El Palacio de Carlos V es una obra maestra del Renacimiento español, construido en 1527 por Pedro Machuca dentro del recinto de la Alhambra. Su patio circular, único en la arquitectura renacentista europea, tiene 30 metros de diámetro y se convierte cada verano en un escenario teatral al aire libre con capacidad para 600 espectadores.',
       en: 'The Palace of Charles V is a masterpiece of Spanish Renaissance architecture, built in 1527 by Pedro Machuca within the Alhambra complex. Its circular courtyard, unique in European Renaissance architecture, is 30 meters in diameter and becomes an open-air theater every summer seating 600 spectators.',
@@ -630,7 +537,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['cine', 'patrimonio', 'cine de autor', 'gratis', 'al aire libre'],
     featured: true,
-    image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/ciclo-cine-alhambra/800/600',
     venueDescription: {
       es: 'El Corral del Carbón es el monumento nazarí mejor conservado de Granada y el único alhóndiga (posada de caravanas) islámico que permanece en pie en España. Su patio porticado de tres alturas, construido en el siglo XIV, se convierte cada verano en una sala de cine al aire libre sin igual. La acústica natural del patio cerrado amplifica el sonido sin necesidad de equipos excesivos.',
       en: 'The Corral del Carbón is the best-preserved Nasrid monument in Granada and the only Islamic alhóndiga (caravanserai) still standing in Spain. Its three-story arcaded courtyard, built in the 14th century, becomes an unparalleled open-air cinema every summer. The natural acoustics of the enclosed courtyard amplify sound without excessive equipment.',
@@ -677,7 +584,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['cine', 'festival', 'cortos', 'internacional', 'cultura'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/granada-film-festival/800/600',
     venueDescription: {
       es: 'El Teatro Isabel la Católica es el coliseo municipal de Granada, un espacio art déco de 1952 con capacidad para 760 espectadores. Situado en pleno centro junto a la Acera del Darro, ha acogido los estrenos cinematográficos más importantes de la ciudad y dispone de equipamiento de proyección de última generación.',
       en: 'Teatro Isabel la Católica is Granada\'s municipal theater, a 1952 art deco space seating 760 people. Located right in the center by the Acera del Darro, it has hosted the city\'s most important film premieres and features state-of-the-art projection equipment.',
@@ -724,7 +631,7 @@ export const mockEvents: Event[] = [
     currency: 'EUR',
     tags: ['cine clásico', 'gratis', 'jardines', 'verano', 'realejo'],
     featured: false,
-    image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&h=600&fit=crop',
+    image: 'https://picsum.photos/seed/cine-verano-carmen-casas/800/600',
     venueDescription: {
       es: 'La Casa de los Tiros es un palacete del siglo XVI en el barrio del Realejo, hoy sede del Museo de la Ciudad de Granada. Su nombre viene de los cañones (tiros) que decoran su fachada. Su jardín interior, un remanso de paz con naranjos y una fuente central, se transforma en verano en una sala de cine al aire libre con capacidad para 80 personas.',
       en: 'Casa de los Tiros is a 16th-century mansion in the Realejo neighborhood, now home to the Granada City Museum. Its name comes from the cannons (tiros) decorating its facade. Its inner garden, a peaceful haven with orange trees and a central fountain, transforms in summer into an open-air cinema seating 80 people.',

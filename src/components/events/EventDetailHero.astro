@@ -1,9 +1,10 @@
 ---
 import type { Event } from '../../types';
 import type { Locale } from '../../types';
+import ScreenFrame from '../ui/ScreenFrame.astro';
 import { useTranslations } from '../../i18n/utils';
 import { formatFullDate, formatTime, getTemporalProximity } from '../../utils/dates';
-import CinematicHero from '../../components/shared/CinematicHero.astro';
+import { formatPriceLabel } from '../../utils/prices';
 
 interface Props {
   event: Event;
@@ -14,164 +15,783 @@ const { event, locale } = Astro.props;
 const t = useTranslations(locale);
 
 const temporalProximity = getTemporalProximity(event.date);
-const proximityLabels: Record<string, string> = {
-  'today':     locale === 'es' ? 'HOY'        : 'TODAY',
-  'tomorrow':  locale === 'es' ? 'MAÑANA'     : 'TOMORROW',
-  'this-week': locale === 'es' ? 'ESTA SEMANA': 'THIS WEEK',
-};
-const proximityLabel = temporalProximity ? (proximityLabels[temporalProximity] ?? null) : null;
 const isToday = temporalProximity === 'today';
+const proxMap: Record<string, string> = {
+  today: locale === 'es' ? 'HOY' : 'TODAY',
+  tomorrow: locale === 'es' ? 'MAÑANA' : 'TOMORROW',
+  'this-week': locale === 'es' ? 'ESTA SEMANA' : 'THIS WEEK',
+};
+const proximityLabel = temporalProximity ? (proxMap[temporalProximity] ?? null) : null;
 
-const eventImage    = event.imageUrl || event.image;
-const refCode       = `EVT / ${event.id.toString().padStart(3, '0')} · ${new Date(event.date).getFullYear()}`;
-const backHref      = locale === 'es' ? '/eventos'  : '/en/events';
-const backLabel     = locale === 'es' ? '← AGENDA'  : '← EVENTS';
-const catLabel      = t(`categories.${event.category}`).toUpperCase();
-const featuredLabel = event.featured ? (locale === 'es' ? 'DESTACADO' : 'FEATURED') : undefined;
-const dockLabel     = locale === 'es' ? 'Información del evento' : 'Event information';
+const eventImage = event.imageUrl || event.image;
+const backHref = locale === 'es' ? '/eventos' : '/en/events';
+const backLabel = locale === 'es' ? 'Agenda' : 'Events';
+const catLabel = t(`categories.${event.category}`).toUpperCase();
+const featuredLabel = event.featured
+  ? (locale === 'es' ? 'Destacado' : 'Featured')
+  : null;
+const priceDisplay = formatPriceLabel(event, t);
+const shortDesc = event.description[locale];
+const hasLink = !!(event.ticketsUrl || event.sourceUrl);
+const ctaText = hasLink
+  ? (locale === 'es' ? 'Adquirir entradas' : 'Get tickets')
+  : (locale === 'es' ? 'Más información' : 'More info');
+const ctaHref = event.ticketsUrl || event.sourceUrl || backHref;
+const fullDate = formatFullDate(event.date, locale);
+const eventTime = formatTime(event.time, locale);
+const neighborhoodLabel = t(`neighborhoods.${event.neighborhood}`);
 
-const priceDisplay  = event.price === null
-  ? (locale === 'es' ? 'ENTRADA LIBRE' : 'FREE ENTRY')
-  : `${event.price}€`;
+const exactLocation = event.address || event.venue;
+
+// Editorial details
+const dayNum = new Date(event.date).getDate().toString().padStart(2, '0');
+const monthNum = (new Date(event.date).getMonth() + 1).toString().padStart(2, '0');
+const monthShort = new Date(event.date).toLocaleDateString('es-ES', { month: 'short' }).toUpperCase();
+const frameTagTopRight = `${dayNum} ${monthShort}`;
+const frameTagBottomLeft = locale === 'es' ? 'GRANADA' : 'GRANADA';
+const frameTagBottomRight = '37°10′N';
+const archiveRef = `${dayNum}${monthNum}`;
 ---
 
-<CinematicHero
-  locale={locale}
-  backHref={backHref}
-  backLabel={backLabel}
-  refCode={refCode}
-  title={event.title[locale]}
-  imageUrl={eventImage}
-  eyebrowText={catLabel}
-  featuredLabel={featuredLabel}
-  dockAriaLabel={dockLabel}
->
-  {proximityLabel && (
-    <span
-      slot="eyebrow-extra"
-      class:list={['evt-proximity-badge', isToday && 'is-today']}
-    >{proximityLabel}</span>
-  )}
+<section class="ev-hero" aria-label={event.title[locale]} data-ev-hero>
+  <!-- Deep ambient canvas -->
+  <div class="ev-canvas" aria-hidden="true">
+    {
+      eventImage && (
+        <img
+          src={eventImage}
+          alt=""
+          class="ev-ambient-img"
+          loading="eager"
+        />
+      )
+    }
+    <div class="ev-mesh" />
+    <div class="ev-radial-pool" />
+    <div class="ev-grain" />
+  </div>
 
-  <div slot="dock" class="cin-dock-cell">
-    <span class="cin-dock-cell-icon date">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-      </svg>
-    </span>
-    <span class="cin-dock-label">{t('detail.date')}</span>
-    <span class="cin-dock-value">{formatFullDate(event.date, locale)}</span>
+  <!-- Decorative architectural layer -->
+  <div class="ev-deco" aria-hidden="true">
+    <span class="deco-ring r1" />
+    <span class="deco-ring r2" />
+    <span class="deco-dot d1" />
+    <span class="deco-dot d2" />
+    <span class="deco-dot d3" />
+    <span class="deco-line v1" />
+    <span class="deco-line h1" />
+    <span class="deco-dots" />
+    <span class="deco-ghost">{dayNum}</span>
+    <span class="deco-filmstrip" />
+    <svg class="deco-star" viewBox="0 0 60 60" fill="none">
+      <path d="M30 4 L34.5 22.5 L52 15 L39 28.5 L56 30 L39 31.5 L52 45 L34.5 37.5 L30 56 L25.5 37.5 L8 45 L21 31.5 L4 30 L21 28.5 L8 15 L25.5 22.5 Z"
+        fill="none" stroke="var(--s-gold)" stroke-width="0.8" stroke-opacity="0.35"/>
+      <path d="M30 12 L32.5 24.5 L42 20 L36 28.5 L46 30 L36 31.5 L42 40 L32.5 35.5 L30 48 L27.5 35.5 L18 40 L24 31.5 L14 30 L24 28.5 L18 20 L27.5 24.5 Z"
+        fill="var(--s-gold)" fill-opacity="0.12" stroke="none"/>
+    </svg>
   </div>
-  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
-  <div slot="dock" class="cin-dock-cell">
-    <span class="cin-dock-cell-icon time">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-    </span>
-    <span class="cin-dock-label">{t('detail.time')}</span>
-    <span class="cin-dock-value">{formatTime(event.time, locale)}</span>
+
+  <!-- ScreenFrame -->
+  <ScreenFrame
+    tagTopLeft={catLabel}
+    tagTopRight={frameTagTopRight}
+    tagBottomLeft={frameTagBottomLeft}
+    tagBottomRight={frameTagBottomRight}
+  />
+
+  <!-- Navbar scrim -->
+  <div class="ev-nav-scrim" aria-hidden="true" />
+
+  <!-- Back link -->
+  <a href={backHref} class="ev-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span>{backLabel}</span>
+  </a>
+
+  <!-- Archive ref badge -->
+  <div class="ev-ref" aria-hidden="true">
+    <span class="ref-label">REF.</span>
+    <span class="ref-num">{archiveRef}</span>
   </div>
-  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
-  <div slot="dock" class="cin-dock-cell">
-    <span class="cin-dock-cell-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-      </svg>
-    </span>
-    <span class="cin-dock-label">{t('detail.venue')}</span>
-    <span class="cin-dock-value evt-dock-venue">{event.venue}</span>
+
+  <!-- Main stage -->
+  <div class="ev-stage" data-ev-stage>
+    <!-- LEFT: Editorial lockup -->
+    <div class="ev-lockup">
+      <!-- Left gold accent rule -->
+      <div class="lockup-rule" aria-hidden="true" />
+
+      <!-- Eyebrow -->
+      <div class="ev-eyebrow">
+        <span class="eyebrow-line" />
+        <span class="eyebrow-text">
+          {locale === 'es' ? 'EVENTO' : 'EVENT'}
+          <span class="eyebrow-slash">/</span>
+          {catLabel}
+        </span>
+        <span class="eyebrow-line" />
+      </div>
+
+      <!-- Meta badges -->
+      <div class="ev-meta">
+        <span class="ev-cat">{catLabel}</span>
+        {
+          proximityLabel && (
+            <span class:list={['ev-prox', isToday && 'is-today']}>
+              {isToday && <span class="ev-live-dot" aria-hidden="true" />}
+              {proximityLabel}
+            </span>
+          )
+        }
+        {
+          featuredLabel && (
+            <span class="ev-feat">
+              <svg viewBox="0 0 12 12" fill="currentColor">
+                <path d="M6 0l1.5 4.5H12L8.5 7l1.5 5L6 9.5 2 12l1.5-5L0 4.5h4.5z" />
+              </svg>
+              {featuredLabel}
+            </span>
+          )
+        }
+      </div>
+
+      <!-- Title -->
+      <h1 class="ev-title">
+        {
+          (() => {
+            let delayIndex = 0;
+            return event.title[locale]
+              .split(' ')
+              .map((word) => (
+                <span class="ev-word">
+                  {word.split('').map((char) => {
+                    const d = 0.3 + delayIndex * 0.025;
+                    delayIndex++;
+                    return (
+                      <span class="ev-char" style={`--delay: ${d}s`}>
+                        {char}
+                      </span>
+                    );
+                  })}
+                </span>
+              ))
+              .reduce(
+                (prev, curr, i) =>
+                  i === 0 ? [curr] : [...prev, ' ', curr],
+                [] as (JSX.Element | string)[]
+              );
+          })()
+        }
+      </h1>
+
+      <!-- Description -->
+      {
+        shortDesc && (
+          <p class="ev-lead">
+            <span class="lead-quote">"</span>
+            {shortDesc.length > 150
+              ? shortDesc.slice(0, 150).trim() + '…'
+              : shortDesc}
+            <span class="lead-quote">"</span>
+          </p>
+        )
+      }
+
+      <!-- RICH DATA SHEET -->
+      <div class="data-sheet">
+        <div class="data-sheet-header">
+          <span class="dsh-line" />
+          <span class="dsh-label">{locale === 'es' ? 'DATOS DEL EVENTO' : 'EVENT DATA'}</span>
+          <span class="dsh-line" />
+        </div>
+        <div class="data-sheet-body">
+          <!-- Date -->
+          <div class="data-cell">
+            <svg class="data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span class="data-caption">{locale === 'es' ? 'Fecha' : 'Date'}</span>
+            <span class="data-value">{fullDate}</span>
+          </div>
+          <!-- Separator -->
+          <div class="data-sep" />
+          <!-- Time -->
+          <div class="data-cell">
+            <svg class="data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span class="data-caption">{locale === 'es' ? 'Hora' : 'Time'}</span>
+            <span class="data-value">{eventTime}</span>
+          </div>
+          <!-- Separator -->
+          <div class="data-sep" />
+          <!-- Location -->
+          <div class="data-cell">
+            <svg class="data-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span class="data-caption">{locale === 'es' ? 'Dirección' : 'Address'}</span>
+            <span class="data-value" title={exactLocation}>{exactLocation}</span>
+          </div>
+        </div>
+        <!-- Panel corner brackets -->
+        <div class="panel-bracket tl" />
+        <div class="panel-bracket tr" />
+        <div class="panel-bracket bl" />
+        <div class="panel-bracket br" />
+        <!-- Top accent bar -->
+        <div class="data-accent-bar" />
+      </div>
+
+      <!-- Price + CTA row -->
+      <div class="ev-actions">
+        <span class="ev-price-ticket">
+          <span class="ticket-hole" />
+          <span class="ticket-text">{priceDisplay}</span>
+          <span class="ticket-hole" />
+        </span>
+        <a
+          href={ctaHref}
+          class="ev-cta"
+          target={hasLink ? '_blank' : undefined}
+          rel={hasLink ? 'noopener noreferrer' : undefined}
+        >
+          <span>{ctaText}</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          <span class="cta-glow" />
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Cinematic visual -->
+    <div class="ev-visual">
+      <div class="ev-img-wrap" data-ev-img>
+        {
+          eventImage ? (
+            <img
+              src={eventImage}
+              alt=""
+              class="ev-img"
+              loading="eager"
+              decoding="async"
+            />
+          ) : (
+            <div class="ev-img-fallback">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </div>
+          )
+        }
+        <div class="ev-img-vignette" />
+        <div class="ev-img-glare" />
+
+        <!-- Corner brackets -->
+        <div class="corner-bracket tl" />
+        <div class="corner-bracket tr" />
+        <div class="corner-bracket bl" />
+        <div class="corner-bracket br" />
+
+        <!-- Featured ribbon -->
+        {
+          event.featured && (
+            <div class="ev-ribbon">
+              <svg viewBox="0 0 12 12" fill="currentColor" width="10" height="10">
+                <path d="M6 0l1.5 4.5H12L8.5 7l1.5 5L6 9.5 2 12l1.5-5L0 4.5h4.5z" />
+              </svg>
+              <span>{featuredLabel}</span>
+            </div>
+          )
+        }
+
+        <!-- Expedition stamp -->
+        <div class="ev-stamp">
+          <span class="stamp-prefix">EVT.</span>
+          <span class="stamp-num">{dayNum}</span>
+        </div>
+      </div>
+
+      <!-- Glow and shadow behind card -->
+      <div class="ev-img-glow" />
+      <div class="ev-img-shadow" />
+
+      <!-- Ghost label -->
+      <div class="ev-ghost-label" aria-hidden="true">GRANADA</div>
+
+      <!-- Floating neighborhood tag -->
+      <div class="ev-nb-tag">
+        <span class="nb-dot" />
+        {neighborhoodLabel}
+      </div>
+    </div>
   </div>
-  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
-  <div slot="dock" class="cin-dock-cell">
-    <span class:list={['cin-dock-cell-icon', 'price', event.price === null && 'is-free']}>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-    </span>
-    <span class="cin-dock-label">{t('detail.price')}</span>
-    <span class:list={['cin-dock-value', 'evt-dock-price', event.price === null && 'is-free']}>{priceDisplay}</span>
+
+  <!-- Bottom editorial bar -->
+  <div class="ev-bottom-bar">
+    <div class="bar-line" />
+    <div class="bar-content">
+      <span class="bar-item">{neighborhoodLabel.toUpperCase()}</span>
+      <span class="bar-diamond" aria-hidden="true">
+        <svg viewBox="0 0 12 12" width="10" height="10">
+          <polygon points="6,0 12,6 6,12 0,6" fill="var(--s-ink-3)" />
+        </svg>
+      </span>
+      <span class="bar-item">{locale === 'es' ? 'VOL. I · 2026' : 'VOL. I · 2026'}</span>
+      <span class="bar-diamond" aria-hidden="true">
+        <svg viewBox="0 0 12 12" width="10" height="10">
+          <polygon points="6,0 12,6 6,12 0,6" fill="var(--s-ink-3)" />
+        </svg>
+      </span>
+      <span class="bar-item">37°10′N  3°36′W</span>
+    </div>
+    <div class="bar-line" />
   </div>
-</CinematicHero>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-line" />
+    <span class="scroll-text">{locale === 'es' ? 'Explorar' : 'Explore'}</span>
+  </div>
+</section>
 
 <style>
-  .evt-proximity-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.25);
-    color: #ffffff;
-    border-radius: 100px;
-    backdrop-filter: blur(16px);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    box-shadow: 
-      0 6px 20px rgba(0,0,0,0.3),
-      inset 0 1px 0 rgba(255,255,255,0.15);
-  }
-
-  .evt-proximity-badge.is-today {
-    background: linear-gradient(135deg, rgba(232,98,42,0.95), rgba(232,98,42,0.7));
-    border-color: rgba(232,98,42,0.6);
-    color: #fff;
-    animation: pulse-today 2s ease-in-out infinite;
-    box-shadow: 
-      0 8px 30px rgba(232,98,42,0.4),
-      0 0 20px rgba(232,98,42,0.2),
-      inset 0 1px 0 rgba(255,255,255,0.2);
-    font-weight: 800;
-  }
-
-  @keyframes pulse-today {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(232,98,42,0.4); }
-    50%       { box-shadow: 0 0 0 8px rgba(232,98,42,0); }
-  }
-
-  .evt-dock-venue { 
-    font-size: 1.4rem; 
-    white-space: normal; 
-    line-height: 1.25; 
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    max-width: 100%;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  /* ================================================================
+     EVENT DETAIL HERO — Ultra-Rich Editorial / Cinematic
+     ================================================================ */
+  .ev-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
-    color: #ffffff !important;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  }
-  
-  .evt-dock-price { 
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    font-size: 1.5rem;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-  }
-  
-  .evt-dock-price.is-free { 
-    color: #8df5aa !important;
-    font-weight: 600;
+    background:
+      radial-gradient(ellipse 70% 60% at 10% 30%, rgba(201,168,76,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 50% at 90% 75%, rgba(232,98,42,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 40% at 50% 5%, rgba(245,240,234,0.9) 0%, transparent 50%),
+      linear-gradient(180deg, #ede8e0 0%, #f5f0ea 40%, #f5f0ea 100%);
+    --s-bg: #f5f0ea;
+    --s-ink: #1a1619;
+    --s-ink-2: #3a3532;
+    --s-ink-3: #8a847e;
+    --s-orange: #e8622a;
+    --s-gold: #c9a84c;
+    --s-border: rgba(26,22,25,0.10);
+    --s-border-s: rgba(26,22,25,0.06);
   }
 
+  /* ---- ScreenFrame overrides ---- */
+  .ev-hero :global(.cin-screen-frame) { border-color: rgba(26,22,25,0.08); top: 1.25rem; left: 1.25rem; right: 1.25rem; bottom: 1.25rem; }
+  .ev-hero :global(.cin-corner::before),
+  .ev-hero :global(.cin-corner::after) { background: var(--s-gold); opacity: 0.2; }
+  .ev-hero :global(.cin-frame-tag) { color: var(--s-ink-3); font-size: 0.55rem; letter-spacing: 0.18em; }
+
+  /* ---- CANVAS ---- */
+  .ev-canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .ev-ambient-img { position: absolute; inset: -20%; width: 140%; height: 140%; object-fit: cover; object-position: center top; filter: blur(140px) saturate(2) brightness(1.25); opacity: 0.14; mix-blend-mode: multiply; }
+  .ev-mesh { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 50% at 75% 15%, rgba(255,255,255,0.55) 0%, transparent 50%), radial-gradient(ellipse 45% 45% at 25% 85%, rgba(201,168,76,0.07) 0%, transparent 40%); }
+  .ev-radial-pool { position: absolute; inset: 0; background: radial-gradient(ellipse 30% 25% at 80% 50%, rgba(201,168,76,0.08) 0%, transparent 60%), radial-gradient(ellipse 25% 20% at 15% 70%, rgba(232,98,42,0.04) 0%, transparent 50%); }
+  .ev-grain { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* ---- NAV SCRIM ---- */
+  .ev-nav-scrim { position: absolute; top: 0; left: 0; right: 0; height: 160px; background: linear-gradient(180deg, rgba(26,22,25,0.70) 0%, rgba(26,22,25,0.15) 60%, transparent 100%); pointer-events: none; z-index: 5; }
+
+  /* ---- DECORATIVE LAYER ---- */
+  .ev-deco { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .deco-ring { position: absolute; border-radius: 50%; border: 1px solid var(--s-gold); opacity: 0; animation: deco-ring-in 2s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .deco-ring.r1 { width: 260px; height: 260px; top: 10%; right: 15%; animation-delay: 0.4s; --target-opacity: 0.12; }
+  .deco-ring.r2 { width: 420px; height: 420px; top: 5%; right: 5%; animation-delay: 0.7s; --target-opacity: 0.06; border-color: var(--s-border); }
+  @keyframes deco-ring-in { from { opacity: 0; transform: scale(0.8); } to { opacity: var(--target-opacity, 0.1); transform: scale(1); } }
+  .deco-dot { position: absolute; border-radius: 50%; animation: ev-float 7s ease-in-out infinite; }
+  .deco-dot.d1 { width: 160px; height: 160px; top: 14%; left: 6%; background: radial-gradient(circle, rgba(201,168,76,0.30), transparent 70%); animation-duration: 8s; }
+  .deco-dot.d2 { width: 90px; height: 90px; top: 50%; left: 42%; background: radial-gradient(circle, rgba(232,98,42,0.18), transparent 70%); animation-duration: 10s; animation-delay: 1.2s; }
+  .deco-dot.d3 { width: 55px; height: 55px; bottom: 18%; right: 10%; background: radial-gradient(circle, rgba(201,168,76,0.28), transparent 70%); animation-duration: 6.5s; animation-delay: 0.5s; }
+  .deco-line { position: absolute; background: linear-gradient(to bottom, transparent, var(--s-border) 20%, var(--s-border) 80%, transparent); opacity: 0.5; }
+  .deco-line.v1 { top: 0; left: 33%; width: 1px; height: 100%; }
+  .deco-line.h1 { top: 62%; left: 0; width: 28%; height: 1px; background: linear-gradient(to right, transparent, var(--s-border) 30%, var(--s-border) 70%, transparent); }
+  .deco-dots { position: absolute; bottom: 12%; left: 6%; width: 100px; height: 100px; background-image: radial-gradient(circle, var(--s-border) 1px, transparent 1px); background-size: 10px 10px; opacity: 0.5; }
+  .deco-ghost { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-body); font-size: clamp(10rem, 30vw, 20rem); font-weight: 300; color: var(--s-ink); opacity: 0.018; pointer-events: none; letter-spacing: -0.04em; line-height: 1; user-select: none; }
+  .deco-filmstrip { position: absolute; top: 0; right: 8%; width: 18px; height: 100%; background: repeating-linear-gradient(to bottom, var(--s-border) 0px, var(--s-border) 4px, transparent 4px, transparent 12px); opacity: 0.25; mask-image: linear-gradient(to bottom, transparent 5%, black 20%, black 80%, transparent 95%); -webkit-mask-image: linear-gradient(to bottom, transparent 5%, black 20%, black 80%, transparent 95%); }
+  .deco-star { position: absolute; top: 18%; right: 22%; width: 44px; height: 44px; animation: star-rotate 30s linear infinite; opacity: 0.6; }
+  @keyframes star-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ---- BACK LINK ---- */
+  .ev-back {
+    position: absolute; top: calc(var(--header-height, 64px) + 1.25rem); left: clamp(1.5rem, 4vw, 3rem); z-index: 30;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(240,237,232,0.85); text-decoration: none;
+    padding: 0.55rem 1rem; border-radius: 100px;
+    background: rgba(26,22,25,0.35); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.12);
+    transition: all 0.3s ease;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.2s both;
+  }
+  .ev-back svg { transition: transform 0.25s ease; }
+  .ev-back:hover { background: rgba(26,22,25,0.55); transform: translateY(-1px); }
+  .ev-back:hover svg { transform: translateX(-3px); }
+
+  /* ---- ARCHIVE REF ---- */
+  .ev-ref {
+    position: absolute; top: calc(var(--header-height, 64px) + 1.25rem); right: clamp(1.5rem, 4vw, 3rem); z-index: 30;
+    display: flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em;
+    color: var(--s-ink-3);
+    opacity: 0; animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  .ref-label { text-transform: uppercase; }
+  .ref-num { color: var(--s-gold); font-weight: 800; }
+
+  /* ---- STAGE ---- */
+  .ev-stage {
+    position: relative; z-index: 10; flex: 1;
+    display: grid; grid-template-columns: 1fr minmax(300px, 44%); align-items: center;
+    gap: clamp(2.5rem, 5vw, 5rem);
+    max-width: 1320px; margin: 0 auto; width: 100%;
+    padding: calc(var(--header-height, 64px) + 3.5rem) clamp(1.5rem, 5vw, 3rem) 3rem;
+  }
+
+  /* ---- LOCKUP ---- */
+  .ev-lockup {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; min-width: 0;
+    position: relative;
+  }
+  .lockup-rule {
+    position: absolute; left: -1.25rem; top: 0.5rem; bottom: 0.5rem; width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--s-gold) 20%, var(--s-orange) 80%, transparent);
+    opacity: 0.45; border-radius: 2px;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.35s both;
+  }
+
+  /* Eyebrow */
+  .ev-eyebrow { display: flex; align-items: center; gap: 0.85rem; opacity: 0; animation: fadeInUp 0.8s ease 0.4s both; }
+  .eyebrow-line { width: 36px; height: 1px; background: linear-gradient(90deg, transparent, var(--s-border) 50%, transparent); }
+  .eyebrow-text { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--s-ink-3); white-space: nowrap; }
+  .eyebrow-slash { opacity: 0.4; margin: 0 0.3em; }
+
+  /* Meta badges */
+  .ev-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; opacity: 0; animation: fadeInUp 0.8s ease 0.5s both; }
+  .ev-cat { display: inline-flex; padding: 0.35rem 0.9rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--s-gold); background: rgba(201,168,76,0.10); border: 1px solid rgba(201,168,76,0.22); border-radius: 100px; }
+  .ev-prox { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.85rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; background: rgba(26,22,25,0.04); border: 1px solid var(--s-border); color: var(--s-ink-2); border-radius: 100px; }
+  .ev-prox.is-today { background: linear-gradient(135deg, rgba(232,98,42,0.92), rgba(220,70,25,0.88)); border-color: rgba(232,98,42,0.35); color: #fff; animation: pulse-today 2.2s ease-in-out infinite; }
+  .ev-live-dot { width: 5px; height: 5px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px #fff; animation: pulse-dot 1.8s ease-in-out infinite; }
+  .ev-feat { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.85rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; background: rgba(201,168,76,0.10); border: 1px solid rgba(201,168,76,0.22); color: var(--s-gold); border-radius: 100px; text-transform: uppercase; }
+  .ev-feat svg { width: 10px; height: 10px; }
+
+  /* Title */
+  .ev-title { font-family: var(--font-body); font-size: clamp(2.2rem, 4.2vw, 3.8rem); font-weight: 300; line-height: 1.1; letter-spacing: -0.03em; margin: 0; color: var(--s-ink); word-break: normal; overflow-wrap: break-word; }
+  .ev-word { display: inline-block; white-space: nowrap; }
+  .ev-char { display: inline-block; opacity: 0; transform: translateY(30px); animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards; }
+
+  /* Lead */
+  .ev-lead { font-family: var(--font-display); font-size: clamp(0.92rem, 1.05vw, 1rem); line-height: 1.7; color: var(--s-ink-3); max-width: 50ch; margin: 0; opacity: 0; animation: fadeInUp 0.8s ease 0.85s both; }
+  .lead-quote { color: var(--s-gold); opacity: 0.35; font-family: var(--font-body); font-size: 1.2em; font-weight: 300; }
+
+  /* ================================================================
+     RICH DATA SHEET
+     ================================================================ */
+  .data-sheet {
+    position: relative;
+    width: 100%; max-width: 520px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.35) 100%);
+    backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 18px;
+    padding: 1.1rem 1.25rem 1.25rem;
+    box-shadow:
+      0 8px 28px rgba(26,22,25,0.05),
+      0 2px 8px rgba(26,22,25,0.03),
+      inset 0 1px 1px rgba(255,255,255,0.7),
+      inset 0 -1px 1px rgba(0,0,0,0.02);
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 1.0s both;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease;
+  }
+  .data-sheet:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 16px 40px rgba(26,22,25,0.08),
+      0 4px 12px rgba(26,22,25,0.04),
+      inset 0 1px 1px rgba(255,255,255,0.8),
+      inset 0 -1px 1px rgba(0,0,0,0.02);
+  }
+  /* Top gradient accent bar */
+  .data-accent-bar {
+    position: absolute; top: 0; left: 18px; right: 18px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--s-gold) 20%, var(--s-orange) 50%, var(--s-gold) 80%, transparent);
+    border-radius: 0 0 2px 2px; opacity: 0.7;
+  }
+  .data-sheet:hover .data-accent-bar { opacity: 1; }
+
+  /* Header */
+  .data-sheet-header { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.85rem; }
+  .dsh-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--s-border) 40%, var(--s-border) 60%, transparent); }
+  .dsh-label { font-family: var(--font-display); font-size: 0.52rem; font-weight: 800; letter-spacing: 0.28em; text-transform: uppercase; color: var(--s-ink-3); white-space: nowrap; }
+
+  /* Body */
+  .data-sheet-body { display: flex; align-items: stretch; gap: 0; }
+  .data-cell {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    padding: 0 0.6rem; min-width: 0; text-align: center;
+  }
+  .data-cell:first-child { padding-left: 0; }
+  .data-cell:last-child { padding-right: 0; }
+  .data-icon { width: 20px; height: 20px; color: var(--s-gold); flex-shrink: 0; opacity: 0.85; }
+  .data-caption { font-family: var(--font-display); font-size: 0.52rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--s-ink-3); }
+  .data-value { font-family: var(--font-display); font-size: clamp(0.8rem, 1vw, 0.92rem); font-weight: 700; color: var(--s-ink-2); line-height: 1.35; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+  .data-sep {
+    width: 1px; align-self: stretch; min-height: 44px;
+    background: linear-gradient(to bottom, transparent, var(--s-border) 25%, var(--s-border) 75%, transparent);
+    flex-shrink: 0;
+  }
+
+  /* Panel corner brackets */
+  .panel-bracket {
+    position: absolute; width: 14px; height: 14px;
+    border-color: rgba(201,168,76,0.35); border-style: solid; border-width: 0;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); pointer-events: none;
+  }
+  .data-sheet:hover .panel-bracket { width: 20px; height: 20px; border-color: rgba(201,168,76,0.6); }
+  .panel-bracket.tl { top: 8px; left: 8px; border-top-width: 1.5px; border-left-width: 1.5px; }
+  .panel-bracket.tr { top: 8px; right: 8px; border-top-width: 1.5px; border-right-width: 1.5px; }
+  .panel-bracket.bl { bottom: 8px; left: 8px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .panel-bracket.br { bottom: 8px; right: 8px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+  /* Actions row */
+  .ev-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeInUp 0.8s ease 1.15s both; margin-top: 0.25rem; }
+
+  /* Ticket-style price badge */
+  .ev-price-ticket {
+    position: relative; display: inline-flex; align-items: center; gap: 0;
+    padding: 0.65rem 1.1rem;
+    font-family: var(--font-display); font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.06em; color: var(--s-ink-2);
+    background: rgba(255,255,255,0.5);
+    border: 1px dashed var(--s-border);
+    border-radius: 8px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+  }
+  .ev-price-ticket:hover { background: rgba(255,255,255,0.7); border-color: var(--s-gold); }
+  .ticket-hole { width: 8px; height: 8px; border-radius: 50%; background: var(--s-bg); border: 1px solid var(--s-border); position: absolute; }
+  .ticket-hole:first-child { left: -5px; top: 50%; transform: translateY(-50%); }
+  .ticket-hole:last-child { right: -5px; top: 50%; transform: translateY(-50%); }
+  .ticket-text { padding: 0 0.3rem; }
+
+  .ev-cta {
+    position: relative; display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 1.05rem 2rem; background: var(--s-orange); color: #fff;
+    font-family: var(--font-display); font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+    border-radius: 100px; border: none; overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 12px 30px rgba(232,98,42,0.22);
+  }
+  .ev-cta:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 20px 40px rgba(232,98,42,0.32), 0 0 0 1px rgba(232,98,42,0.15); }
+  .ev-cta svg { transition: transform 0.25s ease; }
+  .ev-cta:hover svg { transform: translateX(4px); }
+  .cta-glow { position: absolute; inset: 0; background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.25) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+  .ev-cta:hover .cta-glow { opacity: 1; }
+
+  /* ---- RIGHT: Cinematic visual ---- */
+  .ev-visual { display: flex; align-items: center; justify-content: center; position: relative; }
+  .ev-img-wrap {
+    position: relative; width: 100%; max-width: 420px;
+    height: clamp(380px, 54vh, 580px);
+    border-radius: 28px; overflow: hidden; background: #e8e3dd;
+    box-shadow:
+      0 40px 80px rgba(26,22,25,0.14),
+      0 16px 32px rgba(26,22,25,0.08),
+      0 0 0 1px rgba(26,22,25,0.04);
+    opacity: 0;
+    animation: img-enter 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes img-enter {
+    from { opacity: 0; transform: translateY(30px) scale(0.96) rotate(-1deg); }
+    to   { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+  }
+  .ev-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .ev-img-fallback { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--s-ink-3); }
+  .ev-img-fallback svg { width: 48px; height: 48px; }
+
+  /* Vignette + glare */
+  .ev-img-vignette { position: absolute; inset: 0; pointer-events: none; z-index: 2; background: radial-gradient(ellipse at center, transparent 40%, rgba(26,22,25,0.18) 100%); mix-blend-mode: multiply; }
+  .ev-img-glare { position: absolute; inset: 0; pointer-events: none; z-index: 3; background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.12) 52%, transparent 60%); opacity: 0; transition: opacity 0.6s ease; }
+  .ev-img-wrap:hover .ev-img-glare { opacity: 1; animation: glare-sweep 1.2s ease forwards; }
+  @keyframes glare-sweep { 0% { transform: translateX(-100%); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+
+  /* Corner brackets */
+  .corner-bracket { position: absolute; width: 22px; height: 22px; z-index: 4; border-color: rgba(255,255,255,0.55); border-style: solid; border-width: 0; opacity: 0.7; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); pointer-events: none; }
+  .ev-img-wrap:hover .corner-bracket { width: 36px; height: 36px; border-color: var(--s-gold); opacity: 1; }
+  .corner-bracket.tl { top: 1rem; left: 1rem; border-top-width: 2px; border-left-width: 2px; }
+  .corner-bracket.tr { top: 1rem; right: 1rem; border-top-width: 2px; border-right-width: 2px; }
+  .corner-bracket.bl { bottom: 1rem; left: 1rem; border-bottom-width: 2px; border-left-width: 2px; }
+  .corner-bracket.br { bottom: 1rem; right: 1rem; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* Featured ribbon */
+  .ev-ribbon {
+    position: absolute; top: 0; right: 1.5rem; z-index: 5;
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 0.85rem;
+    background: linear-gradient(135deg, var(--s-orange), #d45520);
+    color: #fff;
+    font-family: var(--font-display); font-size: 0.55rem; font-weight: 800;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 14px rgba(232,98,42,0.35);
+    opacity: 0; animation: ribbon-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s both;
+  }
+  @keyframes ribbon-drop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Expedition stamp */
+  .ev-stamp {
+    position: absolute; top: 1.25rem; left: 1.25rem; z-index: 5;
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding: 0.5rem 0.875rem; background: rgba(26,22,25,0.82);
+    border: 1.5px solid var(--s-gold); border-radius: 6px;
+    transform: rotate(-1.5deg); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    opacity: 0; animation: stamp-in 0.6s cubic-bezier(0.16,1,0.3,1) 1.0s both;
+  }
+  .ev-img-wrap:hover .ev-stamp { transform: rotate(0deg) scale(1.03); }
+  @keyframes stamp-in { from { opacity: 0; transform: rotate(-3deg) scale(0.9); } to { opacity: 1; transform: rotate(-1.5deg) scale(1); } }
+  .stamp-prefix { font-family: var(--font-display); font-size: 0.55rem; font-weight: 700; letter-spacing: 0.18em; color: var(--s-gold); }
+  .stamp-num { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; letter-spacing: 0.04em; color: #f5f0ea; line-height: 1; }
+
+  /* Glow & shadow behind image */
+  .ev-img-glow { position: absolute; inset: -18%; z-index: -1; pointer-events: none; background: radial-gradient(circle at 50% 40%, rgba(232,98,42,0.14) 0%, transparent 55%); animation: glow-breathe 5s ease-in-out infinite; }
+  @keyframes glow-breathe { 0%,100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.08); } }
+  .ev-img-shadow { position: absolute; bottom: -8px; left: 8%; right: 8%; height: 24px; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at center, rgba(26,22,25,0.18) 0%, transparent 70%); filter: blur(14px); }
+  .ev-ghost-label { position: absolute; bottom: -1.2rem; right: -1.5rem; z-index: -2; pointer-events: none; font-family: var(--font-body); font-size: clamp(4rem, 10vw, 7rem); font-weight: 300; color: var(--s-ink); opacity: 0.025; letter-spacing: -0.03em; line-height: 1; user-select: none; white-space: nowrap; }
+
+  /* Neighborhood floating tag */
+  .ev-nb-tag {
+    position: absolute; bottom: -0.8rem; left: -0.5rem; z-index: 8;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.45rem 1rem;
+    font-family: var(--font-display); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--s-ink-2);
+    background: rgba(255,255,255,0.75); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.8); border-radius: 100px;
+    box-shadow: 0 4px 14px rgba(26,22,25,0.08);
+    opacity: 0; animation: fadeInUp 0.8s ease 1.3s both;
+  }
+  .nb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--s-gold); box-shadow: 0 0 6px rgba(201,168,76,0.5); }
+
+  /* ---- BOTTOM BAR ---- */
+  .ev-bottom-bar { position: relative; z-index: 10; display: flex; align-items: center; gap: 1.25rem; width: 100%; max-width: 600px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 3rem) 2rem; opacity: 0; animation: fadeInUp 0.8s ease 1.4s both; }
+  .bar-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--s-border), transparent); }
+  .bar-content { display: flex; align-items: center; gap: 0.75rem; white-space: nowrap; }
+  .bar-item { font-family: var(--font-display); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--s-ink-3); }
+  .bar-diamond { opacity: 0.5; display: flex; align-items: center; }
+
+  /* ---- SCROLL HINT ---- */
+  .scroll-hint { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; opacity: 0; animation: fadeInUp 0.8s ease 1.6s both; }
+  .scroll-line { width: 1px; height: 28px; background: linear-gradient(to bottom, var(--s-border), transparent); animation: scroll-pulse 2s ease-in-out infinite; }
+  .scroll-text { font-family: var(--font-display); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--s-ink-3); }
+  @keyframes scroll-pulse { 0%,100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 0.8; transform: scaleY(1.15); } }
+
+  /* ---- RESPONSIVE ---- */
   @media (max-width: 1024px) {
-    .evt-dock-venue { font-size: 1.25rem; }
-    .evt-dock-price { font-size: 1.35rem; }
+    .ev-stage { grid-template-columns: 1fr 1fr; gap: 2rem; padding-top: calc(var(--header-height, 64px) + 3rem); }
+    .ev-title { font-size: clamp(1.9rem, 3.5vw, 2.8rem); }
+    .ev-img-wrap { max-width: 340px; height: clamp(320px, 45vh, 480px); border-radius: 22px; }
+    .deco-ghost { opacity: 0.012; }
+    .ev-bottom-bar { max-width: 480px; }
+    .lockup-rule { display: none; }
+    .ev-ref { display: none; }
   }
 
   @media (max-width: 768px) {
-    .evt-dock-venue { font-size: 1.1rem; line-height: 1.2; }
-    .evt-dock-price { font-size: 1.2rem; }
+    .ev-stage { grid-template-columns: 1fr; align-items: center; gap: 2.5rem; padding: calc(var(--header-height, 64px) + 2.5rem) clamp(1.25rem, 4vw, 2rem) 2.5rem; }
+    .ev-visual { order: -1; }
+    .ev-img-wrap { max-width: 300px; height: clamp(300px, 42vh, 420px); }
+    .ev-lockup { align-items: center; text-align: center; width: 100%; }
+    .ev-eyebrow { justify-content: center; }
+    .ev-title { font-size: clamp(1.9rem, 7.5vw, 2.8rem); line-height: 1.1; }
+    .ev-lead { max-width: 42ch; }
+    .data-sheet { max-width: 100%; padding: 1rem; }
+    .data-sheet-body { gap: 0.4rem; }
+    .data-sep { display: none; }
+    .data-cell { padding: 0.4rem 0.3rem; }
+    .data-value { font-size: 0.78rem; }
+    .ev-actions { justify-content: center; }
+    .ev-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; }
+    .deco-ring { display: none; }
+    .ev-ghost-label { display: none; }
+    .ev-bottom-bar { padding-bottom: 1.5rem; }
+    .ev-nb-tag { display: none; }
+    .scroll-hint { display: none; }
   }
-  
+
   @media (max-width: 480px) {
-    .evt-dock-venue { font-size: 1rem; line-height: 1.15; -webkit-line-clamp: 3; }
-    .evt-dock-price { font-size: 1.15rem; }
+    .ev-title { font-size: clamp(1.6rem, 8vw, 2.2rem); line-height: 1.12; }
+    .ev-lead { font-size: 0.88rem; }
+    .data-sheet { padding: 0.85rem; }
+    .data-icon { width: 18px; height: 18px; }
+    .data-value { font-size: 0.72rem; }
+    .ev-cta { padding: 0.95rem 1.6rem; font-size: 0.72rem; }
+    .ev-price-ticket { font-size: 0.65rem; padding: 0.5rem 0.9rem; }
+    .ev-img-wrap { max-width: 260px; height: clamp(260px, 38vh, 340px); border-radius: 18px; }
+    .ev-cat, .ev-prox, .ev-feat { font-size: 0.55rem; padding: 0.3rem 0.7rem; }
+    .ev-bottom-bar { gap: 0.6rem; }
+    .bar-item { font-size: 0.52rem; letter-spacing: 0.1em; }
+    .ev-stamp { padding: 0.4rem 0.65rem; }
+    .stamp-prefix { font-size: 0.5rem; }
+    .stamp-num { font-size: 0.9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ev-char, .ev-back, .ev-ref, .ev-eyebrow, .ev-meta, .ev-lead, .data-sheet, .ev-actions, .ev-bottom-bar, .ev-img-wrap, .ev-stamp, .deco-ring, .deco-dot, .deco-star, .ev-img-glow, .ev-ribbon, .ev-nb-tag, .scroll-hint, .lockup-rule {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const hero = document.querySelector('[data-ev-hero]') as HTMLElement;
+    const imgWrap = hero?.querySelector('[data-ev-img]') as HTMLElement;
+    const stage = hero?.querySelector('[data-ev-stage]') as HTMLElement;
+    if (!hero) return;
+
+    // 3D tilt on mouse move (desktop)
+    if (window.matchMedia('(pointer: fine)').matches) {
+      hero.addEventListener('mousemove', (e) => {
+        const { clientX, clientY } = e;
+        const { innerWidth, innerHeight } = window;
+        const x = (clientX / innerWidth - 0.5);
+        const y = (clientY / innerHeight - 0.5);
+
+        requestAnimationFrame(() => {
+          if (imgWrap) {
+            imgWrap.style.transform = `translate(${x * -12}px, ${y * -10}px) rotateY(${x * 5}deg) rotateX(${-y * 4}deg)`;
+          }
+          if (stage) {
+            stage.style.setProperty('--parallax-x', `${x * 8}px`);
+            stage.style.setProperty('--parallax-y', `${y * 6}px`);
+          }
+        });
+      });
+
+      hero.addEventListener('mouseleave', () => {
+        requestAnimationFrame(() => {
+          if (imgWrap) {
+            imgWrap.style.transform = 'translate(0, 0) rotateY(0deg) rotateX(0deg)';
+          }
+        });
+      });
+    }
+
+    // Mouse glow on CTA
+    document.querySelectorAll('.ev-cta').forEach((btn) => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = (btn as HTMLElement).getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        (btn as HTMLElement).style.setProperty('--mouse-x', `${x}%`);
+        (btn as HTMLElement).style.setProperty('--mouse-y', `${y}%`);
+      });
+    });
+  });
+</script>

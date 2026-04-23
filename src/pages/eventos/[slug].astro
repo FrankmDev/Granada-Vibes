@@ -10,6 +10,7 @@ import { getAllEvents } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
 import { formatFullDate, formatTime } from '@utils/dates';
+import { getPriceStatus, formatPriceLabel } from '@utils';
 
 export function getStaticPaths() {
   const events = getAllEvents();
@@ -29,10 +30,15 @@ const relatedEvents = getAllEvents()
   .slice(0, 3);
 
 const eventImage = event.imageUrl || event.image;
-const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=RAWDA';
+const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=GRN Index';
 
-const priceText = event.price === null ? 'Entrada libre.' : `Desde ${event.price}€.`;
-const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${priceText} Descubre todos los detalles en RAWDA.`;
+const priceLabel = formatPriceLabel(event, t);
+const priceText = getPriceStatus(event) === 'paid'
+  ? `Desde ${event.price}€.`
+  : getPriceStatus(event) === 'free'
+    ? 'Entrada libre.'
+    : 'Consultar precio.';
+const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${priceText} Descubre todos los detalles en GRN Index.`;
 ---
 
 <BaseLayout
@@ -66,11 +72,20 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
               <div class="upg-line"></div>
               <span class="upg-eyebrow">[ Sobre el evento ]</span>
             </header>
-            
+
             <h2 class="upg-title">Descripción</h2>
-            
+
             <div class="upg-body content-rich">
-              <p class="upg-lead">{event.description[locale]}</p>
+              {event.description[locale] && (
+                <p class="upg-lead">{event.description[locale]}</p>
+              )}
+              {event.longDescription && event.longDescription[locale] && (
+                <div class="upg-long-desc">
+                  {event.longDescription[locale].split('\n\n').map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </div>
+              )}
             </div>
           </article>
 
@@ -200,8 +215,8 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
               <!-- Price Box -->
               <div class="upg-tc-price-wrap">
                 <span class="tc-price-label">{t('detail.price')}</span>
-                <span class:list={['tc-price-val', event.price === null && 'is-free']}>
-                  {event.price === null ? t('detail.free') : `${event.price}€`}
+                <span class:list={['tc-price-val', getPriceStatus(event) === 'free' && 'is-free', getPriceStatus(event) === 'tickets' && 'is-tickets']}>
+                  {formatPriceLabel(event, t)}
                 </span>
               </div>
 
@@ -225,7 +240,7 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
                   </a>
                 ) : (
                   <div class="upg-btn-primary inert">
-                    <span>{event.price === null ? t('detail.free') : t('detail.bookPlace')}</span>
+                    <span>{getPriceStatus(event) === 'free' ? t('events.free') : t('detail.unknown')}</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
                 )}
@@ -301,7 +316,7 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
       const url   = btn.dataset.url;
       const label = btn.querySelector('.upg-share-label');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Descubre "' + title + '" en RAWDA', url }); return; }
+        try { await navigator.share({ title, text: 'Descubre "' + title + '" en GRN Index', url }); return; }
         catch (_) {}
       }
       try {
@@ -382,6 +397,9 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
   }
 
   .upg-lead { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.8; color: var(--s-ink-2); max-width: 68ch; }
+
+  .upg-long-desc { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+  .upg-long-desc p { font-family: var(--font-display); font-size: 1rem; line-height: 1.75; color: var(--s-ink-2); max-width: 68ch; }
 
 
   /* VENUE BLOCK Upgrades */
@@ -492,6 +510,7 @@ const seoDescription = `${event.title[locale]} en Granada — ${formatFullDate(e
   .tc-price-label { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
   .tc-price-val { font-family: var(--font-body); font-size: 3.5rem; font-weight: 300; color: var(--s-ink); line-height: 1; letter-spacing: -0.03em; }
   .tc-price-val.is-free { color: #4a9e6b; font-size: 2.8rem; }
+  .tc-price-val.is-tickets { color: var(--s-orange); font-size: 2.8rem; }
 
   /* Ticket divider (dashed with holes) */
   .upg-tc-divider {

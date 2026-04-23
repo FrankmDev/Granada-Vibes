@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import DetailContent from '@components/shared/DetailContent.astro';
+import CinematicHero from '@components/shared/CinematicHero.astro';
 import { getAllMixedRoutes } from '@data';
 import { useTranslations } from '@i18n/utils';
 import type { MixedRoute, MixedRouteStop } from '@types';
@@ -50,6 +51,13 @@ const slugDurationLabels: Record<string, string> = {
   '3days': t('mixedRoutes.slugDurationLabels.3days'),
 };
 const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
+
+const refNum = plan.id.replace(/^mr-/, '').padStart(3, '0');
+const refCode = `PLN / ${refNum} · ${new Date().getFullYear()}`;
+const backHref = '/rutas/por-tiempo';
+const backLabel = t('mixedRoutes.title');
+const eyebrowText = getDurationLabel(plan.duration).toUpperCase();
+const dockLabel = locale === 'es' ? 'Información del plan' : 'Plan information';
 ---
 
 <BaseLayout
@@ -57,37 +65,52 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
   title={plan.title[locale]}
   description={plan.description[locale]}
 >
-  <!-- Hero -->
-  <section class="mx-hero">
-    <div class="mx-hero-bg" aria-hidden="true">
-      <div class="mx-hero-gradient"></div>
-      <div class="mx-hero-glow"></div>
-    </div>
-    
-    <div class="mx-hero-content">
-      <a href="/rutas/por-tiempo" class="mx-back-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>{t('mixedRoutes.title')}</span>
-      </a>
-
-      <div class="mx-hero-meta">
-        <span class="mx-duration-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          {getDurationLabel(plan.duration)}
-        </span>
-        <span class="mx-hero-stats">
-          {totalStops} {t('mixedRoutes.stops')} · {plan.neighborhoods.length} {t('mixedRoutes.neighborhoods')}
-        </span>
+  <!-- CINEMATIC HERO -->
+  <CinematicHero
+    locale={locale}
+    backHref={backHref}
+    backLabel={backLabel}
+    refCode={refCode}
+    title={plan.title[locale]}
+    imageUrl={plan.image}
+    eyebrowText={eyebrowText}
+    dockAriaLabel={dockLabel}
+    description={plan.description[locale]}
+  >
+    <div slot="dock" class="cin-dock-cell">
+      <div class="cin-dock-cell-icon orange">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
-
-      <h1 class="mx-hero-title">{plan.title[locale]}</h1>
-      <p class="mx-hero-desc">{plan.description[locale]}</p>
+      <span class="cin-dock-label">{t('detail.duration')}</span>
+      <span class="cin-dock-value">{getDurationLabel(plan.duration)}</span>
     </div>
-  </section>
+    <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+    <div slot="dock" class="cin-dock-cell">
+      <div class="cin-dock-cell-icon gold">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <span class="cin-dock-label">{t('mixedRoutes.stops')}</span>
+      <span class="cin-dock-value">{totalStops}</span>
+    </div>
+    <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+    <div slot="dock" class="cin-dock-cell">
+      <div class="cin-dock-cell-icon cream">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      </div>
+      <span class="cin-dock-label">{t('mixedRoutes.neighborhoods')}</span>
+      <span class="cin-dock-value">{plan.neighborhoods.length}</span>
+    </div>
+    <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
+    {plan.bestFor && (
+      <div slot="dock" class="cin-dock-cell">
+        <div class="cin-dock-cell-icon green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <span class="cin-dock-label">{locale === 'es' ? 'Ideal para' : 'Best for'}</span>
+        <span class="cin-dock-value sub">{plan.bestFor[locale]}</span>
+      </div>
+    )}
+  </CinematicHero>
 
   <!-- CREAM EDITORIAL CONTENT WITH UPGRADED UI -->
   <DetailContent>
@@ -283,7 +306,7 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
       const url   = btn.dataset.url;
       const label = btn.querySelector('span');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Ruta "' + title + '" en RAWDA', url }); return; }
+        try { await navigator.share({ title, text: 'Ruta "' + title + '" en GRN Index', url }); return; }
         catch (_) {}
       }
       try {
@@ -463,23 +486,6 @@ const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
   }
   .upg-btn-secondary:hover { background: rgba(26,22,25,0.06); color: var(--s-ink); }
   .upg-btn-secondary svg { width: 16px; height: 16px; }
-
-  /* Hero Section */
-  .mx-hero { position: relative; padding: 8rem 2rem 4rem; background: linear-gradient(180deg, #1a1619 0%, #0a0a0a 100%); overflow: hidden; }
-  .mx-hero-bg { position: absolute; inset: 0; pointer-events: none; }
-  .mx-hero-gradient { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(232, 98, 42, 0.05) 0%, transparent 40%); }
-  .mx-hero-glow { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(201, 168, 76, 0.06), transparent 70%); filter: blur(60px); }
-  .mx-hero-content { position: relative; max-width: 900px; margin: 0 auto; z-index: 2; padding-bottom: 2rem; }
-  .mx-back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(240, 237, 232, 0.5); text-decoration: none; margin-bottom: 2rem; transition: all 0.3s ease; }
-  .mx-back-link:hover { color: var(--s-gold); gap: 0.75rem; }
-  .mx-back-link svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
-  .mx-back-link:hover svg { transform: translateX(-4px); }
-  .mx-hero-meta { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
-  .mx-duration-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(201, 168, 76, 0.15); border: 1px solid rgba(201, 168, 76, 0.3); border-radius: 100px; font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--s-gold); }
-  .mx-duration-badge svg { width: 16px; height: 16px; }
-  .mx-hero-stats { font-family: var(--font-display); font-size: 0.82rem; color: rgba(240, 237, 232, 0.4); }
-  .mx-hero-title { font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 300; letter-spacing: -0.03em; line-height: 1.1; color: #f0ede8; margin-bottom: 1.5rem; }
-  .mx-hero-desc { font-family: var(--font-display); font-size: 1.15rem; line-height: 1.7; color: rgba(240, 237, 232, 0.6); max-width: 65ch; margin-bottom: 1.5rem; }
 
   /* MX Stops Nested Layout */
   .mx-block-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }

@@ -2,8 +2,6 @@
 import type { Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import { useTranslations } from '../../i18n/utils';
-import { getImage } from 'astro:assets';
-import imgAlhambraAtardecer from '@assets/images/routes/alhambra-atardecer.jpg';
 
 interface Props {
   locale: Locale;
@@ -11,9 +9,6 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-
-const posterImage = await getImage({ src: imgAlhambraAtardecer, format: 'webp', width: 1920, quality: 80 });
-const posterUrl = posterImage.src;
 
 const c = {
   supra: t('home.hero.worldHeritage'),
@@ -27,12 +22,15 @@ const c = {
 
 <section class="portal-hero" aria-label={c.ariaLabel}>
 
+  <!-- Boot screen: hides everything until videos are painted -->
+  <div class="hero-boot-screen" id="hero-boot-screen" aria-hidden="true"></div>
+
   <!-- "Camera" Screen Frame -->
   <ScreenFrame />
 
   <!-- 1. The Living Canvas -->
   <div class="ambient-layer">
-    <video class="ambient-video" autoplay muted loop playsinline preload="metadata" poster={posterUrl}>
+    <video class="ambient-video" autoplay muted loop playsinline preload="metadata">
       <source src="/heroVideo.mp4" type="video/mp4" />
     </video>
     <div class="ambient-filter"></div>
@@ -61,7 +59,7 @@ const c = {
     <!-- The physical portal lens -->
     <div class="portal" data-parallax="0.05" aria-hidden="true">
       <div class="portal-inner-frame">
-        <video class="sharp-video" autoplay muted loop playsinline preload="metadata" poster={posterUrl}>
+        <video class="sharp-video" autoplay muted loop playsinline preload="metadata">
           <source src="/heroVideo.mp4" type="video/mp4" />
         </video>
         <div class="portal-shadows"></div>
@@ -76,18 +74,23 @@ const c = {
     </div>
   </div>
 
-  <!-- 4. Minimal Glass Dock (Weather + Time + CTA) -->
+  <!-- 4. Cinematic Glass Dock (Weather + Time + CTA) -->
   <div class="glass-dock-layer">
     <div class="glass-dock">
 
       <!-- Time & Weather -->
       <div class="dock-weather">
-        <div class="time-display" id="live-time">--:--</div>
+        <div class="time-block">
+          <div class="live-dot" aria-hidden="true"></div>
+          <div class="time-display" id="live-time">--:--</div>
+        </div>
         <div class="weather-display">
-          <span class="weather-temp" id="weather-today">--°</span>
           <span class="weather-icon" id="weather-icon-today">—</span>
+          <span class="weather-temp" id="weather-today">--°</span>
         </div>
       </div>
+
+      <div class="dock-divider"></div>
 
       <!-- CTA -->
       <a href={c.ctaLink} class="dock-cta" aria-label={c.cta}>
@@ -98,6 +101,27 @@ const c = {
       </a>
 
     </div>
+  </div>
+
+  <!-- 5. Scroll Hint -->
+  <div class="scroll-hint">
+    <span class="scroll-hint-line"></span>
+  </div>
+
+  <!-- 6. Ambient Floating Orbs -->
+  <div class="ambient-orb orb-1" aria-hidden="true"></div>
+  <div class="ambient-orb orb-2" aria-hidden="true"></div>
+  <div class="ambient-orb orb-3" aria-hidden="true"></div>
+
+  <!-- 7. Bottom Editorial Ornament -->
+  <div class="hero-ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L22 12L12 22L2 12Z"/>
+      </svg>
+    </div>
+    <div class="ornament-line"></div>
   </div>
 
 </section>
@@ -113,12 +137,26 @@ const c = {
     color: var(--color-text-primary);
   }
 
+  /* Boot screen: covers everything until both videos are painted */
+  .hero-boot-screen {
+    position: absolute;
+    inset: 0;
+    background: var(--color-bg);
+    z-index: 100;
+    pointer-events: none;
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity 3.5s cubic-bezier(0.45, 0, 0.15, 1);
+  }
+  .hero-boot-screen.is-hidden {
+    opacity: 0;
+  }
+
   /*
    * MULTI-LAYERED AMBIENT CANVAS
    */
   .ambient-layer {
-    position: absolute; inset: -5%; z-index: 1; pointer-events: none; opacity: 0;
-    animation: cin-fade-in 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: absolute; inset: -5%; z-index: 1; pointer-events: none;
   }
   .ambient-video {
     width: 100%; height: 100%; object-fit: cover;
@@ -140,6 +178,13 @@ const c = {
   .ambient-gradient {
     position: absolute; inset: 0;
     background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.85) 100%); z-index: 3;
+  }
+
+  .ambient-layer::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light;
   }
 
   /*
@@ -289,7 +334,7 @@ const c = {
   }
 
   /*
-   * MINIMAL GLASS DOCK
+   * CINEMATIC GLASS DOCK
    */
   .glass-dock-layer {
     position: absolute;
@@ -297,7 +342,7 @@ const c = {
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 4rem);
-    max-width: 480px;
+    max-width: 520px;
     z-index: 10;
     opacity: 0;
     animation: dock-rise 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
@@ -309,16 +354,35 @@ const c = {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(40px) saturate(140%);
-    -webkit-backdrop-filter: blur(40px) saturate(140%);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%),
+      rgba(8,8,8,0.2);
+    backdrop-filter: blur(40px) saturate(160%);
+    -webkit-backdrop-filter: blur(40px) saturate(160%);
     border-radius: 100px;
     padding: 0.75rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     box-shadow:
-      0 25px 50px rgba(0, 0, 0, 0.4),
-      0 10px 20px rgba(0, 0, 0, 0.2),
+      0 25px 50px rgba(0, 0, 0, 0.45),
+      0 10px 20px rgba(0, 0, 0, 0.25),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-dock::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(201,168,76,0.35) 20%,
+      rgba(201,168,76,0.6) 50%,
+      rgba(201,168,76,0.35) 80%,
+      transparent 100%
+    );
+    z-index: 2;
   }
 
   .dock-weather {
@@ -326,6 +390,27 @@ const c = {
     align-items: center;
     gap: 0.75rem;
     flex-shrink: 0;
+  }
+
+  .time-block {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(232,98,42,0.3), 0 0 10px rgba(232,98,42,0.5);
+    animation: livePulse 2.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
   }
 
   .time-display {
@@ -360,43 +445,188 @@ const c = {
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
   }
 
-  .dock-cta {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.75rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 100px;
-    text-decoration: none;
-    color: var(--color-text-primary);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  .dock-divider {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.15), transparent);
     flex-shrink: 0;
   }
 
+  .dock-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.25rem;
+    background: var(--color-accent);
+    border: 1px solid rgba(232, 98, 42, 0.5);
+    border-radius: 100px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    box-shadow:
+      0 4px 20px rgba(232, 98, 42, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dock-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
   .dock-cta:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-1px);
+    background: var(--color-accent-hover);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+      0 8px 30px rgba(232, 98, 42, 0.4),
+      inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+
+  .dock-cta:hover::before {
+    opacity: 1;
   }
 
   .cta-text {
     font-family: var(--font-display);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
+    position: relative;
+    z-index: 1;
   }
 
   .cta-arrow {
-    opacity: 0.7;
+    opacity: 0.9;
     transition: transform 0.25s, opacity 0.25s;
+    position: relative;
+    z-index: 1;
   }
 
   .dock-cta:hover .cta-arrow {
     opacity: 1;
-    transform: translateX(2px);
+    transform: translateX(3px);
+  }
+
+  /*
+   * SCROLL HINT
+   */
+  .scroll-hint {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: cin-fade-in 1.5s ease 2.5s forwards;
+  }
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(0.7); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /*
+   * AMBIENT FLOATING ORBS
+   */
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    animation: orbFadeIn 3s ease forwards, orbFloat 12s ease-in-out infinite;
+  }
+
+  .orb-1 {
+    width: 180px;
+    height: 180px;
+    top: 15%;
+    right: 8%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    filter: blur(40px);
+    animation-delay: 2s, 4s;
+  }
+
+  .orb-2 {
+    width: 120px;
+    height: 120px;
+    bottom: 25%;
+    left: 5%;
+    background: radial-gradient(circle, rgba(232,98,42,0.06) 0%, transparent 70%);
+    filter: blur(30px);
+    animation-delay: 3s, 5s;
+    animation-duration: 3s, 15s;
+  }
+
+  .orb-3 {
+    width: 80px;
+    height: 80px;
+    top: 45%;
+    left: 15%;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    filter: blur(20px);
+    animation-delay: 4s, 6s;
+    animation-duration: 3s, 10s;
+  }
+
+  @keyframes orbFadeIn {
+    to { opacity: 1; }
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(10px, -15px); }
+    50% { transform: translate(-5px, 10px); }
+    75% { transform: translate(15px, 5px); }
+  }
+
+  /*
+   * BOTTOM EDITORIAL ORNAMENT
+   */
+  .hero-ornament {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    z-index: 10;
+    opacity: 0;
+    animation: cin-fade-in 2s ease 2s forwards;
+    pointer-events: none;
+  }
+
+  .ornament-line {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.25), transparent);
+  }
+
+  .ornament-diamond {
+    color: rgba(201, 168, 76, 0.35);
+    animation: rotate 10s linear infinite;
   }
 
   /* Responsive */
@@ -412,12 +642,16 @@ const c = {
     .epic-title { font-size: 18vw; gap: 2px; }
     .portal-wrapper { top: 26vh; bottom: 26vh; }
     .portal { width: 80vw; border-radius: 50vw 50vw 0 0; animation: cin-fade-in 2s forwards; }
-    .glass-dock-layer { bottom: 1.5rem; width: calc(100% - 2rem); }
+    .glass-dock-layer { bottom: 2.5rem; width: calc(100% - 2rem); }
     .glass-dock {
       display: flex; flex-direction: column;
-      border-radius: 16px; padding: 1.5rem 1.5rem; gap: 1.25rem; text-align: center;
+      border-radius: 20px; padding: 1.25rem 1.5rem; gap: 1rem; text-align: center;
     }
-    .dock-cta { width: 100%; justify-content: space-between; }
+    .dock-divider { display: none; }
+    .dock-cta { width: 100%; justify-content: center; }
+    .scroll-hint { display: none; }
+    .hero-ornament { display: none; }
+    .ambient-orb { display: none; }
   }
 </style>
 
@@ -509,5 +743,52 @@ const c = {
         });
       });
     }
+
+    // Cinematic video reveal — fade from black, no poster flash
+    const ambientVideo = document.querySelector('.ambient-video') as HTMLVideoElement | null;
+    const sharpVideo = document.querySelector('.sharp-video') as HTMLVideoElement | null;
+    const bootScreen = document.getElementById('hero-boot-screen');
+
+    let videosReady = 0;
+    const totalVideos = 2;
+
+    const revealVideos = () => {
+      if (!bootScreen) return;
+
+      // Give the compositor two paint cycles so the first decoded frame
+      // is guaranteed on-screen before we lift the black curtain.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bootScreen.classList.add('is-hidden');
+
+          bootScreen.addEventListener(
+            'transitionend',
+            () => {
+              bootScreen.style.display = 'none';
+            },
+            { once: true }
+          );
+        });
+      });
+    };
+
+    const onVideoReady = () => {
+      videosReady++;
+      if (videosReady >= totalVideos) {
+        revealVideos();
+      }
+    };
+
+    const bindVideoReady = (video: HTMLVideoElement | null) => {
+      if (!video) return;
+      if (video.readyState >= 2) {
+        onVideoReady();
+      } else {
+        video.addEventListener('loadeddata', onVideoReady, { once: true });
+      }
+    };
+
+    bindVideoReady(ambientVideo);
+    bindVideoReady(sharpVideo);
   });
 </script>

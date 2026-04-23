@@ -45,7 +45,7 @@ const articleSchema = JSON.stringify({
   description: post.description[locale],
   datePublished: post.publishDate,
   author: { '@type': 'Person', name: post.author },
-  publisher: { '@type': 'Organization', name: 'RAWDA', url: 'https://granadavibes.com' },
+  publisher: { '@type': 'Organization', name: 'GRN Index', url: 'https://granadavibes.com' },
   image: ogImage,
   url: Astro.url.href,
 });
@@ -98,7 +98,7 @@ const articleSchema = JSON.stringify({
               <div>
                 <span style="font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--s-ink-3); text-transform: uppercase; display: block; margin-bottom: 0.2rem;">Escrito por</span>
                 <span style="font-family: var(--font-body); font-size: 1.5rem; font-weight: 600; color: var(--s-ink); display: block; margin-bottom: 0.4rem;">{post.author}</span>
-                <span style="font-family: var(--font-display); font-size: 0.9rem; color: var(--s-ink-2); line-height: 1.5; display: block;">Colaborador de RAWDA especializado en cultura local y turismo experiencial.</span>
+                <span style="font-family: var(--font-display); font-size: 0.9rem; color: var(--s-ink-2); line-height: 1.5; display: block;">Colaborador de GRN Index especializado en cultura local y turismo experiencial.</span>
               </div>
             </div>
           </article>
@@ -237,7 +237,7 @@ const articleSchema = JSON.stringify({
       const url   = btn.dataset.url;
       const label = btn.querySelector('span');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Lee "' + title + '" en RAWDA', url }); return; }
+        try { await navigator.share({ title, text: 'Lee "' + title + '" en GRN Index', url }); return; }
         catch (_) {}
       }
       try {

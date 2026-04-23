@@ -29,9 +29,9 @@ const relatedEvents = getAllEvents()
   .slice(0, 3);
 
 const eventImage = event.imageUrl || event.image;
-const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=RAWDA';
+const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=GRN Index';
 
-const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${event.price === null ? 'Free entry.' : `From ${event.price}€.`} Get tickets and discover more on RAWDA.`;
+const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${event.price === null ? 'Free entry.' : `From ${event.price}€.`} Get tickets and discover more on GRN Index.`;
 ---
 
 <BaseLayout
@@ -65,7 +65,16 @@ const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(e
               <span class="det-block-eyebrow">[ About the event ]</span>
             </header>
             <h2 class="det-block-title">Description</h2>
-            <p class="det-lead">{event.description[locale]}</p>
+            {event.description[locale] && (
+              <p class="det-lead">{event.description[locale]}</p>
+            )}
+            {event.longDescription && event.longDescription[locale] && (
+              <div class="det-long-desc">
+                {event.longDescription[locale].split('\n\n').map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            )}
             <div class="det-hover-corners" aria-hidden="true">
               <span class="hc tl"></span><span class="hc tr"></span>
               <span class="hc bl"></span><span class="hc br"></span>
@@ -321,7 +330,7 @@ const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(e
       const url   = btn.dataset.url;
       const label = btn.querySelector('.share-label');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Discover "' + title + '" on RAWDA', url }); return; }
+        try { await navigator.share({ title, text: 'Discover "' + title + '" on GRN Index', url }); return; }
         catch (_) {}
       }
       try {
@@ -345,3 +354,8 @@ const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(e
     document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
   });
 </script>
+
+<style>
+  .det-long-desc { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+  .det-long-desc p { font-family: var(--font-display); font-size: 1rem; line-height: 1.75; color: var(--s-ink-2); max-width: 68ch; }
+</style>

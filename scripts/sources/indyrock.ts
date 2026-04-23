@@ -46,8 +46,10 @@ export async function fetchIndyRockEvents(): Promise<IndyRockEvent[]> {
 
     const fullText = paragraphs.join(' ');
 
-    // Extract date from paragraphs
-    const dateMatch = fullText.match(
+    // Extract date from heading text AND following paragraphs
+    // Many IndyRock entries embed the date inside the heading itself
+    const searchText = title + ' ' + fullText;
+    const dateMatch = searchText.match(
       /(\d{1,2})\s+(?:de\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)(?:\s+(?:de\s+)?(\d{4}))?/i
     );
     const dateStr = dateMatch ? dateMatch[0] : '';

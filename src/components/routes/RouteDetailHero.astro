@@ -15,15 +15,18 @@ const t = useTranslations(locale);
 const routeImage    = route.image;
 const refCode       = `RUT / ${route.id.toString().padStart(3, '0')} · ${new Date().getFullYear()}`;
 const backHref      = locale === 'es' ? '/rutas'    : '/en/routes';
-const backLabel     = locale === 'es' ? '← RUTAS'   : '← ROUTES';
+const backLabel     = locale === 'es' ? 'Rutas'     : 'Routes';
 const catLabel      = t(`categories.${route.category}`).toUpperCase();
 const featuredLabel = route.featured ? (locale === 'es' ? 'DESTACADA' : 'FEATURED') : undefined;
 const dockLabel     = locale === 'es' ? 'Información de la ruta' : 'Route information';
+const description   = route.description[locale];
 
 const difficultyColor: Record<string, string> = {
   easy: '#4a9e6b', moderate: '#d4873a', challenging: '#c94a4a',
 };
 const diffColor = difficultyColor[route.difficulty] ?? '#4a9e6b';
+const diffIconClass = route.difficulty === 'easy' ? 'green' : route.difficulty === 'moderate' ? 'orange' : 'orange';
+const timeIconClass = (route.timeOfDay === 'evening' || route.timeOfDay === 'sunset') ? 'cream' : 'gold';
 ---
 
 <CinematicHero
@@ -36,18 +39,28 @@ const diffColor = difficultyColor[route.difficulty] ?? '#4a9e6b';
   eyebrowText={catLabel}
   featuredLabel={featuredLabel}
   dockAriaLabel={dockLabel}
+  description={description}
 >
   <div slot="dock" class="cin-dock-cell">
+    <div class="cin-dock-cell-icon orange">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
     <span class="cin-dock-label">{t('detail.duration')}</span>
     <span class="cin-dock-value">{formatDuration(route.duration, locale)}</span>
   </div>
   <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
   <div slot="dock" class="cin-dock-cell">
+    <div class="cin-dock-cell-icon cream">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+    </div>
     <span class="cin-dock-label">{t('detail.distance')}</span>
     <span class="cin-dock-value">{formatDistance(route.distance, locale)}</span>
   </div>
   <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
   <div slot="dock" class="cin-dock-cell">
+    <div class:list={['cin-dock-cell-icon', diffIconClass]}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
     <span class="cin-dock-label">{t('detail.difficulty')}</span>
     <span class="cin-dock-value rut-dock-diff" style={`--dc: ${diffColor}`}>
       {t(`difficulty.${route.difficulty}`)}
@@ -55,6 +68,12 @@ const diffColor = difficultyColor[route.difficulty] ?? '#4a9e6b';
   </div>
   <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
   <div slot="dock" class="cin-dock-cell">
+    <div class:list={['cin-dock-cell-icon', timeIconClass]}>
+      {(route.timeOfDay === 'evening' || route.timeOfDay === 'sunset')
+        ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      }
+    </div>
     <span class="cin-dock-label">{t('detail.bestTime')}</span>
     <span class="cin-dock-value">{t(`timeOfDay.${route.timeOfDay}`)}</span>
   </div>

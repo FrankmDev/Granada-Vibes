@@ -6,7 +6,7 @@ import { fetchEventbriteEvents, type EventbriteEvent } from './sources/eventbrit
 import { fetchConciertosGranadaEvents } from './sources/conciertos-granada.js';
 import { fetchYuzinEvents } from './sources/yuzin.js';
 import { fetchGranadaEsCulturaEvents } from './sources/granada-es-cultura.js';
-import { fetchIndyRockEvents } from './sources/indyrock.js';
+
 import { fetchPalacioEvents } from './sources/palacio-congresos.js';
 import { fetchTurgranadaEvents } from './sources/turgranada.js';
 import { fetchAyuntamientoEvents } from './sources/ayuntamiento.js';
@@ -15,78 +15,21 @@ import {
   transformConciertosGranada,
   transformYuzin,
   transformGranadaEsCultura,
-  transformIndyRock,
+
   transformPalacio,
   transformTurgranada,
   transformAyuntamiento,
   transformElegirHoy,
 } from './utils/transform-scraped.js';
 import { detectNeighborhood } from './utils/venue-neighborhood.js';
+import {
+  type GeneratedEvent,
+  type EventCategory,
+  slugify,
+} from './utils/shared-types.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const GENERATED_PATH = resolve(__dirname, '../src/data/events/generated.json');
-
-// ─── Types (mirrored from src/types — no alias available in scripts) ───
-
-type EventSource =
-  | 'ticketmaster' | 'eventbrite'
-  | 'yuzin' | 'conciertos-granada' | 'granada-es-cultura' | 'indyrock'
-  | 'ayuntamiento' | 'turgranada' | 'palacio-congresos' | 'elegirhoy'
-  | 'manual' | 'mock';
-
-type EventCategory =
-  | 'concert'
-  | 'exhibition'
-  | 'festival'
-  | 'market'
-  | 'theater'
-  | 'workshop'
-  | 'guided-tour'
-  | 'cinema'
-  | 'other';
-
-type Neighborhood =
-  | 'albaicin'
-  | 'sacromonte'
-  | 'centro'
-  | 'realejo'
-  | 'alhambra'
-  | 'cartuja'
-  | 'zaidin'
-  | 'otro';
-
-interface GeneratedEvent {
-  id: string;
-  slug: string;
-  title: { es: string; en: string };
-  description: { es: string; en: string };
-  category: EventCategory;
-  date: string;
-  time: string;
-  venue: string;
-  neighborhood: Neighborhood;
-  price: number | null;
-  currency: 'EUR';
-  tags: string[];
-  featured: boolean;
-  source: EventSource;
-  sourceId: string;
-  sourceUrl: string;
-  imageUrl?: string;
-  lastSyncedAt: string;
-}
-
-// ─── Helpers ───
-
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/-{2,}/g, '-');
-}
 
 // ─── Ticketmaster transform ───
 
@@ -183,6 +126,14 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
   const venue = raw.primary_venue?.name ?? 'Granada';
   const imageUrl = raw.image?.url;
 
+  // Extract price: null means free, number means paid
+  let price: number | null = null;
+  if (raw.is_free) {
+    price = null; // free
+  } else if (raw.ticket_price) {
+    price = raw.ticket_price.min;
+  }
+
   return {
     id: `eb-${raw.id}`,
     slug: slugify(raw.name),
@@ -193,7 +144,7 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
     time: raw.start_time ? raw.start_time.slice(0, 5) : 'Por confirmar',
     venue,
     neighborhood: detectNeighborhood(venue),
-    price: null,
+    price,
     currency: 'EUR',
     tags: (raw.tags ?? [])
       .filter((t) => t.prefix === 'EventbriteCategory')
@@ -207,20 +158,61 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
   };
 }
 
-// ─── Shared logic ───
+// ─── Validation ───
 
-function isValidEvent(event: GeneratedEvent): boolean {
-  if (!event.title.es) return false;
-  if (!event.venue) return false;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(event.date)) return false;
-  if (Number.isNaN(new Date(event.date).getTime())) return false;
+interface ValidationStats {
+  total: number;
+  noTitle: number;
+  noVenue: number;
+  badDate: number;
+  pastDate: number;
+  cancelled: number;
+  noImage: number;
+  passed: number;
+}
+
+function isValidEvent(event: GeneratedEvent, stats: ValidationStats): boolean {
+  stats.total++;
+
+  if (!event.title.es) { stats.noTitle++; return false; }
+  if (!event.venue) { stats.noVenue++; return false; }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(event.date)) { stats.badDate++; return false; }
+  if (Number.isNaN(new Date(event.date).getTime())) { stats.badDate++; return false; }
+
   // Filter past events at ingestion time
   const today = new Date().toISOString().split('T')[0] as string;
-  if (event.date < today) return false;
+  if (event.date < today) { stats.pastDate++; return false; }
+
   // Filter cancelled events
-  if (/^cancelad[oa]\b/i.test(event.title.es)) return false;
+  if (/^cancelad[oa]\b/i.test(event.title.es)) { stats.cancelled++; return false; }
+
+  // Track missing images but DON'T filter them out
+  if (!event.imageUrl) { stats.noImage++; }
+
+  stats.passed++;
   return true;
 }
+
+/** Log validation stats for a source */
+function logValidationStats(sourceName: string, stats: ValidationStats): void {
+  if (stats.total === 0) return;
+
+  const rejected = stats.total - stats.passed;
+  if (rejected > 0) {
+    const reasons: string[] = [];
+    if (stats.noTitle > 0) reasons.push(`${stats.noTitle} sin título`);
+    if (stats.noVenue > 0) reasons.push(`${stats.noVenue} sin venue`);
+    if (stats.badDate > 0) reasons.push(`${stats.badDate} fecha inválida`);
+    if (stats.pastDate > 0) reasons.push(`${stats.pastDate} pasados`);
+    if (stats.cancelled > 0) reasons.push(`${stats.cancelled} cancelados`);
+    console.log(`  ↳ ${sourceName}: ${rejected} descartados (${reasons.join(', ')})`);
+  }
+  if (stats.noImage > 0) {
+    console.log(`  ↳ ${sourceName}: ${stats.noImage} sin imagen (aceptados igualmente)`);
+  }
+}
+
+// ─── Shared logic ───
 
 /** Normalize title for content-based deduplication */
 function normalizeTitle(title: string): string {
@@ -298,115 +290,149 @@ function deduplicateAndMerge(
 interface SourceResult {
   name: string;
   events: GeneratedEvent[];
+  rawCount: number;
 }
 
 async function fetchFromTicketmaster(): Promise<SourceResult> {
   if (!process.env.TICKETMASTER_API_KEY) {
     console.warn('⚠ TICKETMASTER_API_KEY not set — skipping Ticketmaster');
-    return { name: 'Ticketmaster', events: [] };
+    return { name: 'Ticketmaster', events: [], rawCount: 0 };
   }
 
   const raw = await fetchTicketmasterEvents();
-  const transformed = raw.map(transformTicketmaster).filter(isValidEvent);
-  return { name: 'Ticketmaster', events: transformed };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformTicketmaster).filter(e => isValidEvent(e, stats));
+  logValidationStats('Ticketmaster', stats);
+  return { name: 'Ticketmaster', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromEventbrite(): Promise<SourceResult> {
   if (!process.env.EVENTBRITE_API_KEY) {
     console.warn('⚠ EVENTBRITE_API_KEY not set — skipping Eventbrite');
-    return { name: 'Eventbrite', events: [] };
+    return { name: 'Eventbrite', events: [], rawCount: 0 };
   }
 
   const raw = await fetchEventbriteEvents();
-  const transformed = raw.map(transformEventbrite).filter(isValidEvent);
-  return { name: 'Eventbrite', events: transformed };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformEventbrite).filter(e => isValidEvent(e, stats));
+  logValidationStats('Eventbrite', stats);
+  return { name: 'Eventbrite', events: transformed, rawCount: raw.length };
 }
 
 // ─── Scraper fetchers ───
 
 async function fetchFromConciertosGranada(): Promise<SourceResult> {
   const raw = await fetchConciertosGranadaEvents();
-  return { name: 'ConciertosenGranada', events: raw.map(transformConciertosGranada).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformConciertosGranada).filter(e => isValidEvent(e, stats));
+  logValidationStats('ConciertosenGranada', stats);
+  return { name: 'ConciertosenGranada', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromYuzin(): Promise<SourceResult> {
   const raw = await fetchYuzinEvents();
-  return { name: 'Yuzin', events: raw.map(transformYuzin).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformYuzin).filter(e => isValidEvent(e, stats));
+  logValidationStats('Yuzin', stats);
+  return { name: 'Yuzin', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromGranadaEsCultura(): Promise<SourceResult> {
   const raw = await fetchGranadaEsCulturaEvents();
-  return { name: 'GranadaEsCultura', events: raw.map(transformGranadaEsCultura).filter(isValidEvent) };
-}
-
-async function fetchFromIndyRock(): Promise<SourceResult> {
-  const raw = await fetchIndyRockEvents();
-  return { name: 'IndyRock', events: raw.map(transformIndyRock).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformGranadaEsCultura).filter(e => isValidEvent(e, stats));
+  logValidationStats('GranadaEsCultura', stats);
+  return { name: 'GranadaEsCultura', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromPalacio(): Promise<SourceResult> {
   const raw = await fetchPalacioEvents();
-  return { name: 'PalacioCongresos', events: raw.map(transformPalacio).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformPalacio).filter(e => isValidEvent(e, stats));
+  logValidationStats('PalacioCongresos', stats);
+  return { name: 'PalacioCongresos', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromTurgranada(): Promise<SourceResult> {
   const raw = await fetchTurgranadaEvents();
-  return { name: 'Turgranada', events: raw.map(transformTurgranada).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformTurgranada).filter(e => isValidEvent(e, stats));
+  logValidationStats('Turgranada', stats);
+  return { name: 'Turgranada', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromAyuntamiento(): Promise<SourceResult> {
   const raw = await fetchAyuntamientoEvents();
-  return { name: 'Ayuntamiento', events: raw.map(transformAyuntamiento).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformAyuntamiento).filter(e => isValidEvent(e, stats));
+  logValidationStats('Ayuntamiento', stats);
+  return { name: 'Ayuntamiento', events: transformed, rawCount: raw.length };
 }
 
 async function fetchFromElegirHoy(): Promise<SourceResult> {
   const raw = await fetchElegirHoyEvents();
-  return { name: 'ElegirHoy', events: raw.map(transformElegirHoy).filter(isValidEvent) };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const transformed = raw.map(transformElegirHoy).filter(e => isValidEvent(e, stats));
+  logValidationStats('ElegirHoy', stats);
+  return { name: 'ElegirHoy', events: transformed, rawCount: raw.length };
 }
 
 // ─── Main ───
 
 async function main(): Promise<void> {
+  console.log('🔄 Fetching events from all sources...\n');
+
   const results: SourceResult[] = [];
-  const errors: string[] = [];
+  const errors: { name: string; error: string }[] = [];
 
   // Fetch from all sources in parallel
-  const fetchers = [
-    fetchFromTicketmaster(),
-    fetchFromEventbrite(),
-    fetchFromConciertosGranada(),
-    fetchFromYuzin(),
-    fetchFromGranadaEsCultura(),
-    fetchFromIndyRock(),
-    fetchFromPalacio(),
-    fetchFromTurgranada(),
-    fetchFromAyuntamiento(),
-    fetchFromElegirHoy(),
+  const fetchers: Array<{ name: string; fn: () => Promise<SourceResult> }> = [
+    { name: 'Ticketmaster', fn: fetchFromTicketmaster },
+    { name: 'Eventbrite', fn: fetchFromEventbrite },
+    { name: 'ConciertosenGranada', fn: fetchFromConciertosGranada },
+    { name: 'Yuzin', fn: fetchFromYuzin },
+    { name: 'GranadaEsCultura', fn: fetchFromGranadaEsCultura },
+    { name: 'PalacioCongresos', fn: fetchFromPalacio },
+    { name: 'Turgranada', fn: fetchFromTurgranada },
+    { name: 'Ayuntamiento', fn: fetchFromAyuntamiento },
+    { name: 'ElegirHoy', fn: fetchFromElegirHoy },
   ];
-  const settled = await Promise.allSettled(fetchers);
 
-  for (const result of settled) {
+  const settled = await Promise.allSettled(
+    fetchers.map(f => f.fn())
+  );
+
+  for (let i = 0; i < settled.length; i++) {
+    const result = settled[i]!;
+    const fetcher = fetchers[i]!;
     if (result.status === 'fulfilled') {
       results.push(result.value);
     } else {
-      errors.push(String(result.reason));
+      const errorMsg = result.reason instanceof Error
+        ? result.reason.message
+        : String(result.reason);
+      errors.push({ name: fetcher.name, error: errorMsg });
     }
   }
 
   // Log results per source
-  for (const { name, events } of results) {
-    console.log(`✓ ${name}: ${events.length} eventos obtenidos`);
+  console.log('\n📊 Resultados por fuente:');
+  for (const { name, events, rawCount } of results) {
+    const icon = events.length > 0 ? '✓' : '○';
+    const rawInfo = rawCount !== events.length ? ` (${rawCount} raw → ${events.length} válidos)` : '';
+    console.log(`${icon} ${name}: ${events.length} eventos${rawInfo}`);
   }
 
-  // If all sources failed, exit with error
+  // Log errors
   if (errors.length > 0) {
-    for (const err of errors) {
-      console.error('✗ Error:', err);
+    console.log('\n⚠ Errores:');
+    for (const { name, error } of errors) {
+      console.error(`  ✗ ${name}: ${error}`);
     }
   }
 
   if (results.length === 0 && errors.length > 0) {
-    console.error('✗ All sources failed');
+    console.error('\n✗ All sources failed');
     process.exit(1);
   }
 
@@ -415,7 +441,7 @@ async function main(): Promise<void> {
 
   // If no events from any source, keep existing data
   if (allIncoming.length === 0) {
-    console.warn('⚠ No events returned from any source — keeping existing data');
+    console.warn('\n⚠ No events returned from any source — keeping existing data');
     process.exit(0);
   }
 
@@ -423,17 +449,25 @@ async function main(): Promise<void> {
   const existing = loadExistingEvents();
   const final = deduplicateAndMerge(existing, allIncoming);
 
-  console.log(`✓ Después de deduplicar: ${final.length} eventos en total`);
+  console.log(`\n✓ Después de deduplicar: ${final.length} eventos en total`);
 
   // Coverage summary
   const withImage = final.filter((e) => e.imageUrl).length;
   const withDescription = final.filter((e) => e.description.es.length > 0).length;
-  console.log(`📸 Con imagen: ${withImage}/${final.length} (${Math.round((withImage / final.length) * 100)}%)`);
-  console.log(`📝 Con descripción: ${withDescription}/${final.length} (${Math.round((withDescription / final.length) * 100)}%)`);
+  const withPrice = final.filter((e) => e.price !== null).length;
+  const withTime = final.filter((e) => e.time !== 'Por confirmar').length;
+  const withVenue = final.filter((e) => e.venue !== 'Granada' && e.venue !== '').length;
+
+  console.log(`\n📈 Cobertura de datos:`);
+  console.log(`  📸 Con imagen:      ${withImage}/${final.length} (${Math.round((withImage / final.length) * 100)}%)`);
+  console.log(`  📝 Con descripción: ${withDescription}/${final.length} (${Math.round((withDescription / final.length) * 100)}%)`);
+  console.log(`  💰 Con precio:      ${withPrice}/${final.length} (${Math.round((withPrice / final.length) * 100)}%)`);
+  console.log(`  🕐 Con hora:        ${withTime}/${final.length} (${Math.round((withTime / final.length) * 100)}%)`);
+  console.log(`  📍 Con venue:       ${withVenue}/${final.length} (${Math.round((withVenue / final.length) * 100)}%)`);
 
   // Write
   writeFileSync(GENERATED_PATH, JSON.stringify(final, null, 2) + '\n', 'utf-8');
-  console.log(`✓ Escritos en src/data/events/generated.json`);
+  console.log(`\n✓ Escritos en src/data/events/generated.json`);
 }
 
 main();
