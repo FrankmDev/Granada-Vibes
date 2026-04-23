@@ -1,7 +1,7 @@
 import type { SiteConfig, Locale } from '@types';
 
 export const SITE_CONFIG: SiteConfig = {
-  name: 'GRN Index',
+  name: 'GRN INDEX',
   description: {
     es: 'Tu guía cultural e inteligente de Granada. Descubre eventos, rutas y experiencias únicas en la ciudad de la Alhambra.',
     en: 'Your smart cultural guide to Granada. Discover events, routes, and unique experiences in the city of the Alhambra.',
@@ -26,4 +26,4 @@ export const LOCALE_PATHS: Record<Locale, string> = {
   en: '/en',
 };
 
-export const DEFAULT_OG_IMAGE = 'https://placehold.co/1200x630/080808/f0ede8?text=GRN Index';
+export const DEFAULT_OG_IMAGE = 'https://placehold.co/1200x630/080808/f0ede8?text=GRN INDEX';

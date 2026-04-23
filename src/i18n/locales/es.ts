@@ -402,7 +402,7 @@ ctaAriaLabel: 'Descubre Granada',
     newsletterPlaceholder: 'Tu email',
     viewAllEvents: 'Ver todos los eventos',
     madeIn: 'Hecho con ❤ en Granada',
-    copyright: '© {{year}} GRN Index. Todos los derechos reservados.',
+    copyright: '© {{year}} GRN INDEX. Todos los derechos reservados.',
     allRightsReserved: 'Todos los derechos reservados',
   },
 
@@ -427,7 +427,7 @@ ctaAriaLabel: 'Descubre Granada',
 
   // Meta
   meta: {
-    siteName: 'GRN Index',
+    siteName: 'GRN INDEX',
     defaultDescription:
       'Guía cultural de Granada creada por locales. Eventos, rutas por el Albaicín y Sacromonte, y planes auténticos fuera de las guías turísticas.',
   },

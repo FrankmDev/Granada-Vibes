@@ -391,7 +391,7 @@ const seoDescription = `Discover the "${route.title[locale]}" route through ${ro
       const url   = btn.dataset.url;
       const label = btn.querySelector('.share-label');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Discover the route "' + title + '" on GRN Index', url }); return; }
+        try { await navigator.share({ title, text: 'Discover the route "' + title + '" on GRN INDEX', url }); return; }
         catch (_) {}
       }
       try {

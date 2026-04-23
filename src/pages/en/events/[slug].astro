@@ -29,9 +29,9 @@ const relatedEvents = getAllEvents()
   .slice(0, 3);
 
 const eventImage = event.imageUrl || event.image;
-const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=GRN Index';
+const ogImage = eventImage || 'https://placehold.co/1200x630/0a0a0a/f0ede8?text=GRN INDEX';
 
-const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${event.price === null ? 'Free entry.' : `From ${event.price}€.`} Get tickets and discover more on GRN Index.`;
+const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${event.price === null ? 'Free entry.' : `From ${event.price}€.`} Get tickets and discover more on GRN INDEX.`;
 ---
 
 <BaseLayout
@@ -330,7 +330,7 @@ const seoDescription = `${event.title[locale]} in Granada — ${formatFullDate(e
       const url   = btn.dataset.url;
       const label = btn.querySelector('.share-label');
       if (navigator.share) {
-        try { await navigator.share({ title, text: 'Discover "' + title + '" on GRN Index', url }); return; }
+        try { await navigator.share({ title, text: 'Discover "' + title + '" on GRN INDEX', url }); return; }
         catch (_) {}
       }
       try {

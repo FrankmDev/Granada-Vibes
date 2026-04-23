@@ -404,7 +404,7 @@ ctaAriaLabel: 'Discover Granada',
     newsletterPlaceholder: 'Your email',
     viewAllEvents: 'View all events',
     madeIn: 'Made with ❤ in Granada',
-    copyright: '© {{year}} GRN Index. All rights reserved.',
+    copyright: '© {{year}} GRN INDEX. All rights reserved.',
     allRightsReserved: 'All rights reserved',
   },
 
@@ -429,7 +429,7 @@ ctaAriaLabel: 'Discover Granada',
 
   // Meta
   meta: {
-    siteName: 'GRN Index',
+    siteName: 'GRN INDEX',
     defaultDescription:
       'Your smart cultural guide to Granada. Discover events, routes, and unique experiences in the city of the Alhambra.',
   },

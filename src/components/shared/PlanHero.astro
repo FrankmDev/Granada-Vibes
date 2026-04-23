@@ -1,0 +1,519 @@
+---
+interface Props {
+  locale: 'es' | 'en';
+  backHref: string;
+  backLabel: string;
+  refCode: string;
+  title: string;
+  eyebrowText: string;
+  description?: string;
+  duration: string;
+  totalStops: number;
+  neighborhoods: string[];
+  bestFor?: string;
+}
+
+const {
+  locale,
+  backHref,
+  backLabel,
+  refCode,
+  title,
+  eyebrowText,
+  description,
+  duration,
+  totalStops,
+  neighborhoods,
+  bestFor,
+} = Astro.props;
+
+const refNum = refCode.split(' / ').pop()?.split(' · ')[0] ?? refCode;
+
+const ghostMap: Record<string, string> = {
+  '2h': '2H', '6h': '6H', '12h': '12H',
+  '1day': '1D', '2days': '2D', '3days': '3D',
+};
+const ghostNum = ghostMap[duration] ?? duration.toUpperCase();
+
+// Generate SVG route path with waypoints based on stops count
+const waypointCount = Math.min(totalStops, 7);
+const waypoints = Array.from({ length: waypointCount }, (_, i) => ({
+  x: 8 + (i / (waypointCount - 1 || 1)) * 84 + (Math.sin(i * 3.7) * 3),
+  y: 50 + (Math.cos(i * 2.3) * 25) + (i % 2 === 0 ? -10 : 10),
+}));
+
+const pathD = waypoints.length > 1
+  ? waypoints.reduce((acc, p, i) => {
+      if (i === 0) return `M ${p.x} ${p.y}`;
+      const prev = waypoints[i - 1];
+      const cpx = (prev.x + p.x) / 2;
+      return `${acc} Q ${cpx} ${prev.y} ${p.x} ${p.y}`;
+    }, '')
+  : '';
+
+// Timeline ticks for the strip
+const tickCount = Math.min(totalStops + 1, 12);
+---
+
+<section class="plan-hero" aria-label={title}>
+  <!-- Deep ambient canvas -->
+  <div class="ph-canvas" aria-hidden="true">
+    <div class="ph-bg"></div>
+    <div class="ph-orb o1"></div>
+    <div class="ph-orb o2"></div>
+    <div class="ph-grid"></div>
+    <div class="ph-vignette"></div>
+    <div class="ph-grain"></div>
+  </div>
+
+  <!-- Route topology watermark -->
+  <div class="ph-route-watermark" aria-hidden="true">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+      {pathD && (
+        <>
+          <path d={pathD} fill="none" stroke="rgba(201,168,76,0.08)" stroke-width="0.4" stroke-linecap="round" />
+          {waypoints.map((wp, i) => (
+            <circle
+              cx={wp.x}
+              cy={wp.y}
+              r={1.2 + (i % 3) * 0.4}
+              fill={i === 0 || i === waypoints.length - 1 ? 'rgba(232,98,42,0.25)' : 'rgba(201,168,76,0.15)'}
+            />
+          ))}
+        </>
+      )}
+    </svg>
+  </div>
+
+  <!-- Ghost duration number -->
+  <div class="ph-ghost" aria-hidden="true">
+    <span class="ph-ghost-num">{ghostNum}</span>
+  </div>
+
+  <!-- Decorative star -->
+  <div class="ph-star" aria-hidden="true">
+    <svg viewBox="0 0 60 60" fill="none">
+      <path d="M30 4 L34.5 22.5 L52 15 L39 28.5 L56 30 L39 31.5 L52 45 L34.5 37.5 L30 56 L25.5 37.5 L8 45 L21 31.5 L4 30 L21 28.5 L8 15 L25.5 22.5 Z"
+        fill="none" stroke="var(--h-gold)" stroke-width="0.6" stroke-opacity="0.15"/>
+    </svg>
+  </div>
+
+  <!-- Frame with corner brackets -->
+  <div class="ph-frame" aria-hidden="true">
+    <span class="ph-corner tl"></span>
+    <span class="ph-corner tr"></span>
+    <span class="ph-corner bl"></span>
+    <span class="ph-corner br"></span>
+    <span class="ph-bracket btl"></span>
+    <span class="ph-bracket btr"></span>
+    <span class="ph-bracket bbl"></span>
+    <span class="ph-bracket bbr"></span>
+    <span class="ph-tag left">[{refCode}]</span>
+    <span class="ph-tag right">GRN INDEX</span>
+  </div>
+
+  <!-- Nav scrim -->
+  <div class="ph-nav-scrim" aria-hidden="true"></div>
+
+  <!-- Back link -->
+  <a href={backHref} class="ph-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <span>{backLabel}</span>
+  </a>
+
+  <!-- Archive ref -->
+  <div class="ph-ref" aria-hidden="true">
+    <span class="ph-ref-label">REF.</span>
+    <span class="ph-ref-num">{refNum}</span>
+  </div>
+
+  <!-- Content stage -->
+  <div class="ph-stage">
+    <div class="ph-lockup">
+      <!-- Gold vertical accent rule -->
+      <div class="ph-rule-vertical" aria-hidden="true"></div>
+
+      <div class="ph-eyebrow">
+        <span class="ph-eyebrow-line"></span>
+        <span class="ph-eyebrow-text">
+          {locale === 'es' ? 'GRANADA' : 'GRANADA'}
+          <span class="ph-eyebrow-slash">/</span>
+          {eyebrowText}
+        </span>
+        <span class="ph-eyebrow-line"></span>
+      </div>
+
+      <h1 class="ph-title">
+        {
+          (() => {
+            let delayIndex = 0;
+            return title
+              .split(' ')
+              .map((word) => (
+                <span class="ph-word">
+                  {word.split('').map((char) => {
+                    const d = 0.3 + delayIndex * 0.045;
+                    delayIndex++;
+                    return (
+                      <span class="ph-char" style={`--delay: ${d}s`}>
+                        {char}
+                      </span>
+                    );
+                  })}
+                </span>
+              ))
+              .reduce(
+                (prev, curr, i) =>
+                  i === 0 ? [curr] : [...prev, ' ', curr],
+                [] as (JSX.Element | string)[]
+              );
+          })()
+        }
+      </h1>
+
+      {description && (
+        <p class="ph-lead">{description}</p>
+      )}
+
+      <!-- Metadata pills bar -->
+      <div class="ph-meta-bar">
+        <div class="ph-meta-pill">
+          <span class="ph-meta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="ph-meta-label">{locale === 'es' ? 'Duración' : 'Duration'}</span>
+          <span class="ph-meta-value">{eyebrowText}</span>
+        </div>
+        <div class="ph-meta-divider" aria-hidden="true"></div>
+        <div class="ph-meta-pill">
+          <span class="ph-meta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <span class="ph-meta-label">{locale === 'es' ? 'Paradas' : 'Stops'}</span>
+          <span class="ph-meta-value">{totalStops}</span>
+        </div>
+        <div class="ph-meta-divider" aria-hidden="true"></div>
+        <div class="ph-meta-pill">
+          <span class="ph-meta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="ph-meta-label">{locale === 'es' ? 'Zonas' : 'Zones'}</span>
+          <span class="ph-meta-value">{neighborhoods.length}</span>
+        </div>
+        {bestFor && (
+          <>
+            <div class="ph-meta-divider" aria-hidden="true"></div>
+            <div class="ph-meta-pill">
+              <span class="ph-meta-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="ph-meta-label">{locale === 'es' ? 'Ideal para' : 'Best for'}</span>
+              <span class="ph-meta-value">{bestFor}</span>
+            </div>
+          </>
+        )}
+      </div>
+
+      <!-- Timeline strip -->
+      <div class="ph-timeline" aria-hidden="true">
+        <div class="ph-timeline-line"></div>
+        {Array.from({ length: tickCount }).map((_, i) => (
+          <span
+            class="ph-timeline-tick"
+            style={`left: ${(i / (tickCount - 1 || 1)) * 100}%; --tick-delay: ${0.9 + i * 0.06}s;`}
+          ></span>
+        ))}
+        <span class="ph-timeline-start" aria-hidden="true">00:00</span>
+        <span class="ph-timeline-end" aria-hidden="true">{ghostNum}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom transition rule -->
+  <div class="ph-bottom-rule" aria-hidden="true"></div>
+</section>
+
+<style>
+  .plan-hero {
+    --h-gold:     #c9a84c;
+    --h-gold-dim: rgba(201, 162, 39, 0.45);
+    --h-gold-bright: #e6c587;
+    --h-orange:   #e8622a;
+    --h-cream:    #f0ede8;
+    --h-muted:    rgba(240, 237, 232, 0.45);
+    --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+
+    position: relative;
+    z-index: 1;
+    background: #050505;
+    padding: calc(var(--header-height, 64px) + 3.5rem) clamp(1.5rem, 5vw, 3rem) 4rem;
+    overflow: hidden;
+  }
+
+  /* ---- CANVAS ---- */
+  .ph-canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .ph-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 60%, rgba(232,98,42,0.025) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 100%, rgba(201,168,76,0.02) 0%, transparent 40%),
+      #050505;
+  }
+  .ph-orb {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    filter: blur(60px); opacity: 0;
+    animation: orb-in 2s var(--ease-expo) forwards;
+  }
+  .ph-orb.o1 { width: 200px; height: 200px; top: -5%; right: 10%; background: rgba(201,168,76,0.07); animation-delay: 0.5s; }
+  .ph-orb.o2 { width: 140px; height: 140px; bottom: 10%; left: 5%; background: rgba(232,98,42,0.04); animation-delay: 0.8s; }
+  @keyframes orb-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+  .ph-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at 40% 30%, black 0%, transparent 60%);
+    -webkit-mask-image: radial-gradient(ellipse at 40% 30%, black 0%, transparent 60%);
+  }
+  .ph-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%); }
+  .ph-grain {
+    position: absolute; inset: 0; pointer-events: none;
+    mix-blend-mode: soft-light; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---- ROUTE WATERMARK ---- */
+  .ph-route-watermark { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; animation: fadeInUp 1.5s ease 0.4s both; }
+  .ph-route-watermark svg { width: 100%; height: 100%; }
+
+  /* ---- GHOST NUMBER ---- */
+  .ph-ghost { position: absolute; top: 50%; right: 5%; transform: translateY(-50%); z-index: 1; pointer-events: none; }
+  .ph-ghost-num {
+    font-family: var(--font-body);
+    font-size: clamp(8rem, 22vw, 18rem);
+    font-weight: 200;
+    color: #fff;
+    opacity: 0.018;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    user-select: none;
+    animation: ghost-breathe 8s ease-in-out infinite;
+  }
+  @keyframes ghost-breathe { 0%,100% { opacity: 0.015; } 50% { opacity: 0.028; } }
+
+  /* ---- DECORATIVE STAR ---- */
+  .ph-star { position: absolute; top: 20%; right: 18%; z-index: 1; pointer-events: none; width: 36px; height: 36px; opacity: 0; animation: star-rotate-in 2s ease 0.6s both; }
+  @keyframes star-rotate-in { from { opacity: 0; transform: rotate(-30deg) scale(0.8); } to { opacity: 0.5; transform: rotate(0deg) scale(1); } }
+  .ph-star svg { width: 100%; height: 100%; animation: star-spin 40s linear infinite; }
+  @keyframes star-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* ---- FRAME ---- */
+  .ph-frame { position: absolute; inset: 1.25rem; border: 1px solid rgba(255,255,255,0.06); pointer-events: none; z-index: 5; }
+  .ph-corner { position: absolute; width: 12px; height: 12px; border-color: var(--h-gold-dim); border-style: solid; border-width: 0; }
+  .ph-corner.tl { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+  .ph-corner.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
+  .ph-corner.bl { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
+  .ph-corner.br { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  /* Corner brackets */
+  .ph-bracket { position: absolute; width: 24px; height: 24px; border-color: rgba(201,168,76,0.2); border-style: solid; border-width: 0; opacity: 0; animation: bracket-in 0.8s ease 0.5s both; }
+  @keyframes bracket-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+  .ph-bracket.btl { top: 8px; left: 8px; border-top-width: 1.5px; border-left-width: 1.5px; }
+  .ph-bracket.btr { top: 8px; right: 8px; border-top-width: 1.5px; border-right-width: 1.5px; }
+  .ph-bracket.bbl { bottom: 8px; left: 8px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .ph-bracket.bbr { bottom: 8px; right: 8px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+  .ph-tag {
+    position: absolute; top: -0.75rem; font-family: var(--font-display); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.28); padding: 0 0.5rem; background: #050505;
+  }
+  .ph-tag.left  { left: 1.25rem; }
+  .ph-tag.right { right: 1.25rem; }
+
+  /* ---- NAV SCRIM ---- */
+  .ph-nav-scrim { position: absolute; top: 0; left: 0; right: 0; height: 140px; background: linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.15) 60%, transparent 100%); pointer-events: none; z-index: 4; }
+
+  /* ---- BACK LINK ---- */
+  .ph-back {
+    position: absolute; top: calc(var(--header-height, 64px) + 1.25rem); left: clamp(1.5rem, 4vw, 3rem); z-index: 10;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(240,237,232,0.80); text-decoration: none;
+    padding: 0.55rem 1rem; border-radius: 100px;
+    background: rgba(0,0,0,0.30); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.10);
+    transition: all 0.3s ease;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.2s both;
+  }
+  .ph-back svg { transition: transform 0.25s ease; }
+  .ph-back:hover { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.25); transform: translateY(-1px); color: var(--h-cream); }
+  .ph-back:hover svg { transform: translateX(-3px); }
+
+  /* ---- ARCHIVE REF ---- */
+  .ph-ref {
+    position: absolute; top: calc(var(--header-height, 64px) + 1.25rem); right: clamp(1.5rem, 4vw, 3rem); z-index: 10;
+    display: flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em;
+    color: rgba(240,237,232,0.40);
+    opacity: 0; animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  .ph-ref-label { text-transform: uppercase; }
+  .ph-ref-num { color: var(--h-gold); font-weight: 800; }
+
+  /* ---- STAGE ---- */
+  .ph-stage {
+    position: relative; z-index: 10;
+    max-width: 1320px; margin: 0 auto; width: 100%;
+  }
+
+  /* ---- LOCKUP ---- */
+  .ph-lockup {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem; min-width: 0;
+    position: relative; max-width: 900px;
+    padding-left: 1.5rem;
+  }
+
+  /* Gold vertical accent rule */
+  .ph-rule-vertical {
+    position: absolute; left: 0; top: 0.25rem; bottom: 0.5rem; width: 2px;
+    background: linear-gradient(to bottom, var(--h-gold), var(--h-orange) 60%, transparent);
+    opacity: 0.35; border-radius: 2px;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.35s both;
+  }
+
+  /* Eyebrow */
+  .ph-eyebrow { display: flex; align-items: center; gap: 0.85rem; opacity: 0; animation: fadeInUp 0.8s ease 0.4s both; }
+  .ph-eyebrow-line { width: 36px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12) 50%, transparent); }
+  .ph-eyebrow-text { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--h-muted); white-space: nowrap; }
+  .ph-eyebrow-slash { opacity: 0.35; margin: 0 0.3em; }
+
+  /* Title */
+  .ph-title {
+    font-family: var(--font-body);
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    color: var(--h-cream);
+    margin: 0;
+    max-width: 900px;
+    perspective: 1200px;
+  }
+  .ph-word { display: inline-block; white-space: nowrap; }
+  .ph-char { display: inline-block; opacity: 0; transform: translateY(40px); animation: char-rise 1.3s var(--ease-expo) var(--delay) forwards; }
+
+  /* Lead */
+  .ph-lead { font-family: var(--font-display); font-size: clamp(0.92rem, 1.05vw, 1.05rem); line-height: 1.7; color: rgba(240,237,232,0.52); max-width: 60ch; margin: 0; opacity: 0; animation: fadeInUp 0.8s ease 0.75s both; }
+
+  /* ---- METADATA BAR ---- */
+  .ph-meta-bar {
+    display: flex; align-items: center; gap: 0;
+    flex-wrap: wrap;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.85s both;
+    margin-top: 0.25rem;
+  }
+  .ph-meta-pill {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-family: var(--font-display);
+    transition: background 0.3s ease;
+  }
+  .ph-meta-pill:hover { background: rgba(255,255,255,0.03); }
+  .ph-meta-icon {
+    width: 18px; height: 18px; color: var(--h-gold); opacity: 0.7;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ph-meta-icon svg { width: 100%; height: 100%; }
+  .ph-meta-label {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(240,237,232,0.35);
+  }
+  .ph-meta-value {
+    font-size: 0.78rem; font-weight: 600; color: rgba(240,237,232,0.80);
+    margin-left: 0.3rem;
+  }
+  .ph-meta-divider {
+    width: 1px; height: 20px;
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent);
+  }
+
+  /* ---- TIMELINE STRIP ---- */
+  .ph-timeline {
+    position: relative;
+    width: 100%; max-width: 520px; height: 24px;
+    margin-top: 0.25rem;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.95s both;
+  }
+  .ph-timeline-line {
+    position: absolute; top: 11px; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.25), rgba(201,168,76,0.08) 60%, transparent);
+  }
+  .ph-timeline-tick {
+    position: absolute; top: 7px;
+    width: 1px; height: 9px;
+    background: rgba(201,168,76,0.3);
+    opacity: 0; animation: tick-pop 0.5s ease var(--tick-delay) forwards;
+  }
+  @keyframes tick-pop { from { opacity: 0; transform: scaleY(0); } to { opacity: 0.6; transform: scaleY(1); } }
+  .ph-timeline-start {
+    position: absolute; bottom: 0; left: 0;
+    font-family: var(--font-display); font-size: 0.5rem; font-weight: 600;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.2);
+  }
+  .ph-timeline-end {
+    position: absolute; bottom: 0; right: 0;
+    font-family: var(--font-display); font-size: 0.5rem; font-weight: 600;
+    letter-spacing: 0.1em; color: rgba(255,255,255,0.2);
+  }
+
+  /* Bottom rule */
+  .ph-bottom-rule {
+    position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
+    z-index: 10; pointer-events: none;
+    opacity: 0; animation: fadeInUp 0.8s ease 1.1s both;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 1024px) {
+    .ph-title { font-size: clamp(2rem, 5vw, 3.5rem); }
+    .ph-ref { display: none; }
+    .ph-ghost-num { font-size: 35vw; opacity: 0.012; }
+    .ph-star { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .plan-hero { padding: calc(var(--header-height, 64px) + 2.5rem) clamp(1.25rem, 4vw, 2rem) 3rem; }
+    .ph-frame { display: none; }
+    .ph-title { font-size: clamp(1.9rem, 7vw, 2.8rem); line-height: 1.12; }
+    .ph-lead { max-width: 100%; }
+    .ph-bottom-rule { left: 5%; right: 5%; }
+    .ph-lockup { padding-left: 1rem; }
+    .ph-rule-vertical { width: 1.5px; }
+    .ph-meta-bar { gap: 0; }
+    .ph-meta-pill { padding: 0.5rem 0.75rem; }
+    .ph-timeline { max-width: 100%; }
+    .ph-route-watermark { opacity: 0.4; }
+  }
+
+  @media (max-width: 480px) {
+    .ph-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
+    .ph-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; }
+    .ph-title { font-size: clamp(1.7rem, 6.5vw, 2.4rem); }
+    .ph-lead { font-size: 0.88rem; }
+    .ph-meta-pill { gap: 0.35rem; padding: 0.45rem 0.6rem; }
+    .ph-meta-label { font-size: 0.52rem; }
+    .ph-meta-value { font-size: 0.72rem; }
+    .ph-meta-divider { height: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ph-char, .ph-back, .ph-ref, .ph-eyebrow, .ph-lead, .ph-meta-bar, .ph-timeline, .ph-bottom-rule, .ph-rule-vertical, .ph-orb, .ph-star {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+    .ph-ghost-num { animation: none !important; }
+  }
+</style>
