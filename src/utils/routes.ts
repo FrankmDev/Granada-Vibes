@@ -7,6 +7,7 @@ const ROUTE_MAP: Record<Locale, Record<string, string>> = {
     routes: '/rutas/',
     blog: '/blog/',
     byTime: '/rutas/por-tiempo/',
+    planner: '/planifica/',
     privacy: '/privacidad/',
     legal: '/aviso-legal/',
   },
@@ -16,13 +17,14 @@ const ROUTE_MAP: Record<Locale, Record<string, string>> = {
     routes: '/en/routes/',
     blog: '/en/blog/',
     byTime: '/en/routes/by-time/',
+    planner: '/en/planifica/',
     privacy: '/en/privacy/',
     legal: '/en/legal/',
   },
 };
 
 export function getRoute(
-  name: 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'privacy' | 'legal',
+  name: 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal',
   locale: Locale
 ): string {
   return ROUTE_MAP[locale][name];

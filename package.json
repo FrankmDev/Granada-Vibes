@@ -10,7 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "fetch:events": "cd scripts && npm run fetch"
+    "fetch:events": "cd scripts && npm run fetch",
+    "clean:events": "cd scripts && npm run clean",
+    "sync:events": "cd scripts && npm run sync"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.2.8",

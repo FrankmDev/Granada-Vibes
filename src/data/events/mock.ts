@@ -283,53 +283,6 @@ export const mockEvents: Event[] = [
     source: 'mock',
   },
   {
-    id: 'evt-014',
-    slug: 'ciclo-musica-antigua',
-    title: {
-      es: 'Ciclo de Música Antigua en el Corral del Carbón',
-      en: 'Early Music Cycle at Corral del Carbón',
-    },
-    description: {
-      es: 'Música medieval y renacentista en el único alhóndiga nazarí que se conserva en el mundo, construido en el siglo XIV. Un viaje sonoro a través de la historia de Granada: desde las moaxajas andalusíes hasta los romances castellanos de la Reconquista, pasando por la música sefardí que resonaba en las juderías granadinas. Cuatro conciertos a lo largo de un mes, cada uno centrado en una época y tradición musical diferente, interpretados con instrumentos de época por el ensemble Capella de Ministrers.',
-      en: 'Medieval and Renaissance music in the only surviving Nasrid alhóndiga (caravanserai) in the world, built in the 14th century. A sonic journey through Granada\'s history: from Andalusian muwashshahat to Castilian ballads of the Reconquista, through the Sephardic music that echoed in Granada\'s Jewish quarters. Four concerts over a month, each focused on a different era and musical tradition, performed with period instruments by the ensemble Capella de Ministrers.',
-    },
-    category: 'concert',
-    date: '2026-04-25',
-    time: '20:00',
-    endDate: '2026-05-23',
-    venue: 'Corral del Carbón',
-    neighborhood: 'centro',
-    address: 'Calle Mariana Pineda, s/n',
-    price: 15,
-    currency: 'EUR',
-    tags: ['música antigua', 'patrimonio', 'concierto', 'cultura'],
-    featured: false,
-    image: 'https://picsum.photos/seed/ciclo-musica-antigua/800/600',
-    venueDescription: {
-      es: 'El Corral del Carbón es el monumento nazarí mejor conservado del centro de Granada y la única alhóndiga islámica que permanece en pie en la península. Su patio porticado de tres alturas, construido en el siglo XIV, ofrece una acústica natural perfecta para la música de cámara y un marco histórico incomparable.',
-      en: 'The Corral del Carbón is the best-preserved Nasrid monument in central Granada and the only Islamic alhóndiga still standing in the peninsula. Its three-story arcaded courtyard, built in the 14th century, offers perfect natural acoustics for chamber music and an incomparable historic setting.',
-    },
-    highlights: {
-      es: [
-        'Cuatro conciertos temáticos: andalusí, sefardí, cristiano medieval y renacentista',
-        'Instrumentos de época: laúd, rabel, fídula, salterio y percusión',
-        'Escenario en el patio porticado del siglo XIV',
-        'Breve introducción histórica antes de cada concierto',
-      ],
-      en: [
-        'Four themed concerts: Andalusian, Sephardic, Medieval Christian, and Renaissance',
-        'Period instruments: lute, rebec, fiddle, psaltery, and percussion',
-        'Stage in the 14th-century arcaded courtyard',
-        'Brief historical introduction before each concert',
-      ],
-    },
-    tips: {
-      es: 'El bono para los 4 conciertos cuesta 45€ (ahorro del 25%). Las sillas son de patio y no tienen respaldo alto: trae un cojín si lo necesitas. El Corral del Carbón está en pleno centro, a 2 minutos de la Catedral.',
-      en: 'The 4-concert pass costs €45 (25% savings). Seats are patio chairs without high backs: bring a cushion if needed. The Corral del Carbón is right in the center, 2 minutes from the Cathedral.',
-    },
-    source: 'mock',
-  },
-  {
     id: 'evt-017',
     slug: 'taller-fotografia-nocturna',
     title: {

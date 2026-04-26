@@ -8,6 +8,8 @@
     "tsx": "^4.0.0"
   },
   "scripts": {
-    "fetch": "node --env-file=../.env --import tsx fetch-events.ts"
+    "fetch": "node --env-file=../.env --import tsx fetch-events.ts",
+    "clean": "node --env-file=../.env --import tsx clean-events.ts",
+    "sync": "node --env-file=../.env --import tsx sync-events.ts"
   }
 }

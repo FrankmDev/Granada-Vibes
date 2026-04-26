@@ -43,3 +43,6 @@ export {
   getRelatedPosts,
   getPostsByTag,
 } from './blog/index.js';
+
+// Lugares (Planner)
+export { lugares } from './lugares.js';

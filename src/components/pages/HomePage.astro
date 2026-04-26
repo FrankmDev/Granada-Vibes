@@ -9,6 +9,7 @@ import RoutesGridSection from '@components/home/RoutesGridSection.astro';
 import BlogSection from '@components/home/BlogSection.astro';
 import TimeRoutesSection from '@components/home/TimeRoutesSection.astro';
 import HomeCTA from '@components/home/HomeCTA.astro';
+import PlannerSection from '@components/home/PlannerSection.astro';
 import type { Event, Locale } from '@types';
 
 interface Props {
@@ -55,6 +56,7 @@ const seo = locale === 'es'
   <EventsGridSection events={gridEvents} locale={locale} />
   <RoutesGridSection routes={displayRoutes} locale={locale} />
   <TimeRoutesSection plans={allMixedRoutes} locale={locale} />
+  <PlannerSection locale={locale} />
   <BlogSection posts={allPosts} locale={locale} />
   <HomeCTA locale={locale} />
 

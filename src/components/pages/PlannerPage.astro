@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
+import PlanificadorForm from '@components/PlanificadorForm.astro';
+import { useTranslations } from '@i18n/utils';
+import type { Locale } from '@types';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const heroMetadata = [
+  { label: t('planner.heroMetaPlaces'), value: '60+' },
+  { label: t('planner.heroMetaCategories'), value: '8' },
+  { label: t('planner.heroMetaPrice'), value: t('planner.heroMetaPriceValue') },
+];
+
+const ogImage = 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&h=630&fit=crop&q=80';
+---
+
+<BaseLayout
+  locale={locale}
+  title={t('planner.seoTitle')}
+  description={t('planner.seoDescription')}
+  ogImage={ogImage}
+  schemaType="website"
+  schemaData={{
+    '@type': 'WebApplication',
+    name: t('planner.schemaName'),
+    description: t('planner.schemaDescription'),
+    applicationCategory: 'TravelApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0' },
+  }}
+>
+  <SubpageHero
+    locale={locale}
+    title={t('planner.heroTitle')}
+    subtitle={t('planner.heroSubtitle')}
+    eyebrow={t('planner.heroEyebrow')}
+    eyebrowRight={t('planner.heroEyebrowRight')}
+    description={t('planner.heroDescription')}
+    ctaText={t('planner.heroCta')}
+    ctaLink="#planner"
+    pageNumber="05"
+    coordinates="37°10′N · 3°35′W"
+    metadata={heroMetadata}
+    variant="compact"
+  />
+
+  <PlanificadorForm locale={locale} />
+</BaseLayout>
