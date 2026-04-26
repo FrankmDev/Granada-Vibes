@@ -1,6 +1,6 @@
 ---
 import type { BlogPost, Locale } from '@types';
-import { LOCALE_PATHS } from '@config/site';
+import { getBlogDetailUrl } from '@utils/routes';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
@@ -11,7 +11,6 @@ interface Props {
 }
 
 const { post, locale, t, featured = false } = Astro.props;
-const localePath = LOCALE_PATHS[locale];
 
 const formattedDate = new Date(post.publishDate).toLocaleDateString(
   locale === 'es' ? 'es-ES' : 'en-GB',
@@ -22,7 +21,7 @@ const categoryLabel = t(`blog.categories.${post.category}`);
 ---
 
 <a
-  href={`${localePath}/blog/${post.slug}/`}
+  href={getBlogDetailUrl(post.slug, locale)}
   class:list={[
     'group block bg-[var(--color-bg-card)] border border-[var(--color-border)] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--color-primary)]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20',
     featured && 'border-l-4 border-l-[var(--color-primary)]',

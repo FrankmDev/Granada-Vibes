@@ -9,8 +9,10 @@ import ShareButton from '@components/ui/ShareButton.astro';
 import { getAllEvents } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
-import { getEventDetailUrl, getRoute } from '@utils/routes';
-import { formatFullDate, formatTime } from '@utils/dates';
+import { getEventDetailUrl, getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
+import { formatFullDate, formatTime, formatDuration } from '@utils/dates';
+import { getRelatedRoutesForEvent, getRelatedPostsForEvent, getNeighborhoodLink } from '@utils/cross-links';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import { formatPriceLabel, getPriceStatus } from '@utils';
 import type { Event, Locale } from '@types';
 import '@styles/pages/event-detail.css';
@@ -23,6 +25,8 @@ interface Props {
 const { locale, event } = Astro.props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
+
+const categoryUrl = `${getRoute('events', locale)}?category=${event.category}`;
 
 const copy = isEnglish
   ? {
@@ -60,6 +64,10 @@ const copy = isEnglish
         copied: 'Copied!',
       },
       seoSuffix: 'Discover all the details on GRN INDEX.',
+      nav: {
+        prev: 'Previous event',
+        next: 'Next event',
+      },
     }
   : {
       priceText:
@@ -96,12 +104,48 @@ const copy = isEnglish
         copied: '¡Copiado!',
       },
       seoSuffix: 'Descubre todos los detalles en GRN INDEX.',
+      nav: {
+        prev: 'Evento anterior',
+        next: 'Evento siguiente',
+      },
     };
 
 const venueCoords = getVenueCoordinates(event.venue, event.neighborhood);
-const relatedEvents = getAllEvents()
+const allEvents = getAllEvents().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+const eventIndex = allEvents.findIndex((e) => e.id === event.id);
+const prevEvent = eventIndex > 0 ? allEvents[eventIndex - 1] : null;
+const nextEvent = eventIndex < allEvents.length - 1 ? allEvents[eventIndex + 1] : null;
+
+const relatedEvents = allEvents
   .filter((candidate) => candidate.category === event.category && candidate.id !== event.id)
   .slice(0, 3);
+
+const relatedRoutesForEvent = getRelatedRoutesForEvent(event, 2);
+const relatedPostsForEvent = getRelatedPostsForEvent(event, 2);
+const neighborhoodLink = getNeighborhoodLink(event.neighborhood, locale);
+
+const crossLinks = [
+  ...relatedRoutesForEvent.map((r) => ({
+    url: getRouteDetailUrl(r.slug, locale),
+    title: r.title[locale],
+    meta: `${formatDuration(r.duration, locale)} · ${t(`categories.${r.category}`)}`,
+    image: r.image,
+  })),
+  ...relatedPostsForEvent.map((p) => ({
+    url: getBlogDetailUrl(p.slug, locale),
+    title: p.title[locale],
+    meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
+    image: p.image,
+  })),
+  ...(neighborhoodLink
+    ? [{
+        url: neighborhoodLink.url,
+        title: neighborhoodLink.label,
+        meta: t('detail.exploreNeighborhood'),
+        image: null,
+      }]
+    : []),
+].slice(0, 4);
 
 const eventImage = event.imageUrl || event.image;
 const ogImage = eventImage || 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=1200&h=630&fit=crop&q=80';
@@ -183,6 +227,19 @@ if (event.venue) {
                 </div>
               )}
             </div>
+
+            <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
+              <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                {t(`categories.${event.category}`)}
+              </a>
+              {neighborhoodLink && (
+                <a href={neighborhoodLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  {neighborhoodLink.label}
+                </a>
+              )}
+            </div>
           </article>
 
           <article class="upg-block upg-venue-block" data-reveal>
@@ -196,7 +253,7 @@ if (event.venue) {
             <div class="upg-venue-grid">
               <div class="upg-venue-info">
                 <h2 class="upg-title upg-venue-title">{event.venue}</h2>
-                <div class="upg-venue-badges">
+                <address class="upg-venue-badges" style="font-style:normal;">
                   <span class="upg-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     {t(`neighborhoods.${event.neighborhood}`)}
@@ -207,7 +264,7 @@ if (event.venue) {
                       {event.address}
                     </span>
                   )}
-                </div>
+                </address>
                 {event.venueDescription && (
                   <p class="upg-venue-desc">{event.venueDescription[locale]}</p>
                 )}
@@ -278,6 +335,40 @@ if (event.venue) {
               </div>
             </div>
           )}
+
+          {(prevEvent || nextEvent) && (
+            <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Event navigation' : 'Navegación de eventos'} style="padding: 2rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                {prevEvent ? (
+                  <a href={getEventDetailUrl(prevEvent.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
+                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{prevEvent.title[locale]}</span>
+                    <time datetime={`${prevEvent.date}T${prevEvent.time}`} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatFullDate(prevEvent.date, locale)}</time>
+                  </a>
+                ) : <span />}
+                {nextEvent ? (
+                  <a href={getEventDetailUrl(nextEvent.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
+                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{nextEvent.title[locale]}</span>
+                    <time datetime={`${nextEvent.date}T${nextEvent.time}`} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatFullDate(nextEvent.date, locale)}</time>
+                  </a>
+                ) : <span />}
+              </div>
+            </nav>
+          )}
+
+          {crossLinks.length > 0 && (
+            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">05</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
+              </header>
+              <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
+            </div>
+          )}
         </main>
 
         <aside class="upg-sidebar">
@@ -287,7 +378,7 @@ if (event.venue) {
 
               <div class="upg-tc-header">
                 <div class="upg-tc-date-box">
-                  <span class="tc-day">{new Date(event.date).getDate().toString().padStart(2, '0')}</span>
+                  <time datetime={event.date} class="tc-day">{new Date(event.date).getDate().toString().padStart(2, '0')}</time>
                   <span class="tc-month">
                     {new Intl.DateTimeFormat(isEnglish ? 'en-GB' : 'es-ES', { month: 'short' }).format(new Date(event.date)).toUpperCase()}
                   </span>
@@ -295,7 +386,7 @@ if (event.venue) {
                 <div class="upg-tc-info">
                   <span class="tc-time">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    {formatTime(event.time, locale)}
+                    <time datetime={event.time}>{formatTime(event.time, locale)}</time>
                   </span>
                   <span class="tc-category">{t(`categories.${event.category}`)}</span>
                 </div>

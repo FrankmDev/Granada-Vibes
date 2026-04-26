@@ -208,12 +208,12 @@ export const mixedRoutes: MixedRoute[] = [
     slug: '12-horas-granada-sin-prisas',
     duration: '12h',
     title: {
-      es: 'Granada en 12 horas: un día sin prisas',
-      en: 'Granada in 12 hours: a day without rushing',
+      es: 'Granada en 12 horas sin Alhambra: ruta sin prisas',
+      en: '12 Hours in Granada Without the Alhambra: Unhurried Route',
     },
     description: {
-      es: 'De 9 de la mañana a 9 de la noche. Albaicín, centro monumental, tapeo local, Realejo, atardecer en mirador y flamenco. Un día redondo.',
-      en: 'From 9am to 9pm. Albaicín, monumental center, local tapas, Realejo, sunset at a viewpoint and flamenco. A complete day.',
+      es: 'Plan de 12 horas para quien no tiene entrada a los Palacios Nazaríes. Albaicín a fondo, monumentos gratuitos del centro, tapeo local y atardecer en el mirador. Sin correr.',
+      en: '12-hour plan for visitors without Nasrid Palaces tickets. Deep Albaicín, free downtown monuments, local tapas and sunset from the viewpoint. No rushing required.',
     },
     totalHours: 12,
     neighborhoods: ['albaicin', 'centro', 'realejo', 'sacromonte'],
@@ -365,12 +365,12 @@ export const mixedRoutes: MixedRoute[] = [
     slug: '1-dia-completo-alhambra',
     duration: '1day',
     title: {
-      es: '1 día completo: Granada con la Alhambra',
-      en: '1 full day: Granada with the Alhambra',
+      es: 'Ruta de 1 día en Granada con Alhambra: itinerario paso a paso',
+      en: '1-Day Granada Route with Alhambra: Step-by-Step Itinerary',
     },
     description: {
-      es: 'El día perfecto en Granada: Alhambra por la mañana (necesitas entrada), centro monumental, tapeo, barrios con carácter y atardecer desde el mejor mirador de Europa.',
-      en: 'The perfect day in Granada: Alhambra in the morning (tickets needed), monumental center, tapas, characterful neighborhoods and sunset from Europe\'s best viewpoint.',
+      es: 'Itinerario detallado de 14 horas para quien ya tiene entrada a la Alhambra. Horarios concretos, paradas ordenadas y consejos para no perder tiempo entre monumentos, tapas y miradores.',
+      en: 'Detailed 14-hour itinerary for visitors with pre-booked Alhambra tickets. Timed stops, ordered waypoints and tips to move efficiently between monuments, tapas bars and viewpoints.',
     },
     totalHours: 14,
     neighborhoods: ['alhambra', 'centro', 'realejo', 'albaicin', 'sacromonte'],

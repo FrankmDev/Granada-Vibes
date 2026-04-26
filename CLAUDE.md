@@ -62,8 +62,8 @@ Español es el locale por defecto, sin prefijo de URL. Inglés bajo `/en/`:
 | `/rutas/[slug]` | `/en/routes/[slug]` |
 | `/rutas/por-tiempo` | `/en/routes/by-time` |
 | `/rutas/por-tiempo/[slug]` | `/en/routes/by-time/[slug]` |
-| `/blog` | `/en/blog` |
-| `/blog/[slug]` | `/en/blog/[slug]` |
+| `/guias` | `/en/guides` |
+| `/guias/[slug]` | `/en/guides/[slug]` |
 | `/privacidad` | `/en/privacy` |
 | `/aviso-legal` | `/en/legal` |
 
@@ -83,7 +83,7 @@ Todo el contenido son arrays TypeScript estáticos en `src/data/`, con cuatro do
 - `src/data/events/` — `Event[]`, query helpers (`getAllEvents`, `getFeaturedEvents`, `getEventBySlug`, …)
 - `src/data/routes/` — `Route[]`, query helpers (`getAllRoutes`, `getFeaturedRoutes`, `getRouteBySlug`, …)
 - `src/data/mixed-routes/` — `MixedRoute[]` (planes por tiempo disponible), helpers (`getAllMixedRoutes`, `getMixedRouteBySlug`, `getMixedRouteByDuration`)
-- `src/data/blog/` — `BlogPost[]`, helpers (`getAllPosts`, `getFeaturedPosts`, `getPostBySlug`, `getRelatedPosts`, `getPostsByTag`)
+- `src/data/blog/` — `BlogPost[]`, helpers (`getAllPosts`, `getFeaturedPosts`, `getPostBySlug`, `getRelatedPosts`, `getPostsByTag`) (sección pública: /guias / /en/guides)
 - `src/data/venues/` — datos de venue auxiliares (coordenadas, descripciones)
 
 Todos los helpers se re-exportan desde `src/data/index.ts`. Sin CMS ni API externa en Fase 1.
@@ -399,9 +399,9 @@ Planes por tiempo disponible. Fondo crema.
 
 Editorial de artículos. Fondo oscuro (contraste con secciones crema).
 - Muestra 1 featured + 2 recientes. `ScreenFrame` con tags `EDITORIAL / GRANADA`
-- Eyebrow `[ BLOG ]`, headline "Historias de Granada" en Fraunces
+- Eyebrow `[ GUÍAS ]`, headline "Historias de Granada" en Fraunces
 - Categorías con iconos simbólicos (◈ guia, ◎ cultura, ◐ gastronomia, ○ barrios, ◆ consejos) y colores propios
-- Enlaza a `/blog` (es) o `/en/blog` (en)
+- Enlaza a `/guias` (es) o `/en/guides` (en)
 
 ### 6. HomeCTA (`src/components/home/HomeCTA.astro`)
 
@@ -436,7 +436,7 @@ src/
 │   ├── events/
 │   ├── routes/
 │   ├── mixed-routes/  ← planes por tiempo disponible (MixedRoute[])
-│   ├── blog/          ← artículos (BlogPost[]) + content/ con archivos por post
+│   ├── blog/          ← artículos (BlogPost[]) + content/ con archivos por post (ruta pública: /guias / /en/guides)
 │   ├── venues/        ← datos auxiliares de venues (coordenadas, etc.)
 │   └── index.ts       ← exports centralizados + query helpers
 ├── i18n/
@@ -457,12 +457,12 @@ src/
 │   │   └── por-tiempo/
 │   │       ├── index.astro
 │   │       └── [slug].astro
-│   ├── blog/
+│   ├── guias/
 │   │   ├── index.astro
 │   │   └── [slug].astro
 │   ├── privacidad.astro
 │   ├── aviso-legal.astro
-│   └── en/            ← mirror de todas las páginas (events/, routes/by-time/, blog/)
+│   └── en/            ← mirror de todas las páginas (events/, routes/by-time/, guides/)
 ├── styles/
 │   ├── global.css     ← reset, tipografía base, keyframes cin-*, scrollbar
 │   └── tokens.css     ← SOLO variables CSS

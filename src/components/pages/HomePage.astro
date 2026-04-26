@@ -42,12 +42,15 @@ const seo = locale === 'es'
       description:
         'Discover Granada like a local with GRN INDEX. Upcoming cultural events, curated routes through Albaicín and Sacromonte, time-based itineraries and hidden gems. Authentic experiences beyond the tourist guides.',
     };
+
+const ogImage = 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
 ---
 
 <BaseLayout
   locale={locale}
   title={seo.title}
   description={seo.description}
+  ogImage={ogImage}
   schemaType="website"
 >
   <NavBar slot="header" locale={locale} currentPath={currentPath} />

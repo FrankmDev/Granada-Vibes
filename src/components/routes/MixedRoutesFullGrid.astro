@@ -1,0 +1,279 @@
+---
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getPlanDetailUrl } from '@utils/routes';
+import { getAllMixedRoutes } from '@data/index';
+import type { MixedRoute } from '@types';
+import '@styles/pages/time-routes-archive.css';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const plans = getAllMixedRoutes();
+
+// Duration configurations with enhanced visual styling
+const durationConfig: Record<string, {
+  icon: string;
+  gradient: string;
+  accent: string;
+  accentRgb: string;
+  number: string;
+  unit: string;
+  label: string;
+}> = {
+  '2h': {
+    icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+    gradient: 'linear-gradient(135deg, rgba(74, 158, 107, 0.2) 0%, rgba(74, 158, 107, 0.05) 100%)',
+    accent: '#4a9e6b',
+    accentRgb: '74, 158, 107',
+    number: '2',
+    unit: t('mixedRoutes.durationUnits.hours'),
+    label: t('mixedRoutes.durationLabels.2h'),
+  },
+  '6h': {
+    icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+    gradient: 'linear-gradient(135deg, rgba(212, 135, 58, 0.2) 0%, rgba(212, 135, 58, 0.05) 100%)',
+    accent: '#d4873a',
+    accentRgb: '212, 135, 58',
+    number: '6',
+    unit: t('mixedRoutes.durationUnits.hours'),
+    label: t('mixedRoutes.durationLabels.6h'),
+  },
+  '12h': {
+    icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
+    gradient: 'linear-gradient(135deg, rgba(232, 98, 42, 0.2) 0%, rgba(232, 98, 42, 0.05) 100%)',
+    accent: '#e8622a',
+    accentRgb: '232, 98, 42',
+    number: '12',
+    unit: t('mixedRoutes.durationUnits.hours'),
+    label: t('mixedRoutes.durationLabels.12h'),
+  },
+  '1day': {
+    icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z',
+    gradient: 'linear-gradient(135deg, rgba(201, 168, 76, 0.2) 0%, rgba(201, 168, 76, 0.05) 100%)',
+    accent: '#c9a84c',
+    accentRgb: '201, 168, 76',
+    number: '1',
+    unit: t('mixedRoutes.durationUnits.day'),
+    label: t('mixedRoutes.durationLabels.1day'),
+  },
+  '2days': {
+    icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+    gradient: 'linear-gradient(135deg, rgba(201, 168, 76, 0.25) 0%, rgba(232, 98, 42, 0.1) 100%)',
+    accent: '#c9a84c',
+    accentRgb: '201, 168, 76',
+    number: '2',
+    unit: t('mixedRoutes.durationUnits.days'),
+    label: t('mixedRoutes.durationLabels.2days'),
+  },
+  '3days': {
+    icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+    gradient: 'linear-gradient(135deg, rgba(232, 98, 42, 0.25) 0%, rgba(201, 168, 76, 0.1) 100%)',
+    accent: '#e8622a',
+    accentRgb: '232, 98, 42',
+    number: '3',
+    unit: t('mixedRoutes.durationUnits.days'),
+    label: t('mixedRoutes.durationLabels.3days'),
+  },
+};
+
+// Calculate stats for each plan
+function getPlanStats(plan: MixedRoute) {
+  const totalStops = plan.days.reduce(
+    (acc, day) => acc + day.blocks.reduce((bAcc, block) => bAcc + block.stops.length, 0),
+    0
+  );
+  const uniqueCategories = [...new Set(
+    plan.days.flatMap(d => d.blocks.flatMap(b => b.stops.map(s => s.category)))
+  )];
+  const totalBlocks = plan.days.reduce((acc, day) => acc + day.blocks.length, 0);
+  return { totalStops, uniqueCategories, totalBlocks };
+}
+
+// Category icons
+const categoryIcons: Record<string, string> = {
+  mirador: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
+  tapas: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z',
+  monumento: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+  cultura: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z',
+  paseo: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
+  compras: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z',
+  naturaleza: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z',
+  flamenco: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
+};
+---
+
+<!-- TIMELINE SECTION -->
+<section class="timeline-section" id="time-plans">
+  <div class="timeline-backdrop">
+    <div class="backdrop-gradient"></div>
+    <div class="grain-overlay" aria-hidden="true"></div>
+  </div>
+
+  <ScreenFrame
+    tagTopLeft={t('mixedRoutes.frameTagTopLeft')}
+    tagTopRight={t('mixedRoutes.frameTagTopRight')}
+    tagBottomLeft={t('mixedRoutes.frameTagBottomLeft')}
+    tagBottomRight={t('mixedRoutes.frameTagBottomRight')}
+  />
+
+  <div class="timeline-container">
+    <!-- Section Header -->
+    <header class="section-header">
+      <div class="header-ornament">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="header-eyebrow">{t('mixedRoutes.sectionChooseRhythm')}</span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
+      <h2 class="section-title">
+        <span class="title-line">{t('mixedRoutes.titleLineYourTime')}</span>
+        <span class="title-accent">{t('mixedRoutes.titleLineYourGranada')}</span>
+      </h2>
+      <p class="section-subtitle">
+        {t('mixedRoutes.sectionFullDescription')}
+      </p>
+    </header>
+
+    <!-- Plans Grid -->
+    <div class="plans-grid">
+      {plans.map((plan, index) => {
+        const config = durationConfig[plan.duration] || durationConfig['2h'];
+        const { totalStops, uniqueCategories } = getPlanStats(plan);
+        const href = getPlanDetailUrl(plan.slug, locale);
+
+        return (
+            <article
+              class="plan-card"
+              data-duration={plan.duration}
+              style={`--card-index: ${index}; --accent-color: ${config.accent}; --accent-rgb: ${config.accentRgb}`}
+            >
+              <a href={href} class="plan-link">
+                <!-- Card Visual - Dramatic Design -->
+                <div class="card-visual">
+                  <!-- Animated Background Gradient -->
+                  <div class="visual-bg-gradient"></div>
+
+                  <!-- Floating Particles -->
+                  <div class="floating-particles">
+                    <span class="particle p-1"></span>
+                    <span class="particle p-2"></span>
+                    <span class="particle p-3"></span>
+                  </div>
+
+                  <!-- Duration Badge - Large & Prominent -->
+                  <div class="duration-badge-wrapper">
+                    <div class="duration-badge-ring"></div>
+                    <div class="duration-badge" style={`background: ${config.accent}`}>
+                      <span class="duration-number">{config.number}</span>
+                      <span class="duration-unit">{config.unit}</span>
+                    </div>
+                  </div>
+
+                  <!-- Duration Label Overlay -->
+                  <div class="duration-overlay">
+                    <span class="duration-label">{config.label}</span>
+                    <div class="label-underline"></div>
+                  </div>
+
+                  <!-- Stats Pills on Visual -->
+                  <div class="visual-stats">
+                    <div class="v-stat">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <span>{totalStops} {t('mixedRoutes.stopsLabel')}</span>
+                    </div>
+                  </div>
+
+                  <!-- Corner Brackets - Dramatic -->
+                  <span class="card-bracket bracket-tl"></span>
+                  <span class="card-bracket bracket-tr"></span>
+                  <span class="card-bracket bracket-bl"></span>
+                  <span class="card-bracket bracket-br"></span>
+
+              <!-- Hover Overlay with Compass - Routes Style -->
+              <div class="card-hover-overlay">
+                <div class="hover-content">
+                  <svg viewBox="0 0 100 100" class="hover-icon">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+                    <path d="M50 10 L55 45 L90 50 L55 55 L50 90 L45 55 L10 50 L45 45 Z" fill="currentColor" opacity="0.8"/>
+                    <circle cx="50" cy="50" r="4" fill="currentColor"/>
+                  </svg>
+                  <span class="hover-text">{t('mixedRoutes.explorePlan')}</span>
+                </div>
+              </div>
+                </div>
+
+                <!-- Main Content - Enhanced -->
+                <div class="plan-main">
+                  <!-- Title with Accent Line -->
+                  <div class="plan-header">
+                    <div class="title-accent-line" style={`background: ${config.accent}`}></div>
+                    <h3 class="plan-title">{plan.title[locale]}</h3>
+                  </div>
+
+                  <!-- Description -->
+                  <p class="plan-description">{plan.description[locale]}</p>
+
+                  <!-- Categories with Icons -->
+                  <div class="plan-categories">
+                    <div class="categories-list">
+                      {uniqueCategories.slice(0, 3).map((cat) => (
+                        <span class="category-item" title={cat}>
+                          <span class="category-icon-wrapper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                              <path d={categoryIcons[cat] || categoryIcons.paseo} stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                          <span class="category-name">{t(`mixedRoutes.stopCategories.${cat}`)}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <!-- Footer - Enhanced -->
+                  <div class="plan-footer">
+                    <div class="neighborhoods-section">
+                      <span class="neighborhoods-label">{t('mixedRoutes.neighborhoodsLabel')}</span>
+                      <div class="neighborhoods-list">
+                        {plan.neighborhoods.slice(0, 3).map((n) => (
+                          <span class="neighborhood-tag">{t(`neighborhoods.${n}`)}</span>
+                        ))}
+                        {plan.neighborhoods.length > 3 && (
+                          <span class="neighborhood-more">+{plan.neighborhoods.length - 3}</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <span class="plan-cta">
+                      <span class="cta-text">{t('actions.viewDetails')}</span>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+        );
+      })}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { onPageLoad } from '../../scripts/utils/pageLifecycle';
+  import { revealOnIntersect } from '../../scripts/utils/reveal';
+
+  onPageLoad(() => {
+    revealOnIntersect('.plan-card', { threshold: 0.1 });
+  });
+</script>

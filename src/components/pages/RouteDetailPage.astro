@@ -6,8 +6,11 @@ import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import { getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
-import { getRoute, getRouteDetailUrl } from '@utils/routes';
+import { getRoute, getRouteDetailUrl, getBlogDetailUrl, getEventDetailUrl } from '@utils/routes';
 import { formatDistance, formatDuration } from '@utils/dates';
+import { formatFullDate } from '@utils/dates';
+import { getRelatedPostsForRoute, getRelatedEventsForRoute } from '@utils/cross-links';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import type { Locale, Neighborhood, Route, RouteHighlight, RouteTip } from '@types';
 import '@styles/pages/route-detail.css';
 
@@ -19,6 +22,8 @@ interface Props {
 const { locale, route } = Astro.props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
+
+const categoryUrl = `${getRoute('routes', locale)}?type=${route.category}`;
 
 const copy = isEnglish
   ? {
@@ -50,6 +55,10 @@ const copy = isEnglish
       },
       seo:
         `Route "${route.title[locale]}" through ${route.neighborhoods.map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`)).join(', ')} in Granada — ${formatDuration(route.duration, locale)} of ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Difficulty: ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Discover practical tips, must-see spots and how to prepare the perfect itinerary.`,
+      nav: {
+        prev: 'Previous route',
+        next: 'Next route',
+      },
     }
   : {
       breadcrumb: {
@@ -80,14 +89,23 @@ const copy = isEnglish
       },
       seo:
         `Ruta "${route.title[locale]}" por ${route.neighborhoods.map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`)).join(', ')} en Granada — ${formatDuration(route.duration, locale)} de ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`,
+      nav: {
+        prev: 'Ruta anterior',
+        next: 'Ruta siguiente',
+      },
     };
 
-const relatedRoutes = getAllRoutes()
+const allRoutes = getAllRoutes();
+const routeIndex = allRoutes.findIndex((r) => r.id === route.id);
+const prevRoute = routeIndex > 0 ? allRoutes[routeIndex - 1] : null;
+const nextRoute = routeIndex < allRoutes.length - 1 ? allRoutes[routeIndex + 1] : null;
+
+const relatedRoutes = allRoutes
   .filter((candidate) => candidate.category === route.category && candidate.id !== route.id)
   .slice(0, 3);
 
 if (relatedRoutes.length < 3) {
-  const moreRoutes = getAllRoutes()
+  const moreRoutes = allRoutes
     .filter(
       (candidate) =>
         candidate.difficulty === route.difficulty &&
@@ -98,6 +116,24 @@ if (relatedRoutes.length < 3) {
 
   relatedRoutes.push(...moreRoutes);
 }
+
+const relatedPosts = getRelatedPostsForRoute(route, 2);
+const relatedEventsForRoute = getRelatedEventsForRoute(route, 2);
+
+const crossLinks = [
+  ...relatedPosts.map((p) => ({
+    url: getBlogDetailUrl(p.slug, locale),
+    title: p.title[locale],
+    meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
+    image: p.image,
+  })),
+  ...relatedEventsForRoute.map((e) => ({
+    url: getEventDetailUrl(e.slug, locale),
+    title: e.title[locale],
+    meta: `${formatFullDate(e.date, locale)} · ${t(`categories.${e.category}`)}`,
+    image: e.imageUrl || e.image,
+  })),
+].slice(0, 4);
 
 const ogImage = route.image || 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
 const breadcrumb = [
@@ -157,18 +193,25 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 <span class="upg-rn-label">{copy.sections.neighborhoods}</span>
                 <div class="upg-tags-list">
                   {route.neighborhoods.map((neighborhood: Neighborhood) => (
-                    <span class="upg-badge ghost">
+                    <a href={`${getRoute('routes', locale)}?neighborhood=${neighborhood}`} class="upg-badge ghost" style="text-decoration:none;">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                       {t(`neighborhoods.${neighborhood}`)}
-                    </span>
+                    </a>
                   ))}
                 </div>
               </div>
             )}
+
+            <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
+              <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                {t(`categories.${route.category}`)}
+              </a>
+            </div>
           </article>
 
           {route.highlights.length > 0 && (
-            <article class="upg-block" data-reveal>
+            <article class="upg-block" id="itinerary" data-reveal>
               <div class="upg-block-bg"></div>
               <header class="upg-header">
                 <span class="upg-num">02</span>
@@ -186,6 +229,43 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                     <div class="upg-hl-content">
                       <h3 class="tl-title" style="margin-bottom:0.4rem; font-family: var(--font-display); font-size:1.1rem; color:var(--s-ink);">{highlight.title[locale]}</h3>
                       <p class="upg-hl-text" style="padding-top:0;">{highlight.description[locale]}</p>
+                      {(highlight.address || highlight.price || highlight.hours || highlight.duration || highlight.tip) && (
+                        <div class="upg-hl-meta" style="margin-top: 1rem; padding: 1rem; background: rgba(26,22,25,0.03); border-radius: 12px; border: 1px solid var(--s-border);">
+                          <div style="font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; color: var(--s-ink-3); text-transform: uppercase; margin-bottom: 0.5rem;">{t('detail.stopInfo')}</div>
+                          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                            {highlight.address && (
+                              <div style="display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <span>{highlight.address[locale]}</span>
+                              </div>
+                            )}
+                            {highlight.duration && (
+                              <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                <span>{formatDuration(highlight.duration, locale)}</span>
+                              </div>
+                            )}
+                            {highlight.price && (
+                              <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>{highlight.price[locale]}</span>
+                              </div>
+                            )}
+                            {highlight.hours && (
+                              <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <span>{highlight.hours[locale]}</span>
+                              </div>
+                            )}
+                            {highlight.tip && (
+                              <div style="display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2); margin-top: 0.25rem; padding-top: 0.35rem; border-top: 1px dashed var(--s-border);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-gold);"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>{highlight.tip[locale]}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -194,7 +274,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
           )}
 
           {route.tips.length > 0 && (
-            <article class="upg-block block-tips" data-reveal>
+            <article class="upg-block block-tips" id="tips" data-reveal>
               <div class="upg-block-bg"></div>
               <header class="upg-header">
                 <span class="upg-num">03</span>
@@ -219,6 +299,63 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
             </article>
           )}
 
+          {(route.startingPoint || route.endingPoint || route.howToGetThere || route.estimatedBudget || route.whoIsItFor || route.accessibility || route.bestTimeToVisit) && (
+            <article class="upg-block" id="practical-info" data-reveal>
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">04</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {t('detail.practicalInfo')} ]</span>
+              </header>
+              <h2 class="upg-title">{t('detail.routeInfo')}</h2>
+
+              <div class="upg-body content-rich" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                {route.startingPoint && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.startingPoint')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.startingPoint[locale]}</p>
+                  </div>
+                )}
+                {route.endingPoint && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.endingPoint')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.endingPoint[locale]}</p>
+                  </div>
+                )}
+                {route.howToGetThere && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.howToGetThere')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.howToGetThere[locale]}</p>
+                  </div>
+                )}
+                {route.estimatedBudget && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.estimatedBudget')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.estimatedBudget[locale]}</p>
+                  </div>
+                )}
+                {route.whoIsItFor && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.whoIsItFor')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.whoIsItFor[locale]}</p>
+                  </div>
+                )}
+                {route.accessibility && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.accessibility')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.accessibility[locale]}</p>
+                  </div>
+                )}
+                {route.bestTimeToVisit && (
+                  <div>
+                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.bestTimeToVisit')}</h4>
+                    <p class="upg-text-secondary" style="margin-top: 0;">{route.bestTimeToVisit[locale]}</p>
+                  </div>
+                )}
+              </div>
+            </article>
+          )}
+
           {route.tags.length > 0 && (
             <div class="upg-tags" data-reveal>
               <span class="upg-tags-title">{copy.sections.tags}</span>
@@ -229,10 +366,60 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               </div>
             </div>
           )}
+
+          {(prevRoute || nextRoute) && (
+            <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Route navigation' : 'Navegación de rutas'} style="padding: 2rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                {prevRoute ? (
+                  <a href={getRouteDetailUrl(prevRoute.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
+                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{prevRoute.title[locale]}</span>
+                    <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
+                  </a>
+                ) : <span />}
+                {nextRoute ? (
+                  <a href={getRouteDetailUrl(nextRoute.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
+                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{nextRoute.title[locale]}</span>
+                    <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
+                  </a>
+                ) : <span />}
+              </div>
+            </nav>
+          )}
+
+          {crossLinks.length > 0 && (
+            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">05</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
+              </header>
+              <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
+            </div>
+          )}
         </main>
 
-        <aside class="upg-sidebar">
+        <aside class="upg-sidebar" aria-label={isEnglish ? 'Route details sidebar' : 'Barra lateral de detalles de ruta'}>
           <div class="upg-sidebar-sticky">
+            {(route.highlights.length > 0 || route.tips.length > 0 || route.startingPoint || route.endingPoint) && (
+              <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
+                <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{isEnglish ? 'On this page' : 'En esta página'}</span>
+                <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+                  {route.highlights.length > 0 && (
+                    <li><a href="#itinerary" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">01</span> {copy.sections.itineraryTitle}</a></li>
+                  )}
+                  {route.tips.length > 0 && (
+                    <li><a href="#tips" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">02</span> {copy.sections.tipsTitle}</a></li>
+                  )}
+                  {(route.startingPoint || route.endingPoint || route.howToGetThere || route.estimatedBudget || route.whoIsItFor || route.accessibility || route.bestTimeToVisit) && (
+                    <li><a href="#practical-info" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">03</span> {t('detail.routeInfo')}</a></li>
+                  )}
+                </ul>
+              </nav>
+            )}
             <div class="upg-ticket-card" data-reveal>
               <div class="upg-ticket-glass"></div>
 

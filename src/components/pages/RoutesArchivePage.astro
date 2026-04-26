@@ -6,8 +6,8 @@ import RoutesGridSection from '@components/home/RoutesGridSection.astro';
 import CinematicCTA from '@components/shared/CinematicCTA.astro';
 import RoutesArchiveFilter from '@components/routes/RoutesArchiveFilter.astro';
 import RoutesArchiveGrid from '@components/routes/RoutesArchiveGrid.astro';
-import RoutesTimePlansSection from '@components/routes/RoutesTimePlansSection.astro';
-import { getAllRoutes, getAllMixedRoutes } from '@data/index';
+import MixedRoutesFullGrid from '@components/routes/MixedRoutesFullGrid.astro';
+import { getAllRoutes } from '@data/index';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import type { RouteCategory, RouteDifficulty, Locale } from '@types';
@@ -19,7 +19,6 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const allRoutes = getAllRoutes();
-const mixedRoutes = getAllMixedRoutes();
 
 const categories: RouteCategory[] = ['viewpoint', 'tapas', 'monuments', 'hiking', 'photography', 'secrets', 'history', 'flamenco'];
 const difficulties: RouteDifficulty[] = ['easy', 'moderate', 'challenging'];
@@ -58,8 +57,6 @@ const categoryIcons: Record<RouteCategory, string> = {
   flamenco:    '◎',
 };
 
-const remainingRoutes = allRoutes.slice(5);
-
 const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: string } = {
   tapas:       'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=1000&fit=crop',
   monuments:   'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=1000&fit=crop',
@@ -80,8 +77,7 @@ const heroMetadata = [
   { label: t('routes.heroMetaDifficultiesLabel'), value: difficulties.length.toString() },
 ];
 
-const timePlansPath = getRoute('byTime', locale);
-const eventsPath    = getRoute('events', locale);
+const eventsPath = getRoute('events', locale);
 ---
 
 <BaseLayout 
@@ -101,7 +97,7 @@ const eventsPath    = getRoute('events', locale);
     ctaText={t('routes.heroCta')}
     ctaLink="#featured-routes"
     secondaryCtaText={t('routes.heroSecondaryCta')}
-    secondaryCtaLink={timePlansPath}
+    secondaryCtaLink="#time-plans"
     pageNumber="02"
     coordinates="37°11′N 3°36′W"
     metadata={heroMetadata}
@@ -127,23 +123,21 @@ const eventsPath    = getRoute('events', locale);
       allRoutes={allRoutes}
     />
 
-    <RoutesArchiveGrid
-      locale={locale}
-      routes={remainingRoutes}
-      categoryLabels={categoryLabels}
-      categoryIcons={categoryIcons}
-      difficultyLabels={difficultyLabels}
-      difficultyColors={difficultyColors}
-      routeFallbacks={ROUTE_FALLBACKS}
-    />
+    <div class="filter-container">
+      <RoutesArchiveGrid
+        locale={locale}
+        routes={allRoutes}
+        categoryLabels={categoryLabels}
+        categoryIcons={categoryIcons}
+        difficultyLabels={difficultyLabels}
+        difficultyColors={difficultyColors}
+        routeFallbacks={ROUTE_FALLBACKS}
+      />
+    </div>
   </section>
 
   <!-- TIME PLANS SECTION -->
-  <RoutesTimePlansSection
-    locale={locale}
-    mixedRoutes={mixedRoutes}
-    timePlansPath={timePlansPath}
-  />
+  <MixedRoutesFullGrid locale={locale} />
 
   <!-- CTA SECTION -->
   <CinematicCTA 
@@ -151,7 +145,7 @@ const eventsPath    = getRoute('events', locale);
     ctaPrimaryText={t('routes.ctaBtn')}
     ctaPrimaryLink={eventsPath}
     ctaSecondaryText={t('routes.heroSecondaryCta')}
-    ctaSecondaryLink={timePlansPath}
+    ctaSecondaryLink="#time-plans"
   />
 
   <script>

@@ -19,7 +19,7 @@ const displayPlans = selectedDurations
   .map(duration => plans.find(p => p.duration === duration))
   .filter((p): p is MixedRoute => p !== undefined);
 
-const timeRoutesHref = getRoute('byTime', locale);
+const timeRoutesHref = `${getRoute('routes', locale)}#time-plans`;
 
 // Duration configurations with visual styling
 const durationConfig: Record<string, {

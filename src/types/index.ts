@@ -100,6 +100,11 @@ export type TimeOfDay = 'morning' | 'afternoon' | 'sunset' | 'evening' | 'any';
 export interface RouteHighlight {
   title: LocalizedText;
   description: LocalizedText;
+  address?: LocalizedText;
+  duration?: number; // minutes recommended at this stop
+  price?: LocalizedText;
+  hours?: LocalizedText;
+  tip?: LocalizedText;
 }
 
 export interface RouteTip {
@@ -127,6 +132,13 @@ export interface Route {
   longDescription?: LocalizedText;
   whatToBring?: { es: string[]; en: string[] };
   bestMonths?: string[];
+  startingPoint?: LocalizedText;
+  endingPoint?: LocalizedText;
+  howToGetThere?: LocalizedText;
+  estimatedBudget?: LocalizedText;
+  whoIsItFor?: LocalizedText;
+  accessibility?: LocalizedText;
+  bestTimeToVisit?: LocalizedText;
 }
 
 // ============================================

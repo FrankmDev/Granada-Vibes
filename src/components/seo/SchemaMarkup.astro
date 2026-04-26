@@ -13,7 +13,7 @@ interface FaqItem {
 }
 
 interface Props {
-  type: 'website' | 'event' | 'route' | 'organization' | 'article';
+  type: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article';
   data?: Event | Route | BlogPost;
   locale: 'es' | 'en';
   path?: string;
@@ -111,6 +111,7 @@ switch (type) {
   case 'event':
     if (data && 'date' in data) {
       const eventData = data as Event;
+      const eventImages = [resolveImageUrl(eventData.image), resolveImageUrl(eventData.imageUrl)].filter((img, i, arr) => img && arr.indexOf(img) === i);
       primarySchema = {
         '@context': 'https://schema.org',
         '@type': 'Event',
@@ -125,19 +126,22 @@ switch (type) {
           name: eventData.venue,
           address: {
             '@type': 'PostalAddress',
+            streetAddress: eventData.address,
             addressLocality: 'Granada',
             addressRegion: 'Andalucía',
             addressCountry: 'ES',
           },
         },
-        image: resolveImageUrl(eventData.image),
+        image: eventImages.length > 1 ? eventImages : eventImages[0],
         url: `${siteUrl}${path}`,
-        offers: eventData.price !== null ? {
+        isAccessibleForFree: eventData.price === 0 || eventData.price === null,
+        offers: eventData.price !== null && eventData.price > 0 ? {
           '@type': 'Offer',
           price: eventData.price,
           priceCurrency: eventData.currency,
           availability: 'https://schema.org/InStock',
-          url: eventData.url || `${siteUrl}${path}`,
+          url: eventData.url || eventData.ticketsUrl || `${siteUrl}${path}`,
+          validFrom: eventData.date,
         } : {
           '@type': 'Offer',
           price: 0,
@@ -148,6 +152,11 @@ switch (type) {
           '@type': 'Organization',
           name: SITE_CONFIG.name,
           url: siteUrl,
+          logo: `${siteUrl}/favicon.svg`,
+        },
+        about: {
+          '@type': 'Thing',
+          name: eventData.category,
         },
       };
     }
@@ -156,13 +165,63 @@ switch (type) {
   case 'route':
     if (data && 'duration' in data) {
       const routeData = data as Route;
+      const routeImages = [resolveImageUrl(routeData.image)].filter(Boolean);
+      const routeProps: Record<string, unknown>[] = [
+        {
+          '@type': 'PropertyValue',
+          name: 'Duration',
+          value: `${routeData.duration} minutes`,
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Distance',
+          value: `${routeData.distance} km`,
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Difficulty',
+          value: routeData.difficulty,
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Best time of day',
+          value: routeData.timeOfDay,
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Category',
+          value: routeData.category,
+        },
+      ];
+      if (routeData.bestTimeToVisit) {
+        routeProps.push({
+          '@type': 'PropertyValue',
+          name: 'Best time to visit',
+          value: routeData.bestTimeToVisit[locale],
+        });
+      }
+      if (routeData.startingPoint) {
+        routeProps.push({
+          '@type': 'PropertyValue',
+          name: 'Starting point',
+          value: routeData.startingPoint[locale],
+        });
+      }
+      if (routeData.accessibility) {
+        routeProps.push({
+          '@type': 'PropertyValue',
+          name: 'Accessibility',
+          value: routeData.accessibility[locale],
+        });
+      }
       primarySchema = {
         '@context': 'https://schema.org',
         '@type': 'TouristAttraction',
         name: routeData.title[locale],
         description: routeData.description[locale],
-        image: resolveImageUrl(routeData.image),
+        image: routeImages.length > 0 ? routeImages : undefined,
         url: `${siteUrl}${path}`,
+        isAccessibleForFree: true,
         touristType: [
           {
             '@type': 'Audience',
@@ -180,45 +239,116 @@ switch (type) {
         },
         address: {
           '@type': 'PostalAddress',
-            addressLocality: 'Granada',
-            addressRegion: 'Andalucía',
-            addressCountry: 'ES',
+          addressLocality: 'Granada',
+          addressRegion: 'Andalucía',
+          addressCountry: 'ES',
+        },
+        additionalProperty: routeProps,
+        hasMap: 'https://www.google.com/maps/search/?api=1&query=Granada,+Spain',
+      };
+    }
+    break;
+
+  case 'timePlan':
+    if (data && 'days' in data) {
+      const planData = data as import('@types').MixedRoute;
+      const planImages = [resolveImageUrl(planData.image)].filter(Boolean);
+      const itemListElements: unknown[] = [];
+      planData.days.forEach((day, dayIdx) => {
+        day.blocks.forEach((block) => {
+          block.stops.forEach((stop, stopIdx) => {
+            itemListElements.push({
+              '@type': 'ListItem',
+              position: itemListElements.length + 1,
+              item: {
+                '@type': 'TouristAttraction',
+                name: stop.name[locale],
+                description: stop.description[locale],
+                additionalProperty: [
+                  { '@type': 'PropertyValue', name: 'Category', value: stop.category },
+                  { '@type': 'PropertyValue', name: 'Duration', value: `${stop.duration} minutes` },
+                ],
+              },
+            });
+          });
+        });
+      });
+      primarySchema = {
+        '@context': 'https://schema.org',
+        '@type': 'TouristAttraction',
+        name: planData.title[locale],
+        description: planData.description[locale],
+        image: planImages.length > 0 ? planImages : undefined,
+        url: `${siteUrl}${path}`,
+        isAccessibleForFree: true,
+        touristType: [
+          {
+            '@type': 'Audience',
+            audienceType: 'Cultural Tourists',
+          },
+          {
+            '@type': 'Audience',
+            audienceType: 'History Enthusiasts',
+          },
+        ],
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 37.1773,
+          longitude: -3.5986,
+        },
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Granada',
+          addressRegion: 'Andalucía',
+          addressCountry: 'ES',
         },
         additionalProperty: [
           {
             '@type': 'PropertyValue',
             name: 'Duration',
-            value: `${routeData.duration} minutes`,
+            value: planData.duration,
           },
           {
             '@type': 'PropertyValue',
-            name: 'Distance',
-            value: `${routeData.distance} km`,
-          },
-          {
-            '@type': 'PropertyValue',
-            name: 'Difficulty',
-            value: routeData.difficulty,
+            name: 'Neighborhoods',
+            value: planData.neighborhoods.join(', '),
           },
         ],
+        hasMap: 'https://www.google.com/maps/search/?api=1&query=Granada,+Spain',
       };
+      if (itemListElements.length > 0) {
+        (primarySchema as Record<string, unknown>).itinerary = {
+          '@type': 'ItemList',
+          itemListElement: itemListElements,
+        };
+      }
     }
     break;
 
   case 'article':
     if (data && 'publishDate' in data) {
       const postData = data as BlogPost;
+      const postImages = [resolveImageUrl(postData.image)].filter(Boolean);
       primarySchema = {
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: postData.title[locale],
         description: postData.description[locale],
-        image: resolveImageUrl(postData.image),
+        image: postImages.length > 0 ? postImages : undefined,
         url: `${siteUrl}${path}`,
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': `${siteUrl}${path}`,
+        },
         datePublished: postData.publishDate,
+        dateModified: postData.publishDate,
+        articleSection: postData.category,
+        wordCount: Math.round(postData.readingTime * 200),
+        keywords: postData.tags.join(', '),
         author: {
           '@type': 'Person',
           name: postData.author,
+          url: siteUrl,
         },
         publisher: {
           '@type': 'Organization',

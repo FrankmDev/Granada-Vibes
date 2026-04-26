@@ -4,6 +4,15 @@ export const granadaUnDiaContent = {
 
 <p>Antes de empezar: la única decisión que importa es si tienes entrada para la Alhambra o no. El resto del itinerario se construye alrededor de esa respuesta. Si la tienes, la mañana es tuya. Si no la tienes —y no la reservaste con meses de antelación— no esperes conseguirla en el día. La alternativa existe y merece la pena, pero es otra experiencia.</p>
 
+<div style="margin: 2rem 0; padding: 1.5rem 2rem; background: linear-gradient(135deg, rgba(232,98,42,0.06), transparent); border-left: 3px solid var(--s-orange); border-radius: 0 16px 16px 0;">
+  <p style="margin-bottom: 0.75rem; font-weight: 600; color: var(--s-ink);">¿Prefieres un plan paso a paso con horarios exactos?</p>
+  <p style="margin-bottom: 0; font-size: 1rem;">Esta guía resume lo esencial. Si quieres una ruta detallada con paradas ordenadas minuto a minuto, tenemos dos planes diseñados para seguir directamente:</p>
+  <ul style="margin-top: 0.75rem; margin-bottom: 0;">
+    <li><a href="/rutas/por-tiempo/1-dia-completo-alhambra/">Ruta de 1 día con entrada a la Alhambra</a> — itinerario de 14 horas con paradas ordenadas, tapeo y atardecer.</li>
+    <li><a href="/rutas/por-tiempo/12-horas-granada-sin-prisas/">Granada en 12 horas sin Alhambra</a> — para quien no consiguió entrada pero no quiere perderse nada del Albaicín ni los monumentos gratuitos.</li>
+  </ul>
+</div>
+
 <hr/>
 
 <h2>Lo primero: la decisión de la Alhambra</h2>
@@ -131,12 +140,30 @@ export const granadaUnDiaContent = {
 <p>Sí. Con la condición de que vengas con la entrada de la Alhambra comprada —si es lo que quieres ver— o con la expectativa correcta de que la visita va a ser un aperitivo, no la ciudad entera.</p>
 
 <p>Granada en un día bien hecho deja con ganas de volver. Eso es exactamente lo que debe hacer.</p>
-`,
+
+<div style="margin: 2.5rem 0; padding: 2rem; background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 16px;">
+  <p style="margin-bottom: 1rem; font-family: var(--font-body); font-size: 1.2rem; font-weight: 600; color: var(--s-ink);">Lleva este plan en el móvil</p>
+  <p style="margin-bottom: 0.75rem; font-size: 1rem;">Si prefieres seguir una ruta concreta con paradas ordenadas y horarios:</p>
+  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <a href="/rutas/por-tiempo/1-dia-completo-alhambra/" style="display: block; padding: 0.75rem 1rem; background: rgba(232,98,42,0.08); border-radius: 8px; color: var(--s-ink); text-decoration: none; font-weight: 500;">→ Ruta de 1 día con Alhambra: 14 horas paso a paso</a>
+    <a href="/rutas/por-tiempo/12-horas-granada-sin-prisas/" style="display: block; padding: 0.75rem 1rem; background: rgba(232,98,42,0.08); border-radius: 8px; color: var(--s-ink); text-decoration: none; font-weight: 500;">→ Granada en 12 horas sin Alhambra: ruta sin prisas</a>
+  </div>
+</div>
+ `,
 
   en: `
 <p>Granada in a day is doable. It's not ideal — the city has too much for a single day — but if that's what you have, this itinerary is designed to get the most out of it without rushing or missing what actually matters.</p>
 
 <p>Before we start: the only decision that matters is whether you have an Alhambra ticket or not. The rest of the day is built around that answer. If you have one, the morning is yours. If you don't — and you didn't book months in advance — don't expect to get one on the day. The alternative exists and is worth it, but it's a different experience.</p>
+
+<div style="margin: 2rem 0; padding: 1.5rem 2rem; background: linear-gradient(135deg, rgba(232,98,42,0.06), transparent); border-left: 3px solid var(--s-orange); border-radius: 0 16px 16px 0;">
+  <p style="margin-bottom: 0.75rem; font-weight: 600; color: var(--s-ink);">Prefer a step-by-step plan with exact timings?</p>
+  <p style="margin-bottom: 0; font-size: 1rem;">This guide covers the essentials. If you want a detailed route with ordered stops minute by minute, we have two ready-to-follow plans:</p>
+  <ul style="margin-top: 0.75rem; margin-bottom: 0;">
+    <li><a href="/en/routes/by-time/1-dia-completo-alhambra/">1-Day Route with Alhambra Entry</a> — a 14-hour itinerary with ordered stops, tapas and sunset.</li>
+    <li><a href="/en/routes/by-time/12-horas-granada-sin-prisas/">12 Hours in Granada Without the Alhambra</a> — for those without Palace tickets who still want the full Albaicín and free monuments experience.</li>
+  </ul>
+</div>
 
 <hr/>
 
@@ -265,5 +292,14 @@ export const granadaUnDiaContent = {
 <p>Yes. On one condition: come with the Alhambra ticket already bought — if that's what you want to see — or with the right expectation that the visit is an appetiser, not the whole city.</p>
 
 <p>Granada in a day done well leaves you wanting to come back. That's exactly what it should do.</p>
-`,
+
+<div style="margin: 2.5rem 0; padding: 2rem; background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 16px;">
+  <p style="margin-bottom: 1rem; font-family: var(--font-body); font-size: 1.2rem; font-weight: 600; color: var(--s-ink);">Take this plan with you</p>
+  <p style="margin-bottom: 0.75rem; font-size: 1rem;">If you prefer a concrete route with ordered stops and timings:</p>
+  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+    <a href="/en/routes/by-time/1-dia-completo-alhambra/" style="display: block; padding: 0.75rem 1rem; background: rgba(232,98,42,0.08); border-radius: 8px; color: var(--s-ink); text-decoration: none; font-weight: 500;">→ 1-Day Route with Alhambra: 14-Hour Step-by-Step Itinerary</a>
+    <a href="/en/routes/by-time/12-horas-granada-sin-prisas/" style="display: block; padding: 0.75rem 1rem; background: rgba(232,98,42,0.08); border-radius: 8px; color: var(--s-ink); text-decoration: none; font-weight: 500;">→ 12 Hours in Granada Without the Alhambra: Unhurried Route</a>
+  </div>
+</div>
+ `,
 };

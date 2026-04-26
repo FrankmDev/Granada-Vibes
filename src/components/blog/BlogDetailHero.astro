@@ -23,10 +23,10 @@ const numericId = parseInt(post.id, 10);
 const refNum = isNaN(numericId)
   ? post.slug.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0) % 1000
   : numericId;
-const refCode = `BLOG / ${refNum.toString().padStart(3, '0')} · ${year}`;
+const refCode = `GUIA / ${refNum.toString().padStart(3, '0')} · ${year}`;
 
 const backHref   = getRoute('blog', locale);
-const backLabel  = 'Blog';
+const backLabel  = locale === 'es' ? 'Guías' : 'Guides';
 const catLabel   = t(`blog.categories.${post.category}`).toUpperCase();
 const dockLabel  = t('detail.articleInfo');
 const description = post.description[locale];

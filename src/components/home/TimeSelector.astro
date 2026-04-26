@@ -117,7 +117,7 @@ const timeBlocks: { duration: TimeDuration; label: string; shortLabel: string; c
     <!-- Link to all plans -->
     <div class="text-center mt-12 reveal">
       <a
-        href={getRoute('byTime', locale)}
+        href={`${getRoute('routes', locale)}#time-plans`}
         class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold text-white bg-white/5 border border-white/10 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[#FF3366]/30 hover:shadow-lg hover:shadow-[#FF3366]/10 group"
       >
         <span>{t('mixedRoutes.viewPlan')}</span>

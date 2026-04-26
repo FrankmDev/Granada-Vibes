@@ -105,6 +105,34 @@ export const routes: Route[] = [
       en: ['Real hunger — you\'ll hit five stops', 'Cash (Bar Ávila and Casa Julio don\'t always take cards)', 'Comfortable shoes for the Realejo\'s cobblestones', 'Water bottle to carry between stops'],
     },
     bestMonths: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'],
+    startingPoint: {
+      es: 'Bodegas Castañeda, Calle Almireceros 1 (esquina con Calle Elvira). Acceso a pie desde Plaza Nueva en 3 minutos.',
+      en: 'Bodegas Castañeda, Calle Almireceros 1 (corner with Calle Elvira). A 3-minute walk from Plaza Nueva.',
+    },
+    endingPoint: {
+      es: 'Taberna La Tana, Placeta del Agua 3, en el corazón del Realejo. Desde aquí se vuelve al centro en 10 minutos andando.',
+      en: 'Taberna La Tana, Placeta del Agua 3, in the heart of the Realejo. From here it is a 10-minute walk back to the center.',
+    },
+    howToGetThere: {
+      es: 'El punto de inicio está en el centro histórico, a 5 minutos de la Catedral. Si vienes en coche, aparca en el parking de Plaza Nueva. En bus, líneas C1, C2, 4, 9, 11 y 33 tienen parada en Plaza Nueva.',
+      en: 'The starting point is in the historic center, 5 minutes from the Cathedral. If coming by car, park at Plaza Nueva car park. By bus, lines C1, C2, 4, 9, 11 and 33 stop at Plaza Nueva.',
+    },
+    estimatedBudget: {
+      es: 'Entre 12€ y 18€ por persona (5 tapas + 5 bebidas). La Tana puede subir el presupuesto si pides vinos selectos.',
+      en: 'Between €12 and €18 per person (5 tapas + 5 drinks). La Tana can raise the budget if you order select wines.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para quienes quieren entender la cultura del tapeo granadino sin filtros. Perfecta para grupos de amigos, parejas y viajeros solitarios con espíritu sociable. No recomendada para vegetarianos estrictos ni para quienes buscan gastronomía de autor.',
+      en: 'Ideal for those who want to understand Granada\'s tapas culture without filters. Perfect for groups of friends, couples, and solo travellers with a social spirit. Not recommended for strict vegetarians or those seeking haute cuisine.',
+    },
+    accessibility: {
+      es: 'Ruta por calles empedradas del centro y el Realejo. Bodegas Castañeda tiene escalón de entrada. Bar Casa Julio es minúsculo y no apto para sillas de ruedas. El resto de locales son accesibles con ayuda.',
+      en: 'Route through cobblestoned streets of the centre and Realejo. Bodegas Castañeda has a step at the entrance. Bar Casa Julio is tiny and not wheelchair-friendly. The other venues are accessible with assistance.',
+    },
+    bestTimeToVisit: {
+      es: 'Cualquier día de la semana funciona, pero los martes y miércoles los bares están menos concurridos. En verano, empieza más tarde (21:30) para evitar el calor. En invierno, la hora ideal es 20:30.',
+      en: 'Any day of the week works, but Tuesdays and Wednesdays the bars are less crowded. In summer, start later (21:30) to avoid the heat. In winter, the ideal time is 20:30.',
+    },
   },
   {
     id: 'rte-002',
@@ -181,6 +209,34 @@ export const routes: Route[] = [
       en: ['C1 10-trip card to get up to the neighborhood', 'Comfortable shoes — the Albaicín is hilly', 'Booking made at El Huerto de Juan Ranas (weekends)', 'Time: at least two hours so you\'re not rushing'],
     },
     bestMonths: ['marzo', 'abril', 'mayo', 'junio', 'septiembre', 'octubre'],
+    startingPoint: {
+      es: 'Placeta de San Miguel Bajo, en el corazón del Albaicín. Llega en bus C1 desde Plaza Nueva y baja en la parada "San Miguel Bajo".',
+      en: 'Placeta de San Miguel Bajo, in the heart of the Albaicín. Take bus C1 from Plaza Nueva and get off at the "San Miguel Bajo" stop.',
+    },
+    endingPoint: {
+      es: 'El Huerto de Juan Ranas, Callejón Atarazana 6. Desde aquí puedes bajar a pie al centro por el Paseo de los Tristes (20 minutos) o coger el C1 en la parada del Mirador de San Nicolás.',
+      en: 'El Huerto de Juan Ranas, Callejón Atarazana 6. From here you can walk down to the centre via Paseo de los Tristes (20 minutes) or catch the C1 at the Mirador de San Nicolás stop.',
+    },
+    howToGetThere: {
+      es: 'Desde el centro, bus C1 cada 9 minutos desde Plaza Nueva. También puedes subir a pie por la Cuesta de San Gregorio (15 minutos desde Plaza Nueva). No recomendable en coche: el Albaicín es zona restringida.',
+      en: 'From the centre, bus C1 every 9 minutes from Plaza Nueva. You can also walk up via Cuesta de San Gregorio (15 minutes from Plaza Nueva). Not recommended by car: the Albaicín is a restricted zone.',
+    },
+    estimatedBudget: {
+      es: 'Aproximadamente 15€ por persona (3 vermuts + tapas + consumición en El Huerto).',
+      en: 'Approximately €15 per person (3 vermouths + tapas + drink at El Huerto).',
+    },
+    whoIsItFor: {
+      es: 'Perfecta para parejas y grupos de amigos que buscan una mañana de sábado auténtica. También para fotógrafos que quieren la Alhambra desde el Huerto de Juan Ranas. No apta para quienes tienen dificultades para caminar cuestas arriba.',
+      en: 'Perfect for couples and groups of friends looking for an authentic Saturday morning. Also for photographers wanting the Alhambra view from El Huerto de Juan Ranas. Not suitable for those who have difficulty walking uphill.',
+    },
+    accessibility: {
+      es: 'El Albaicín tiene empedrado irregular y cuestas pronunciadas. El bus C1 es accesible. Las terrazas de San Miguel Bajo tienen mesas al aire libre accesibles. El Huerto de Juan Ranas tiene escaleras de entrada.',
+      en: 'The Albaicín has irregular cobblestones and steep slopes. The C1 bus is accessible. The San Miguel Bajo terraces have accessible outdoor tables. El Huerto de Juan Ranas has stairs at the entrance.',
+    },
+    bestTimeToVisit: {
+      es: 'Sábado entre las 13:00 y las 15:00. En verano, empieza a las 12:30 para coger sombra. En invierno, la terraza del Huerto puede estar cerrada si llueve — confirma antes.',
+      en: 'Saturday between 1 PM and 3 PM. In summer, start at 12:30 to get shade. In winter, El Huerto\'s terrace may be closed if it rains — confirm beforehand.',
+    },
   },
 
   // ——————————————————————————————————————————
@@ -268,6 +324,34 @@ export const routes: Route[] = [
       en: ['C31/C32 10-trip card to ride up to the neighborhood', 'Comfortable shoes — irregular cobblestones throughout', 'Camera or phone with charged battery', 'Light jacket — temperature drops quickly after sunset'],
     },
     bestMonths: ['marzo', 'abril', 'mayo', 'junio', 'septiembre', 'octubre', 'noviembre'],
+    startingPoint: {
+      es: 'Mirador de San Cristóbal, Plaza de San Cristóbal. Llega en bus C31/C32 desde Gran Vía y baja en la parada "Alhacaba".',
+      en: 'Mirador de San Cristóbal, Plaza de San Cristóbal. Take bus C31/C32 from Gran Vía and get off at the "Alhacaba" stop.',
+    },
+    endingPoint: {
+      es: 'Mirador de San Nicolás. Desde aquí baja a pie al centro por el Paseo de los Tristes (20 minutos) o coge el bus C31 de vuelta.',
+      en: 'Mirador de San Nicolás. From here walk downhill to the centre via Paseo de los Tristes (20 minutes) or catch the C31 bus back.',
+    },
+    howToGetThere: {
+      es: 'Bus C31 o C32 desde Gran Vía cada 10-12 minutos. También puedes subir a pie desde Plaza Nueva por la Cuesta de Alhacaba (20 minutos). No hay aparcamiento en el Albaicín: usa el parking de Plaza Nueva si vienes en coche.',
+      en: 'Bus C31 or C32 from Gran Vía every 10–12 minutes. You can also walk up from Plaza Nueva via Cuesta de Alhacaba (20 minutes). There is no parking in the Albaicín: use the Plaza Nueva car park if coming by car.',
+    },
+    estimatedBudget: {
+      es: 'Gratis. Solo gastos de transporte (1,40€ por trayecto en bus) y lo que consumas en Calderería Nueva después.',
+      en: 'Free. Only transport costs (€1.40 per bus ride) and whatever you spend in Calderería Nueva afterwards.',
+    },
+    whoIsItFor: {
+      es: 'Imprescindible para cualquier visitante de Granada. Ideal para parejas, fotógrafos y amantes de los atardeceres. Apta para familias con niños mayores (el empedrado puede resbalar).',
+      en: 'Essential for any Granada visitor. Ideal for couples, photographers, and sunset lovers. Suitable for families with older children (cobblestones can be slippery).',
+    },
+    accessibility: {
+      es: 'Ruta con empedrado irregular y desnivel constante. No apta para sillas de ruedas ni carritos de bebé. El bus C31/C32 es accesible. El Mirador de San Nicolás tiene zona pavimentada.',
+      en: 'Route with irregular cobblestones and constant slope. Not suitable for wheelchairs or strollers. The C31/C32 bus is accessible. Mirador de San Nicolás has a paved area.',
+    },
+    bestTimeToVisit: {
+      es: 'Llega 45 minutos antes del atardecer. En verano, el sol se pone sobre las 21:30; en invierno, sobre las 18:15. Las mejores fotos son 20 minutos antes de que el sol desaparezca.',
+      en: 'Arrive 45 minutes before sunset. In summer the sun sets around 21:30; in winter around 18:15. The best photos are taken 20 minutes before the sun disappears.',
+    },
   },
   {
     id: 'rte-004',
@@ -351,6 +435,34 @@ export const routes: Route[] = [
       en: ['Clothing covering shoulders and knees — required in all three monuments', 'Camera (no flash — prohibited in the Royal Chapel and Monastery)', 'Water — no drinking fountains on the interior route', 'Budget: Cathedral €10 + Royal Chapel €5 + Monastery €7 = €22 per person'],
     },
     bestMonths: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'octubre', 'noviembre', 'diciembre'],
+    startingPoint: {
+      es: 'Catedral de Granada, Gran Vía de Colón 5. Llega a pie desde Plaza Nueva (5 minutos) o en bus líneas C1, C2, 4, 9, 11, 33.',
+      en: 'Granada Cathedral, Gran Vía de Colón 5. Walk from Plaza Nueva (5 minutes) or take bus lines C1, C2, 4, 9, 11, 33.',
+    },
+    endingPoint: {
+      es: 'Monasterio de San Jerónimo, Calle Rector López Argüeta 9. Desde aquí se vuelve al centro en 10 minutos andando.',
+      en: 'Monastery of San Jerónimo, Calle Rector López Argüeta 9. From here it is a 10-minute walk back to the center.',
+    },
+    howToGetThere: {
+      es: 'Los tres monumentos están a menos de 400 metros entre sí en el centro histórico. Aparca en el parking de Plaza Nueva o Gran Vía. En transporte público, cualquier bus que pase por Gran Vía o Plaza Nueva te deja cerca.',
+      en: 'All three monuments are within 400 meters of each other in the historic center. Park at the Plaza Nueva or Gran Vía car parks. By public transport, any bus passing through Gran Vía or Plaza Nueva drops you nearby.',
+    },
+    estimatedBudget: {
+      es: '22€ por persona en entradas (Catedral 10€ + Capilla Real 5€ + San Jerónimo 7€). Añade 5€ para agua y un café entre monumentos.',
+      en: '€22 per person in admissions (Cathedral €10 + Royal Chapel €5 + San Jerónimo €7). Add €5 for water and a coffee between monuments.',
+    },
+    whoIsItFor: {
+      es: 'Imprescindible para amantes de arte, historia y arquitectura. Ideal para visitantes culturales que quieren entender el Renacimiento español. También apta para adolescentes con interés por la historia. No recomendada para niños muy pequeños (monumentos silenciosos y sin actividades infantiles).',
+      en: 'Essential for lovers of art, history, and architecture. Ideal for cultural visitors who want to understand the Spanish Renaissance. Also suitable for teenagers interested in history. Not recommended for very young children (silent monuments with no children\'s activities).',
+    },
+    accessibility: {
+      es: 'La Catedral tiene rampa de acceso. La Capilla Real tiene acceso por ascensor previa petición. San Jerónimo tiene escalones en la entrada principal; hay entrada alternativa por el claustro. Ninguno de los tres tiene audioguía gratuita.',
+      en: 'The Cathedral has a ramped entrance. The Royal Chapel has lift access on request. San Jerónimo has steps at the main entrance; there is an alternative entrance through the cloister. None of the three has a free audio guide.',
+    },
+    bestTimeToVisit: {
+      es: 'Empieza a las 10:00 en punto. En temporada alta (Semana Santa, julio-agosto), compra entradas online con antelación. Los martes por la mañana suelen ser los días más tranquilos.',
+      en: 'Start at 10:00 sharp. In high season (Easter Week, July–August), buy tickets online in advance. Tuesday mornings are usually the quietest days.',
+    },
   },
   {
     id: 'rte-005',
@@ -434,6 +546,34 @@ export const routes: Route[] = [
       en: ['Credit card — the Cuarto Real does not accept cash', 'Comfortable shoes for the neighborhood cobblestones', 'Camera — El Niño de las Pinturas murals are very photogenic', 'Time: this neighborhood invites getting lost'],
     },
     bestMonths: ['marzo', 'abril', 'mayo', 'septiembre', 'octubre', 'noviembre'],
+    startingPoint: {
+      es: 'Cuarto Real de Santo Domingo, Plaza de los Campos 6. A 10 minutos andando desde la Catedral o en bus C2 hasta la parada "Plaza de los Campos".',
+      en: 'Cuarto Real de Santo Domingo, Plaza de los Campos 6. A 10-minute walk from the Cathedral or bus C2 to the "Plaza de los Campos" stop.',
+    },
+    endingPoint: {
+      es: 'Calle Molinos / Campo del Príncipe. Desde aquí se coge el C2 de vuelta al centro o se continúa caminando hacia Gran Vía en 15 minutos.',
+      en: 'Calle Molinos / Campo del Príncipe. From here take the C2 back to the center or continue walking toward Gran Vía in 15 minutes.',
+    },
+    howToGetThere: {
+      es: 'El Realejo está a 10 minutos andando del centro. Bus C2 circula por el barrio. En coche, aparca en el parking de San Agustín o en la zona de la Caleta.',
+      en: 'The Realejo is a 10-minute walk from the center. Bus C2 runs through the neighborhood. By car, park at the San Agustín car park or in the Caleta area.',
+    },
+    estimatedBudget: {
+      es: '2€ por persona (entrada al Cuarto Real, gratis los domingos). El resto de la ruta es gratuita. Añade 3€ si entras en la Casa de los Tiros.',
+      en: '€2 per person (Cuarto Real entry, free on Sundays). The rest of the route is free. Add €3 if you enter Casa de los Tiros.',
+    },
+    whoIsItFor: {
+      es: 'Perfecta para viajeros curiosos que buscan algo más allá de la Alhambra. Ideal para fotógrafos urbanos, amantes del arte callejero y quienes quieren entender las capas históricas de Granada. No es una ruta para quienes buscan monumentos famosos.',
+      en: 'Perfect for curious travellers looking for something beyond the Alhambra. Ideal for urban photographers, street art lovers, and those who want to understand Granada\'s historical layers. Not a route for those seeking famous monuments.',
+    },
+    accessibility: {
+      es: 'El empedrado del Realejo es irregular pero plano en la mayoría del recorrido. El Cuarto Real tiene acceso por rampa. El lavadero está en una placeta peatonal.',
+      en: 'The Realejo\'s cobblestones are irregular but mostly flat. The Cuarto Real has ramped access. The laundry is in a pedestrian square.',
+    },
+    bestTimeToVisit: {
+      es: 'La luz de la tarde (16:00–18:00) es ideal para fotografiar los murales. El Cuarto Real abre por la tarde de martes a sábado. Los domingos por la mañana el barrio está muy tranquilo.',
+      en: 'Afternoon light (16:00–18:00) is ideal for photographing the murals. The Cuarto Real opens in the afternoon Tuesday to Saturday. Sunday mornings the neighborhood is very quiet.',
+    },
   },
   {
     id: 'rte-006',
@@ -510,6 +650,34 @@ export const routes: Route[] = [
       en: ['Nothing special — two of the three monuments are free', 'Clothing covering shoulders and knees for the Royal Chapel', 'Camera (no flash in the Royal Chapel)', 'Maximum budget: €5 (only the Royal Chapel)'],
     },
     bestMonths: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'octubre', 'noviembre', 'diciembre'],
+    startingPoint: {
+      es: 'Corral del Carbón, Calle Mariana Pineda s/n. A 3 minutos andando desde Plaza Nueva.',
+      en: 'Corral del Carbón, Calle Mariana Pineda s/n. A 3-minute walk from Plaza Nueva.',
+    },
+    endingPoint: {
+      es: 'Capilla Real, Calle Oficios s/n. Desde aquí estás en el centro histórico, a 2 minutos de la Catedral.',
+      en: 'Royal Chapel, Calle Oficios s/n. From here you are in the historic center, 2 minutes from the Cathedral.',
+    },
+    howToGetThere: {
+      es: 'Los tres monumentos están en el centro histórico, a menos de 500 metros entre sí. Aparca en Plaza Nueva o Gran Vía. Bus C1, C2, 4, 9, 11 y 33 pasan por la zona.',
+      en: 'All three monuments are in the historic center, less than 500 meters apart. Park at Plaza Nueva or Gran Vía. Bus C1, C2, 4, 9, 11 and 33 pass through the area.',
+    },
+    estimatedBudget: {
+      es: '5€ por persona (solo la Capilla Real tiene entrada). El Corral del Carbón y la Madraza son gratuitos.',
+      en: '€5 per person (only the Royal Chapel charges admission). Corral del Carbón and the Madraza are free.',
+    },
+    whoIsItFor: {
+      es: 'Perfecta para historiadores, estudiantes y cualquier visitante que quiera entender el momento fundacional de la España moderna. También para quienes buscan una ruta cultural económica. No es una ruta de grandes espectáculos visuales: es de lectura histórica.',
+      en: 'Perfect for historians, students, and any visitor who wants to understand the foundational moment of modern Spain. Also for those seeking an affordable cultural route. It is not a route of grand visual spectacles: it is one of historical reading.',
+    },
+    accessibility: {
+      es: 'Corral del Carbón y Capilla Real tienen acceso accesible. La Madraza tiene escalones en la entrada principal pero acceso alternativo por la librería.',
+      en: 'Corral del Carbón and Royal Chapel have accessible access. The Madraza has steps at the main entrance but an alternative entrance through the bookshop.',
+    },
+    bestTimeToVisit: {
+      es: 'La mañana es ideal. Empieza a las 10:00 en el Corral del Carbón. La Capilla Real abre a las 10:15. Evita los domingos por la mañana si quieres ver la Madraza: cierra los domingos.',
+      en: 'Morning is ideal. Start at 10:00 at Corral del Carbón. The Royal Chapel opens at 10:15. Avoid Sunday mornings if you want to see the Madraza: it is closed on Sundays.',
+    },
   },
   {
     id: 'rte-007',
@@ -593,6 +761,34 @@ export const routes: Route[] = [
       en: ['Comfortable shoes — the Camino del Sacromonte is uneven and hilly', 'A layer — the caves are cool inside even in summer', 'Cash or card for the included drink', 'Confirmed booking for La Canastera in high season'],
     },
     bestMonths: ['marzo', 'abril', 'mayo', 'junio', 'septiembre', 'octubre', 'noviembre'],
+    startingPoint: {
+      es: 'Museo Cuevas del Sacromonte, Barranco de los Negros s/n. Sube a pie desde el Paseo de los Tristes (15 minutos) o en taxi desde el centro (6-8€).',
+      en: 'Museo Cuevas del Sacromonte, Barranco de los Negros s/n. Walk up from Paseo de los Tristes (15 minutes) or take a taxi from the center (€6–8).',
+    },
+    endingPoint: {
+      es: 'Peña La Platería, Albaicín. Desde aquí se puede volver al centro a pie en 15 minutos cuesta abajo o coger el bus C1 en la parada más cercana.',
+      en: 'Peña La Platería, Albaicín. From here you can walk back to the center downhill in 15 minutes or catch bus C1 at the nearest stop.',
+    },
+    howToGetThere: {
+      es: 'Al Museo Cuevas: taxi desde la Catedral (5-7 min) o caminando por Paseo de los Tristes. Entre el museo y La Canastera se camina por el Camino del Sacromonte. De Sacromonte al Albaicín: taxi o caminando 20 minutos.',
+      en: 'To Museo Cuevas: taxi from the Cathedral (5–7 min) or walking via Paseo de los Tristes. Between the museum and La Canastera walk along Camino del Sacromonte. From Sacromonte to Albaicín: taxi or 20-minute walk.',
+    },
+    estimatedBudget: {
+      es: '31€ por persona (Museo 5€ + Zambra 26€). Añade 10-15€ para cena y taxi. La Platería tiene entrada módica.',
+      en: '€31 per person (Museum €5 + Zambra €26). Add €10–15 for dinner and taxi. La Platería has a modest entry fee.',
+    },
+    whoIsItFor: {
+      es: 'Imprescindible para amantes del flamenco y la cultura gitana. También para viajeros que buscan experiencias auténticas fuera de los circuitos turísticos. No apta para quienes buscan espectáculos de flamenco para turistas con cena incluida.',
+      en: 'Essential for lovers of flamenco and Gitano culture. Also for travellers seeking authentic experiences outside tourist circuits. Not suitable for those seeking tourist-oriented flamenco shows with dinner included.',
+    },
+    accessibility: {
+      es: 'El Camino del Sacromonte tiene empedrado irregular y pendiente. Las cuevas no son accesibles para sillas de ruedas. La Platería tiene acceso complicado por el empedrado del Albaicín.',
+      en: 'Camino del Sacromonte has irregular cobblestones and slope. The caves are not wheelchair accessible. La Platería has complicated access due to Albaicín cobblestones.',
+    },
+    bestTimeToVisit: {
+      es: 'El museo abre por la mañana. La Canastera es a las 21:00. La Platería solo los jueves a las 21:30. La mejor combinación es museo por la tarde (17:00-18:00), cena en el Albaicín, y espectáculo después.',
+      en: 'The museum opens in the morning. La Canastera is at 21:00. La Platería is only on Thursdays at 21:30. The best combination is museum in the late afternoon (17:00–18:00), dinner in the Albaicín, and a show afterwards.',
+    },
   },
   {
     id: 'rte-008',
@@ -653,6 +849,43 @@ export const routes: Route[] = [
     tags: ['fotografía', 'sacromonte', 'cuevas', 'paisaje', 'texturas'],
     featured: false,
     image: '/images/routes/albaicin-panorama.jpg',
+    longDescription: {
+      es: 'El Sacromonte es uno de los barrios más fotogénicos de España, y también uno de los menos fotografiados con rigor. La mayoría de visitantes sube al Mirador de San Nicolás, hace la foto clásica de la Alhambra y se da por satisfecha. Esta ruta va más allá: explora el barrio de las cuevas desde dentro, buscando las texturas, las geometrías y las luces que hacen único este paisaje urbano. La tierra blanca del Sacromonte refleja la luz de forma particular, creando contraluces que parecen de otro planeta. Las cuevas, excavadas a mano en la ladera durante siglos, forman una arquitectura orgánica que no existe en ningún otro lugar de Europa. El Barranco de los Negros es la vena principal del barrio: un camino de tierra que serpentea entre cuevas, chimeneas y tendederos. El Museo Cuevas del Sacromonte ofrece no solo el contexto histórico sino también el mejor mirador fotográfico de la Alhambra desde el otro lado del Darro. Y La Cerra, el punto más alto, es el sitio donde los fotógrafos locales van a capturar la hora azul con la ciudad entera a sus pies. Es una ruta para hacer con calma, con el trípode preparado y los ojos abiertos.',
+      en: 'Sacromonte is one of the most photogenic neighborhoods in Spain, and also one of the least rigorously photographed. Most visitors climb to the Mirador de San Nicolás, take the classic Alhambra photo, and call it a day. This route goes further: it explores the cave neighborhood from within, seeking the textures, geometries, and lights that make this urban landscape unique. Sacromonte\'s white earth reflects light in a particular way, creating backlights that seem otherworldly. The caves, hand-dug into the hillside over centuries, form an organic architecture found nowhere else in Europe. The Barranco de los Negros is the neighborhood\'s main artery: a dirt path winding between caves, chimneys, and clotheslines. The Sacromonte Caves Museum offers not only historical context but also the best photographic viewpoint of the Alhambra from the other side of the Darro. And La Cerra, the highest point, is where local photographers go to capture blue hour with the entire city at their feet. It is a route to be done calmly, with tripod ready and eyes open.',
+    },
+    whatToBring: {
+      es: ['Cámara réflex o sin espejo con baterías de repuesto', 'Objetivo angular (16-35mm) y teleobjetivo (70-200mm)', 'Trípode ligero para la hora azul', 'Toallitas para limpiar objetivos (el polvo blanco es fino y abundante)', 'Calzado de senderismo — el camino es de tierra y piedra', 'Agua y algo de comer: no hay tiendas en el barranco'],
+      en: ['DSLR or mirrorless camera with spare batteries', 'Wide-angle (16–35mm) and telephoto (70–200mm) lenses', 'Lightweight tripod for blue hour', 'Lens wipes (the white dust is fine and abundant)', 'Hiking shoes — the path is dirt and stone', 'Water and snacks: no shops in the ravine'],
+    },
+    bestMonths: ['marzo', 'abril', 'mayo', 'septiembre', 'octubre', 'noviembre'],
+    startingPoint: {
+      es: 'Barranco de los Negros, a la altura del Paseo del Padre Manjón. Sube a pie desde el Paseo de los Tristes (15 minutos) o en taxi (6€ desde el centro).',
+      en: 'Barranco de los Negros, at the height of Paseo del Padre Manjón. Walk up from Paseo de los Tristes (15 minutes) or take a taxi (€6 from the centre).',
+    },
+    endingPoint: {
+      es: 'La Cerra, el punto más alto del Sacromonte. Desde aquí se baja por el mismo camino o se coge un taxi de vuelta al centro (7-8€).',
+      en: 'La Cerra, the highest point in Sacromonte. From here descend by the same path or take a taxi back to the center (€7–8).',
+    },
+    howToGetThere: {
+      es: 'No hay transporte público directo al Barranco de los Negros. La opción más práctica es taxi desde el centro (6€) o caminar desde el Paseo de los Tristes. No recomendable en coche: no hay aparcamiento.',
+      en: 'There is no direct public transport to Barranco de los Negros. The most practical option is taxi from the center (€6) or walking from Paseo de los Tristes. Not recommended by car: no parking.',
+    },
+    estimatedBudget: {
+      es: '5€ (entrada al Museo Cuevas). El resto es gratuito. Añade 15€ para taxi de ida y vuelta si no quieres caminar.',
+      en: '€5 (Museo Cuevas entry). The rest is free. Add €15 for round-trip taxi if you don\'t want to walk.',
+    },
+    whoIsItFor: {
+      es: 'Diseñada para fotógrafos aficionados y profesionales, Instagrammers que buscan algo diferente, y viajeros curiosos. No es una ruta turística convencional: requiere interés por la fotografía y disposición para caminar terreno irregular.',
+      en: 'Designed for amateur and professional photographers, Instagrammers looking for something different, and curious travellers. It is not a conventional tourist route: it requires an interest in photography and willingness to walk uneven terrain.',
+    },
+    accessibility: {
+      es: 'No apta para sillas de ruedas ni personas con movilidad reducida. El camino es de tierra, con piedras sueltas y pendiente. Los tramos finales a La Cerra son especialmente empinados.',
+      en: 'Not suitable for wheelchairs or people with reduced mobility. The path is dirt, with loose stones and slope. The final stretches to La Cerra are especially steep.',
+    },
+    bestTimeToVisit: {
+      es: 'La hora dorada (1 hora antes del atardecer) es ideal para el Barranco. La hora azul (20 min después del atardecer) es perfecta para La Cerra. El museo cierra a las 20:00 en verano y a las 18:00 en invierno.',
+      en: 'Golden hour (1 hour before sunset) is ideal for the Barranco. Blue hour (20 minutes after sunset) is perfect for La Cerra. The museum closes at 20:00 in summer and 18:00 in winter.',
+    },
   },
 
   // ——————————————————————————————————————————
@@ -722,6 +955,38 @@ export const routes: Route[] = [
       en: ['Hiking shoes', 'Plenty of water', 'Energy snacks', 'Sun protection', 'Optional trekking poles for the return'],
     },
     bestMonths: ['febrero', 'marzo', 'abril', 'mayo', 'octubre', 'noviembre'],
+    longDescription: {
+      es: 'El río Darro es la columna vertebral histórica de Granada. Durante siglos fue el eje comercial, defensivo y social de la ciudad. Hoy, el sendero que lo sigue desde el centro hasta los Cármenes de la Muralla es una de las rutas de naturaleza más desconocidas de la ciudad: ocho kilómetros que combinan el romanticismo del Paseo de los Tristes, la arqueología del Puente Espinosa y la literatura de la Fuente del Avellano, donde Federico García Lorca pasaba las tardes con sus amigos de la Generación del 27. La ruta tiene tramos de asfalto, sendas de tierra y escaleras de piedra. Es moderada porque en algunos puntos el desnivel es considerable y el terreno puede estar resbaladizo tras lluvia. Pero la recompensa es una perspectiva de Granada que pocos turistas llegan a ver: la ciudad desde el valle, con la Alhambra imponiéndose sobre la ladera y Sierra Nevada cerrando el horizonte. Es una ruta para hacer en silencio, con tiempo para sentarse junto al río y leer unos versos de Lorca.',
+      en: 'The Darro River is the historic backbone of Granada. For centuries it was the city\'s commercial, defensive, and social axis. Today, the trail that follows it from the centre to the Cármenes de la Muralla is one of the city\'s most unknown nature routes: eight kilometres combining the romance of the Paseo de los Tristes, the archaeology of the Espinosa Bridge, and the literature of the Avellano Fountain, where Federico García Lorca spent afternoons with his Generation of \'27 friends. The route has stretches of asphalt, dirt paths, and stone stairs. It is moderate because in some places the slope is considerable and the terrain can be slippery after rain. But the reward is a perspective of Granada that few tourists ever see: the city from the valley, with the Alhambra looming over the hillside and Sierra Nevada closing the horizon. It is a route to be done in silence, with time to sit by the river and read a few lines of Lorca.',
+    },
+    startingPoint: {
+      es: 'Paseo de los Tristes, junto al río Darro. A 10 minutos andando desde Plaza Nueva.',
+      en: 'Paseo de los Tristes, next to the Darro River. A 10-minute walk from Plaza Nueva.',
+    },
+    endingPoint: {
+      es: 'Cármenes de la Muralla, en el límite entre el Albaicín y la zona del Darro Alto. Desde aquí se puede volver en bus SN1 o caminar de regreso por el mismo sendero.',
+      en: 'Cármenes de la Muralla, on the border between the Albaicín and the upper Darro area. From here you can return by SN1 bus or walk back along the same trail.',
+    },
+    howToGetThere: {
+      es: 'El punto de inicio está en el centro, accesible a pie desde cualquier punto. Si vienes en coche, aparca en Plaza Nueva. No hay transporte público directo al final de la ruta: el regreso es a pie o en taxi desde el Albaicín.',
+      en: 'The starting point is in the center, accessible on foot from anywhere. If coming by car, park at Plaza Nueva. There is no direct public transport to the end of the route: return is on foot or by taxi from the Albaicín.',
+    },
+    estimatedBudget: {
+      es: 'Gratis. Solo necesitas agua y algo de comer. Si vuelves en taxi desde el final, añade 8-10€.',
+      en: 'Free. You only need water and snacks. If you take a taxi back from the end, add €8–10.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para senderistas urbanos, amantes de la literatura (es una ruta lorquiana) y quienes buscan naturaleza sin salir de la ciudad. No apta para niños pequeños ni personas con dificultades de movilidad por los tramos de escaleras y piedra suelta.',
+      en: 'Ideal for urban hikers, literature lovers (it is a Lorca-themed route), and those seeking nature without leaving the city. Not suitable for small children or people with mobility difficulties due to stair sections and loose stones.',
+    },
+    accessibility: {
+      es: 'No accesible para sillas de ruedas. Hay tramos con escaleras de piedra, sendas estrechas y pendiente. Los primeros 2 km (Paseo de los Tristes) son planos y accesibles.',
+      en: 'Not wheelchair accessible. There are sections with stone stairs, narrow paths, and slope. The first 2 km (Paseo de los Tristes) are flat and accessible.',
+    },
+    bestTimeToVisit: {
+      es: 'Primavera (marzo-mayo) es la mejor época: el Darro lleva caudal, el bosque está verde y la temperatura es ideal. Otoño también es bueno. Evita julio y agosto por el calor.',
+      en: 'Spring (March–May) is the best time: the Darro has water flow, the forest is green, and the temperature is ideal. Autumn is also good. Avoid July and August because of the heat.',
+    },
   },
   {
     id: 'rte-010',
@@ -787,6 +1052,38 @@ export const routes: Route[] = [
       en: ['Sports or light hiking shoes', 'Water', 'Camera', 'Binoculars for birdwatching'],
     },
     bestMonths: ['febrero', 'marzo', 'abril', 'mayo', 'octubre', 'noviembre', 'diciembre'],
+    longDescription: {
+      es: 'A los pies de la Alhambra existe un bosque que la mayoría de visitantes ignora por completo. Es el bosque que rodea la colina del monumento, una franja verde de olmos, encinas y chopos que fue plantada en el siglo XIX para estabilizar el terreno y que hoy es un santuario para pájaros cantores, zorros y quienes buscan silencio a pocos minutos del centro. Esta ruta circular sigue el trazado de la Acequia Real, el canal de agua nazarí de siete kilómetros que traía agua desde el Darro hasta los palacios de la Alhambra. El agua ya no corre, pero la acequia sigue ahí, oculta entre la maleza, y en algunos tramos todavía se pueden ver los muros de piedra que la contenían. La ruta es fácil, casi llana, y no requiere entrada a la Alhambra. Es ideal para una mañana temprana, cuando el bosque está vacío y la luz se filtra entre las copas de los árboles. En primavera, el canto de los ruiseñores es ensordecedor. En otoño, el olor de la tierra mojada y las hojas caídas crea una atmósfera casi mística. Es una ruta para quienes creen que ya lo han visto todo en Granada y descubren que no es así.',
+      en: 'At the foot of the Alhambra lies a forest that most visitors completely ignore. It is the woodland surrounding the monument\'s hill, a green strip of elms, holm oaks, and poplars planted in the 19th century to stabilize the terrain and today a sanctuary for songbirds, foxes, and those seeking silence minutes from the center. This circular route follows the trace of the Acequia Real, the seven-kilometre Nasrid water channel that brought water from the Darro to the Alhambra palaces. The water no longer flows, but the channel is still there, hidden in the undergrowth, and in some stretches you can still see the stone walls that contained it. The route is easy, almost flat, and does not require an Alhambra ticket. It is ideal for an early morning, when the forest is empty and light filters through the tree canopy. In spring, the nightingales\' song is deafening. In autumn, the smell of damp earth and fallen leaves creates an almost mystical atmosphere. It is a route for those who think they have seen everything in Granada and discover they have not.',
+    },
+    startingPoint: {
+      es: 'Entrada al Bosque de la Alhambra, junto a la Puerta de los Granados (cuesta de Gomérez). A 15 minutos andando desde Plaza Nueva.',
+      en: 'Entrance to the Alhambra Forest, next to Puerta de los Granados (Cuesta de Gomérez). A 15-minute walk from Plaza Nueva.',
+    },
+    endingPoint: {
+      es: 'Mismo punto de inicio (ruta circular). También puedes salir por la Puerta de la Justicia y bajar al Albaicín.',
+      en: 'Same starting point (circular route). You can also exit through Puerta de la Justicia and descend to the Albaicín.',
+    },
+    howToGetThere: {
+      es: 'A pie desde Plaza Nueva subiendo por la Cuesta de Gomérez. También en bus C30 hasta la parada "Alhambra - Generalife". No necesitas entrada a la Alhambra para hacer esta ruta.',
+      en: 'On foot from Plaza Nueva up Cuesta de Gomérez. Also by bus C30 to the "Alhambra - Generalife" stop. You do not need an Alhambra ticket for this route.',
+    },
+    estimatedBudget: {
+      es: 'Totalmente gratuita. Lleva agua y algo de comer porque no hay servicios en el recorrido.',
+      en: 'Completely free. Bring water and snacks because there are no services along the way.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para familias con niños, corredores de trail, birdwatchers y quienes buscan una alternativa verde a la visita turística. Perfecta para una mañana de domingo. No es una ruta de monumentos: es de naturaleza y silencio.',
+      en: 'Ideal for families with children, trail runners, birdwatchers, and those seeking a green alternative to the tourist visit. Perfect for a Sunday morning. It is not a monument route: it is one of nature and silence.',
+    },
+    accessibility: {
+      es: 'El sendero principal es ancho y casi llano, apto para carritos de bebé con ruedas grandes. Algunos desvíos hacia las torres defensivas tienen escaleras y no son accesibles.',
+      en: 'The main path is wide and almost flat, suitable for strollers with large wheels. Some detours to the defensive towers have stairs and are not accessible.',
+    },
+    bestTimeToVisit: {
+      es: 'Antes de las 9:00 para tener el bosque para ti solo. Primavera (pájaros cantores) y otoño (colores) son las mejores épocas. En verano, el bosque da sombra y refresca.',
+      en: 'Before 9 AM to have the forest to yourself. Spring (songbirds) and autumn (colours) are the best seasons. In summer the forest provides shade and coolness.',
+    },
   },
 
   // ——————————————————————————————————————————
@@ -860,6 +1157,34 @@ export const routes: Route[] = [
       en: ['Cash for workshop purchases', 'Cloth bag for your purchases', 'Camera (ask permission before photographing artisans)'],
     },
     bestMonths: ['enero', 'febrero', 'marzo', 'abril', 'octubre', 'noviembre', 'diciembre'],
+    startingPoint: {
+      es: 'Alcaicería, junto a la Catedral. Acceso a pie desde cualquier punto del centro.',
+      en: 'Alcaicería, next to the Cathedral. Access on foot from any point in the center.',
+    },
+    endingPoint: {
+      es: 'Taller de Taracea González, en las inmediaciones de la Alcaicería. Desde aquí se vuelve a Gran Vía en 3 minutos.',
+      en: 'González Marquetry Workshop, in the vicinity of the Alcaicería. From here it is a 3-minute walk back to Gran Vía.',
+    },
+    howToGetThere: {
+      es: 'El triángulo artesanal está en el centro histórico, entre la Catedral y Plaza Nueva. Accesible a pie desde cualquier lugar. En coche, aparca en Plaza Nueva o Gran Vía.',
+      en: 'The artisan triangle is in the historic center, between the Cathedral and Plaza Nueva. Accessible on foot from anywhere. By car, park at Plaza Nueva or Gran Vía.',
+    },
+    estimatedBudget: {
+      es: 'Gratis si solo miras. Si compras, los precios varían: una cerámica pequeña desde 15€, un joyero de taracea desde 80€. Lleva efectivo: muchos talleres no aceptan tarjeta.',
+      en: 'Free if you just look. If you buy, prices vary: a small ceramic from €15, a marquetry jewelry box from €80. Bring cash: many workshops do not take cards.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para compradores de souvenirs de calidad, amantes de la artesanía y quienes quieren llevarse algo único de Granada. También para fotógrafos de documentalismo. No es una ruta para quienes buscan souvenirs baratos de importación.',
+      en: 'Ideal for quality souvenir buyers, craft lovers, and those who want to take something unique from Granada. Also for documentary photographers. Not a route for those seeking cheap imported souvenirs.',
+    },
+    accessibility: {
+      es: 'La Alcaicería tiene calles estrechas pero planas. Calderería Nueva es peatonal. Los talleres suelen tener escalones de entrada.',
+      en: 'The Alcaicería has narrow but flat streets. Calderería Nueva is pedestrian. Workshops often have steps at the entrance.',
+    },
+    bestTimeToVisit: {
+      es: 'De 10:00 a 14:00, cuando los artesanos están trabajando y puedes ver el proceso en directo. Evita los domingos: la mayoría de talleres cierran.',
+      en: 'From 10:00 to 14:00, when the artisans are working and you can see the process live. Avoid Sundays: most workshops are closed.',
+    },
   },
   {
     id: 'rte-012',
@@ -920,6 +1245,43 @@ export const routes: Route[] = [
     tags: ['artesanía', 'esparto', 'seda', 'realejo', 'tradición', 'talleres'],
     featured: false,
     image: '/images/routes/alcaiceria.jpg',
+    longDescription: {
+      es: 'El Realejo fue durante siglos el barrio de los artesanos de Granada. Cuando los nazaríes gobernaban la ciudad, aquí vivían los tejedores de seda, los herreros, los curtidores y los artesanos del esparto. Tras la Reconquista, muchos de estos oficios sobrevivieron, aunque transformados, y hoy todavía es posible encontrar talleres donde el esparto se trenza a mano como se hacía en el siglo XII. Esta ruta explora ese legado: empieza en uno de los últimos talleres de esparto de Granada, donde Don José sigue haciendo cestas y esteras con las mismas técnicas que aprendió de su padre; pasa por la Casa de los Tiros, un palacio renacentista que alberga el mejor museo de artesanía popular de la ciudad; y termina en el Callejón del Gallo, una callejuela escondida donde dos artesanos — un herrero y un curtidor — mantienen vivos oficios que de otro modo habrían desaparecido. Es una ruta de mañana, porque los talleres cierran a mediodía, y requiere paciencia: aquí no hay prisa, ni turistas, ni carteles explicativos. Solo artesanos trabajando y dispuestos a contarte su oficio si les preguntas con respeto.',
+      en: 'The Realejo was for centuries the neighborhood of Granada\'s artisans. When the Nasrids ruled the city, silk weavers, blacksmiths, tanners, and esparto craftsmen lived here. After the Reconquest, many of these trades survived, albeit transformed, and today it is still possible to find workshops where esparto is hand-braided as it was in the 12th century. This route explores that legacy: it starts at one of Granada\'s last esparto workshops, where Don José continues to make baskets and mats with the same techniques he learned from his father; passes through the Casa de los Tiros, a Renaissance palace housing the city\'s best museum of popular crafts; and ends at Callejón del Gallo, a hidden alley where two artisans — a blacksmith and a leatherworker — keep alive trades that would otherwise have disappeared. It is a morning route, because the workshops close at midday, and requires patience: there is no rush, no tourists, no explanatory signs. Just artisans working and willing to tell you about their craft if you ask respectfully.',
+    },
+    whatToBring: {
+      es: ['Efectivo para compras en talleres (muchos no aceptan tarjeta)', 'Calzado cómodo para el empedrado del Realejo', 'Cámara (pedir permiso antes de fotografiar)', 'Bolsa de tela para tus compras'],
+      en: ['Cash for workshop purchases (many don\'t take cards)', 'Comfortable shoes for the Realejo\'s cobblestones', 'Camera (ask permission before photographing)', 'Cloth bag for your purchases'],
+    },
+    bestMonths: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'octubre', 'noviembre', 'diciembre'],
+    startingPoint: {
+      es: 'Taller de Esparto El Realejo, en la zona baja del barrio. Llega en bus C2 o a pie desde la Catedral (10 minutos).',
+      en: 'El Realejo Esparto Workshop, in the lower part of the neighborhood. Arrive by bus C2 or on foot from the Cathedral (10 minutes).',
+    },
+    endingPoint: {
+      es: 'Callejón del Gallo. Desde aquí se coge el C2 de vuelta al centro o se camina hasta Gran Vía en 12 minutos.',
+      en: 'Callejón del Gallo. From here take the C2 back to the center or walk to Gran Vía in 12 minutes.',
+    },
+    howToGetThere: {
+      es: 'El Realejo está a 10 minutos del centro. Bus C2 circula por el barrio. En coche, aparca en el parking de San Agustín.',
+      en: 'The Realejo is 10 minutes from the center. Bus C2 runs through the neighborhood. By car, park at the San Agustín car park.',
+    },
+    estimatedBudget: {
+      es: 'Gratis si solo visitas y miras. Las compras en talleres varían: una cesta de esparto desde 20€, una pieza de herrería artística desde 50€. La Casa de los Tiros es gratis para ciudadanos de la UE.',
+      en: 'Free if you just visit and look. Workshop purchases vary: an esparto basket from €20, an artistic iron piece from €50. Casa de los Tiros is free for EU citizens.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para amantes de la artesanía, compradores conscientes y viajeros que buscen experiencias auténticas. También para fotógrafos de retratos. No es una ruta para quienes buscan souvenirs rápidos.',
+      en: 'Ideal for craft lovers, conscious buyers, and travellers seeking authentic experiences. Also for portrait photographers. Not a route for those seeking quick souvenirs.',
+    },
+    accessibility: {
+      es: 'El empedrado del Realejo es irregular. Los talleres tienen escalones de entrada. La Casa de los Tiros tiene ascensor y acceso accesible.',
+      en: 'The Realejo\'s cobblestones are irregular. Workshops have steps at the entrance. Casa de los Tiros has a lift and accessible access.',
+    },
+    bestTimeToVisit: {
+      es: 'De 10:00 a 13:00, cuando los artesanos están trabajando. Los martes y jueves algunos talleres hacen demostraciones. Evita los domingos: casi todo cierra.',
+      en: 'From 10:00 to 13:00, when the artisans are working. On Tuesdays and Thursdays some workshops hold demonstrations. Avoid Sundays: almost everything is closed.',
+    },
   },
 
   // ——————————————————————————————————————————
@@ -1021,6 +1383,34 @@ export const routes: Route[] = [
     tags: ['flamenco', 'sacromonte', 'cuevas', 'atardecer', 'cultura gitana', 'nocturna'],
     featured: true,
     image: '/images/routes/sacromonte-darro.jpg',
+    startingPoint: {
+      es: 'Museo del Sacromonte, Barranco de los Negros 9. Sube desde el Paseo de los Tristes (15 minutos) o en taxi (6€ desde el centro).',
+      en: 'Sacromonte Museum, Barranco de los Negros 9. Walk up from Paseo de los Tristes (15 minutes) or take a taxi (€6 from the center).',
+    },
+    endingPoint: {
+      es: 'Paseo del Darro / Plaza Nueva. Desde la cueva del espectáculo se puede bajar a pie (20 minutos) o pedir taxi (7-8€).',
+      en: 'Paseo del Darro / Plaza Nueva. From the show cave you can walk down (20 minutes) or call a taxi (€7–8).',
+    },
+    howToGetThere: {
+      es: 'Al museo: taxi desde el centro (5-7 min) o caminando. Entre el museo y el mirador se camina por el Camino del Sacromonte. Desde el mirador a la cueva del espectáculo: taxi o caminando 15 minutos.',
+      en: 'To the museum: taxi from the center (5–7 min) or walking. Between the museum and the viewpoint walk along Camino del Sacromonte. From the viewpoint to the show cave: taxi or 15-minute walk.',
+    },
+    estimatedBudget: {
+      es: 'Museo 5€ + espectáculo 25-30€ + cena 15€ + taxi 7€ = aproximadamente 55€ por persona.',
+      en: 'Museum €5 + show €25–30 + dinner €15 + taxi €7 = approximately €55 per person.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para quienes quieren entender el flamenco desde sus raíces, no como espectáculo turístico. Perfecta para parejas y grupos de amigos con interés cultural. No apta para niños pequeños: los espectáculos en cueva son para adultos y el ambiente es íntimo.',
+      en: 'Ideal for those who want to understand flamenco from its roots, not as a tourist show. Perfect for couples and groups of friends with cultural interest. Not suitable for small children: cave shows are for adults and the atmosphere is intimate.',
+    },
+    accessibility: {
+      es: 'El Camino del Sacromonte tiene empedrado irregular y pendiente. Las cuevas del museo y del espectáculo no son accesibles para sillas de ruedas. El mirador está a pie de camino.',
+      en: 'Camino del Sacromonte has irregular cobblestones and slope. The museum and show caves are not wheelchair accessible. The viewpoint is right on the path.',
+    },
+    bestTimeToVisit: {
+      es: 'Empieza el museo a las 17:30 para llegar al mirador antes del atardecer (20:30-21:00 en verano, 18:00-19:00 en invierno). El espectáculo suele ser a las 21:30-22:00.',
+      en: 'Start the museum at 17:30 to reach the viewpoint before sunset (20:30–21:00 in summer, 18:00–19:00 in winter). The show is usually at 21:30–22:00.',
+    },
   },
 
   // ——————————————————————————————————————————
@@ -1134,6 +1524,34 @@ export const routes: Route[] = [
     tags: ['historia', 'árabe', 'nazarí', 'bañuelo', 'madraza', 'patrimonio', 'mañana'],
     featured: false,
     image: '/images/routes/alcaiceria.jpg',
+    startingPoint: {
+      es: 'El Bañuelo, Carrera del Darro 31. A 5 minutos andando desde Plaza Nueva.',
+      en: 'El Bañuelo, Carrera del Darro 31. A 5-minute walk from Plaza Nueva.',
+    },
+    endingPoint: {
+      es: 'Puerta de Elvira, en el límite norte del Albaicín. Desde aquí puedes continuar al Albaicín o volver al centro en 10 minutos.',
+      en: 'Puerta de Elvira, at the northern edge of the Albaicín. From here you can continue into the Albaicín or return to the center in 10 minutes.',
+    },
+    howToGetThere: {
+      es: 'El punto de inicio está en la Carrera del Darro, accesible a pie desde el centro. En bus, líneas C1, C2, 4 y 9 dejan cerca. No hay aparcamiento en la Carrera del Darro: usa el parking de Plaza Nueva.',
+      en: 'The starting point is on Carrera del Darro, accessible on foot from the center. By bus, lines C1, C2, 4, and 9 stop nearby. There is no parking on Carrera del Darro: use the Plaza Nueva car park.',
+    },
+    estimatedBudget: {
+      es: 'Totalmente gratuita. Ninguno de los monumentos tiene entrada de pago. Añade 5€ si desayunas en una tetería antes de empezar.',
+      en: 'Completely free. None of the monuments charge admission. Add €5 if you have breakfast in a teahouse before starting.',
+    },
+    whoIsItFor: {
+      es: 'Perfecta para viajeros con interés histórico, estudiantes de arte e historia, y quienes quieren entender la Granada anterior a 1492. También para fotógrafos de arquitectura. Es una ruta tranquila, sin masificación turística.',
+      en: 'Perfect for travellers with historical interest, art and history students, and those who want to understand Granada before 1492. Also for architecture photographers. It is a quiet route, without tourist crowds.',
+    },
+    accessibility: {
+      es: 'El Bañuelo tiene escalones de entrada. El Corral del Carbón es accesible. La Madraza tiene acceso por la librería. La Alcaicería tiene calles planas. La Puerta de Elvira está en una acera junto a una calle con tráfico.',
+      en: 'El Bañuelo has entrance steps. Corral del Carbón is accessible. The Madraza has access through the bookshop. The Alcaicería has flat streets. Puerta de Elvira is on a pavement next to a busy road.',
+    },
+    bestTimeToVisit: {
+      es: 'Empieza a las 9:45 para ser el primero en el Bañuelo (abre a las 10:00). La luz de la mañana es ideal para fotografiar la cúpula de la Madraza. Evita domingos y festivos: la Madraza cierra.',
+      en: 'Start at 09:45 to be first at El Bañuelo (opens at 10:00). Morning light is ideal for photographing the Madraza dome. Avoid Sundays and public holidays: the Madraza is closed.',
+    },
   },
 ];
 

@@ -3,7 +3,7 @@ import type { BlogPost, BlogCategory, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
-import { getRoute } from '@utils/routes';
+import { getRoute, getBlogDetailUrl } from '@utils/routes';
 
 interface Props {
   posts: BlogPost[];
@@ -86,7 +86,7 @@ function formatDate(dateStr: string): string {
               class="bento-item item-feature" 
               style={`--accent: ${catData?.color ?? '#e8622a'}; --accent-rgb: ${catData?.accentRgb ?? '232, 98, 42'}`}
             >
-              <a href={`/blog/${post.slug}/`} class="feature-link">
+              <a href={getBlogDetailUrl(post.slug, locale)} class="feature-link">
                 {/* Image Background */}
                 <div class="feature-visual">
                   <OptimizedImage
@@ -154,7 +154,7 @@ function formatDate(dateStr: string): string {
             data-index={idx}
             style={`--card-index: ${idx}; --accent: ${catData?.color ?? '#e8622a'}; --accent-rgb: ${catData?.accentRgb ?? '232, 98, 42'}`}
           >
-            <a href={`/blog/${post.slug}/`} class="expedition-link">
+            <a href={getBlogDetailUrl(post.slug, locale)} class="expedition-link">
               {/* Expedition Number Stamp */}
               <div class="expedition-stamp">
                 <span class="stamp-prefix">ART.</span>

@@ -1,0 +1,49 @@
+---
+import OptimizedImage from './OptimizedImage.astro';
+
+export interface CrossLink {
+  url: string;
+  title: string;
+  meta: string;
+  image?: string | null;
+}
+
+interface Props {
+  title: string;
+  links: CrossLink[];
+  showArrow?: boolean;
+}
+
+const { title, links, showArrow = true } = Astro.props;
+---
+
+{links.length > 0 && (
+  <div class="upg-related-bento" data-reveal>
+    <div class="upg-rb-header">
+      <span class="upg-rb-title">[ {title} ]</span>
+    </div>
+
+    <div class="upg-rb-list">
+      {links.map((link, index) => (
+        <a href={link.url} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
+          <div class="uri-thumb">
+            {link.image ? (
+              <OptimizedImage src={link.image} alt={link.title} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
+            ) : (
+              <div class="uri-thumb-fallback" />
+            )}
+          </div>
+          <div class="uri-content">
+            <span class="uri-title">{link.title}</span>
+            <span class="uri-meta">{link.meta}</span>
+          </div>
+          {showArrow && (
+            <div class="uri-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+)}

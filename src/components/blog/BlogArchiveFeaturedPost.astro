@@ -2,6 +2,7 @@
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
+import { getBlogDetailUrl } from '@utils/routes';
 
 interface Props {
   locale: Locale;
@@ -24,7 +25,7 @@ const cat = categoryData[post.category];
 ---
 
 <article class="featured-post" data-category={post.category}>
-  <a href={`/blog/${post.slug}/`} class="featured-link">
+  <a href={getBlogDetailUrl(post.slug, locale)} class="featured-link">
     <div class="featured-visual">
       <OptimizedImage
         src={image}

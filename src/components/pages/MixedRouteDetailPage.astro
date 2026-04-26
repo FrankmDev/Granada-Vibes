@@ -1,0 +1,322 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PlanHero from '@components/shared/PlanHero.astro';
+import { getAllMixedRoutes } from '@data';
+import { useTranslations } from '@i18n/utils';
+import { getRoute, getPlanDetailUrl } from '@utils/routes';
+import type { MixedRoute, MixedRouteStop, Locale } from '@types';
+import ShareButton from '@components/ui/ShareButton.astro';
+import ReadingProgress from '@components/ui/ReadingProgress.astro';
+import '@styles/pages/mixed-route-detail.css';
+
+interface Props {
+  locale: Locale;
+  plan: MixedRoute;
+}
+
+const { locale, plan } = Astro.props;
+const t = useTranslations(locale);
+const isEnglish = locale === 'en';
+
+const allPlans = getAllMixedRoutes();
+const planIndex = allPlans.findIndex((p) => p.id === plan.id);
+const prevPlan = planIndex > 0 ? allPlans[planIndex - 1] : null;
+const nextPlan = planIndex < allPlans.length - 1 ? allPlans[planIndex + 1] : null;
+
+const ogImage = plan.image || 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
+
+const breadcrumb = [
+  { name: isEnglish ? 'Home' : 'Inicio', url: getRoute('home', locale) },
+  { name: t('nav.routes'), url: getRoute('routes', locale) },
+  { name: plan.title[locale], url: getPlanDetailUrl(plan.slug, locale) },
+];
+
+const totalStops = plan.days.reduce(
+  (acc, day) => acc + day.blocks.reduce((bAcc, block) => bAcc + block.stops.length, 0),
+  0
+);
+
+const stopCategoryConfig: Record<string, { color: string; bg: string; border: string; icon: string; label: string }> = {
+  mirador: { color: '#d4873a', bg: 'rgba(212, 135, 58, 0.12)', border: 'rgba(212, 135, 58, 0.3)', icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z', label: t('mixedRoutes.stopCategories.mirador') },
+  tapas: { color: '#c94a4a', bg: 'rgba(201, 74, 74, 0.12)', border: 'rgba(201, 74, 74, 0.3)', icon: 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z', label: t('mixedRoutes.stopCategories.tapas') },
+  monumento: { color: '#4a9e6b', bg: 'rgba(74, 158, 107, 0.12)', border: 'rgba(74, 158, 107, 0.3)', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', label: t('mixedRoutes.stopCategories.monumento') },
+  cultura: { color: '#d4873a', bg: 'rgba(212, 135, 58, 0.12)', border: 'rgba(212, 135, 58, 0.3)', icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z', label: t('mixedRoutes.stopCategories.cultura') },
+  paseo: { color: '#4a9e6b', bg: 'rgba(74, 158, 107, 0.12)', border: 'rgba(74, 158, 107, 0.3)', icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6', label: t('mixedRoutes.stopCategories.paseo') },
+  compras: { color: '#d4873a', bg: 'rgba(212, 135, 58, 0.12)', border: 'rgba(212, 135, 58, 0.3)', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z', label: t('mixedRoutes.stopCategories.compras') },
+  naturaleza: { color: '#4a9e6b', bg: 'rgba(74, 158, 107, 0.12)', border: 'rgba(74, 158, 107, 0.3)', icon: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z', label: t('mixedRoutes.stopCategories.naturaleza') },
+  flamenco: { color: '#c94a4a', bg: 'rgba(201, 74, 74, 0.12)', border: 'rgba(201, 74, 74, 0.3)', icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3', label: t('mixedRoutes.stopCategories.flamenco') },
+};
+
+const slugDurationLabels: Record<string, string> = {
+  '30min': t('mixedRoutes.slugDurationLabels.30min'),
+  '1h': t('mixedRoutes.slugDurationLabels.1h'),
+  '2h': t('mixedRoutes.slugDurationLabels.2h'),
+  '6h': t('mixedRoutes.slugDurationLabels.6h'),
+  '12h': t('mixedRoutes.slugDurationLabels.12h'),
+  'half-day': t('mixedRoutes.slugDurationLabels.half-day'),
+  'full-day': t('mixedRoutes.slugDurationLabels.full-day'),
+  '1day': t('mixedRoutes.slugDurationLabels.1day'),
+  '2days': t('mixedRoutes.slugDurationLabels.2days'),
+  '3days': t('mixedRoutes.slugDurationLabels.3days'),
+};
+const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
+
+const refNum = plan.id.replace(/^mr-/, '').padStart(3, '0');
+const refCode = `PLN / ${refNum} · ${new Date().getFullYear()}`;
+const backHref = getRoute('byTime', locale);
+const backLabel = t('mixedRoutes.title');
+const eyebrowText = getDurationLabel(plan.duration).toUpperCase();
+
+const copy = isEnglish
+  ? {
+      nav: {
+        prev: 'Previous plan',
+        next: 'Next plan',
+      },
+      toc: 'On this page',
+    }
+  : {
+      nav: {
+        prev: 'Plan anterior',
+        next: 'Plan siguiente',
+      },
+      toc: 'En esta página',
+    };
+---
+
+<BaseLayout
+  locale={locale}
+  title={plan.title[locale]}
+  description={plan.description[locale]}
+  ogImage={ogImage}
+  ogImageAlt={plan.title[locale]}
+  schemaType="timePlan"
+  schemaData={plan}
+  breadcrumb={breadcrumb}
+>
+  <PlanHero
+    locale={locale}
+    backHref={backHref}
+    backLabel={backLabel}
+    refCode={refCode}
+    title={plan.title[locale]}
+    eyebrowText={eyebrowText}
+    description={plan.description[locale]}
+    duration={plan.duration}
+    totalStops={totalStops}
+    neighborhoods={plan.neighborhoods}
+    bestFor={plan.bestFor ? plan.bestFor[locale] : undefined}
+  />
+
+  <div class="det-page mx-page-override">
+    <div class="det-content-wrap mt-pull">
+      <div class="upgraded-layout">
+
+        <main id="main-content" class="upgraded-main">
+            {plan.days.map((day, dayIndex) => (
+              <article class="upg-block mx-day-section" id={`day-${dayIndex + 1}`} data-reveal style={`--day-delay: ${dayIndex * 0.15}s`}>
+                <div class="upg-block-bg"></div>
+                
+                {day.label && (
+                  <header class="upg-header">
+                    <span class="upg-num">{(dayIndex + 1).toString().padStart(2, '0')}</span>
+                    <div class="upg-line"></div>
+                    <span class="upg-eyebrow">[ {day.label[locale]} ]</span>
+                  </header>
+                )}
+
+                {day.blocks.map((block, blockIndex) => (
+                  <div class="mx-block" data-reveal-inner style={`--block-delay: ${(blockIndex + 1) * 0.1}s; margin-top:2rem;`}>
+                    <div class="mx-block-header">
+                      <div class="mx-block-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <h3 class="mx-block-title" style="font-family:var(--font-display);font-size:1.1rem;color:var(--s-ink);">{block.label[locale]}</h3>
+                      <div class="mx-block-divider"></div>
+                    </div>
+
+                    <div class="mx-stops-list">
+                      {block.stops.map((stop: MixedRouteStop, stopIndex: number) => {
+                        const catConfig = stopCategoryConfig[stop.category] || stopCategoryConfig.paseo;
+                        return (
+                          <div class="mx-stop" data-reveal-inner style={`--stop-delay: ${stopIndex * 0.08}s`}>
+                            <div class="mx-stop-marker">
+                              <div class="mx-stop-dot" style={`--dot-color: ${catConfig.color}`}></div>
+                              <div class="mx-stop-line"></div>
+                            </div>
+                            <div class="mx-stop-card" style={`--card-accent: ${catConfig.color}`}>
+                              <div class="mx-stop-header">
+                                <span class="mx-stop-category" style={`color: ${catConfig.color}; background: ${catConfig.bg}; border-color: ${catConfig.border};`}>
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d={catConfig.icon} stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                  {catConfig.label}
+                                </span>
+                                {stop.neighborhood && (
+                                  <span class="mx-stop-zone">{t(`neighborhoods.${stop.neighborhood}`)}</span>
+                                )}
+                                <span class="mx-stop-duration">~{stop.duration} min</span>
+                              </div>
+                              <h4 class="mx-stop-name">{stop.name[locale]}</h4>
+                              <p class="mx-stop-desc">{stop.description[locale]}</p>
+                              {stop.tip && (
+                                <div class="mx-stop-tip" style={`--tip-color: ${catConfig.color}`}>
+                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                  <span>{stop.tip[locale]}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </article>
+            ))}
+
+            {plan.essentialTips && plan.essentialTips.length > 0 && (
+              <article class="upg-block block-tips" id="essential-tips" data-reveal>
+                <div class="upg-block-bg"></div>
+                <header class="upg-header">
+                  <span class="upg-num">X</span>
+                  <div class="upg-line"></div>
+                  <span class="upg-eyebrow">[ EXPERIENCIA ]</span>
+                </header>
+                <h2 class="upg-title">{t('mixedRoutes.essentialTips')}</h2>
+                
+                <div class="upg-tips-grid" style="display:grid; grid-template-columns: repeat(2,1fr); gap:1.5rem; margin-top:2rem;">
+                  {plan.essentialTips.map((tip, i) => (
+                    <div style="background:#fff; padding:2rem; border-radius:16px; border:1px solid var(--s-border);">
+                      <span style="font-family:var(--font-body); font-size:2.5rem; font-weight:300; color:rgba(201,168,76,0.3); display:block; margin-bottom:1rem; line-height:1;">{(i + 1).toString().padStart(2, '0')}</span>
+                      <p style="font-family:var(--font-display); font-size:0.95rem; line-height:1.6; color:var(--s-ink-2);">{tip[locale]}</p>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            )}
+
+            {(prevPlan || nextPlan) && (
+              <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Plan navigation' : 'Navegación de planes'} style="padding: 2rem 3rem;">
+                <div class="upg-block-bg"></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                  {prevPlan ? (
+                    <a href={getPlanDetailUrl(prevPlan.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
+                      <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
+                      <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{prevPlan.title[locale]}</span>
+                      <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{getDurationLabel(prevPlan.duration)}</span>
+                    </a>
+                  ) : <span />}
+                  {nextPlan ? (
+                    <a href={getPlanDetailUrl(nextPlan.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
+                      <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
+                      <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{nextPlan.title[locale]}</span>
+                      <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{getDurationLabel(nextPlan.duration)}</span>
+                    </a>
+                  ) : <span />}
+                </div>
+              </nav>
+            )}
+          </main>
+
+          <aside class="upg-sidebar" aria-label={isEnglish ? 'Plan details sidebar' : 'Barra lateral de detalles del plan'}>
+            <div class="upg-sidebar-sticky">
+
+              {(plan.days.length > 1 || plan.essentialTips) && (
+                <nav class="upg-toc" data-reveal aria-label={copy.toc} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
+                  <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{copy.toc}</span>
+                  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+                    {plan.days.map((day, i) => (
+                      <li><a href={`#day-${i + 1}`} style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">{(i + 1).toString().padStart(2, '0')}</span> {day.label ? day.label[locale] : `${t('mixedRoutes.day')} ${i + 1}`}</a></li>
+                    ))}
+                    {plan.essentialTips && plan.essentialTips.length > 0 && (
+                      <li><a href="#essential-tips" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">X</span> {t('mixedRoutes.essentialTips')}</a></li>
+                    )}
+                  </ul>
+                </nav>
+              )}
+
+              <div class="upg-ticket-card" data-reveal>
+                <div class="upg-ticket-glass"></div>
+                
+                <div class="upg-tc-header">
+                  <div class="upg-tc-date-box" style="background: rgba(232, 98, 42, 0.1); border-color: rgba(232, 98, 42, 0.3); color: var(--s-orange);">
+                    <span class="tc-day" style="font-size: 1.4rem;">{plan.neighborhoods.length}</span>
+                    <span class="tc-month" style="opacity:0.8;">{t('detail.zones')}</span>
+                  </div>
+                  <div class="upg-tc-info">
+                    <span class="tc-time" style="color:var(--s-ink);">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      {getDurationLabel(plan.duration)}
+                    </span>
+                    <span class="tc-category">{t('nav.byTime')}</span>
+                  </div>
+                </div>
+
+                <div class="upg-tc-price-wrap">
+                  <span class="tc-price-label">{t('detail.pointsOfInterest')}</span>
+                  <span class="tc-price-val">
+                    {totalStops}<span style="font-size:1.5rem; margin-left:8px; opacity:0.8;">{t('mixedRoutes.stops')}</span>
+                  </span>
+                </div>
+
+                {plan.bestFor && (
+                  <div style="padding: 0 2.5rem 1.5rem; display: flex; flex-direction:column; gap:0.5rem;">
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
+                       <span style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--s-orange);">{t('mixedRoutes.bestFor')}</span>
+                       <div style="flex:1; height: 1px; background: var(--s-border);"></div>
+                    </div>
+                    <p style="font-family:var(--font-display); font-size:0.9rem; line-height:1.5; color:var(--s-ink-2);">{plan.bestFor[locale]}</p>
+                  </div>
+                )}
+
+                <div class="upg-tc-divider">
+                  <span class="tcd-hole left"></span>
+                  <div class="tcd-dashed"></div>
+                  <span class="tcd-hole right"></span>
+                </div>
+
+                <div class="upg-tc-actions">
+                  <ShareButton
+                    title={plan.title[locale]}
+                    url={Astro.url.href}
+                    label={t('detail.shareRoute')}
+                    copiedLabel={t('detail.copied')}
+                    class="upg-btn-primary"
+                  />
+
+                  <a href={getRoute('byTime', locale)} class="upg-btn-secondary" style="margin-top:0.5rem; text-decoration:none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span class="upg-share-label">{t('detail.backToTimeRoutes')}</span>
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+          </aside>
+
+        </div>
+      </div>
+
+      <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
+        <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+        <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
+        <span style="color: var(--s-gold); margin: 0 0.5rem;"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+        <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
+        <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+      </div>
+
+    </div>
+
+</BaseLayout>
+
+<script>
+  import '@/scripts/pages/timeRouteDetail.ts';
+</script>
+
+<ReadingProgress />

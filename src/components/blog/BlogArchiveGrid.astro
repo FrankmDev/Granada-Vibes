@@ -2,6 +2,7 @@
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
+import { getBlogDetailUrl } from '@utils/routes';
 
 interface Props {
   locale: Locale;
@@ -27,7 +28,7 @@ function formatDate(dateStr: string): string {
       data-category={post.category}
       style={`--card-index: ${idx}; --cat-color: ${categoryData[post.category].color}`}
     >
-      <a href={`/blog/${post.slug}/`} class="post-link">
+      <a href={getBlogDetailUrl(post.slug, locale)} class="post-link">
         <div class="card-visual">
           <OptimizedImage
             src={post.image || blogImages[post.id] || blogImages.default}

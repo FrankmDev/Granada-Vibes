@@ -249,10 +249,10 @@ const plannerCopy = {
                   <span class="opt-check-ring"></span>
                   <span class="opt-check-icon" set:html={iconSvg.check} />
                 </span>
-                <span class="opt-corner tl" aria-hidden="true"></span>
-                <span class="opt-corner tr" aria-hidden="true"></span>
-                <span class="opt-corner bl" aria-hidden="true"></span>
-                <span class="opt-corner br" aria-hidden="true"></span>
+                <span class="opt-corner tl" data-corner-index="0" aria-hidden="true"></span>
+                <span class="opt-corner tr" data-corner-index="1" aria-hidden="true"></span>
+                <span class="opt-corner bl" data-corner-index="2" aria-hidden="true"></span>
+                <span class="opt-corner br" data-corner-index="3" aria-hidden="true"></span>
                 <span class="opt-inner">
                   <span class="opt-icon-wrap">
                     <span class="opt-icon" set:html={iconSvg[option.icon] ?? iconSvg['sparkle']} />
@@ -316,7 +316,12 @@ const plannerCopy = {
     <div class="loading-visual" aria-hidden="true">
       <div class="load-ring load-ring-1"></div>
       <div class="load-ring load-ring-2"></div>
+      <div class="load-ring load-ring-3"></div>
       <div class="load-core"></div>
+      <div class="load-orbiter orbiter-1"></div>
+      <div class="load-orbiter orbiter-2"></div>
+      <div class="load-orbiter orbiter-3"></div>
+      <div class="load-scanline" aria-hidden="true"></div>
     </div>
     <div class="loading-text-block">
       <p id="loading-text" class="load-text">{t('planner.loading.step1')}</p>
@@ -382,26 +387,12 @@ const plannerCopy = {
 
 <script>
   import '@/scripts/pages/planner.ts';
-
-  // Mouse-tracking glow for option cards
-  document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll<HTMLElement>('.option-card');
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
-      });
-    });
-  });
 </script>
 
 <style is:global>
   /* ================================================================
-     PLANNER — CREAM EDITORIAL THEME
-     Light, warm, editorial. Cards with soft shadows and warm accents.
+     PLANNER — DYNAMIC DARK THEME
+     Highly animated, robust hover/active/selected states.
      ================================================================ */
 
   .planner-app {
@@ -584,7 +575,7 @@ const plannerCopy = {
     .option-grid { gap: 1.25rem; }
   }
 
-  /* ── Option Card ── */
+  /* ── Option Card — Anti-vanish architecture ── */
   .option-card {
     position: relative;
     display: flex;
@@ -598,78 +589,116 @@ const plannerCopy = {
     border: 1.5px solid var(--border);
     border-radius: 22px;
     cursor: pointer;
-    transition: all 0.5s var(--ease-out-expo);
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(16px) scale(0.97);
-    animation: cardPop 0.6s var(--ease-out-expo) forwards;
-    animation-delay: calc(0.25s + var(--section-index) * 0.06s + var(--card-index) * 0.04s);
+    /* CRITICAL: base state is always visible. Animation only runs on mount. */
+    opacity: 1;
+    transform: translateY(0) scale(1);
     box-shadow: var(--shadow-sm);
+    animation: cardIntro 0.65s var(--ease-out-expo) both;
+    animation-delay: calc(0.2s + var(--section-index) * 0.07s + var(--card-index) * 0.05s);
+    /* Safe transitions — never animate opacity or box-shadow directly on the element */
+    transition: transform 0.5s var(--ease-out-expo), border-color 0.5s var(--ease-out-expo), background 0.4s ease;
+    will-change: transform;
   }
 
-  @keyframes cardPop {
+  @keyframes cardIntro {
+    from { opacity: 0; transform: translateY(20px) scale(0.96); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* === HOVER: cinematic floating glow === */
-  .option-card:hover {
-    border-color: rgba(201, 168, 76, 0.4);
-    background: linear-gradient(135deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-    transform: translateY(-10px) scale(1.03);
-    box-shadow:
-      0 40px 100px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(201,168,76,0.15),
-      0 0 60px rgba(201,168,76,0.1),
-      inset 0 1px 0 rgba(255,255,255,0.08);
-    animation: hoverPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes hoverPulse {
-    0%, 100% {
-      border-color: rgba(201, 168, 76, 0.25);
-      box-shadow:
-        0 40px 100px rgba(0,0,0,0.5),
-        0 0 0 1px rgba(201,168,76,0.08),
-        0 0 40px rgba(201,168,76,0.06),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-    }
-    50% {
-      border-color: rgba(201, 168, 76, 0.6);
-      box-shadow:
-        0 40px 100px rgba(0,0,0,0.5),
-        0 0 0 2px rgba(201,168,76,0.3),
-        0 0 90px rgba(201,168,76,0.15),
-        inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-  }
-
-  /* Inner aurora glow on hover */
-  .option-card::after {
+  /* Glow layer — pseudo-element so it never fights with transforms */
+  .option-card::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 22px;
-    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201,168,76,0.1), transparent 40%);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.45s ease;
     pointer-events: none;
     z-index: 0;
   }
 
-  .option-card:hover::after {
-    opacity: 1;
+  /* === HOVER === */
+  .option-card:hover {
+    border-color: rgba(201, 168, 76, 0.5);
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    transform: translateY(-10px) scale(1.03);
   }
 
-  /* === ACTIVE: pressed feedback === */
+  .option-card:hover::before {
+    opacity: 1;
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.45),
+      0 0 0 1.5px rgba(201,168,76,0.25),
+      0 0 50px rgba(201,168,76,0.1),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  /* === ACTIVE === */
   .option-card:active {
     transform: translateY(-2px) scale(0.98);
     transition-duration: 0.1s;
-    animation: none;
-    border-color: rgba(201, 168, 76, 0.6);
+    border-color: rgba(201, 168, 76, 0.7);
+  }
+
+  .option-card:active::before {
+    opacity: 1;
+    box-shadow: inset 0 0 30px rgba(201,168,76,0.12);
+    transition-duration: 0.1s;
+  }
+
+  /* === SELECTED === */
+  .option-card.is-selected {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(232,98,42,0.08), rgba(232,98,42,0.02));
+    transform: translateY(-8px) scale(1.03);
+  }
+
+  .option-card.is-selected::before {
+    opacity: 1;
+    animation: selectedGlowPulse 2.5s ease-in-out infinite;
     box-shadow:
-      0 20px 50px rgba(0,0,0,0.4),
-      0 0 0 2px rgba(201,168,76,0.25),
-      0 0 40px rgba(201,168,76,0.1);
+      0 0 0 1px var(--accent-dim),
+      0 0 30px rgba(232,98,42,0.12),
+      0 16px 50px rgba(0,0,0,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .option-card.is-selected:hover {
+    border-color: var(--accent);
+  }
+
+  .option-card.is-selected:hover::before {
+    animation: selectedGlowPulse 2.5s ease-in-out infinite;
+  }
+
+  .option-card.is-selected:active {
+    transform: translateY(-4px) scale(0.985);
+  }
+
+  @keyframes selectedGlowPulse {
+    0%, 100% {
+      box-shadow:
+        0 0 0 1px var(--accent-dim),
+        0 0 30px rgba(232,98,42,0.12),
+        0 16px 50px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    50% {
+      box-shadow:
+        0 0 0 2px rgba(232,98,42,0.2),
+        0 0 50px rgba(232,98,42,0.22),
+        0 16px 50px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+  }
+
+  /* Non-selected dim — smooth return guaranteed because base opacity is 1 */
+  .option-grid.has-selection[data-multi="false"] .option-card:not(.is-selected) {
+    opacity: 0.3;
+    filter: grayscale(0.9) brightness(0.6);
+    transform: scale(0.95);
+    transition: transform 0.55s var(--ease-out-expo), opacity 0.55s ease, filter 0.55s ease, border-color 0.5s ease;
   }
 
   .option-card:hover .opt-icon-wrap {
@@ -691,24 +720,6 @@ const plannerCopy = {
   @keyframes shimmerMove {
     from { transform: translateX(-100%); }
     to   { transform: translateX(100%); }
-  }
-
-  /* === SELECTED: neon ember pulse === */
-  .option-card.is-selected {
-    border-color: var(--accent);
-    background: linear-gradient(135deg, rgba(232,98,42,0.08), rgba(232,98,42,0.02));
-    box-shadow:
-      0 0 0 1px var(--accent-dim),
-      0 0 40px rgba(232,98,42,0.15),
-      0 20px 60px rgba(0,0,0,0.4),
-      inset 0 1px 0 rgba(255,255,255,0.06);
-    transform: translateY(-8px) scale(1.03);
-    animation: selectedPulse 3s ease-in-out infinite;
-  }
-
-  @keyframes selectedPulse {
-    0%, 100% { box-shadow: 0 0 0 1px var(--accent-dim), 0 0 40px rgba(232,98,42,0.15), 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06); }
-    50% { box-shadow: 0 0 0 2px rgba(232,98,42,0.25), 0 0 60px rgba(232,98,42,0.25), 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08); }
   }
 
   .option-card.is-selected .opt-title {
@@ -733,14 +744,7 @@ const plannerCopy = {
 
   .option-card.is-selected .opt-check {
     opacity: 1;
-    transform: scale(1);
-  }
-
-  /* Dim non-selected when single-choice has selection */
-  .option-grid.has-selection[data-multi="false"] .option-card:not(.is-selected) {
-    opacity: 0.2;
-    filter: grayscale(0.95);
-    transform: scale(0.93);
+    transform: scale(1) rotate(0deg);
   }
 
   /* Shimmer sweep */
@@ -750,9 +754,10 @@ const plannerCopy = {
     background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
     transform: translateX(-100%);
     pointer-events: none;
+    z-index: 1;
   }
 
-  /* Corner markers - minimal dot instead of bracket */
+  /* Corner markers — animated stagger */
   .opt-corner {
     position: absolute;
     width: 4px;
@@ -761,16 +766,25 @@ const plannerCopy = {
     background: var(--gold);
     pointer-events: none;
     opacity: 0;
-    transition: all 0.4s ease;
+    transform: scale(0.5);
+    transition: opacity 0.35s ease, transform 0.35s ease, background 0.35s ease;
     box-shadow: 0 0 8px rgba(201,168,76,0.4);
+    z-index: 2;
   }
 
   .option-card:hover .opt-corner {
-    opacity: 0.6;
+    opacity: 0.7;
+    transform: scale(1);
   }
+
+  .option-card:hover .opt-corner.tl { transition-delay: 0s; }
+  .option-card:hover .opt-corner.tr { transition-delay: 0.07s; }
+  .option-card:hover .opt-corner.br { transition-delay: 0.14s; }
+  .option-card:hover .opt-corner.bl { transition-delay: 0.21s; }
 
   .option-card.is-selected .opt-corner {
     opacity: 1;
+    transform: scale(1);
     background: var(--accent);
     box-shadow: 0 0 12px rgba(232,98,42,0.5);
   }
@@ -780,7 +794,7 @@ const plannerCopy = {
   .opt-corner.bl { bottom: 14px; left: 14px; }
   .opt-corner.br { bottom: 14px; right: 14px; }
 
-  /* Checkmark */
+  /* Checkmark — dramatic entrance */
   .opt-check {
     position: absolute;
     top: 14px;
@@ -793,8 +807,8 @@ const plannerCopy = {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transform: scale(0.3);
-    transition: all 0.45s var(--ease-spring);
+    transform: scale(0) rotate(-120deg);
+    transition: all 0.5s var(--ease-spring);
     color: #fff;
     box-shadow: 0 4px 16px rgba(232,98,42,0.35);
     z-index: 3;
@@ -859,7 +873,7 @@ const plannerCopy = {
     max-width: 180px;
   }
 
-  /* ── Notes ── */
+  /* ── Notes — animated gradient border on focus ── */
   .notes-area { position: relative; }
 
   .notes-frame {
@@ -867,17 +881,44 @@ const plannerCopy = {
     background: var(--card-bg);
     border: 1.5px solid var(--border);
     border-radius: 22px;
-    transition: all 0.35s ease;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
     overflow: hidden;
     box-shadow: var(--shadow-sm);
   }
 
+  .notes-frame::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 24px;
+    padding: 2px;
+    background: linear-gradient(135deg, var(--accent), var(--gold), var(--accent));
+    background-size: 200% 200%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: borderRotate 3s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .notes-frame:focus-within::before {
+    opacity: 1;
+  }
+
   .notes-frame:focus-within {
-    border-color: var(--accent-dim);
-    box-shadow:
-      0 0 0 3px rgba(232,98,42,0.06),
-      var(--shadow-md);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(232,98,42,0.06), var(--shadow-md);
     background: linear-gradient(135deg, rgba(232,98,42,0.02), var(--card-bg));
+  }
+
+  @keyframes borderRotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   .notes-frame textarea {
@@ -983,6 +1024,11 @@ const plannerCopy = {
       0 0 0 2px rgba(232,98,42,0.10);
   }
 
+  .submit-btn:not(:disabled):active {
+    transform: translateY(-2px) scale(0.97);
+    transition-duration: 0.1s;
+  }
+
   .submit-gleam {
     position: absolute;
     inset: 0;
@@ -1023,7 +1069,7 @@ const plannerCopy = {
     transform: translateY(0);
   }
 
-  /* ── Loading ── */
+  /* ── Loading — cinematic orbital system ── */
   .loading-stage {
     position: relative;
     min-height: 70vh;
@@ -1037,8 +1083,8 @@ const plannerCopy = {
 
   .loading-visual {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: 240px;
+    height: 240px;
   }
 
   .load-ring {
@@ -1050,16 +1096,23 @@ const plannerCopy = {
   }
 
   .load-ring-1 {
-    width: 180px; height: 180px;
-    border-color: rgba(201,168,76,0.20);
-    animation: spinCW 9s linear infinite;
+    width: 240px; height: 240px;
+    border-color: rgba(201,168,76,0.18);
+    animation: spinCW 14s linear infinite;
   }
 
   .load-ring-2 {
-    width: 130px; height: 130px;
-    border-color: rgba(232,98,42,0.15);
+    width: 180px; height: 180px;
+    border-color: rgba(232,98,42,0.12);
     border-style: dashed;
-    animation: spinCCW 13s linear infinite;
+    animation: spinCCW 10s linear infinite;
+  }
+
+  .load-ring-3 {
+    width: 120px; height: 120px;
+    border-color: rgba(201,168,76,0.08);
+    border-style: dotted;
+    animation: spinCW 6s linear infinite;
   }
 
   @keyframes spinCW {
@@ -1076,17 +1129,63 @@ const plannerCopy = {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 24px rgba(232,98,42,0.35), 0 0 48px rgba(232,98,42,0.12);
-    animation: corePulse 2s ease-in-out infinite;
+    background: radial-gradient(circle, var(--accent), #ff8c5a);
+    box-shadow: 0 0 30px rgba(232,98,42,0.4), 0 0 60px rgba(232,98,42,0.15), inset 0 0 8px rgba(255,255,255,0.3);
+    animation: corePulse 1.6s ease-in-out infinite;
   }
 
   @keyframes corePulse {
     0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-    50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.6; }
+  }
+
+  /* Orbiting particles */
+  .load-orbiter {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px rgba(201,168,76,0.5);
+    will-change: transform;
+  }
+
+  .orbiter-1 { animation: orbit1 4s linear infinite; }
+  .orbiter-2 { animation: orbit2 5.5s linear infinite; background: var(--accent); box-shadow: 0 0 10px rgba(232,98,42,0.5); }
+  .orbiter-3 { animation: orbit3 7s linear infinite; width: 4px; height: 4px; }
+
+  @keyframes orbit1 {
+    from { transform: translate(-50%, -50%) rotate(0deg) translateX(115px) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg) translateX(115px) rotate(-360deg); }
+  }
+  @keyframes orbit2 {
+    from { transform: translate(-50%, -50%) rotate(120deg) translateX(88px) rotate(-120deg); }
+    to   { transform: translate(-50%, -50%) rotate(480deg) translateX(88px) rotate(-480deg); }
+  }
+  @keyframes orbit3 {
+    from { transform: translate(-50%, -50%) rotate(240deg) translateX(62px) rotate(-240deg); }
+    to   { transform: translate(-50%, -50%) rotate(600deg) translateX(62px) rotate(-600deg); }
+  }
+
+  /* Scanline overlay */
+  .load-scanline {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(232,98,42,0.04) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    opacity: 0.5;
+    animation: scanlineMove 6s linear infinite;
+  }
+
+  @keyframes scanlineMove {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100%); }
   }
 
   .loading-text-block {
@@ -1105,6 +1204,7 @@ const plannerCopy = {
     margin: 0;
     transition: opacity 0.3s ease;
     letter-spacing: -0.01em;
+    min-height: 1.6em;
   }
 
   .load-dots {
@@ -1138,11 +1238,19 @@ const plannerCopy = {
     display: flex;
     flex-direction: column;
     gap: 3.5rem;
-    animation: fadeIn 0.6s ease forwards;
   }
 
   @media (min-width: 768px) {
     .results-stage { padding: 4rem 2.5rem 6rem; }
+  }
+
+  .results-stage.is-entering {
+    animation: stageEnter 0.7s var(--ease-out-expo) forwards;
+  }
+
+  @keyframes stageEnter {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .result-hero {
@@ -1153,6 +1261,8 @@ const plannerCopy = {
     padding: 2.5rem;
     overflow: hidden;
     box-shadow: var(--shadow-md);
+    opacity: 0;
+    animation: fadeInUp 0.8s var(--ease-out-expo) 0.1s forwards;
   }
 
   @media (min-width: 768px) {
@@ -1191,6 +1301,8 @@ const plannerCopy = {
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--gold);
+    opacity: 0;
+    animation: fadeInUp 0.6s var(--ease-out-expo) 0.2s forwards;
   }
 
   .result-hero-title {
@@ -1201,6 +1313,8 @@ const plannerCopy = {
     letter-spacing: -0.02em;
     color: var(--ink);
     margin: 0;
+    opacity: 0;
+    animation: fadeInUp 0.7s var(--ease-out-expo) 0.3s forwards;
   }
 
   .result-hero-subtitle {
@@ -1209,12 +1323,16 @@ const plannerCopy = {
     color: var(--ink-3);
     line-height: 1.6;
     margin: 0;
+    opacity: 0;
+    animation: fadeInUp 0.7s var(--ease-out-expo) 0.4s forwards;
   }
 
   .result-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s var(--ease-out-expo) 0.5s forwards;
   }
 
   .result-pill {
@@ -1238,6 +1356,8 @@ const plannerCopy = {
     margin: 0;
     padding-top: 0.75rem;
     border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeInUp 0.7s var(--ease-out-expo) 0.6s forwards;
   }
 
   /* ── Days Timeline ── */
@@ -1249,8 +1369,13 @@ const plannerCopy = {
 
   .day-section {
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.6s var(--ease-out-expo) forwards;
+    animation: dayReveal 0.7s var(--ease-out-expo) forwards;
+    animation-delay: var(--day-delay, 0s);
+  }
+
+  @keyframes dayReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .day-header {
@@ -1301,6 +1426,14 @@ const plannerCopy = {
     width: 2px;
     background: linear-gradient(to bottom, var(--gold-dim), rgba(232,98,42,0.20), transparent);
     border-radius: 1px;
+    transform-origin: top;
+    animation: trackGrow 1.2s var(--ease-out-expo) forwards;
+    animation-delay: var(--track-delay, 0s);
+  }
+
+  @keyframes trackGrow {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
   }
 
   .stop-card {
@@ -1312,16 +1445,16 @@ const plannerCopy = {
     margin-bottom: 1.25rem;
     opacity: 0;
     transform: translateX(-14px);
-    animation: slideIn 0.5s var(--ease-out-expo) forwards;
-    transition: all 0.4s var(--ease-out-expo);
+    animation: slideIn 0.55s var(--ease-out-expo) forwards;
+    transition: transform 0.4s var(--ease-out-expo), border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     box-shadow: var(--shadow-sm);
   }
 
   .stop-card:hover {
     border-color: rgba(201,168,76,0.25);
     background: var(--card-bg-hover);
-    transform: translateX(0);
-    box-shadow: var(--shadow-md);
+    transform: translateX(6px) translateY(-2px);
+    box-shadow: -4px 8px 24px rgba(0,0,0,0.25), 0 0 0 1px rgba(201,168,76,0.08);
   }
 
   @keyframes slideIn {
@@ -1340,6 +1473,22 @@ const plannerCopy = {
     border: 2px solid var(--bg);
     box-shadow: 0 0 14px rgba(201,168,76,0.25);
     transform: translateX(-5px);
+  }
+
+  .stop-dot::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0;
+    animation: dotPing 2.5s ease-out infinite;
+    animation-delay: var(--dot-delay, 0s);
+  }
+
+  @keyframes dotPing {
+    0% { transform: scale(0.6); opacity: 0.5; }
+    100% { transform: scale(2.2); opacity: 0; }
   }
 
   @media (min-width: 768px) {
@@ -1512,6 +1661,8 @@ const plannerCopy = {
     flex-direction: column;
     gap: 2rem;
     padding-top: 1rem;
+    opacity: 0;
+    animation: fadeInUp 0.7s var(--ease-out-expo) 0.7s forwards;
   }
 
   .result-stats {
@@ -1636,6 +1787,11 @@ const plannerCopy = {
     box-shadow: 0 12px 32px rgba(232,98,42,0.20);
   }
 
+  .result-action-btn:active {
+    transform: translateY(0) scale(0.97);
+    transition-duration: 0.1s;
+  }
+
   .result-action-btn.secondary {
     background: transparent;
     border-color: var(--border);
@@ -1658,6 +1814,26 @@ const plannerCopy = {
     transform: translateY(-1px);
   }
 
+  /* ── Stage transition animations ── */
+  .form-stage.is-leaving {
+    animation: stageExit 0.4s var(--ease-out-expo) forwards;
+    pointer-events: none;
+  }
+
+  .loading-stage.is-entering {
+    animation: stageEnter 0.5s var(--ease-out-expo) forwards;
+  }
+
+  .loading-stage.is-leaving {
+    animation: stageExit 0.35s var(--ease-out-expo) forwards;
+    pointer-events: none;
+  }
+
+  @keyframes stageExit {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-20px); }
+  }
+
   /* ── Utilities ── */
   .hidden { display: none !important; }
 
@@ -1675,17 +1851,32 @@ const plannerCopy = {
   @media (prefers-reduced-motion: reduce) {
     .form-section,
     .option-card,
+    .option-card::before,
     .load-ring,
     .load-core,
+    .load-orbiter,
+    .load-scanline,
     .load-dots span,
     .opt-check-ring,
     .day-section,
     .stop-card,
+    .stop-dot::after,
+    .timeline-track,
+    .result-hero,
+    .result-ref-badge,
+    .result-hero-title,
+    .result-hero-subtitle,
+    .result-pills,
+    .result-hero-summary,
+    .result-footer,
     .ambient-blob {
       animation: none !important;
       opacity: 1;
       transform: none;
     }
     .ambient-blob { opacity: 0.3; }
+    .option-card { animation: none; opacity: 1; transform: none; }
+    .stop-card { animation: none; opacity: 1; transform: none; }
+    .timeline-track { transform: none; }
   }
 </style>

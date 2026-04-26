@@ -22,13 +22,20 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   ogType?: 'website' | 'article';
   canonical?: string;
   noindex?: boolean;
-  schemaType?: 'website' | 'event' | 'route' | 'organization' | 'article';
+  schemaType?: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article';
   schemaData?: Record<string, unknown>;
   breadcrumb?: BreadcrumbItem[];
   faq?: FaqItem[];
+  googleSiteVerification?: string;
+  articlePublishedTime?: string;
+  articleModifiedTime?: string;
+  articleAuthor?: string;
+  articleSection?: string;
+  articleTags?: string[];
 }
 
 const {
@@ -36,6 +43,7 @@ const {
   title,
   description,
   ogImage,
+  ogImageAlt,
   ogType,
   canonical,
   noindex,
@@ -43,6 +51,12 @@ const {
   schemaData,
   breadcrumb,
   faq,
+  googleSiteVerification,
+  articlePublishedTime,
+  articleModifiedTime,
+  articleAuthor,
+  articleSection,
+  articleTags,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -62,9 +76,16 @@ const currentPath = Astro.url.pathname;
       title={title ?? SITE_CONFIG.name}
       description={description}
       ogImage={ogImage}
+      ogImageAlt={ogImageAlt}
       ogType={ogType}
       canonical={canonical}
       noindex={noindex}
+      googleSiteVerification={googleSiteVerification}
+      articlePublishedTime={articlePublishedTime}
+      articleModifiedTime={articleModifiedTime}
+      articleAuthor={articleAuthor}
+      articleSection={articleSection}
+      articleTags={articleTags}
     />
 
     <!-- Schema Markup -->
@@ -83,6 +104,8 @@ const currentPath = Astro.url.pathname;
   </head>
 
   <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Header: override via <Fragment slot="header"> -->
     <slot name="header">
       <NavBar locale={locale} currentPath={currentPath} />

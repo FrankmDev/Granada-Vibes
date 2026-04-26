@@ -1,5 +1,15 @@
 ---
-import MixedRoutesArchivePage from '@components/pages/MixedRoutesArchivePage.astro';
+const redirectUrl = '/en/routes/';
 ---
-
-<MixedRoutesArchivePage locale="en" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content={`0; url=${redirectUrl}`}>
+  <link rel="canonical" href={redirectUrl}>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to <a href={redirectUrl}>{redirectUrl}</a>...</p>
+</body>
+</html>

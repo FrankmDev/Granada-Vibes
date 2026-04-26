@@ -6,9 +6,12 @@ import BlogDetailHero from '@components/blog/BlogDetailHero.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import ReadingProgress from '@components/ui/ReadingProgress.astro';
-import { getRelatedPosts } from '@data/index.js';
+import { getRelatedPosts, getAllPosts } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
-import { getBlogDetailUrl, getRoute } from '@utils/routes';
+import { getBlogDetailUrl, getRoute, getRouteDetailUrl, getEventDetailUrl } from '@utils/routes';
+import { getRelatedRoutesForBlogPost, getRelatedEventsForBlogPost } from '@utils/cross-links';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+import { formatDuration, formatFullDate } from '@utils/dates';
 import type { BlogPost, Locale } from '@types';
 import '@styles/pages/blog-detail.css';
 
@@ -20,7 +23,28 @@ interface Props {
 const { locale, post } = Astro.props as Props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
+const allPosts = getAllPosts();
+const postIndex = allPosts.findIndex((p) => p.id === post.id);
+const prevPost = postIndex > 0 ? allPosts[postIndex - 1] : null;
+const nextPost = postIndex < allPosts.length - 1 ? allPosts[postIndex + 1] : null;
 const relatedPosts = getRelatedPosts(post, 3);
+const relatedRoutes = getRelatedRoutesForBlogPost(post, 2);
+const relatedEvents = getRelatedEventsForBlogPost(post, 2);
+
+const crossLinks = [
+  ...relatedRoutes.map((r) => ({
+    url: getRouteDetailUrl(r.slug, locale),
+    title: r.title[locale],
+    meta: `${formatDuration(r.duration, locale)} · ${t(`categories.${r.category}`)}`,
+    image: r.image,
+  })),
+  ...relatedEvents.map((e) => ({
+    url: getEventDetailUrl(e.slug, locale),
+    title: e.title[locale],
+    meta: `${formatFullDate(e.date, locale)} · ${t(`categories.${e.category}`)}`,
+    image: e.imageUrl || e.image,
+  })),
+].slice(0, 4);
 
 const publishedDate = new Date(post.publishDate);
 const dateLocale = isEnglish ? 'en-GB' : 'es-ES';
@@ -32,13 +56,14 @@ const formattedDate = publishedDate.toLocaleDateString(dateLocale, {
 const dayNum = publishedDate.getDate().toString().padStart(2, '0');
 const monthShort = publishedDate.toLocaleDateString(dateLocale, { month: 'short' }).toUpperCase();
 const categoryLabel = t(`blog.categories.${post.category}`);
+const categoryUrl = `${getRoute('blog', locale)}?category=${post.category}`;
 const ogImage = post.image ?? 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=630&fit=crop&q=80';
 
 const copy = isEnglish
   ? {
       breadcrumb: {
         home: 'Home',
-        listing: 'Blog',
+        listing: t('blog.title'),
       },
       section: {
         article: '[ Article ]',
@@ -50,11 +75,15 @@ const copy = isEnglish
         tags: '[ Tags ]',
       },
       seoDescription: `${post.description[locale]} — ${categoryLabel}. By ${post.author}. ${t('blog.readingTime', { minutes: post.readingTime })}.`,
+      nav: {
+        prev: 'Previous article',
+        next: 'Next article',
+      },
     }
   : {
       breadcrumb: {
         home: 'Inicio',
-        listing: 'Blog',
+        listing: t('blog.title'),
       },
       section: {
         article: '[ Artículo ]',
@@ -66,6 +95,10 @@ const copy = isEnglish
         tags: '[ Etiquetas ]',
       },
       seoDescription: `${post.description[locale]} — ${categoryLabel}. Por ${post.author}. ${t('blog.readingTime', { minutes: post.readingTime })}.`,
+      nav: {
+        prev: 'Artículo anterior',
+        next: 'Artículo siguiente',
+      },
     };
 
 const breadcrumb = [
@@ -80,10 +113,16 @@ const breadcrumb = [
   title={post.title[locale]}
   description={copy.seoDescription}
   ogImage={ogImage}
+  ogImageAlt={post.title[locale]}
   ogType="article"
   schemaType="article"
   schemaData={post}
   breadcrumb={breadcrumb}
+  articlePublishedTime={post.publishDate}
+  articleModifiedTime={post.publishDate}
+  articleAuthor={post.author}
+  articleSection={categoryLabel}
+  articleTags={post.tags}
 >
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
@@ -93,7 +132,7 @@ const breadcrumb = [
     <div class="det-content-wrap">
       <div class="upgraded-layout">
         <main id="main-content" class="upgraded-main">
-          <article class="upg-block" data-reveal aria-label={post.title[locale]}>
+          <article class="upg-block" id="article-content" data-reveal aria-label={post.title[locale]}>
             <div class="upg-block-bg"></div>
             <header class="upg-header">
               <span class="upg-num">01</span>
@@ -102,9 +141,16 @@ const breadcrumb = [
             </header>
 
             <div class="blg-prose content-rich" set:html={post.content[locale]} />
+
+            <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
+              <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                {categoryLabel}
+              </a>
+            </div>
           </article>
 
-          <article class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+          <article class="upg-block" id="author" data-reveal style="padding: 2.5rem 3rem;">
             <div class="upg-block-bg"></div>
             <div style="display:flex; gap: 1.5rem; align-items: center;">
               <div class="upg-author-avatar">
@@ -119,7 +165,7 @@ const breadcrumb = [
           </article>
 
           {post.tags.length > 0 && (
-            <div class="upg-tags" data-reveal>
+            <div class="upg-tags" id="tags" data-reveal>
               <span class="upg-tags-title">{copy.section.tags}</span>
               <div class="upg-tags-list">
                 {post.tags.map((tag: string) => (
@@ -128,16 +174,61 @@ const breadcrumb = [
               </div>
             </div>
           )}
+
+          {(prevPost || nextPost) && (
+            <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Article navigation' : 'Navegación de artículos'} style="padding: 2rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+                {prevPost ? (
+                  <a href={getBlogDetailUrl(prevPost.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
+                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{prevPost.title[locale]}</span>
+                    <time datetime={prevPost.publishDate} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{prevPost.publishDate}</time>
+                  </a>
+                ) : <span />}
+                {nextPost ? (
+                  <a href={getBlogDetailUrl(nextPost.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
+                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{nextPost.title[locale]}</span>
+                    <time datetime={nextPost.publishDate} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{nextPost.publishDate}</time>
+                  </a>
+                ) : <span />}
+              </div>
+            </nav>
+          )}
+
+          {crossLinks.length > 0 && (
+            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">02</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
+              </header>
+              <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
+            </div>
+          )}
         </main>
 
-        <aside class="upg-sidebar">
+        <aside class="upg-sidebar" aria-label={isEnglish ? 'Article sidebar' : 'Barra lateral del artículo'}>
           <div class="upg-sidebar-sticky">
+            <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
+              <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{isEnglish ? 'On this page' : 'En esta página'}</span>
+              <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+                <li><a href="#article-content" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">01</span> {isEnglish ? 'Article' : 'Artículo'}</a></li>
+                <li><a href="#author" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">02</span> {isEnglish ? 'Author' : 'Autor'}</a></li>
+                {post.tags.length > 0 && (
+                  <li><a href="#tags" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">03</span> {isEnglish ? 'Tags' : 'Etiquetas'}</a></li>
+                )}
+              </ul>
+            </nav>
+
             <div class="upg-ticket-card" data-reveal>
               <div class="upg-ticket-glass"></div>
 
               <div class="upg-tc-header">
                 <div class="upg-tc-date-box">
-                  <span class="tc-day" style="font-size: 1.4rem;">{dayNum}</span>
+                  <time datetime={post.publishDate} class="tc-day" style="font-size: 1.4rem;">{dayNum}</time>
                   <span class="tc-month">{monthShort}</span>
                 </div>
                 <div class="upg-tc-info">
@@ -158,7 +249,7 @@ const breadcrumb = [
                   </div>
                   <div style="display:flex; align-items:center; gap:0.6rem;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;color:var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    <span style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2);">{formattedDate}</span>
+                    <time datetime={post.publishDate} style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2);">{formattedDate}</time>
                   </div>
                 </div>
               </div>

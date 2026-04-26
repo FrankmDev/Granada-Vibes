@@ -237,11 +237,44 @@ function renderResults(itinerary: Itinerario, params: PlanParams): void {
   });
 }
 
+function switchStage(
+  fromEl: HTMLElement | null,
+  toEl: HTMLElement | null,
+  leavingClass = 'is-leaving',
+  enteringClass = 'is-entering',
+  leaveDuration = 400,
+): void {
+  if (fromEl) {
+    fromEl.classList.add(leavingClass);
+    window.setTimeout(() => {
+      fromEl.classList.add('hidden');
+      fromEl.classList.remove(leavingClass);
+    }, leaveDuration);
+  }
+
+  if (toEl) {
+    window.setTimeout(() => {
+      toEl.classList.remove('hidden');
+      toEl.classList.add(enteringClass);
+      // Clean up entering class after animation completes
+      window.setTimeout(() => {
+        toEl.classList.remove(enteringClass);
+      }, 800);
+    }, fromEl ? leaveDuration : 0);
+  }
+}
+
 function startGeneration(params: PlanParams): void {
-  formEl.classList.add('hidden');
-  progressEl.classList.add('hidden');
-  loadingEl.classList.remove('hidden');
+  switchStage(formEl, loadingEl, 'is-leaving', 'is-entering', 400);
+  if (progressEl) {
+    progressEl.classList.add('is-leaving');
+    window.setTimeout(() => {
+      progressEl.classList.add('hidden');
+      progressEl.classList.remove('is-leaving');
+    }, 400);
+  }
   resultsEl.classList.add('hidden');
+  resultsEl.classList.remove('is-entering');
 
   // Scroll to the planner section top immediately so the loading/results
   // appear in view and we don't jump to the bottom when tall content unfolds.
@@ -265,8 +298,7 @@ function startGeneration(params: PlanParams): void {
     const itinerary = generarItinerario(params, { locale });
     renderResults(itinerary, params);
     updateUrl(params);
-    loadingEl.classList.add('hidden');
-    resultsEl.classList.remove('hidden');
+    switchStage(loadingEl, resultsEl, 'is-leaving', 'is-entering', 350);
   }, 2600);
 }
 
@@ -284,11 +316,22 @@ function resetForm(): void {
   notesCount.textContent = '0';
   setSelectedState();
   updateProgress();
-  resultsEl.classList.add('hidden');
-  formEl.classList.remove('hidden');
-  progressEl.classList.remove('hidden');
   window.history.pushState({}, '', window.location.pathname);
   validateForm();
+
+  // Animate results out, then form back in
+  resultsEl.classList.add('is-leaving');
+  window.setTimeout(() => {
+    resultsEl.classList.add('hidden');
+    resultsEl.classList.remove('is-leaving');
+    formEl.classList.remove('hidden');
+    progressEl.classList.remove('hidden');
+    formEl.classList.add('is-entering');
+    window.setTimeout(() => {
+      formEl.classList.remove('is-entering');
+    }, 600);
+    root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 400);
 }
 
 document.querySelectorAll<HTMLElement>('[data-group]').forEach((group) => {

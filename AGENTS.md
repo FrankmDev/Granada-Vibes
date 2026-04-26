@@ -45,8 +45,8 @@ Español es locale por defecto, sin prefijo. Inglés bajo `/en/`.
 | `/rutas/[slug]` | `/en/routes/[slug]` |
 | `/rutas/por-tiempo` | `/en/routes/by-time` |
 | `/rutas/por-tiempo/[slug]` | `/en/routes/by-time/[slug]` |
-| `/blog` | `/en/blog` |
-| `/blog/[slug]` | `/en/blog/[slug]` |
+| `/guias` | `/en/guides` |
+| `/guias/[slug]` | `/en/guides/[slug]` |
 | `/privacidad` | `/en/privacy` |
 | `/aviso-legal` | `/en/legal` |
 
@@ -63,7 +63,7 @@ Todo el contenido son arrays TypeScript estáticos en `src/data/`:
 - `src/data/events/` — `Event[]`, helpers: `getAllEvents`, `getFeaturedEvents`, `getEventBySlug`, `getUpcomingEvents`...
 - `src/data/routes/` — `Route[]`, helpers: `getAllRoutes`, `getFeaturedRoutes`, `getRouteBySlug`...
 - `src/data/mixed-routes/` — `MixedRoute[]`, helpers: `getAllMixedRoutes`, `getMixedRouteBySlug`, `getMixedRouteByDuration`
-- `src/data/blog/` — `BlogPost[]`, helpers: `getAllPosts`, `getFeaturedPosts`, `getPostBySlug`, `getRelatedPosts`
+- `src/data/blog/` — `BlogPost[]`, helpers: `getAllPosts`, `getFeaturedPosts`, `getPostBySlug`, `getRelatedPosts` (sección pública: /guias / /en/guides)
 - `src/data/venues/` — datos auxiliares de venues
 
 Todos los helpers se re-exportan desde `src/data/index.ts`. Sin CMS ni API externa en Fase 1.
@@ -263,6 +263,42 @@ Botón "Limpiar filtros" solo visible con filtros activos. Contador dinámico. E
 - `og:image` placeholder: `https://placehold.co/1200x630/080808/f0ede8?text=Granada+Vibes`
 - `@astrojs/sitemap` activado. `robots.txt` incluido.
 - JSON-LD en todas las páginas de detalle vía `SchemaMarkup.astro`.
+
+### Checklist de lanzamiento SEO (día D)
+
+Ejecutar **el mismo día** que se apunte el dominio definitivo a Vercel/Netlify:
+
+1. **Verificar dominio en Google Search Console**
+   - Añade la propiedad de dominio (o URL prefix) en [https://search.google.com/search-console](https://search.google.com/search-console).
+   - Copia el código de verificación (meta tag HTML).
+   - Pégalo en `src/config/site.ts` como `googleSiteVerification: 'TU_CODIGO_AQUI'`.
+   - Pasa esa propiedad a `BaseLayout` desde la página raíz o el layout global si se decide hacerlo global.
+   - Haz `npm run build` y despliega.
+   - Pulsa "Verificar" en GSC.
+
+2. **Enviar sitemap**
+   - En GSC, ve a *Sitemaps*.
+   - Añade `sitemap-index.xml` y envía.
+   - Confirma que el estado es "Correcto" (puede tardar unos minutos).
+
+3. **Solicitar indexación manual de la home**
+   - Inspecciona la URL `https://<dominio>/`.
+   - Pulsa "Solicitar indexación".
+   - Repite para `/eventos/`, `/rutas/`, `/guias/`.
+
+4. **Comprobar OG en redes sociales**
+   - Facebook: [https://developers.facebook.com/tools/debug/](https://developers.facebook.com/tools/debug/)
+   - LinkedIn: [https://www.linkedin.com/post-inspector/](https://www.linkedin.com/post-inspector/)
+   - Twitter/X: [https://cards-dev.twitter.com/validator](https://cards-dev.twitter.com/validator)
+   - WhatsApp: comparte un enlace en un chat contigo mismo y comprueba la preview.
+
+5. **Rich Results Test**
+   - Valida al menos una ruta (`TouristAttraction`) y un artículo (`Article`) en [https://search.google.com/test/rich-results](https://search.google.com/test/rich-results).
+
+6. **Verificar hreflang**
+   - Usa [https://technicalseo.com/tools/hreflang/](https://technicalseo.com/tools/hreflang/) para confirmar que no hay errores entre `/` y `/en/`.
+
+> Nota: `robots.txt` ya apunta a `https://granadavibes.com/sitemap-index.xml`. Si el dominio definitivo cambia, actualiza `astro.config.mjs` (`site`), `robots.txt` y `src/config/site.ts` (`url`) **antes** del build de producción.
 
 ---
 
