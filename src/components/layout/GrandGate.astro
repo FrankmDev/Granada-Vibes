@@ -33,6 +33,9 @@ const t = useTranslations(locale);
   <!-- Grain overlay -->
   <div class="gate-grain" aria-hidden="true"></div>
 
+  <!-- Vignette — darkens edges for cinematic focus -->
+  <div class="gate-vignette" aria-hidden="true"></div>
+
   <!-- Close button -->
   <button class="gate-close" data-gate-close aria-label={t('nav.closeMenu')}>
     <span class="gc-line"></span>
@@ -70,9 +73,15 @@ const t = useTranslations(locale);
 
       <!-- Top: Logo -->
       <div class="gate-header">
-        <span class="gate-header-logo">GRN INDEX</span>
+        <span class="gate-header-logo">GRN URBAN</span>
         <span class="gate-header-sub">{t('nav.guideSubtitle')} · {new Date().getFullYear()}</span>
       </div>
+
+      <!-- Decorative accent line — grows downward on open -->
+      <div class="gate-accent-line" aria-hidden="true"></div>
+
+      <!-- Decorative rule between header and nav -->
+      <div class="gate-rule gate-rule--top" aria-hidden="true"></div>
 
       <!-- Nav items — full-width rows -->
       <nav class="gate-nav" aria-label={t('nav.mainNavLabel')}>
@@ -103,13 +112,22 @@ const t = useTranslations(locale);
         })}
       </nav>
 
+      <!-- Decorative rule between nav and footer -->
+      <div class="gate-rule gate-rule--bottom" aria-hidden="true"></div>
+
       <!-- Footer: Lang switch + copyright -->
       <div class="gate-footer">
         <a href={altHref} class="gf-lang" data-gate-close>
           <span class="gf-lang-label">{t('nav.switchLanguage')}</span>
           <span class="gf-lang-val">{altLabel}</span>
         </a>
-        <p class="gf-copy">© 2026 GRN INDEX</p>
+        <div class="gf-meta">
+          <span class="gf-status" aria-hidden="true">
+            <span class="gf-status-dot"></span>
+            GRANADA, ES
+          </span>
+          <p class="gf-copy">© 2026 GRN URBAN</p>
+        </div>
       </div>
 
     </div>

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guía de contexto para agentes de código (OpenCode, Claude, etc.) trabajando en Granada Vibes. Lee esto antes de tocar cualquier archivo.
+Guía de contexto para agentes de código (OpenCode, Claude, etc.) trabajando en Granada Urban (GRN URBAN). Lee esto antes de tocar cualquier archivo.
 
 ---
 
@@ -298,7 +298,7 @@ Ejecutar **el mismo día** que se apunte el dominio definitivo a Vercel/Netlify:
 6. **Verificar hreflang**
    - Usa [https://technicalseo.com/tools/hreflang/](https://technicalseo.com/tools/hreflang/) para confirmar que no hay errores entre `/` y `/en/`.
 
-> Nota: `robots.txt` ya apunta a `https://granadavibes.com/sitemap-index.xml`. Si el dominio definitivo cambia, actualiza `astro.config.mjs` (`site`), `robots.txt` y `src/config/site.ts` (`url`) **antes** del build de producción.
+> Nota: `robots.txt` apunta a `https://www.granadaurban.com/sitemap-index.xml`. Si el dominio definitivo cambia, actualiza `astro.config.mjs` (`site`), `robots.txt` y `src/config/site.ts` (`url`) **antes** del build de producción.
 
 ---
 

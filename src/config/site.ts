@@ -1,18 +1,18 @@
 import type { SiteConfig, Locale } from '@types';
 
 export const SITE_CONFIG: SiteConfig = {
-  name: 'GRN INDEX',
+  name: 'GRN URBAN',
   description: {
     es: 'Tu guía cultural e inteligente de Granada. Descubre eventos, rutas y experiencias únicas en la ciudad de la Alhambra.',
     en: 'Your smart cultural guide to Granada. Discover events, routes, and unique experiences in the city of the Alhambra.',
   },
-  url: 'https://granadavibes.com',
+  url: 'https://www.granadaurban.com',
   defaultLocale: 'es',
   locales: ['es', 'en'],
   social: {
-    instagram: 'https://instagram.com/granadavibes',
-    twitter: 'https://twitter.com/granadavibes',
-    facebook: 'https://facebook.com/granadavibes',
+    instagram: 'https://instagram.com/granadaurban',
+    twitter: 'https://twitter.com/granadaurban',
+    facebook: 'https://facebook.com/granadaurban',
   },
 };
 

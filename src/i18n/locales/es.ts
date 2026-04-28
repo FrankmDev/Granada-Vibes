@@ -344,7 +344,9 @@ ctaAriaLabel: 'Descubre Granada',
     heroMetaPlansLabel: 'PLANES',
     heroMetaDurationLabel: 'DURACIÓN',
     heroMetaNeighborhoodsLabel: 'BARRIOS',
-    sectionChooseRhythm: '[ ELIGE TU RITMO ]',
+    sectionChooseRhythm: 'RUTAS POR TIEMPO',
+    titleMain: 'ELIGE',
+    titleSecondary: 'TU RITMO',
     titleLineYourTime: 'Tu tiempo',
     titleLineYourGranada: 'Tu Granada',
     sectionFullDescription: 'Planes completos organizados según el tiempo disponible. Cada ruta incluye paradas seleccionadas, consejos locales y mapa detallado para que no te pierdas nada.',
@@ -427,7 +429,7 @@ ctaAriaLabel: 'Descubre Granada',
     vol: 'VOL. I · 2026',
     brand: {
       title: 'GRANADA',
-      subtitle: 'VIBES',
+      subtitle: 'URBAN',
       desc: 'Tu guía cultural para descubrir la ciudad. Desde la Alhambra hasta el Albaicín, eventos y rutas auténticas.',
     },
     explore: {
@@ -457,7 +459,7 @@ ctaAriaLabel: 'Descubre Granada',
     newsletterPlaceholder: 'Tu email',
     viewAllEvents: 'Ver todos los eventos',
     madeIn: 'Hecho con ❤ en Granada',
-    copyright: '© {{year}} GRN INDEX. Todos los derechos reservados.',
+    copyright: '© {{year}} GRN URBAN.',
     allRightsReserved: 'Todos los derechos reservados',
   },
 
@@ -478,7 +480,7 @@ ctaAriaLabel: 'Descubre Granada',
     heroMetaCategoriesLabel: 'CATEGORÍAS',
     heroMetaUpdatedLabel: 'ACTUALIZADO',
     archiveEyebrow: 'ÚLTIMAS PUBLICACIONES',
-    archiveTitle: 'Guías · Granada',
+    archiveTitle: 'Guías',
     filterLabel: 'Filtrar por categoría',
     emptyTitle: 'No hay artículos en esta categoría',
     emptyText: 'Prueba con otra categoría o explora todos los artículos',
@@ -505,7 +507,7 @@ ctaAriaLabel: 'Descubre Granada',
   },
 
   planner: {
-    seoTitle: 'Planificador de Granada · Itinerarios personalizados gratis | GRN INDEX',
+    seoTitle: 'Planificador de Granada · Itinerarios personalizados gratis | GRN URBAN',
     seoDescription: 'Crea un itinerario personalizado para Granada según tiempo, presupuesto, compañía e intereses. Planes editoriales y compartibles.',
     schemaName: 'Planificador de Granada',
     schemaDescription: 'Generador de itinerarios personalizados para Granada',
@@ -643,14 +645,14 @@ ctaAriaLabel: 'Descubre Granada',
 
   // Not Found
   notFound: {
-    title: 'Página no encontrada — GRN INDEX',
+    title: 'Página no encontrada — GRN URBAN',
     message: 'La página que buscas no existe o ha sido movida.',
     goHome: 'Volver al inicio',
   },
 
   // Meta
   meta: {
-    siteName: 'GRN INDEX',
+    siteName: 'GRN URBAN',
     location: 'Granada, España',
     defaultDescription:
       'Guía cultural de Granada creada por locales. Eventos, rutas por el Albaicín y Sacromonte, y planes auténticos fuera de las guías turísticas.',

@@ -1,6 +1,6 @@
-# Refactorización del Proyecto Granada Vibes
+# Refactorización del Proyecto Granada Urban
 
-Este documento describe las optimizaciones y refactorizaciones realizadas al proyecto Astro de Granada Vibes.
+Este documento describe las optimizaciones y refactorizaciones realizadas al proyecto Astro de Granada Urban.
 
 ## 🎯 Resumen de Mejoras
 

@@ -346,7 +346,9 @@ ctaAriaLabel: 'Discover Granada',
     heroMetaPlansLabel: 'PLANS',
     heroMetaDurationLabel: 'DURATION',
     heroMetaNeighborhoodsLabel: 'NEIGHBORHOODS',
-    sectionChooseRhythm: '[ CHOOSE YOUR PACE ]',
+    sectionChooseRhythm: 'ROUTES BY TIME',
+    titleMain: 'CHOOSE',
+    titleSecondary: 'YOUR RHYTHM',
     titleLineYourTime: 'Your time',
     titleLineYourGranada: 'Your Granada',
     sectionFullDescription: 'Complete plans organised by available time. Each route includes selected stops, local tips and a detailed map so you don\'t miss a thing.',
@@ -429,7 +431,7 @@ ctaAriaLabel: 'Discover Granada',
     vol: 'VOL. I · 2026',
     brand: {
       title: 'GRANADA',
-      subtitle: 'VIBES',
+      subtitle: 'URBAN',
       desc: 'Your cultural guide to discover the city. From the Alhambra to the Albaicín, events and authentic routes.',
     },
     explore: {
@@ -459,7 +461,7 @@ ctaAriaLabel: 'Discover Granada',
     newsletterPlaceholder: 'Your email',
     viewAllEvents: 'View all events',
     madeIn: 'Made with ❤ in Granada',
-    copyright: '© {{year}} GRN INDEX. All rights reserved.',
+    copyright: '© {{year}} GRN URBAN.',
     allRightsReserved: 'All rights reserved',
   },
 
@@ -480,7 +482,7 @@ ctaAriaLabel: 'Discover Granada',
     heroMetaCategoriesLabel: 'CATEGORIES',
     heroMetaUpdatedLabel: 'UPDATED',
     archiveEyebrow: 'LATEST PUBLICATIONS',
-    archiveTitle: 'Guides · Granada',
+    archiveTitle: 'Guides',
     filterLabel: 'Filter by category',
     emptyTitle: 'No articles in this category',
     emptyText: 'Try another category or explore all articles',
@@ -507,7 +509,7 @@ ctaAriaLabel: 'Discover Granada',
   },
 
   planner: {
-    seoTitle: 'Granada planner · Free custom itineraries | GRN INDEX',
+    seoTitle: 'Granada planner · Free custom itineraries | GRN URBAN',
     seoDescription: 'Build a Granada itinerary based on time, budget, company and interests. Editorial, shareable plans generated from local rules.',
     schemaName: 'Granada planner',
     schemaDescription: 'Custom itinerary generator for Granada',
@@ -645,14 +647,14 @@ ctaAriaLabel: 'Discover Granada',
 
   // Not Found
   notFound: {
-    title: 'Page not found — GRN INDEX',
+    title: 'Page not found — GRN URBAN',
     message: 'The page you are looking for does not exist or has been moved.',
     goHome: 'Go home',
   },
 
   // Meta
   meta: {
-    siteName: 'GRN INDEX',
+    siteName: 'GRN URBAN',
     location: 'Granada, Spain',
     defaultDescription:
       'Cultural guide to Granada created by locals. Events, routes through the Albaicín and Sacromonte, and authentic plans off the beaten path.',

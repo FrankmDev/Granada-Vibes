@@ -3,6 +3,7 @@ import '@styles/pages/blog-archive.css';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import CinematicCTA from '@components/shared/CinematicCTA.astro';
 import BlogArchiveFeaturedPost from '@components/blog/BlogArchiveFeaturedPost.astro';
 import BlogArchiveFilter from '@components/blog/BlogArchiveFilter.astro';
@@ -64,7 +65,7 @@ const eventsPath = getRoute('events', locale);
     locale={locale}
     title="EDITORIAL"
     subtitle={t('blog.title').toUpperCase()}
-    eyebrow="GRN INDEX"
+    eyebrow="GRN URBAN"
     eyebrowRight="ED. 2025"
     description={t('blog.heroDescription')}
     ctaText={t('blog.heroCta')}
@@ -94,20 +95,11 @@ const eventsPath = getRoute('events', locale);
 
     <div class="editorial-container">
       <!-- SECTION HEADER -->
-      <header class="section-header">
-        <div class="header-ornament">
-          <span class="ornament-line"></span>
-          <span class="ornament-dot"></span>
-          <span class="header-eyebrow">[ {t('blog.archiveEyebrow')} ]</span>
-          <span class="ornament-dot"></span>
-          <span class="ornament-line"></span>
-        </div>
-        <h2 class="section-title">
-          <span class="title-word">{t('blog.archiveTitle').split(' · ')[0]}</span>
-          <span class="title-separator">·</span>
-          <span class="title-word title-accent">{t('blog.archiveTitle').split(' · ')[1]}</span>
-        </h2>
-      </header>
+      <SectionHeader
+        eyebrow={t('blog.archiveEyebrow')}
+        title={t('blog.archiveTitle')}
+        animateTitle={true}
+      />
 
       {allPosts.length > 0 ? (
         <>

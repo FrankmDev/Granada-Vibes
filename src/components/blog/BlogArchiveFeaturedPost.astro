@@ -22,9 +22,10 @@ function formatDate(dateStr: string): string {
 
 const image = post.image || blogImages[post.id] || blogImages.default;
 const cat = categoryData[post.category];
+const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 16)).join(', ') ?? '232, 98, 42';
 ---
 
-<article class="featured-post" data-category={post.category}>
+<article class="featured-post" data-category={post.category} style={`--cat-color: ${cat.color}; --cat-rgb: ${catRgb}`}>
   <a href={getBlogDetailUrl(post.slug, locale)} class="featured-link">
     <div class="featured-visual">
       <OptimizedImage
@@ -37,6 +38,12 @@ const cat = categoryData[post.category];
       />
       <div class="featured-overlay"></div>
       
+      {/* Editorial Stamp */}
+      <div class="featured-stamp">
+        <span class="stamp-prefix">DESTACADO</span>
+        <span class="stamp-number">01</span>
+      </div>
+
       <div class="featured-category" style={`--category-color: ${cat.color}`}>
         <span class="category-icon">{cat.icon}</span>
         <span class="category-label">{cat.label}</span>
@@ -59,6 +66,12 @@ const cat = categoryData[post.category];
           </span>
         )}
       </div>
+
+      {/* Corner Brackets */}
+      <span class="featured-bracket bracket-tl"></span>
+      <span class="featured-bracket bracket-tr"></span>
+      <span class="featured-bracket bracket-bl"></span>
+      <span class="featured-bracket bracket-br"></span>
     </div>
 
     <div class="featured-content">

@@ -22,91 +22,138 @@ function formatDate(dateStr: string): string {
 ---
 
 <div class="posts-grid" id="posts-grid">
-  {posts.map((post, idx) => (
-    <article 
-      class={`post-card ${post.featured ? 'is-featured' : ''}`}
-      data-category={post.category}
-      style={`--card-index: ${idx}; --cat-color: ${categoryData[post.category].color}`}
-    >
-      <a href={getBlogDetailUrl(post.slug, locale)} class="post-link">
-        <div class="card-visual">
-          <OptimizedImage
-            src={post.image || blogImages[post.id] || blogImages.default}
-            alt={post.title[locale]}
-            class="card-image"
-            loading="lazy"
-            decoding="async"
-            sizes="(max-width: 640px) 100vw, 400px"
-          />
-          <div class="card-overlay"></div>
-          
-          {post.featured && (
-            <div class="card-featured-badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-              <span>{t('routes.featured')}</span>
+  {posts.map((post, idx) => {
+    const cardNum = String(idx + 1).padStart(2, '0');
+    const cat = categoryData[post.category];
+    const readingPct = Math.min((post.readingTime / 15) * 100, 100);
+    const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 16)).join(', ') ?? '232, 98, 42';
+    
+    return (
+      <article 
+        class={`post-card ${post.featured ? 'is-featured' : ''}`}
+        data-category={post.category}
+        style={`--card-index: ${idx}; --cat-color: ${cat.color}; --cat-rgb: ${catRgb}`}
+      >
+        <a href={getBlogDetailUrl(post.slug, locale)} class="post-link">
+          {/* Editorial Stamp */}
+          <div class="card-stamp">
+            <span class="stamp-prefix">N.</span>
+            <span class="stamp-number">{cardNum}</span>
+          </div>
+
+          {/* Image Frame */}
+          <div class="card-visual">
+            <div class="visual-frame">
+              <OptimizedImage
+                src={post.image || blogImages[post.id] || blogImages.default}
+                alt={post.title[locale]}
+                class="card-image"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 640px) 100vw, 400px"
+              />
+              <div class="image-vignette"></div>
+              
+              {/* Corner Brackets */}
+              <span class="card-bracket bracket-tl"></span>
+              <span class="card-bracket bracket-tr"></span>
+              <span class="card-bracket bracket-bl"></span>
+              <span class="card-bracket bracket-br"></span>
             </div>
-          )}
-          
-          <div class="card-category-badge" style={`background: ${categoryData[post.category].color}`}>
-            <span>{categoryData[post.category].icon}</span>
-          </div>
+            
+            {/* Category Badge - Fixed colors */}
+            <div class="category-badge" style={`background: ${cat.color}`}>
+              <span class="badge-icon">{cat.icon}</span>
+              <span class="badge-label">{cat.label}</span>
+            </div>
 
-          <span class="card-bracket bracket-tl"></span>
-          <span class="card-bracket bracket-tr"></span>
-          <span class="card-bracket bracket-bl"></span>
-          <span class="card-bracket bracket-br"></span>
-          
-          <div class="card-hover-hint">
-            <span>{t('blog.readArticle')}</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-        </div>
-
-        <div class="card-content">
-          <div class="card-header">
-            <div class="card-meta">
-              <time datetime={post.publishDate}>{formatDate(post.publishDate)}</time>
-              <span class="meta-separator">·</span>
-              <span class="reading-time">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
+            {/* Featured Badge */}
+            {post.featured && (
+              <div class="card-featured-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
-                {post.readingTime} min
-              </span>
+                <span>{t('routes.featured')}</span>
+              </div>
+            )}
+            
+            {/* Hover Reveal */}
+            <div class="hover-reveal">
+              <div class="reveal-inner">
+                <span class="reveal-line"></span>
+                <span class="reveal-text">{t('blog.readArticle')}</span>
+                <span class="reveal-line"></span>
+              </div>
             </div>
-            <h3 class="card-title">{post.title[locale]}</h3>
+          </div>
+
+          {/* Content - Editorial Style */}
+          <div class="card-content">
+            <div class="card-header">
+              {/* Meta Row */}
+              <div class="card-meta">
+                <time datetime={post.publishDate}>{formatDate(post.publishDate)}</time>
+                <span class="meta-separator"></span>
+                <span class="reading-time">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  {post.readingTime} min
+                </span>
+              </div>
+              
+              {/* Title */}
+              <h3 class="card-title">{post.title[locale]}</h3>
+            </div>
+            
+            {/* Excerpt */}
+            <p class="card-excerpt">{post.description[locale]}</p>
+
+            {/* Tags */}
+            {post.tags && post.tags.length > 0 && (
+              <div class="card-tags">
+                {post.tags.slice(0, 3).map(tag => (
+                  <span class="tag-pill">{tag}</span>
+                ))}
+              </div>
+            )}
+
+            {/* Footer with Author, Reading Bar, Action */}
+            <div class="card-footer">
+              <div class="footer-author">
+                <div class="author-avatar" style={`background: ${cat.color}`}>
+                  <span>{post.author.charAt(0)}</span>
+                </div>
+                <span class="author-name">{post.author}</span>
+              </div>
+              
+              <div class="footer-divider"></div>
+              
+              <div class="reading-bar">
+                <div class="reading-track">
+                  <div class="reading-fill" style={`width: ${readingPct}%`}></div>
+                </div>
+                <span class="reading-label">{post.readingTime} min</span>
+              </div>
+              
+              <div class="card-action">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
           </div>
           
-          <p class="card-excerpt">{post.description[locale]}</p>
-
-          {post.tags && post.tags.length > 0 && (
-            <div class="card-tags">
-              {post.tags.slice(0, 3).map(tag => (
-                <span class="tag-pill">#{tag}</span>
-              ))}
-            </div>
-          )}
-
-          <div class="card-footer">
-            <div class="card-author">
-              <span class="author-dot"></span>
-              <span>{post.author}</span>
-            </div>
-            <span class="card-action">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </div>
-        </div>
-      </a>
-    </article>
-  ))}
+          {/* Left Accent Bar */}
+          <div class="accent-bar-left"></div>
+          
+          {/* Bottom Color Line */}
+          <div class="bottom-accent-line" style={`background: ${cat.color}`}></div>
+        </a>
+      </article>
+    );
+  })}
 </div>
 
 <!-- EMPTY STATE -->

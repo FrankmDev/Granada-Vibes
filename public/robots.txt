@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://granadavibes.com/sitemap-index.xml
+Sitemap: https://www.granadaurban.com/sitemap-index.xml

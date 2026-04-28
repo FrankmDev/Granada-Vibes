@@ -1,4 +1,4 @@
-# Granada Vibes
+# Granada Urban
 
 Tu guía cultural e inteligente de Granada, España. Descubre eventos, rutas y experiencias únicas en la ciudad de la Alhambra.
 
@@ -132,5 +132,5 @@ bun run preview
 
 ## 📝 Licencia
 
-Proyecto privado - Granada Vibes
-# Granada-Vibes
+Proyecto privado - Granada Urban
+# Granada-Urban

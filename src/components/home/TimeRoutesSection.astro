@@ -13,6 +13,9 @@ interface Props {
 const { plans, locale } = Astro.props;
 const t = useTranslations(locale);
 
+const splitText = (text: string, baseDelay = 0) =>
+  text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.03 }));
+
 // Select 3 plans with best SEO potential
 const selectedDurations = ['2h', '1day', '2days'];
 const displayPlans = selectedDurations
@@ -142,10 +145,22 @@ function getCategoryName(category: string): string {
         <span class="eyebrow-text">{t('mixedRoutes.sectionChooseRhythm')}</span>
         <span class="eyebrow-line"></span>
       </div>
-      <h2 class="header-title">
-        <span class="title-word" data-parallax="-0.02">Tu</span>
-        <span class="title-word" data-parallax="-0.03">tiempo</span>
-        <span class="title-accent" data-parallax="-0.04">Tu Granada</span>
+      <h2 class="masthead-title">
+        <span class="title-main">
+          {splitText(t('mixedRoutes.titleMain')).map(({ char, delay }) => (
+            <span class="title-char title-char-primary" style={`--delay: ${delay}s`}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </span>
+        <span class="title-divider" aria-hidden="true">/</span>
+        <span class="title-secondary">
+          {splitText(t('mixedRoutes.titleSecondary'), t('mixedRoutes.titleMain').length * 0.03).map(({ char, delay }) => (
+            <span class="title-char title-char-secondary" style={`--delay: ${delay}s`}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </span>
       </h2>
       <p class="header-subtitle">{t('mixedRoutes.sectionFullDescription')}</p>
     </header>
@@ -268,33 +283,12 @@ function getCategoryName(category: string): string {
     });
   }
 
-  // Parallax on mouse move for header
-  function initParallax() {
-    if (window.matchMedia('(pointer: coarse)').matches) return;
-    
-    const header = document.querySelector('.editorial-header');
-    if (!header) return;
-
-    header.addEventListener('mousemove', (e) => {
-      const rect = header.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-      header.querySelectorAll('[data-parallax]').forEach((el) => {
-        const depth = parseFloat((el as HTMLElement).dataset.parallax || '0');
-        (el as HTMLElement).style.transform = `translate(${x * depth * 100}px, ${y * depth * 50}px)`;
-      });
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
-    initParallax();
   });
 
   document.addEventListener('astro:page-load', () => {
     initScrollAnimations();
-    initParallax();
   });
 </script>
 
@@ -406,25 +400,58 @@ function getCategoryName(category: string): string {
     text-transform: uppercase;
   }
 
-  .header-title {
+  .masthead-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 0 0 1.5rem;
+  }
+
+  .title-main, .title-secondary {
+    display: flex;
     font-family: var(--font-body);
     font-size: clamp(3rem, 8vw, 7rem);
     font-weight: 300;
-    line-height: 0.95;
-    margin: 0 0 1.5rem;
-    color: var(--t-ink);
-    letter-spacing: -0.02em;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
 
-  .title-word {
+  .title-char {
     display: inline-block;
-    margin-right: 0.3em;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
+    animation-play-state: paused;
   }
 
-  .title-accent {
+  .editorial-header.is-visible .title-char {
+    animation-play-state: running;
+  }
+
+  .title-char-primary {
+    color: var(--t-ink);
+  }
+
+  .title-char-secondary {
     color: var(--t-orange);
-    font-style: italic;
-    font-weight: 400;
+  }
+
+  .title-divider {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--t-border);
+    opacity: 0;
+    transform: translateY(40px);
+    animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    animation-play-state: paused;
+  }
+
+  .editorial-header.is-visible .title-divider {
+    animation-play-state: running;
   }
 
   .header-subtitle {
@@ -1013,8 +1040,16 @@ function getCategoryName(category: string): string {
       margin-top: 0;
     }
 
-    .header-title {
-      font-size: 3rem;
+    .masthead-title {
+      gap: 0.75rem;
+    }
+
+    .title-main, .title-secondary {
+      font-size: clamp(2.5rem, 12vw, 5rem);
+    }
+
+    .title-divider {
+      display: none;
     }
 
     .duration-number {

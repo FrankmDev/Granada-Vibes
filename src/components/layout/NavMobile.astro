@@ -5,6 +5,7 @@ import { LOCALE_PATHS } from '@config/site';
 interface NavLink {
   href: string;
   label: string;
+  abbr?: string;
 }
 
 interface Props {
@@ -17,6 +18,12 @@ interface Props {
 
 const { locale, navLinks, switchUrl, isActive, t } = Astro.props;
 const localePath = LOCALE_PATHS[locale];
+
+function getAbbr(link: NavLink): string {
+  if (link.abbr) return link.abbr.toUpperCase();
+  // Derive a two-letter code from the label (e.g. "Eventos" → "EV")
+  return link.label.slice(0, 2).toUpperCase();
+}
 ---
 
 <div
@@ -32,20 +39,32 @@ const localePath = LOCALE_PATHS[locale];
       <span class="nav-mobile__gv">GV</span>
     </div>
 
-    <!-- Links -->
+    <!-- Links — large, tappable rows with single-letter orbit badges -->
     <nav class="nav-mobile__nav">
-      {navLinks.map((link, index) => (
-        <a
-          href={link.href}
-          class:list={['nav-mobile__link', isActive(link.href) && 'is-active']}
-          style={`--idx: ${index}`}
-          aria-current={isActive(link.href) ? 'page' : undefined}
-        >
-          <span class="nav-mobile__link-num">{String(index + 1).padStart(2, '0')}</span>
-          <span class="nav-mobile__link-text">{link.label}</span>
-          <span class="nav-mobile__link-arrow" aria-hidden="true">→</span>
-        </a>
-      ))}
+      {navLinks.map((link, index) => {
+        const active = isActive(link.href);
+        return (
+          <a
+            href={link.href}
+            class:list={['nav-mobile__link', active && 'is-active']}
+            style={`--idx: ${index}`}
+            aria-current={active ? 'page' : undefined}
+          >
+            <span class="nav-mobile__link-orbit" aria-hidden="true">
+              <span class="nav-mobile__link-initial">{link.label.charAt(0)}</span>
+            </span>
+            <span class="nav-mobile__link-body">
+              <span class="nav-mobile__link-text">{link.label}</span>
+              <span class="nav-mobile__link-meta">{active ? 'Estás aquí' : 'Ir a sección'}</span>
+            </span>
+            <span class="nav-mobile__link-arrow" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        );
+      })}
     </nav>
 
     <!-- Footer row -->
@@ -85,7 +104,7 @@ const localePath = LOCALE_PATHS[locale];
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding: 1.5rem 2rem;
     opacity: 0;
     transform: translateY(-12px);
     transition: opacity 0.32s var(--ease-editorial), transform 0.32s var(--ease-editorial);
@@ -111,13 +130,13 @@ const localePath = LOCALE_PATHS[locale];
     letter-spacing: -0.04em;
   }
 
-  /* ── Nav links ── */
+  /* ── Nav links — large tappable rows ── */
   .nav-mobile__nav {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0;
+    gap: 0.5rem;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
@@ -125,66 +144,112 @@ const localePath = LOCALE_PATHS[locale];
 
   .nav-mobile__link {
     display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid var(--color-border-subtle);
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 7vw, 2.5rem);
-    font-weight: 900;
-    letter-spacing: -0.03em;
     color: var(--color-text-muted);
     text-decoration: none;
-    transition: all 0.25s ease;
+    transition: all 0.25s var(--ease-editorial);
     max-width: 100%;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
-
-  .nav-mobile__link:first-child {
-    border-top: 1px solid var(--color-border-subtle);
   }
 
   .nav-mobile__link:hover,
   .nav-mobile__link.is-active {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(232, 98, 42, 0.25);
     color: var(--color-text-primary);
-    padding-left: 0.5rem;
   }
 
   .nav-mobile__link.is-active {
+    background: rgba(232, 98, 42, 0.08);
+    border-color: rgba(232, 98, 42, 0.35);
+    box-shadow: 0 0 24px rgba(232, 98, 42, 0.08);
+  }
+
+  /* Orbit badge with initial */
+  .nav-mobile__link-orbit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(201, 168, 76, 0.08);
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+
+  .nav-mobile__link:hover .nav-mobile__link-orbit,
+  .nav-mobile__link.is-active .nav-mobile__link-orbit {
+    background: rgba(232, 98, 42, 0.12);
+    border-color: rgba(232, 98, 42, 0.45);
+    transform: scale(1.05);
+  }
+
+  .nav-mobile__link-initial {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .nav-mobile__link.is-active .nav-mobile__link-initial {
     color: var(--color-accent);
   }
 
-  .nav-mobile__link-num {
-    font-family: var(--font-body);
-    font-size: 0.625rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: var(--color-text-muted);
-    flex-shrink: 0;
-    align-self: center;
+  /* Body: label + meta */
+  .nav-mobile__link-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
   }
 
   .nav-mobile__link-text {
-    flex: 1;
-    text-transform: lowercase;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    line-height: 1.2;
   }
 
+  .nav-mobile__link-meta {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--color-text-secondary);
+    text-transform: lowercase;
+  }
+
+  .nav-mobile__link.is-active .nav-mobile__link-meta {
+    color: rgba(232, 98, 42, 0.7);
+  }
+
+  /* Arrow */
   .nav-mobile__link-arrow {
-    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--color-accent);
     opacity: 0;
-    transition: opacity 0.2s ease;
-    align-self: center;
+    transform: translateX(-6px);
+    transition: all 0.3s var(--ease-editorial);
+    flex-shrink: 0;
   }
 
   .nav-mobile__link:hover .nav-mobile__link-arrow,
   .nav-mobile__link.is-active .nav-mobile__link-arrow {
     opacity: 1;
+    transform: translateX(0);
   }
 
   /* ── Footer row ── */

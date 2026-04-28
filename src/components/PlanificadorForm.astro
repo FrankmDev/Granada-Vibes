@@ -1424,6 +1424,8 @@ const plannerCopy = {
     top: 0;
     bottom: 0;
     width: 2px;
+    max-width: 2px;
+    min-width: 2px;
     background: linear-gradient(to bottom, var(--gold-dim), rgba(232,98,42,0.20), transparent);
     border-radius: 1px;
     transform-origin: top;
@@ -1845,6 +1847,33 @@ const plannerCopy = {
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Mobile sizing fixes ── */
+  @media (max-width: 768px) {
+    .ambient-blob {
+      width: 240px;
+      height: 240px;
+      opacity: 0.35;
+      filter: blur(60px);
+    }
+    .blob-a { top: -5%; right: -15%; }
+    .blob-b { bottom: 5%; left: -20%; }
+
+    .result-hero-glow {
+      width: 320px;
+      height: 320px;
+      top: -40%;
+      left: -15%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ambient-blob {
+      width: 180px;
+      height: 180px;
+      opacity: 0.25;
+    }
   }
 
   /* ── Reduced Motion ── */

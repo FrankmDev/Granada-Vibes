@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import path from 'path';
 
 export default defineConfig({
-  site: 'https://granadavibes.com',
+  site: 'https://www.granadaurban.com',
   integrations: [
     sitemap({
       i18n: {
