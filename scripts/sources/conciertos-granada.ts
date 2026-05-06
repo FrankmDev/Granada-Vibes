@@ -141,7 +141,7 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
     const href = $concertLink.attr('href') ?? '';
     if (!href || href === '/conciertos/' || href === '/conciertos') return;
     // Skip category/filter links
-    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales|estilos)\//i.test(href)) return;
 
     const cleanHref = href.split('?')[0]!;
     // Normalize URL to deduplicate events with timestamp suffixes
@@ -271,7 +271,7 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
     const $link = $(el);
     const href = $link.attr('href') ?? '';
     if (!href || href === '/conciertos/' || href === '/conciertos') return;
-    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales)\//i.test(href)) return;
+    if (/\/conciertos\/(genero|tipo|lugar|fecha|locales|estilos)\//i.test(href)) return;
     // Skip buy-ticket links
     if (href.includes('link=banner') === false && $link.closest('li').length) return;
 

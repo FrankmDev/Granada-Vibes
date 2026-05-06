@@ -185,7 +185,7 @@ function getCategoryName(category: string): string {
                   src={PLAN_IMAGES[plan.duration] || PLAN_IMAGES['2h']}
                   alt={plan.title[locale]}
                   class="visual-image"
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading="lazy"
                   decoding="async"
                   sizes="(max-width: 640px) 100vw, 400px"
                 />
@@ -413,7 +413,7 @@ function getCategoryName(category: string): string {
     display: flex;
     font-family: var(--font-body);
     font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 300;
+    font-weight: 200;
     line-height: 0.9;
     letter-spacing: -0.03em;
     text-transform: uppercase;
@@ -665,9 +665,8 @@ function getCategoryName(category: string): string {
     text-transform: uppercase;
     color: white;
     padding: 0.4rem 0.875rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 100px;
     transition: all 0.4s ease;
   }

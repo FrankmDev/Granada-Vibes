@@ -85,7 +85,7 @@ const routesHref = getRoute('routes', locale);
               src={bgImage}
               alt={route.title[locale]}
               class="pane-img"
-              loading={idx < 3 ? 'eager' : 'lazy'}
+              loading="lazy"
               decoding="async"
               sizes="(max-width: 1024px) 100vw, 40vw"
             />
@@ -296,17 +296,22 @@ const routesHref = getRoute('routes', locale);
 
   .pane-text-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
   .pane-title {
-    font-family: var(--font-body); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300;
+    font-family: var(--font-body); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 200;
     letter-spacing: -0.02em; color: var(--color-text-primary); margin: 0; line-height: 1;
     text-shadow: 0 4px 24px rgba(0,0,0,0.6); max-width: 80%;
   }
 
   .pane-meta-glass {
     display: flex; justify-content: space-between; align-items: center;
-    background: rgba(245, 240, 234, 0.92); backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    background: rgba(245, 240, 234, 0.95);
     border: 1px solid rgba(245, 240, 234, 0.6); padding: 1rem 1.5rem; border-radius: 8px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+  @media (min-width: 769px) {
+    .pane-meta-glass {
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+    }
   }
   .meta-stats {
     display: flex; align-items: center; flex-wrap: wrap; gap: 1rem;

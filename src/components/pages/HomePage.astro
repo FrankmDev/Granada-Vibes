@@ -28,7 +28,7 @@ const upcoming = allEvents
   .filter((event: Event) => event.date >= todayStr)
   .sort((left: Event, right: Event) => left.date.localeCompare(right.date));
 
-const gridEvents = upcoming.slice(0, 20);
+const gridEvents = upcoming.slice(0, 9);
 const displayRoutes = featuredRoutes.slice(0, 7);
 
 const seo = locale === 'es'

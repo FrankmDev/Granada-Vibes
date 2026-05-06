@@ -93,7 +93,7 @@ function formatDate(dateStr: string): string {
                     src={post.image || BLOG_IMAGES[post.id] || BLOG_IMAGES.default}
                     alt={post.title[locale]}
                     class="feature-img"
-                    loading="eager"
+                    loading="lazy"
                     decoding="async"
                     sizes="(max-width: 768px) 100vw, 60vw"
                   />
@@ -325,7 +325,7 @@ function formatDate(dateStr: string): string {
   .kicker-text { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3em; color: var(--j-orange); text-transform: uppercase; }
 
   .masthead-title { margin: 0 0 0.75rem; }
-  .title-main { display: block; font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 300; line-height: 1; color: var(--j-ink); letter-spacing: -0.03em; }
+  .title-main { display: block; font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 200; line-height: 1; color: var(--j-ink); letter-spacing: -0.03em; }
   .title-sub { display: block; font-family: var(--font-display); font-size: clamp(0.9rem, 2vw, 1.1rem); font-weight: 400; letter-spacing: 0.15em; color: var(--j-ink-3); text-transform: uppercase; margin-top: 0.5rem; }
 
   .masthead-lead { font-family: var(--font-display); font-size: 1rem; color: var(--j-ink-2); max-width: 400px; margin: 0 auto; line-height: 1.6; }
