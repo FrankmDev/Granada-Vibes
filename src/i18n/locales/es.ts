@@ -659,4 +659,12 @@ ctaAriaLabel: 'Descubre Granada',
   },
 } as const;
 
-export type Translations = typeof es;
+type WidenTranslationValues<T> = {
+  readonly [Key in keyof T]: T[Key] extends string
+    ? string
+    : T[Key] extends Record<string, unknown>
+      ? WidenTranslationValues<T[Key]>
+      : T[Key];
+};
+
+export type Translations = WidenTranslationValues<typeof es>;

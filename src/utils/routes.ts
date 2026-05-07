@@ -1,6 +1,8 @@
-import type { Locale } from '@types';
+import type { Locale, RouteDifficulty } from '@types';
 
-const ROUTE_MAP: Record<Locale, Record<string, string>> = {
+type RouteName = 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal';
+
+const ROUTE_MAP: Record<Locale, Record<RouteName, string>> = {
   es: {
     home: '/',
     events: '/eventos/',
@@ -24,7 +26,7 @@ const ROUTE_MAP: Record<Locale, Record<string, string>> = {
 };
 
 export function getRoute(
-  name: 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal',
+  name: RouteName,
   locale: Locale
 ): string {
   return ROUTE_MAP[locale][name];
@@ -48,4 +50,14 @@ export function getPlanDetailUrl(slug: string, locale: Locale): string {
 
 export function getSwitchLangUrl(locale: Locale): string {
   return locale === 'es' ? '/en/' : '/';
+}
+
+export const difficultyConfig: Record<RouteDifficulty, { bars: string; level: 1 | 2 | 3 }> = {
+  easy: { bars: '■□□', level: 1 },
+  moderate: { bars: '■■□', level: 2 },
+  challenging: { bars: '■■■', level: 3 },
+};
+
+export function getDifficultyBars(difficulty: RouteDifficulty): string {
+  return difficultyConfig[difficulty].bars;
 }

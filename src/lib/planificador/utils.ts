@@ -28,7 +28,7 @@ export function normalizeText(value: string): string {
 
 export function toMinutes(time: string): number {
   const [hours, minutes] = time.split(':').map(Number);
-  return hours * 60 + minutes;
+  return (hours ?? 0) * 60 + (minutes ?? 0);
 }
 
 export function toTimeString(totalMinutes: number): string {

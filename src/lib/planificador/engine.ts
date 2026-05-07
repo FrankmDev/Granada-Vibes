@@ -23,6 +23,7 @@ import type {
   Itinerario,
   Parada,
   PlanParams,
+  PlannerCategory,
   PlannerGenerationOptions,
   RankedLugar,
   ScoreBreakdown,
@@ -42,7 +43,7 @@ import {
 } from './utils.js';
 import { encodePlanParams } from './url.js';
 
-const CATEGORY_TYPE_AFFINITY = {
+const CATEGORY_TYPE_AFFINITY: Record<PlannerCategory, readonly Lugar['tipo'][]> = {
   historia: ['monumento', 'museo', 'experiencia', 'barrio'],
   gastronomia: ['bar', 'restaurante', 'tienda', 'experiencia'],
   naturaleza: ['parque', 'mirador'],
@@ -378,6 +379,7 @@ function buildDays(params: PlanParams, locale: Locale, orderedPlaces: RankedLuga
 
     for (let index = 0; index < pending.length; index += 1) {
       const rankedPlace = pending[index];
+      if (!rankedPlace) continue;
 
       if (totalDays > 1 && dayNumber < totalDays && paradas.length >= targetStopsForDay) {
         nextPending.push(...pending.slice(index));
@@ -418,7 +420,9 @@ function buildDays(params: PlanParams, locale: Locale, orderedPlaces: RankedLuga
     }
 
     for (let index = 0; index < paradas.length; index += 1) {
-      paradas[index].nota_transicion = buildTransitionNote(locale, paradas[index].lugar, paradas[index + 1]?.lugar);
+      const parada = paradas[index];
+      if (!parada) continue;
+      parada.nota_transicion = buildTransitionNote(locale, parada.lugar, paradas[index + 1]?.lugar);
     }
 
     if (paradas.length > 0) {

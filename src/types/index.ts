@@ -72,6 +72,8 @@ export interface Event {
   tips?: LocalizedText;
   ticketsUrl?: string;
   longDescription?: LocalizedText;
+  whatToBring?: { es: string[]; en: string[] };
+  bestMonths?: string[];
   // Campos de trazabilidad para fuentes externas
   source?: EventSource;
   sourceId?: string;

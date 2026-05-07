@@ -29,14 +29,12 @@ const defaultSizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
 const baseClasses = 'optimized-img';
 const combinedClasses = className ? `${baseClasses} ${className}` : baseClasses;
 
+// Only run Astro's image pipeline for stable image hosts. Scraped event
+// providers often redirect asset URLs during revalidation, which creates
+// noisy build warnings while Astro falls back to stale cache entries.
 const OPTIMIZABLE_HOSTNAMES = [
   'images.unsplash.com',
   'upload.wikimedia.org',
-  'www.pcgr.org',
-  'conciertos.club',
-  'img.evbuc.com',
-  'cdn.dipgra.es',
-  's1.ticketm.net',
 ];
 
 let resolvedImage: ImageMetadata | null = null;

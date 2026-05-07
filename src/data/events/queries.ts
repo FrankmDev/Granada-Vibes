@@ -35,10 +35,11 @@ function extractPriceFromDescription(text: string): number | null | undefined {
   return undefined; // genuinely unknown
 }
 
-const generatedEvents = (generatedRaw as Event[]).map((e) => ({
-  ...e,
-  image: e.image ?? e.imageUrl,
-}));
+const generatedEvents = (generatedRaw as Event[]).map((e) => {
+  const image = e.image ?? e.imageUrl;
+
+  return image ? { ...e, image } : e;
+});
 
 // Merge generated + mock events by slug.
 // Mock events overlay generated ones: they carry curated fields (price, ticketsUrl,

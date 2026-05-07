@@ -24,6 +24,7 @@ if (!root || !rawCopy) {
   throw new Error('Planner app configuration not found.');
 }
 
+const plannerRoot = root;
 const locale = (root.getAttribute('data-locale') ?? 'es') as 'es' | 'en';
 const copy = JSON.parse(rawCopy) as PlannerCopy;
 
@@ -278,7 +279,7 @@ function startGeneration(params: PlanParams): void {
 
   // Scroll to the planner section top immediately so the loading/results
   // appear in view and we don't jump to the bottom when tall content unfolds.
-  root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  plannerRoot.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const loadingText = document.getElementById('loading-text') as HTMLParagraphElement;
   let index = 0;
@@ -330,7 +331,7 @@ function resetForm(): void {
     window.setTimeout(() => {
       formEl.classList.remove('is-entering');
     }, 600);
-    root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    plannerRoot.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 400);
 }
 

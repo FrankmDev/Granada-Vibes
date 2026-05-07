@@ -13,6 +13,7 @@
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@utils/*": ["src/utils/*"],
+      "@types": ["src/types/index.ts"],
       "@types/*": ["src/types/*"],
       "@data/*": ["src/data/*"],
       "@config/*": ["src/config/*"],
