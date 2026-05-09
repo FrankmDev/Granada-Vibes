@@ -380,20 +380,30 @@ btnGenerate.addEventListener('click', () => {
   startGeneration(params);
 });
 
+function getCanonicalHref(): string {
+  const url = new URL(window.location.href);
+  if (url.hostname === 'granadaurban.com') {
+    url.hostname = 'www.granadaurban.com';
+  }
+  return url.toString();
+}
+
 document.getElementById('btn-compartir')?.addEventListener('click', async () => {
   if (!currentItinerary) return;
+
+  const shareUrl = getCanonicalHref();
 
   try {
     if (navigator.share) {
       await navigator.share({
         title: currentItinerary.titulo,
-        url: window.location.href,
+        url: shareUrl,
       });
       return;
     }
 
     if (navigator.clipboard) {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(shareUrl);
       const button = document.getElementById('btn-compartir') as HTMLButtonElement;
       const originalHtml = button.innerHTML;
       button.innerHTML = `<span>${copy.shareCopied}</span>`;
