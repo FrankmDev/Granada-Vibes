@@ -64,6 +64,23 @@
   .blg-prose a { color: var(--s-orange); text-decoration: underline; text-underline-offset: 4px; transition: color 0.3s ease; }
   .blg-prose a:hover { color: var(--s-ink); }
 
+  /* Force cream-theme text colors over inline Tailwind utilities from blog data */
+  .blg-prose p,
+  .blg-prose li,
+  .blg-prose ul,
+  .blg-prose ol,
+  .blg-prose td,
+  .blg-prose th,
+  .blg-prose div,
+  .blg-prose span {
+    color: var(--s-ink-2);
+  }
+  .blg-prose strong,
+  .blg-prose b {
+    color: var(--s-ink);
+    font-weight: 700;
+  }
+
   /* TAGS */
   .upg-tags { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; margin-left: 1rem; }
   .upg-tags.is-visible { opacity: 1; transform: translateY(0); }
