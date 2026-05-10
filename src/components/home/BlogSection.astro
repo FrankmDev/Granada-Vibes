@@ -1,6 +1,7 @@
 ---
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
 import { getRoute, getBlogDetailUrl } from '@utils/routes';
@@ -58,19 +59,15 @@ function formatDate(dateStr: string): string {
   />
 
   <div class="journal-container">
-    <!-- Masthead -->
-    <header class="journal-masthead">
-      <div class="masthead-kicker">
-        <span class="kicker-line"></span>
-        <span class="kicker-text">{t('blog.specialEdition')}</span>
-        <span class="kicker-line"></span>
-      </div>
-      <h2 class="masthead-title">
-        <span class="title-main">{t('blog.storiesTitle')}</span>
-        <span class="title-sub">{t('blog.storiesSubtitle')}</span>
-      </h2>
-      <p class="masthead-lead">{t('blog.storiesLead')}</p>
-    </header>
+    <SectionHeader
+      eyebrow={t('blog.specialEdition')}
+      titleLabel={t('blog.storiesTitle').toUpperCase()}
+      title={t('nav.blog').toUpperCase()}
+      ctaHref={blogHref}
+      ctaLabel={t('actions.viewAll').toUpperCase()}
+      showDecoration={true}
+    />
+    <p class="section-lead">{t('blog.storiesLead')}</p>
 
     <!-- Bento Grid Layout -->
     <div class="bento-grid">
@@ -267,7 +264,7 @@ function formatDate(dateStr: string): string {
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    document.querySelectorAll('.bento-item, .journal-masthead').forEach((el) => {
+    document.querySelectorAll('.bento-item').forEach((el) => {
       observer.observe(el);
     });
   }
@@ -290,6 +287,15 @@ function formatDate(dateStr: string): string {
     --j-gold: #c9a84c;
     --j-border: rgba(26, 22, 25, 0.08);
     --j-border-2: rgba(26, 22, 25, 0.12);
+
+    /* aliases for SectionHeader compatibility */
+    --s-cream: var(--j-cream);
+    --s-ink: var(--j-ink);
+    --s-ink-2: var(--j-ink-2);
+    --s-ink-3: var(--j-ink-3);
+    --s-orange: var(--j-orange);
+    --s-border: var(--j-border);
+    --s-border-s: var(--j-border-2);
 
     position: relative;
     width: 100%;
@@ -314,21 +320,16 @@ function formatDate(dateStr: string): string {
   /* Container */
   .journal-container { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2.5rem); }
 
-  /* ═══════════════════════════════════════════════════════════════
-     MASTHEAD
-     ═══════════════════════════════════════════════════════════════ */
-  .journal-masthead { text-align: center; margin-bottom: 3rem; opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-  .journal-masthead.is-visible { opacity: 1; transform: translateY(0); }
-
-  .masthead-kicker { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; }
-  .kicker-line { width: 40px; height: 1px; background: var(--j-border); }
-  .kicker-text { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3em; color: var(--j-orange); text-transform: uppercase; }
-
-  .masthead-title { margin: 0 0 0.75rem; }
-  .title-main { display: block; font-family: var(--font-body); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 200; line-height: 1; color: var(--j-ink); letter-spacing: -0.03em; }
-  .title-sub { display: block; font-family: var(--font-display); font-size: clamp(0.9rem, 2vw, 1.1rem); font-weight: 400; letter-spacing: 0.15em; color: var(--j-ink-3); text-transform: uppercase; margin-top: 0.5rem; }
-
-  .masthead-lead { font-family: var(--font-display); font-size: 1rem; color: var(--j-ink-2); max-width: 400px; margin: 0 auto; line-height: 1.6; }
+  /* Section lead below SectionHeader */
+  .section-lead {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--j-ink-2);
+    max-width: 400px;
+    margin: 1.5rem auto 3rem;
+    line-height: 1.6;
+    text-align: center;
+  }
 
   /* ═══════════════════════════════════════════════════════════════
      BENTO GRID
