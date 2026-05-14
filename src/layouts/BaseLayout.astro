@@ -72,6 +72,7 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="msvalidate.01" content="6A19FE7E273FC514F82832219D058DDF" />
 
     {/* Resource hints — preconnect to critical third-party origins */}
     <link rel="preconnect" href="https://images.unsplash.com" />
@@ -197,7 +198,7 @@ const currentPath = Astro.url.pathname;
     <script is:inline>
       // Check for reduced motion preference
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
+
       if (!prefersReducedMotion) {
         // Add page load animation class
         document.addEventListener('DOMContentLoaded', () => {
