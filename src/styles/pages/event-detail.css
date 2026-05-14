@@ -274,6 +274,29 @@
   .uri-arrow svg { width: 16px; height: 16px; }
   .upg-rel-item:hover .uri-arrow { background: var(--s-orange); color: #fff; }
 
+  /* Related events grid (main content) */
+  .upg-related-events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .upg-rel-event-card {
+    display: flex; flex-direction: column; gap: 0.75rem;
+    background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 20px;
+    padding: 1rem; text-decoration: none; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0; transform: translateY(12px); animation: cell-reveal 0.6s var(--ease-expo) calc(var(--rd, 0s) + 0.2s) forwards;
+  }
+  .upg-rel-event-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.06); border-color: rgba(201,168,76,0.35); }
+  .urec-thumb { width: 100%; aspect-ratio: 16/10; border-radius: 14px; overflow: hidden; background: rgba(26,22,25,0.04); }
+  .urec-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); filter: grayscale(20%) contrast(1.05); }
+  .upg-rel-event-card:hover .urec-thumb img { transform: scale(1.05); filter: grayscale(0%) contrast(1.05); }
+  .urec-thumb-fallback { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(232,98,42,0.06), rgba(201,168,76,0.04)); }
+  .urec-content { display: flex; flex-direction: column; gap: 0.25rem; padding: 0 0.25rem; }
+  .urec-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; color: var(--s-ink); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .urec-meta { font-family: var(--font-display); font-size: 0.7rem; color: var(--s-ink-3); letter-spacing: 0.02em; }
+  .urec-arrow { width: 36px; height: 36px; border-radius: 50%; background: transparent; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; margin-top: auto; align-self: flex-end; }
+  .urec-arrow svg { width: 16px; height: 16px; }
+  .upg-rel-event-card:hover .urec-arrow { background: var(--s-orange); color: #fff; }
+  @media (max-width: 768px) {
+    .upg-related-events-grid { grid-template-columns: 1fr; }
+  }
+
   /* Footer ornament */
   .det-footer-orn {
     display: flex;

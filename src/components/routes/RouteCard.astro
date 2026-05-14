@@ -17,5 +17,5 @@ const { route, locale, t, index = 0, variant = 'grid' } = Astro.props;
 {variant === 'list' ? (
   <RouteCardList route={route} locale={locale} t={t} index={index} />
 ) : (
-  <RouteCardGrid route={route} locale={locale} t={t} />
+  <RouteCardGrid route={route} locale={locale} t={t} index={index} />
 )}

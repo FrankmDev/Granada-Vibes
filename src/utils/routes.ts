@@ -1,6 +1,6 @@
 import type { Locale, RouteDifficulty } from '@types';
 
-type RouteName = 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal';
+type RouteName = 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal' | 'collaborate';
 
 const ROUTE_MAP: Record<Locale, Record<RouteName, string>> = {
   es: {
@@ -12,6 +12,7 @@ const ROUTE_MAP: Record<Locale, Record<RouteName, string>> = {
     planner: '/planifica/',
     privacy: '/privacidad/',
     legal: '/aviso-legal/',
+    collaborate: '/colabora/',
   },
   en: {
     home: '/en/',
@@ -22,6 +23,7 @@ const ROUTE_MAP: Record<Locale, Record<RouteName, string>> = {
     planner: '/en/planifica/',
     privacy: '/en/privacy/',
     legal: '/en/legal/',
+    collaborate: '/en/collaborate/',
   },
 };
 

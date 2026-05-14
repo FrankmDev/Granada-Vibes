@@ -645,6 +645,29 @@ ctaAriaLabel: 'Discover Granada',
     log: 'LOG',
   },
 
+  // Collaborate page
+  collaborate: {
+    heroTitle: 'Your business, at the heart of Granada.',
+    pageDescription: 'Collaborate with GRN URBAN. Directory listings, content sponsorships and newsletter mentions for local businesses in Granada.',
+    proposalsHeading: 'Collaboration proposals',
+    card1Title: 'Directory Listing',
+    card1Desc: 'Free presence in our local business directory during launch. Visibility to tourists and locals seeking authentic experiences.',
+    card1Cta: 'Request listing',
+    card1Price: 'Free at launch',
+    card2Title: 'Content Sponsorship',
+    card2Desc: 'Editorially integrated sponsored guide or route. Native content that connects your brand with quality travellers without intrusive banners.',
+    card2Cta: 'Sponsorship proposal',
+    card2Price: 'From €150',
+    card3Title: 'Newsletter Mention',
+    card3Desc: 'Appear in our weekly newsletter sent to thousands of visitors and residents interested in Granada culture and leisure.',
+    card3Cta: 'Book mention',
+    card3Price: 'From €50',
+    ctaText: 'No forms. Drop us a line and we will reply within 24 hours.',
+    ctaEmail: 'hola@granadaurban.com',
+    ctaSubject: 'Collaboration GRN URBAN',
+    footerGroup: 'COLLABORATE',
+  },
+
   // Not Found
   notFound: {
     title: 'Page not found — GRN URBAN',

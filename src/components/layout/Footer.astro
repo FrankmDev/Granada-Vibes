@@ -149,6 +149,21 @@ const wordmarkChars = t('footer.brand.title').split('');
           </nav>
         </div>
 
+        <div class="collaborate-section">
+          <div class="col-header">
+            <span class="col-bracket">[</span>
+            <span class="col-title">{t('collaborate.footerGroup')}</span>
+            <span class="col-bracket">]</span>
+          </div>
+          <nav class="footer-nav footer-nav--compact">
+            <a href={getRoute('collaborate', locale)} class="nav-link nav-link--subtle" style="--index: 0">
+              <span class="link-num">03</span>
+              <span class="link-label">{t('collaborate.footerGroup')}</span>
+              <span class="link-indicator"></span>
+            </a>
+          </nav>
+        </div>
+
         <div class="contact-section">
           <div class="col-header">
             <span class="col-bracket">[</span>
@@ -1051,6 +1066,13 @@ const wordmarkChars = t('footer.brand.title').split('');
   .nav-link--subtle .link-corner {
     width: 6px;
     height: 6px;
+  }
+
+  /* Collaborate Section */
+  .collaborate-section {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--s-border-s);
   }
 
   /* Contact Section - Glass Card Design */

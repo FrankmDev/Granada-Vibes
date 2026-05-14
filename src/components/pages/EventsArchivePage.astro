@@ -180,7 +180,13 @@ const columns = rawColumns;
       const eventsGrid = document.getElementById('events-grid');
       const eventCards = document.querySelectorAll('.archive-item');
 
-      let filters = { category: 'all', neighborhood: 'all', date: 'all', free: false };
+      let filters = { category: 'all', neighborhood: 'all', date: 'all', free: false, query: '' };
+
+      const params = new URLSearchParams(window.location.search);
+      const searchQuery = (params.get('q') || '').trim().toLowerCase();
+      if (searchQuery) {
+        filters.query = searchQuery;
+      }
 
       function matchesDateFilter(eventDate, filter) {
         if (filter === 'all') return true;
@@ -212,6 +218,7 @@ const columns = rawColumns;
             (filters.category === 'all' || card.dataset.category === filters.category) &&
             (filters.neighborhood === 'all' || card.dataset.neighborhood === filters.neighborhood) &&
             (!filters.free || card.dataset.price === 'free') &&
+            (!filters.query || (card.dataset.search || '').includes(filters.query)) &&
             matchesDateFilter(card.dataset.date, filters.date);
           card.style.display = match ? '' : 'none';
           if (match) visibleCount++;
@@ -228,7 +235,7 @@ const columns = rawColumns;
         }
 
         const hasActive = filters.category !== 'all' || filters.neighborhood !== 'all' ||
-                          filters.date !== 'all' || filters.free;
+                          filters.date !== 'all' || filters.free || filters.query !== '';
         clearFiltersBtn && clearFiltersBtn.classList.toggle('hidden', !hasActive);
       }
 
@@ -247,7 +254,7 @@ const columns = rawColumns;
       freeCheckbox?.addEventListener('input', e => { filters.free = e.target.checked; applyFilters(); });
 
       function clearFilters() {
-        filters = { category: 'all', neighborhood: 'all', date: 'all', free: false };
+        filters = { category: 'all', neighborhood: 'all', date: 'all', free: false, query: '' };
         categoryButtons.forEach(b => {
           const isAll = b.dataset.category === 'all';
           b.classList.toggle('active', isAll);
@@ -261,6 +268,7 @@ const columns = rawColumns;
 
       clearFiltersBtn?.addEventListener('click', clearFilters);
       emptyClearFiltersBtn?.addEventListener('click', clearFilters);
+      applyFilters();
     })();
   </script>
 </BaseLayout>

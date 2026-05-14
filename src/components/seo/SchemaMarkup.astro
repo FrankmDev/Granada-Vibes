@@ -1,5 +1,6 @@
 ---
 import { SITE_CONFIG } from '@config/site';
+import { resolveOgImageUrl } from '@utils/seo';
 import type { Event, Route, BlogPost } from '@types';
 
 interface BreadcrumbItem {
@@ -26,9 +27,7 @@ const { type, data, locale, path = '', breadcrumb, faq } = Astro.props;
 const siteUrl = SITE_CONFIG.url;
 
 function resolveImageUrl(image: string | undefined): string {
-  if (!image) return `${siteUrl}/og-default.jpg`;
-  if (image.startsWith('http://') || image.startsWith('https://')) return image;
-  return `${siteUrl}${image}`;
+  return resolveOgImageUrl(image);
 }
 
 // Base organization schema
@@ -56,13 +55,23 @@ const organizationSchema = {
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
   name: SITE_CONFIG.name,
   description: SITE_CONFIG.description[locale],
   url: siteUrl,
   inLanguage: locale,
   publisher: {
     '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
     name: SITE_CONFIG.name,
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${siteUrl}/eventos/?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
   },
 };
 
@@ -367,6 +376,8 @@ switch (type) {
     if (data && 'publishDate' in data) {
       const postData = data as BlogPost;
       const postImages = [resolveImageUrl(postData.image)].filter(Boolean);
+      const articleText = postData.content[locale].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      const articleWordCount = articleText ? articleText.split(' ').length : Math.round(postData.readingTime * 200);
       primarySchema = {
         '@context': 'https://schema.org',
         '@type': 'Article',
@@ -381,7 +392,7 @@ switch (type) {
         datePublished: postData.publishDate,
         dateModified: postData.publishDate,
         articleSection: postData.category,
-        wordCount: Math.round(postData.readingTime * 200),
+        wordCount: articleWordCount,
         keywords: postData.tags.join(', '),
         author: {
           '@type': 'Person',
@@ -401,7 +412,9 @@ switch (type) {
 }
 
 // Build final schema graph
-const graph: unknown[] = [primarySchema];
+const graph: unknown[] = type === 'website'
+  ? [organizationSchema, primarySchema]
+  : [primarySchema];
 if (breadcrumb && breadcrumb.length > 0) {
   graph.push(buildBreadcrumbSchema(breadcrumb));
 }

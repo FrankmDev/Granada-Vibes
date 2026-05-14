@@ -33,6 +33,7 @@ const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 1
         alt={post.title[locale]}
         class="featured-image"
         loading="eager"
+        fetchpriority="high"
         decoding="async"
         sizes="(max-width: 768px) 100vw, 60vw"
       />

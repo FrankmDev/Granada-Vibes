@@ -9,15 +9,17 @@ interface Props {
   route: Route;
   locale: Locale;
   t: (key: string, vars?: Record<string, string | number>) => string;
+  index?: number;
 }
 
-const { route, locale, t } = Astro.props;
+const { route, locale, t, index = 3 } = Astro.props;
 const href = getRouteDetailUrl(route.slug, locale);
 
 const catStyle = routeCategoryStyles[route.category] ?? routeCategoryStyles.monuments;
 const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;
 const timeStyle = timeOfDayStyles[route.timeOfDay] ?? timeOfDayStyles.any;
 const diffLevel = diffStyle.bars;
+const isPriorityImage = index < 3;
 ---
 
 <article class="group h-full">
@@ -33,7 +35,8 @@ const diffLevel = diffStyle.bars;
               src={route.image}
               alt={route.title[locale]}
               class="route-grid__image"
-              loading="lazy"
+              loading={isPriorityImage ? 'eager' : 'lazy'}
+              fetchpriority={isPriorityImage ? 'high' : undefined}
               decoding="async"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
             />

@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
 import Footer from '@components/layout/Footer.astro';
+import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import { getAllRoutes } from '@data/index.js';
@@ -168,6 +169,15 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
   faq={faq.length > 0 ? faq : undefined}
 >
   <RouteDetailHero route={route} locale={locale} />
+
+  <Breadcrumbs
+    variant="light"
+    items={[
+      { label: copy.breadcrumb.home, href: getRoute('home', locale) },
+      { label: copy.breadcrumb.listing, href: getRoute('routes', locale) },
+      { label: route.title[locale] },
+    ]}
+  />
 
   <div class="det-page route-page-override">
     <div class="det-content-wrap">

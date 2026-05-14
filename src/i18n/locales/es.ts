@@ -643,6 +643,29 @@ ctaAriaLabel: 'Descubre Granada',
     log: 'REGISTRO',
   },
 
+  // Collaborate page
+  collaborate: {
+    heroTitle: 'Tu negocio, en el corazón de Granada.',
+    pageDescription: 'Colabora con GRN URBAN. Fichas de directorio, patrocinios de contenido y menciones en newsletter para negocios locales de Granada.',
+    proposalsHeading: 'Propuestas de colaboración',
+    card1Title: 'Ficha en el Directorio',
+    card1Desc: 'Presencia gratuita en nuestro directorio de negocios locales durante el lanzamiento. Visibilidad frente a turistas y granadinos que buscan experiencias auténticas.',
+    card1Cta: 'Solicitar ficha',
+    card1Price: 'Gratuita en lanzamiento',
+    card2Title: 'Patrocinio de contenido',
+    card2Desc: 'Guía o ruta patrocinada integrada editorialmente. Contenido nativo que conecta tu marca con viajeros de calidad sin banners intrusivos.',
+    card2Cta: 'Propuesta de patrocinio',
+    card2Price: 'Desde 150€',
+    card3Title: 'Mención en newsletter',
+    card3Desc: 'Aparece en nuestra newsletter semanal dirigida a miles de visitantes y residentes interesados en la cultura y el ocio de Granada.',
+    card3Cta: 'Reservar mención',
+    card3Price: 'Desde 50€',
+    ctaText: 'Sin formularios. Escríbenos y en 24h te respondemos.',
+    ctaEmail: 'hola@granadaurban.com',
+    ctaSubject: 'Colaboración GRN URBAN',
+    footerGroup: 'COLABORA',
+  },
+
   // Not Found
   notFound: {
     title: 'Página no encontrada — GRN URBAN',

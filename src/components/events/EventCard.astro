@@ -11,14 +11,16 @@ interface Props {
   locale: Locale;
   t: (key: string, vars?: Record<string, string | number>) => string;
   featured?: boolean;
+  index?: number;
 }
 
-const { event, locale, t, featured = false } = Astro.props;
+const { event, locale, t, featured = false, index = 3 } = Astro.props;
 const href = getEventDetailUrl(event.slug, locale);
 const temporalProximity = getTemporalProximity(event.date);
 const catStyle = eventCategoryStyles[event.category] ?? eventCategoryStyles.other;
 const eventImage = event.imageUrl ?? event.image;
 const catColor = catStyle.colorVar;
+const isPriorityImage = index < 3;
 ---
 
 <article class:list={['group relative', { 'lg:col-span-2': featured }]}>
@@ -34,7 +36,8 @@ const catColor = catStyle.colorVar;
             src={eventImage}
             alt={event.title[locale]}
             class="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
-            loading="lazy"
+            loading={isPriorityImage ? 'eager' : 'lazy'}
+            fetchpriority={isPriorityImage ? 'high' : undefined}
             decoding="async"
           />
         )}

@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
+import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
@@ -115,9 +116,15 @@ const allEvents = getAllEvents().sort((a, b) => new Date(a.date).getTime() - new
 const eventIndex = allEvents.findIndex((e) => e.id === event.id);
 const prevEvent = eventIndex > 0 ? allEvents[eventIndex - 1] : null;
 const nextEvent = eventIndex < allEvents.length - 1 ? allEvents[eventIndex + 1] : null;
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
 const relatedEvents = allEvents
-  .filter((candidate) => candidate.category === event.category && candidate.id !== event.id)
+  .filter((candidate) => {
+    const candidateDate = new Date(candidate.date);
+    candidateDate.setHours(0, 0, 0, 0);
+    return candidate.category === event.category && candidate.id !== event.id && candidateDate >= today;
+  })
   .slice(0, 3);
 
 const relatedRoutesForEvent = getRelatedRoutesForEvent(event, 2);
@@ -200,6 +207,15 @@ if (event.venue) {
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
   <EventDetailHero event={event} locale={locale} />
+
+  <Breadcrumbs
+    variant="light"
+    items={[
+      { label: copy.breadcrumb.home, href: getRoute('home', locale) },
+      { label: copy.breadcrumb.listing, href: getRoute('events', locale) },
+      { label: event.title[locale] },
+    ]}
+  />
 
   <div class="det-page">
     <div class="det-content-wrap">
@@ -367,6 +383,37 @@ if (event.venue) {
                 <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
               </header>
               <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
+            </div>
+          )}
+
+          {relatedEvents.length > 0 && (
+            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">06</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {isEnglish ? 'You may also like' : 'Otros eventos que te pueden interesar'} ]</span>
+              </header>
+              <div class="upg-related-events-grid">
+                {relatedEvents.map((related, index) => (
+                  <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-event-card" style={`--rd: ${index * 0.15}s`}>
+                    <div class="urec-thumb">
+                      {(related.imageUrl || related.image) ? (
+                        <OptimizedImage src={related.imageUrl || related.image} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" />
+                      ) : (
+                        <div class="urec-thumb-fallback"></div>
+                      )}
+                    </div>
+                    <div class="urec-content">
+                      <span class="urec-title">{related.title[locale]}</span>
+                      <span class="urec-meta">{formatFullDate(related.date, locale)} · {related.venue}</span>
+                    </div>
+                    <div class="urec-arrow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                  </a>
+                ))}
+              </div>
             </div>
           )}
         </main>

@@ -12,9 +12,10 @@ interface Props {
   post: BlogPost;
   locale: Locale;
   formattedDate: string;
+  readingMinutes?: number;
 }
 
-const { post, locale, formattedDate } = Astro.props;
+const { post, locale, formattedDate, readingMinutes = post.readingTime } = Astro.props;
 const t = useTranslations(locale);
 
 const year = new Date(post.publishDate).getFullYear();
@@ -31,7 +32,7 @@ const catLabel   = t(`blog.categories.${post.category}`).toUpperCase();
 const dockLabel  = t('detail.articleInfo');
 const description = post.description[locale];
 
-const readingDisplay = t('blog.readingTime', { minutes: post.readingTime });
+const readingDisplay = t('blog.readingTime', { minutes: readingMinutes });
 ---
 
 <CinematicHero

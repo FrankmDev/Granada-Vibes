@@ -49,6 +49,7 @@ function eventHref(slug: string): string {
         const href = eventHref(evt.slug);
         const proximity = getTemporalProximity(evt.date);
         const hasTemporalBadge = proximity === 'today' || proximity === 'tomorrow';
+        const eventImage = evt.imageUrl || evt.image;
 
         return (
           <article
@@ -57,6 +58,7 @@ function eventHref(slug: string): string {
             data-neighborhood={evt.neighborhood}
             data-price={getPriceStatus(evt) === 'free' ? 'free' : getPriceStatus(evt) === 'paid' ? 'paid' : 'tickets'}
             data-date={evt.date}
+            data-search={`${evt.title[locale]} ${evt.description[locale]} ${evt.venue} ${categoryLabels[evt.category] ?? evt.category}`.toLowerCase()}
             style={`--card-index: ${colIndex * 6 + idx}; height: ${heightVh}vh;`}
           >
             <a href={href} class="item-link">
@@ -65,12 +67,13 @@ function eventHref(slug: string): string {
               <span class="cb cb-bl" aria-hidden="true"></span>
               <span class="cb cb-br" aria-hidden="true"></span>
 
-              {evt.image && !evt.image.includes('undefined') ? (
+              {eventImage && !eventImage.includes('undefined') ? (
                 <OptimizedImage
-                  src={evt.image}
+                  src={eventImage}
                   alt={evt.title[locale]}
                   class="item-image"
-                  loading={idx < 2 ? 'eager' : 'lazy'}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={idx === 0 ? 'high' : undefined}
                   decoding="async"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />

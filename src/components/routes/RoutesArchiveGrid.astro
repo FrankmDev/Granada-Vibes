@@ -62,7 +62,8 @@ const timeOfDayIcons: Record<string, string> = {
                 src={bgImage}
                 alt={route.title[locale]}
                 class="expedition-img"
-                loading="lazy"
+                loading={idx < 3 ? 'eager' : 'lazy'}
+                fetchpriority={idx < 3 ? 'high' : undefined}
                 decoding="async"
                 sizes="(max-width: 768px) 100vw, 400px"
               />

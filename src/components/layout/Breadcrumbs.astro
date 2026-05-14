@@ -8,9 +8,21 @@ interface BreadcrumbItem {
 
 interface Props {
   items: BreadcrumbItem[];
+  variant?: 'dark' | 'light';
 }
 
-const { items } = Astro.props;
+const { items, variant = 'dark' } = Astro.props;
+
+const isLight = variant === 'light';
+const linkClass = isLight
+  ? 'text-ink-3 hover:text-orange transition-colors'
+  : 'text-white/40 hover:text-accent transition-colors';
+const activeClass = isLight
+  ? 'text-ink font-medium'
+  : 'text-white font-medium';
+const sepClass = isLight
+  ? 'text-ink-3/30'
+  : 'text-white/30';
 ---
 
 <nav aria-label="Breadcrumb" class="mb-8">
@@ -18,18 +30,24 @@ const { items } = Astro.props;
     {items.map((item, index) => (
       <li class="flex items-center gap-2">
         {index > 0 && (
-          <svg class="w-4 h-4 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class={`w-4 h-4 ${sepClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icons.chevronRight} />
           </svg>
         )}
         {item.href ? (
-          <a href={item.href} class="text-white/40 hover:text-accent transition-colors">
+          <a href={item.href} class={linkClass}>
             {item.label}
           </a>
         ) : (
-          <span class="text-white font-medium" aria-current="page">{item.label}</span>
+          <span class={activeClass} aria-current="page">{item.label}</span>
         )}
       </li>
     ))}
   </ol>
 </nav>
+
+<style>
+  .text-ink { color: var(--s-ink, #1a1619); }
+  .text-ink-3 { color: var(--s-ink-3, #8a7f77); }
+  .text-orange { color: var(--s-orange, #e8622a); }
+</style>

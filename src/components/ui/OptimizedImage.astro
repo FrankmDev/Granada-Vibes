@@ -11,6 +11,7 @@ interface Props {
   sizes?: string;
   loading?: 'eager' | 'lazy';
   decoding?: 'async' | 'sync' | 'auto';
+  fetchpriority?: 'high' | 'low' | 'auto';
   class?: string;
 }
 
@@ -22,6 +23,7 @@ const {
   sizes,
   loading = 'lazy',
   decoding = 'async',
+  fetchpriority,
   class: className = '',
 } = Astro.props;
 
@@ -77,6 +79,7 @@ const fallbackHeight = height || 600;
     sizes={imgSizes}
     loading={loading}
     decoding={decoding}
+    {...(fetchpriority ? { fetchpriority } : {})}
     class={combinedClasses}
     inferSize
   />
@@ -89,6 +92,7 @@ const fallbackHeight = height || 600;
     sizes={imgSizes}
     loading={loading}
     decoding={decoding}
+    {...(fetchpriority ? { fetchpriority } : {})}
     class={combinedClasses}
   />
 ) : (
@@ -99,6 +103,7 @@ const fallbackHeight = height || 600;
     height={height}
     loading={loading}
     decoding={decoding}
+    {...(fetchpriority ? { fetchpriority } : {})}
     class={combinedClasses}
   />
 )}

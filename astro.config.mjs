@@ -1,20 +1,15 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { createSitemapConfig } from './src/config/sitemap.mjs';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   site: 'https://www.granadaurban.com',
   integrations: [
-    sitemap({
-      i18n: {
-        defaultLocale: 'es',
-        locales: {
-          es: 'es',
-          en: 'en',
-        },
-      },
-      lastmod: new Date(),
-    }),
+    sitemap(createSitemapConfig(__dirname)),
   ],
   i18n: {
     defaultLocale: 'es',

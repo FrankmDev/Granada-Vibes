@@ -17,6 +17,7 @@ const href = getRouteDetailUrl(route.slug, locale);
 
 const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;
 const diffLevel = diffStyle.bars;
+const isPriorityImage = index < 3;
 ---
 
 <article class="group">
@@ -31,7 +32,8 @@ const diffLevel = diffStyle.bars;
             src={route.image}
             alt={route.title[locale]}
             class="route-list__image"
-            loading="lazy"
+            loading={isPriorityImage ? 'eager' : 'lazy'}
+            fetchpriority={isPriorityImage ? 'high' : undefined}
             decoding="async"
             sizes="100vw"
           />

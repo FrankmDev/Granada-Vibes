@@ -37,9 +37,15 @@ export {
 
 // SEO utilities
 export {
+  absoluteSiteUrl,
+  getAlternateUrls,
   getEventMetaDescription,
+  getEnglishPath,
   getRouteMetaDescription,
   getOgImageUrl,
+  getSpanishPath,
+  normalizeUrlPath,
+  resolveOgImageUrl,
 } from './seo';
 
 // Route utilities

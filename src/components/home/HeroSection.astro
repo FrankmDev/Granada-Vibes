@@ -89,7 +89,7 @@ const c = {
 
   <!-- 1. The Living Canvas -->
   <div class="ambient-layer">
-    <video class="ambient-video" autoplay muted loop playsinline preload="auto">
+    <video class="ambient-video" autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg" data-ambient-video>
       <source src="/heroVideo.mp4" type="video/mp4" />
     </video>
     <div class="ambient-grain" aria-hidden="true"></div>
@@ -127,7 +127,7 @@ const c = {
 
     <div class="portal" data-parallax="0.05" aria-hidden="true">
       <div class="portal-inner-frame">
-        <video class="sharp-video" muted loop playsinline preload="none">
+        <video class="sharp-video" muted loop playsinline preload="metadata" poster="/hero-poster.jpg">
           <source src="/heroVideo.mp4" type="video/mp4" />
         </video>
         <div class="portal-shadows"></div>
@@ -234,17 +234,25 @@ const c = {
       if (code <= 82) return '🌦';
       return '⛈';
     };
-    fetch('https://api.open-meteo.com/v1/forecast?latitude=37.18&longitude=-3.60&current=temperature_2m,weather_code&timezone=Europe%2FMadrid')
-      .then(r => r.json())
-      .then(data => {
-        const todayTemp = document.getElementById('weather-today');
-        const todayIcon = document.getElementById('weather-icon-today');
-        const curTemp = Math.round(data.current.temperature_2m);
-        const curCode = data.current.weather_code as number;
-        if (todayTemp) todayTemp.textContent = `${curTemp}°`;
-        if (todayIcon) todayIcon.textContent = wmoIcon(curCode);
-      })
-      .catch(() => {});
+    const fetchWeather = () => {
+      fetch('https://api.open-meteo.com/v1/forecast?latitude=37.18&longitude=-3.60&current=temperature_2m,weather_code&timezone=Europe%2FMadrid')
+        .then(r => r.json())
+        .then(data => {
+          const todayTemp = document.getElementById('weather-today');
+          const todayIcon = document.getElementById('weather-icon-today');
+          const curTemp = Math.round(data.current.temperature_2m);
+          const curCode = data.current.weather_code as number;
+          if (todayTemp) todayTemp.textContent = `${curTemp}°`;
+          if (todayIcon) todayIcon.textContent = wmoIcon(curCode);
+        })
+        .catch(() => {});
+    };
+    // Defer weather fetch until after critical rendering
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(fetchWeather, { timeout: 3000 });
+    } else {
+      setTimeout(fetchWeather, 2000);
+    }
 
     // 3. Lightweight Mouse Parallax
     const portal = document.querySelector('.portal') as HTMLElement;
@@ -311,6 +319,8 @@ const c = {
       if (bootStatus) bootStatus.textContent = pct < 50 ? 'Cargando' : 'Listo';
     }, 40);
 
+    const ambientVideo = document.querySelector('[data-ambient-video]') as HTMLVideoElement | null;
+
     const revealHero = () => {
       if (!bootScreen || hasRevealed) return;
       hasRevealed = true;
@@ -327,6 +337,13 @@ const c = {
         // Start hero entrance immediately
         section?.classList.add('is-ready');
         if (sharpVideo) { sharpVideo.play().catch(() => {}); }
+
+        // Defer ambient video load until after critical content is visible
+        if (ambientVideo) {
+          ambientVideo.preload = 'auto';
+          ambientVideo.load();
+          ambientVideo.play().catch(() => {});
+        }
 
         // Boot fades out smoothly after a tiny delay
         setTimeout(() => {

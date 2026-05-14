@@ -48,7 +48,8 @@ function formatDate(dateStr: string): string {
                 src={post.image || blogImages[post.id] || blogImages.default}
                 alt={post.title[locale]}
                 class="card-image"
-                loading="lazy"
+                loading={idx < 3 ? 'eager' : 'lazy'}
+                fetchpriority={idx < 3 ? 'high' : undefined}
                 decoding="async"
                 sizes="(max-width: 640px) 100vw, 400px"
               />

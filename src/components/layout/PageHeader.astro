@@ -99,7 +99,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
   <!-- Background -->
   {backgroundVideo ? (
     <div class="ph-bg" aria-hidden="true">
-      <video class="ph-bg-media" autoplay muted loop playsinline>
+      <video class="ph-bg-media" autoplay muted loop playsinline preload="none">
         <source src="/heroVideo.mp4" type="video/mp4" />
       </video>
       <div class="ph-bg-vignette"></div>

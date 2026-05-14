@@ -2,7 +2,7 @@ import type { BlogPost, BlogCategory } from '@types';
 import { posts } from './posts.js';
 
 export function getAllPosts(): BlogPost[] {
-  return posts.sort((a, b) => b.publishDate.localeCompare(a.publishDate));
+  return posts.slice().sort((a, b) => b.publishDate.localeCompare(a.publishDate));
 }
 
 export function getFeaturedPosts(): BlogPost[] {

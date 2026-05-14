@@ -1,0 +1,175 @@
+import { readFileSync } from 'fs';
+import path from 'path';
+
+const ROUTES_EXCLUDED_FROM_SITEMAP = [
+  '/404/',
+  '/privacidad/',
+  '/en/privacy/',
+  '/aviso-legal/',
+  '/en/legal/',
+  '/rutas/por-tiempo/',
+  '/en/routes/by-time/',
+];
+
+const ES_TO_EN_SEGMENTS = {
+  eventos: 'events',
+  rutas: 'routes',
+  guias: 'guides',
+  'por-tiempo': 'by-time',
+  privacidad: 'privacy',
+  'aviso-legal': 'legal',
+  colabora: 'collaborate',
+  planifica: 'planifica',
+};
+
+const EN_TO_ES_SEGMENTS = Object.fromEntries(
+  Object.entries(ES_TO_EN_SEGMENTS).map(([spanishSegment, englishSegment]) => [
+    englishSegment,
+    spanishSegment,
+  ])
+);
+
+function normalizePathname(pathname) {
+  if (pathname === '/') return pathname;
+  return pathname.endsWith('/') ? pathname : `${pathname}/`;
+}
+
+function stripEnglishPrefix(pathname) {
+  return pathname.replace(/^\/en(?=\/|$)/, '') || '/';
+}
+
+function translatePath(pathname, dictionary) {
+  return normalizePathname(
+    pathname
+      .split('/')
+      .map((segment) => dictionary[segment] ?? segment)
+      .join('/')
+  );
+}
+
+function getEnglishPath(pathname) {
+  const translatedPath = translatePath(stripEnglishPrefix(pathname), ES_TO_EN_SEGMENTS);
+  return normalizePathname(`/en${translatedPath === '/' ? '' : translatedPath}`);
+}
+
+function getSpanishPath(pathname) {
+  return translatePath(stripEnglishPrefix(pathname), EN_TO_ES_SEGMENTS);
+}
+
+function getAlternateLinks(url) {
+  const parsedUrl = new URL(url);
+  const pathname = normalizePathname(parsedUrl.pathname);
+
+  return [
+    {
+      lang: 'es',
+      url: new URL(getSpanishPath(pathname), parsedUrl.origin).href,
+    },
+    {
+      lang: 'en',
+      url: new URL(getEnglishPath(pathname), parsedUrl.origin).href,
+    },
+  ];
+}
+
+function readPastEventSlugs(rootDir) {
+  const pastEventSlugs = new Set();
+
+  try {
+    const generatedPath = path.join(rootDir, 'src/data/events/generated.json');
+    const generatedEvents = JSON.parse(readFileSync(generatedPath, 'utf-8'));
+    const today = new Date().toISOString().split('T')[0];
+
+    if (!Array.isArray(generatedEvents) || !today) return pastEventSlugs;
+
+    for (const event of generatedEvents) {
+      if (
+        event &&
+        typeof event === 'object' &&
+        typeof event.date === 'string' &&
+        typeof event.slug === 'string' &&
+        event.date < today
+      ) {
+        pastEventSlugs.add(event.slug);
+      }
+    }
+  } catch {
+    return pastEventSlugs;
+  }
+
+  return pastEventSlugs;
+}
+
+function getSitemapMeta(url, pastEventSlugs) {
+  const pathname = normalizePathname(new URL(url).pathname);
+
+  if (pathname === '/' || pathname === '/en/') {
+    return { priority: 1.0, changefreq: 'daily' };
+  }
+
+  if (pathname === '/eventos/' || pathname === '/en/events/') {
+    return { priority: 0.9, changefreq: 'daily' };
+  }
+
+  if (
+    pathname === '/rutas/' ||
+    pathname === '/en/routes/' ||
+    pathname === '/guias/' ||
+    pathname === '/en/guides/'
+  ) {
+    return { priority: 0.8, changefreq: 'monthly' };
+  }
+
+  if (
+    pathname === '/planifica/' ||
+    pathname === '/en/planifica/' ||
+    pathname === '/colabora/' ||
+    pathname === '/en/collaborate/'
+  ) {
+    return { priority: 0.7, changefreq: 'monthly' };
+  }
+
+  const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
+  if (eventMatch) {
+    const slug = eventMatch[1];
+    return pastEventSlugs.has(slug)
+      ? { priority: 0.3, changefreq: 'yearly' }
+      : { priority: 0.65, changefreq: 'daily' };
+  }
+
+  if (pathname.match(/^\/(?:en\/routes|rutas)\/[^/]+\/$/)) {
+    return { priority: 0.6, changefreq: 'monthly' };
+  }
+
+  if (pathname.match(/^\/(?:en\/guides|guias)\/[^/]+\/$/)) {
+    return { priority: 0.6, changefreq: 'monthly' };
+  }
+
+  if (pathname.match(/^\/(?:en\/routes\/by-time|rutas\/por-tiempo)\/[^/]+\/$/)) {
+    return { priority: 0.55, changefreq: 'monthly' };
+  }
+
+  return { priority: 0.5, changefreq: 'monthly' };
+}
+
+function shouldIndexPage(page) {
+  const pathname = normalizePathname(new URL(page).pathname);
+  return !ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname);
+}
+
+export function createSitemapConfig(rootDir) {
+  const pastEventSlugs = readPastEventSlugs(rootDir);
+
+  return {
+    filter: shouldIndexPage,
+    serialize(item) {
+      const meta = getSitemapMeta(item.url, pastEventSlugs);
+      return {
+        ...item,
+        changefreq: meta.changefreq,
+        priority: meta.priority,
+        links: getAlternateLinks(item.url),
+      };
+    },
+  };
+}

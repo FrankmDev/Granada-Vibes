@@ -8,9 +8,11 @@ interface Props {
   locale: Locale;
   t: (key: string, vars?: Record<string, string | number>) => string;
   featured?: boolean;
+  index?: number;
 }
 
-const { post, locale, t, featured = false } = Astro.props;
+const { post, locale, t, featured = false, index = 3 } = Astro.props;
+const isPriorityImage = index < 3;
 
 const formattedDate = new Date(post.publishDate).toLocaleDateString(
   locale === 'es' ? 'es-ES' : 'en-GB',
@@ -34,7 +36,8 @@ const categoryLabel = t(`blog.categories.${post.category}`);
         src={post.image}
         alt={post.title[locale]}
         class="transition-transform duration-500 group-hover:scale-105"
-        loading="lazy"
+        loading={isPriorityImage ? 'eager' : 'lazy'}
+        fetchpriority={isPriorityImage ? 'high' : undefined}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
       />
     ) : (

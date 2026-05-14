@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
+import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import BlogDetailHero from '@components/blog/BlogDetailHero.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
@@ -59,6 +60,26 @@ const categoryLabel = t(`blog.categories.${post.category}`);
 const categoryUrl = `${getRoute('blog', locale)}?category=${post.category}`;
 const ogImage = post.image ?? 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=630&fit=crop&q=80';
 
+// ── Auto-generated Table of Contents ──
+const rawContent = post.content[locale];
+const plainText = rawContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const wordCount = plainText.split(' ').length;
+const calculatedReadingTime = Math.max(1, Math.ceil(wordCount / 220));
+const hasLongContent = wordCount > 800;
+
+let headingCounter = 0;
+interface TocItem { level: number; text: string; id: string }
+const tocItems: TocItem[] = [];
+
+const processedContent = rawContent.replace(/<(h2|h3)([^>]*)>([\s\S]*?)<\/\1>/gi, (_fullMatch, tag, attrs, innerHtml) => {
+  const text = innerHtml.replace(/<[^>]+>/g, '').trim();
+  const id = `section-${headingCounter++}`;
+  tocItems.push({ level: tag === 'h2' ? 2 : 3, text, id });
+  return `<${tag}${attrs} id="${id}">${innerHtml}</${tag}>`;
+});
+
+const showAutoToc = hasLongContent && tocItems.length > 0;
+
 const copy = isEnglish
   ? {
       breadcrumb: {
@@ -73,8 +94,9 @@ const copy = isEnglish
         shareLabel: 'Share article',
         shareCopied: 'Link copied!',
         tags: '[ Tags ]',
+        tocLabel: 'Contents',
       },
-      seoDescription: `${post.description[locale]} — ${categoryLabel}. By ${post.author}. ${t('blog.readingTime', { minutes: post.readingTime })}.`,
+      seoDescription: `${post.description[locale]} — ${categoryLabel}. By ${post.author}. ${t('blog.readingTime', { minutes: calculatedReadingTime })}.`,
       nav: {
         prev: 'Previous article',
         next: 'Next article',
@@ -93,8 +115,9 @@ const copy = isEnglish
         shareLabel: 'Compartir artículo',
         shareCopied: '¡Enlace copiado!',
         tags: '[ Etiquetas ]',
+        tocLabel: 'Contenido',
       },
-      seoDescription: `${post.description[locale]} — ${categoryLabel}. Por ${post.author}. ${t('blog.readingTime', { minutes: post.readingTime })}.`,
+      seoDescription: `${post.description[locale]} — ${categoryLabel}. Por ${post.author}. ${t('blog.readingTime', { minutes: calculatedReadingTime })}.`,
       nav: {
         prev: 'Artículo anterior',
         next: 'Artículo siguiente',
@@ -126,12 +149,40 @@ const breadcrumb = [
 >
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
-  <BlogDetailHero post={post} locale={locale} formattedDate={formattedDate} />
+  <BlogDetailHero post={post} locale={locale} formattedDate={formattedDate} readingMinutes={calculatedReadingTime} />
+
+  <Breadcrumbs
+    variant="light"
+    items={[
+      { label: copy.breadcrumb.home, href: getRoute('home', locale) },
+      { label: copy.breadcrumb.listing, href: getRoute('blog', locale) },
+      { label: post.title[locale] },
+    ]}
+  />
 
   <div class="det-page blog-page-override">
     <div class="det-content-wrap">
       <div class="upgraded-layout">
         <main id="main-content" class="upgraded-main">
+          {/* Mobile collapsible TOC */}
+          {showAutoToc && (
+            <details class="blg-toc-mobile" data-reveal>
+              <summary>
+                <span class="blg-toc-m-label">{copy.section.tocLabel}</span>
+                <span class="blg-toc-m-toggle">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </summary>
+              <ol class="blg-toc-m-list">
+                {tocItems.map((item) => (
+                  <li class={`blg-toc-m-item level-${item.level}`}>
+                    <a href={`#${item.id}`}>{item.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )}
+
           <article class="upg-block" id="article-content" data-reveal aria-label={post.title[locale]}>
             <div class="upg-block-bg"></div>
             <header class="upg-header">
@@ -140,7 +191,7 @@ const breadcrumb = [
               <span class="upg-eyebrow">{copy.section.article}</span>
             </header>
 
-            <div class="blg-prose content-rich" set:html={post.content[locale]} />
+            <div class="blg-prose content-rich" set:html={processedContent} />
 
             <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
               <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
@@ -208,20 +259,67 @@ const breadcrumb = [
               <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
             </div>
           )}
+
+          {relatedRoutes.length > 0 && (
+            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">03</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {isEnglish ? 'Recommended routes' : 'Rutas recomendadas'} ]</span>
+              </header>
+              <div class="blg-related-routes">
+                {relatedRoutes.map((route, index) => (
+                  <a href={getRouteDetailUrl(route.slug, locale)} class="blg-rel-route-card" style={`--rd: ${index * 0.15}s`}>
+                    <div class="brr-thumb">
+                      {route.image ? (
+                        <OptimizedImage src={route.image} alt={route.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" />
+                      ) : (
+                        <div class="brr-thumb-fallback"></div>
+                      )}
+                    </div>
+                    <div class="brr-content">
+                      <span class="brr-title">{route.title[locale]}</span>
+                      <span class="brr-meta">{formatDuration(route.duration, locale)} · {t(`difficulty.${route.difficulty}`)}</span>
+                    </div>
+                    <div class="brr-arrow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </main>
 
         <aside class="upg-sidebar" aria-label={isEnglish ? 'Article sidebar' : 'Barra lateral del artículo'}>
           <div class="upg-sidebar-sticky">
-            <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
-              <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{isEnglish ? 'On this page' : 'En esta página'}</span>
-              <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
-                <li><a href="#article-content" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">01</span> {isEnglish ? 'Article' : 'Artículo'}</a></li>
-                <li><a href="#author" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">02</span> {isEnglish ? 'Author' : 'Autor'}</a></li>
-                {post.tags.length > 0 && (
-                  <li><a href="#tags" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">03</span> {isEnglish ? 'Tags' : 'Etiquetas'}</a></li>
-                )}
-              </ul>
-            </nav>
+            {showAutoToc ? (
+              <nav class="upg-toc blg-toc-auto" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
+                <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{copy.section.tocLabel}</span>
+                <ol style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+                  {tocItems.map((item) => (
+                    <li style={`padding-left: ${item.level === 3 ? '1rem' : '0'}`}>
+                      <a href={`#${item.id}`} style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem; transition: color 0.2s;">
+                        <span style={`color:var(--s-orange); font-size: 0.7rem; font-weight: 700; ${item.level === 3 ? 'opacity: 0.6' : ''}`}>{item.level === 2 ? '§' : '›'}</span>
+                        <span>{item.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            ) : (
+              <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
+                <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{isEnglish ? 'On this page' : 'En esta página'}</span>
+                <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+                  <li><a href="#article-content" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">01</span> {isEnglish ? 'Article' : 'Artículo'}</a></li>
+                  <li><a href="#author" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">02</span> {isEnglish ? 'Author' : 'Autor'}</a></li>
+                  {post.tags.length > 0 && (
+                    <li><a href="#tags" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">03</span> {isEnglish ? 'Tags' : 'Etiquetas'}</a></li>
+                  )}
+                </ul>
+              </nav>
+            )}
 
             <div class="upg-ticket-card" data-reveal>
               <div class="upg-ticket-glass"></div>
@@ -234,7 +332,7 @@ const breadcrumb = [
                 <div class="upg-tc-info">
                   <span class="tc-time" style="color:var(--s-ink);">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    {t('blog.readingTime', { minutes: post.readingTime })}
+                    {t('blog.readingTime', { minutes: calculatedReadingTime })}
                   </span>
                   <span class="tc-category">{categoryLabel}</span>
                 </div>
