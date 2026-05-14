@@ -112,13 +112,57 @@ switch (type) {
     if (data && 'date' in data) {
       const eventData = data as Event;
       const eventImages = [resolveImageUrl(eventData.image), resolveImageUrl(eventData.imageUrl)].filter((img, i, arr) => img && arr.indexOf(img) === i);
-      primarySchema = {
+
+      // Build a valid startDate (date-only when time is invalid)
+      const isValidTime = /^\d{2}:\d{2}$/.test(eventData.time);
+      const startDate = isValidTime ? `${eventData.date}T${eventData.time}` : eventData.date;
+
+      // Fallback description when curated one is empty
+      const rawDescription = eventData.description?.[locale]?.trim();
+      const safeDescription = rawDescription && rawDescription.length > 0
+        ? rawDescription
+        : `${eventData.title[locale]} — ${eventData.venue}, ${eventData.date}. ${eventData.category} en Granada.`;
+
+      // Determine performer
+      let performerSchema: Record<string, unknown> | undefined;
+      if (eventData.performer) {
+        performerSchema = {
+          '@type': 'PerformingGroup',
+          name: eventData.performer[locale],
+        };
+      } else if (eventData.category === 'concert' || eventData.category === 'theater') {
+        // For concerts, the title is usually the artist / show name
+        performerSchema = {
+          '@type': eventData.category === 'concert' ? 'MusicGroup' : 'PerformingGroup',
+          name: eventData.title[locale],
+        };
+      }
+
+      // Build offer object (always include url + validFrom to satisfy GSC)
+      const offerUrl = eventData.url || eventData.ticketsUrl || eventData.sourceUrl || `${siteUrl}${path}`;
+      const offerBase = {
+        '@type': 'Offer' as const,
+        url: offerUrl,
+        validFrom: eventData.date,
+        availability: 'https://schema.org/InStock',
+      };
+      const offerSchema = eventData.price !== null && eventData.price > 0
+        ? { ...offerBase, price: eventData.price, priceCurrency: eventData.currency }
+        : { ...offerBase, price: 0, priceCurrency: 'EUR' };
+
+      // Normalize endDate to match startDate format (datetime when startDate is datetime)
+      const rawEndDate = eventData.endDate || eventData.date;
+      const endDate = isValidTime && /^\d{4}-\d{2}-\d{2}$/.test(rawEndDate)
+        ? `${rawEndDate}T${eventData.time}`
+        : rawEndDate;
+
+      const schemaParts: Record<string, unknown> = {
         '@context': 'https://schema.org',
         '@type': 'Event',
         name: eventData.title[locale],
-        description: eventData.description[locale],
-        startDate: `${eventData.date}T${eventData.time}`,
-        endDate: eventData.endDate ?? undefined,
+        description: safeDescription,
+        startDate,
+        endDate,
         eventStatus: 'https://schema.org/EventScheduled',
         eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         location: {
@@ -135,19 +179,7 @@ switch (type) {
         image: eventImages.length > 1 ? eventImages : eventImages[0],
         url: `${siteUrl}${path}`,
         isAccessibleForFree: eventData.price === 0 || eventData.price === null,
-        offers: eventData.price !== null && eventData.price > 0 ? {
-          '@type': 'Offer',
-          price: eventData.price,
-          priceCurrency: eventData.currency,
-          availability: 'https://schema.org/InStock',
-          url: eventData.url || eventData.ticketsUrl || `${siteUrl}${path}`,
-          validFrom: eventData.date,
-        } : {
-          '@type': 'Offer',
-          price: 0,
-          priceCurrency: 'EUR',
-          availability: 'https://schema.org/InStock',
-        },
+        offers: offerSchema,
         organizer: {
           '@type': 'Organization',
           name: SITE_CONFIG.name,
@@ -159,6 +191,12 @@ switch (type) {
           name: eventData.category,
         },
       };
+
+      if (performerSchema) {
+        schemaParts.performer = performerSchema;
+      }
+
+      primarySchema = schemaParts;
     }
     break;
 

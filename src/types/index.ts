@@ -74,6 +74,7 @@ export interface Event {
   longDescription?: LocalizedText;
   whatToBring?: { es: string[]; en: string[] };
   bestMonths?: string[];
+  performer?: LocalizedText;
   // Campos de trazabilidad para fuentes externas
   source?: EventSource;
   sourceId?: string;

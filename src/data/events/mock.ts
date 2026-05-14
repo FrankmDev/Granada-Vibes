@@ -46,6 +46,10 @@ export const mockEvents: Event[] = [
       en: 'Friday tickets include a Q&A with the actors after the show. 20% discount for under-30s and seniors. The box office opens 1 hour before the performance.',
     },
     ticketsUrl: 'https://teatroisabelgranada.es',
+    performer: {
+      es: 'La Nave del Duende',
+      en: 'La Nave del Duende',
+    },
     source: 'mock',
   },
   {
@@ -92,6 +96,10 @@ export const mockEvents: Event[] = [
     tips: {
       es: 'Lleva tu propia silla plegable o manta para asegurar un buen sitio. Las sesiones de noche son las más concurridas: llega con antelación. Los bares de la plaza sirven tapas durante el festival.',
       en: 'Bring your own folding chair or blanket to secure a good spot. Evening sessions are the busiest: arrive early. Bars around the square serve tapas during the festival.',
+    },
+    performer: {
+      es: 'Varias formaciones de jazz internacional',
+      en: 'Various international jazz ensembles',
     },
     source: 'mock',
   },
@@ -187,6 +195,10 @@ export const mockEvents: Event[] = [
       en: 'Theater access is independent from the Alhambra entrance. Arrive 20 minutes early to enjoy the sunset from the gardens. Evenings at the Alhambra get cool: bring a light layer.',
     },
     ticketsUrl: 'https://festivalgranada.es',
+    performer: {
+      es: 'Carmen Linares',
+      en: 'Carmen Linares',
+    },
     source: 'mock',
   },
   {
@@ -280,6 +292,10 @@ export const mockEvents: Event[] = [
       en: 'Book in advance, especially in high season (May–September). If you choose dinner, arrive at 8 PM. Access is via Camino del Sacromonte: walk up from Plaza Nueva (20 min) or take the C2 minibus. No nearby parking.',
     },
     ticketsUrl: 'https://ventaelgallo.com',
+    performer: {
+      es: 'Artistas de Venta El Gallo',
+      en: 'Venta El Gallo Artists',
+    },
     source: 'mock',
   },
   {
@@ -370,7 +386,11 @@ export const mockEvents: Event[] = [
     },
     tips: {
       es: 'El auditorio está en una cuesta empinada: llega con tiempo si vas andando. Hay parking gratuito junto al Hotel Alhambra Palace. El concierto dura aproximadamente 100 minutos con un intermedio de 20.',
-      en: 'The auditorium is on a steep hill: allow extra time if walking. There\'s free parking near the Alhambra Palace Hotel. The concert lasts approximately 100 minutes with a 20-minute intermission.',
+      en: "The auditorium is on a steep hill: allow extra time if walking. There's free parking near the Alhambra Palace Hotel. The concert lasts approximately 100 minutes with a 20-minute intermission.",
+    },
+    performer: {
+      es: 'Camerata de las Américas',
+      en: 'Camerata de las Américas',
     },
     source: 'mock',
   },
@@ -466,6 +486,10 @@ export const mockEvents: Event[] = [
       en: 'Palace access for the theater is independent from the Alhambra entrance. Arrive early: the entry queue can be long. August evenings are pleasant but bring a light layer just in case. English subtitles available via mobile app.',
     },
     ticketsUrl: 'https://ntc.es',
+    performer: {
+      es: 'Compañía Nacional de Teatro Clásico',
+      en: 'National Classical Theater Company',
+    },
     source: 'mock',
   },
   {
