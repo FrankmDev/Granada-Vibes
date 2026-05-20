@@ -58,6 +58,7 @@ export interface GeneratedEvent {
   sourceUrl: string;
   ticketsUrl?: string;
   imageUrl?: string;
+  remoteImageUrl?: string;
   lastSyncedAt: string;
 }
 

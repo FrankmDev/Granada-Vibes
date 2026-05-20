@@ -17,6 +17,7 @@ interface EventRecord extends Record<string, unknown> {
   id?: string;
   slug?: string;
   imageUrl?: string;
+  remoteImageUrl?: string;
 }
 
 function isEventRecord(value: unknown): value is EventRecord {
@@ -25,6 +26,10 @@ function isEventRecord(value: unknown): value is EventRecord {
 
 function isRemoteImage(url: string | undefined): url is string {
   return typeof url === 'string' && /^https?:\/\//.test(url);
+}
+
+function isLocalImageFilename(value: string | undefined): value is string {
+  return typeof value === 'string' && /\.(webp|jpe?g|png|avif)$/i.test(value);
 }
 
 function getCacheName(url: string): string {
@@ -112,14 +117,38 @@ async function main(): Promise<void> {
   let failed = 0;
 
   for (const event of events) {
-    const originalUrl = event.imageUrl;
+    const originalUrl = isRemoteImage(event.imageUrl)
+      ? event.imageUrl
+      : event.remoteImageUrl;
     const improvedUrl = improveImageUrl(originalUrl);
     if (!isRemoteImage(improvedUrl)) {
-      // Already a local filename (legacy /generated/events/ or new bare filename)
+      // Already a local filename (legacy /generated/events/ or new bare filename).
+      // If the file is missing but we have the original remote URL, regenerate it.
       if (typeof event.imageUrl === 'string') {
         const basename = path.basename(event.imageUrl);
-        if (basename.endsWith('.webp') || basename.endsWith('.jpg') || basename.endsWith('.png') || basename.endsWith('.avif')) {
+        const localPath = path.join(outputDir, basename);
+        if (isLocalImageFilename(basename) && existsSync(localPath)) {
+          event.imageUrl = basename;
           usedFiles.add(basename);
+          reused++;
+          continue;
+        }
+      }
+
+      if (isRemoteImage(event.remoteImageUrl)) {
+        const fileName = getCacheName(event.remoteImageUrl);
+        const filePath = path.join(outputDir, fileName);
+        usedFiles.add(fileName);
+        try {
+          await optimizeImage(event.remoteImageUrl, filePath);
+          event.imageUrl = fileName;
+          optimized++;
+        } catch (error) {
+          delete event.imageUrl;
+          failed++;
+          const label = event.slug ?? event.id ?? event.remoteImageUrl;
+          const message = error instanceof Error ? error.message : String(error);
+          console.warn(`[img] No se pudo regenerar ${label}: ${message}`);
         }
       }
       continue;
@@ -131,6 +160,7 @@ async function main(): Promise<void> {
 
     if (existsSync(filePath)) {
       event.imageUrl = fileName;
+      event.remoteImageUrl = improvedUrl;
       reused++;
       continue;
     }
@@ -138,6 +168,7 @@ async function main(): Promise<void> {
     try {
       await optimizeImage(improvedUrl, filePath);
       event.imageUrl = fileName;
+      event.remoteImageUrl = improvedUrl;
       optimized++;
     } catch (error) {
       const shouldRetryOriginal = isRemoteImage(originalUrl) && originalUrl !== improvedUrl;
@@ -148,6 +179,7 @@ async function main(): Promise<void> {
           usedFiles.add(originalFileName);
           await optimizeImage(originalUrl, originalFilePath);
           event.imageUrl = originalFileName;
+          event.remoteImageUrl = originalUrl;
           optimized++;
           continue;
         } catch {

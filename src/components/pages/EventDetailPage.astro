@@ -155,7 +155,7 @@ const crossLinks = [
     : []),
 ].slice(0, 4);
 
-const eventImage = event.imageUrl || event.image;
+const eventImage = event.remoteImageUrl || event.imageUrl || event.image;
 const ogImage = eventImage || 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=1200&h=630&fit=crop&q=80';
 const priceLabel = formatPriceLabel(event, t);
 const seoDescription = isEnglish

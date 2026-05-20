@@ -272,6 +272,10 @@ function isUsefulImageUrl(value: string | undefined): value is string {
   return true;
 }
 
+function isRemoteImageUrl(value: string | undefined): value is string {
+  return typeof value === 'string' && /^https?:\/\//.test(value);
+}
+
 function hasUsefulDescription(event: GeneratedEvent): boolean {
   return hasUsefulText(event.description.es) && event.description.es.trim().length >= 40;
 }
@@ -280,6 +284,7 @@ function scoreEventData(event: GeneratedEvent): number {
   let score = 0;
 
   if (isUsefulImageUrl(event.imageUrl)) score += 30;
+  if (isRemoteImageUrl(event.remoteImageUrl)) score += 2;
   if (hasUsefulDescription(event)) score += Math.min(20, Math.floor(event.description.es.length / 40));
   if (event.price !== null) score += 8;
   if (event.time !== 'Por confirmar') score += 8;
@@ -329,6 +334,9 @@ function mergeEventRecords(preferred: GeneratedEvent, fallback: GeneratedEvent):
     sourceUrl: preferred.sourceUrl || fallback.sourceUrl,
     ticketsUrl: preferred.ticketsUrl ?? fallback.ticketsUrl,
     imageUrl: isUsefulImageUrl(preferred.imageUrl) ? preferred.imageUrl : fallback.imageUrl,
+    remoteImageUrl: isRemoteImageUrl(preferred.remoteImageUrl)
+      ? preferred.remoteImageUrl
+      : fallback.remoteImageUrl,
     lastSyncedAt: preferred.lastSyncedAt,
   };
 }
@@ -350,18 +358,22 @@ function deduplicateAndMerge(
 
   // Step 1: Key by source+sourceId to avoid cross-source collisions
   const key = (e: GeneratedEvent): string => `${e.source}:${e.sourceId}`;
-  const incomingByKey = new Map(incoming.map((e) => [key(e), e]));
+  const incomingKeys = new Set(incoming.map((e) => key(e)));
+  const existingByKey = new Map<string, GeneratedEvent>();
   const merged = new Map<string, GeneratedEvent>();
 
   for (const event of existing) {
     if ((event.endDate ?? event.date) < today) continue;
-    if (incomingByKey.has(key(event))) continue;
-    merged.set(key(event), event);
+    const eventKey = key(event);
+    existingByKey.set(eventKey, event);
+    if (!incomingKeys.has(eventKey)) {
+      merged.set(eventKey, event);
+    }
   }
 
   for (const event of incoming) {
     const eventKey = key(event);
-    const current = merged.get(eventKey);
+    const current = merged.get(eventKey) ?? existingByKey.get(eventKey);
     merged.set(eventKey, current ? mergeEventRecords(event, current) : event);
   }
 

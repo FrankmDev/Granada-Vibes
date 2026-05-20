@@ -118,5 +118,6 @@ export function getOgImageUrl(_text: string): string {
 
 export function resolveOgImageUrl(image = DEFAULT_OG_IMAGE): string {
   if (image.startsWith('http://') || image.startsWith('https://')) return image;
+  if (!image.startsWith('/')) return `${SITE_CONFIG.url}${DEFAULT_OG_IMAGE}`;
   return `${SITE_CONFIG.url}${image}`;
 }

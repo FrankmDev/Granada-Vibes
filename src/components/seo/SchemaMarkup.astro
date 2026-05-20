@@ -26,7 +26,11 @@ const { type, data, locale, path = '', breadcrumb, faq } = Astro.props;
 
 const siteUrl = SITE_CONFIG.url;
 
-function resolveImageUrl(image: string | undefined): string {
+function resolveImageUrl(image: string | undefined): string | undefined {
+  if (!image) return undefined;
+  if (!image.startsWith('http://') && !image.startsWith('https://') && !image.startsWith('/')) {
+    return undefined;
+  }
   return resolveOgImageUrl(image);
 }
 
@@ -120,7 +124,11 @@ switch (type) {
   case 'event':
     if (data && 'date' in data) {
       const eventData = data as Event;
-      const eventImages = [resolveImageUrl(eventData.image), resolveImageUrl(eventData.imageUrl)].filter((img, i, arr) => img && arr.indexOf(img) === i);
+      const eventImages = [
+        resolveImageUrl(eventData.remoteImageUrl),
+        resolveImageUrl(eventData.image),
+        resolveImageUrl(eventData.imageUrl),
+      ].filter((img, i, arr) => img && arr.indexOf(img) === i);
 
       // Build a valid startDate (date-only when time is invalid)
       const isValidTime = /^\d{2}:\d{2}$/.test(eventData.time);

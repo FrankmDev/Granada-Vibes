@@ -80,6 +80,7 @@ export interface Event {
   sourceId?: string;
   sourceUrl?: string;
   imageUrl?: string;
+  remoteImageUrl?: string;
   lastSyncedAt?: string;
 }
 

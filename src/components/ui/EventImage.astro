@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { Event } from '@types';
 
 interface Props {
@@ -12,8 +12,6 @@ interface Props {
   width?: number;
   height?: number;
   sizes?: string;
-  quality?: number;
-  widths?: number[];
 }
 
 const {
@@ -25,37 +23,33 @@ const {
   fetchpriority,
   width,
   height,
-  sizes,
-  quality = 95,
-  // Source images are capped at 1400px. 1600w is wasteful, so we generate
-  // three tight breakpoints that cover mobile, tablet, and desktop retina.
-  widths = [400, 800, 1400],
 } = Astro.props;
 
-// Load all event images from assets via Vite's import.meta.glob.
-// This lets Astro's image pipeline (Sharp) optimize them at build time,
-// generating responsive srcsets automatically.
-const allImages = import.meta.glob('/src/assets/images/events/*.{webp,jpg,jpeg,png,avif}', { eager: true });
+// Event images are already normalized to WebP by scripts/optimize-event-images.ts.
+// Importing them from src/assets gives us hashed URLs and dimensions without
+// asking Astro to generate hundreds of duplicate derivatives per build.
+const allImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/events/*.{webp,jpg,jpeg,png,avif}',
+  { eager: true }
+);
 
 const filename = event.imageUrl ?? event.image;
-const imagePath = filename ? `/src/assets/images/events/${filename}` : null;
+const imageName = filename ? filename.split('/').pop() : null;
+const imagePath = imageName ? `/src/assets/images/events/${imageName}` : null;
 const imageModule = imagePath ? allImages[imagePath] : null;
-const imageMeta = imageModule ? (imageModule as { default: typeof Image.prototype.src }).default : null;
+const imageMeta = imageModule?.default ?? null;
 ---
 
 {imageMeta ? (
-  <Image
-    src={imageMeta}
+  <img
+    src={imageMeta.src}
     alt={alt}
     class={`optimized-img ${className}`}
     loading={loading}
     decoding={decoding}
     {...(fetchpriority ? { fetchpriority } : {})}
-    {...(width ? { width } : {})}
-    {...(height ? { height } : {})}
-    {...(sizes ? { sizes } : {})}
-    quality={quality}
-    widths={widths}
+    width={width ?? imageMeta.width}
+    height={height ?? imageMeta.height}
   />
 ) : (
   <div class:list={['event-image-fallback', className]} aria-hidden="true" />
