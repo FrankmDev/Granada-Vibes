@@ -342,6 +342,10 @@ function formatDate(dateStr: string): string {
     min-height: 600px;
     height: auto;
   }
+
+  .bento-item {
+    min-width: 0;
+  }
   
   .bento-grid::after {
     content: '';
@@ -355,7 +359,7 @@ function formatDate(dateStr: string): string {
   .item-feature { grid-row: span 2; opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
   .item-feature.is-visible { opacity: 1; transform: translateY(0); }
 
-  .feature-link { display: block; position: relative; height: 100%; border-radius: 20px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .feature-link { display: block; position: relative; height: 100%; min-width: 0; border-radius: 20px; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
   .feature-link:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(var(--accent-rgb), 0.2), 0 12px 32px rgba(0, 0, 0, 0.15); }
 
   .feature-visual { position: absolute; inset: 0; }
@@ -411,6 +415,7 @@ function formatDate(dateStr: string): string {
     display: flex;
     flex-direction: column;
     position: relative;
+    min-width: 0;
     text-decoration: none;
     color: inherit;
     background: #ffffff;

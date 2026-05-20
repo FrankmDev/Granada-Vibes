@@ -827,6 +827,7 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
+    overflow: hidden;
     pointer-events: none;
     visibility: hidden;
     /* Al cerrar: espera a que cortinas terminen (~1.35s) antes de ocultarse */

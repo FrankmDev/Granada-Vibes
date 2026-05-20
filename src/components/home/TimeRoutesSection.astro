@@ -669,6 +669,10 @@ function getCategoryName(category: string): string {
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 100px;
     transition: all 0.4s ease;
+    max-width: calc(100% - 6rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .card-small .plan-label {
@@ -701,6 +705,7 @@ function getCategoryName(category: string): string {
     font-size: 0.7rem;
     color: white;
     transition: all 0.4s ease;
+    max-width: calc(100% - 2rem);
   }
 
   .card-small .stops-badge {
@@ -836,6 +841,13 @@ function getCategoryName(category: string): string {
     font-weight: 500;
     color: var(--t-ink-2);
     transition: all 0.3s ease;
+    max-width: 100%;
+  }
+
+  .chip-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .card-small .category-chip {
@@ -862,6 +874,7 @@ function getCategoryName(category: string): string {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.875rem;
     padding-top: 0.875rem;
     border-top: 1px solid var(--t-border);
     margin-top: auto;
@@ -875,6 +888,8 @@ function getCategoryName(category: string): string {
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
+    flex: 1;
+    min-width: 0;
   }
 
   .card-small .neighborhoods-preview {
@@ -912,6 +927,7 @@ function getCategoryName(category: string): string {
     border-radius: 50%;
     color: var(--accent-color);
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex: 0 0 auto;
   }
 
   .card-small .explore-arrow {
@@ -987,24 +1003,31 @@ function getCategoryName(category: string): string {
      ═══════════════════════════════════════════════════════════════ */
   @media (max-width: 1024px) {
     .plans-showcase {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      grid-template-columns: minmax(0, 34rem);
+      justify-content: center;
+      gap: 1.5rem;
+      max-width: 40rem;
+      margin: 0 auto;
     }
 
     .card-large {
-      transform: translateY(-16px);
+      transform: none;
+    }
+
+    .card-large.is-visible {
+      transform: none;
     }
 
     .card-small {
-      margin-top: 1.5rem;
+      margin-top: 0;
     }
 
     .card-visual {
-      aspect-ratio: 4/4;
+      aspect-ratio: 16/10;
     }
 
     .card-content {
-      padding: 1rem;
+      padding: 1.25rem;
     }
 
     .card-title {
@@ -1016,7 +1039,7 @@ function getCategoryName(category: string): string {
     }
 
     .card-description {
-      font-size: 0.8rem;
+      font-size: 0.875rem;
     }
   }
 
@@ -1027,7 +1050,6 @@ function getCategoryName(category: string): string {
     }
 
     .plans-showcase {
-      grid-template-columns: 1fr;
       gap: 1.5rem;
     }
 
@@ -1065,6 +1087,42 @@ function getCategoryName(category: string): string {
 
     .card-large .card-title {
       font-size: 1.4rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .time-container {
+      padding: 0 1rem;
+    }
+
+    .editorial-header {
+      margin-bottom: 3rem;
+    }
+
+    .card-content,
+    .card-small .card-content {
+      padding: 1rem;
+    }
+
+    .category-chips,
+    .neighborhoods-preview {
+      gap: 0.3rem;
+    }
+
+    .card-footer {
+      align-items: flex-end;
+    }
+
+    .footer-cta {
+      width: 100%;
+      justify-content: center;
+      padding-inline: 1.5rem;
+    }
+  }
+
+  @media (hover: none) {
+    .card-link:hover {
+      transform: none;
     }
   }
 
