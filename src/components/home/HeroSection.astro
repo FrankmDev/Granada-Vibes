@@ -89,8 +89,29 @@ const c = {
 
   <!-- 1. The Living Canvas -->
   <div class="ambient-layer">
-    <video class="ambient-video" autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg" data-ambient-video>
-      <source src="/heroVideo.mp4" type="video/mp4" />
+    <picture class="ambient-picture">
+      <source srcset="/hero-poster-1920.jpg" media="(min-width: 900px)" />
+      <img
+        class="ambient-poster"
+        src="/hero-poster.jpg"
+        alt=""
+        width="1280"
+        height="720"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </picture>
+    <video
+      class="ambient-video"
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster="/hero-poster.jpg"
+      data-src="/hero-video-ambient.mp4"
+      aria-hidden="true"
+    >
     </video>
     <div class="ambient-grain" aria-hidden="true"></div>
     <div class="ambient-gradient"></div>
@@ -127,8 +148,16 @@ const c = {
 
     <div class="portal" data-parallax="0.05" aria-hidden="true">
       <div class="portal-inner-frame">
-        <video class="sharp-video" muted loop playsinline preload="metadata" poster="/hero-poster.jpg">
-          <source src="/heroVideo.mp4" type="video/mp4" />
+        <video
+          class="sharp-video"
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster="/hero-poster-1920.jpg"
+          data-src-mobile="/heroVideo.mp4"
+          data-src-desktop="/hero-video-1080.mp4"
+        >
         </video>
         <div class="portal-shadows"></div>
         <div class="portal-glare"></div>
@@ -190,6 +219,7 @@ const c = {
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const section = document.querySelector('.portal-hero') as HTMLElement;
+    const ambientVideo = document.querySelector('.ambient-video') as HTMLVideoElement | null;
     const sharpVideo = document.querySelector('.sharp-video') as HTMLVideoElement | null;
     const bootScreen = document.getElementById('hero-boot-screen');
 
@@ -307,6 +337,38 @@ const c = {
     const MIN_BOOT_MS = 350;
     const MAX_BOOT_MS = 700;
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const connection = 'connection' in navigator
+      ? (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+      : undefined;
+    const shouldSkipVideo = prefersReducedMotion || connection?.saveData === true || connection?.effectiveType === '2g';
+    let portalVideoLoaded = false;
+
+    const loadVideo = (video: HTMLVideoElement, src: string | undefined, playableClass: string) => {
+      if (!src) return;
+
+      video.addEventListener('canplay', () => {
+        video.classList.add(playableClass);
+      }, { once: true });
+      video.src = src;
+      video.load();
+      video.play().catch(() => {});
+    };
+
+    const loadPortalVideo = () => {
+      if (!sharpVideo || portalVideoLoaded || shouldSkipVideo) return;
+      const selectedSrc = window.matchMedia('(min-width: 900px)').matches
+        ? sharpVideo.dataset.srcDesktop
+        : sharpVideo.dataset.srcMobile;
+
+      portalVideoLoaded = true;
+      loadVideo(sharpVideo, selectedSrc, 'is-playable');
+    };
+
+    const loadAmbientVideo = () => {
+      if (!ambientVideo || shouldSkipVideo || ambientVideo.src) return;
+      loadVideo(ambientVideo, ambientVideo.dataset.src, 'is-playable');
+    };
 
     const tick = setInterval(() => {
       if (hasRevealed) { clearInterval(tick); return; }
@@ -318,8 +380,6 @@ const c = {
       if (bootPercent) bootPercent.textContent = `${pct}%`;
       if (bootStatus) bootStatus.textContent = pct < 50 ? 'Cargando' : 'Listo';
     }, 40);
-
-    const ambientVideo = document.querySelector('[data-ambient-video]') as HTMLVideoElement | null;
 
     const revealHero = () => {
       if (!bootScreen || hasRevealed) return;
@@ -334,16 +394,9 @@ const c = {
         if (bootPercent) bootPercent.textContent = '100%';
         if (bootStatus) bootStatus.textContent = 'Listo';
 
-        // Start hero entrance immediately
         section?.classList.add('is-ready');
-        if (sharpVideo) { sharpVideo.play().catch(() => {}); }
-
-        // Defer ambient video load until after critical content is visible
-        if (ambientVideo) {
-          ambientVideo.preload = 'auto';
-          ambientVideo.load();
-          ambientVideo.play().catch(() => {});
-        }
+        loadPortalVideo();
+        window.setTimeout(loadAmbientVideo, 180);
 
         // Boot fades out smoothly after a tiny delay
         setTimeout(() => {

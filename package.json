@@ -17,11 +17,11 @@
   "dependencies": {
     "@fontsource/dm-sans": "^5.2.8",
     "@fontsource/fraunces": "^5.2.9",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^6.0.4"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.7.1",
-    
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
     "autoprefixer": "^10.4.27",
