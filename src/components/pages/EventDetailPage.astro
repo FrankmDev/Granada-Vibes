@@ -4,6 +4,7 @@ import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
+import EventImage from '@components/ui/EventImage.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
@@ -399,7 +400,7 @@ if (event.venue) {
                   <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-event-card" style={`--rd: ${index * 0.15}s`}>
                     <div class="urec-thumb">
                       {(related.imageUrl || related.image) ? (
-                        <OptimizedImage src={related.imageUrl || related.image} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" />
+                        <EventImage event={related} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" width={400} height={250} />
                       ) : (
                         <div class="urec-thumb-fallback"></div>
                       )}
@@ -493,7 +494,7 @@ if (event.venue) {
                     <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
                       <div class="uri-thumb">
                         {(related.imageUrl || related.image) ? (
-                          <OptimizedImage src={related.imageUrl || related.image} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
+                          <EventImage event={related} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" width={280} height={180} />
                         ) : (
                           <div class="uri-thumb-fallback"></div>
                         )}

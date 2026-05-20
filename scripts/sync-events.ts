@@ -1,6 +1,6 @@
-#!/usr/bin/env -S node --env-file=.env --import tsx
-import { spawn } from 'child_process';
-import path from 'path';
+#!/usr/bin/env bun
+import { spawn } from 'node:child_process';
+import path from 'node:path';
 
 const scriptsDir = import.meta.dirname;
 const rootDir = path.resolve(scriptsDir, '..');
@@ -10,12 +10,12 @@ function formatDuration(startTime: number): string {
   return `${(elapsedMs / 1000).toFixed(1)}s`;
 }
 
-function runNodeScript(script: string, label: string): Promise<void> {
+function runBunScript(script: string, label: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const fullPath = path.join(scriptsDir, script);
     const startedAt = Date.now();
-    const proc = spawn(process.execPath, ['--env-file=../.env', '--import', 'tsx', fullPath], {
-      cwd: scriptsDir,
+    const proc = spawn('bun', [fullPath], {
+      cwd: rootDir,
       stdio: 'inherit',
     });
 
@@ -60,19 +60,19 @@ function runCommand(command: string, args: string[], label: string, cwd: string)
 async function main(): Promise<void> {
   try {
     console.log('>>> LIMPIANDO eventos pasados...\n');
-    await runNodeScript('clean-events.ts', 'Limpieza');
+    await runBunScript('clean-events.ts', 'Limpieza');
 
     console.log('\n>>> BUSCANDO nuevos eventos...\n');
-    await runNodeScript('fetch-events.ts', 'Fetch');
+    await runBunScript('fetch-events.ts', 'Fetch');
 
-    console.log('\n>>> LIMPIANDO de nuevo tras la sincronización...\n');
-    await runNodeScript('clean-events.ts', 'Limpieza final');
+    console.log('\n>>> OPTIMIZANDO imagenes de eventos...\n');
+    await runBunScript('optimize-event-images.ts', 'Optimización de imágenes');
 
     console.log('\n>>> GENERANDO HTML y sitemap actualizados...\n');
-    await runCommand('npm', ['run', 'build'], 'Build', rootDir);
+    await runCommand('bun', ['run', 'build:static'], 'Build', rootDir);
 
     console.log('\n>>> VERIFICANDO sitemap de eventos...\n');
-    await runNodeScript('verify-event-sitemap.ts', 'Verificación de sitemap');
+    await runBunScript('verify-event-sitemap.ts', 'Verificación de sitemap');
 
     console.log('\n[OK] Sincronización completada.');
   } catch (err) {

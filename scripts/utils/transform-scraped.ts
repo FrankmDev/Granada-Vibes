@@ -18,6 +18,7 @@ import {
   hashId,
   parsePrice,
 } from './shared-types.js';
+import { improveImageUrl } from './image-quality.js';
 
 // Re-export GeneratedEvent for consumers that import from here
 export type { GeneratedEvent };
@@ -43,7 +44,7 @@ export function transformConciertosGranada(raw: ConciertosGranadaEvent): Generat
     source: 'conciertos-granada',
     sourceId: hashId(raw.url),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -68,7 +69,7 @@ export function transformYuzin(raw: YuzinEvent): GeneratedEvent {
     source: 'yuzin',
     sourceId: hashId(raw.url),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -91,7 +92,7 @@ export function transformGranadaEsCultura(raw: GranadaEsCulturaEvent): Generated
     source: 'granada-es-cultura',
     sourceId: hashId(raw.url),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -114,7 +115,7 @@ export function transformIndyRock(raw: IndyRockEvent): GeneratedEvent {
     source: 'indyrock',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -139,7 +140,7 @@ export function transformPalacio(raw: PalacioEvent): GeneratedEvent {
     source: 'palacio-congresos',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -162,7 +163,7 @@ export function transformTurgranada(raw: TurgranadaEvent): GeneratedEvent {
     source: 'turgranada',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -185,7 +186,7 @@ export function transformAyuntamiento(raw: AyuntamientoEvent): GeneratedEvent {
     source: 'ayuntamiento',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }
@@ -208,7 +209,7 @@ export function transformElegirHoy(raw: ElegirHoyEvent): GeneratedEvent {
     source: 'elegirhoy',
     sourceId: hashId(raw.url + raw.title),
     sourceUrl: raw.url,
-    ...(raw.imageUrl ? { imageUrl: raw.imageUrl } : {}),
+    ...(raw.imageUrl ? { imageUrl: improveImageUrl(raw.imageUrl) } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
 }

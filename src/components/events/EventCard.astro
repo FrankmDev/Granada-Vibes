@@ -4,7 +4,7 @@ import { formatDateShort, formatTime, getTemporalProximity } from '@utils/dates'
 import { truncateTitle } from '@utils/strings';
 import { eventCategoryStyles, icons } from '@config/ui';
 import { getEventDetailUrl } from '@utils/routes';
-import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import EventImage from '@components/ui/EventImage.astro';
 
 interface Props {
   event: Event;
@@ -18,7 +18,6 @@ const { event, locale, t, featured = false, index = 3 } = Astro.props;
 const href = getEventDetailUrl(event.slug, locale);
 const temporalProximity = getTemporalProximity(event.date);
 const catStyle = eventCategoryStyles[event.category] ?? eventCategoryStyles.other;
-const eventImage = event.imageUrl ?? event.image;
 const catColor = catStyle.colorVar;
 const isPriorityImage = index < 3;
 ---
@@ -31,14 +30,17 @@ const isPriorityImage = index < 3;
       <!-- Image -->
       <div class:list={['relative overflow-hidden', featured ? 'aspect-[21/10]' : 'aspect-[16/10]']}>
         <div class="event-card__fallback" style={`--cat-color: ${catColor}`}></div>
-        {eventImage && (
-          <OptimizedImage
-            src={eventImage}
+        {(event.imageUrl || event.image) && (
+          <EventImage
+            event={event}
             alt={event.title[locale]}
             class="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
             loading={isPriorityImage ? 'eager' : 'lazy'}
             fetchpriority={isPriorityImage ? 'high' : undefined}
             decoding="async"
+            sizes={featured ? '(max-width: 1024px) 100vw, 66vw' : '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+            width={featured ? 1400 : 900}
+            height={featured ? 667 : 563}
           />
         )}
 

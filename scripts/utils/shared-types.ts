@@ -45,6 +45,7 @@ export interface GeneratedEvent {
   description: { es: string; en: string };
   category: EventCategory;
   date: string;
+  endDate?: string;
   time: string;
   venue: string;
   neighborhood: Neighborhood;
@@ -55,6 +56,7 @@ export interface GeneratedEvent {
   source: EventSource;
   sourceId: string;
   sourceUrl: string;
+  ticketsUrl?: string;
   imageUrl?: string;
   lastSyncedAt: string;
 }

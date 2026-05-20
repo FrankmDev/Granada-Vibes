@@ -22,11 +22,15 @@ export default defineConfig({
     service: {
       entrypoint: 'astro/assets/services/sharp',
       config: {
-        quality: 65,
+        // Maximum quality for event imagery. AVIF is not available in this
+        // environment (Sharp built without libheif/libavif), so WebP is used
+        // as the best-supported modern format. Quality 95 gives excellent
+        // visual fidelity with reasonable file sizes.
+        quality: 95,
         format: 'webp',
       },
     },
-    domains: ['images.unsplash.com', 'upload.wikimedia.org', 'www.pcgr.org', 'conciertos.club', 'img.evbuc.com', 'cdn.dipgra.es', 's1.ticketm.net'],
+    domains: ['images.unsplash.com', 'upload.wikimedia.org', 'www.pcgr.org', 'conciertos.club', 'doc.conciertos.club', 'img.evbuc.com', 'cdn.dipgra.es', 's1.ticketm.net'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -47,6 +51,10 @@ export default defineConfig({
       {
         protocol: 'https',
         hostname: 'conciertos.club',
+      },
+      {
+        protocol: 'https',
+        hostname: 'doc.conciertos.club',
       },
       {
         protocol: 'https',

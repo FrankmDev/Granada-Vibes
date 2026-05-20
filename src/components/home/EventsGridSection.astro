@@ -3,7 +3,7 @@ import type { Event, Locale, EventCategory } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import SectionHeader from '@components/ui/SectionHeader.astro';
-import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import EventImage from '@components/ui/EventImage.astro';
 
 interface Props {
   events: Event[];
@@ -37,20 +37,6 @@ const COL_HEIGHTS: [number[], number[], number[]] = [
 const columns = [0, 1, 2].map((colIndex) =>
   events.filter((_, i) => i % 3 === colIndex).slice(0, 4)
 );
-
-function getEventImage(evt: Event, fallbackIndex: number): string {
-  if (evt.image && !evt.image.includes('undefined')) return evt.image;
-  if (evt.imageUrl) return evt.imageUrl;
-  // deterministic fallback using Unsplash
-  const FALLBACKS = [
-    'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1200&q=85',
-    'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=85',
-    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&q=85',
-    'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=85',
-    'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1200&q=85',
-  ];
-  return FALLBACKS[fallbackIndex % FALLBACKS.length]!;
-}
 
 function formatPrice(price: number | null): string {
   if (price === null) return t('events.free');
@@ -89,19 +75,20 @@ const eventsHref = getRoute('events', locale);
         {colEvents.map((evt, idx) => {
           const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
           const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
-          const imgSrc = getEventImage(evt, colIndex * 50 + idx);
           const href = `/${locale === 'en' ? 'en/events' : 'eventos'}/${evt.slug}/`;
 
           return (
             <article class="masonry-item" style={`--item-flex: ${heightVh};`}>
               <a href={href} class="item-link">
-                <OptimizedImage
-                  src={imgSrc}
+                <EventImage
+                  event={evt}
                   alt={evt.title[locale]}
                   class="item-image"
                   loading="lazy"
                   decoding="async"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  width={900}
+                  height={1200}
                 />
                 <div class="item-overlay"></div>
 

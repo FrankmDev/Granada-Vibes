@@ -13,7 +13,8 @@
  *
  * We also enrich events that lack price/description by fetching the detail page.
  */
-import { fetchHTML } from '../utils/scraper-helpers.js';
+import { fetchHTML, fetchHTMLWithCache } from '../utils/scraper-helpers.js';
+import { improveImageUrl } from '../utils/image-quality.js';
 
 export interface ConciertosGranadaEvent {
   title: string;
@@ -90,7 +91,7 @@ function extractGenre(text: string): string {
 /** Fetch detail page for richer description and fallback price */
 async function fetchDetailInfo(url: string): Promise<{ description?: string; price?: string }> {
   try {
-    const $ = await fetchHTML(url, { timeout: 10_000, retries: 1 });
+    const $ = await fetchHTMLWithCache(url, { timeout: 10_000, retries: 1 });
     const result: { description?: string; price?: string } = {};
 
     // Description: look for the event description block
@@ -260,7 +261,7 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
       genre,
       price,
       url: cleanHref.startsWith('http') ? cleanHref : `${BASE_URL}${cleanHref}`,
-      imageUrl,
+      imageUrl: improveImageUrl(imageUrl),
       description,
     });
   });
@@ -318,7 +319,7 @@ export async function fetchConciertosGranadaEvents(): Promise<ConciertosGranadaE
       genre: '',
       price: '',
       url: cleanHref.startsWith('http') ? cleanHref : `${BASE_URL}${cleanHref}`,
-      imageUrl,
+      imageUrl: improveImageUrl(imageUrl),
     });
   });
 

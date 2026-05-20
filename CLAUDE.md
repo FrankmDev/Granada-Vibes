@@ -12,9 +12,10 @@ Respeta estas decisiones. No las cuestiones salvo que haya un error técnico rea
 ## Comandos
 
 ```bash
-npm run dev        # Servidor de desarrollo
-npm run build      # Build para producción
-npm run preview    # Preview del build
+bun run dev          # Servidor de desarrollo
+bun run build        # Build para producción con eventos y sitemap actualizados
+bun run preview      # Preview del build
+bun run sync:events  # Flujo diario de eventos + build + sitemap
 ```
 
 ESLint y Prettier están instalados como devDependencies pero no tienen

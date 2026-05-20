@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { fetchTextWithCache } from './enrichment-cache.js';
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36';
@@ -48,6 +49,20 @@ export async function fetchHTML(
   }
 
   throw lastError ?? new Error(`Failed to fetch ${url}`);
+}
+
+export async function fetchHTMLWithCache(
+  url: string,
+  options: FetchOptions & { ttlMs?: number } = {}
+): Promise<cheerio.CheerioAPI> {
+  const { ttlMs, ...fetchOptions } = options;
+  const html = await fetchTextWithCache(
+    url,
+    () => fetchText(url, fetchOptions),
+    { ttlMs }
+  );
+
+  return cheerio.load(html);
 }
 
 export async function fetchText(

@@ -1,6 +1,7 @@
 ---
 import type { Event, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import EventImage from '@components/ui/EventImage.astro';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import { formatFullDate, formatTime, getTemporalProximity } from '@utils/dates';
@@ -23,7 +24,7 @@ const proxMap: Record<string, string> = {
 };
 const proximityLabel = temporalProximity ? (proxMap[temporalProximity] ?? null) : null;
 
-const eventImage = event.imageUrl || event.image;
+const hasImage = !!(event.imageUrl || event.image);
 const backHref = getRoute('events', locale);
 const backLabel = t('nav.events');
 const catLabel = t(`categories.${event.category}`).toUpperCase();
@@ -53,12 +54,16 @@ const archiveRef = `${dayNum}${monthNum}`;
   <!-- Deep ambient canvas -->
   <div class="ev-canvas" aria-hidden="true">
     {
-      eventImage && (
-        <img
-          src={eventImage}
+      hasImage && (
+        <EventImage
+          event={event}
           alt=""
           class="ev-ambient-img"
           loading="eager"
+          fetchpriority="high"
+          sizes="100vw"
+          width={1920}
+          height={1080}
         />
       )
     }
@@ -263,13 +268,16 @@ const archiveRef = `${dayNum}${monthNum}`;
     <div class="ev-visual">
       <div class="ev-img-wrap" data-ev-img>
         {
-          eventImage ? (
-            <img
-              src={eventImage}
+          hasImage ? (
+            <EventImage
+              event={event}
               alt=""
               class="ev-img"
               loading="eager"
               decoding="async"
+              fetchpriority="high"
+              width={800}
+              height={1000}
             />
           ) : (
             <div class="ev-img-fallback">

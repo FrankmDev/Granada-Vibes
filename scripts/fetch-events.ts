@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadLocalEnv } from './utils/load-env.js';
 import { fetchTicketmasterEvents, type TicketmasterEvent } from './sources/ticketmaster.js';
 import { fetchEventbriteEvents, type EventbriteEvent } from './sources/eventbrite.js';
 import { fetchConciertosGranadaEvents } from './sources/conciertos-granada.js';
@@ -22,6 +23,7 @@ import {
   transformElegirHoy,
 } from './utils/transform-scraped.js';
 import { detectNeighborhood } from './utils/venue-neighborhood.js';
+import { improveImageUrl } from './utils/image-quality.js';
 import {
   type GeneratedEvent,
   type EventCategory,
@@ -30,6 +32,7 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const GENERATED_PATH = resolve(__dirname, '../src/data/events/generated.json');
+loadLocalEnv();
 const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Europe/Madrid',
   year: 'numeric',
@@ -66,9 +69,11 @@ function getBestTmImage(event: TicketmasterEvent): string | undefined {
   const preferred = event.images.filter((img) => img.ratio === '16_9');
   const pool = preferred.length > 0 ? preferred : event.images;
 
-  return pool.reduce((best, img) =>
+  const bestImage = pool.reduce((best, img) =>
     img.width > best.width ? img : best
   ).url;
+
+  return improveImageUrl(bestImage);
 }
 
 function getBestTmDescription(event: TicketmasterEvent): string {
@@ -134,7 +139,7 @@ function mapEbCategory(event: EventbriteEvent): EventCategory {
 
 function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
   const venue = raw.primary_venue?.name ?? 'Granada';
-  const imageUrl = raw.image?.url;
+  const imageUrl = improveImageUrl(raw.image?.url);
 
   // Extract price: null means free, number means paid
   let price: number | null = null;
@@ -151,6 +156,7 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
     description: { es: raw.summary ?? '', en: raw.summary ?? '' },
     category: mapEbCategory(raw),
     date: raw.start_date,
+    ...(raw.end_date && raw.end_date !== raw.start_date ? { endDate: raw.end_date } : {}),
     time: raw.start_time ? raw.start_time.slice(0, 5) : 'Por confirmar',
     venue,
     neighborhood: detectNeighborhood(venue),
@@ -163,6 +169,7 @@ function transformEventbrite(raw: EventbriteEvent): GeneratedEvent {
     source: 'eventbrite',
     sourceId: raw.id,
     sourceUrl: raw.url,
+    ...(raw.tickets_url ? { ticketsUrl: raw.tickets_url } : {}),
     ...(imageUrl ? { imageUrl } : {}),
     lastSyncedAt: new Date().toISOString(),
   };
@@ -191,7 +198,8 @@ function isValidEvent(event: GeneratedEvent, stats: ValidationStats): boolean {
 
   // Filter past events at ingestion time
   const today = getTodayString();
-  if (event.date < today) { stats.pastDate++; return false; }
+  const eventEndDate = event.endDate ?? event.date;
+  if (eventEndDate < today) { stats.pastDate++; return false; }
 
   // Filter cancelled events
   if (/^cancelad[oa]\b/i.test(event.title.es)) { stats.cancelled++; return false; }
@@ -253,6 +261,87 @@ function ensureUniqueSlugs(events: GeneratedEvent[]): GeneratedEvent[] {
   });
 }
 
+function hasUsefulText(value: string | undefined): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+function isUsefulImageUrl(value: string | undefined): value is string {
+  if (!hasUsefulText(value)) return false;
+  if (value.startsWith('data:')) return false;
+  if (/nofoto|placeholder|default-image/i.test(value)) return false;
+  return true;
+}
+
+function hasUsefulDescription(event: GeneratedEvent): boolean {
+  return hasUsefulText(event.description.es) && event.description.es.trim().length >= 40;
+}
+
+function scoreEventData(event: GeneratedEvent): number {
+  let score = 0;
+
+  if (isUsefulImageUrl(event.imageUrl)) score += 30;
+  if (hasUsefulDescription(event)) score += Math.min(20, Math.floor(event.description.es.length / 40));
+  if (event.price !== null) score += 8;
+  if (event.time !== 'Por confirmar') score += 8;
+  if (event.venue !== 'Granada' && hasUsefulText(event.venue)) score += 8;
+  if (event.sourceUrl) score += 4;
+  if (event.ticketsUrl) score += 4;
+  if (event.endDate) score += 3;
+  if (event.tags.length > 0) score += 2;
+
+  const sourcePriority: Record<GeneratedEvent['source'], number> = {
+    ticketmaster: 10,
+    eventbrite: 10,
+    'conciertos-granada': 9,
+    'palacio-congresos': 8,
+    turgranada: 7,
+    'granada-es-cultura': 6,
+    ayuntamiento: 5,
+    elegirhoy: 5,
+    yuzin: 4,
+    indyrock: 4,
+    manual: 3,
+    mock: 1,
+  };
+
+  score += sourcePriority[event.source] ?? 0;
+
+  return score;
+}
+
+function mergeEventRecords(preferred: GeneratedEvent, fallback: GeneratedEvent): GeneratedEvent {
+  const preferredDescription = preferred.description.es.trim();
+  const fallbackDescription = fallback.description.es.trim();
+  const description = fallbackDescription.length > preferredDescription.length
+    ? fallback.description
+    : preferred.description;
+
+  return {
+    ...fallback,
+    ...preferred,
+    description,
+    endDate: preferred.endDate ?? fallback.endDate,
+    time: preferred.time !== 'Por confirmar' ? preferred.time : fallback.time,
+    venue: preferred.venue !== 'Granada' ? preferred.venue : fallback.venue,
+    neighborhood: preferred.venue !== 'Granada' ? preferred.neighborhood : fallback.neighborhood,
+    price: preferred.price ?? fallback.price,
+    tags: Array.from(new Set([...fallback.tags, ...preferred.tags])),
+    sourceUrl: preferred.sourceUrl || fallback.sourceUrl,
+    ticketsUrl: preferred.ticketsUrl ?? fallback.ticketsUrl,
+    imageUrl: isUsefulImageUrl(preferred.imageUrl) ? preferred.imageUrl : fallback.imageUrl,
+    lastSyncedAt: preferred.lastSyncedAt,
+  };
+}
+
+function chooseBestEvent(a: GeneratedEvent, b: GeneratedEvent): GeneratedEvent {
+  const aScore = scoreEventData(a);
+  const bScore = scoreEventData(b);
+  const preferred = aScore >= bScore ? a : b;
+  const fallback = preferred === a ? b : a;
+
+  return mergeEventRecords(preferred, fallback);
+}
+
 function deduplicateAndMerge(
   existing: GeneratedEvent[],
   incoming: GeneratedEvent[]
@@ -265,22 +354,27 @@ function deduplicateAndMerge(
   const merged = new Map<string, GeneratedEvent>();
 
   for (const event of existing) {
-    if (event.date < today) continue;
+    if ((event.endDate ?? event.date) < today) continue;
     if (incomingByKey.has(key(event))) continue;
     merged.set(key(event), event);
   }
 
   for (const event of incoming) {
-    merged.set(key(event), event);
+    const eventKey = key(event);
+    const current = merged.get(eventKey);
+    merged.set(eventKey, current ? mergeEventRecords(event, current) : event);
   }
 
   // Step 2: Content-based deduplication (same normalized title + same date)
-  // Keeps the first occurrence (which has the best data from source priority)
+  // Keep the richest event record so images/prices/descriptions are not lost.
   const contentDeduped = new Map<string, GeneratedEvent>();
   for (const event of merged.values()) {
     const contentKey = `${normalizeTitle(event.title.es)}::${event.date}`;
-    if (!contentDeduped.has(contentKey)) {
+    const current = contentDeduped.get(contentKey);
+    if (!current) {
       contentDeduped.set(contentKey, event);
+    } else {
+      contentDeduped.set(contentKey, chooseBestEvent(current, event));
     }
   }
 

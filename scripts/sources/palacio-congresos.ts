@@ -7,7 +7,7 @@
  * Prices live in the detail pages (?seccion=evento&idEvento=X), NOT in the listing cards.
  * We extract the ID from the image src and fetch each detail page for price info.
  */
-import { fetchHTML } from '../utils/scraper-helpers.js';
+import { fetchHTML, fetchHTMLWithCache } from '../utils/scraper-helpers.js';
 import { parseSpanishDate, parseSpanishTime } from '../utils/date-parser.js';
 
 export interface PalacioEvent {
@@ -30,7 +30,7 @@ const LISTING_URL = `${BASE_URL}/?seccion=eventosCulturales`;
 async function fetchDetailPrice(eventId: string): Promise<string> {
   try {
     const url = `${BASE_URL}/?seccion=evento&idEvento=${eventId}`;
-    const $ = await fetchHTML(url, { timeout: 12_000, retries: 1 });
+    const $ = await fetchHTMLWithCache(url, { timeout: 12_000, retries: 1 });
     const text = $('body').text();
 
     // Look for price patterns in the detail page

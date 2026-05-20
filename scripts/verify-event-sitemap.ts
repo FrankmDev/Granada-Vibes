@@ -8,7 +8,7 @@ const expectedOrigin = 'https://granadaurban.com';
 
 function assertFileExists(filePath: string): void {
   if (!fs.existsSync(filePath)) {
-    throw new Error(`No existe ${path.relative(rootDir, filePath)}. Ejecuta npm run build antes de verificar.`);
+    throw new Error(`No existe ${path.relative(rootDir, filePath)}. Ejecuta bun run build antes de verificar.`);
   }
 }
 

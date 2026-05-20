@@ -7,10 +7,10 @@ Guía de contexto para agentes de código (OpenCode, Claude, etc.) trabajando en
 ## Comandos
 
 ```bash
-npm run dev           # Servidor de desarrollo Astro
-npm run build         # Build estático para producción
-npm run preview       # Preview del build estático
-npm run fetch:events  # Ejecuta scripts/package.json (scraping de eventos, requiere .env)
+bun run dev           # Servidor de desarrollo Astro
+bun run build         # Limpia/sincroniza eventos, build estático y verifica sitemap
+bun run preview       # Preview del build estático
+bun run sync:events   # Flujo diario: limpia eventos, busca nuevos, build y sitemap
 ```
 
 - **ESLint y Prettier** están instalados pero no tienen scripts en `package.json`.
@@ -273,7 +273,7 @@ Ejecutar **el mismo día** que se apunte el dominio definitivo a Vercel/Netlify:
    - Copia el código de verificación (meta tag HTML).
    - Pégalo en `src/config/site.ts` como `googleSiteVerification: 'TU_CODIGO_AQUI'`.
    - Pasa esa propiedad a `BaseLayout` desde la página raíz o el layout global si se decide hacerlo global.
-   - Haz `npm run build` y despliega.
+   - Haz `bun run build` y despliega.
    - Pulsa "Verificar" en GSC.
 
 2. **Enviar sitemap**

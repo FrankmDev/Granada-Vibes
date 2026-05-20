@@ -7,13 +7,15 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "bun run prepare:events && bun run build:static && bun run verify:event-sitemap",
+    "build:static": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "fetch:events": "cd scripts && npm run fetch",
-    "clean:events": "cd scripts && npm run clean",
-    "sync:events": "cd scripts && npm run sync",
-    "verify:event-sitemap": "cd scripts && npm run verify:sitemap"
+    "prepare:events": "bun scripts/clean-events.ts && bun scripts/fetch-events.ts && bun scripts/optimize-event-images.ts",
+    "fetch:events": "bun scripts/fetch-events.ts",
+    "clean:events": "bun scripts/clean-events.ts",
+    "sync:events": "bun scripts/sync-events.ts",
+    "verify:event-sitemap": "bun scripts/verify-event-sitemap.ts"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.2.8",
@@ -26,10 +28,12 @@
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
     "autoprefixer": "^10.4.27",
+    "cheerio": "^1.2.0",
     "eslint": "^10.0.3",
     "eslint-plugin-astro": "^1.6.0",
     "postcss": "^8.5.8",
     "prettier": "^3.8.1",
+    "sharp": "^0.34.5",
     "tailwindcss": "3"
   }
 }

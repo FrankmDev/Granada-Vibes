@@ -12,6 +12,8 @@ interface Props {
   loading?: 'eager' | 'lazy';
   decoding?: 'async' | 'sync' | 'auto';
   fetchpriority?: 'high' | 'low' | 'auto';
+  quality?: number;
+  widths?: number[];
   class?: string;
 }
 
@@ -24,6 +26,8 @@ const {
   loading = 'lazy',
   decoding = 'async',
   fetchpriority,
+  quality = 95,
+  widths,
   class: className = '',
 } = Astro.props;
 
@@ -69,6 +73,7 @@ if (typeof src === 'string') {
 const imgSizes = sizes || defaultSizes;
 const fallbackWidth = width || 800;
 const fallbackHeight = height || 600;
+const responsiveWidths = widths ?? [360, 640, 960, 1280, 1600];
 ---
 
 {resolvedImage ? (
@@ -77,6 +82,8 @@ const fallbackHeight = height || 600;
     alt={alt}
     {...(width && height ? { width, height } : {})}
     sizes={imgSizes}
+    quality={quality}
+    widths={responsiveWidths}
     loading={loading}
     decoding={decoding}
     {...(fetchpriority ? { fetchpriority } : {})}
@@ -90,6 +97,8 @@ const fallbackHeight = height || 600;
     width={fallbackWidth}
     height={fallbackHeight}
     sizes={imgSizes}
+    quality={quality}
+    widths={responsiveWidths}
     loading={loading}
     decoding={decoding}
     {...(fetchpriority ? { fetchpriority } : {})}

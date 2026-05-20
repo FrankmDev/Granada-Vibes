@@ -1,3 +1,6 @@
+import { fetchTextWithCache } from '../utils/enrichment-cache.js';
+import { improveImageUrl } from '../utils/image-quality.js';
+
 export interface EventbriteEvent {
   id: string;
   name: string;
@@ -88,17 +91,26 @@ async function enrichEventbriteEvent(
 ): Promise<void> {
   try {
     const eventId = event.eventbrite_event_id ?? event.id;
-    const response = await fetch(`https://www.eventbriteapi.com/v3/events/${eventId}/?expand=ticket_classes,ticket_availability`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) return;
-    const data = (await response.json()) as EventbriteDetailResponse;
+    const detailUrl = `https://www.eventbriteapi.com/v3/events/${eventId}/?expand=ticket_classes,ticket_availability`;
+    const text = await fetchTextWithCache(
+      detailUrl,
+      async () => {
+        const response = await fetch(detailUrl, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!response.ok) {
+          throw new Error(`Eventbrite detail error: ${response.status} ${response.statusText}`);
+        }
+        return response.text();
+      }
+    );
+    const data = JSON.parse(text) as EventbriteDetailResponse;
 
     // Logo / image
     if (!event.image?.url) {
       const logoUrl = data.logo?.original?.url ?? data.logo?.url;
       if (logoUrl) {
-        event.image = { url: logoUrl };
+        event.image = { url: improveImageUrl(logoUrl) ?? logoUrl };
       }
     }
 
