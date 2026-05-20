@@ -1,33 +1,5 @@
 [
   {
-    "id": "eb-1497161302759",
-    "slug": "gastrocata-luxury-granada",
-    "title": {
-      "es": "Gastrocata Luxury Granada",
-      "en": "Gastrocata Luxury Granada"
-    },
-    "description": {
-      "es": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail.",
-      "en": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail."
-    },
-    "category": "other",
-    "date": "2026-05-20",
-    "time": "20:30",
-    "venue": "Hotel Monasterio Granada Adults Only",
-    "neighborhood": "centro",
-    "price": 99,
-    "currency": "EUR",
-    "tags": [
-      "Food & Drink"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1497161302759",
-    "sourceUrl": "https://www.eventbrite.es/e/gastrocata-luxury-granada-tickets-1497161302759",
-    "imageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1074985763%2F2829674272701%2F1%2Foriginal.20250716-173744?auto=format%2Ccompress&q=75&sharp=10&s=6d1bebeb3f20600a792ee5be576257e3",
-    "lastSyncedAt": "2026-05-20T09:22:24.746Z"
-  },
-  {
     "id": "eb-1978344077391",
     "slug": "escape-room-al-aire-libre-en-granada",
     "title": {
@@ -56,6 +28,34 @@
     "lastSyncedAt": "2026-05-20T09:22:24.746Z"
   },
   {
+    "id": "eb-1497161302759",
+    "slug": "gastrocata-luxury-granada",
+    "title": {
+      "es": "Gastrocata Luxury Granada",
+      "en": "Gastrocata Luxury Granada"
+    },
+    "description": {
+      "es": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail.",
+      "en": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail."
+    },
+    "category": "other",
+    "date": "2026-05-20",
+    "time": "20:30",
+    "venue": "Hotel Monasterio Granada Adults Only",
+    "neighborhood": "centro",
+    "price": 99,
+    "currency": "EUR",
+    "tags": [
+      "Food & Drink"
+    ],
+    "featured": false,
+    "source": "eventbrite",
+    "sourceId": "1497161302759",
+    "sourceUrl": "https://www.eventbrite.es/e/gastrocata-luxury-granada-tickets-1497161302759",
+    "imageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1074985763%2F2829674272701%2F1%2Foriginal.20250716-173744?auto=format%2Ccompress&q=75&sharp=10&s=6d1bebeb3f20600a792ee5be576257e3",
+    "lastSyncedAt": "2026-05-20T16:40:25.236Z"
+  },
+  {
     "id": "cg-oi6fef",
     "slug": "lamaar-leo-esquivel",
     "title": {
@@ -81,7 +81,7 @@
     "sourceId": "oi6fef",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116859-lamaar-leo-esquivel",
     "imageUrl": "https://conciertos.club/doc/c/2026/a_lamaaryleoesquivel.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "tg-5zzy9p",
@@ -107,7 +107,7 @@
     "sourceId": "5zzy9p",
     "sourceUrl": "https://www.turgranada.es/es/eventos/presentaci%C3%B3n-y-concierto-del-x-festival-internacional-de-la-guitarra-granada",
     "imageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/700657573_18161878570443158_3.2e16d0ba.fill-275x202-c100_qAERWIx.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:52.078Z"
+    "lastSyncedAt": "2026-05-20T16:39:49.972Z"
   },
   {
     "id": "cg-3u1i3p",
@@ -138,6 +138,62 @@
     "lastSyncedAt": "2026-05-10T08:10:35.353Z"
   },
   {
+    "id": "eb-1978344078394",
+    "slug": "escape-room-al-aire-libre-en-granada-2",
+    "title": {
+      "es": "Escape Room al Aire Libre en Granada",
+      "en": "Escape Room al Aire Libre en Granada"
+    },
+    "description": {
+      "es": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego.",
+      "en": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego."
+    },
+    "category": "other",
+    "date": "2026-05-21",
+    "time": "12:00",
+    "venue": "Pl. de Bib-Rambla, 6",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "Travel & Outdoor"
+    ],
+    "featured": false,
+    "source": "eventbrite",
+    "sourceId": "1978344078394",
+    "sourceUrl": "https://www.eventbrite.com/e/escape-room-al-aire-libre-en-granada-tickets-1978344078394",
+    "imageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1173148462%2F2986668976361%2F1%2Foriginal.20251217-182050?auto=format%2Ccompress&q=75&sharp=10&s=3cff2122ed3e2ab0e1e08a047adc8e81",
+    "lastSyncedAt": "2026-05-20T16:40:25.236Z"
+  },
+  {
+    "id": "cg-3vlh27",
+    "slug": "orquesta-ciudad-de-granada",
+    "title": {
+      "es": "Orquesta Ciudad de Granada",
+      "en": "Orquesta Ciudad de Granada"
+    },
+    "description": {
+      "es": "Precio: Entrada libre.",
+      "en": "Precio: Entrada libre."
+    },
+    "category": "concert",
+    "date": "2026-05-21",
+    "time": "20:00",
+    "venue": "Iglesia de Santa Ana",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Clásica"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "3vlh27",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/118804-orquesta-ciudad-de-granada",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_ocg.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
+  },
+  {
     "id": "cg-mtjtf6",
     "slug": "alien-animals",
     "title": {
@@ -163,7 +219,7 @@
     "sourceId": "mtjtf6",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116860-alien-animals",
     "imageUrl": "https://conciertos.club/doc/lp/l_LemonRock_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "cg-kuqt6d",
@@ -191,7 +247,7 @@
     "sourceId": "kuqt6d",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117553-fletan-feten-paul-rodie",
     "imageUrl": "https://conciertos.club/doc/lp/l_Planta_Baja_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "cg-45pgav",
@@ -219,7 +275,7 @@
     "sourceId": "45pgav",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116847-suu",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/GdZdiAP84jYf20260521.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "cg-l69y41",
@@ -247,7 +303,7 @@
     "sourceId": "l69y41",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117779-enrale-parasito-colera",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_enrale2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "cg-xhca6d",
@@ -275,7 +331,7 @@
     "sourceId": "xhca6d",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116703-nia-dahl-eric-kopetz",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_liberia2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "cg-1fd35c",
@@ -303,7 +359,7 @@
     "sourceId": "1fd35c",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116712-enrale-parasito",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_enrale2605.jpeg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "tg-u5218x",
@@ -329,7 +385,7 @@
     "sourceId": "u5218x",
     "sourceUrl": "https://www.turgranada.es/es/eventos/festival-entreplazas",
     "imageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/parque-guaynabo-albolote.2e16d0ba.fill-275x202-c100.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:52.078Z"
+    "lastSyncedAt": "2026-05-20T16:39:49.972Z"
   },
   {
     "id": "tg-6lm49l",
@@ -355,7 +411,7 @@
     "sourceId": "6lm49l",
     "sourceUrl": "https://www.turgranada.es/es/eventos/arabuleila-folk-el-mantel-de-noa",
     "imageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/noa.2e16d0ba.fill-275x202-c100.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:52.078Z"
+    "lastSyncedAt": "2026-05-20T16:39:49.972Z"
   },
   {
     "id": "tg-69rg6u",
@@ -381,7 +437,7 @@
     "sourceId": "69rg6u",
     "sourceUrl": "https://www.turgranada.es/es/eventos/estampas-trovos-guitarra-y-revista",
     "imageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/banner_FGL_MAYO_1.2e16d0ba.fill-275x202-c100.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:52.078Z"
+    "lastSyncedAt": "2026-05-20T16:39:49.972Z"
   },
   {
     "id": "cg-a5x6z7",
@@ -412,86 +468,6 @@
     "lastSyncedAt": "2026-05-10T08:10:35.353Z"
   },
   {
-    "id": "tm-Z698xZ2qZ1kAYOs19",
-    "slug": "el-kanka",
-    "title": {
-      "es": "El Kanka",
-      "en": "El Kanka"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-05-22",
-    "time": "21:00",
-    "venue": "Sala Industrial Copera",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "ticketmaster",
-    "sourceId": "Z698xZ2qZ1kAYOs19",
-    "sourceUrl": "https://www.ticketmaster.es/event/el-kanka-tickets/170831297?language=en-us",
-    "imageUrl": "https://s1.ticketm.net/dam/a/ba0/83b77406-373c-4b35-8887-9e552ecf3ba0_SOURCE",
-    "lastSyncedAt": "2026-05-20T09:21:49.897Z"
-  },
-  {
-    "id": "cg-psn17k",
-    "slug": "rustic-festival",
-    "title": {
-      "es": "Rustic Festival:",
-      "en": "Rustic Festival:"
-    },
-    "description": {
-      "es": "Precio: 13€.",
-      "en": "Precio: 13€."
-    },
-    "category": "concert",
-    "date": "2026-05-22",
-    "time": "Por confirmar",
-    "venue": "Parque del Salao. Lanjarón",
-    "neighborhood": "centro",
-    "price": 13,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "psn17k",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116445-",
-    "imageUrl": "https://conciertos.club/doc/ban/B/ban_balkanbomba.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
-  },
-  {
-    "id": "cg-39fwcx",
-    "slug": "elegante-y-embustero",
-    "title": {
-      "es": "Elegante y embustero",
-      "en": "Elegante y embustero"
-    },
-    "description": {
-      "es": "Precio: Entrada libre.",
-      "en": "Precio: Entrada libre."
-    },
-    "category": "concert",
-    "date": "2026-05-22",
-    "time": "18:00",
-    "venue": "Backstage",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Versiones/Tributos"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "39fwcx",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/115782-elegante-y-embustero",
-    "imageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
     "id": "cg-je52sk",
     "slug": "camellos",
     "title": {
@@ -520,6 +496,86 @@
     "lastSyncedAt": "2026-05-20T09:21:58.581Z"
   },
   {
+    "id": "tm-Z698xZ2qZ1kAYOs19",
+    "slug": "el-kanka",
+    "title": {
+      "es": "El Kanka",
+      "en": "El Kanka"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-05-22",
+    "time": "21:00",
+    "venue": "Sala Industrial Copera",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "ticketmaster",
+    "sourceId": "Z698xZ2qZ1kAYOs19",
+    "sourceUrl": "https://www.ticketmaster.es/event/el-kanka-tickets/170831297?language=en-us",
+    "imageUrl": "https://s1.ticketm.net/dam/a/ba0/83b77406-373c-4b35-8887-9e552ecf3ba0_SOURCE",
+    "lastSyncedAt": "2026-05-20T16:39:47.807Z"
+  },
+  {
+    "id": "cg-psn17k",
+    "slug": "rustic-festival",
+    "title": {
+      "es": "Rustic Festival:",
+      "en": "Rustic Festival:"
+    },
+    "description": {
+      "es": "Precio: 13€.",
+      "en": "Precio: 13€."
+    },
+    "category": "concert",
+    "date": "2026-05-22",
+    "time": "Por confirmar",
+    "venue": "Parque del Salao. Lanjarón",
+    "neighborhood": "centro",
+    "price": 13,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "psn17k",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116445-",
+    "imageUrl": "https://conciertos.club/doc/ban/B/ban_balkanbomba.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
+  },
+  {
+    "id": "cg-39fwcx",
+    "slug": "elegante-y-embustero",
+    "title": {
+      "es": "Elegante y embustero",
+      "en": "Elegante y embustero"
+    },
+    "description": {
+      "es": "Precio: Entrada libre.",
+      "en": "Precio: Entrada libre."
+    },
+    "category": "concert",
+    "date": "2026-05-22",
+    "time": "18:00",
+    "venue": "Backstage",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Versiones/Tributos"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "39fwcx",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/115782-elegante-y-embustero",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
+  },
+  {
     "id": "cg-3qy1qt",
     "slug": "candlelight",
     "title": {
@@ -545,7 +601,7 @@
     "sourceId": "3qy1qt",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115446-candlelight",
     "imageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "cg-ug3a56",
@@ -573,7 +629,35 @@
     "sourceId": "ug3a56",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117778-garnata",
     "imageUrl": "https://conciertos.club/doc/a/2025/a_garnata.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-c2ewy",
+    "slug": "orquesta-ciudad-de-granada-2",
+    "title": {
+      "es": "Orquesta Ciudad de Granada",
+      "en": "Orquesta Ciudad de Granada"
+    },
+    "description": {
+      "es": "Precio: Entrada libre.",
+      "en": "Precio: Entrada libre."
+    },
+    "category": "concert",
+    "date": "2026-05-22",
+    "time": "20:00",
+    "venue": "Teatro Municipal",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Clásica"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "c2ewy",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/118805-orquesta-ciudad-de-granada",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_ocg.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-4auxxw",
@@ -601,7 +685,7 @@
     "sourceId": "4auxxw",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117343-juan-angel-tirado",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/juanangelt_20260522.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-txa5an",
@@ -629,7 +713,7 @@
     "sourceId": "txa5an",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115746-georgina",
     "imageUrl": "https://conciertos.club/doc/a/2017/a_georgina.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-g86wtm",
@@ -657,7 +741,7 @@
     "sourceId": "g86wtm",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116918-doble-fondo-del-gremio",
     "imageUrl": "https://conciertos.club/doc/a/2020/a_doblefondo.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-f1m1qz",
@@ -685,7 +769,7 @@
     "sourceId": "f1m1qz",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117011-samuel-slzr",
     "imageUrl": "https://conciertos.club/doc/a/2023/a_samuelslzr.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-52ugsc",
@@ -713,7 +797,7 @@
     "sourceId": "52ugsc",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117036-sin-tregua",
     "imageUrl": "https://conciertos.club/doc/lp/l_LaLolaina_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-c6h2zm",
@@ -741,7 +825,7 @@
     "sourceId": "c6h2zm",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116843-la-juan-roman",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/la-juan-roman-en-lemon-rock20260522.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-sj7wl3",
@@ -769,7 +853,7 @@
     "sourceId": "sj7wl3",
     "sourceUrl": "https://conciertosengranada.es/conciertos/114600-dulze",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_dulze2605.jpeg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-ldt9h8",
@@ -797,7 +881,7 @@
     "sourceId": "ldt9h8",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117206-mr-man-the-small-frying-pan",
     "imageUrl": "https://conciertos.club/doc/a/2026/a_mrmanpan.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-5yblfd",
@@ -825,7 +909,7 @@
     "sourceId": "5yblfd",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117727-the-leftcovers",
     "imageUrl": "https://conciertos.club/doc/a/2022/a_theleftcovers.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-iw4t0w",
@@ -884,254 +968,6 @@
     "lastSyncedAt": "2026-05-19T18:56:19.159Z"
   },
   {
-    "id": "tm-Z698xZ2qZ1kpKj7j6",
-    "slug": "el-kanka-2",
-    "title": {
-      "es": "El Kanka",
-      "en": "El Kanka"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "21:00",
-    "venue": "Sala Industrial Copera",
-    "neighborhood": "zaidin",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "ticketmaster",
-    "sourceId": "Z698xZ2qZ1kpKj7j6",
-    "sourceUrl": "https://www.ticketmaster.es/event/el-kanka-tickets/593704707?language=en-us",
-    "imageUrl": "https://s1.ticketm.net/dam/a/ba0/83b77406-373c-4b35-8887-9e552ecf3ba0_SOURCE",
-    "lastSyncedAt": "2026-05-20T09:21:49.897Z"
-  },
-  {
-    "id": "cg-abw85k",
-    "slug": "sexitanian-metal-fest-iii-obus-muro-injector-mugre-astter",
-    "title": {
-      "es": "Sexitanian Metal Fest III: Obús + Muro + Injector + Mügre + Astter",
-      "en": "Sexitanian Metal Fest III: Obús + Muro + Injector + Mügre + Astter"
-    },
-    "description": {
-      "es": "Precio: 20€ Anticipada/25€ Taquilla.",
-      "en": "Precio: 20€ Anticipada/25€ Taquilla."
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "Por confirmar",
-    "venue": "Parque del Majuelo",
-    "neighborhood": "centro",
-    "price": 20,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "abw85k",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/117205-obus-muro-injector-mugre-astter",
-    "imageUrl": "https://conciertos.club/doc/ban/O/ban_obus.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
-  },
-  {
-    "id": "cg-dyuu2",
-    "slug": "rustic-festival-2",
-    "title": {
-      "es": "Rustic Festival.",
-      "en": "Rustic Festival."
-    },
-    "description": {
-      "es": "Precio: 13€.",
-      "en": "Precio: 13€."
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "13:00",
-    "venue": "Parque del Salao",
-    "neighborhood": "centro",
-    "price": 13,
-    "currency": "EUR",
-    "tags": [
-      "Varios"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "dyuu2",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116455-rustic-festival",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_rustic2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
-    "id": "cg-q50kss",
-    "slug": "we-will-rock-you-el-musical",
-    "title": {
-      "es": "We Will Rock You - El Musical.",
-      "en": "We Will Rock You - El Musical."
-    },
-    "description": {
-      "es": "Venta anticipada: redentradas.com.",
-      "en": "Venta anticipada: redentradas.com."
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "17:30",
-    "venue": "Espacio Escénico Ciudad de Maracena",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Musicales/Teatro musical"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "q50kss",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/117337-we-will-rock-you-el-musical/1779550200",
-    "imageUrl": "https://doc.conciertos.club/doc/c/2026/wewillrock_20260523.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
-    "id": "cg-3zxqn9",
-    "slug": "suena-orgiva",
-    "title": {
-      "es": "Suena Órgiva.",
-      "en": "Suena Órgiva."
-    },
-    "description": {
-      "es": "Ver mapa, ficha y próximos conciertos en Plaza de las Culturas",
-      "en": "Ver mapa, ficha y próximos conciertos en Plaza de las Culturas"
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "18:00",
-    "venue": "Plaza de las Culturas",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Varios"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "3zxqn9",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/117943-suena-orgiva",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_suenaorgiva2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
-    "id": "cg-rm5gjt",
-    "slug": "denisdenis",
-    "title": {
-      "es": "Denisdenis",
-      "en": "Denisdenis"
-    },
-    "description": {
-      "es": "Precio: Entrada libre.",
-      "en": "Precio: Entrada libre."
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "19:00",
-    "venue": "Casa de la Cultura",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Pop-rock/Indie"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "rm5gjt",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/112524-denisdenis-molina-molina-radio-palmer-siameses-la-enfermedad-del-beso",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_indiedesc2410.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
-    "id": "cg-t1vsyt",
-    "slug": "concierto-de-pentecostes",
-    "title": {
-      "es": "Concierto de Pentecostés.",
-      "en": "Concierto de Pentecostés."
-    },
-    "description": {
-      "es": "Ver mapa, ficha y próximos conciertos en Catedral",
-      "en": "Ver mapa, ficha y próximos conciertos en Catedral"
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "20:00",
-    "venue": "Catedral",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Clásica"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "t1vsyt",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/117199-concierto-de-pentecostes",
-    "imageUrl": "https://conciertos.club/doc/lp/l_Catedral_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
-    "id": "cg-m4t4lf",
-    "slug": "triana-la-canela",
-    "title": {
-      "es": "Triana La Canela",
-      "en": "Triana La Canela"
-    },
-    "description": {
-      "es": "Precio: 13€.",
-      "en": "Precio: 13€."
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "20:30",
-    "venue": "Teatro La Chumbera",
-    "neighborhood": "centro",
-    "price": 13,
-    "currency": "EUR",
-    "tags": [
-      "Flamenco/Copla"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "m4t4lf",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/117342-triana-la-canela",
-    "imageUrl": "https://doc.conciertos.club/doc/c/2026/trianalaca_20260523.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
-    "id": "cg-lq6whe",
-    "slug": "mescalina",
-    "title": {
-      "es": "Mescalina",
-      "en": "Mescalina"
-    },
-    "description": {
-      "es": "Precio: 16,83€.",
-      "en": "Precio: 16,83€."
-    },
-    "category": "concert",
-    "date": "2026-05-23",
-    "time": "21:00",
-    "venue": "El Tren",
-    "neighborhood": "centro",
-    "price": 16.83,
-    "currency": "EUR",
-    "tags": [
-      "Versiones/Tributos"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "lq6whe",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/110664-mescalina",
-    "imageUrl": "https://conciertos.club/doc/c/2026/c_mescalina2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
-  },
-  {
     "id": "cg-ulkxhv",
     "slug": "iron-dicks-tributo-a-iron-maiden",
     "title": {
@@ -1160,6 +996,282 @@
     "lastSyncedAt": "2026-05-20T09:21:58.581Z"
   },
   {
+    "id": "tm-Z698xZ2qZ1kpKj7j6",
+    "slug": "el-kanka-2",
+    "title": {
+      "es": "El Kanka",
+      "en": "El Kanka"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "21:00",
+    "venue": "Sala Industrial Copera",
+    "neighborhood": "zaidin",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "ticketmaster",
+    "sourceId": "Z698xZ2qZ1kpKj7j6",
+    "sourceUrl": "https://www.ticketmaster.es/event/el-kanka-tickets/593704707?language=en-us",
+    "imageUrl": "https://s1.ticketm.net/dam/a/ba0/83b77406-373c-4b35-8887-9e552ecf3ba0_SOURCE",
+    "lastSyncedAt": "2026-05-20T16:39:47.807Z"
+  },
+  {
+    "id": "cg-abw85k",
+    "slug": "sexitanian-metal-fest-iii-obus-muro-injector-mugre-astter",
+    "title": {
+      "es": "Sexitanian Metal Fest III: Obús + Muro + Injector + Mügre + Astter",
+      "en": "Sexitanian Metal Fest III: Obús + Muro + Injector + Mügre + Astter"
+    },
+    "description": {
+      "es": "Precio: 20€ Anticipada/25€ Taquilla.",
+      "en": "Precio: 20€ Anticipada/25€ Taquilla."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "Por confirmar",
+    "venue": "Parque del Majuelo",
+    "neighborhood": "centro",
+    "price": 20,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "abw85k",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/117205-obus-muro-injector-mugre-astter",
+    "imageUrl": "https://conciertos.club/doc/ban/O/ban_obus.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
+  },
+  {
+    "id": "cg-dyuu2",
+    "slug": "rustic-festival-2",
+    "title": {
+      "es": "Rustic Festival.",
+      "en": "Rustic Festival."
+    },
+    "description": {
+      "es": "Precio: 13€.",
+      "en": "Precio: 13€."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "13:00",
+    "venue": "Parque del Salao",
+    "neighborhood": "centro",
+    "price": 13,
+    "currency": "EUR",
+    "tags": [
+      "Varios"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "dyuu2",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116455-rustic-festival",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_rustic2605.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-q50kss",
+    "slug": "we-will-rock-you-el-musical",
+    "title": {
+      "es": "We Will Rock You - El Musical.",
+      "en": "We Will Rock You - El Musical."
+    },
+    "description": {
+      "es": "Venta anticipada: redentradas.com.",
+      "en": "Venta anticipada: redentradas.com."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "17:30",
+    "venue": "Espacio Escénico Ciudad de Maracena",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Musicales/Teatro musical"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "q50kss",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/117337-we-will-rock-you-el-musical/1779550200",
+    "imageUrl": "https://doc.conciertos.club/doc/c/2026/wewillrock_20260523.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-3zxqn9",
+    "slug": "suena-orgiva",
+    "title": {
+      "es": "Suena Órgiva.",
+      "en": "Suena Órgiva."
+    },
+    "description": {
+      "es": "Ver mapa, ficha y próximos conciertos en Plaza de las Culturas",
+      "en": "Ver mapa, ficha y próximos conciertos en Plaza de las Culturas"
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "18:00",
+    "venue": "Plaza de las Culturas",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Varios"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "3zxqn9",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/117943-suena-orgiva",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_suenaorgiva2605.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-rm5gjt",
+    "slug": "denisdenis",
+    "title": {
+      "es": "Denisdenis",
+      "en": "Denisdenis"
+    },
+    "description": {
+      "es": "Precio: Entrada libre.",
+      "en": "Precio: Entrada libre."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "19:00",
+    "venue": "Casa de la Cultura",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Pop-rock/Indie"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "rm5gjt",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/112524-denisdenis-molina-molina-radio-palmer-siameses-la-enfermedad-del-beso",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_indiedesc2410.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-t1vsyt",
+    "slug": "concierto-de-pentecostes",
+    "title": {
+      "es": "Concierto de Pentecostés.",
+      "en": "Concierto de Pentecostés."
+    },
+    "description": {
+      "es": "Ver mapa, ficha y próximos conciertos en Catedral",
+      "en": "Ver mapa, ficha y próximos conciertos en Catedral"
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "20:00",
+    "venue": "Catedral",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Clásica"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "t1vsyt",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/117199-concierto-de-pentecostes",
+    "imageUrl": "https://conciertos.club/doc/lp/l_Catedral_Gra_pp.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-4jqaw3",
+    "slug": "orquesta-ciudad-de-granada-3",
+    "title": {
+      "es": "Orquesta Ciudad de Granada",
+      "en": "Orquesta Ciudad de Granada"
+    },
+    "description": {
+      "es": "Precio: Entrada libre.",
+      "en": "Precio: Entrada libre."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "20:00",
+    "venue": "Casa de la Cultura",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Clásica"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "4jqaw3",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/118806-orquesta-ciudad-de-granada",
+    "imageUrl": "https://conciertos.club/doc/a/2017/a_ocg.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-m4t4lf",
+    "slug": "triana-la-canela",
+    "title": {
+      "es": "Triana La Canela",
+      "en": "Triana La Canela"
+    },
+    "description": {
+      "es": "Precio: 13€.",
+      "en": "Precio: 13€."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "20:30",
+    "venue": "Teatro La Chumbera",
+    "neighborhood": "centro",
+    "price": 13,
+    "currency": "EUR",
+    "tags": [
+      "Flamenco/Copla"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "m4t4lf",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/117342-triana-la-canela",
+    "imageUrl": "https://doc.conciertos.club/doc/c/2026/trianalaca_20260523.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
+    "id": "cg-lq6whe",
+    "slug": "mescalina",
+    "title": {
+      "es": "Mescalina",
+      "en": "Mescalina"
+    },
+    "description": {
+      "es": "Precio: 16,83€.",
+      "en": "Precio: 16,83€."
+    },
+    "category": "concert",
+    "date": "2026-05-23",
+    "time": "21:00",
+    "venue": "El Tren",
+    "neighborhood": "centro",
+    "price": 16.83,
+    "currency": "EUR",
+    "tags": [
+      "Versiones/Tributos"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "lq6whe",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/110664-mescalina",
+    "imageUrl": "https://conciertos.club/doc/c/2026/c_mescalina2605.jpg",
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
+  },
+  {
     "id": "cg-ahapzw",
     "slug": "holy-fuck",
     "title": {
@@ -1185,7 +1297,7 @@
     "sourceId": "ahapzw",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116861-holy-fuck-dark-libra",
     "imageUrl": "https://conciertos.club/doc/a/2020/a_holyfuck.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-jfa80f",
@@ -1213,7 +1325,7 @@
     "sourceId": "jfa80f",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117037-tributo-a-heroes-del-silencio",
     "imageUrl": "https://conciertos.club/doc/lp/l_LaLolaina_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-kmd154",
@@ -1241,7 +1353,7 @@
     "sourceId": "kmd154",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116744-the-country-boys",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/los-country-boys-en-el-sin-sentido-bar-granada20260523.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-tf5xzt",
@@ -1267,7 +1379,7 @@
     "sourceId": "tf5xzt",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116715-sampalo",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_sampalo2605.jpeg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-kx4dmz",
@@ -1295,7 +1407,7 @@
     "sourceId": "kx4dmz",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116801-cc-syndicate",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-ih066h",
@@ -1322,7 +1434,7 @@
     "source": "conciertos-granada",
     "sourceId": "ih066h",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117208-black-chain",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-bbvn9w",
@@ -1350,7 +1462,7 @@
     "sourceId": "bbvn9w",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117227-el-extrano-caso-de-carmen-dorado",
     "imageUrl": "https://conciertos.club/doc/lp/l_SalaPremier_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-jct58j",
@@ -1378,7 +1490,7 @@
     "sourceId": "jct58j",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117728-italianini",
     "imageUrl": "https://conciertos.club/doc/a/2025/a_italianini.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-ynz0on",
@@ -1406,7 +1518,7 @@
     "sourceId": "ynz0on",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117197-aurora-clara-varekai",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_auroraclara2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-wuh8ag",
@@ -1466,7 +1578,7 @@
     "sourceId": "lzr9lz",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116456-rustic-festival",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_rustic2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-p0m1rx",
@@ -1494,7 +1606,7 @@
     "sourceId": "p0m1rx",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117038-parentesis",
     "imageUrl": "https://conciertos.club/doc/lp/l_LaLolaina_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-b3z3ld",
@@ -1522,7 +1634,7 @@
     "sourceId": "b3z3ld",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116960-duo-chanson",
     "imageUrl": "https://conciertos.club/doc/lp/l_Vimaambi_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-i4l5k1",
@@ -1549,7 +1661,7 @@
     "source": "conciertos-granada",
     "sourceId": "i4l5k1",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117944-montybm",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-bgd20b",
@@ -1577,7 +1689,7 @@
     "sourceId": "bgd20b",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117335-musical-jazzandalus",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/musicaljaz_20260524.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-kznysk",
@@ -1605,7 +1717,7 @@
     "sourceId": "kznysk",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116802-la-vin-band",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-q2ueqc",
@@ -1633,7 +1745,7 @@
     "sourceId": "q2ueqc",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117597-bestia-bebe",
     "imageUrl": "https://conciertos.club/doc/a/2019/a_bestiabebe.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-2z2rze",
@@ -1661,7 +1773,7 @@
     "sourceId": "2z2rze",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116862-paulina-del-carmen-diego-de-la-torre",
     "imageUrl": "https://conciertos.club/doc/c/2026/a_lamaaryleoesquivel.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-h9ze3b",
@@ -1689,7 +1801,7 @@
     "sourceId": "h9ze3b",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116863-tessa-olmos",
     "imageUrl": "https://conciertos.club/doc/a/2026/a_tessaolmos.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-fkmeyw",
@@ -1717,7 +1829,7 @@
     "sourceId": "fkmeyw",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116803-jam-con-la-desorquesta",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-p37l01",
@@ -1745,7 +1857,7 @@
     "sourceId": "p37l01",
     "sourceUrl": "https://conciertosengranada.es/conciertos/112904-jaguayano",
     "imageUrl": "https://conciertos.club/doc/lp/l_JJ2_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-46t7mt",
@@ -1773,7 +1885,7 @@
     "sourceId": "46t7mt",
     "sourceUrl": "https://conciertosengranada.es/conciertos/114125-alizzz",
     "imageUrl": "https://conciertos.club/doc/lp/l_ElTren_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-833ofd",
@@ -1801,7 +1913,7 @@
     "sourceId": "833ofd",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117088-manteka-pa-la-tosta",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_manteka2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-72zai0",
@@ -1829,7 +1941,7 @@
     "sourceId": "72zai0",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116864-chinachinachina",
     "imageUrl": "https://conciertos.club/doc/a/2026/a_china.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-bhzsno",
@@ -1857,7 +1969,7 @@
     "sourceId": "bhzsno",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116579-exilio-a-pluton-malave",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/exilio-a-pluton-y-malave-en-sala-rocknrolla20260528.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-px0j08",
@@ -1885,7 +1997,7 @@
     "sourceId": "px0j08",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116704-juan-justicia-trio",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_liberia2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-wraq6s",
@@ -1941,7 +2053,7 @@
     "sourceId": "glgxjf",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116653-ciudad-de-los-ninos-fest",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_ciudadninos2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-24d4wo",
@@ -1969,7 +2081,7 @@
     "sourceId": "24d4wo",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117754-the-taliscuales",
     "imageUrl": "https://conciertos.club/doc/a/2026/a_thetaliscuales.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-yop76z",
@@ -1997,7 +2109,7 @@
     "sourceId": "yop76z",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116919-el-rock-en-el-cine",
     "imageUrl": "https://conciertos.club/doc/lp/l_SalaRiff_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-mqe0ju",
@@ -2025,7 +2137,7 @@
     "sourceId": "mqe0ju",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117039-darro-river-rockies",
     "imageUrl": "https://conciertos.club/doc/a/2025/a_davedarro.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-3i1z2t",
@@ -2053,7 +2165,7 @@
     "sourceId": "3i1z2t",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115314-musgo",
     "imageUrl": "https://conciertos.club/doc/a/2026/a_musgo.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-tcdqoy",
@@ -2081,7 +2193,7 @@
     "sourceId": "tcdqoy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116683-los-jaleo",
     "imageUrl": "https://conciertos.club/doc/a/2024/a_losjaleo.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-382c5s",
@@ -2109,7 +2221,7 @@
     "sourceId": "382c5s",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116705-mr-samba-lazy-band",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_liberia2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "pc-ju5vgy",
@@ -2135,7 +2247,7 @@
     "sourceId": "ju5vgy",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=482",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/482.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.069Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "cg-x30fn0",
@@ -2163,7 +2275,7 @@
     "sourceId": "x30fn0",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117226-lady-coulson",
     "imageUrl": "https://conciertos.club/doc/a/2023/a_ladycoulson.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-wca3nw",
@@ -2191,7 +2303,7 @@
     "sourceId": "wca3nw",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117254-jose-fermin-fernandez-manuel-linan",
     "imageUrl": "https://conciertos.club/doc/a/2019/a_josefermin.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-drbwax",
@@ -2219,7 +2331,7 @@
     "sourceId": "drbwax",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117200-concierto-de-organo",
     "imageUrl": "https://conciertos.club/doc/lp/l_Catedral_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-8ybjla",
@@ -2247,7 +2359,7 @@
     "sourceId": "8ybjla",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117341-familia-heredia-noche-flamenca",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/patrimonio_20260530.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-z7n1jt",
@@ -2275,7 +2387,7 @@
     "sourceId": "z7n1jt",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116844-paul-val",
     "imageUrl": "https://conciertos.club/doc/a/2025/a_paulval.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-c7s40m",
@@ -2303,7 +2415,7 @@
     "sourceId": "c7s40m",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116920-radikal-kaos-festival-desklate-ashes-dyed-red-etxale-apio-casual-kids",
     "imageUrl": "https://conciertos.club/doc/lp/l_SalaRiff_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-6oi3hi",
@@ -2331,7 +2443,7 @@
     "sourceId": "6oi3hi",
     "sourceUrl": "https://conciertosengranada.es/conciertos/111385-fran-mariscal",
     "imageUrl": "https://conciertos.club/doc/a/2019/a_franmariscal.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-9m0dns",
@@ -2359,7 +2471,7 @@
     "sourceId": "9m0dns",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116496-the-row-band",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_therow2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-98xgjm",
@@ -2387,7 +2499,7 @@
     "sourceId": "98xgjm",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117729-tu-prima-la-peloh",
     "imageUrl": "https://conciertos.club/doc/lp/l_ElAcorde_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-mukgza",
@@ -2415,7 +2527,7 @@
     "sourceId": "mukgza",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117334-schola-pueri-cantores",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/puericanto_20260531.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-kyryg5",
@@ -2443,7 +2555,7 @@
     "sourceId": "kyryg5",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117040-joe-maremoto",
     "imageUrl": "https://conciertos.club/doc/lp/l_LaLolaina_Gra_pp.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-hhejuq",
@@ -2471,7 +2583,7 @@
     "sourceId": "hhejuq",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116921-blacksound-fest-aljamia-astter-sibelclan-sonoris-causa-roswell-symbiosis",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_blacksound2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-8m0cx1",
@@ -2499,7 +2611,7 @@
     "sourceId": "8m0cx1",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116804-gorka-benitez-baleen-lobak",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_oyk2605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-sqme9h",
@@ -2527,7 +2639,7 @@
     "sourceId": "sqme9h",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117105-south-garden",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_sgarden1605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-4hd7jq",
@@ -2555,7 +2667,7 @@
     "sourceId": "4hd7jq",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117333-silvana-estrada",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/silvanaest_20260605.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-pwvxy7",
@@ -2583,7 +2695,7 @@
     "sourceId": "pwvxy7",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115726-elvis-tribute-show-blue-angel-and-the-devils-in-disguise",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_elvistribute2606.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "pc-g9a3ab",
@@ -2609,7 +2721,7 @@
     "sourceId": "g9a3ab",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=503",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/503.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.069Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "cg-dz3wiq",
@@ -2637,7 +2749,7 @@
     "sourceId": "dz3wiq",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117385-iseo-dodosound-xpresidentx-sonido-vegetal-ojaras-k-diversion-asegurada-y-mas",
     "imageUrl": "https://conciertos.club/doc/c/2026/c_dmc2606.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-dd0tds",
@@ -2665,7 +2777,7 @@
     "sourceId": "dd0tds",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117325-la-cabra-mecanica-a-toda-pastilla-tributo-a-estopa",
     "imageUrl": "https://conciertos.club/doc/a/2023/a_lacabramecanica.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.581Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-t1y1z0",
@@ -2693,7 +2805,7 @@
     "sourceId": "t1y1z0",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117331-la-zambra-del-sacromonte",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/gitanasdel_20260609.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.582Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-nhfb2v",
@@ -2721,7 +2833,7 @@
     "sourceId": "nhfb2v",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117330-la-tana-con-la-guitarra-de-paquete",
     "imageUrl": "https://doc.conciertos.club/doc/c/2026/latanaconl_20260610.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.582Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.263Z"
   },
   {
     "id": "cg-azrs3u",
@@ -2773,7 +2885,7 @@
     "sourceId": "c58eet",
     "sourceUrl": "https://conciertosengranada.es/conciertos/111839-miguel-poveda",
     "imageUrl": "https://conciertos.club/doc/ban/M/ban_miguelpoveda.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "pc-mcs8yv",
@@ -2799,7 +2911,7 @@
     "sourceId": "mcs8yv",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=501",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/501.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.069Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-o61pkn",
@@ -2825,7 +2937,7 @@
     "sourceId": "o61pkn",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=456",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/456.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.069Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "tm-Z698xZ2qZ16v0JqSOZ",
@@ -2851,7 +2963,7 @@
     "sourceId": "Z698xZ2qZ16v0JqSOZ",
     "sourceUrl": "https://www.ticketmaster.es/event/pablo-alboran-tickets/1926773800?language=en-us",
     "imageUrl": "https://s1.ticketm.net/dam/a/097/4c04e381-32d7-4c29-b8d5-9426dfdc5097_SOURCE",
-    "lastSyncedAt": "2026-05-20T09:21:49.897Z"
+    "lastSyncedAt": "2026-05-20T16:39:47.807Z"
   },
   {
     "id": "cg-tfy2i4",
@@ -2877,7 +2989,7 @@
     "sourceId": "tfy2i4",
     "sourceUrl": "https://conciertosengranada.es/conciertos/108292-sting",
     "imageUrl": "https://conciertos.club/doc/ban/S/ban_sting.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:58.580Z"
+    "lastSyncedAt": "2026-05-20T16:39:56.262Z"
   },
   {
     "id": "tm-Z698xZ2qZ16vvoA_4y",
@@ -2903,7 +3015,7 @@
     "sourceId": "Z698xZ2qZ16vvoA_4y",
     "sourceUrl": "https://www.ticketmaster.es/event/1001-musicas-caixabank-%7C-danny-ocean-tickets/1051159579?language=en-us",
     "imageUrl": "https://s1.ticketm.net/dam/e/0db/8e78d5b4-9711-43b2-9002-fa704df0e0db_TABLET_LANDSCAPE_LARGE_16_9.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:49.897Z"
+    "lastSyncedAt": "2026-05-20T16:39:47.807Z"
   },
   {
     "id": "pc-ck3sas",
@@ -2929,7 +3041,7 @@
     "sourceId": "ck3sas",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=490",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/490.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.069Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "tm-Z698xZ2qZ1ka9q-Py",
@@ -2955,7 +3067,7 @@
     "sourceId": "Z698xZ2qZ1ka9q-Py",
     "sourceUrl": "https://www.ticketmaster.es/event/1001-musicas-caixabank-%7C-sting-tickets/257761979?language=en-us",
     "imageUrl": "https://s1.ticketm.net/dam/e/a87/b621e4c5-cd89-4492-b8a3-b9feca871a87_TABLET_LANDSCAPE_LARGE_16_9.jpg",
-    "lastSyncedAt": "2026-05-20T09:21:49.897Z"
+    "lastSyncedAt": "2026-05-20T16:39:47.807Z"
   },
   {
     "id": "cg-5qylk9",
@@ -3007,7 +3119,7 @@
     "sourceId": "hda02m",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=488",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/488.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-fg2sca",
@@ -3033,7 +3145,7 @@
     "sourceId": "fg2sca",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=483",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/483.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-949tft",
@@ -3085,7 +3197,7 @@
     "sourceId": "dh7vd",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=489",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/489.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-7aahll",
@@ -3111,7 +3223,7 @@
     "sourceId": "7aahll",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=504",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/504.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-8xfj7h",
@@ -3137,7 +3249,7 @@
     "sourceId": "8xfj7h",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=497",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/497.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-f3stlg",
@@ -3163,7 +3275,7 @@
     "sourceId": "f3stlg",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=476",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/476.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-7b7fmf",
@@ -3189,7 +3301,7 @@
     "sourceId": "7b7fmf",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=507",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/507.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-zrfki",
@@ -3215,7 +3327,7 @@
     "sourceId": "zrfki",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=500",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/500.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-wcacp0",
@@ -3241,7 +3353,7 @@
     "sourceId": "wcacp0",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=448",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/448.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-kbr10e",
@@ -3293,7 +3405,7 @@
     "sourceId": "adtqcp",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=496",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/496.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-4f1e3r",
@@ -3319,7 +3431,7 @@
     "sourceId": "4f1e3r",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=491",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/491.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-dcb4q6",
@@ -3345,7 +3457,7 @@
     "sourceId": "dcb4q6",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=502",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/502.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-h8dlts",
@@ -3371,7 +3483,7 @@
     "sourceId": "h8dlts",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=485",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/485.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-6k5y0s",
@@ -3397,7 +3509,7 @@
     "sourceId": "6k5y0s",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=505",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/505.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-vt0ytk",
@@ -3423,7 +3535,7 @@
     "sourceId": "vt0ytk",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=508",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/508.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-7plp9q",
@@ -3449,7 +3561,7 @@
     "sourceId": "7plp9q",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=509",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/509.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-rkdyfi",
@@ -3475,7 +3587,7 @@
     "sourceId": "rkdyfi",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=506",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/506.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "pc-kt5102",
@@ -3501,7 +3613,7 @@
     "sourceId": "kt5102",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=494",
     "imageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/494.png",
-    "lastSyncedAt": "2026-05-20T09:22:41.070Z"
+    "lastSyncedAt": "2026-05-20T16:40:39.649Z"
   },
   {
     "id": "eb-1988263510683",
@@ -3529,6 +3641,6 @@
     "sourceId": "1988263510683",
     "sourceUrl": "https://www.eventbrite.com/e/entradas-fedh-en-granada-1988263510683",
     "imageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1183056277%2F2999845154463%2F1%2Foriginal.20260426-091926?auto=format%2Ccompress&q=75&sharp=10&s=f516bcdfacb4646d01e0466c7409692c",
-    "lastSyncedAt": "2026-05-20T09:22:24.746Z"
+    "lastSyncedAt": "2026-05-20T16:40:25.236Z"
   }
 ]
