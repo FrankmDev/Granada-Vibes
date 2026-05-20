@@ -118,17 +118,6 @@ const currentPath = Astro.url.pathname;
 
     <slot name="head" />
 
-    <!-- Force www subdomain -->
-    <script is:inline>
-      (function () {
-        var host = window.location.hostname;
-        if (host === 'granadaurban.com') {
-          window.location.replace(
-            window.location.href.replace('//granadaurban.com', '//www.granadaurban.com')
-          );
-        }
-      })();
-    </script>
   </head>
 
   <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased">

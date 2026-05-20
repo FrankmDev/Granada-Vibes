@@ -30,6 +30,16 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const GENERATED_PATH = resolve(__dirname, '../src/data/events/generated.json');
+const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Europe/Madrid',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
+function getTodayString(): string {
+  return madridDateFormatter.format(new Date());
+}
 
 // ─── Ticketmaster transform ───
 
@@ -180,7 +190,7 @@ function isValidEvent(event: GeneratedEvent, stats: ValidationStats): boolean {
   if (Number.isNaN(new Date(event.date).getTime())) { stats.badDate++; return false; }
 
   // Filter past events at ingestion time
-  const today = new Date().toISOString().split('T')[0] as string;
+  const today = getTodayString();
   if (event.date < today) { stats.pastDate++; return false; }
 
   // Filter cancelled events
@@ -247,7 +257,7 @@ function deduplicateAndMerge(
   existing: GeneratedEvent[],
   incoming: GeneratedEvent[]
 ): GeneratedEvent[] {
-  const today = new Date().toISOString().split('T')[0] as string;
+  const today = getTodayString();
 
   // Step 1: Key by source+sourceId to avoid cross-source collisions
   const key = (e: GeneratedEvent): string => `${e.source}:${e.sourceId}`;

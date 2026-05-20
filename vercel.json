@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.granadaurban.com"
+        }
+      ],
+      "destination": "https://granadaurban.com/:path*",
+      "permanent": true
+    }
+  ]
+}

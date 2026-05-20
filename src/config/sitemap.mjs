@@ -3,10 +3,6 @@ import path from 'path';
 
 const ROUTES_EXCLUDED_FROM_SITEMAP = [
   '/404/',
-  '/privacidad/',
-  '/en/privacy/',
-  '/aviso-legal/',
-  '/en/legal/',
   '/rutas/por-tiempo/',
   '/en/routes/by-time/',
 ];
