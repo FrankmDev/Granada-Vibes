@@ -69,14 +69,6 @@ const websiteSchema = {
     '@id': `${siteUrl}/#organization`,
     name: SITE_CONFIG.name,
   },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${siteUrl}/eventos/?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
 };
 
 // BreadcrumbList schema
