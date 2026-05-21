@@ -7,6 +7,7 @@ export const SITE_CONFIG: SiteConfig = {
     en: 'Your smart cultural guide to Granada. Discover events, routes, and unique experiences in the city of the Alhambra.',
   },
   url: 'https://granadaurban.com',
+  email: 'info@granadaurban.com',
   defaultLocale: 'es',
   locales: ['es', 'en'],
   social: {

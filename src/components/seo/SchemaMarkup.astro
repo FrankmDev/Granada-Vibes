@@ -38,21 +38,49 @@ function resolveImageUrl(image: string | undefined): string | undefined {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
   name: SITE_CONFIG.name,
   description: SITE_CONFIG.description[locale],
   url: siteUrl,
   logo: `${siteUrl}/favicon.svg`,
+  email: SITE_CONFIG.email,
   sameAs: [
     SITE_CONFIG.social.instagram,
     SITE_CONFIG.social.twitter,
     SITE_CONFIG.social.facebook,
   ].filter(Boolean),
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: SITE_CONFIG.email,
+    contactType: 'customer support',
+    areaServed: 'ES',
+    availableLanguage: ['es', 'en'],
+  },
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Granada',
     addressRegion: 'Andalucía',
     addressCountry: 'ES',
   },
+  areaServed: {
+    '@type': 'City',
+    name: 'Granada',
+    address: {
+      '@type': 'PostalAddress',
+      addressRegion: 'Andalucía',
+      addressCountry: 'ES',
+    },
+  },
+  knowsAbout: [
+    'Granada events',
+    'Granada cultural agenda',
+    'Granada routes',
+    'Alhambra',
+    'Albaicín',
+    'Sacromonte',
+    'Granada tapas',
+    'Flamenco in Granada',
+  ],
 };
 
 // Website schema
@@ -64,6 +92,35 @@ const websiteSchema = {
   description: SITE_CONFIG.description[locale],
   url: siteUrl,
   inLanguage: locale,
+  about: {
+    '@type': 'City',
+    name: 'Granada',
+    address: {
+      '@type': 'PostalAddress',
+      addressRegion: 'Andalucía',
+      addressCountry: 'ES',
+    },
+  },
+  hasPart: [
+    {
+      '@type': 'DataFeed',
+      name: 'Granada Urban Events Feed',
+      encodingFormat: 'application/json',
+      url: `${siteUrl}/ai/events.json`,
+    },
+    {
+      '@type': 'DataFeed',
+      name: 'Granada Urban Routes Feed',
+      encodingFormat: 'application/json',
+      url: `${siteUrl}/ai/routes.json`,
+    },
+    {
+      '@type': 'DataFeed',
+      name: 'Granada Urban Guides Feed',
+      encodingFormat: 'application/json',
+      url: `${siteUrl}/ai/guides.json`,
+    },
+  ],
   publisher: {
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,

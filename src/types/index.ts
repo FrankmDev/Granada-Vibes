@@ -246,6 +246,7 @@ export interface SiteConfig {
   name: string;
   description: LocalizedText;
   url: string;
+  email: string;
   defaultLocale: Locale;
   locales: Locale[];
   social: {
