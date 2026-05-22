@@ -12,6 +12,11 @@ const ES_TO_EN_SEGMENTS: Record<string, string> = {
   'aviso-legal': 'legal',
   planifica: 'planifica',
   colabora: 'collaborate',
+  salas: 'venues',
+  hoy: 'today',
+  'este-fin-de-semana': 'this-weekend',
+  'conciertos-granada': 'granada-concerts',
+  gratis: 'free',
 };
 
 const EN_TO_ES_SEGMENTS: Record<string, string> = Object.fromEntries(

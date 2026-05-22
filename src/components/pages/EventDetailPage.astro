@@ -15,7 +15,14 @@ import { getEventDetailUrl, getRoute, getRouteDetailUrl, getBlogDetailUrl } from
 import { formatFullDate, formatTime, formatDuration } from '@utils/dates';
 import { getRelatedRoutesForEvent, getRelatedPostsForEvent, getNeighborhoodLink } from '@utils/cross-links';
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
-import { formatPriceLabel, getPriceStatus } from '@utils';
+import {
+  formatPriceLabel,
+  getEventSeoDescription,
+  getEventSeoTitle,
+  getEventTicketIntentLabel,
+  getPriceStatus,
+  isPastEvent,
+} from '@utils';
 import type { Event, Locale } from '@types';
 import '@styles/pages/event-detail.css';
 
@@ -54,12 +61,28 @@ const copy = isEnglish
       },
       faq: {
         tipsQuestion: `What should I know before going to ${event.title[locale]}?`,
+        dateQuestion: `When is ${event.title[locale]} in Granada?`,
+        dateAnswer: `${event.title[locale]} is scheduled for ${formatFullDate(event.date, locale)} at ${formatTime(event.time, locale)}.`,
         priceQuestion: 'How much are the tickets?',
         priceFree: 'Entry is free.',
         pricePaid: `Tickets are ${event.price}€.`,
         priceUnknown: 'Please check the official event website for pricing information.',
         venueQuestion: 'Where is the event held?',
         venueAnswer: `The event is held at ${event.venue}, located in the ${t(`neighborhoods.${event.neighborhood}`)} neighborhood in Granada.`,
+        ticketsQuestion: `Where can I get tickets for ${event.title[locale]}?`,
+        ticketsAnswer: event.ticketsUrl || event.sourceUrl
+          ? `Use the official ticket or event source linked from this page and confirm the latest price before buying.`
+          : `No official ticket link is available yet on GRN URBAN. Check the event source and confirm price and access conditions before going.`,
+        nearbyQuestion: `What can I do near ${event.venue}?`,
+        nearbyAnswer: `Check related routes, guides and other upcoming events linked from this page to build a plan before or after the event.`,
+      },
+      status: {
+        past: 'This event has already taken place. Use this page as a reference and browse related upcoming events in Granada.',
+        intentLabel: 'Search intent',
+        tickets: 'Tickets',
+        venue: 'Venue',
+        date: 'Date and time',
+        related: 'Related plans',
       },
       share: {
         label: 'Share',
@@ -94,12 +117,28 @@ const copy = isEnglish
       },
       faq: {
         tipsQuestion: `¿Qué debo saber antes de ir a ${event.title[locale]}?`,
+        dateQuestion: `¿Cuándo es ${event.title[locale]} en Granada?`,
+        dateAnswer: `${event.title[locale]} está programado para el ${formatFullDate(event.date, locale)} a las ${formatTime(event.time, locale)}.`,
         priceQuestion: '¿Cuál es el precio de la entrada?',
         priceFree: 'La entrada es gratuita.',
         pricePaid: `El precio es de ${event.price}€.`,
         priceUnknown: 'Consulta la web oficial del evento para información sobre precios.',
         venueQuestion: '¿Dónde se celebra el evento?',
         venueAnswer: `El evento se celebra en ${event.venue}, situado en el barrio de ${t(`neighborhoods.${event.neighborhood}`)} en Granada.`,
+        ticketsQuestion: `¿Dónde comprar entradas para ${event.title[locale]}?`,
+        ticketsAnswer: event.ticketsUrl || event.sourceUrl
+          ? `Usa el enlace oficial de entradas o fuente del evento que aparece en esta página y confirma el precio actualizado antes de comprar.`
+          : `GRN URBAN todavía no tiene enlace oficial de entradas para este evento. Consulta la fuente del evento y confirma precio y condiciones de acceso antes de ir.`,
+        nearbyQuestion: `¿Qué hacer cerca de ${event.venue}?`,
+        nearbyAnswer: `Revisa las rutas, guías y próximos eventos relacionados enlazados en esta página para montar un plan antes o después del evento.`,
+      },
+      status: {
+        past: 'Este evento ya se celebró. Usa esta ficha como referencia y consulta otros próximos eventos relacionados en Granada.',
+        intentLabel: 'Intención de búsqueda',
+        tickets: 'Entradas',
+        venue: 'Recinto',
+        date: 'Fecha y hora',
+        related: 'Planes relacionados',
       },
       share: {
         label: 'Compartir',
@@ -131,6 +170,8 @@ const relatedEvents = allEvents
 const relatedRoutesForEvent = getRelatedRoutesForEvent(event, 2);
 const relatedPostsForEvent = getRelatedPostsForEvent(event, 2);
 const neighborhoodLink = getNeighborhoodLink(event.neighborhood, locale);
+const hasPassed = isPastEvent(event);
+const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
 
 const crossLinks = [
   ...relatedRoutesForEvent.map((r) => ({
@@ -158,9 +199,8 @@ const crossLinks = [
 const eventImage = event.remoteImageUrl || event.imageUrl || event.image;
 const ogImage = eventImage || 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=1200&h=630&fit=crop&q=80';
 const priceLabel = formatPriceLabel(event, t);
-const seoDescription = isEnglish
-  ? `${event.title[locale]} in Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} at ${event.venue}, ${t(`neighborhoods.${event.neighborhood}`)}. ${copy.priceText} ${copy.seoSuffix}`
-  : `${event.title[locale]} en Granada — ${formatFullDate(event.date, locale)}, ${formatTime(event.time, locale)}. ${t(`categories.${event.category}`)} en ${event.venue}, barrio ${t(`neighborhoods.${event.neighborhood}`)}. ${copy.priceText} ${copy.seoSuffix}`;
+const seoTitle = getEventSeoTitle(event, locale);
+const seoDescription = getEventSeoDescription(event, locale, t);
 
 const breadcrumb = [
   { name: copy.breadcrumb.home, url: getRoute('home', locale) },
@@ -178,6 +218,11 @@ if (event.tips?.[locale]) {
 }
 
 faq.push({
+  question: copy.faq.dateQuestion,
+  answer: copy.faq.dateAnswer,
+});
+
+faq.push({
   question: copy.faq.priceQuestion,
   answer:
     event.price !== null
@@ -193,11 +238,21 @@ if (event.venue) {
     answer: copy.faq.venueAnswer,
   });
 }
+
+faq.push({
+  question: copy.faq.ticketsQuestion,
+  answer: copy.faq.ticketsAnswer,
+});
+
+faq.push({
+  question: copy.faq.nearbyQuestion,
+  answer: copy.faq.nearbyAnswer,
+});
 ---
 
 <BaseLayout
   locale={locale}
-  title={event.title[locale]}
+  title={seoTitle}
   description={seoDescription}
   ogImage={ogImage}
   schemaType="event"
@@ -257,9 +312,35 @@ if (event.venue) {
                 </a>
               )}
             </div>
+
+            {hasPassed && (
+              <div class="upg-past-notice">
+                <strong>{copy.status.past}</strong>
+                <a href={getRoute('events', locale)}>{t('detail.allEvents')}</a>
+              </div>
+            )}
+
+            <div class="upg-intent-grid" aria-label={copy.status.intentLabel}>
+              <a href={(event.ticketsUrl || event.sourceUrl) ?? getRoute('events', locale)} target={(event.ticketsUrl || event.sourceUrl) ? '_blank' : undefined} rel={(event.ticketsUrl || event.sourceUrl) ? 'noopener noreferrer' : undefined}>
+                <span>{copy.status.tickets}</span>
+                <strong>{ticketIntentLabel}</strong>
+              </a>
+              <a href="#event-location">
+                <span>{copy.status.venue}</span>
+                <strong>{event.venue}</strong>
+              </a>
+              <a href="#event-practical">
+                <span>{copy.status.date}</span>
+                <strong>{formatFullDate(event.date, locale)}</strong>
+              </a>
+              <a href="#event-related">
+                <span>{copy.status.related}</span>
+                <strong>{t('detail.discoverMore')}</strong>
+              </a>
+            </div>
           </article>
 
-          <article class="upg-block upg-venue-block" data-reveal>
+          <article class="upg-block upg-venue-block" id="event-location" data-reveal>
             <div class="upg-block-bg"></div>
             <header class="upg-header">
               <span class="upg-num">02</span>
@@ -333,7 +414,7 @@ if (event.venue) {
               </header>
               <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
 
-              <div class="upg-tips-content">
+            <div class="upg-tips-content" id="event-practical">
                 <div class="upg-tips-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
@@ -376,7 +457,7 @@ if (event.venue) {
           )}
 
           {crossLinks.length > 0 && (
-            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+            <div class="upg-block" id="event-related" data-reveal style="padding: 2.5rem 3rem;">
               <div class="upg-block-bg"></div>
               <header class="upg-header">
                 <span class="upg-num">05</span>

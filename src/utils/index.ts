@@ -48,6 +48,14 @@ export {
   resolveOgImageUrl,
 } from './seo';
 
+// Event SEO utilities
+export {
+  getEventSeoDescription,
+  getEventSeoTitle,
+  getEventTicketIntentLabel,
+  isPastEvent,
+} from './event-seo';
+
 // Route utilities
 export {
   difficultyConfig,

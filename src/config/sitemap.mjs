@@ -16,6 +16,11 @@ const ES_TO_EN_SEGMENTS = {
   'aviso-legal': 'legal',
   colabora: 'collaborate',
   planifica: 'planifica',
+  salas: 'venues',
+  hoy: 'today',
+  'este-fin-de-semana': 'this-weekend',
+  'conciertos-granada': 'granada-concerts',
+  gratis: 'free',
 };
 
 const EN_TO_ES_SEGMENTS = Object.fromEntries(
@@ -108,6 +113,19 @@ function getSitemapMeta(url, pastEventSlugs) {
   }
 
   if (
+    pathname === '/eventos/hoy/' ||
+    pathname === '/eventos/este-fin-de-semana/' ||
+    pathname === '/eventos/conciertos-granada/' ||
+    pathname === '/eventos/gratis/' ||
+    pathname === '/en/events/today/' ||
+    pathname === '/en/events/this-weekend/' ||
+    pathname === '/en/events/granada-concerts/' ||
+    pathname === '/en/events/free/'
+  ) {
+    return { priority: 0.85, changefreq: 'daily' };
+  }
+
+  if (
     pathname === '/rutas/' ||
     pathname === '/en/routes/' ||
     pathname === '/guias/' ||
@@ -135,6 +153,10 @@ function getSitemapMeta(url, pastEventSlugs) {
 
   if (pathname.match(/^\/(?:en\/routes|rutas)\/[^/]+\/$/)) {
     return { priority: 0.6, changefreq: 'monthly' };
+  }
+
+  if (pathname.match(/^\/(?:en\/venues|salas)\/[^/]+\/$/)) {
+    return { priority: 0.65, changefreq: 'daily' };
   }
 
   if (pathname.match(/^\/(?:en\/guides|guias)\/[^/]+\/$/)) {

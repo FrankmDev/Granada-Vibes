@@ -7,6 +7,7 @@ import SectionHeader from '@components/ui/SectionHeader.astro';
 import EventsArchiveFilter from '@components/events/EventsArchiveFilter.astro';
 import EventsArchiveGrid from '@components/events/EventsArchiveGrid.astro';
 import { getAllEvents } from '@data/index.js';
+import { eventHubs } from '@data/seo/event-hubs.js';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import type { EventCategory, Neighborhood, Locale } from '@types';
@@ -84,6 +85,11 @@ const COL_HEIGHTS = rawColumns.map((col, ci) => {
 });
 
 const columns = rawColumns;
+const hubLinks = eventHubs.slice(0, 7).map((hub) => ({
+  href: locale === 'en' ? hub.englishPath : hub.spanishPath,
+  label: hub.h1[locale],
+  eyebrow: hub.eyebrow[locale],
+}));
 ---
 
 <BaseLayout
@@ -132,6 +138,15 @@ const columns = rawColumns;
       eventsCount={events.length}
       neighborhoods={neighborhoods}
     />
+
+    <nav class="events-growth-links" aria-label={t('seoHub.discoveryLinks')}>
+      {hubLinks.map((link) => (
+        <a href={link.href}>
+          <span>{link.eyebrow}</span>
+          <strong>{link.label}</strong>
+        </a>
+      ))}
+    </nav>
 
     <EventsArchiveGrid
       locale={locale}

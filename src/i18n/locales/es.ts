@@ -666,6 +666,21 @@ ctaAriaLabel: 'Descubre Granada',
     footerGroup: 'COLABORA',
   },
 
+  // SEO growth hubs
+  seoHub: {
+    statsLabel: 'Resumen de la agenda',
+    eventsCount: 'eventos',
+    alternativesCount: 'alternativas',
+    quickLinks: 'Enlaces rápidos',
+    discoveryLinks: 'Enlaces de descubrimiento de eventos',
+    upcomingEyebrow: 'Agenda',
+    upcomingTitle: 'Próximas fechas',
+    moreEyebrow: 'También ahora',
+    moreTitle: 'Más eventos para seguir explorando',
+    faqEyebrow: 'Dudas rápidas',
+    faqTitle: 'Información práctica',
+  },
+
   // Not Found
   notFound: {
     title: 'Página no encontrada — GRN URBAN',

@@ -668,6 +668,21 @@ ctaAriaLabel: 'Discover Granada',
     footerGroup: 'COLLABORATE',
   },
 
+  // SEO growth hubs
+  seoHub: {
+    statsLabel: 'Agenda summary',
+    eventsCount: 'events',
+    alternativesCount: 'alternatives',
+    quickLinks: 'Quick links',
+    discoveryLinks: 'Event discovery links',
+    upcomingEyebrow: 'Agenda',
+    upcomingTitle: 'Upcoming dates',
+    moreEyebrow: 'Also now',
+    moreTitle: 'More events to keep exploring',
+    faqEyebrow: 'Quick questions',
+    faqTitle: 'Practical information',
+  },
+
   // Not Found
   notFound: {
     title: 'Page not found — GRN URBAN',
