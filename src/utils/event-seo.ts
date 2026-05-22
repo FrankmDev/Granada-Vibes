@@ -9,21 +9,47 @@ function clampMetaDescription(value: string): string {
   return `${value.slice(0, 155).trim()}...`;
 }
 
+function cleanEventName(name: string): string {
+  return name
+    .replace(/\s+\|\s+/g, ' ')
+    .replace(/[.。]+$/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function compactEventName(name: string, maxLength: number): string {
+  const clean = cleanEventName(name);
+  if (clean.length <= maxLength) return clean;
+  const truncated = clean.slice(0, maxLength - 1).trim();
+  const lastSpace = truncated.lastIndexOf(' ');
+  return `${(lastSpace > 24 ? truncated.slice(0, lastSpace) : truncated).trim()}...`;
+}
+
+function compactDateLabel(date: string, locale: Locale): string {
+  const formatter = new Intl.DateTimeFormat(locale === 'es' ? 'es-ES' : 'en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+  return formatter.format(new Date(date)).replace(/\./g, '');
+}
+
 export function getEventSeoTitle(event: Event, locale: Locale): string {
-  const year = event.date.slice(0, 4);
+  const date = compactDateLabel(event.date, locale);
   const isConcert = event.category === 'concert';
+  const name = compactEventName(event.title[locale], isConcert ? 28 : 24);
 
   if (locale === 'en') {
     if (isConcert) {
-      return `${event.title.en} in Granada ${year}: tickets, time and venue`;
+      return `${name}: tickets Granada ${date}`;
     }
-    return `${event.title.en} in Granada: date, time, venue and price`;
+    return `${name}: Granada ${date}`;
   }
 
   if (isConcert) {
-    return `${event.title.es} en Granada ${year}: entradas, horario y lugar`;
+    return `${name}: entradas Granada ${date}`;
   }
-  return `${event.title.es} en Granada: fecha, horario, lugar y precio`;
+  return `${name}: Granada ${date}`;
 }
 
 export function getEventSeoDescription(event: Event, locale: Locale, t: Translate): string {

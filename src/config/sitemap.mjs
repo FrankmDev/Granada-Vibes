@@ -3,8 +3,6 @@ import path from 'path';
 
 const ROUTES_EXCLUDED_FROM_SITEMAP = [
   '/404/',
-  '/rutas/por-tiempo/',
-  '/en/routes/by-time/',
 ];
 
 const ES_TO_EN_SEGMENTS = {
@@ -17,6 +15,7 @@ const ES_TO_EN_SEGMENTS = {
   colabora: 'collaborate',
   planifica: 'planifica',
   salas: 'venues',
+  artistas: 'artists',
   hoy: 'today',
   'este-fin-de-semana': 'this-weekend',
   'conciertos-granada': 'granada-concerts',
@@ -129,7 +128,13 @@ function getSitemapMeta(url, pastEventSlugs) {
     pathname === '/rutas/' ||
     pathname === '/en/routes/' ||
     pathname === '/guias/' ||
-    pathname === '/en/guides/'
+    pathname === '/en/guides/' ||
+    pathname === '/salas/' ||
+    pathname === '/en/venues/' ||
+    pathname === '/artistas/' ||
+    pathname === '/en/artists/' ||
+    pathname === '/rutas/por-tiempo/' ||
+    pathname === '/en/routes/by-time/'
   ) {
     return { priority: 0.8, changefreq: 'monthly' };
   }
@@ -156,6 +161,10 @@ function getSitemapMeta(url, pastEventSlugs) {
   }
 
   if (pathname.match(/^\/(?:en\/venues|salas)\/[^/]+\/$/)) {
+    return { priority: 0.65, changefreq: 'daily' };
+  }
+
+  if (pathname.match(/^\/(?:en\/artists|artistas)\/[^/]+\/$/)) {
     return { priority: 0.65, changefreq: 'daily' };
   }
 

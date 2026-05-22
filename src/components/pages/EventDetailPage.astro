@@ -8,7 +8,7 @@ import EventImage from '@components/ui/EventImage.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
-import { getAllEvents } from '@data/index.js';
+import { getAllArtistEntries, getAllEvents, getAllVenueEntries, getDirectoryHref } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
@@ -170,6 +170,8 @@ const relatedEvents = allEvents
 const relatedRoutesForEvent = getRelatedRoutesForEvent(event, 2);
 const relatedPostsForEvent = getRelatedPostsForEvent(event, 2);
 const neighborhoodLink = getNeighborhoodLink(event.neighborhood, locale);
+const venueDirectoryEntry = getAllVenueEntries().find((entry) => entry.events.some((item) => item.id === event.id));
+const artistDirectoryEntry = getAllArtistEntries().find((entry) => entry.events.some((item) => item.id === event.id));
 const hasPassed = isPastEvent(event);
 const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
 
@@ -309,6 +311,18 @@ faq.push({
                 <a href={neighborhoodLink.url} class="upg-badge ghost" style="text-decoration:none;">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                   {neighborhoodLink.label}
+                </a>
+              )}
+              {venueDirectoryEntry && (
+                <a href={getDirectoryHref('venue', venueDirectoryEntry.slug, locale)} class="upg-badge ghost" style="text-decoration:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-7h6v7"/></svg>
+                  {venueDirectoryEntry.name}
+                </a>
+              )}
+              {artistDirectoryEntry && (
+                <a href={getDirectoryHref('artist', artistDirectoryEntry.slug, locale)} class="upg-badge ghost" style="text-decoration:none;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  {artistDirectoryEntry.name}
                 </a>
               )}
             </div>

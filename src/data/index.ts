@@ -46,3 +46,12 @@ export {
 
 // Lugares (Planner)
 export { lugares } from './lugares.js';
+
+// Directory entries
+export {
+  getAllArtistEntries,
+  getAllVenueEntries,
+  getArtistEntryBySlug,
+  getDirectoryHref,
+  getVenueEntryBySlug,
+} from './directories.js';
