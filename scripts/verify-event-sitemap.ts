@@ -4,7 +4,7 @@ import path from 'node:path';
 const rootDir = path.resolve(import.meta.dirname, '..');
 const distDir = path.join(rootDir, 'dist');
 const sitemapPath = path.join(distDir, 'sitemap-0.xml');
-const expectedOrigin = 'https://granadaurban.com';
+const expectedOrigin = 'https://www.granadaurban.com';
 
 function assertFileExists(filePath: string): void {
   if (!fs.existsSync(filePath)) {

@@ -57,7 +57,7 @@ const formattedDate = publishedDate.toLocaleDateString(dateLocale, {
 const dayNum = publishedDate.getDate().toString().padStart(2, '0');
 const monthShort = publishedDate.toLocaleDateString(dateLocale, { month: 'short' }).toUpperCase();
 const categoryLabel = t(`blog.categories.${post.category}`);
-const categoryUrl = `${getRoute('blog', locale)}?category=${post.category}`;
+const categoryUrl = `${getRoute('blog', locale)}#content`;
 const ogImage = post.image ?? 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=630&fit=crop&q=80';
 
 // ── Auto-generated Table of Contents ──

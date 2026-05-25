@@ -1,6 +1,7 @@
 ---
 import { SITE_CONFIG } from '@config/site';
 import { resolveOgImageUrl } from '@utils/seo';
+import { getPriceStatus } from '@utils/prices';
 import type { Event, Route, BlogPost } from '@types';
 
 interface BreadcrumbItem {
@@ -206,15 +207,18 @@ switch (type) {
 
       // Build offer object (always include url + validFrom to satisfy GSC)
       const offerUrl = eventData.url || eventData.ticketsUrl || eventData.sourceUrl || `${siteUrl}${path}`;
+      const priceStatus = getPriceStatus(eventData);
       const offerBase = {
         '@type': 'Offer' as const,
         url: offerUrl,
         validFrom: eventData.date,
         availability: 'https://schema.org/InStock',
       };
-      const offerSchema = eventData.price !== null && eventData.price > 0
+      const offerSchema = priceStatus === 'paid'
         ? { ...offerBase, price: eventData.price, priceCurrency: eventData.currency }
-        : { ...offerBase, price: 0, priceCurrency: 'EUR' };
+        : priceStatus === 'free'
+          ? { ...offerBase, price: 0, priceCurrency: 'EUR' }
+          : { ...offerBase, priceCurrency: 'EUR' };
 
       // Normalize endDate to match startDate format (datetime when startDate is datetime)
       const rawEndDate = eventData.endDate || eventData.date;
@@ -244,7 +248,7 @@ switch (type) {
         },
         image: eventImages.length > 1 ? eventImages : eventImages[0],
         url: `${siteUrl}${path}`,
-        isAccessibleForFree: eventData.price === 0 || eventData.price === null,
+        isAccessibleForFree: priceStatus === 'free',
         offers: offerSchema,
         organizer: {
           '@type': 'Organization',

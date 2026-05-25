@@ -237,6 +237,6 @@ export function getNeighborhoodLink(
   const base = locale === 'en' ? '/en/routes/' : '/rutas/';
   return {
     label: labels[neighborhood][locale],
-    url: `${base}?neighborhood=${neighborhood}`,
+    url: `${base}#routes-grid`,
   };
 }

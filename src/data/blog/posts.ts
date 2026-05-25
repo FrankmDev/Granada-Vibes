@@ -9,8 +9,29 @@ import { antesDeLegarContent } from './content/antes-de-llegar.js';
 import { granadaGratisContent } from './content/granada-gratis.js';
 import { sierraNevadaContent } from './content/sierra-nevada.js';
 import { granadaUnDiaContent } from './content/granada-un-dia.js';
+import { corpusGranada2026Content } from './content/corpus-granada-2026.js';
 
 export const posts: BlogPost[] = [
+  {
+    id: 'blog-011',
+    slug: 'corpus-granada-2026',
+    title: {
+      es: 'Corpus de Granada 2026: guía completa con fechas, programa, casetas y trucos de local',
+      en: 'Granada Corpus Christi 2026: Complete Guide to Dates, Programme, Casetas and Local Tips',
+    },
+    description: {
+      es: 'Corpus de Granada 2026: fechas oficiales, programa, casetas, Tarasca, procesión, ferial de Almanjáyar, transporte, Día del Niño, toros y consejos locales.',
+      en: 'Granada Corpus Christi 2026: dates, programme, casetas, Tarasca, procession, Almanjáyar fairground, transport, kids, bullfighting and local tips.',
+    },
+    content: corpusGranada2026Content,
+    publishDate: '2026-05-26',
+    category: 'cultura',
+    tags: ['corpus', 'corpus 2026', 'feria', 'tarasca', 'casetas', 'almanjáyar', 'programa', 'granada', 'andalucia'],
+    author: 'GRN URBAN',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Corpus%20Christi%20en%20la%20Catedral%20de%20Granada%2001.jpg',
+    readingTime: 12,
+    featured: true,
+  },
   {
     id: 'blog-001',
     slug: 'entradas-alhambra-agotadas',

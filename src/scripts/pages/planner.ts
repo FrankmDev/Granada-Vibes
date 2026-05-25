@@ -382,8 +382,8 @@ btnGenerate.addEventListener('click', () => {
 
 function getCanonicalHref(): string {
   const url = new URL(window.location.href);
-  if (url.hostname === 'www.granadaurban.com') {
-    url.hostname = 'granadaurban.com';
+  if (url.hostname === 'granadaurban.com') {
+    url.hostname = 'www.granadaurban.com';
   }
   return url.toString();
 }

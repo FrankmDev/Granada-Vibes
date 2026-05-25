@@ -148,6 +148,13 @@ function getSitemapMeta(url, pastEventSlugs) {
     return { priority: 0.7, changefreq: 'monthly' };
   }
 
+  if (
+    pathname === '/guias/corpus-granada-2026/' ||
+    pathname === '/en/guides/corpus-granada-2026/'
+  ) {
+    return { priority: 0.9, changefreq: 'daily' };
+  }
+
   const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
   if (eventMatch) {
     const slug = eventMatch[1];

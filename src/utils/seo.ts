@@ -30,14 +30,18 @@ const EN_TO_ES_SEGMENTS: Record<string, string> = Object.fromEntries(
 export function normalizeUrlPath(path: string): string {
   if (!path || path === '/') return '/';
 
-  const [pathname = '/', query = ''] = path.split('?');
+  const [pathWithoutHash = '/'] = path.split('#');
+  const [pathname = '/'] = pathWithoutHash.split('?');
   const normalizedPathname = pathname.endsWith('/') ? pathname : `${pathname}/`;
 
-  return query ? `${normalizedPathname}?${query}` : normalizedPathname;
+  return normalizedPathname;
 }
 
 export function absoluteSiteUrl(path: string): string {
-  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    const url = new URL(path);
+    return `${SITE_CONFIG.url}${normalizeUrlPath(url.pathname)}`;
+  }
   return `${SITE_CONFIG.url}${normalizeUrlPath(path)}`;
 }
 

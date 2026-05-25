@@ -35,7 +35,7 @@ const { locale, event } = Astro.props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
 
-const categoryUrl = `${getRoute('events', locale)}?category=${event.category}`;
+const categoryUrl = `${getRoute('events', locale)}#archive`;
 
 const copy = isEnglish
   ? {
