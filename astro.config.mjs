@@ -8,6 +8,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   site: 'https://granadaurban.com',
+  build: {
+    assets: '_granada-assets',
+  },
   integrations: [
     sitemap(createSitemapConfig(__dirname)),
   ],
