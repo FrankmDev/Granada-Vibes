@@ -289,18 +289,6 @@ export const es = {
       gatewayLabel: 'La Puerta a Granada',
       searchHeading: 'Qué hacer en Granada: eventos, conciertos y rutas',
     },
-    quickLinks: {
-      title: 'Empieza por aquí',
-      ariaLabel: 'Accesos rápidos a la agenda',
-      todayLabel: 'Qué hacer hoy',
-      todayMeta: 'Planes activos ahora mismo',
-      weekendLabel: 'Este fin de semana',
-      weekendMeta: 'Conciertos y agenda útil',
-      freeLabel: 'Eventos gratis',
-      freeMeta: 'Entrada libre y plan barato',
-      concertsLabel: 'Conciertos',
-      concertsMeta: 'Entradas, salas y fechas',
-    },
     sections: {
       eventsEyebrow: 'AGENDA',
       eventsAriaLabel: 'Archivo de eventos',

@@ -2,6 +2,7 @@
 import type { Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 import '../../styles/home/hero.css';
 
 interface Props {
@@ -15,6 +16,8 @@ const c = {
   supra: t('home.hero.worldHeritage'),
   searchHeading: t('home.hero.searchHeading'),
   title: 'GRANADA',
+  cta: t('home.hero.ctaEvents'),
+  ctaLink: getRoute('events', locale),
   label: t('home.hero.heritageDestination'),
   ariaLabel: t('home.hero.gatewayLabel'),
 };
@@ -184,6 +187,15 @@ const c = {
           <span class="weather-temp" id="weather-today">--°</span>
         </div>
       </div>
+
+      <div class="dock-divider"></div>
+
+      <a href={c.ctaLink} class="dock-cta" aria-label={c.cta}>
+        <span class="cta-text">{c.cta}</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="cta-arrow" aria-hidden="true">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        </svg>
+      </a>
     </div>
   </div>
 

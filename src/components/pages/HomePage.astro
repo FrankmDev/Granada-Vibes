@@ -4,7 +4,6 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import HeroSection from '@components/home/HeroSection.astro';
-import HomeIntentLinks from '@components/home/HomeIntentLinks.astro';
 import EventsGridSection from '@components/home/EventsGridSection.astro';
 import RoutesGridSection from '@components/home/RoutesGridSection.astro';
 import BlogSection from '@components/home/BlogSection.astro';
@@ -64,7 +63,6 @@ const ogImage = 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=
   <NavBar slot="header" locale={locale} currentPath={currentPath} />
 
   <HeroSection locale={locale} />
-  <HomeIntentLinks locale={locale} />
   <EventsGridSection events={gridEvents} locale={locale} />
   <RoutesGridSection routes={displayRoutes} locale={locale} />
   <TimeRoutesSection plans={allMixedRoutes} locale={locale} />

@@ -291,18 +291,6 @@ export const en: Translations = {
       gatewayLabel: 'The Gateway to Granada',
       searchHeading: 'What to do in Granada: events, concerts and routes',
     },
-    quickLinks: {
-      title: 'Start here',
-      ariaLabel: 'Quick links to the agenda',
-      todayLabel: 'Today in Granada',
-      todayMeta: 'Plans happening right now',
-      weekendLabel: 'This weekend',
-      weekendMeta: 'Concerts and useful picks',
-      freeLabel: 'Free events',
-      freeMeta: 'Free entry and low-cost plans',
-      concertsLabel: 'Concerts',
-      concertsMeta: 'Tickets, venues and dates',
-    },
     sections: {
       eventsEyebrow: 'AGENDA',
       eventsAriaLabel: 'Event archive',
