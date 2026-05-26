@@ -7,7 +7,7 @@ import { createSitemapConfig } from './src/config/sitemap.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  site: 'https://www.granadaurban.com',
+  site: 'https://granadaurban.com',
   integrations: [
     sitemap(createSitemapConfig(__dirname)),
   ],

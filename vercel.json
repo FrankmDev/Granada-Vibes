@@ -6,10 +6,10 @@
       "has": [
         {
           "type": "host",
-          "value": "granadaurban.com"
+          "value": "www.granadaurban.com"
         }
       ],
-      "destination": "https://www.granadaurban.com/:path*",
+      "destination": "https://granadaurban.com/:path*",
       "permanent": true
     },
     {
