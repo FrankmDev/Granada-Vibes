@@ -10,6 +10,7 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const plannerHref = getRoute('planner', locale);
+const currentYear = new Date().getFullYear();
 
 const content = {
   es: {
@@ -28,7 +29,7 @@ const content = {
     meta: {
       ref: 'REF. 05',
       coords: '37°10′N · 3°35′W',
-      edition: 'ED. 2025',
+      edition: `ED. ${currentYear}`,
     },
   },
   en: {
@@ -47,7 +48,7 @@ const content = {
     meta: {
       ref: 'REF. 05',
       coords: '37°10′N · 3°35′W',
-      edition: 'ED. 2025',
+      edition: `ED. ${currentYear}`,
     },
   },
 };

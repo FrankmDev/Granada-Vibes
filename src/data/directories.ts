@@ -83,6 +83,12 @@ function compactName(name: string, maxLength = 30): string {
   return `${(lastSpace > 18 ? truncated.slice(0, lastSpace) : truncated).trim()}...`;
 }
 
+function compactTitle(name: string, suffix: string, maxLength = 60): string {
+  const fullTitle = `${name}${suffix}`;
+  if (fullTitle.length <= maxLength) return fullTitle;
+  return `${compactName(name, maxLength - suffix.length)}${suffix}`;
+}
+
 function directoryEvents(): Event[] {
   return events.slice().sort(sortEventsByDate);
 }
@@ -171,8 +177,8 @@ export function getAllVenueEntries(): VenueDirectoryEntry[] {
         slug,
         name: group.name,
         title: {
-          es: `${compactName(group.name)}: eventos en Granada`,
-          en: `${compactName(group.name)}: events in Granada`,
+          es: compactTitle(group.name, ': eventos en Granada'),
+          en: compactTitle(group.name, ': events in Granada'),
         },
         events: groupedEvents,
         upcomingEvents,
@@ -216,8 +222,8 @@ export function getAllArtistEntries(): ArtistDirectoryEntry[] {
         slug,
         name: group.name,
         title: {
-          es: `${compactName(group.name)}: conciertos Granada`,
-          en: `${compactName(group.name)}: Granada concerts`,
+          es: compactTitle(group.name, ': conciertos en Granada'),
+          en: compactTitle(group.name, ': concerts in Granada'),
         },
         events: groupedEvents,
         upcomingEvents,

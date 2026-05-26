@@ -12,6 +12,7 @@ interface Props {
 
 const { events, locale } = Astro.props;
 const t = useTranslations(locale);
+const currentYear = new Date().getFullYear();
 
 // Category labels sourced from i18n — no inline map needed
 const categoryLabels: Record<EventCategory, string> = {
@@ -60,7 +61,7 @@ const eventsHref = getRoute('events', locale);
   <!-- Cinematic Header -->
   <SectionHeader
     eyebrow={t('home.sections.eventsEyebrow')}
-    eyebrowYear="2025 — 2026"
+    eyebrowYear={`${currentYear - 1} — ${currentYear}`}
     titleLabel={t('events.upcoming').toUpperCase()}
     title={t('nav.events').toUpperCase()}
     ctaHref={eventsHref}

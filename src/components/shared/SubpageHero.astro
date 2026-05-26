@@ -20,6 +20,8 @@ interface Props {
   coordinates?: string;
   metadata?: { label: string; value: string; icon?: string }[];
   variant?: 'default' | 'compact';
+  /** Short label text: single line, no per-char animation (default true when compact). Same large type scale. */
+  compactTitle?: boolean;
 }
 
 const {
@@ -38,8 +40,11 @@ const {
   coordinates = '37\u00b0N \u00b7 3\u00b0W',
   metadata = [],
   variant = 'default',
+  compactTitle = variant === 'compact',
 } = Astro.props;
 const t = useTranslations(locale);
+const currentYear = new Date().getFullYear();
+const displayTitle = title.trim().toUpperCase();
 
 const iconSvg: Record<string, string> = {
   calendar: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
@@ -55,6 +60,7 @@ const iconSvg: Record<string, string> = {
   class="sp-hero"
   aria-label={title}
   data-hero-variant={variant}
+  data-compact-title={compactTitle ? 'true' : 'false'}
   data-sp-hero
 >
   <!-- BACKGROUND -->
@@ -123,7 +129,7 @@ const iconSvg: Record<string, string> = {
     tagTopLeft={eyebrow || 'GRN URBAN'}
     tagTopRight={eyebrowRight || coordinates}
     tagBottomLeft={`PG. ${pageNumber}`}
-    tagBottomRight={'ED. 2025'}
+    tagBottomRight={`ED. ${currentYear}`}
   />
 
   <!-- MAIN CONTENT -->
@@ -140,11 +146,15 @@ const iconSvg: Record<string, string> = {
         )}
 
         <h1 class="sp-title">
-          {title.split('').map((char, i) => (
-            <span class="sp-char" style={`--delay: ${0.15 + i * 0.03}s`}>
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
+          {compactTitle ? (
+            <span class="sp-title-text">{displayTitle}</span>
+          ) : (
+            title.split('').map((char, i) => (
+              <span class="sp-char" style={`--delay: ${0.15 + i * 0.03}s`}>
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))
+          )}
         </h1>
 
         <div class="sp-divider" aria-hidden="true">
@@ -654,7 +664,7 @@ const iconSvg: Record<string, string> = {
   }
 
   [data-hero-variant="compact"] .sp-content {
-    padding: calc(var(--header-height) + 4rem) clamp(2rem, 6.5vw, 5.5rem) 2.5rem;
+    padding: calc(var(--header-height) + 4.5rem) clamp(2rem, 6.5vw, 5.5rem) 2.75rem;
   }
 
   .sp-inner {
@@ -662,7 +672,7 @@ const iconSvg: Record<string, string> = {
     justify-content: space-between;
     align-items: flex-end;
     width: 100%;
-    gap: 4rem;
+    gap: clamp(1.5rem, 3vw, 4rem);
   }
 
   /* ========== LEFT COLUMN ========== */
@@ -670,7 +680,9 @@ const iconSvg: Record<string, string> = {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    max-width: 680px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: min(680px, calc(100% - 22rem));
     position: relative;
   }
 
@@ -723,18 +735,41 @@ const iconSvg: Record<string, string> = {
   /* Title */
   .sp-title {
     font-family: var(--font-body);
-    font-size: clamp(2.6rem, 5vw, 5rem);
-    font-weight: 300;
-    line-height: 1.04;
+    font-size: clamp(2.75rem, 6vw, 5.75rem);
+    font-weight: 100;
+    line-height: 1.02;
     margin: 0;
     letter-spacing: -0.02em;
-    white-space: nowrap;
-    display: block;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-wrap: wrap;
     color: var(--color-text-primary);
     text-shadow:
       0 2px 24px rgba(0,0,0,0.55),
       0 4px 48px rgba(0,0,0,0.3),
       0 0 80px rgba(201,168,76,0.04);
+  }
+
+  [data-compact-title='true'] .sp-title {
+    font-size: clamp(3rem, 7.5vw, 6.5rem);
+    line-height: 0.98;
+    flex-wrap: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1320px) {
+    [data-compact-title='true'] .sp-title {
+      font-size: clamp(2.85rem, 5.5vw, 5.75rem);
+      flex-wrap: wrap;
+      max-width: 11ch;
+    }
+  }
+
+  .sp-title-text {
+    display: block;
+    opacity: 0;
+    animation: spFadeUp 0.8s var(--ease-out-expo) 0.2s forwards;
   }
 
   .sp-char {
@@ -1205,7 +1240,7 @@ const iconSvg: Record<string, string> = {
   .sp-meta-val {
     font-family: var(--font-body);
     font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-    font-weight: 300;
+    font-weight: 200;
     color: var(--color-text-primary);
     letter-spacing: -0.02em;
     line-height: 1.15;
@@ -1513,13 +1548,21 @@ const iconSvg: Record<string, string> = {
     .sp-main {
       align-items: center;
       max-width: 100%;
+      flex: 1 1 auto;
       gap: 1.25rem;
     }
 
     .sp-title {
       justify-content: center;
-      font-size: clamp(2.2rem, 7.5vw, 3.6rem);
-      white-space: normal;
+      font-size: clamp(2.5rem, 9vw, 4.5rem);
+      line-height: 1.05;
+    }
+
+    [data-compact-title='true'] .sp-title {
+      font-size: clamp(2.75rem, 10vw, 5rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
     }
 
     .sp-divider {
@@ -1591,18 +1634,32 @@ const iconSvg: Record<string, string> = {
     }
   }
 
+  @media (max-width: 768px) {
+    .sp-main {
+      max-width: 100%;
+    }
+
+    [data-compact-title='true'] .sp-title {
+      font-size: clamp(2.5rem, 12vw, 4.25rem);
+    }
+  }
+
   @media (max-width: 640px) {
     .sp-content {
       padding: calc(var(--header-height) + 2.75rem) 1.5rem 1.75rem;
     }
 
     [data-hero-variant="compact"] .sp-content {
-      padding: calc(var(--header-height) + 2rem) 1.5rem 1.5rem;
+      padding: calc(var(--header-height) + 2.25rem) 1.5rem 1.5rem;
     }
 
     .sp-title {
-      font-size: clamp(1.9rem, 9vw, 2.6rem);
-      line-height: 1.08;
+      font-size: clamp(2.25rem, 11vw, 3.5rem);
+      line-height: 1.06;
+    }
+
+    [data-compact-title='true'] .sp-title {
+      font-size: clamp(2.35rem, 12vw, 3.75rem);
     }
 
     .sp-eyebrow-text {
@@ -1649,10 +1706,22 @@ const iconSvg: Record<string, string> = {
     }
   }
 
+  @media (max-width: 400px) {
+    .sp-title {
+      font-size: clamp(2rem, 13vw, 3rem);
+    }
+
+    [data-compact-title='true'] .sp-title {
+      font-size: clamp(2.1rem, 14vw, 3.15rem);
+      letter-spacing: -0.02em;
+    }
+  }
+
   /* ========== REDUCED MOTION ========== */
   @media (prefers-reduced-motion: reduce) {
     .sp-img,
     .sp-char,
+    .sp-title-text,
     .sp-divider,
     .sp-eyebrow,
     .sp-desc,

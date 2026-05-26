@@ -1,0 +1,38 @@
+---
+import '@styles/components/event-discovery-links.css';
+import type { EventDiscoveryLink } from '@utils/event-hub-links';
+
+interface Props {
+  links: EventDiscoveryLink[];
+  ariaLabel: string;
+  panelLabel: string;
+  activeId?: string;
+}
+
+const { links, ariaLabel, panelLabel, activeId } = Astro.props;
+---
+
+{links.length > 0 && (
+  <div class="edl-wrap">
+    <div class="edl-panel">
+      <header class="edl-header">
+        <span class="edl-header-rule" aria-hidden="true"></span>
+        <p class="edl-header-text">{panelLabel}</p>
+      </header>
+      <nav class="edl-grid" aria-label={ariaLabel}>
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class:list={['edl-link', activeId === link.id && 'is-active']}
+          >
+            <span class="edl-link-eyebrow">{link.eyebrow}</span>
+            <span class="edl-link-label">{link.label}</span>
+            <span class="edl-link-arrow" aria-hidden="true">→</span>
+            <span class="edl-corner edl-corner-tl" aria-hidden="true"></span>
+            <span class="edl-corner edl-corner-br" aria-hidden="true"></span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+)}

@@ -4,6 +4,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import HeroSection from '@components/home/HeroSection.astro';
+import HomeIntentLinks from '@components/home/HomeIntentLinks.astro';
 import EventsGridSection from '@components/home/EventsGridSection.astro';
 import RoutesGridSection from '@components/home/RoutesGridSection.astro';
 import BlogSection from '@components/home/BlogSection.astro';
@@ -16,9 +17,16 @@ interface Props {
   locale: Locale;
 }
 
+const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Europe/Madrid',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
 const { locale } = Astro.props;
 const currentPath = Astro.url.pathname;
-const todayStr = new Date().toISOString().split('T')[0] ?? '';
+const todayStr = madridDateFormatter.format(new Date());
 const allEvents = getAllEvents();
 const featuredRoutes = getFeaturedRoutes();
 const allPosts = getAllPosts();
@@ -33,14 +41,14 @@ const displayRoutes = featuredRoutes.slice(0, 7);
 
 const seo = locale === 'es'
   ? {
-      title: 'Guía Cultural de Granada',
+      title: 'Qué hacer en Granada: eventos, conciertos y rutas',
       description:
-        'Descubre Granada como un local con GRN URBAN. Agenda cultural actualizada, rutas por el Albaicín y Sacromonte, planes por tiempo disponible y secretos de la ciudad. Vive experiencias auténticas fuera de las guías turísticas.',
+        'Agenda local de Granada con eventos de hoy, conciertos, planes gratis, rutas por barrios y guías para moverte como un local.',
     }
   : {
-      title: 'Cultural Guide to Granada',
+      title: 'What to do in Granada: events, concerts and routes',
       description:
-        'Discover Granada like a local with GRN URBAN. Upcoming cultural events, curated routes through Albaicín and Sacromonte, time-based itineraries and hidden gems. Authentic experiences beyond the tourist guides.',
+        'Local Granada guide with today events, concerts, free plans, neighbourhood routes and practical guides to explore the city like a local.',
     };
 
 const ogImage = 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
@@ -56,6 +64,7 @@ const ogImage = 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=
   <NavBar slot="header" locale={locale} currentPath={currentPath} />
 
   <HeroSection locale={locale} />
+  <HomeIntentLinks locale={locale} />
   <EventsGridSection events={gridEvents} locale={locale} />
   <RoutesGridSection routes={displayRoutes} locale={locale} />
   <TimeRoutesSection plans={allMixedRoutes} locale={locale} />

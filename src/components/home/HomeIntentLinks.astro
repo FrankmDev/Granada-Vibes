@@ -1,0 +1,134 @@
+---
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const links = locale === 'en'
+  ? [
+      { href: '/en/events/today/', label: t('home.quickLinks.todayLabel'), meta: t('home.quickLinks.todayMeta') },
+      { href: '/en/events/this-weekend/', label: t('home.quickLinks.weekendLabel'), meta: t('home.quickLinks.weekendMeta') },
+      { href: '/en/events/free/', label: t('home.quickLinks.freeLabel'), meta: t('home.quickLinks.freeMeta') },
+      { href: '/en/events/granada-concerts/', label: t('home.quickLinks.concertsLabel'), meta: t('home.quickLinks.concertsMeta') },
+    ]
+  : [
+      { href: '/eventos/hoy/', label: t('home.quickLinks.todayLabel'), meta: t('home.quickLinks.todayMeta') },
+      { href: '/eventos/este-fin-de-semana/', label: t('home.quickLinks.weekendLabel'), meta: t('home.quickLinks.weekendMeta') },
+      { href: '/eventos/gratis/', label: t('home.quickLinks.freeLabel'), meta: t('home.quickLinks.freeMeta') },
+      { href: '/eventos/conciertos-granada/', label: t('home.quickLinks.concertsLabel'), meta: t('home.quickLinks.concertsMeta') },
+    ];
+---
+
+<section class="home-intent-links" aria-label={t('home.quickLinks.ariaLabel')}>
+  <div class="hil-shell">
+    <p class="hil-title">{t('home.quickLinks.title')}</p>
+    <nav class="hil-grid" aria-label={t('home.quickLinks.ariaLabel')}>
+      {links.map((link) => (
+        <a href={link.href} class="hil-link">
+          <strong>{link.label}</strong>
+          <span>{link.meta}</span>
+        </a>
+      ))}
+    </nav>
+  </div>
+</section>
+
+<style>
+  .home-intent-links {
+    position: relative;
+    z-index: 5;
+    margin-top: -2.25rem;
+    padding: 0 1rem 1rem;
+  }
+
+  .hil-shell {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+  }
+
+  .hil-title {
+    margin-bottom: 0.85rem;
+    color: rgba(240, 237, 232, 0.78);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hil-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+
+  .hil-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-height: 88px;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: rgba(17, 17, 17, 0.78);
+    backdrop-filter: blur(18px) saturate(135%);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: transform 0.24s ease, border-color 0.24s ease, background 0.24s ease;
+  }
+
+  .hil-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(232, 98, 42, 0.45);
+    background: rgba(22, 22, 22, 0.9);
+  }
+
+  .hil-link strong {
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+
+  .hil-link span {
+    color: var(--color-text-secondary);
+    font-family: var(--font-display);
+    font-size: 0.73rem;
+    line-height: 1.35;
+  }
+
+  @media (max-width: 900px) {
+    .home-intent-links {
+      margin-top: -1.6rem;
+      padding-inline: 0.85rem;
+    }
+
+    .hil-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .home-intent-links {
+      margin-top: -1.2rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .hil-grid {
+      gap: 0.55rem;
+    }
+
+    .hil-link {
+      min-height: 84px;
+      padding: 0.9rem;
+    }
+
+    .hil-link strong {
+      font-size: 0.94rem;
+    }
+  }
+</style>

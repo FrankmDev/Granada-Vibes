@@ -63,8 +63,8 @@ const eventsPath = getRoute('events', locale);
   <!-- HERO SECTION -->
   <SubpageHero
     locale={locale}
-    title="EDITORIAL"
-    subtitle={t('blog.title').toUpperCase()}
+    title={t('blog.heroTitle')}
+    subtitle={t('blog.archiveEyebrow')}
     eyebrow="GRN URBAN"
     eyebrowRight="ED. 2025"
     description={t('blog.heroDescription')}
@@ -97,7 +97,8 @@ const eventsPath = getRoute('events', locale);
       <!-- SECTION HEADER -->
       <SectionHeader
         eyebrow={t('blog.archiveEyebrow')}
-        title={t('blog.archiveTitle')}
+        title={t('blog.heroTitle')}
+        size="compact"
         animateTitle={true}
       />
 

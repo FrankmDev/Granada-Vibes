@@ -23,6 +23,14 @@ interface Props {
 const { locale, route } = Astro.props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
+const neighborhoodsLabel = route.neighborhoods
+  .map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`))
+  .join(', ');
+const durationLabel = formatDuration(route.duration, locale);
+const distanceLabel = formatDistance(route.distance, locale);
+const routeSeoTitle = isEnglish
+  ? `${route.title[locale]} in Granada: ${durationLabel}, ${distanceLabel}`
+  : `${route.title[locale]} en Granada: ${durationLabel}, ${distanceLabel}`;
 
 const categoryUrl = `${getRoute('routes', locale)}#routes-grid`;
 
@@ -55,7 +63,7 @@ const copy = isEnglish
         copied: 'Copied!',
       },
       seo:
-        `Route "${route.title[locale]}" through ${route.neighborhoods.map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`)).join(', ')} in Granada — ${formatDuration(route.duration, locale)} of ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Difficulty: ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Discover practical tips, must-see spots and how to prepare the perfect itinerary.`,
+        `Route "${route.title[locale]}" through ${neighborhoodsLabel} in Granada — ${durationLabel} of ${t(`categories.${route.category}`).toLowerCase()}, ${distanceLabel}. Difficulty: ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Discover practical tips, must-see spots and how to prepare the perfect itinerary.`,
       nav: {
         prev: 'Previous route',
         next: 'Next route',
@@ -89,7 +97,7 @@ const copy = isEnglish
         copied: '¡Copiado!',
       },
       seo:
-        `Ruta "${route.title[locale]}" por ${route.neighborhoods.map((neighborhood: Neighborhood) => t(`neighborhoods.${neighborhood}`)).join(', ')} en Granada — ${formatDuration(route.duration, locale)} de ${t(`categories.${route.category}`).toLowerCase()}, ${formatDistance(route.distance, locale)}. Dificultad ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`,
+        `Ruta "${route.title[locale]}" por ${neighborhoodsLabel} en Granada — ${durationLabel} de ${t(`categories.${route.category}`).toLowerCase()}, ${distanceLabel}. Dificultad ${t(`difficulty.${route.difficulty}`).toLowerCase()}. Descubre consejos prácticos, puntos imprescindibles y cómo preparar el itinerario perfecto.`,
       nav: {
         prev: 'Ruta anterior',
         next: 'Ruta siguiente',
@@ -160,7 +168,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
 
 <BaseLayout
   locale={locale}
-  title={route.title[locale]}
+  title={routeSeoTitle}
   description={copy.seo}
   ogImage={ogImage}
   schemaType="route"

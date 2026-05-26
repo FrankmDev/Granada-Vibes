@@ -14,6 +14,7 @@ const t = useTranslations(locale);
 
 const c = {
   supra: t('home.hero.worldHeritage'),
+  searchHeading: t('home.hero.searchHeading'),
   title: 'GRANADA',
   cta: t('home.hero.ctaEvents'),
   ctaLink: getRoute('events', locale),
@@ -23,6 +24,7 @@ const c = {
 ---
 
 <section class="portal-hero" aria-label={c.ariaLabel}>
+  <h1 class="sr-only">{c.searchHeading}</h1>
 
   <!-- Cinematic Preloader — ultra light -->
   <div class="hero-boot-screen" id="hero-boot-screen" aria-hidden="true">
@@ -132,11 +134,11 @@ const c = {
   <!-- 2. Monumental Lockup -->
   <div class="epic-title-layer">
     <span class="epic-subtitle" data-parallax="-0.04">{c.supra}</span>
-    <h1 class="epic-title" data-parallax="-0.03" aria-label="Granada">
+    <div class="epic-title" data-parallax="-0.03" aria-hidden="true">
       {c.title.split('').map((letter, index) => (
         <span class="title-char" style={`--delay: ${index * 0.08}s`}>{letter}</span>
       ))}
-    </h1>
+    </div>
   </div>
 
   <!-- 3. The Alhambra Portal -->

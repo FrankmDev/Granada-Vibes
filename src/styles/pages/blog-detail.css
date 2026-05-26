@@ -51,7 +51,14 @@
   .upg-author-initial { font-family: var(--font-body); font-size: 1.5rem; font-weight: 700; color: white; }
 
   /* BLOG PROSE STYLES inside upg-block */
-  .blg-prose { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.8; color: var(--s-ink-2); }
+  .blg-prose {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--s-ink-2);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
   .blg-prose p { margin-bottom: 1.5rem; }
   .blg-prose h2 { font-family: var(--font-body); font-size: 1.8rem; font-weight: 600; margin-top: 3rem; margin-bottom: 1.25rem; color: var(--s-ink); position: relative; padding-bottom: 0.75rem; line-height: 1.2; letter-spacing: -0.01em; }
   .blg-prose h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 40px; height: 2px; background: linear-gradient(90deg, var(--s-gold), transparent); }
@@ -86,6 +93,7 @@
   }
   .blg-prose table {
     width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
     color: var(--s-ink-2);
@@ -104,6 +112,9 @@
     border: 1px solid var(--s-border);
     padding: 0.85rem 1rem;
     vertical-align: top;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
   }
   .blg-prose figure {
     margin: 2rem 0;
@@ -258,4 +269,12 @@
   @media (max-width: 640px) {
     .upg-block { padding: 2rem 1.5rem; }
     .upg-tc-header, .upg-tc-actions { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .det-content-wrap { padding-left: 1rem; padding-right: 1rem; }
+    .blg-prose { font-size: 1rem; }
+    .blg-prose table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
   }

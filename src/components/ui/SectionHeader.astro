@@ -15,6 +15,8 @@ interface Props {
   title: string;
   /** If true, title chars are animated one by one (char-rise) */
   animateTitle?: boolean;
+  /** Archive / hub subpages: short label copy, same display scale */
+  size?: 'default' | 'compact';
   /** Optional href for the CTA button */
   ctaHref?: string;
   /** CTA button label */
@@ -29,13 +31,14 @@ const {
   titleLabel,
   title,
   animateTitle = false,
+  size = 'default',
   ctaHref,
   ctaLabel,
   showDecoration = false,
 } = Astro.props;
 ---
 
-<header class="section-header">
+<header class:list={['section-header', size === 'compact' && 'section-header--compact']}>
   <div class="header-top">
     <div class="header-eyebrow">
       <span class="eyebrow-bracket">[</span>
@@ -162,9 +165,10 @@ const {
   .title-char {
     display: inline-block;
     font-family: var(--font-body);
-    font-size: clamp(4rem, 12vw, 8rem);
-    font-weight: 200;
-    letter-spacing: -0.03em;
+    font-size: clamp(4.5rem, 13vw, 9rem);
+    font-weight: 100;
+    letter-spacing: -0.02em;
+    -webkit-font-smoothing: antialiased;
     text-transform: uppercase;
     color: var(--s-ink);
   }
@@ -233,16 +237,42 @@ const {
     flex-shrink: 0;
   }
 
+  .section-header--compact .title-char {
+    font-size: clamp(4rem, 12vw, 8.5rem);
+    line-height: 0.88;
+  }
+
+  .section-header--compact .header-main {
+    padding-top: 1.25rem;
+  }
+
   /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .title-char {
+      font-size: clamp(3.75rem, 14vw, 7rem);
+    }
+
+    .section-header--compact .title-char {
+      font-size: clamp(3.5rem, 13vw, 6.5rem);
+    }
+  }
+
   @media (max-width: 768px) {
     .section-header { padding: 0 1rem; }
     .header-main { grid-template-columns: 1fr; gap: 1.25rem; padding-top: 1.25rem; }
-    .title-char { font-size: clamp(3rem, 15vw, 5rem) !important; }
+    .title-char { font-size: clamp(3.25rem, 16vw, 5.5rem) !important; }
+    .section-header--compact .title-char {
+      font-size: clamp(3rem, 15vw, 5.25rem) !important;
+    }
     .desktop-cta { display: none; }
   }
 
   @media (max-width: 480px) {
     .header-eyebrow { font-size: 0.6rem; }
     .header-top { padding-top: 2rem; padding-bottom: 1rem; }
+    .title-char { font-size: clamp(2.75rem, 18vw, 4.5rem) !important; }
+    .section-header--compact .title-char {
+      font-size: clamp(2.65rem, 17vw, 4.25rem) !important;
+    }
   }
 </style>

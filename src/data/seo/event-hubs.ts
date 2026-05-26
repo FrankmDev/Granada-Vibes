@@ -7,6 +7,8 @@ export interface EventHubConfig {
   kind: EventHubKind;
   title: LocalizedText;
   h1: LocalizedText;
+  /** Short label for hero and section headers (SEO uses `title`). */
+  displayH1: LocalizedText;
   description: LocalizedText;
   intro: LocalizedText;
   eyebrow: LocalizedText;
@@ -33,9 +35,10 @@ export const eventHubs: EventHubConfig[] = [
       en: 'What to do in Granada today: events, concerts and plans',
     },
     h1: {
-      es: 'Qué hacer hoy en Granada',
-      en: 'What to do in Granada today',
+      es: 'Hoy en Granada',
+      en: 'Today in Granada',
     },
+    displayH1: { es: 'HOY', en: 'TODAY' },
     description: {
       es: 'Planes para hoy en Granada: conciertos, cultura, eventos gratis, rutas y actividades actualizadas para disfrutar la ciudad.',
       en: 'Plans for today in Granada: concerts, culture, free events, routes and updated activities around the city.',
@@ -78,9 +81,10 @@ export const eventHubs: EventHubConfig[] = [
       en: 'Events in Granada this weekend: concerts and plans',
     },
     h1: {
-      es: 'Eventos en Granada este fin de semana',
-      en: 'Events in Granada this weekend',
+      es: 'Este fin de semana',
+      en: 'This weekend',
     },
+    displayH1: { es: 'FINDE', en: 'WEEKEND' },
     description: {
       es: 'Agenda de eventos este fin de semana en Granada: conciertos, cultura, planes gratis, salas, barrios y actividades para viernes, sábado y domingo.',
       en: 'Weekend events in Granada: concerts, culture, free plans, venues, neighborhoods and activities for Friday, Saturday and Sunday.',
@@ -119,6 +123,7 @@ export const eventHubs: EventHubConfig[] = [
       es: 'Conciertos en Granada',
       en: 'Concerts in Granada',
     },
+    displayH1: { es: 'CONCIERTOS', en: 'CONCERTS' },
     description: {
       es: 'Agenda actualizada de conciertos en Granada: artistas, fechas, entradas, salas, festivales y música en directo esta semana.',
       en: 'Updated Granada concert agenda: artists, dates, tickets, venues, festivals and live music this week.',
@@ -162,9 +167,10 @@ export const eventHubs: EventHubConfig[] = [
       en: 'Free events in Granada: free plans agenda',
     },
     h1: {
-      es: 'Eventos gratis en Granada',
-      en: 'Free events in Granada',
+      es: 'Entrada libre',
+      en: 'Free entry',
     },
+    displayH1: { es: 'GRATIS', en: 'FREE' },
     description: {
       es: 'Agenda de eventos gratis en Granada: conciertos, cultura, exposiciones, talleres y planes de entrada libre actualizados.',
       en: 'Free events in Granada: concerts, culture, exhibitions, workshops and free-entry plans updated.',
@@ -204,6 +210,7 @@ export const eventHubs: EventHubConfig[] = [
       es: 'Plaza de Toros de Granada',
       en: 'Plaza de Toros Granada',
     },
+    displayH1: { es: 'PLAZA DE TOROS', en: 'PLAZA DE TOROS' },
     description: {
       es: 'Próximos conciertos y eventos en Plaza de Toros de Granada: fechas, horarios, entradas, ubicación y cómo llegar.',
       en: 'Upcoming concerts and events at Plaza de Toros Granada: dates, times, tickets, location and how to get there.',
@@ -243,6 +250,7 @@ export const eventHubs: EventHubConfig[] = [
       es: 'Industrial Copera Granada',
       en: 'Industrial Copera Granada',
     },
+    displayH1: { es: 'COPERA', en: 'COPERA' },
     description: {
       es: 'Agenda de conciertos y eventos en Industrial Copera Granada: fechas, entradas, horarios, artistas y cómo llegar.',
       en: 'Concerts and events at Industrial Copera Granada: dates, tickets, times, artists and how to get there.',
@@ -282,6 +290,7 @@ export const eventHubs: EventHubConfig[] = [
       es: 'Sala El Tren Granada',
       en: 'Sala El Tren Granada',
     },
+    displayH1: { es: 'EL TREN', en: 'EL TREN' },
     description: {
       es: 'Próximos conciertos y eventos en Sala El Tren Granada: fechas, entradas, horarios, artistas y planes cerca.',
       en: 'Upcoming concerts and events at Sala El Tren Granada: dates, tickets, times, artists and nearby plans.',

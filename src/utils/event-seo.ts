@@ -49,7 +49,19 @@ function shouldUseTicketsIntent(event: Event): boolean {
   return status === 'paid' || status === 'tickets' || !!event.ticketsUrl;
 }
 
+function isPastSeoEvent(event: Event): boolean {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const eventDate = new Date(event.date);
+  eventDate.setHours(0, 0, 0, 0);
+  return eventDate < today;
+}
+
 function getSpanishTitleHook(event: Event): string {
+  if (isPastSeoEvent(event)) {
+    return 'concierto y próximas fechas';
+  }
+
   const status = getPriceStatus(event);
 
   if (status === 'free') {
@@ -72,6 +84,10 @@ function getSpanishTitleHook(event: Event): string {
 }
 
 function getEnglishTitleHook(event: Event): string {
+  if (isPastSeoEvent(event)) {
+    return 'concert and next dates';
+  }
+
   const status = getPriceStatus(event);
 
   if (status === 'free') {
@@ -135,6 +151,19 @@ export function getEventSeoDescription(event: Event, locale: Locale, t: Translat
   const time = formatTime(event.time, locale);
   const venue = getVenueSearchName(event.venue);
   const status = getPriceStatus(event);
+  const pastEvent = isPastSeoEvent(event);
+
+  if (pastEvent) {
+    if (locale === 'en') {
+      return clampMetaDescription(
+        `${cleanEventName(event.title.en)} played in Granada on ${date} at ${venue}. Use this page to check the venue, the original date and related upcoming plans in the city.`
+      );
+    }
+
+    return clampMetaDescription(
+      `${cleanEventName(event.title.es)} se celebró en Granada el ${date} en ${venue}. Usa esta página para ver el recinto, la fecha original y próximos planes relacionados en la ciudad.`
+    );
+  }
 
   if (locale === 'en') {
     const intent = status === 'free'

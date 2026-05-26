@@ -49,8 +49,9 @@ const variantMap = {
 
 const v = variantMap[variant];
 
-const titleWords = title.split(' ');
+const displayTitle = title.trim().toUpperCase();
 const isSecondary = accent === 'secondary';
+const useCompactTitle = displayTitle.length <= 28;
 const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
 ---
 
@@ -141,15 +142,19 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
         </div>
       )}
 
-      <h1 id="page-title" class="ph-title">
-        {titleWords.map((word, wIndex) => (
-          <span
-            class:list={['title-word', { 'title-word--gold': isSecondary && wIndex === 0 }]}
-            style={`--word-delay: ${wIndex * 0.14}s`}
-          >
-            {word}
-          </span>
-        ))}
+      <h1 id="page-title" class:list={['ph-title', useCompactTitle && 'ph-title--compact']}>
+        {useCompactTitle ? (
+          <span class="ph-title-line">{displayTitle}</span>
+        ) : (
+          displayTitle.split(' ').map((word, wIndex) => (
+            <span
+              class:list={['title-word', { 'title-word--gold': isSecondary && wIndex === 0 }]}
+              style={`--word-delay: ${wIndex * 0.14}s`}
+            >
+              {word}
+            </span>
+          ))
+        )}
       </h1>
 
       {subtitle && (
@@ -466,9 +471,10 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 1200px;
+    max-width: min(1200px, calc(100% - 12rem));
     margin: 0 auto;
     padding: 0 2rem;
+    padding-right: clamp(2rem, 14vw, 11rem);
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -514,30 +520,45 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
      ==================================================== */
   .ph-title {
     font-family: var(--font-body);
-    font-size: clamp(4rem, 11vw, 9rem);
-    font-weight: 200;
-    letter-spacing: -0.03em;
-    line-height: 0.92;
+    font-size: clamp(4.5rem, 12.5vw, 10.5rem);
+    font-weight: 100;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    -webkit-font-smoothing: antialiased;
     color: var(--color-text-primary);
     margin: 0 0 1.75rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.2em;
     overflow: visible;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+  /* Short label (e.g. EVENTOS) — same scale, fewer words */
+  .ph-title--compact {
+    flex-wrap: nowrap;
+  }
+
+  .ph-title-line {
+    display: block;
+    opacity: 0;
+    animation: ph-word-rise 1.2s var(--ease-out-expo) 0.1s forwards;
   }
 
   .page-header--large .ph-title {
-    font-size: clamp(5rem, 14vw, 12rem);
+    font-size: clamp(5.5rem, 16vw, 13rem);
   }
 
   .page-header--minimal .ph-title {
-    font-size: clamp(2.25rem, 5.5vw, 4rem);
-    font-weight: 300;
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    font-weight: 100;
     line-height: 1.0;
   }
 
   .title-word {
     display: inline-block;
+    white-space: nowrap;
     opacity: 0;
     transform: translateY(80%) skewX(-12deg) scale(0.95);
     animation: ph-word-rise 1.4s var(--ease-out-expo) var(--word-delay, 0s) forwards;
@@ -729,6 +750,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     .ph-frame-tag,
     .ph-eyebrow,
     .title-word,
+    .ph-title-line,
     .ph-subtitle,
     .ph-separator,
     .sep-bar,
@@ -751,13 +773,33 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
   /* ====================================================
      RESPONSIVE
      ==================================================== */
+  @media (max-width: 1024px) {
+    .ph-inner {
+      max-width: 100%;
+      padding-right: clamp(1.25rem, 8vw, 5rem);
+    }
+
+    .ph-title {
+      font-size: clamp(3.75rem, 13vw, 7.5rem);
+    }
+
+    .page-header--large .ph-title {
+      font-size: clamp(4.25rem, 15vw, 8.5rem);
+    }
+  }
+
   @media (max-width: 768px) {
     .ph-frame { inset: 0.75rem; }
 
-    .ph-inner { padding: 0 1.25rem; }
+    .ph-inner {
+      padding: 0 1.25rem;
+      max-width: 100%;
+      padding-right: 1.25rem;
+    }
 
     .ph-bg-number {
-      font-size: clamp(8rem, 30vw, 14rem);
+      font-size: clamp(5rem, 24vw, 8rem);
+      right: -4%;
       opacity: 0;
       animation: ph-bg-number-reveal 2s ease 0.3s forwards;
     }
@@ -765,7 +807,37 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     .ph-separator { display: none; }
 
     .ph-title {
-      white-space: normal;
+      font-size: clamp(3.25rem, 14vw, 5.75rem);
+      max-width: 100%;
+      flex-wrap: wrap;
+      line-height: 0.92;
+    }
+
+    .page-header--large .ph-title {
+      font-size: clamp(3.5rem, 16vw, 6.5rem);
+    }
+
+    .page-header--minimal .ph-title {
+      font-size: clamp(2.35rem, 10vw, 3.75rem);
+    }
+
+    .ph-title--compact {
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ph-title {
+      font-size: clamp(2.75rem, 17vw, 4.5rem);
+      letter-spacing: -0.025em;
+    }
+
+    .page-header--large .ph-title {
+      font-size: clamp(3rem, 18vw, 5rem);
+    }
+
+    .ph-bg-number {
+      font-size: clamp(4rem, 22vw, 6.5rem);
     }
   }
 </style>

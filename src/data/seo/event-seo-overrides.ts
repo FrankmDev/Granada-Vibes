@@ -65,7 +65,7 @@ export const eventSeoOverrides: Record<string, EventSeoOverride> = {
   },
   'silvana-estrada-vendran-suaves-lluvias': {
     title: {
-      es: 'Silvana Estrada Granada: Vendrán suaves lluvias',
+      es: 'Silvana Estrada Granada 5 junio 2026: Vendrán suaves lluvias',
       en: 'Silvana Estrada Granada: Vendrán suaves lluvias',
     },
     description: {
@@ -131,6 +131,48 @@ export const eventSeoOverrides: Record<string, EventSeoOverride> = {
     h1: {
       es: 'Noche flamenca en el Sacromonte',
       en: 'Flamenco night in Sacromonte',
+    },
+  },
+  'petite-lorena-tremenda': {
+    title: {
+      es: 'Petite Lorena Granada 29 mayo 2026: Tremenda y entradas',
+      en: 'Petite Lorena Granada 29 May 2026: Tremenda tickets',
+    },
+    description: {
+      es: 'Petite Lorena presenta Tremenda en el Palacio de Congresos de Granada el 29 de mayo de 2026. Consulta horario, entradas y detalles del show.',
+      en: 'Petite Lorena brings Tremenda to Palacio de Congresos Granada on 29 May 2026. Check time, tickets and show details.',
+    },
+    h1: {
+      es: 'Petite Lorena en Granada',
+      en: 'Petite Lorena in Granada',
+    },
+  },
+  'juan-davila-el-palacio-del-pecado': {
+    title: {
+      es: 'Juan Dávila Granada 30 octubre 2026: entradas y horario',
+      en: 'Juan Davila Granada 30 October 2026: tickets and time',
+    },
+    description: {
+      es: 'Juan Dávila presenta El Palacio del Pecado en Granada el 30 de octubre de 2026. Consulta entradas, horario, recinto y detalles del espectáculo.',
+      en: 'Juan Davila brings El Palacio del Pecado to Granada on 30 October 2026. Check tickets, time, venue and show details.',
+    },
+    h1: {
+      es: 'Juan Dávila en Granada',
+      en: 'Juan Davila in Granada',
+    },
+  },
+  'la-plazuela': {
+    title: {
+      es: 'La Plazuela Granada 2026: concierto y próximas fechas',
+      en: 'La Plazuela Granada 2026: concert and next dates',
+    },
+    description: {
+      es: 'La Plazuela actuó en Granada el 15 de mayo de 2026. Esta ficha conserva recinto, precio y acceso a próximos conciertos relacionados en la ciudad.',
+      en: 'La Plazuela played in Granada on 15 May 2026. This page keeps the venue, price and links to related upcoming concerts in the city.',
+    },
+    h1: {
+      es: 'La Plazuela en Granada',
+      en: 'La Plazuela in Granada',
     },
   },
 };

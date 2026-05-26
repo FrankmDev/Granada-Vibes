@@ -1,0 +1,143 @@
+---
+import '@styles/components/event-archive-card.css';
+import EventImage from '@components/ui/EventImage.astro';
+import { formatPriceLabel, getPriceStatus } from '@utils/prices';
+import type { Event, Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+
+interface Props {
+  event: Event;
+  locale: Locale;
+  href: string;
+  categoryLabel: string;
+  cardIndex: number;
+  heightVh?: number;
+  dataCategory?: string;
+  dataNeighborhood?: string;
+  dataPrice?: string;
+  dataDate?: string;
+  dataSearch?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+}
+
+const {
+  event,
+  locale,
+  href,
+  categoryLabel,
+  cardIndex,
+  heightVh,
+  dataCategory,
+  dataNeighborhood,
+  dataPrice,
+  dataDate,
+  dataSearch,
+  loading = 'lazy',
+  fetchpriority,
+  sizes = '(max-width: 768px) 100vw, 33vw',
+} = Astro.props;
+
+const t = useTranslations(locale);
+
+function getTemporalProximity(dateStr: string): 'today' | 'tomorrow' | 'this-week' | 'future' | 'past' {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const eventDate = new Date(dateStr);
+  eventDate.setHours(0, 0, 0, 0);
+
+  const diffDays = Math.ceil((eventDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0) return 'past';
+  if (diffDays === 0) return 'today';
+  if (diffDays === 1) return 'tomorrow';
+  if (diffDays <= 7) return 'this-week';
+  return 'future';
+}
+
+function formatMonth(dateStr: string): string {
+  return new Date(dateStr)
+    .toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', { month: 'short' })
+    .toUpperCase()
+    .replace(/\./g, '');
+}
+
+const proximity = getTemporalProximity(event.date);
+const hasTemporalBadge = proximity === 'today' || proximity === 'tomorrow';
+const hasImage = !!(event.imageUrl || event.image);
+const priceStatus = getPriceStatus(event);
+const priceClass = priceStatus === 'free'
+  ? ' footer-price--free'
+  : priceStatus === 'tickets'
+    ? ' footer-price--tickets'
+    : '';
+const cardStyle = heightVh !== undefined
+  ? `--card-index: ${cardIndex}; height: ${heightVh}vh;`
+  : `--card-index: ${cardIndex};`;
+---
+
+<article
+  class="archive-item"
+  data-category={dataCategory}
+  data-neighborhood={dataNeighborhood}
+  data-price={dataPrice}
+  data-date={dataDate}
+  data-search={dataSearch}
+  style={cardStyle}
+>
+  <a href={href} class="item-link">
+    <span class="cb cb-tl" aria-hidden="true"></span>
+    <span class="cb cb-tr" aria-hidden="true"></span>
+    <span class="cb cb-bl" aria-hidden="true"></span>
+    <span class="cb cb-br" aria-hidden="true"></span>
+
+    {hasImage ? (
+      <EventImage
+        event={event}
+        alt={event.title[locale]}
+        class="item-image"
+        loading={loading}
+        fetchpriority={fetchpriority}
+        decoding="async"
+        sizes={sizes}
+        width={900}
+        height={1200}
+      />
+    ) : (
+      <div class="item-image-fallback"></div>
+    )}
+
+    <div class="item-overlay"></div>
+
+    {proximity === 'today' && (
+      <div class="temporal-badge badge-today">
+        <span class="badge-dot"></span>
+        {t('events.today')}
+      </div>
+    )}
+    {proximity === 'tomorrow' && (
+      <div class="temporal-badge badge-tomorrow">{t('events.tomorrow')}</div>
+    )}
+
+    <div class="category-badge">{categoryLabel}</div>
+
+    <div class={`date-badge${hasTemporalBadge ? ' date-badge--offset' : ''}`}>
+      <span class="date-day">{new Date(event.date).getDate()}</span>
+      <span class="date-month">{formatMonth(event.date)}</span>
+    </div>
+
+    <div class="item-content">
+      <div class="item-text">
+        <h3 class="item-title">{event.title[locale]}</h3>
+        <div class="item-footer">
+          <span class="footer-venue">{event.venue || 'Granada'}</span>
+          <span class="footer-separator"></span>
+          <span class={`footer-price${priceClass}`}>
+            {formatPriceLabel(event, t)}
+          </span>
+        </div>
+      </div>
+    </div>
+  </a>
+</article>

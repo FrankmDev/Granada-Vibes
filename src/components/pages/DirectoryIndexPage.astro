@@ -1,6 +1,9 @@
 ---
+import '@styles/pages/directory.css';
 import BaseLayout from '@layouts/BaseLayout.astro';
-import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
+import SubpageHero from '@components/shared/SubpageHero.astro';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import { SITE_CONFIG } from '@config/site';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
@@ -15,22 +18,29 @@ interface Props {
 
 const { locale, kind, entries } = Astro.props;
 const t = useTranslations(locale);
+const currentYear = new Date().getFullYear();
 const isArtists = kind === 'artists';
+
 const basePath = isArtists
   ? locale === 'en' ? '/en/artists/' : '/artistas/'
   : locale === 'en' ? '/en/venues/' : '/salas/';
+
 const title = isArtists ? t('directory.artistsTitle') : t('directory.venuesTitle');
 const description = isArtists ? t('directory.artistsDescription') : t('directory.venuesDescription');
 const h1 = isArtists ? t('directory.artistsH1') : t('directory.venuesH1');
+const displayH1 = isArtists ? t('directory.artistsDisplayH1') : t('directory.venuesDisplayH1');
 const intro = isArtists ? t('directory.artistsIntro') : t('directory.venuesIntro');
 const totalLabel = isArtists ? t('directory.totalArtists') : t('directory.totalVenues');
+const metaLabel = isArtists ? t('directory.artistMeta') : t('directory.venueMeta');
 
 const topEntries = entries.slice(0, 48);
 const totalUpcoming = entries.reduce((sum, entry) => sum + entry.upcomingEvents.length, 0);
+
 const breadcrumb = [
   { name: locale === 'en' ? 'Home' : 'Inicio', url: getRoute('home', locale) },
   { name: h1, url: basePath },
 ];
+
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -42,175 +52,87 @@ const itemListSchema = {
     url: `${SITE_CONFIG.url}${basePath}${entry.slug}/`,
   })),
 };
+
+const heroMetadata = [
+  { label: totalLabel, value: entries.length.toString(), icon: 'layers' },
+  { label: t('directory.upcomingDates'), value: totalUpcoming.toString(), icon: 'calendar' },
+  { label: t('directory.listedEvents'), value: topEntries.reduce((sum, entry) => sum + entry.events.length, 0).toString(), icon: 'clock' },
+];
 ---
 
 <BaseLayout locale={locale} title={title} description={description} breadcrumb={breadcrumb}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
 
-  <section class="dir-hero">
+  <SubpageHero
+    locale={locale}
+    title={displayH1}
+    subtitle={t('directory.indexEyebrow')}
+    eyebrow="GRN URBAN"
+    eyebrowRight={`ED. ${currentYear}`}
+    description={intro}
+    ctaText={t('directory.browseEvents')}
+    ctaLink={getRoute('events', locale)}
+    secondaryCtaText={t('detail.allEvents')}
+    secondaryCtaLink={getRoute('events', locale)}
+    pageNumber="04"
+    coordinates="37°10′N 3°36′W"
+    metadata={heroMetadata}
+    variant="compact"
+  />
+
+  <section class="dir-archive" aria-label={h1}>
+    <div class="cin-grain" aria-hidden="true"></div>
+    <ScreenFrame
+      tagTopLeft={t('events.archiveFrameTagTopLeft')}
+      tagTopRight={t('events.archiveFrameTagTopRight')}
+      tagBottomLeft={t('events.archiveFrameTagBottomLeft')}
+      tagBottomRight={t('events.archiveFrameTagBottomRight')}
+    />
+
     <div class="dir-wrap">
-      <Breadcrumbs variant="light" items={[
-        { label: locale === 'en' ? 'Home' : 'Inicio', href: getRoute('home', locale) },
-        { label: h1 },
-      ]} />
-      <p class="dir-eyebrow">{t('directory.indexEyebrow')}</p>
-      <h1>{h1}</h1>
-      <p class="dir-intro">{intro}</p>
-      <div class="dir-stats">
-        <span><strong>{entries.length}</strong>{totalLabel}</span>
-        <span><strong>{totalUpcoming}</strong>{t('directory.upcomingDates')}</span>
+      <SectionHeader
+        eyebrow={t('directory.featuredList')}
+        eyebrowYear={`${currentYear - 1} — ${currentYear}`}
+        titleLabel={t('directory.indexEyebrow')}
+        title={displayH1}
+        size="compact"
+        animateTitle={true}
+      />
+
+      <div class="dir-grid">
+        {topEntries.map((entry, idx) => (
+          <article class="dir-card" style={`--card-index: ${idx};`}>
+            <a href={`${basePath}${entry.slug}/`}>
+              <span class="dir-card__meta">{metaLabel}</span>
+              <h3>{entry.name}</h3>
+              <p>{entry.description[locale]}</p>
+              <div class="dir-card__footer">
+                <span>{entry.upcomingEvents.length} {t('directory.upcomingDates')}</span>
+                <span>{entry.events.length} {t('directory.listedEvents')}</span>
+              </div>
+            </a>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-  <main class="dir-wrap dir-main">
-    <header class="dir-section-head">
-      <p>{t('directory.featuredList')}</p>
-      <h2>{h1}</h2>
-    </header>
-
-    <div class="dir-grid">
-      {topEntries.map((entry) => (
-        <article class="dir-card">
-          <a href={`${basePath}${entry.slug}/`}>
-            <span class="dir-card__meta">{isArtists ? t('directory.artistMeta') : t('directory.venueMeta')}</span>
-            <h3>{entry.name}</h3>
-            <p>{entry.description[locale]}</p>
-            <div class="dir-card__footer">
-              <span>{entry.upcomingEvents.length} {t('directory.upcomingDates')}</span>
-              <span>{entry.events.length} {t('directory.listedEvents')}</span>
-            </div>
-          </a>
-        </article>
-      ))}
-    </div>
-  </main>
+  <script is:inline>
+    (function() {
+      const sectionHeaders = document.querySelectorAll('.dir-archive .section-header');
+      if (sectionHeaders.length === 0) return;
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      sectionHeaders.forEach(sh => io.observe(sh));
+    })();
+  </script>
 </BaseLayout>
-
-<style>
-  .dir-hero {
-    background: var(--color-bg);
-    color: var(--color-text-primary);
-    padding: 7rem 1.5rem 4rem;
-  }
-
-  .dir-wrap {
-    width: min(1180px, 100%);
-    margin: 0 auto;
-  }
-
-  .dir-eyebrow,
-  .dir-section-head p,
-  .dir-card__meta {
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-  }
-
-  .dir-hero h1 {
-    font-family: var(--font-body);
-    font-size: clamp(3.2rem, 8vw, 7rem);
-    line-height: 0.92;
-    margin: 0.8rem 0 1.2rem;
-  }
-
-  .dir-intro {
-    max-width: 760px;
-    color: var(--color-text-secondary);
-    line-height: 1.7;
-    font-size: 1.05rem;
-  }
-
-  .dir-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 2rem;
-  }
-
-  .dir-stats span {
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 999px;
-    padding: 0.8rem 1rem;
-    background: rgba(255,255,255,0.05);
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 700;
-  }
-
-  .dir-stats strong {
-    color: var(--color-gold);
-    margin-right: 0.45rem;
-  }
-
-  .dir-main {
-    color: var(--s-ink);
-    padding: 4rem 1.5rem 5rem;
-  }
-
-  .dir-section-head {
-    border-bottom: 1px solid var(--s-border);
-    padding-bottom: 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .dir-section-head h2 {
-    font-family: var(--font-body);
-    font-size: clamp(2rem, 4vw, 3.4rem);
-    margin: 0;
-  }
-
-  .dir-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--s-border);
-    border: 1px solid var(--s-border);
-  }
-
-  .dir-card {
-    background: var(--s-bg);
-  }
-
-  .dir-card a {
-    min-height: 100%;
-    display: grid;
-    gap: 0.85rem;
-    padding: 1.25rem;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .dir-card h3 {
-    font-family: var(--font-body);
-    font-size: 1.55rem;
-    line-height: 1.08;
-    margin: 0;
-  }
-
-  .dir-card p {
-    margin: 0;
-    color: color-mix(in srgb, var(--s-ink) 68%, transparent);
-    line-height: 1.55;
-  }
-
-  .dir-card__footer {
-    border-top: 1px solid var(--s-border);
-    padding-top: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    color: color-mix(in srgb, var(--s-ink) 58%, transparent);
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  @media (max-width: 900px) {
-    .dir-grid { grid-template-columns: 1fr; }
-  }
-</style>

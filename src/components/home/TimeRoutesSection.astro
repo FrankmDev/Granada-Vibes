@@ -12,6 +12,7 @@ interface Props {
 
 const { plans, locale } = Astro.props;
 const t = useTranslations(locale);
+const currentYear = new Date().getFullYear();
 
 const splitText = (text: string, baseDelay = 0) =>
   text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.03 }));
@@ -134,7 +135,7 @@ function getCategoryName(category: string): string {
     tagTopLeft="CRONOGRAMA"
     tagTopRight="GRANADA"
     tagBottomLeft="VOL. 02"
-    tagBottomRight="ED. 2025"
+    tagBottomRight={`ED. ${currentYear}`}
   />
 
   <div class="time-container">
