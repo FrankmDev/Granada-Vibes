@@ -5,6 +5,208 @@ import type { Route } from '@types';
 // ============================================================
 
 export const routes: Route[] = [
+  {
+    id: 'rte-015',
+    slug: 'ruta-corpus-granada-2026',
+    title: {
+      es: 'Ruta del Corpus de Granada 2026: Tarasca, tapas y feria en un día',
+      en: 'Granada Corpus Route 2026: Tarasca, Tapas and Fair in One Day',
+    },
+    description: {
+      es: 'La ruta más práctica para vivir el Corpus de Granada en un solo día: ver la Tarasca en el centro, tapear cerca de Reyes Católicos y acabar en la Feria del Corpus de Almanjáyar. Con variante para el jueves de procesión.',
+      en: 'The most practical one-day Corpus route in Granada: watch the Tarasca in the city centre, stop for tapas near Reyes Católicos, and finish at the Almanjáyar fairground, with a Thursday procession variant.',
+    },
+    category: 'history',
+    difficulty: 'easy',
+    duration: 480,
+    distance: 3.4,
+    timeOfDay: 'any',
+    neighborhoods: ['centro', 'otro'],
+    highlights: [
+      {
+        title: { es: 'Plaza del Carmen — salida de la Tarasca', en: 'Plaza del Carmen — Tarasca starting point' },
+        description: {
+          es: 'El miércoles 3 de junio de 2026, la Tarasca sale a las 12:00 desde el entorno del Ayuntamiento. Este es el mejor punto para arrancar la ruta si quieres vivir el lado más popular del Corpus. Si prefieres la versión solemne, usa este mismo tramo del centro como antesala del jueves 4 de junio, cuando la procesión del Santísimo arranca a las 10:15 en el casco histórico.',
+          en: 'On Wednesday 3 June 2026, the Tarasca starts at 12:00 from the City Hall area. This is the strongest starting point if you want the most popular side of Corpus week. If you prefer the more solemn version, use the same central stretch as the lead-in to Thursday 4 June, when the Corpus Christi procession begins at 10:15 in the historic centre.',
+        },
+        address: {
+          es: 'Plaza del Carmen, junto al Ayuntamiento de Granada',
+          en: 'Plaza del Carmen, beside Granada City Hall',
+        },
+        duration: 45,
+        hours: {
+          es: 'Miércoles 3 de junio: llegar entre 11:00 y 11:30. Variante jueves 4 de junio: estar en el centro antes de las 10:00.',
+          en: 'Wednesday 3 June: arrive between 11:00 and 11:30. Thursday 4 June variant: be in the centre before 10:00.',
+        },
+        tip: {
+          es: 'Si tu prioridad es ver bien la Tarasca, no llegues justo a las 12:00. A esa hora ya tendrás mucha gente delante.',
+          en: 'If your priority is to watch the Tarasca properly, do not arrive right at 12:00. By then the crowd will already be in place.',
+        },
+      },
+      {
+        title: { es: 'Reyes Católicos, Puerta Real y eje del centro', en: 'Reyes Católicos, Puerta Real and the central axis' },
+        description: {
+          es: 'Tras la salida, la ruta sigue por el eje más cómodo para moverse con lógica de Corpus: Reyes Católicos, Puerta Real, Gran Vía y alrededores. Es una buena zona para seguir la Tarasca sin encerrarte en un único punto y también funciona el jueves como tramo razonable para ver ambiente alrededor de la procesión, la Catedral y las calles principales.',
+          en: 'After the start, the route follows the most practical Corpus axis in the centre: Reyes Católicos, Puerta Real, Gran Vía and nearby streets. It works well for following the Tarasca without locking yourself into one fixed spot, and on Thursday it also makes sense for watching the atmosphere around the procession, the Cathedral and the main historic-centre streets.',
+        },
+        address: {
+          es: 'Reyes Católicos, Puerta Real y entorno de la Catedral',
+          en: 'Reyes Católicos, Puerta Real and the Cathedral area',
+        },
+        duration: 45,
+        hours: {
+          es: 'Franja útil: 12:00–13:00 si haces Tarasca; 10:15–12:00 si haces la variante de procesión.',
+          en: 'Useful window: 12:00–13:00 for Tarasca day; 10:15–12:00 for the procession variant.',
+        },
+        tip: {
+          es: 'Muévete con calma y evita cruzar el eje principal a última hora. En Corpus, la diferencia entre mirar y correr es enorme.',
+          en: 'Move calmly and avoid trying to cut across the main axis at the last minute. During Corpus, the difference between watching and rushing is huge.',
+        },
+      },
+      {
+        title: { es: 'Tapeo en el centro — Navas, Plaza Nueva, Elvira o Romanilla', en: 'Tapas in the centre — Navas, Plaza Nueva, Elvira or Romanilla' },
+        description: {
+          es: 'Después del desfile o de la procesión, esta ruta pide una parada de tapas sin salirte del centro. Las zonas más lógicas son Calle Navas si quieres una opción fácil, Plaza Nueva si prefieres seguir en pleno paso de gente, Calle Elvira si buscas algo más informal, y Romanilla o alrededores de la Catedral si quieres cortar menos el recorrido. No hace falta prometer un bar concreto para que el plan funcione: lo importante es elegir bien la zona y no alargar demasiado la sobremesa.',
+          en: 'After the parade or procession, this route calls for a tapas stop without leaving the centre. The most practical areas are Calle Navas for the easiest option, Plaza Nueva if you want to stay in the middle of the flow, Calle Elvira for a more casual stop, and Romanilla or the Cathedral area if you want to keep the route tighter. You do not need to pin the plan to one specific bar. The key is choosing the right zone and not stretching lunch too far.',
+        },
+        address: {
+          es: 'Centro histórico: Calle Navas, Plaza Nueva, Calle Elvira, Romanilla y Puerta Real',
+          en: 'Historic centre: Calle Navas, Plaza Nueva, Calle Elvira, Romanilla and Puerta Real',
+        },
+        duration: 90,
+        price: {
+          es: 'Presupuesto flexible según la zona y el número de paradas',
+          en: 'Flexible budget depending on the area and number of stops',
+        },
+        hours: {
+          es: 'Versión Tarasca: 13:00–15:00. Versión procesión: 13:30–15:00 o plan corto antes de subir a la feria.',
+          en: 'Tarasca version: 13:00–15:00. Procession version: 13:30–15:00 or a shorter stop before heading to the fairground.',
+        },
+        tip: {
+          es: 'Si quieres rematar en la feria con ganas, haz dos o tres paradas rápidas y no conviertas el tapeo en una ruta completa aparte.',
+          en: 'If you want to enjoy the fairground afterwards, keep tapas to two or three quick stops and do not turn it into a full separate route.',
+        },
+      },
+      {
+        title: { es: 'Traslado al recinto ferial de Almanjáyar', en: 'Transfer to the Almanjáyar fairground' },
+        description: {
+          es: 'La ruta cambia aquí de ritmo y de geografía. Desde el centro, lo sensato es subir al recinto ferial en autobús, metro o taxi. En 2026 conviene revisar el transporte el mismo día: a fecha de 29 de mayo hay paros parciales del Metro de Granada con servicios mínimos del 60% en varias jornadas del Corpus, así que el metro puede seguir siendo útil, pero no conviene depender de él sin comprobar horarios.',
+          en: 'This is where the route changes pace and geography. From the centre, the practical move is to head to the fairground by bus, metro or taxi. In 2026 it is worth checking transport the same day: as of 29 May there are partial Metro de Granada stoppages with 60% minimum service on several Corpus dates, so the metro may still be useful, but it should not be your only plan without checking live service.',
+        },
+        address: {
+          es: 'Recinto Ferial de Granada, Almanjáyar',
+          en: 'Granada Fairground, Almanjáyar',
+        },
+        duration: 45,
+        price: {
+          es: 'Autobús o metro según tarifa vigente; taxi según demanda y hora',
+          en: 'Bus or metro at the current fare; taxi depending on demand and time',
+        },
+        hours: {
+          es: 'Mejor salir del centro entre 18:00 y 19:00 si quieres llegar con ambiente y sin el pico final.',
+          en: 'Leaving the centre between 18:00 and 19:00 is usually the best balance if you want atmosphere without the latest-night peak.',
+        },
+        tip: {
+          es: 'No plantees el trayecto andando desde el centro como parte del plan. Te come tiempo y no mejora la experiencia.',
+          en: 'Do not treat the walk from the centre to the fairground as part of the plan. It eats time and does not improve the day.',
+        },
+      },
+      {
+        title: { es: 'Feria del Corpus — casetas, música y cierre del día', en: 'Corpus Fair — casetas, music and the end of the day' },
+        description: {
+          es: 'El cierre natural de esta ruta está en la Feria del Corpus de Granada, con casetas de acceso libre, atracciones y un ambiente que cambia mucho entre la tarde y la noche. Si vas con familia, la mejor franja es la tarde. Si vas con amigos o en pareja y quieres más movimiento, quédate hasta que el ferial se llene de verdad. El objetivo aquí no es verlo todo, sino rematar el día con una última capa del Corpus que no se vive en el centro.',
+          en: 'The natural ending point is Granada’s Corpus Fair, with free-entry casetas, rides and an atmosphere that shifts a lot between late afternoon and night. If you are going with family, the best window is the afternoon. If you are with friends or as a couple and want more energy, stay until the fairground properly fills up. The point is not to see everything. It is to finish the day with the part of Corpus that does not happen in the historic centre.',
+        },
+        address: {
+          es: 'Recinto ferial de Almanjáyar',
+          en: 'Almanjáyar fairground',
+        },
+        duration: 180,
+        price: {
+          es: 'Entrada libre; comida, bebida y atracciones aparte',
+          en: 'Free entry; food, drinks and rides not included',
+        },
+        hours: {
+          es: 'Franja recomendada: 19:00–22:30 para un plan equilibrado; más tarde si buscas noche de feria.',
+          en: 'Recommended window: 19:00–22:30 for a balanced plan; later if you want the full fair-at-night atmosphere.',
+        },
+        tip: {
+          es: 'Al atardecer se vive mejor si quieres casetas, paseo y algo de feria sin cerrar la madrugada.',
+          en: 'Sunset is the best slot if you want casetas, a walk and some fairground atmosphere without staying out until the very end.',
+        },
+      },
+    ],
+    tips: [
+      {
+        title: { es: 'Elige primero el día: Tarasca o procesión', en: 'Choose the day first: Tarasca or procession' },
+        content: {
+          es: 'La versión del miércoles 3 de junio de 2026 es más callejera, más visual y más ligera. La del jueves 4 de junio de 2026 es más solemne y más tradicional. La estructura de la ruta sirve para ambas, pero el tono cambia bastante.',
+          en: 'The Wednesday 3 June 2026 version is more visual, more festive and more playful. The Thursday 4 June 2026 version is more solemn and traditional. The route structure works for both, but the tone changes a lot.',
+        },
+      },
+      {
+        title: { es: 'Haz el tapeo con cabeza', en: 'Keep tapas under control' },
+        content: {
+          es: 'Esta ruta funciona porque mezcla tres planes en un solo día. Si conviertes el centro en una maratón de bares, llegarás tarde y cansado a la feria. Mejor pocas paradas y bien elegidas.',
+          en: 'This route works because it combines three plans in one day. If you turn the centre into a bar marathon, you will reach the fairground late and tired. Fewer, better stops work much better.',
+        },
+      },
+      {
+        title: { es: 'Revisa el transporte antes de subir al ferial', en: 'Check transport before heading to the fairground' },
+        content: {
+          es: 'En el Corpus 2026 hay información oficial sobre paros parciales del metro en varias jornadas, con servicios mínimos del 60%. El autobús sigue siendo una buena red de seguridad, y el taxi gana valor cuando ya anochece.',
+          en: 'During Corpus 2026 there is official information about partial metro stoppages on several dates, with 60% minimum service. The bus remains a good fallback, and taxis become more useful once the evening starts.',
+        },
+      },
+      {
+        title: { es: 'Con niños, adelanta los tiempos', en: 'With children, move everything earlier' },
+        content: {
+          es: 'Si haces esta ruta en familia, intenta resolver la parte de centro antes del pico de calor y entra en la feria pronto. La experiencia mejora mucho si no llegas ya de noche.',
+          en: 'If you do this route as a family, try to complete the city-centre part before the hottest stretch and reach the fairground early. The day gets much easier if you do not arrive once it is already fully nighttime.',
+        },
+      },
+    ],
+    whatToBring: {
+      es: ['Agua y algo para el sol si haces la versión de mediodía', 'Calzado cómodo para moverte por el centro y luego por el ferial', 'Tarjeta y algo de efectivo para tapas, taxi o casetas', 'El móvil con batería para revisar transporte y orientarte al volver'],
+      en: ['Water and sun protection if you do the midday version', 'Comfortable shoes for the city centre and then the fairground', 'Card and some cash for tapas, taxi or casetas', 'A charged phone to check transport and find your way back'],
+    },
+    bestMonths: ['junio'],
+    tags: ['corpus', 'corpus 2026', 'tarasca', 'tarasca granada 2026', 'feria del corpus', 'feria granada 2026', 'procesion', 'tapas', 'centro', 'almanjayar', 'granada 2026'],
+    featured: true,
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/TARASCA%20DE%20GRANADA%2002.jpg',
+    longDescription: {
+      es: 'Esta ruta está pensada para una pregunta muy concreta: cómo vivir el Corpus de Granada 2026 en un solo día sin dispersarte. La respuesta no es intentar verlo todo, sino encadenar bien tres momentos que sí encajan entre sí: la Tarasca o la procesión en el centro, una parada de tapas cerca del recorrido y una tarde-noche en la feria de Almanjáyar. Así ves tradición, calle, comida y ambiente sin repetir trayectos absurdos ni convertir el día en una carrera.',
+      en: 'This route is built around one specific question: how to experience Granada Corpus 2026 in a single day without spreading yourself too thin. The answer is not trying to see everything. It is linking three moments that genuinely work together: the Tarasca or the procession in the city centre, a tapas stop close to the main axis, and a late-afternoon or evening finish at the Almanjáyar fairground. That gives you tradition, street life, food and fair atmosphere without pointless backtracking or turning the day into a race.',
+    },
+    startingPoint: {
+      es: 'Plaza del Carmen si haces la versión Tarasca del miércoles 3 de junio de 2026. Si eliges la variante del jueves, usa el entorno de la Catedral y Plaza del Carmen como punto de entrada al centro histórico.',
+      en: 'Start at Plaza del Carmen for the Wednesday 3 June 2026 Tarasca version. If you choose the Thursday variant, use the Cathedral and Plaza del Carmen area as your entry point into the historic centre.',
+    },
+    endingPoint: {
+      es: 'Recinto ferial de Almanjáyar. Desde allí, la vuelta depende de la hora y del transporte disponible esa noche.',
+      en: 'Almanjáyar fairground. From there, your return depends on the time and the transport running that night.',
+    },
+    howToGetThere: {
+      es: 'La primera parte de la ruta se hace caminando por el centro histórico. Para el salto al ferial, la combinación más razonable es autobús, metro si el servicio está operativo, o taxi. Evita meter el coche en el centro si piensas enlazar con la feria más tarde.',
+      en: 'The first part of the route is done on foot through the historic centre. For the move to the fairground, the most practical options are bus, metro if service is running properly, or taxi. Avoid taking the car into the centre if you plan to continue on to the fair later.',
+    },
+    estimatedBudget: {
+      es: 'Entre 20 y 40 euros por persona si haces tapas en el centro y una visita corta o media a la feria. Sube si cenas fuerte, haces muchas consumiciones o entras en varias atracciones.',
+      en: 'Around 20 to 40 euros per person if you stop for tapas in the centre and do a short or medium fairground visit. It climbs if you have a full dinner, several rounds of drinks or lots of rides.',
+    },
+    whoIsItFor: {
+      es: 'Ideal para quien visita Granada durante el Corpus y quiere un plan claro sin perder media jornada decidiendo sobre la marcha. Funciona bien para parejas, grupos de amigos y viajeros que pisan la ciudad por primera vez en esa semana.',
+      en: 'Ideal for visitors coming to Granada during Corpus week who want a clear plan instead of burning half a day deciding on the spot. It works well for couples, groups of friends and first-time visitors during that week.',
+    },
+    accessibility: {
+      es: 'La parte del centro es razonable a pie, pero la afluencia complica bastante el movimiento durante Tarasca y procesión. El mayor límite de accesibilidad está en la concentración de gente y en el salto posterior al ferial, no en la distancia caminada del centro.',
+      en: 'The city-centre stretch is manageable on foot, but the crowds make movement much harder during the Tarasca and the procession. The main accessibility limit is the density of people and the later transfer to the fairground rather than the walking distance itself.',
+    },
+    bestTimeToVisit: {
+      es: 'Miércoles 3 de junio de 2026 si quieres la versión Tarasca. Jueves 4 de junio de 2026 si prefieres la procesión. En ambos casos, la feria se disfruta mejor desde última hora de la tarde.',
+      en: 'Wednesday 3 June 2026 if you want the Tarasca version. Thursday 4 June 2026 if you prefer the procession version. In both cases, the fairground is best from late afternoon onward.',
+    },
+  },
 
   // ——————————————————————————————————————————
   // TAPEO
@@ -13,8 +215,8 @@ export const routes: Route[] = [
     id: 'rte-001',
     slug: 'ruta-tapeo-tradicional',
     title: {
-      es: 'Ruta de Tapeo Tradicional',
-      en: 'Traditional Tapas Route',
+      es: 'Tapeo clásico por el centro',
+      en: 'Classic Centre Tapas Route',
     },
     description: {
       es: 'Cinco instituciones del centro y el Realejo donde las tapas siguen siendo gratis con la bebida. Desde la bodega más antigua de Granada hasta el mejor bar de vinos del Realejo, dos horas andando entre bares históricos.',
@@ -138,8 +340,8 @@ export const routes: Route[] = [
     id: 'rte-002',
     slug: 'hora-del-vermut-albaicin',
     title: {
-      es: 'La Hora del Vermut en el Albaicín',
-      en: 'Vermouth Hour in the Albaicín',
+      es: 'Vermut y plazas del Albaicín',
+      en: 'Vermouth and Albaicin Squares',
     },
     description: {
       es: 'Tres paradas imprescindibles del vermut granadino en el barrio más antiguo de la ciudad. Desde la plaza más animada del Albaicín hasta una terraza con la Alhambra enfrente. Un sábado de aperitivo como los de aquí.',
@@ -246,8 +448,8 @@ export const routes: Route[] = [
     id: 'rte-003',
     slug: 'atardecer-miradores-albaicin',
     title: {
-      es: 'Atardecer en los Miradores del Albaicín',
-      en: 'Sunset at the Albaicín Viewpoints',
+      es: 'Miradores del Albaicín al atardecer',
+      en: 'Albaicin Viewpoints at Sunset',
     },
     description: {
       es: 'Tres miradores del Albaicín para ver la Alhambra al atardecer: desde la muralla zirí del siglo XI en San Cristóbal hasta el legendario San Nicolás, pasando por el Carril de las Tomasas — el camino secreto que pocos turistas conocen.',
@@ -357,8 +559,8 @@ export const routes: Route[] = [
     id: 'rte-004',
     slug: 'granada-monumental',
     title: {
-      es: 'Granada Monumental: El Siglo de Oro',
-      en: 'Monumental Granada: The Golden Age',
+      es: 'Granada monumental en una mañana',
+      en: 'Monumental Granada in One Morning',
     },
     description: {
       es: 'Tres monumentos renacentistas en el corazón del centro histórico: la Catedral donde Diego de Siloé redefinió la arquitectura española, la Capilla Real con los féretros de los Reyes Católicos en su cripta original, y el Monasterio de San Jerónimo — panteón del Gran Capitán y la obra cumbre de Siloé.',
@@ -468,8 +670,8 @@ export const routes: Route[] = [
     id: 'rte-005',
     slug: 'rincones-secretos-realejo',
     title: {
-      es: 'Rincones Secretos del Realejo',
-      en: 'Secret Corners of the Realejo',
+      es: 'Realejo secreto: patios y arte urbano',
+      en: 'Secret Realejo: Patios and Street Art',
     },
     description: {
       es: 'El barrio que los árabes llamaron Garnata al-Yahud esconde tres secretos que los turistas casi nunca encuentran: un palacio nazarí del siglo XIII con entrada de 2€, el último lavadero público de Granada en uso hasta 1965, y la mayor concentración de murales de Raúl Ruiz — el artista que el mundo conoce como El Niño de las Pinturas.',
@@ -579,8 +781,8 @@ export const routes: Route[] = [
     id: 'rte-006',
     slug: 'huellas-reyes-catolicos',
     title: {
-      es: 'Huellas de los Reyes Católicos',
-      en: 'Traces of the Catholic Monarchs',
+      es: 'Reyes Católicos: ruta histórica',
+      en: 'Catholic Monarchs Historic Route',
     },
     description: {
       es: 'Tres edificios a menos de 200 metros entre sí que cuentan la Granada de 1492 a 1521: la alhóndiga nazarí que los Reyes Católicos heredaron y preservaron, la universidad islámica que convirtieron en Ayuntamiento, y la capilla que Isabel fundó semanas antes de morir y Fernando nunca vio terminada.',
@@ -683,8 +885,8 @@ export const routes: Route[] = [
     id: 'rte-007',
     slug: 'ruta-flamenco-autentico',
     title: {
-      es: 'Ruta del Flamenco Auténtico',
-      en: 'Authentic Flamenco Route',
+      es: 'Flamenco real entre Sacromonte y Albaicín',
+      en: 'Real Flamenco: Sacromonte to Albaicin',
     },
     description: {
       es: 'La zambra nació en los palacios nazaríes y sobrevivió en las cuevas del Sacromonte. Esta ruta combina el contexto histórico (Museo Cuevas, €5), el espectáculo más íntimo de Granada (Zambra María la Canastera, €26) y la peña más antigua de España (La Platería, 1949, jueves 21:30).',
@@ -794,8 +996,8 @@ export const routes: Route[] = [
     id: 'rte-008',
     slug: 'ruta-fotografia-sacromonte',
     title: {
-      es: 'Ruta de Fotografía en el Sacromonte',
-      en: 'Photography Route in Sacromonte',
+      es: 'Sacromonte fotográfico',
+      en: 'Photographic Sacromonte',
     },
     description: {
       es: 'Los mejores spots fotográficos del barrio de las cuevas. Contraluces, texturas de tierra blanca, flamenco puro y vistas únicas de la Alhambra que no verás en ninguna otra parte.',
@@ -895,8 +1097,8 @@ export const routes: Route[] = [
     id: 'rte-009',
     slug: 'senderismo-rio-darro',
     title: {
-      es: 'Senderismo por el Río Darro',
-      en: 'Hiking along the Darro River',
+      es: 'Río Darro y Fuente del Avellano',
+      en: 'Darro River and Avellano Fountain',
     },
     description: {
       es: 'Ruta de dificultad media que sigue el curso del Darro desde la Carrera hasta los Cármenes de la Muralla. Naturaleza, arqueología y vistas panorámicas a las que se accede a pie desde el centro.',
@@ -992,8 +1194,8 @@ export const routes: Route[] = [
     id: 'rte-010',
     slug: 'bosque-alhambra-acequias',
     title: {
-      es: 'El Bosque de la Alhambra y sus Acequias',
-      en: 'The Alhambra Forest and its Water Channels',
+      es: 'Bosque de la Alhambra y acequias',
+      en: 'Alhambra Forest and Water Channels',
     },
     description: {
       es: 'Ruta circular por el bosque que rodea la colina de la Alhambra, siguiendo el recorrido de las acequias nazaríes que abastecían de agua a los palacios. Un mundo verde escondido a minutos del centro.',
@@ -1093,8 +1295,8 @@ export const routes: Route[] = [
     id: 'rte-011',
     slug: 'barrio-artesanos-taracea',
     title: {
-      es: 'El Barrio de los Artesanos: Taracea y Cerámica',
-      en: 'The Artisans\' Quarter: Marquetry and Ceramics',
+      es: 'Artesanía granadina: taracea y bazares',
+      en: 'Granada Crafts: Marquetry and Bazaars',
     },
     description: {
       es: 'Recorre el triángulo artesanal entre la Alcaicería, Calderería Nueva y el Corral del Carbón. Aquí sobreviven los talleres de taracea, cerámica nazarí y esparto que mantienen vivo el legado andalusí.',
@@ -1190,8 +1392,8 @@ export const routes: Route[] = [
     id: 'rte-012',
     slug: 'talleres-esparto-realejo',
     title: {
-      es: 'Talleres de Esparto y Seda del Realejo',
-      en: 'Esparto and Silk Workshops of the Realejo',
+      es: 'Esparto y museos del Realejo',
+      en: 'Esparto and Realejo Museums',
     },
     description: {
       es: 'El Realejo fue el barrio de los tejedores y artesanos del esparto en la Granada árabe. Esta ruta combina visita a talleres activos con la historia del barrio judío y sus tradiciones artesanales supervivientes.',
@@ -1291,8 +1493,8 @@ export const routes: Route[] = [
     id: 'rte-013',
     slug: 'sacromonte-flamenco-historia-gitana',
     title: {
-      es: 'Sacromonte: flamenco y cultura gitana',
-      en: 'Sacromonte: Flamenco and Gitano Culture',
+      es: 'Sacromonte: cuevas, zambra y miradores',
+      en: 'Sacromonte: Caves, Zambra and Views',
     },
     description: {
       es: 'La tarde perfecta en el Sacromonte: museo, cuevas históricas, mirador al atardecer frente a la Alhambra y espectáculo flamenco en una cueva familiar. El barrio donde nació el flamenco, con tiempo para entenderlo.',
@@ -1420,8 +1622,8 @@ export const routes: Route[] = [
     id: 'rte-014',
     slug: 'granada-arabe-historia-nazari',
     title: {
-      es: 'Granada árabe: la ciudad nazarí a pie',
-      en: 'Arab Granada: the Nasrid City on Foot',
+      es: 'Granada nazarí: Bañuelo, Madraza y Darro',
+      en: 'Nasrid Granada: Banuelo, Madraza and Darro',
     },
     description: {
       es: 'Dos horas y media por los restos de la Garnata islámica: los baños árabes más antiguos de España, el único alhóndiga nazarí conservado, la antigua universidad islámica y el zoco reconstruido sobre la trama original del siglo XIV. Sin guía, sin grupo, sin prisa.',
@@ -1554,4 +1756,3 @@ export const routes: Route[] = [
     },
   },
 ];
-

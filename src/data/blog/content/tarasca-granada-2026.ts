@@ -101,7 +101,7 @@ export const tarascaGranada2026Content = {
 
 <p>Un plan razonable sería este: llegar antes de las 11:15, ver la salida o un tramo del recorrido, acercarte luego a <strong>Plaza Bib-Rambla</strong> para el ambiente del Corpus infantil y las carocas, y terminar con tapas por <strong>Navas, Pescadería o la Romanilla</strong>. Si por la tarde quieres seguir con la parte más ferial, entonces ya tiene sentido moverte al <strong>recinto de Almanjáyar</strong>. Para eso te conviene esta <a href="/guias/feria-corpus-granada-2026">guía de la Feria del Corpus de Granada 2026</a>, centrada en casetas, atracciones, transporte y ambiente.</p>
 
-<p>Para organizar mejor el día, te conviene enlazar esta guía con nuestra <a href="/guias/corpus-granada-2026">guía completa del Corpus de Granada 2026</a>, donde tienes el contexto de fechas, casetas, ferial y programación general.</p>
+<p>Para organizar mejor el día, te conviene enlazar esta guía con nuestra <a href="/guias/corpus-granada-2026">guía completa del Corpus de Granada 2026</a>, donde tienes el contexto de fechas, casetas, ferial y programación general. Y si prefieres que todo quede ya ordenado en formato itinerario, tienes también la <a href="/rutas/ruta-corpus-granada-2026">ruta del Corpus de Granada 2026 para hacer Tarasca, tapas y feria en un día</a>.</p>
 
 <h2>Preguntas frecuentes sobre la Tarasca de Granada 2026</h2>
 
@@ -221,7 +221,7 @@ export const tarascaGranada2026Content = {
 
 <p>The advantage of the Tarasca is timing. It happens in the very centre and fits naturally into a wider morning and lunchtime plan. A practical sequence is to arrive before 11:15, watch the start or one section of the route, then head toward <strong>Plaza Bib-Rambla</strong> for Corpus atmosphere and continue with tapas around <strong>Navas, Pescadería or Romanilla</strong>. If you want the fairground side of Corpus later, then move on to <strong>Almanjáyar</strong> in the evening. For that part, use our <a href="/en/guides/feria-corpus-granada-2026">Granada Corpus Fair 2026 guide</a>, focused on casetas, rides, transport and atmosphere.</p>
 
-<p>For the wider context, use this guide together with our <a href="/en/guides/corpus-granada-2026">complete Granada Corpus 2026 guide</a>.</p>
+<p>For the wider context, use this guide together with our <a href="/en/guides/corpus-granada-2026">complete Granada Corpus 2026 guide</a>. If you want the day already mapped out as an itinerary, use the <a href="/en/routes/ruta-corpus-granada-2026">Granada Corpus 2026 route linking Tarasca, tapas and the fairground</a>.</p>
 
 <h2>FAQ</h2>
 

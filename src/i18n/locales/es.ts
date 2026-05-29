@@ -132,7 +132,7 @@ export const es = {
 
   // Routes page
   routes: {
-    title: 'Rutas por Granada',
+    title: 'Rutas por Granada a pie',
     subtitle: 'Descubre la ciudad con itinerarios diseñados por granadinos: miradores, tapeo y lugares secretos',
     featured: 'Destacada',
     stops: 'paradas',
@@ -179,7 +179,7 @@ export const es = {
     ctaTitle: '¿Listo para explorar Granada?',
     ctaText: 'Descubre la ciudad a través de los ojos de quienes la conocen mejor',
     ctaBtn: 'Ver eventos',
-    pageDescription: 'Rutas y planes alternativos por Granada: miradores secretos, tapas locales, paseos por el Albaicín y Sacromonte. Guías creadas por granadinos.',
+    pageDescription: 'Rutas por Granada con miradores, tapas, Albaicín, Sacromonte, Realejo y planes a pie creados por locales para organizar mejor tu visita.',
   },
 
   // Detail pages (events & routes)
@@ -326,7 +326,7 @@ ctaAriaLabel: 'Descubre Granada',
 
   // Mixed Routes (Time-based plans)
   mixedRoutes: {
-    title: 'Rutas por tiempo disponible',
+    title: 'Rutas por tiempo en Granada',
     subtitle: 'Planes completos según cuánto tiempo tengas en Granada. Curados por locales, mezclando miradores, tapas, monumentos y experiencias reales.',
     sectionTitle: '¿Cuánto tiempo tienes?',
     sectionSubtitle: 'Granada se adapta a ti. Elige tu ventana de tiempo y te damos el plan perfecto.',
@@ -366,7 +366,7 @@ ctaAriaLabel: 'Descubre Granada',
     frameTagTopRight: 'GRANADA',
     frameTagBottomLeft: 'VOL. 02',
     frameTagBottomRight: 'ED. 2025',
-    pageDescription: 'Planes completos para visitar Granada según tu tiempo disponible: 2 horas, 6 horas, 1 día, 2 días o 3 días. Rutas curadas por locales con miradores, tapas y experiencias auténticas.',
+    pageDescription: 'Planes para visitar Granada en 2 horas, medio día, 1 día, 2 días o 3 días, con rutas locales, miradores, tapas y monumentos.',
     durationUnits: {
       hours: 'HORAS',
       day: 'DÍA',
@@ -466,8 +466,8 @@ ctaAriaLabel: 'Descubre Granada',
 
   // Blog
   blog: {
-    title: 'Guías',
-    subtitle: 'Historias, guías y secretos de Granada contados por quienes la viven',
+    title: 'Guías de Granada',
+    subtitle: 'Guías prácticas de Granada: Alhambra, tapas, miradores, barrios, rutas y consejos locales para preparar una visita realista.',
     readingTime: '{{minutes}} min de lectura',
     publishedOn: 'Publicado el {{date}}',
     by: 'Por {{author}}',
@@ -509,8 +509,8 @@ ctaAriaLabel: 'Descubre Granada',
   },
 
   planner: {
-    seoTitle: 'Planificador de Granada · Itinerarios personalizados gratis | GRN URBAN',
-    seoDescription: 'Crea un itinerario personalizado para Granada según tiempo, presupuesto, compañía e intereses. Planes editoriales y compartibles.',
+    seoTitle: 'Planificador de Granada gratis',
+    seoDescription: 'Crea un itinerario personalizado por Granada según tiempo, presupuesto, compañía e intereses, con bares, miradores y lugares locales.',
     schemaName: 'Planificador de Granada',
     schemaDescription: 'Generador de itinerarios personalizados para Granada',
     heroTitle: 'PLANIFICADOR',
@@ -725,6 +725,13 @@ ctaAriaLabel: 'Descubre Granada',
     title: 'Página no encontrada — GRN URBAN',
     message: 'La página que buscas no existe o ha sido movida.',
     goHome: 'Volver al inicio',
+  },
+
+  legalPages: {
+    privacySeoTitle: 'Privacidad y datos en GRN URBAN',
+    privacySeoDescription: 'Política de privacidad de GRN URBAN: información sobre contacto, tratamiento de datos y derechos de usuarios de la guía de Granada.',
+    legalSeoTitle: 'Aviso legal de GRN URBAN',
+    legalSeoDescription: 'Aviso legal de GRN URBAN: datos de contacto, condiciones generales de uso y responsabilidad editorial de la guía local de Granada.',
   },
 
   // Meta

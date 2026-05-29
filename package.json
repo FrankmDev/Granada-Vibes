@@ -15,7 +15,8 @@
     "fetch:events": "bun scripts/fetch-events.ts",
     "clean:events": "bun scripts/clean-events.ts",
     "sync:events": "bun scripts/sync-events.ts",
-    "verify:event-sitemap": "bun scripts/verify-event-sitemap.ts"
+    "verify:event-sitemap": "bun scripts/verify-event-sitemap.ts",
+    "scan:seo": "bun scripts/seo-scan.ts"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.2.8",

@@ -13,6 +13,8 @@ import { getBlogDetailUrl, getRoute, getRouteDetailUrl, getEventDetailUrl } from
 import { getRelatedRoutesForBlogPost, getRelatedEventsForBlogPost } from '@utils/cross-links';
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import { formatDuration, formatFullDate } from '@utils/dates';
+import { clampMetaDescription } from '@utils/seo-text';
+import { editorialMediaByBlogSlug } from '@data/editorial-media';
 import type { BlogPost, Locale } from '@types';
 import '@styles/pages/blog-detail.css';
 
@@ -71,7 +73,12 @@ let headingCounter = 0;
 interface TocItem { level: number; text: string; id: string }
 const tocItems: TocItem[] = [];
 
-const processedContent = rawContent.replace(/<(h2|h3)([^>]*)>([\s\S]*?)<\/\1>/gi, (_fullMatch, tag, attrs, innerHtml) => {
+const mediaBlock = editorialMediaByBlogSlug[post.slug]?.[locale] ?? '';
+const contentWithMedia = mediaBlock
+  ? rawContent.replace(/<\/p>/i, (match) => `${match}${mediaBlock}`)
+  : rawContent;
+
+const processedContent = contentWithMedia.replace(/<(h2|h3)([^>]*)>([\s\S]*?)<\/\1>/gi, (_fullMatch, tag, attrs, innerHtml) => {
   const text = innerHtml.replace(/<[^>]+>/g, '').trim();
   const id = `section-${headingCounter++}`;
   tocItems.push({ level: tag === 'h2' ? 2 : 3, text, id });
@@ -96,7 +103,7 @@ const copy = isEnglish
         tags: '[ Tags ]',
         tocLabel: 'Contents',
       },
-      seoDescription: `${post.description[locale]} — ${categoryLabel}. By ${post.author}. ${t('blog.readingTime', { minutes: calculatedReadingTime })}.`,
+      seoDescription: clampMetaDescription(`${post.description[locale]} ${categoryLabel} guide by ${post.author}, updated with practical local tips for planning Granada.`),
       nav: {
         prev: 'Previous article',
         next: 'Next article',
@@ -117,7 +124,7 @@ const copy = isEnglish
         tags: '[ Etiquetas ]',
         tocLabel: 'Contenido',
       },
-      seoDescription: `${post.description[locale]} — ${categoryLabel}. Por ${post.author}. ${t('blog.readingTime', { minutes: calculatedReadingTime })}.`,
+      seoDescription: clampMetaDescription(`${post.description[locale]} Guía de ${categoryLabel.toLowerCase()} por ${post.author}, con consejos locales para planear Granada.`),
       nav: {
         prev: 'Artículo anterior',
         next: 'Artículo siguiente',

@@ -29,16 +29,14 @@ import type {
   ScoreBreakdown,
 } from './types.js';
 import {
-  addMinutes,
   clamp,
   formatCostRange,
   formatDuration,
   getWeekdayInMadrid,
   haversineKm,
-  maxTime,
-  minutesFromDayStart,
   normalizeText,
   stableReferenceCode,
+  toTimeString,
   toMinutes,
 } from './utils.js';
 import { encodePlanParams } from './url.js';
@@ -55,6 +53,38 @@ const CATEGORY_TYPE_AFFINITY: Record<PlannerCategory, readonly Lugar['tipo'][]> 
   monumentos: ['monumento', 'museo'],
 } as const;
 
+interface NotePreferences {
+  avoidTouristCrowds: boolean;
+  needsAccessibleStops: boolean;
+  wantsViews: boolean;
+  wantsTapas: boolean;
+  wantsQuiet: boolean;
+  wantsTerrace: boolean;
+  wantsReservations: boolean;
+  wantsKidsFriendly: boolean;
+  wantsNightPlan: boolean;
+}
+
+function includesAny(text: string, terms: readonly string[]): boolean {
+  return terms.some((term) => text.includes(term));
+}
+
+function getNotePreferences(params: PlanParams): NotePreferences {
+  const notes = normalizeText(params.notas);
+
+  return {
+    avoidTouristCrowds: includesAny(notes, ['evitar turistas', 'poco turistico', 'no turistico', 'sin turistas', 'masificado', 'masificacion', 'tranquilo']),
+    needsAccessibleStops: includesAny(notes, ['movilidad reducida', 'silla de ruedas', 'accesible', 'sin escaleras', 'carrito']),
+    wantsViews: includesAny(notes, ['vistas', 'mirador', 'atardecer', 'puesta de sol', 'foto', 'fotografia']),
+    wantsTapas: includesAny(notes, ['tapa', 'tapas', 'tapear', 'bar', 'bares', 'racion']),
+    wantsQuiet: includesAny(notes, ['tranquilo', 'silencioso', 'sin ruido', 'poca gente', 'intimo', 'local']),
+    wantsTerrace: includesAny(notes, ['terraza', 'patio', 'aire libre', 'exterior']),
+    wantsReservations: includesAny(notes, ['reserva', 'reservar', 'especial', 'gastronomico', 'menu degustacion']),
+    wantsKidsFriendly: includesAny(notes, ['ninos', 'niños', 'familia', 'carrito']),
+    wantsNightPlan: includesAny(notes, ['noche', 'copas', 'flamenco', 'cena', 'zambra']),
+  };
+}
+
 function isClosedOnPlanningDate(lugar: Lugar, fecha: string): boolean {
   if (!lugar.horario.cerrado) return false;
   return normalizeText(lugar.horario.cerrado) === getWeekdayInMadrid(fecha);
@@ -65,12 +95,18 @@ function getDistanceToCenterKm(lugar: Lugar): number {
 }
 
 function applyHardFilters(params: PlanParams, allPlaces: Lugar[]): Lugar[] {
+  const notePreferences = getNotePreferences(params);
+
   return allPlaces.filter((lugar) => {
     if (params.movilidad === 'pie' && getDistanceToCenterKm(lugar) > WALKING_MAX_DISTANCE_KM) {
       return false;
     }
 
-    if (params.compania === 'familia' && !lugar.apto_para.familias) {
+    if ((params.compania === 'familia' || notePreferences.wantsKidsFriendly) && !lugar.apto_para.familias) {
+      return false;
+    }
+
+    if (notePreferences.needsAccessibleStops && !lugar.apto_para.movilidad_reducida) {
       return false;
     }
 
@@ -91,6 +127,7 @@ function applyHardFilters(params: PlanParams, allPlaces: Lugar[]): Lugar[] {
 }
 
 function scorePlace(lugar: Lugar, params: PlanParams): ScoreBreakdown {
+  const notePreferences = getNotePreferences(params);
   const categoryMatches = params.categorias.filter((category) => lugar.categorias.includes(category)).length;
   let total = 0;
 
@@ -158,6 +195,53 @@ function scorePlace(lugar: Lugar, params: PlanParams): ScoreBreakdown {
       break;
   }
   total = clamp(total + paceScore, 0, 20);
+
+  let noteScore = 0;
+  const normalizedTags = lugar.tags.map((tag) => normalizeText(tag));
+  const hasTagLike = (needle: string) => normalizedTags.some((tag) => tag.includes(needle));
+
+  if (notePreferences.avoidTouristCrowds) {
+    if (lugar.nivel_turistico <= 2) noteScore += 4;
+    if (lugar.nivel_turistico >= 5) noteScore -= 6;
+    if (lugar.categorias.includes('secreto') || hasTagLike('local') || hasTagLike('poco')) noteScore += 3;
+  }
+
+  if (notePreferences.wantsViews) {
+    if (lugar.tipo === 'mirador' || lugar.categorias.includes('fotografia')) noteScore += 5;
+    if (hasTagLike('vista') || hasTagLike('mirador') || hasTagLike('atardecer')) noteScore += 3;
+  }
+
+  if (notePreferences.wantsTapas) {
+    if (lugar.tipo === 'bar') noteScore += 5;
+    if (hasTagLike('tapa') || hasTagLike('barra')) noteScore += 3;
+  }
+
+  if (notePreferences.wantsQuiet) {
+    if (hasTagLike('intimo') || hasTagLike('tranquilo') || hasTagLike('secreto')) noteScore += 4;
+    if (lugar.nivel_turistico >= 4) noteScore -= 3;
+  }
+
+  if (notePreferences.wantsTerrace && (hasTagLike('terraza') || hasTagLike('patio') || hasTagLike('aire'))) {
+    noteScore += 4;
+  }
+
+  if (notePreferences.wantsReservations && hasTagLike('reserva')) {
+    noteScore += 4;
+  }
+
+  if (notePreferences.wantsReservations && lugar.tipo === 'restaurante') {
+    noteScore += 6;
+  }
+
+  if (notePreferences.wantsNightPlan && (lugar.horario.mejor_momento === 'noche' || lugar.horario.mejor_momento === 'atardecer')) {
+    noteScore += 3;
+  }
+
+  if (notePreferences.wantsNightPlan && (lugar.tipo === 'bar' || lugar.tipo === 'restaurante' || lugar.tipo === 'experiencia')) {
+    noteScore += 3;
+  }
+
+  total = clamp(total + noteScore, 0, 28);
 
   return {
     categoria: categoryScore,
@@ -255,19 +339,51 @@ function rankPlaces(params: PlanParams, filteredPlaces: Lugar[]): RankedLugar[] 
     });
 }
 
+function isRelevantCandidate(rankedPlace: RankedLugar, params: PlanParams): boolean {
+  const notePreferences = getNotePreferences(params);
+  const normalizedTags = rankedPlace.lugar.tags.map((tag) => normalizeText(tag));
+
+  if (notePreferences.wantsTapas) {
+    return (
+      rankedPlace.lugar.tipo === 'bar' ||
+      rankedPlace.lugar.tipo === 'restaurante' ||
+      normalizedTags.some((tag) => tag.includes('tapa') || tag.includes('tapeo'))
+    );
+  }
+
+  const hasDirectCategoryMatch = params.categorias.some((category) => rankedPlace.lugar.categorias.includes(category));
+  const hasTypeAffinity = params.categorias.some((category) => CATEGORY_TYPE_AFFINITY[category]?.includes(rankedPlace.lugar.tipo));
+
+  if (hasDirectCategoryMatch || hasTypeAffinity) return true;
+  if (notePreferences.wantsViews && rankedPlace.lugar.tipo === 'mirador') return true;
+  if (notePreferences.wantsReservations && rankedPlace.lugar.tipo === 'restaurante') return true;
+  if (notePreferences.wantsTerrace && normalizedTags.some((tag) => tag.includes('terraza') || tag.includes('patio'))) {
+    return true;
+  }
+
+  return false;
+}
+
 function selectPlacesByTime(params: PlanParams, rankedPlaces: RankedLugar[]): RankedLugar[] {
+  const candidatePool = rankedPlaces.filter((rankedPlace) => isRelevantCandidate(rankedPlace, params));
+  const relevantPlaces = candidatePool.length > 0 ? candidatePool : rankedPlaces;
   const selected: RankedLugar[] = [];
   let selectedStopCount = 0;
   let selectedCoveredCategories = 0;
   let selectedScheduledScore = 0;
+  let selectedDiversityScore = 0;
 
   const getScheduledMetrics = (candidates: RankedLugar[]) => {
     const scheduled = buildDays(params, 'es', orderByMomentAndNeighborhood(candidates));
     const stopIds = new Set(scheduled.dias.flatMap((dia) => dia.paradas.map((parada) => parada.lugar.id)));
+    const scheduledStops = candidates.filter((candidate) => stopIds.has(candidate.lugar.id));
+    const scheduledTypes = new Set(scheduledStops.map((candidate) => candidate.lugar.tipo));
+    const scheduledNeighborhoods = new Set(scheduledStops.map((candidate) => candidate.lugar.ubicacion.barrio));
     const coveredCategories = params.categorias.filter((category) => {
       return candidates.some((candidate) => stopIds.has(candidate.lugar.id) && candidate.lugar.categorias.includes(category));
     }).length;
     const totalScore = scheduled.dias.flatMap((dia) => dia.paradas).reduce((sum, parada) => sum + parada.puntuacion, 0);
+    const diversityScore = scheduledTypes.size * 8 + scheduledNeighborhoods.size * 3;
 
     return {
       scheduled,
@@ -275,13 +391,26 @@ function selectPlacesByTime(params: PlanParams, rankedPlaces: RankedLugar[]): Ra
       stopCount: stopIds.size,
       coveredCategories,
       totalScore,
+      diversityScore,
     };
   };
 
+  const notePreferences = getNotePreferences(params);
+  const preferenceSeeds = [
+    ...(notePreferences.wantsReservations
+      ? relevantPlaces.filter((rankedPlace) => rankedPlace.lugar.tipo === 'restaurante').slice(0, 3)
+      : []),
+    ...(notePreferences.wantsTapas
+      ? relevantPlaces.filter((rankedPlace) => rankedPlace.lugar.tipo === 'bar').slice(0, 4)
+      : []),
+    ...(notePreferences.wantsViews
+      ? relevantPlaces.filter((rankedPlace) => rankedPlace.lugar.tipo === 'mirador').slice(0, 4)
+      : []),
+  ];
   const coverageSeeds = params.categorias.flatMap((category) =>
-    rankedPlaces.filter((rankedPlace) => rankedPlace.lugar.categorias.includes(category)).slice(0, 3)
+    relevantPlaces.filter((rankedPlace) => rankedPlace.lugar.categorias.includes(category)).slice(0, 3)
   );
-  const iterationPool = [...new Map([...coverageSeeds, ...rankedPlaces].map((item) => [item.lugar.id, item])).values()];
+  const iterationPool = [...new Map([...preferenceSeeds, ...coverageSeeds, ...relevantPlaces].map((item) => [item.lugar.id, item])).values()];
 
   for (const rankedPlace of iterationPool) {
     if (selected.some((candidate) => candidate.lugar.id === rankedPlace.lugar.id)) continue;
@@ -291,11 +420,18 @@ function selectPlacesByTime(params: PlanParams, rankedPlaces: RankedLugar[]): Ra
 
     if (!metrics.stopIds.has(rankedPlace.lugar.id)) continue;
 
+    const selectedIds = new Set(selected.map((candidate) => candidate.lugar.id));
+    const keepsCurrentSelection = [...selectedIds].every((id) => metrics.stopIds.has(id));
     const improvesCoverage = metrics.coveredCategories > selectedCoveredCategories;
     const improvesStopCount = metrics.stopCount > selectedStopCount;
     const improvesScore = metrics.totalScore > selectedScheduledScore;
+    const improvesDiversity = metrics.diversityScore > selectedDiversityScore;
 
-    if (!improvesCoverage && !improvesStopCount && !improvesScore && selected.length > 0) {
+    if (!keepsCurrentSelection && !improvesCoverage) {
+      continue;
+    }
+
+    if (!improvesCoverage && !improvesStopCount && !improvesScore && !improvesDiversity && selected.length > 0) {
       continue;
     }
 
@@ -303,6 +439,7 @@ function selectPlacesByTime(params: PlanParams, rankedPlaces: RankedLugar[]): Ra
     selectedStopCount = metrics.stopCount;
     selectedCoveredCategories = metrics.coveredCategories;
     selectedScheduledScore = metrics.totalScore;
+    selectedDiversityScore = metrics.diversityScore;
   }
 
   return selected;
@@ -343,28 +480,74 @@ function orderByMomentAndNeighborhood(selectedPlaces: RankedLugar[]): RankedLuga
     });
 }
 
-function buildTransitionNote(locale: Locale, current: Lugar, next?: Lugar): string {
+function estimateTransitionMinutes(params: PlanParams, current: Lugar, next?: Lugar): number {
+  if (!next) return 0;
+
+  const distanceKm = haversineKm(current.ubicacion.lat, current.ubicacion.lng, next.ubicacion.lat, next.ubicacion.lng);
+  const sameNeighborhoodBase = current.ubicacion.barrio === next.ubicacion.barrio ? 8 : TRANSITION_MINUTES;
+
+  if (params.movilidad === 'coche') {
+    return clamp(Math.round(distanceKm * 6) + 8, sameNeighborhoodBase, 35);
+  }
+
+  if (params.movilidad === 'publico') {
+    return clamp(Math.round(distanceKm * 10) + 12, sameNeighborhoodBase, 45);
+  }
+
+  return clamp(Math.round(distanceKm * 14) + 6, sameNeighborhoodBase, 55);
+}
+
+function buildTransitionNote(locale: Locale, params: PlanParams, current: Lugar, next?: Lugar): string {
   if (!next) return '';
+  const transitionMinutes = estimateTransitionMinutes(params, current, next);
 
   if (current.ubicacion.barrio === next.ubicacion.barrio) {
     return locale === 'en'
-      ? `From ${current.nombre}, walk about 10 minutes through ${current.ubicacion.barrio} to ${next.nombre}.`
-      : `Desde ${current.nombre}, camina unos 10 min por ${current.ubicacion.barrio} hasta ${next.nombre}.`;
+      ? `From ${current.nombre}, allow about ${transitionMinutes} minutes through ${current.ubicacion.barrio} to ${next.nombre}.`
+      : `Desde ${current.nombre}, calcula unos ${transitionMinutes} min por ${current.ubicacion.barrio} hasta ${next.nombre}.`;
   }
 
   return locale === 'en'
-    ? `From ${current.nombre}, head towards ${next.ubicacion.barrio} for ${next.nombre} — around 15 minutes on foot.`
-    : `Desde ${current.nombre}, dirígete a ${next.ubicacion.barrio} para llegar a ${next.nombre} — unos 15 min a pie.`;
+    ? `From ${current.nombre}, head towards ${next.ubicacion.barrio} for ${next.nombre} — allow around ${transitionMinutes} minutes.`
+    : `Desde ${current.nombre}, dirígete a ${next.ubicacion.barrio} para llegar a ${next.nombre} — calcula unos ${transitionMinutes} min.`;
 }
 
-function canFitWithinClosingHours(lugar: Lugar, startTime: string, endTime: string): boolean {
-  if (!lugar.horario.cierre) return true;
-  return toMinutes(endTime) <= toMinutes(lugar.horario.cierre);
+function getAbsoluteClosingMinutes(lugar: Lugar): number {
+  if (!lugar.horario.cierre) return toMinutes('23:30');
+  const closingMinutes = toMinutes(lugar.horario.cierre);
+  return closingMinutes < toMinutes('06:00') ? closingMinutes + 24 * 60 : closingMinutes;
+}
+
+function canFitWithinClosingHours(lugar: Lugar, endMinutes: number): boolean {
+  return endMinutes <= getAbsoluteClosingMinutes(lugar);
+}
+
+function getDayStartTime(params: PlanParams): string {
+  const notePreferences = getNotePreferences(params);
+  const onlyFoodPlan =
+    params.categorias.includes('gastronomia') &&
+    !params.categorias.some((category) => category !== 'gastronomia' && category !== 'flamenco');
+
+  if (notePreferences.wantsNightPlan || params.categorias.includes('flamenco')) {
+    return '18:00';
+  }
+
+  if (notePreferences.wantsViews && (params.tiempo === '2h' || params.tiempo === 'medio-dia')) {
+    return '16:00';
+  }
+
+  if (onlyFoodPlan) {
+    return params.compania === 'amigos' ? '13:00' : '12:00';
+  }
+
+  return DAY_START_TIME;
 }
 
 function buildDays(params: PlanParams, locale: Locale, orderedPlaces: RankedLugar[]): DayPlanBuildResult {
   const totalDays = TIME_BUDGETS[params.tiempo].days;
   const dayBudget = TIME_BUDGETS[params.tiempo].total / totalDays;
+  const dayStartTime = getDayStartTime(params);
+  const dayStartMinutes = toMinutes(dayStartTime);
   let pending = [...orderedPlaces];
   let scheduledMinutes = 0;
   const droppedBySchedule: RankedLugar[] = [];
@@ -373,7 +556,7 @@ function buildDays(params: PlanParams, locale: Locale, orderedPlaces: RankedLuga
   for (let dayNumber = 1; dayNumber <= totalDays; dayNumber += 1) {
     const paradas: Parada[] = [];
     const nextPending: RankedLugar[] = [];
-    let currentTime = DAY_START_TIME;
+    let currentMinutes = dayStartMinutes;
     const remainingDays = totalDays - dayNumber + 1;
     const targetStopsForDay = Math.ceil(pending.length / remainingDays);
 
@@ -386,43 +569,45 @@ function buildDays(params: PlanParams, locale: Locale, orderedPlaces: RankedLuga
         break;
       }
 
-      const transition = paradas.length > 0 ? TRANSITION_MINUTES : 0;
+      const previousStop = paradas[paradas.length - 1];
+      const transition = previousStop ? estimateTransitionMinutes(params, previousStop.lugar, rankedPlace.lugar) : 0;
+      const openingMinutes = rankedPlace.lugar.horario.apertura ? toMinutes(rankedPlace.lugar.horario.apertura) : null;
       const preferredMomentStart =
         rankedPlace.lugar.horario.mejor_momento === 'atardecer' || rankedPlace.lugar.horario.mejor_momento === 'noche'
-          ? MOMENT_START_TIME[rankedPlace.lugar.horario.mejor_momento]
+          ? toMinutes(MOMENT_START_TIME[rankedPlace.lugar.horario.mejor_momento])
           : null;
-      const startTime = maxTime(
-        addMinutes(currentTime, transition),
-        rankedPlace.lugar.horario.apertura,
-        preferredMomentStart
+      const startMinutes = Math.max(
+        currentMinutes + transition,
+        openingMinutes ?? dayStartMinutes,
+        preferredMomentStart ?? dayStartMinutes
       );
-      const endTime = addMinutes(startTime, rankedPlace.lugar.duracion_min);
+      const endMinutes = startMinutes + rankedPlace.lugar.duracion_min;
 
-      if (!canFitWithinClosingHours(rankedPlace.lugar, startTime, endTime)) {
+      if (!canFitWithinClosingHours(rankedPlace.lugar, endMinutes)) {
         droppedBySchedule.push(rankedPlace);
         continue;
       }
 
-      if (minutesFromDayStart(endTime) > dayBudget) {
+      if (endMinutes - dayStartMinutes > dayBudget) {
         nextPending.push(rankedPlace);
         continue;
       }
 
       paradas.push({
         orden: paradas.length + 1,
-        hora_inicio: startTime,
-        hora_fin: endTime,
+        hora_inicio: toTimeString(startMinutes),
+        hora_fin: toTimeString(endMinutes),
         lugar: rankedPlace.lugar,
         nota_transicion: '',
         puntuacion: rankedPlace.score.total,
       });
-      currentTime = endTime;
+      currentMinutes = endMinutes;
     }
 
     for (let index = 0; index < paradas.length; index += 1) {
       const parada = paradas[index];
       if (!parada) continue;
-      parada.nota_transicion = buildTransitionNote(locale, parada.lugar, paradas[index + 1]?.lugar);
+      parada.nota_transicion = buildTransitionNote(locale, params, parada.lugar, paradas[index + 1]?.lugar);
     }
 
     if (paradas.length > 0) {
@@ -432,7 +617,7 @@ function buildDays(params: PlanParams, locale: Locale, orderedPlaces: RankedLuga
         paradas,
       });
 
-      scheduledMinutes += minutesFromDayStart(paradas[paradas.length - 1]?.hora_fin ?? DAY_START_TIME);
+      scheduledMinutes += currentMinutes - dayStartMinutes;
     }
 
     pending = nextPending;

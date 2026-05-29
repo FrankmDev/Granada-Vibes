@@ -1,5 +1,6 @@
 import type { Event, EventCategory, Locale, LocalizedText, Neighborhood } from '@types';
 import { slugify } from '@utils/slugs';
+import { clampMetaDescription } from '@utils/seo-text';
 import { events } from './events/repository.js';
 
 export interface VenueDirectoryEntry {
@@ -83,7 +84,7 @@ function compactName(name: string, maxLength = 30): string {
   return `${(lastSpace > 18 ? truncated.slice(0, lastSpace) : truncated).trim()}...`;
 }
 
-function compactTitle(name: string, suffix: string, maxLength = 60): string {
+function compactTitle(name: string, suffix: string, maxLength = 54): string {
   const fullTitle = `${name}${suffix}`;
   if (fullTitle.length <= maxLength) return fullTitle;
   return `${compactName(name, maxLength - suffix.length)}${suffix}`;
@@ -129,8 +130,8 @@ function venueDescription(entry: Pick<VenueDirectoryEntry, 'name' | 'events' | '
   const total = entry.events.length;
   const upcoming = entry.upcomingEvents.length;
   return {
-    es: `${entry.name}: próximos eventos, conciertos, entradas, horarios y agenda cultural en Granada. ${upcoming} próximas fechas y ${total} eventos registrados en GRN Urban.`,
-    en: `${entry.name}: upcoming events, concerts, tickets, times and cultural agenda in Granada. ${upcoming} upcoming dates and ${total} listed events on GRN Urban.`,
+    es: clampMetaDescription(`${entry.name}: agenda en Granada con ${upcoming} próximas fechas, entradas, horarios, barrio y ${total} eventos registrados para planear tu visita.`),
+    en: clampMetaDescription(`${entry.name}: Granada agenda with ${upcoming} upcoming dates, tickets, times, neighbourhood details and ${total} listed events to plan your visit.`),
   };
 }
 
@@ -143,8 +144,8 @@ function venueIntro(entry: Pick<VenueDirectoryEntry, 'name' | 'upcomingEvents' |
 
 function artistDescription(entry: Pick<ArtistDirectoryEntry, 'name' | 'events' | 'upcomingEvents'>): LocalizedText {
   return {
-    es: `${entry.name} en Granada: próximos conciertos, entradas, fechas, salas y eventos relacionados. ${entry.upcomingEvents.length} próximas fechas y ${entry.events.length} eventos registrados.`,
-    en: `${entry.name} in Granada: upcoming concerts, tickets, dates, venues and related events. ${entry.upcomingEvents.length} upcoming dates and ${entry.events.length} listed events.`,
+    es: clampMetaDescription(`${entry.name} en Granada: ${entry.upcomingEvents.length} próximas fechas, entradas, salas y eventos relacionados en la agenda musical local.`),
+    en: clampMetaDescription(`${entry.name} in Granada: ${entry.upcomingEvents.length} upcoming dates, tickets, venues and related events in the local music agenda.`),
   };
 }
 

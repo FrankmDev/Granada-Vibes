@@ -2,13 +2,9 @@ import type { Event, Locale } from '@types';
 import { eventSeoOverrides } from '@data/seo/event-seo-overrides';
 import { formatFullDate, formatTime } from './dates';
 import { formatPriceLabel, getPriceStatus } from './prices';
+import { clampMetaDescription } from './seo-text';
 
 type Translate = (key: string, vars?: Record<string, string | number>) => string;
-
-function clampMetaDescription(value: string): string {
-  if (value.length <= 158) return value;
-  return `${value.slice(0, 155).trim()}...`;
-}
 
 function cleanEventName(name: string): string {
   return name

@@ -119,7 +119,7 @@ export const corpusGranada2026Content = {
   <li><strong>Plan sensato:</strong> mañana de centro, pausa larga, tarde de Bib-Rambla o Patio del Ayuntamiento y noche de ferial.</li>
 </ul>
 
-<p>Si estás organizando viaje completo, combina esta guía con <a href="/guias/antes-de-llegar-granada">Antes de llegar a Granada</a>, <a href="/guias/granada-gratis-que-hacer-sin-gastar">Qué hacer gratis en Granada</a> y <a href="/guias/miradores-granada-guia-completa">Los miradores de Granada</a>. Durante Corpus, esos tres artículos te resuelven alojamiento, presupuesto y planes entre actos.</p>
+<p>Si estás organizando viaje completo, combina esta guía con <a href="/guias/antes-de-llegar-granada">Antes de llegar a Granada</a>, <a href="/guias/granada-gratis-que-hacer-sin-gastar">Qué hacer gratis en Granada</a> y <a href="/guias/miradores-granada-guia-completa">Los miradores de Granada</a>. Durante Corpus, esos tres artículos te resuelven alojamiento, presupuesto y planes entre actos. Y si quieres un plan cerrado para el miércoles o el jueves, añade también nuestra <a href="/rutas/ruta-corpus-granada-2026">ruta del Corpus de Granada 2026 para ver Tarasca o procesión, tapear por el centro y acabar en la feria</a>.</p>
 
 <h2>Breve historia del Corpus en Granada</h2>
 
@@ -224,7 +224,7 @@ export const corpusGranada2026Content = {
   <li>Do not try to combine the Alhambra, Tarasca, Cathedral, fairground and tapas in one compressed day.</li>
 </ul>
 
-<p>For a fuller trip, combine this guide with <a href="/en/guides/antes-de-llegar-granada">Before You Arrive in Granada</a>, <a href="/en/guides/granada-gratis-que-hacer-sin-gastar">Free Things to Do in Granada</a> and <a href="/en/guides/miradores-granada-guia-completa">Granada's Viewpoints</a>.</p>
+<p>For a fuller trip, combine this guide with <a href="/en/guides/antes-de-llegar-granada">Before You Arrive in Granada</a>, <a href="/en/guides/granada-gratis-que-hacer-sin-gastar">Free Things to Do in Granada</a> and <a href="/en/guides/miradores-granada-guia-completa">Granada's Viewpoints</a>. If you want one structured day plan for the main Corpus moments, add our <a href="/en/routes/ruta-corpus-granada-2026">Granada Corpus 2026 route linking the Tarasca or procession, tapas and the fairground</a>.</p>
 
 <h2>History and Photos</h2>
 <p>Granada's Corpus has more than 500 years of history. The 2026 municipal programme refers to 1501 and Queen Isabella as the symbolic beginning of a celebration that became the city's main festival. The week combines solemnity, street humour, religious heritage, fairground culture and family life.</p>

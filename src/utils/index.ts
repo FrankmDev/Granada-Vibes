@@ -48,6 +48,12 @@ export {
   resolveOgImageUrl,
 } from './seo';
 
+export {
+  buildSeoTitle,
+  clampMetaDescription,
+  normalizeSeoTitle,
+} from './seo-text';
+
 // Event SEO utilities
 export {
   getEventSeoDescription,

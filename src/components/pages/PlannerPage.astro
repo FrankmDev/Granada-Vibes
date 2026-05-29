@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import PlanificadorForm from '@components/PlanificadorForm.astro';
+import { lugares } from '@data/lugares';
 import { useTranslations } from '@i18n/utils';
 import type { Locale } from '@types';
 
@@ -13,7 +14,7 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 
 const heroMetadata = [
-  { label: t('planner.heroMetaPlaces'), value: '60+' },
+  { label: t('planner.heroMetaPlaces'), value: `${lugares.length}+` },
   { label: t('planner.heroMetaCategories'), value: '8' },
   { label: t('planner.heroMetaPrice'), value: t('planner.heroMetaPriceValue') },
 ];

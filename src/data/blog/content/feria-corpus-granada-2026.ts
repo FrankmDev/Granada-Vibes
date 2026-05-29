@@ -157,7 +157,7 @@ export const feriaCorpusGranada2026Content = {
 
 <h2>Resumen rápido</h2>
 
-<p>Si necesitas la versión corta: la <strong>Feria del Corpus de Granada 2026</strong> se celebra del <strong>30 de mayo al 6 de junio</strong> en <strong>Almanjáyar</strong>, con <strong>72 casetas</strong>, <strong>entrada libre</strong>, atracciones, ambiente de tarde y de noche, y un transporte público reforzado que en 2026 queda condicionado por <strong>paros parciales del metro con servicios mínimos del 60%</strong>. Para afinar el viaje, combina esta guía con la de <a href="/guias/corpus-granada-2026">Corpus de Granada 2026</a> y la de <a href="/guias/tarasca-granada-2026">la Tarasca</a>.</p>
+<p>Si necesitas la versión corta: la <strong>Feria del Corpus de Granada 2026</strong> se celebra del <strong>30 de mayo al 6 de junio</strong> en <strong>Almanjáyar</strong>, con <strong>72 casetas</strong>, <strong>entrada libre</strong>, atracciones, ambiente de tarde y de noche, y un transporte público reforzado que en 2026 queda condicionado por <strong>paros parciales del metro con servicios mínimos del 60%</strong>. Para afinar el viaje, combina esta guía con la de <a href="/guias/corpus-granada-2026">Corpus de Granada 2026</a>, la de <a href="/guias/tarasca-granada-2026">la Tarasca</a> y nuestra <a href="/rutas/ruta-corpus-granada-2026">ruta del Corpus para hacer centro, tapas y feria en un día</a>.</p>
 `,
 
   en: `
@@ -299,6 +299,6 @@ export const feriaCorpusGranada2026Content = {
 
 <h2>Quick Summary</h2>
 
-<p>If you only need the short version: <strong>Granada Corpus Fair 2026</strong> runs from <strong>30 May to 6 June</strong> in <strong>Almanjáyar</strong>, with <strong>72 casetas</strong>, <strong>free entry</strong>, rides, daytime and nighttime atmosphere, and reinforced public transport that in 2026 is affected by <strong>partial metro strike action with 60% minimum service</strong>. For the full picture, combine this with our guides to <a href="/en/guides/corpus-granada-2026">Corpus 2026</a> and <a href="/en/guides/tarasca-granada-2026">the Tarasca</a>.</p>
+<p>If you only need the short version: <strong>Granada Corpus Fair 2026</strong> runs from <strong>30 May to 6 June</strong> in <strong>Almanjáyar</strong>, with <strong>72 casetas</strong>, <strong>free entry</strong>, rides, daytime and nighttime atmosphere, and reinforced public transport that in 2026 is affected by <strong>partial metro strike action with 60% minimum service</strong>. For the full picture, combine this with our guides to <a href="/en/guides/corpus-granada-2026">Corpus 2026</a>, <a href="/en/guides/tarasca-granada-2026">the Tarasca</a> and the <a href="/en/routes/ruta-corpus-granada-2026">one-day Corpus route linking the centre, tapas and the fairground</a>.</p>
 `,
 };

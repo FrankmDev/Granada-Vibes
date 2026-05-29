@@ -134,7 +134,7 @@ export const en: Translations = {
 
   // Routes page
   routes: {
-    title: 'Routes through Granada',
+    title: 'Walking Routes in Granada',
     subtitle: 'Explore the city with our curated routes',
     featured: 'Featured',
     stops: 'stops',
@@ -181,7 +181,7 @@ export const en: Translations = {
     ctaTitle: 'Ready to explore Granada?',
     ctaText: 'Discover the city through the eyes of those who know it best',
     ctaBtn: 'View events',
-    pageDescription: 'Guided routes through Granada: Albaicín viewpoints, traditional tapas with free tapas, hiking along the Darro and Realejo secrets. Original plans created by locals.',
+    pageDescription: 'Granada walking routes with viewpoints, tapas, Albaicín, Sacromonte, Realejo and local plans to organise your visit better.',
   },
 
   // Detail pages (events & routes)
@@ -328,7 +328,7 @@ ctaAriaLabel: 'Discover Granada',
 
   // Mixed Routes (Time-based plans)
   mixedRoutes: {
-    title: 'Routes by time available',
+    title: 'Granada Routes by Time',
     subtitle: 'Complete plans based on how much time you have in Granada. Curated by locals, mixing viewpoints, tapas, monuments and real experiences.',
     sectionTitle: 'How much time do you have?',
     sectionSubtitle: 'Granada adapts to you. Choose your time window and we\'ll give you the perfect plan.',
@@ -368,7 +368,7 @@ ctaAriaLabel: 'Discover Granada',
     frameTagTopRight: 'GRANADA',
     frameTagBottomLeft: 'VOL. 02',
     frameTagBottomRight: 'ED. 2025',
-    pageDescription: 'Complete plans to visit Granada based on your available time: 2 hours, 6 hours, 1 day, 2 days or 3 days. Routes curated by locals with viewpoints, tapas and authentic experiences.',
+    pageDescription: 'Visit Granada in 2 hours, half a day, 1 day, 2 days or 3 days with local routes, viewpoints, tapas and monuments.',
     durationUnits: {
       hours: 'HOURS',
       day: 'DAY',
@@ -468,8 +468,8 @@ ctaAriaLabel: 'Discover Granada',
 
   // Blog
   blog: {
-    title: 'Guides',
-    subtitle: 'Stories, guides and secrets of Granada told by those who live it',
+    title: 'Granada Guides',
+    subtitle: 'Practical Granada guides: Alhambra, tapas, viewpoints, neighbourhoods, routes and local tips for realistic trip planning.',
     readingTime: '{{minutes}} min read',
     publishedOn: 'Published on {{date}}',
     by: 'By {{author}}',
@@ -511,8 +511,8 @@ ctaAriaLabel: 'Discover Granada',
   },
 
   planner: {
-    seoTitle: 'Granada planner · Free custom itineraries | GRN URBAN',
-    seoDescription: 'Build a Granada itinerary based on time, budget, company and interests. Editorial, shareable plans generated from local rules.',
+    seoTitle: 'Free Granada Trip Planner',
+    seoDescription: 'Build a custom Granada itinerary by time, budget, company and interests, with local bars, viewpoints and practical places.',
     schemaName: 'Granada planner',
     schemaDescription: 'Custom itinerary generator for Granada',
     heroTitle: 'PLANNER',
@@ -727,6 +727,13 @@ ctaAriaLabel: 'Discover Granada',
     title: 'Page not found — GRN URBAN',
     message: 'The page you are looking for does not exist or has been moved.',
     goHome: 'Go home',
+  },
+
+  legalPages: {
+    privacySeoTitle: 'Privacy and data at GRN URBAN',
+    privacySeoDescription: 'GRN URBAN privacy policy: contact information, data handling and user rights for the local Granada guide.',
+    legalSeoTitle: 'GRN URBAN Legal Notice',
+    legalSeoDescription: 'GRN URBAN legal notice: contact details, general terms of use and editorial responsibility for the local Granada guide.',
   },
 
   // Meta
