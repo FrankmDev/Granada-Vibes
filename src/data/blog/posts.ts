@@ -11,8 +11,29 @@ import { sierraNevadaContent } from './content/sierra-nevada.js';
 import { granadaUnDiaContent } from './content/granada-un-dia.js';
 import { corpusGranada2026Content } from './content/corpus-granada-2026.js';
 import { tarascaGranada2026Content } from './content/tarasca-granada-2026.js';
+import { feriaCorpusGranada2026Content } from './content/feria-corpus-granada-2026.js';
 
 export const posts: BlogPost[] = [
+  {
+    id: 'blog-013',
+    slug: 'feria-corpus-granada-2026',
+    title: {
+      es: 'Feria del Corpus de Granada 2026: casetas, ferial, transporte, ambiente y consejos',
+      en: 'Granada Corpus Fair 2026: Casetas, Fairground, Transport, Atmosphere and Local Tips',
+    },
+    description: {
+      es: 'Guía práctica de la Feria del Corpus de Granada 2026: fechas, recinto ferial de Almanjáyar, 72 casetas, acceso libre, atracciones, Día del Niño, transporte, huelga parcial del metro y ambiente de día y de noche.',
+      en: 'Practical guide to Granada Corpus Fair 2026: dates, Almanjáyar fairground, 72 casetas, free entry, rides, Children’s Day, transport, partial metro strike and day-to-night atmosphere.',
+    },
+    content: feriaCorpusGranada2026Content,
+    publishDate: '2026-05-29',
+    category: 'cultura',
+    tags: ['feria del corpus', 'feria granada 2026', 'casetas', 'almanjayar', 'metro granada', 'dia del nino', 'corpus', 'granada'],
+    author: 'GRN URBAN',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Casetas%20en%20la%20Feria%20de%20Granada%202007.jpg',
+    readingTime: 9,
+    featured: true,
+  },
   {
     id: 'blog-012',
     slug: 'tarasca-granada-2026',

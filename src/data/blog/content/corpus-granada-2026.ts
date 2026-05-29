@@ -41,7 +41,7 @@ export const corpusGranada2026Content = {
 <h3>Ferial de Almanjáyar: casetas, atracciones y noche</h3>
 <p>El ferial está en Almanjáyar, en la zona Norte, cerca de la estación de autobuses. En 2026 el mapa municipal adjudica <strong>72 casetas</strong>: 7 institucionales, 3 comerciales y 62 tradicionales, además de las parcelas de bar y churros. La feria granadina es más abierta de lo que mucha gente espera: hay casetas de acceso público y otras más asociativas, pero el ambiente general invita a entrar, mirar, tomar algo y seguir.</p>
 
-<p>Las calles principales del recinto llevan nombres de sabor andaluz: La Zambra, El Vito, La Caña, Maimones, La Reja, Verdiales y Martinetes. Si quedas con alguien, queda en la portada o en la Plaza de los Caseteros. Quedar “en la feria” a secas es receta para perderse.</p>
+<p>Las calles principales del recinto llevan nombres de sabor andaluz: La Zambra, El Vito, La Caña, Maimones, La Reja, Verdiales y Martinetes. Si quedas con alguien, queda en la portada o en la Plaza de los Caseteros. Quedar “en la feria” a secas es receta para perderse. Si lo que quieres es una guía centrada solo en <strong>casetas, atracciones, transporte, ambiente y metro</strong>, aquí tienes nuestra <a href="/guias/feria-corpus-granada-2026">guía práctica de la Feria del Corpus de Granada 2026</a>.</p>
 
 <h2>Programa completo día por día</h2>
 
@@ -190,7 +190,7 @@ export const corpusGranada2026Content = {
 <h2>Where It Happens</h2>
 <p>The traditional Corpus takes place around the Cathedral, Plaza del Carmen, Plaza Bib-Rambla, Puerta Real and Carrera de la Virgen. This is where you will find the Tarasca, the procession, altars, carocas, children's activities and street culture.</p>
 
-<p>The fairground is in Almanjáyar, in northern Granada. In 2026 the official map includes <strong>72 casetas</strong>: 7 institutional, 3 commercial and 62 traditional, plus churros and bar plots. The streets of the fairground include La Zambra, El Vito, La Caña, Maimones, La Reja, Verdiales and Martinetes.</p>
+<p>The fairground is in Almanjáyar, in northern Granada. In 2026 the official map includes <strong>72 casetas</strong>: 7 institutional, 3 commercial and 62 traditional, plus churros and bar plots. The streets of the fairground include La Zambra, El Vito, La Caña, Maimones, La Reja, Verdiales and Martinetes. For a guide focused only on <strong>casetas, rides, transport, atmosphere and metro disruption</strong>, use our <a href="/en/guides/feria-corpus-granada-2026">practical Granada Corpus Fair 2026 guide</a>.</p>
 
 <h2>Main Programme by Day</h2>
 <p>Saturday 30 May brings the official opening speech at 12:00 and the fairground opening from 22:30, with the main gate lighting after midnight. Sunday 31 is strong for families, with children's Corpus activities, music, puppets and traditional carriages. Monday 1 June includes Quiet Fair Day, the opening of the children's Corpus and the Tapa Casetera contest.</p>

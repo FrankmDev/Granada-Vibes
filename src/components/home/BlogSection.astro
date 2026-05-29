@@ -9,15 +9,18 @@ import { getRoute, getBlogDetailUrl } from '@utils/routes';
 interface Props {
   posts: BlogPost[];
   locale: Locale;
+  featuredSlugs?: string[];
 }
 
-const { posts, locale } = Astro.props;
+const { posts, locale, featuredSlugs = [] } = Astro.props;
 const t = useTranslations(locale);
 
-// Get featured + 2 more posts
-const featuredPost = posts.find(p => p.featured) || posts[0];
-const otherPosts = posts.filter(p => p.id !== featuredPost?.id).slice(0, 2);
-const displayPosts = [featuredPost, ...otherPosts].filter(Boolean);
+const prioritizedPosts = featuredSlugs
+  .map((slug) => posts.find((post) => post.slug === slug))
+  .filter((post): post is BlogPost => Boolean(post));
+
+const fallbackPosts = posts.filter((post) => !featuredSlugs.includes(post.slug));
+const displayPosts = [...prioritizedPosts, ...fallbackPosts].slice(0, 3);
 
 const blogHref = getRoute('blog', locale);
 
