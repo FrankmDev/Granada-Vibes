@@ -5,6 +5,7 @@ export {
   getEventsByCategory,
   getEventsByNeighborhood,
   getEventBySlug,
+  getIndexableEvents,
   getUpcomingEvents,
   getEventsByTag,
 } from './queries.js';

@@ -11,6 +11,7 @@ export {
   getEventsByCategory,
   getEventsByNeighborhood,
   getEventBySlug,
+  getIndexableEvents,
   getUpcomingEvents,
   getEventsByTag,
 } from './events/index.js';

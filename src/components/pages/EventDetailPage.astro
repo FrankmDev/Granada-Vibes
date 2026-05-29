@@ -203,6 +203,7 @@ const ogImage = eventImage || 'https://images.unsplash.com/photo-1514525253440-b
 const priceLabel = formatPriceLabel(event, t);
 const seoTitle = getEventSeoTitle(event, locale);
 const seoDescription = getEventSeoDescription(event, locale, t);
+const eventDescription = event.description[locale]?.trim() || seoDescription;
 
 const breadcrumb = [
   { name: copy.breadcrumb.home, url: getRoute('home', locale) },
@@ -290,9 +291,7 @@ faq.push({
             <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
 
             <div class="upg-body content-rich">
-              {event.description[locale] && (
-                <p class="upg-lead">{event.description[locale]}</p>
-              )}
+              <p class="upg-lead">{eventDescription}</p>
               {event.longDescription?.[locale] && (
                 <div class="upg-long-desc">
                   {event.longDescription[locale].split('\n\n').map((paragraph) => (

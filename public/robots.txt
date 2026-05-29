@@ -29,15 +29,5 @@ Disallow: /admin/
 Disallow: /draft/
 Disallow: /preview/
 Disallow: /api/
-Disallow: /*?*category=
-Disallow: /*?*neighborhood=
-Disallow: /*?*type=
-Disallow: /*?*difficulty=
-Disallow: /*?*duration=
-Disallow: /*?*timeOfDay=
-Disallow: /*?*date=
-Disallow: /*?*free=
-Disallow: /*?*sort=
-Disallow: /*?*page=
 
 Sitemap: https://granadaurban.com/sitemap-index.xml

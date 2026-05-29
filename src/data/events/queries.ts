@@ -36,6 +36,20 @@ export function getUpcomingEvents(limit: number, fromDate: Date = new Date()): E
     .slice(0, limit);
 }
 
+export function getIndexableEvents(fromDate: Date = new Date()): Event[] {
+  const from = fromDate.toISOString().split('T')[0];
+  if (!from) return [];
+
+  return events
+    .filter((event) => {
+      if (event.seoIndex === 'never') return false;
+      if (event.seoIndex === 'always') return true;
+      return (event.endDate ?? event.date) >= from;
+    })
+    .slice()
+    .sort(byDateAscending);
+}
+
 export function getEventsByTag(tag: string): Event[] {
   return events.filter((event) => event.tags.includes(tag));
 }

@@ -11,54 +11,6 @@
       ],
       "destination": "https://granadaurban.com/:path*",
       "permanent": true
-    },
-    {
-      "source": "/eventos",
-      "has": [{ "type": "query", "key": "category" }],
-      "destination": "/eventos/",
-      "permanent": true
-    },
-    {
-      "source": "/en/events",
-      "has": [{ "type": "query", "key": "category" }],
-      "destination": "/en/events/",
-      "permanent": true
-    },
-    {
-      "source": "/rutas",
-      "has": [{ "type": "query", "key": "type" }],
-      "destination": "/rutas/",
-      "permanent": true
-    },
-    {
-      "source": "/rutas",
-      "has": [{ "type": "query", "key": "neighborhood" }],
-      "destination": "/rutas/",
-      "permanent": true
-    },
-    {
-      "source": "/en/routes",
-      "has": [{ "type": "query", "key": "type" }],
-      "destination": "/en/routes/",
-      "permanent": true
-    },
-    {
-      "source": "/en/routes",
-      "has": [{ "type": "query", "key": "neighborhood" }],
-      "destination": "/en/routes/",
-      "permanent": true
-    },
-    {
-      "source": "/guias",
-      "has": [{ "type": "query", "key": "category" }],
-      "destination": "/guias/",
-      "permanent": true
-    },
-    {
-      "source": "/en/guides",
-      "has": [{ "type": "query", "key": "category" }],
-      "destination": "/en/guides/",
-      "permanent": true
     }
   ]
 }

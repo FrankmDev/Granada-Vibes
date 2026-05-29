@@ -1,8 +1,8 @@
 import type { GetStaticPaths } from 'astro';
-import { getAllEvents, getAllPosts, getAllRoutes } from '@data/index.js';
+import { getAllPosts, getAllRoutes, getIndexableEvents } from '@data/index.js';
 
 export const getEventStaticPaths: GetStaticPaths = () =>
-  getAllEvents().map((event) => ({
+  getIndexableEvents().map((event) => ({
     params: { slug: event.slug },
     props: { event },
   }));

@@ -83,12 +83,13 @@ function readPastEventSlugs(rootDir) {
     if (!Array.isArray(generatedEvents) || !today) return pastEventSlugs;
 
     for (const event of generatedEvents) {
+      if (!event || typeof event !== 'object') continue;
+
+      const eventEndDate = typeof event.endDate === 'string' ? event.endDate : event.date;
       if (
-        event &&
-        typeof event === 'object' &&
-        typeof event.date === 'string' &&
+        typeof eventEndDate === 'string' &&
         typeof event.slug === 'string' &&
-        event.date < today
+        eventEndDate < today
       ) {
         pastEventSlugs.add(event.slug);
       }
@@ -186,16 +187,24 @@ function getSitemapMeta(url, pastEventSlugs) {
   return { priority: 0.5, changefreq: 'monthly' };
 }
 
-function shouldIndexPage(page) {
+function shouldIndexPage(page, pastEventSlugs) {
   const pathname = normalizePathname(new URL(page).pathname);
-  return !ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname);
+  if (ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname)) return false;
+
+  const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
+  if (eventMatch) {
+    const slug = eventMatch[1];
+    return !pastEventSlugs.has(slug);
+  }
+
+  return true;
 }
 
 export function createSitemapConfig(rootDir) {
   const pastEventSlugs = readPastEventSlugs(rootDir);
 
   return {
-    filter: shouldIndexPage,
+    filter: (page) => shouldIndexPage(page, pastEventSlugs),
     serialize(item) {
       const meta = getSitemapMeta(item.url, pastEventSlugs);
       return {

@@ -38,6 +38,8 @@ export type EventSource =
   | 'manual'
   | 'mock';
 
+export type EventIndexing = 'auto' | 'always' | 'never';
+
 export type Neighborhood =
   | 'albaicin'
   | 'sacromonte'
@@ -64,6 +66,7 @@ export interface Event {
   currency: 'EUR';
   tags: string[];
   featured: boolean;
+  seoIndex?: EventIndexing;
   image?: string;
   url?: string;
   // Campos para páginas de detalle
