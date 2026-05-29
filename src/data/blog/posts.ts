@@ -10,8 +10,29 @@ import { granadaGratisContent } from './content/granada-gratis.js';
 import { sierraNevadaContent } from './content/sierra-nevada.js';
 import { granadaUnDiaContent } from './content/granada-un-dia.js';
 import { corpusGranada2026Content } from './content/corpus-granada-2026.js';
+import { tarascaGranada2026Content } from './content/tarasca-granada-2026.js';
 
 export const posts: BlogPost[] = [
+  {
+    id: 'blog-012',
+    slug: 'tarasca-granada-2026',
+    title: {
+      es: 'Tarasca de Granada 2026: cuándo sale, desde dónde, recorrido y cómo verla bien',
+      en: 'Granada Tarasca 2026: When It Starts, Where It Leaves From, Route and Local Tips',
+    },
+    description: {
+      es: 'Tarasca de Granada 2026: fecha y hora confirmadas, salida desde Plaza del Carmen, recorrido habitual por el centro, gigantes y cabezudos, contexto dentro del Corpus y consejos para verla bien.',
+      en: 'Granada Tarasca 2026: confirmed date and time, Plaza del Carmen starting point, usual city-centre route, giants and big-head figures, Corpus context and practical viewing tips.',
+    },
+    content: tarascaGranada2026Content,
+    publishDate: '2026-05-29',
+    category: 'cultura',
+    tags: ['tarasca', 'tarasca granada 2026', 'corpus', 'plaza del carmen', 'recorrido', 'gigantes y cabezudos', 'granada'],
+    author: 'GRN URBAN',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/TARASCA%20DE%20GRANADA%2002.jpg',
+    readingTime: 8,
+    featured: true,
+  },
   {
     id: 'blog-011',
     slug: 'corpus-granada-2026',
