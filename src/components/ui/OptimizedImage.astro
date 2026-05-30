@@ -35,12 +35,9 @@ const defaultSizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
 const baseClasses = 'optimized-img';
 const combinedClasses = className ? `${baseClasses} ${className}` : baseClasses;
 
-// Only run Astro's image pipeline for stable image hosts. Scraped event
-// providers often redirect asset URLs during revalidation, which creates
-// noisy build warnings while Astro falls back to stale cache entries.
+// Only run Astro's image pipeline for stable image hosts. Wikimedia is kept as
+// a runtime <img> source because it rate-limits build-time optimization bursts.
 const OPTIMIZABLE_HOSTNAMES = [
-  'images.unsplash.com',
-  'upload.wikimedia.org',
 ];
 
 let resolvedImage: ImageMetadata | null = null;

@@ -91,7 +91,7 @@ export const en: Translations = {
 
   // Events page
   events: {
-    title: 'Events in Granada',
+    title: 'Events in Granada today: concerts, free plans and tickets',
     subtitle: 'Concerts, exhibitions, flamenco and cultural plans picked by locals',
     upcoming: 'Upcoming',
     featured: 'Featured',
@@ -129,12 +129,12 @@ export const en: Translations = {
     archiveEyebrow: 'AGENDA',
     archiveEyebrowYear: 'LOCAL AGENDA',
     archiveTitleLabel: 'UPCOMING',
-    pageDescription: 'Granada cultural agenda: concerts, theatre, exhibitions, free events, venues, neighbourhoods, dates and tickets to plan your visit better.',
+    pageDescription: 'Updated Granada events agenda: concerts, theatre, exhibitions, free plans, dates, venues, neighbourhoods and official ticket links.',
   },
 
   // Routes page
   routes: {
-    title: 'Walking Routes in Granada',
+    title: 'Granada walking routes: Albaicín, tapas and viewpoints',
     subtitle: 'Explore the city with our curated routes',
     featured: 'Featured',
     stops: 'stops',
@@ -181,7 +181,7 @@ export const en: Translations = {
     ctaTitle: 'Ready to explore Granada?',
     ctaText: 'Discover the city through the eyes of those who know it best',
     ctaBtn: 'View events',
-    pageDescription: 'Granada walking routes with viewpoints, tapas, Albaicín, Sacromonte, Realejo and local plans to organise your visit better.',
+    pageDescription: 'Granada walking routes with Albaicín, Sacromonte, Realejo, viewpoints, tapas and local itineraries for 2 hours, 1 day or a weekend.',
   },
 
   // Detail pages (events & routes)
@@ -468,8 +468,8 @@ ctaAriaLabel: 'Discover Granada',
 
   // Blog
   blog: {
-    title: 'Granada Guides',
-    subtitle: 'Practical Granada guides: Alhambra, tapas, viewpoints, neighbourhoods, routes and local tips for realistic trip planning.',
+    title: 'Granada guides: Alhambra, tapas, summer and districts',
+    subtitle: 'Practical Granada guides: Alhambra, tapas, viewpoints, Corpus, summer, neighbourhoods, routes and local tips for realistic trip planning.',
     readingTime: '{{minutes}} min read',
     publishedOn: 'Published on {{date}}',
     by: 'By {{author}}',

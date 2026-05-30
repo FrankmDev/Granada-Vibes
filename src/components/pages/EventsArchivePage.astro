@@ -37,7 +37,7 @@ const events = getAllEvents()
 const categories = [...new Set(events.map((e) => e.category))].sort() as EventCategory[];
 const neighborhoods: Neighborhood[] = ['albaicin', 'sacromonte', 'centro', 'realejo', 'alhambra', 'cartuja', 'zaidin', 'otro'];
 
-const ogImage = 'https://images.unsplash.com/photo-1514525253440-b393452e8d26?w=1200&h=630&fit=crop&q=80';
+const ogImage = 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Granada_-_Teatro_Isabel_la_Cat%C3%B3lica_8.jpg';
 
 const heroMetadata = [
   { label: t('events.heroMetaTotalLabel'), value: events.length.toString(), icon: 'calendar' },

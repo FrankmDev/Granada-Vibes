@@ -13,9 +13,10 @@ interface Props {
   locale: Locale;
   formattedDate: string;
   readingMinutes?: number;
+  displayTitle?: string;
 }
 
-const { post, locale, formattedDate, readingMinutes = post.readingTime } = Astro.props;
+const { post, locale, formattedDate, readingMinutes = post.readingTime, displayTitle = post.title[locale] } = Astro.props;
 const t = useTranslations(locale);
 
 const year = new Date(post.publishDate).getFullYear();
@@ -40,7 +41,7 @@ const readingDisplay = t('blog.readingTime', { minutes: readingMinutes });
   backHref={backHref}
   backLabel={backLabel}
   refCode={refCode}
-  title={post.title[locale]}
+  title={displayTitle}
   imageUrl={post.image}
   eyebrowText={catLabel}
   featuredLabel={post.featured ? t('routes.featured').toUpperCase() : undefined}

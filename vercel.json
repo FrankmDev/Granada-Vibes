@@ -1,16 +1,63 @@
 {
   "trailingSlash": true,
-  "redirects": [
+  "routes": [
     {
-      "source": "/:path*",
+      "src": "/(.*)",
       "has": [
         {
           "type": "host",
           "value": "www.granadaurban.com"
         }
       ],
-      "destination": "https://granadaurban.com/:path*",
-      "permanent": true
+      "status": 308,
+      "headers": {
+        "Location": "https://granadaurban.com/$1"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/eventos/(.*)",
+      "status": 308,
+      "headers": {
+        "Location": "/eventos/"
+      }
+    },
+    {
+      "src": "/en/events/(.*)",
+      "status": 308,
+      "headers": {
+        "Location": "/en/events/"
+      }
+    },
+    {
+      "src": "/artistas/(.*)",
+      "status": 308,
+      "headers": {
+        "Location": "/artistas/"
+      }
+    },
+    {
+      "src": "/en/artists/(.*)",
+      "status": 308,
+      "headers": {
+        "Location": "/en/artists/"
+      }
+    },
+    {
+      "src": "/salas/(.*)",
+      "status": 308,
+      "headers": {
+        "Location": "/salas/"
+      }
+    },
+    {
+      "src": "/en/venues/(.*)",
+      "status": 308,
+      "headers": {
+        "Location": "/en/venues/"
+      }
     }
   ]
 }

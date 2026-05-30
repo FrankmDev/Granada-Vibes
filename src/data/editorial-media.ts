@@ -23,7 +23,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'entradas-alhambra-agotadas': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
         'La Alhambra vista desde el mirador de San Nicolas',
         'La Alhambra desde San Nicolas. Imagen real de Wikimedia Commons.'
       ) +
@@ -33,7 +33,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
         'The Alhambra seen from San Nicolas viewpoint',
         'The Alhambra from San Nicolas. Real image from Wikimedia Commons.'
       ) +
@@ -45,7 +45,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'granada-fin-de-semana-48-horas': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Carrera%20del%20Darro%20de%20Granada.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg',
         'Carrera del Darro en Granada',
         'Carrera del Darro, uno de los ejes mas utiles para un primer fin de semana en Granada.'
       ) +
@@ -55,7 +55,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Carrera%20del%20Darro%20de%20Granada.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg',
         'Carrera del Darro in Granada',
         'Carrera del Darro, one of the most useful axes for a first weekend in Granada.'
       ) +
@@ -67,7 +67,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'miradores-granada-guia-completa': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
         'Vista de la Alhambra desde San Nicolas',
         'San Nicolas concentra la postal clasica; San Cristobal, La Lona y Silla del Moro completan mejor la lectura de la ciudad.'
       ) +
@@ -77,7 +77,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
         'Alhambra view from San Nicolas',
         'San Nicolas gives the classic postcard; San Cristobal, La Lona and Silla del Moro complete the city reading.'
       ) +
@@ -89,7 +89,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'tapas-gratis-granada': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Granada%2C%20La%20Fontana%2C%20tapas.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/a/a0/Granada%2C_La_Fontana%2C_tapas.jpg',
         'Tapas servidas en Granada',
         'La tapa incluida funciona mejor por zonas que por una lista cerrada de bares: Navas, Realejo, Plaza Nueva, Elvira y La Chana.'
       ) +
@@ -99,7 +99,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Granada%2C%20La%20Fontana%2C%20tapas.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/a/a0/Granada%2C_La_Fontana%2C_tapas.jpg',
         'Tapas served in Granada',
         'The included tapa works better by area than as a fixed list of bars: Navas, Realejo, Plaza Nueva, Elvira and La Chana.'
       ) +
@@ -111,7 +111,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'flamenco-granada-guia-autentica': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Aa%20interpretation%20centre%20in%20sacromonte%20-%20etnographical%20and%20environmontal%20museum%20showing%20life%20and%20customs%20in%20a%20group%20of%20caves%201.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/6/68/Aa_interpretation_centre_in_sacromonte_-_etnographical_and_environmontal_museum_showing_life_and_customs_in_a_group_of_caves_1.jpg',
         'Cuevas del Sacromonte en Granada',
         'El Sacromonte se entiende mejor como barrio, mirador y cultura de cueva antes que como simple espectaculo.'
       ) +
@@ -121,7 +121,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Aa%20interpretation%20centre%20in%20sacromonte%20-%20etnographical%20and%20environmontal%20museum%20showing%20life%20and%20customs%20in%20a%20group%20of%20caves%201.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/6/68/Aa_interpretation_centre_in_sacromonte_-_etnographical_and_environmontal_museum_showing_life_and_customs_in_a_group_of_caves_1.jpg',
         'Sacromonte caves in Granada',
         'Sacromonte is best understood as a neighbourhood, viewpoint and cave culture before it is reduced to a show.'
       ) +
@@ -133,7 +133,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'granada-en-un-dia-itinerario': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Cathedral%20%26%20Capilla%20Real%20Granada%20Spain.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/0/0c/Cathedral_%26_Capilla_Real_Granada_Spain.jpg',
         'Catedral y Capilla Real de Granada',
         'La Catedral, la Capilla Real y el eje Plaza Nueva-Darro son el nucleo mas eficiente cuando solo tienes un dia.'
       ) +
@@ -143,7 +143,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Cathedral%20%26%20Capilla%20Real%20Granada%20Spain.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/0/0c/Cathedral_%26_Capilla_Real_Granada_Spain.jpg',
         'Granada Cathedral and Royal Chapel',
         'The Cathedral, Royal Chapel and Plaza Nueva-Darro axis are the most efficient core when you only have one day.'
       ) +
@@ -155,7 +155,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'sierra-nevada-desde-granada-guia-excursion': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Sierra%20Nevada%2C%20Granada%2004.JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/5/5d/Sierra_Nevada%2C_Granada_04.JPG',
         'Sierra Nevada vista desde Granada',
         'Sierra Nevada cambia mucho por temporada: nieve, senderos altos, calor en cotas bajas y transporte condicionan el plan.'
       ) +
@@ -165,7 +165,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Sierra%20Nevada%2C%20Granada%2004.JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/5/5d/Sierra_Nevada%2C_Granada_04.JPG',
         'Sierra Nevada seen from Granada',
         'Sierra Nevada changes sharply by season: snow, high trails, low-altitude heat and transport all shape the plan.'
       ) +
@@ -177,7 +177,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'granada-gratis-que-hacer-sin-gastar': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Corral_del_Carb%C3%B3n%2CGranada..JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/d/d8/Corral_del_Carb%C3%B3n%2CGranada..JPG',
         'Patio del Corral del Carbon en Granada',
         'Corral del Carbon, Bañuelo, Dar al-Horra, Horno de Oro y Maristan hacen que Granada barata no sea una version menor.'
       ) +
@@ -187,7 +187,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Corral_del_Carb%C3%B3n%2CGranada..JPG',
+        'https://upload.wikimedia.org/wikipedia/commons/d/d8/Corral_del_Carb%C3%B3n%2CGranada..JPG',
         'Corral del Carbon courtyard in Granada',
         'Corral del Carbon, Banuelo, Dar al-Horra, Horno de Oro and Maristan prove budget Granada is not a lesser version.'
       ) +
@@ -199,7 +199,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'antes-de-llegar-granada': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/A%20view%20of%20Granada%20from%20the%20Alhambra.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/c/c1/A_view_of_Granada_from_the_Alhambra.jpg',
         'Vista general de Granada desde la Alhambra',
         'Reservas, transporte y barrio base importan mas en Granada que en ciudades planas: la orografia decide el viaje.'
       ) +
@@ -209,7 +209,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/A%20view%20of%20Granada%20from%20the%20Alhambra.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/c/c1/A_view_of_Granada_from_the_Alhambra.jpg',
         'General view of Granada from the Alhambra',
         'Bookings, transport and base neighbourhood matter more in Granada than in flat cities: the terrain shapes the trip.'
       ) +
@@ -221,7 +221,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
   'albaicin-a-pie': {
     es:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Aa%20a%20street%20of%20albaicin%20small%20street%202016%20white%20in%20granada%20in%20spain.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/e/e6/Aa_a_street_of_albaicin_small_street_2016_white_in_granada_in_spain.jpg',
         'Calle del Albaicin en Granada',
         'El Albaicin se disfruta con una ruta corta y bien secuenciada: mirador, aljibe, plaza, callejon y bajada al Darro.'
       ) +
@@ -231,7 +231,7 @@ export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
       ]),
     en:
       mediaFigure(
-        'https://commons.wikimedia.org/wiki/Special:FilePath/Aa%20a%20street%20of%20albaicin%20small%20street%202016%20white%20in%20granada%20in%20spain.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/e/e6/Aa_a_street_of_albaicin_small_street_2016_white_in_granada_in_spain.jpg',
         'Albaicin street in Granada',
         'The Albaicin works best as a short, well-sequenced route: viewpoint, cistern, square, alley and descent to the Darro.'
       ) +

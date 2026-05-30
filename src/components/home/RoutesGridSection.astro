@@ -46,12 +46,12 @@ function formatDuration(minutes: number): string {
 }
 
 const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: string } = {
-  tapas:       'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=1000&fit=crop',
-  monuments:   'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&h=1000&fit=crop',
-  hiking:      'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&h=1000&fit=crop',
-  photography: 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&h=1000&fit=crop',
-  viewpoint:   'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
-  default:     'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=800&h=1000&fit=crop',
+  tapas:       'https://upload.wikimedia.org/wikipedia/commons/a/a0/Granada%2C_La_Fontana%2C_tapas.jpg',
+  monuments:   'https://upload.wikimedia.org/wikipedia/commons/0/0c/Cathedral_%26_Capilla_Real_Granada_Spain.jpg',
+  hiking:      'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg',
+  photography: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Aa_view_from_sacromonte_2016_at_granada_in_spain.jpg',
+  viewpoint:   'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg',
+  default:     'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg',
 };
 
 const routesHref = getRoute('routes', locale);

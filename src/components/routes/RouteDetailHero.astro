@@ -8,9 +8,10 @@ import CinematicHero from '@components/shared/CinematicHero.astro';
 interface Props {
   route: Route;
   locale: Locale;
+  displayTitle?: string;
 }
 
-const { route, locale } = Astro.props;
+const { route, locale, displayTitle = route.title[locale] } = Astro.props;
 const t = useTranslations(locale);
 
 const routeImage    = route.image;
@@ -35,7 +36,7 @@ const timeIconClass = (route.timeOfDay === 'evening' || route.timeOfDay === 'sun
   backHref={backHref}
   backLabel={backLabel}
   refCode={refCode}
-  title={route.title[locale]}
+  title={displayTitle}
   imageUrl={routeImage}
   eyebrowText={catLabel}
   featuredLabel={featuredLabel}

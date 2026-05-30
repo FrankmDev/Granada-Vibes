@@ -18,8 +18,8 @@ export const posts: BlogPost[] = [
     id: 'blog-013',
     slug: 'feria-corpus-granada-2026',
     title: {
-      es: 'Feria del Corpus de Granada 2026: casetas, ferial, transporte, ambiente y consejos',
-      en: 'Granada Corpus Fair 2026: Casetas, Fairground, Transport, Atmosphere and Local Tips',
+      es: 'Feria Corpus Granada 2026: casetas y transporte',
+      en: 'Corpus Fair Granada 2026: casetas and transport',
     },
     description: {
       es: 'Guía práctica de la Feria del Corpus de Granada 2026: fechas, recinto ferial de Almanjáyar, 72 casetas, acceso libre, atracciones, Día del Niño, transporte, huelga parcial del metro y ambiente de día y de noche.',
@@ -30,7 +30,7 @@ export const posts: BlogPost[] = [
     category: 'cultura',
     tags: ['feria del corpus', 'feria granada 2026', 'casetas', 'almanjayar', 'metro granada', 'dia del nino', 'corpus', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Casetas%20en%20la%20Feria%20de%20Granada%202007.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Casetas_en_la_Feria_de_Granada_2007.jpg',
     readingTime: 9,
     featured: true,
   },
@@ -38,8 +38,8 @@ export const posts: BlogPost[] = [
     id: 'blog-012',
     slug: 'tarasca-granada-2026',
     title: {
-      es: 'Tarasca de Granada 2026: cuándo sale, desde dónde, recorrido y cómo verla bien',
-      en: 'Granada Tarasca 2026: When It Starts, Where It Leaves From, Route and Local Tips',
+      es: 'Tarasca Granada 2026: hora y recorrido',
+      en: 'Granada Tarasca 2026: time, route and viewing tips',
     },
     description: {
       es: 'Tarasca de Granada 2026: fecha y hora confirmadas, salida desde Plaza del Carmen, recorrido habitual por el centro, gigantes y cabezudos, contexto dentro del Corpus y consejos para verla bien.',
@@ -50,7 +50,7 @@ export const posts: BlogPost[] = [
     category: 'cultura',
     tags: ['tarasca', 'tarasca granada 2026', 'corpus', 'plaza del carmen', 'recorrido', 'gigantes y cabezudos', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/TARASCA%20DE%20GRANADA%2002.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/TARASCA_DE_GRANADA_02.jpg',
     readingTime: 8,
     featured: true,
   },
@@ -58,8 +58,8 @@ export const posts: BlogPost[] = [
     id: 'blog-011',
     slug: 'corpus-granada-2026',
     title: {
-      es: 'Corpus de Granada 2026: guía completa con fechas, programa, casetas y trucos de local',
-      en: 'Granada Corpus Christi 2026: Complete Guide to Dates, Programme, Casetas and Local Tips',
+      es: 'Corpus Granada 2026: fechas, programa, casetas y Tarasca',
+      en: 'Granada Corpus 2026: dates, casetas and Tarasca',
     },
     description: {
       es: 'Corpus de Granada 2026: fechas oficiales, programa, casetas, Tarasca, procesión, ferial de Almanjáyar, transporte, Día del Niño, toros y consejos locales.',
@@ -70,7 +70,7 @@ export const posts: BlogPost[] = [
     category: 'cultura',
     tags: ['corpus', 'corpus 2026', 'feria', 'tarasca', 'casetas', 'almanjáyar', 'programa', 'granada', 'andalucia'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Corpus%20Christi%20en%20la%20Catedral%20de%20Granada%2001.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Corpus_Christi_en_la_Catedral_de_Granada_01.jpg',
     readingTime: 12,
     featured: true,
   },
@@ -78,8 +78,8 @@ export const posts: BlogPost[] = [
     id: 'blog-001',
     slug: 'entradas-alhambra-agotadas',
     title: {
-      es: 'Entradas Alhambra agotadas: opciones reales',
-      en: 'Sold-Out Alhambra Tickets: Real Options',
+      es: 'Entradas Alhambra agotadas: alternativas reales',
+      en: 'Sold-out Alhambra tickets: real options and alternatives',
     },
     description: {
       es: 'Qué hacer si no quedan entradas para la Alhambra: canal oficial, visitas nocturnas, Jardines y Generalife, Dobla de Oro, tours autorizados y alternativas cerca del monumento.',
@@ -90,7 +90,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['alhambra', 'entradas agotadas', 'como conseguir entradas', 'palacios nazaríes', 'visita nocturna', 'granada', 'patrimonio'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
     readingTime: 12,
     featured: true,
   },
@@ -98,8 +98,8 @@ export const posts: BlogPost[] = [
     id: 'blog-002',
     slug: 'granada-fin-de-semana-48-horas',
     title: {
-      es: 'Granada en 48 horas: ruta de fin de semana',
-      en: 'Granada in 48 Hours: Weekend Route',
+      es: 'Granada en 48 horas: itinerario de fin de semana',
+      en: 'Granada in 48 hours: weekend itinerary',
     },
     description: {
       es: 'Itinerario de 48 horas en Granada con Alhambra, Albaicín, Realejo, Carrera del Darro, tapeo por zonas y miradores. Plan realista con tiempos, transporte y prioridades.',
@@ -110,7 +110,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['fin de semana', '48 horas', 'itinerario', 'tapas', 'albaicín', 'alhambra', 'granada', 'presupuesto'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Carrera%20del%20Darro%20de%20Granada.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg',
     readingTime: 11,
     featured: true,
   },
@@ -118,8 +118,8 @@ export const posts: BlogPost[] = [
     id: 'blog-003',
     slug: 'miradores-granada-guia-completa',
     title: {
-      es: 'Miradores de Granada: cuál elegir y cuándo ir',
-      en: 'Granada Viewpoints: Which to Choose and When',
+      es: 'Miradores de Granada: mejores vistas y cuándo ir',
+      en: 'Granada viewpoints: best views and when to go',
     },
     description: {
       es: 'Guía definitiva de los miradores de Granada: San Nicolás, San Cristóbal, Santa Isabel la Real, La Lona y la Silla del Moro. Horarios, cómo llegar y cuál elegir.',
@@ -130,7 +130,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['miradores', 'albaicín', 'fotografía', 'atardecer', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
     readingTime: 10,
     featured: false,
   },
@@ -138,8 +138,8 @@ export const posts: BlogPost[] = [
     id: 'blog-004',
     slug: 'tapas-gratis-granada',
     title: {
-      es: 'Tapas gratis en Granada: zonas y bares fiables',
-      en: 'Free Tapas in Granada: Areas and Reliable Bars',
+      es: 'Tapas gratis en Granada: zonas, bares y cómo funciona',
+      en: 'Free tapas in Granada: areas, bars and how it works',
     },
     description: {
       es: 'Cómo funciona el sistema de tapas gratis en Granada: precios reales, por qué no es una ley, las mejores rutas por barrios (Navas, Realejo, La Chana) y los bares donde comer gratis y bien. Guía hecha por locales.',
@@ -150,7 +150,7 @@ export const posts: BlogPost[] = [
     category: 'gastronomia',
     tags: ['tapas gratis', 'cómo funciona', 'bares', 'calle navas', 'realejo', 'la chana', 'granada', 'gastronomía'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Granada%2C%20La%20Fontana%2C%20tapas.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Granada%2C_La_Fontana%2C_tapas.jpg',
     readingTime: 12,
     featured: false,
   },
@@ -158,8 +158,8 @@ export const posts: BlogPost[] = [
     id: 'blog-006',
     slug: 'flamenco-granada-guia-autentica',
     title: {
-      es: 'Flamenco en Granada: Sacromonte sin trampas',
-      en: 'Flamenco in Granada: Sacromonte Without Traps',
+      es: 'Flamenco en Granada: cuevas y peñas auténticas',
+      en: 'Flamenco in Granada: caves and authentic peñas',
     },
     description: {
       es: 'El flamenco nació en las cuevas del Sacromonte. Guía para distinguir lo auténtico de lo turístico, qué cuevas elegir, cómo llegar de noche, cuánto cuesta y por qué las peñas son lo que de verdad merece la pena.',
@@ -170,7 +170,7 @@ export const posts: BlogPost[] = [
     category: 'cultura',
     tags: ['flamenco', 'sacromonte', 'cuevas', 'cultura gitana', 'música', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Aa%20interpretation%20centre%20in%20sacromonte%20-%20etnographical%20and%20environmontal%20museum%20showing%20life%20and%20customs%20in%20a%20group%20of%20caves%201.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/6/68/Aa_interpretation_centre_in_sacromonte_-_etnographical_and_environmontal_museum_showing_life_and_customs_in_a_group_of_caves_1.jpg',
     readingTime: 12,
     featured: true,
   },
@@ -178,8 +178,8 @@ export const posts: BlogPost[] = [
     id: 'blog-010',
     slug: 'granada-en-un-dia-itinerario',
     title: {
-      es: 'Granada en un día: itinerario práctico',
-      en: 'Granada in One Day: Practical Itinerary',
+      es: 'Granada en un día: itinerario con o sin Alhambra',
+      en: 'Granada in one day: itinerary with or without Alhambra',
     },
     description: {
       es: 'Guía maestra con dos itinerarios para un día completo en Granada: uno con Alhambra reservada, uno sin ella. Horarios de AVE desde Málaga, Sevilla y Madrid, y los tres errores que arruinan el día a la mayoría de visitantes.',
@@ -190,7 +190,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['itinerario', 'un día', 'alhambra', 'albaicín', 'desde málaga', 'día de excursión', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Cathedral%20%26%20Capilla%20Real%20Granada%20Spain.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Cathedral_%26_Capilla_Real_Granada_Spain.jpg',
     readingTime: 10,
     featured: true,
   },
@@ -198,8 +198,8 @@ export const posts: BlogPost[] = [
     id: 'blog-009',
     slug: 'sierra-nevada-desde-granada-guia-excursion',
     title: {
-      es: 'Sierra Nevada desde Granada: guía sin coche',
-      en: 'Sierra Nevada from Granada: Car-Free Guide',
+      es: 'Sierra Nevada desde Granada: cómo ir sin coche y rutas',
+      en: 'Sierra Nevada from Granada: car-free trip and routes',
     },
     description: {
       es: 'La montaña más alta de la península ibérica está a 45 minutos de autobús de Granada. Guía completa de la estación de esquí (Pradollano), las rutas de senderismo de verano (Mulhacén, Veleta, Laguna de Yeguas), cómo llegar y qué llevar.',
@@ -210,7 +210,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['sierra nevada', 'esquí', 'senderismo', 'mulhacén', 'pradollano', 'excursión', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Sierra%20Nevada%2C%20Granada%2004.JPG',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/5d/Sierra_Nevada%2C_Granada_04.JPG',
     readingTime: 11,
     featured: false,
   },
@@ -218,8 +218,8 @@ export const posts: BlogPost[] = [
     id: 'blog-008',
     slug: 'granada-gratis-que-hacer-sin-gastar',
     title: {
-      es: 'Qué hacer gratis en Granada: guía real',
-      en: 'Free Things to Do in Granada: Real Guide',
+      es: 'Qué hacer gratis en Granada: miradores y tapas',
+      en: 'Free things in Granada: viewpoints, monuments and tapas',
     },
     description: {
       es: 'Granada es cara solo si no sabes cómo funciona. Guía de monumentos gratuitos (El Bañuelo, Corral del Carbón, Madraza), miradores sin entrada, el bosque de la Alhambra y el sistema de tapas que convierte dos cañas en una comida.',
@@ -230,7 +230,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['gratis', 'presupuesto', 'tapas', 'miradores', 'bañuelo', 'monumentos', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Corral_del_Carb%C3%B3n%2CGranada..JPG',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d8/Corral_del_Carb%C3%B3n%2CGranada..JPG',
     readingTime: 9,
     featured: false,
   },
@@ -238,8 +238,8 @@ export const posts: BlogPost[] = [
     id: 'blog-007',
     slug: 'antes-de-llegar-granada',
     title: {
-      es: 'Antes de viajar a Granada: reservas clave',
-      en: 'Before Granada: Key Bookings and Tips',
+      es: 'Antes de viajar a Granada: reservas, Alhambra y consejos',
+      en: 'Before Granada: bookings, Alhambra and local tips',
     },
     description: {
       es: 'La guía práctica pre-viaje que nadie te da: cómo conseguir entrada para la Alhambra sin que se agote, cómo llegar, cuándo ir de verdad, dónde dormir sin arrepentirte y cuánto dinero llevar.',
@@ -250,7 +250,7 @@ export const posts: BlogPost[] = [
     category: 'guia',
     tags: ['planificación', 'alhambra entradas', 'cómo llegar', 'alojamiento', 'presupuesto', 'granada'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/A%20view%20of%20Granada%20from%20the%20Alhambra.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/c1/A_view_of_Granada_from_the_Alhambra.jpg',
     readingTime: 10,
     featured: true,
   },
@@ -258,8 +258,8 @@ export const posts: BlogPost[] = [
     id: 'blog-005',
     slug: 'albaicin-a-pie',
     title: {
-      es: 'Albaicín a pie: ruta esencial',
-      en: 'Albaicin on Foot: Essential Route',
+      es: 'Albaicín a pie: ruta, miradores y consejos locales',
+      en: 'Albaicín on foot: route, viewpoints and local tips',
     },
     description: {
       es: 'Ruta a pie paso a paso por el Albaicín sin guía: 3,5 km, 2,5-3 horas, miradores, plazas secretas, teterías y consejos de locales. Incluye mapa mental, horarios y precios reales.',
@@ -270,7 +270,7 @@ export const posts: BlogPost[] = [
     category: 'barrios',
     tags: ['albaicín', 'a pie', 'paseo', 'sin guía', 'ruta', 'miradores', 'granada', 'patrimonio'],
     author: 'GRN URBAN',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Aa%20a%20street%20of%20albaicin%20small%20street%202016%20white%20in%20granada%20in%20spain.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Aa_a_street_of_albaicin_small_street_2016_white_in_granada_in_spain.jpg',
     readingTime: 11,
     featured: false,
   },

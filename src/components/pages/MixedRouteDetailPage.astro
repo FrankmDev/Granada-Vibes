@@ -23,7 +23,7 @@ const planIndex = allPlans.findIndex((p) => p.id === plan.id);
 const prevPlan = planIndex > 0 ? allPlans[planIndex - 1] : null;
 const nextPlan = planIndex < allPlans.length - 1 ? allPlans[planIndex + 1] : null;
 
-const ogImage = plan.image || 'https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=1200&h=630&fit=crop&q=80';
+const ogImage = plan.image || 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg';
 
 const breadcrumb = [
   { name: isEnglish ? 'Home' : 'Inicio', url: getRoute('home', locale) },

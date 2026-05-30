@@ -14,6 +14,7 @@ import { getRelatedRoutesForBlogPost, getRelatedEventsForBlogPost } from '@utils
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import { formatDuration, formatFullDate } from '@utils/dates';
 import { clampMetaDescription } from '@utils/seo-text';
+import { getBlogDisplayTitle, getBlogSeoDescription, getRouteDisplayTitle } from '@utils/content-seo';
 import { editorialMediaByBlogSlug } from '@data/editorial-media';
 import type { BlogPost, Locale } from '@types';
 import '@styles/pages/blog-detail.css';
@@ -33,11 +34,12 @@ const nextPost = postIndex < allPosts.length - 1 ? allPosts[postIndex + 1] : nul
 const relatedPosts = getRelatedPosts(post, 3);
 const relatedRoutes = getRelatedRoutesForBlogPost(post, 2);
 const relatedEvents = getRelatedEventsForBlogPost(post, 2);
+const displayTitle = getBlogDisplayTitle(post, locale);
 
 const crossLinks = [
   ...relatedRoutes.map((r) => ({
     url: getRouteDetailUrl(r.slug, locale),
-    title: r.title[locale],
+    title: getRouteDisplayTitle(r, locale),
     meta: `${formatDuration(r.duration, locale)} · ${t(`categories.${r.category}`)}`,
     image: r.image,
   })),
@@ -48,6 +50,16 @@ const crossLinks = [
     image: e.imageUrl || e.image,
   })),
 ].slice(0, 4);
+
+const planningLinks = [
+  ...relatedPosts.map((p) => ({
+    url: getBlogDetailUrl(p.slug, locale),
+    title: getBlogDisplayTitle(p, locale),
+    meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
+    image: p.image,
+  })),
+  ...crossLinks,
+].slice(0, 5);
 
 const publishedDate = new Date(post.publishDate);
 const dateLocale = isEnglish ? 'en-GB' : 'es-ES';
@@ -60,7 +72,7 @@ const dayNum = publishedDate.getDate().toString().padStart(2, '0');
 const monthShort = publishedDate.toLocaleDateString(dateLocale, { month: 'short' }).toUpperCase();
 const categoryLabel = t(`blog.categories.${post.category}`);
 const categoryUrl = `${getRoute('blog', locale)}#content`;
-const ogImage = post.image ?? 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&h=630&fit=crop&q=80';
+const ogImage = post.image ?? 'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg';
 
 // ── Auto-generated Table of Contents ──
 const rawContent = post.content[locale];
@@ -103,11 +115,13 @@ const copy = isEnglish
         tags: '[ Tags ]',
         tocLabel: 'Contents',
       },
-      seoDescription: clampMetaDescription(`${post.description[locale]} ${categoryLabel} guide by ${post.author}, updated with practical local tips for planning Granada.`),
+      seoDescription: clampMetaDescription(getBlogSeoDescription(post, locale)),
       nav: {
         prev: 'Previous article',
         next: 'Next article',
       },
+      planningTitle: 'Keep planning Granada',
+      planningEyebrow: '[ Related plans ]',
     }
   : {
       breadcrumb: {
@@ -124,11 +138,13 @@ const copy = isEnglish
         tags: '[ Etiquetas ]',
         tocLabel: 'Contenido',
       },
-      seoDescription: clampMetaDescription(`${post.description[locale]} Guía de ${categoryLabel.toLowerCase()} por ${post.author}, con consejos locales para planear Granada.`),
+      seoDescription: clampMetaDescription(getBlogSeoDescription(post, locale)),
       nav: {
         prev: 'Artículo anterior',
         next: 'Artículo siguiente',
       },
+      planningTitle: 'Sigue preparando Granada',
+      planningEyebrow: '[ Planes relacionados ]',
     };
 
 const breadcrumb = [
@@ -156,7 +172,7 @@ const breadcrumb = [
 >
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
-  <BlogDetailHero post={post} locale={locale} formattedDate={formattedDate} readingMinutes={calculatedReadingTime} />
+  <BlogDetailHero post={post} locale={locale} formattedDate={formattedDate} readingMinutes={calculatedReadingTime} displayTitle={displayTitle} />
 
   <Breadcrumbs
     variant="light"
@@ -226,10 +242,22 @@ const breadcrumb = [
             <div class="upg-tags" id="tags" data-reveal>
               <span class="upg-tags-title">{copy.section.tags}</span>
               <div class="upg-tags-list">
-                {post.tags.map((tag: string) => (
+              {post.tags.map((tag: string) => (
                   <span class="upg-tag">#{tag}</span>
                 ))}
               </div>
+            </div>
+          )}
+
+          {planningLinks.length > 0 && (
+            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+              <div class="upg-block-bg"></div>
+              <header class="upg-header">
+                <span class="upg-num">02</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.planningEyebrow}</span>
+              </header>
+              <CrossLinksSection title={copy.planningTitle} links={planningLinks} />
             </div>
           )}
 
@@ -240,31 +268,19 @@ const breadcrumb = [
                 {prevPost ? (
                   <a href={getBlogDetailUrl(prevPost.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
                     <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{prevPost.title[locale]}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{getBlogDisplayTitle(prevPost, locale)}</span>
                     <time datetime={prevPost.publishDate} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{prevPost.publishDate}</time>
                   </a>
                 ) : <span />}
                 {nextPost ? (
                   <a href={getBlogDetailUrl(nextPost.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
                     <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{nextPost.title[locale]}</span>
+                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{getBlogDisplayTitle(nextPost, locale)}</span>
                     <time datetime={nextPost.publishDate} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{nextPost.publishDate}</time>
                   </a>
                 ) : <span />}
               </div>
             </nav>
-          )}
-
-          {crossLinks.length > 0 && (
-            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">02</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
-              </header>
-              <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
-            </div>
           )}
 
           {relatedRoutes.length > 0 && (
@@ -280,13 +296,13 @@ const breadcrumb = [
                   <a href={getRouteDetailUrl(route.slug, locale)} class="blg-rel-route-card" style={`--rd: ${index * 0.15}s`}>
                     <div class="brr-thumb">
                       {route.image ? (
-                        <OptimizedImage src={route.image} alt={route.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" />
+                        <OptimizedImage src={route.image} alt={getRouteDisplayTitle(route, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" />
                       ) : (
                         <div class="brr-thumb-fallback"></div>
                       )}
                     </div>
                     <div class="brr-content">
-                      <span class="brr-title">{route.title[locale]}</span>
+                      <span class="brr-title">{getRouteDisplayTitle(route, locale)}</span>
                       <span class="brr-meta">{formatDuration(route.duration, locale)} · {t(`difficulty.${route.difficulty}`)}</span>
                     </div>
                     <div class="brr-arrow">
@@ -388,13 +404,13 @@ const breadcrumb = [
                     <a href={getBlogDetailUrl(relatedPost.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
                       <div class="uri-thumb">
                         {relatedPost.image ? (
-                          <OptimizedImage src={relatedPost.image} alt={relatedPost.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
+                          <OptimizedImage src={relatedPost.image} alt={getBlogDisplayTitle(relatedPost, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
                         ) : (
                           <div class="uri-thumb-fallback"></div>
                         )}
                       </div>
                       <div class="uri-content">
-                        <span class="uri-title">{relatedPost.title[locale]}</span>
+                        <span class="uri-title">{getBlogDisplayTitle(relatedPost, locale)}</span>
                         <span class="uri-meta">{t('blog.readingTime', { minutes: relatedPost.readingTime })}</span>
                       </div>
                       <div class="uri-arrow">

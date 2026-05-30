@@ -3,6 +3,10 @@ import path from 'path';
 
 const ROUTES_EXCLUDED_FROM_SITEMAP = [
   '/404/',
+  '/artistas/',
+  '/en/artists/',
+  '/salas/',
+  '/en/venues/',
 ];
 
 const ES_TO_EN_SEGMENTS = {
@@ -103,13 +107,14 @@ function readPastEventSlugs(rootDir) {
 
 function getSitemapMeta(url, pastEventSlugs) {
   const pathname = normalizePathname(new URL(url).pathname);
+  const today = new Date().toISOString().split('T')[0];
 
   if (pathname === '/' || pathname === '/en/') {
-    return { priority: 1.0, changefreq: 'daily' };
+    return { priority: 1.0, changefreq: 'daily', lastmod: today };
   }
 
   if (pathname === '/eventos/' || pathname === '/en/events/') {
-    return { priority: 0.9, changefreq: 'daily' };
+    return { priority: 0.9, changefreq: 'daily', lastmod: today };
   }
 
   if (
@@ -122,7 +127,7 @@ function getSitemapMeta(url, pastEventSlugs) {
     pathname === '/en/events/granada-concerts/' ||
     pathname === '/en/events/free/'
   ) {
-    return { priority: 0.85, changefreq: 'daily' };
+    return { priority: 0.85, changefreq: 'daily', lastmod: today };
   }
 
   if (
@@ -132,12 +137,10 @@ function getSitemapMeta(url, pastEventSlugs) {
     pathname === '/en/guides/' ||
     pathname === '/salas/' ||
     pathname === '/en/venues/' ||
-    pathname === '/artistas/' ||
-    pathname === '/en/artists/' ||
     pathname === '/rutas/por-tiempo/' ||
     pathname === '/en/routes/by-time/'
   ) {
-    return { priority: 0.8, changefreq: 'monthly' };
+    return { priority: 0.8, changefreq: 'weekly', lastmod: today };
   }
 
   if (
@@ -153,15 +156,15 @@ function getSitemapMeta(url, pastEventSlugs) {
     pathname === '/guias/corpus-granada-2026/' ||
     pathname === '/en/guides/corpus-granada-2026/'
   ) {
-    return { priority: 0.9, changefreq: 'daily' };
+    return { priority: 0.9, changefreq: 'daily', lastmod: today };
   }
 
   const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
   if (eventMatch) {
     const slug = eventMatch[1];
     return pastEventSlugs.has(slug)
-      ? { priority: 0.3, changefreq: 'yearly' }
-      : { priority: 0.65, changefreq: 'daily' };
+      ? { priority: 0.3, changefreq: 'yearly', lastmod: today }
+      : { priority: 0.72, changefreq: 'daily', lastmod: today };
   }
 
   if (pathname.match(/^\/(?:en\/routes|rutas)\/[^/]+\/$/)) {
@@ -169,11 +172,7 @@ function getSitemapMeta(url, pastEventSlugs) {
   }
 
   if (pathname.match(/^\/(?:en\/venues|salas)\/[^/]+\/$/)) {
-    return { priority: 0.65, changefreq: 'daily' };
-  }
-
-  if (pathname.match(/^\/(?:en\/artists|artistas)\/[^/]+\/$/)) {
-    return { priority: 0.65, changefreq: 'daily' };
+    return { priority: 0.66, changefreq: 'weekly', lastmod: today };
   }
 
   if (pathname.match(/^\/(?:en\/guides|guias)\/[^/]+\/$/)) {
@@ -190,6 +189,8 @@ function getSitemapMeta(url, pastEventSlugs) {
 function shouldIndexPage(page, pastEventSlugs) {
   const pathname = normalizePathname(new URL(page).pathname);
   if (ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname)) return false;
+
+  if (pathname.match(/^\/(?:en\/artists|artistas|en\/venues|salas)\/[^/]+\/$/)) return false;
 
   const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
   if (eventMatch) {
@@ -211,6 +212,7 @@ export function createSitemapConfig(rootDir) {
         ...item,
         changefreq: meta.changefreq,
         priority: meta.priority,
+        lastmod: meta.lastmod,
         links: getAlternateLinks(item.url),
       };
     },

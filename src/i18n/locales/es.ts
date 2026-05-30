@@ -89,7 +89,7 @@ export const es = {
 
   // Events page
   events: {
-    title: 'Eventos en Granada',
+    title: 'Eventos en Granada hoy: conciertos, gratis y entradas',
     subtitle: 'Conciertos, exposiciones, flamenco y planes culturales seleccionados por locales',
     upcoming: 'Próximos',
     featured: 'Destacados',
@@ -127,12 +127,12 @@ export const es = {
     archiveEyebrow: 'AGENDA',
     archiveEyebrowYear: 'AGENDA LOCAL',
     archiveTitleLabel: 'PRÓXIMOS',
-    pageDescription: 'Agenda cultural de Granada: conciertos, teatro, exposiciones, eventos gratis, salas, barrios, fechas y entradas para planear mejor tu visita.',
+    pageDescription: 'Agenda de eventos en Granada actualizada: conciertos, teatro, exposiciones, planes gratis, fechas, salas, barrios y entradas oficiales.',
   },
 
   // Routes page
   routes: {
-    title: 'Rutas por Granada a pie',
+    title: 'Rutas por Granada a pie: Albaicín, tapas y miradores',
     subtitle: 'Descubre la ciudad con itinerarios diseñados por granadinos: miradores, tapeo y lugares secretos',
     featured: 'Destacada',
     stops: 'paradas',
@@ -179,7 +179,7 @@ export const es = {
     ctaTitle: '¿Listo para explorar Granada?',
     ctaText: 'Descubre la ciudad a través de los ojos de quienes la conocen mejor',
     ctaBtn: 'Ver eventos',
-    pageDescription: 'Rutas por Granada con miradores, tapas, Albaicín, Sacromonte, Realejo y planes a pie creados por locales para organizar mejor tu visita.',
+    pageDescription: 'Rutas por Granada a pie con Albaicín, Sacromonte, Realejo, miradores, tapas e itinerarios locales para 2 horas, 1 día o fin de semana.',
   },
 
   // Detail pages (events & routes)
@@ -466,8 +466,8 @@ ctaAriaLabel: 'Descubre Granada',
 
   // Blog
   blog: {
-    title: 'Guías de Granada',
-    subtitle: 'Guías prácticas de Granada: Alhambra, tapas, miradores, barrios, rutas y consejos locales para preparar una visita realista.',
+    title: 'Guías de Granada: Alhambra, tapas, verano y barrios',
+    subtitle: 'Guías prácticas de Granada: Alhambra, tapas, miradores, Corpus, verano, barrios, rutas y consejos locales para preparar una visita realista.',
     readingTime: '{{minutes}} min de lectura',
     publishedOn: 'Publicado el {{date}}',
     by: 'Por {{author}}',

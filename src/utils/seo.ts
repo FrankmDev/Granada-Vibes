@@ -123,7 +123,7 @@ export function getRouteMetaDescription(route: Route, locale: Locale): string {
  * Generate OG image URL — returns a branded Granada fallback.
  */
 export function getOgImageUrl(_text: string): string {
-  return 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&h=630&fit=crop&q=80';
+  return 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg';
 }
 
 export function resolveOgImageUrl(image = DEFAULT_OG_IMAGE): string {

@@ -60,7 +60,7 @@ const heroMetadata = [
 ];
 ---
 
-<BaseLayout locale={locale} title={title} description={description} breadcrumb={breadcrumb}>
+<BaseLayout locale={locale} title={title} description={description} breadcrumb={breadcrumb} noindex>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
 
   <SubpageHero
