@@ -1,5 +1,5 @@
 ---
-import { getAllEvents, getFeaturedRoutes, getAllPosts, getAllMixedRoutes } from '@data/index.js';
+import { getIndexableEvents, getFeaturedRoutes, getAllPosts, getAllMixedRoutes } from '@data/index.js';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
@@ -26,7 +26,7 @@ const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
 const { locale } = Astro.props;
 const currentPath = Astro.url.pathname;
 const todayStr = madridDateFormatter.format(new Date());
-const allEvents = getAllEvents();
+const allEvents = getIndexableEvents();
 const featuredRoutes = getFeaturedRoutes();
 const allPosts = getAllPosts();
 const allMixedRoutes = getAllMixedRoutes();

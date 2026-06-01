@@ -1,6 +1,164 @@
 import type { Event } from '@types';
 
 export const eventOverrides: Record<string, Partial<Event>> = {
+  'la-farsa': {
+    description: {
+      es: 'La Farsa actúa en JJ Taberna el 6 de junio con un directo pequeño, cercano y muy útil para quien busca música mestiza en formato bar y entrada asequible.',
+      en: 'La Farsa plays JJ Taberna on 6 June in a small, close-range live set for people looking for a low-friction Granada gig with a fusion sound and affordable ticket.'
+    },
+    longDescription: {
+      es: `La Farsa llega a JJ Taberna como uno de esos conciertos que funcionan mejor precisamente por su escala corta. No es un gran recinto ni una producción de festival: es un plan de sala-bar en el que la distancia entre banda y público casi desaparece, y eso en Granada suele traducirse en una noche mucho más viva y menos ceremoniosa.
+
+El interés real de esta fecha está en el formato. JJ Taberna concentra a un público que suele ir a escuchar, no solo a pasar. Si buscas un concierto de mestizaje y fusión en el centro, con entrada contenida y sin la logística de una sala grande, esta ficha te da el contexto suficiente para decidir rápido si encaja con tu noche.`,
+      en: `La Farsa lands at JJ Taberna in the kind of Granada live setting that works because it stays small. This is not a festival-scale production. It is a bar-room concert where the distance between band and crowd almost disappears, which usually means a sharper, more social night out.
+
+The real value of this listing is the format. JJ Taberna tends to attract people who go to listen, not just to fill time. If you want a fusion-leaning show in central Granada, with a modest ticket and none of the friction of a larger venue, this page gives you enough context to decide quickly.`
+    },
+    tips: {
+      es: 'Úsalo como plan de noche en el centro: cena antes por Realejo o Calle Navas y llega con margen corto, porque en conciertos de sala pequeña el ambiente se forma rápido.',
+      en: 'Use it as a city-centre evening plan: eat first in Realejo or around Calle Navas and arrive with a bit of margin, because small-room gigs in Granada settle fast.'
+    },
+  },
+  'baile-swing-con-carlos-ligero-cuarteto': {
+    description: {
+      es: 'Baile Swing con Carlos Ligero Cuarteto propone una fecha de jazz bailable en Ool Ya Koo, útil para quien busca un plan musical más social que contemplativo.',
+      en: 'Swing Dance with Carlos Ligero Quartet brings a dance-friendly jazz night to Ool Ya Koo, ideal for people who want a social Granada music plan rather than a seated concert.'
+    },
+    longDescription: {
+      es: `Esta fecha en Ool Ya Koo no se entiende solo como concierto: funciona mejor como encuentro de baile, escucha y ambiente. El valor está en que no te sientas delante de un escenario a esperar repertorio; entras en una noche con ritmo, interacción y un punto de comunidad muy distinto al de un bolo tradicional.
+
+Si te interesa el jazz en su versión más física y compartida, Carlos Ligero Cuarteto encaja bien en la agenda local. Ool Ya Koo suele funcionar mejor en este tipo de propuestas porque permite cercanía, movimiento y una experiencia menos rígida que la de una sala clásica.`,
+      en: `This Ool Ya Koo date makes more sense as a social music night than as a conventional concert. The value is that you are not just sitting in front of a stage waiting for a setlist. You step into a rhythm-led evening with movement, interaction and a stronger sense of shared atmosphere.
+
+If you like jazz in its more physical, danceable form, Carlos Ligero Quartet fits well into Granada's live calendar. Ool Ya Koo suits this kind of plan because the room allows closeness, motion and a looser format than a traditional seated venue.`
+    },
+  },
+  'joselu-manteca': {
+    description: {
+      es: 'Joselu Manteca pasa por JJ Taberna con una fecha de formato corto y centro urbano, pensada para público que prioriza cercanía y descubrimiento local.',
+      en: 'Joselu Manteca stops at JJ Taberna for a compact city-centre date aimed at people who value closeness, local discovery and a low-ceremony live set.'
+    },
+    longDescription: {
+      es: `JJ Taberna suele ser un buen termómetro para detectar conciertos que no viven tanto del nombre como del contexto. En el caso de Joselu Manteca, la propuesta encaja en ese tipo de noche donde la sala pequeña importa casi tanto como el repertorio: barra cerca, público mezclado y margen para escuchar sin la rigidez de un teatro o una sala grande.
+
+Para alguien que busca planes musicales distintos a los grandes titulares de agenda, esta fecha tiene utilidad clara. Es una opción razonable para completar una noche por el centro con música en directo, ticket contenido y un formato fácil de encajar después de tapear o pasear.`,
+      en: `JJ Taberna is often a good signal for concerts that depend as much on setting as on name recognition. In Joselu Manteca’s case, the appeal sits in that small-room format: bar close by, mixed crowd and enough immediacy to listen without the stiffness of a theatre or larger hall.
+
+For visitors or locals looking beyond the biggest headline gigs, this listing has clear use. It works well as a central-Granada live plan with modest ticket cost and an easy fit after tapas or an evening walk.`
+    },
+  },
+  'the-fixed-trio': {
+    description: {
+      es: 'The Fixed Trío lleva un directo de blues y rhythm and blues a Lemon Rock, en una fecha útil para quien quiere música en vivo con ambiente de bar y entrada baja.',
+      en: 'The Fixed Trio brings a blues and rhythm-and-blues live set to Lemon Rock, a practical pick for anyone after live music, bar atmosphere and a low ticket threshold.'
+    },
+    longDescription: {
+      es: `En Granada hay conciertos que se disfrutan por el cartel y otros por el sitio donde pasan. The Fixed Trío en Lemon Rock pertenece bastante a la segunda categoría: una sala-bar muy bien integrada en el centro, con público que suele ir a escuchar de verdad y con un formato que favorece los estilos de raíz, el groove y el directo sin maquillaje.
+
+Si te interesan los conciertos de blues, R&B y banda pequeña donde el sonido cercano importa, esta fecha tiene más valor del que sugiere el precio. También es una de esas noches fáciles de recomendar a quien ya ha visto lo principal de Granada y quiere rematar el día con un plan local, no turístico.`,
+      en: `Some Granada concerts are mainly about the headline. Others are about the room. The Fixed Trio at Lemon Rock belongs strongly to the second category: a central bar-venue with a listening crowd and the kind of format that flatters roots music, groove and unvarnished live sound.
+
+If you are into blues, R&B and small-band gigs where closeness matters, this date offers more than the ticket price suggests. It is also the sort of plan that makes sense once you have done Granada’s headline sights and want a local evening rather than a tourist-scripted one.`
+    },
+  },
+  'granada-latina-festival': {
+    description: {
+      es: 'Granada Latina Festival plantea una jornada más amplia y festiva en Cortijo del Conde, pensada para público que busca un plan de verano con formato de evento y no solo de concierto.',
+      en: 'Granada Latina Festival is a broader, more festive date at Cortijo del Conde for people who want a summer event format rather than a simple one-room concert.'
+    },
+    longDescription: {
+      es: `Granada Latina Festival no encaja en la lógica de la sala pequeña ni del recital aislado. Su interés está en el formato de evento: desplazamiento a Cortijo del Conde, público más grande, duración más amplia y un tipo de experiencia donde pesa tanto el ambiente general como los nombres del cartel.
+
+Si buscas una noche de música urbana y latina fuera del circuito más céntrico, esta fecha destaca porque cambia el marco por completo. Conviene pensarla con logística de ida y vuelta, pero precisamente por eso funciona mejor para grupos, para plan de varias horas y para quien quiere una atmósfera más expansiva que la del concierto clásico en bar o club.`,
+      en: `Granada Latina Festival does not sit in the logic of a small-room show or an isolated recital. The appeal is the event format itself: Cortijo del Conde as destination, a bigger crowd, longer duration and a night where the overall atmosphere matters as much as the lineup.
+
+If you want an urban and Latin-leaning music plan outside Granada’s most central circuit, this listing stands out because it changes the frame completely. It requires a bit more transport planning, but that is exactly why it works better for groups, for a multi-hour outing and for anyone after a more expansive mood than a standard club date.`
+    },
+  },
+  'albertucho': {
+    description: {
+      es: 'Albertucho toca en JJ Taberna con una fecha valiosa para quien sigue la canción mestiza y el directo cercano en el centro de Granada.',
+      en: 'Albertucho plays JJ Taberna in a date worth tracking for anyone into mestizo songwriting and close-range live music in central Granada.'
+    },
+    longDescription: {
+      es: `Albertucho mantiene un perfil reconocible dentro de la mezcla entre rock, canción de autor y pulso sureño. Verlo en un espacio pequeño como JJ Taberna cambia mucho la experiencia respecto a recintos medios: menos distancia, más atención a la voz y al texto, y una sensación general de concierto cercano que en Granada suele funcionar especialmente bien.
+
+Para quien ya conoce su trayectoria, esta ficha sirve como referencia rápida de fecha, sala y precio. Para quien no, el interés está en que es uno de esos bolos cómodos de encajar en una noche de centro, sin moverte a periferia ni depender de una producción grande para que el plan merezca la pena.`,
+      en: `Albertucho has a recognisable place in the overlap between rock, singer-songwriter writing and a southern live pulse. Seeing him in a small room like JJ Taberna changes the experience a lot compared with medium-sized venues: less distance, more focus on voice and lyrics, and a generally closer concert format.
+
+For people who already follow his work, this page gives fast date, room and price context. For everyone else, the main value is simpler: it is the kind of city-centre live plan that fits easily into a Granada evening without having to cross the city or rely on large-scale production.`
+    },
+  },
+  'orquesta-panorama': {
+    description: {
+      es: 'Orquesta Panorama aparece aquí como gran cita festiva fuera del centro de Granada, más pensada como evento popular de verano que como concierto convencional.',
+      en: 'Orquesta Panorama appears here as a large-scale summer popular event outside central Granada, better understood as a festive date than as a conventional concert listing.'
+    },
+    longDescription: {
+      es: `Orquesta Panorama pertenece a otra liga dentro de la agenda: producción grande, repertorio muy amplio, espíritu de verbena y una puesta en escena diseñada para atraer a públicos muy distintos en la misma noche. Por eso esta ficha tiene sentido aunque el recinto no esté en el centro urbano habitual del visitante de Granada.
+
+Si te interesa saber qué planes grandes se mueven en la provincia y no solo en la capital, esta página añade contexto. No es un bolo íntimo ni de descubrimiento; es un evento pensado para ir en grupo, con desplazamiento y con ganas de espectáculo largo, visual y muy popular.`,
+      en: `Orquesta Panorama sits in a different category within the local agenda: large production, broad repertoire, open-air party energy and staging designed to pull in very different audiences on the same night. That is why this listing still matters even though the venue is outside the standard central-Granada visitor circuit.
+
+If you want to track large summer events across the province and not only intimate city shows, this page adds the right context. It is not a discovery-room concert. It is a group plan built around scale, movement and a long, highly popular show format.`
+    },
+  },
+  'serpiente-negra-el-vez-con-lord-rochester': {
+    description: {
+      es: 'Serpiente Negra con El Vez y Lord Rochester convierte Planta Baja en una fecha de rock and roll y garage con mejor pinta para público de sala que para turismo casual.',
+      en: 'Serpiente Negra with El Vez and Lord Rochester turns Planta Baja into a rock-and-roll and garage date that makes more sense for venue-goers than for casual tourism.'
+    },
+    longDescription: {
+      es: `Planta Baja sigue siendo una de las salas que mejor justifican una salida musical en Granada cuando el plan depende del directo, no del envoltorio. Esta combinación de Serpiente Negra, El Vez y Lord Rochester apunta a una noche de garage, rock and roll y escena de culto donde el ambiente de sala es parte central del valor.
+
+No es una ficha pensada para quien solo quiere “hacer algo” después de cenar. Tiene más sentido para público que ya busca guitarras, repertorio con pegada y una sala con historia local. Por eso la utilidad de esta página está en situar bien la fecha: centro urbano, ticket razonable y una propuesta bastante más específica que la media de agenda generalista.`,
+      en: `Planta Baja remains one of the Granada rooms that most clearly justifies a music night when the value sits in the live show itself rather than in packaging. This combination of Serpiente Negra, El Vez and Lord Rochester points to a garage and rock-and-roll date where venue atmosphere is a major part of the appeal.
+
+This is not a listing for someone who simply wants “something to do” after dinner. It makes more sense for people actively looking for guitars, drive and a room with local history. That is why this page matters: it places the date in context with a central location, sensible ticket and a much more specific proposition than the average generic agenda entry.`
+    },
+  },
+  'liane-carroll': {
+    description: {
+      es: 'Liane Carroll firma una de las citas de jazz más claras de junio en Ool Ya Koo, con formato íntimo y una sala que favorece la escucha.',
+      en: 'Liane Carroll shapes one of June’s clearest jazz dates at Ool Ya Koo, with an intimate format and a room that rewards close listening.'
+    },
+    longDescription: {
+      es: `Para una agenda local como la de Granada, una fecha de Liane Carroll aporta algo muy distinto al circuito de salas rock o programación masiva. Ool Ya Koo encaja bien porque no obliga a convertir el jazz en un evento solemne: mantiene cercanía, permite escuchar con atención y deja margen para una noche más serena que la media del fin de semana.
+
+Si te interesan las voces con peso, los repertorios con lectura más cuidada y los conciertos donde importa sentarse o colocarse bien para escuchar, esta ficha tiene valor real. También es un buen contrapunto para quien ya haya pasado por rutas, miradores o tapas y quiera cerrar el día con un plan cultural menos obvio.`,
+      en: `Within Granada’s local agenda, a Liane Carroll date offers something clearly different from the rock-room circuit or large-format programming. Ool Ya Koo suits it well because it lets jazz stay close and human rather than forcing it into an overly formal event.
+
+If you care about strong vocals, carefully read repertoire and concerts where listening position actually matters, this page has real use. It also works as a good contrast for visitors who have already done the walking-city part of Granada and want a calmer cultural finish to the day.`
+    },
+  },
+  'los-primos-chicos': {
+    description: {
+      es: 'Los Primos Chicos pasan por Planta Baja con una fecha de pop-rock e indie de sala, pensada para público que busca directo de club en una de las salas clásicas de Granada.',
+      en: 'Los Primos Chicos stop at Planta Baja with a pop-rock and indie club date for people looking for a classic Granada venue night rather than a generic event listing.'
+    },
+    longDescription: {
+      es: `Planta Baja sigue siendo una referencia muy clara cuando el plan es ver un grupo de pop-rock o indie en condiciones de sala real: escenario próximo, buen sonido para formatos de banda y un público acostumbrado a ir a conciertos de verdad. En ese marco, Los Primos Chicos encajan como cita de club más que como gran evento.
+
+La utilidad de esta ficha está en eso: te ayuda a separar un bolo de sala con identidad local de un simple apunte de agenda. Si quieres una noche de música en directo con menos artificio, precio asumible y un recinto que forma parte de la historia reciente de Granada, esta fecha entra bien en ese perfil.`,
+      en: `Planta Baja remains a strong reference when the plan is to catch a pop-rock or indie band in a proper room: close stage, solid sound for band formats and a crowd used to attending real gigs. In that setting, Los Primos Chicos fit best as a club date rather than as a broad-stroke event.
+
+That is the real use of this page: it helps separate a locally meaningful venue show from a simple agenda note. If you want a live-music night with less packaging, sensible price and a room that matters in Granada’s recent scene history, this date fits that profile well.`
+    },
+  },
+  'bloody-kalma': {
+    description: {
+      es: 'Bloody Kalma lleva una fecha de rock alternativo a Lemon Rock, con formato accesible y buen encaje para cerrar una noche por el centro con música en vivo.',
+      en: 'Bloody Kalma brings an alternative-rock date to Lemon Rock in a format that fits well if you want to finish a central-Granada evening with live music.'
+    },
+    longDescription: {
+      es: `Lemon Rock funciona especialmente bien para conciertos de banda que necesitan cercanía pero no pierden energía en un entorno híbrido entre sala y bar. Bloody Kalma entra ahí con naturalidad: es una cita de rock alternativo fácil de encajar en una noche por el centro, con entrada baja y un espacio que no exige toda la logística de un recinto grande.
+
+Para quien filtra la agenda buscando conciertos manejables, esta ficha gana por contexto. No promete un evento desmesurado; promete algo más útil: música en directo, localización muy cómoda y un ambiente donde el plan puede empezar con una cena o unas tapas y seguir sin desplazamientos largos.`,
+      en: `Lemon Rock works especially well for band shows that need closeness without losing energy in a hybrid bar-room environment. Bloody Kalma fits naturally into that frame: an alternative-rock date that is easy to slot into a city-centre evening, with a low ticket and no big-venue logistics.
+
+For people filtering Granada’s agenda for manageable live plans, the strength of this page is context. It does not promise oversized spectacle. It offers something more useful: live music, a very comfortable location and an evening that can start with dinner or tapas and continue without a long cross-city move.`
+    },
+  },
   'rustic-festival': {
     price: 13,
     description: {

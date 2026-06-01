@@ -1,7 +1,7 @@
 import type { Event, EventCategory, Locale, LocalizedText, Neighborhood } from '@types';
 import { slugify } from '@utils/slugs';
 import { clampMetaDescription } from '@utils/seo-text';
-import { events } from './events/repository.js';
+import { getIndexableEvents } from './events/queries.js';
 
 export interface VenueDirectoryEntry {
   slug: string;
@@ -90,8 +90,23 @@ function compactTitle(name: string, suffix: string, maxLength = 54): string {
   return `${compactName(name, maxLength - suffix.length)}${suffix}`;
 }
 
+function formatDirectoryDate(date: string, locale: Locale): string {
+  const [year, month, day] = date.split('-');
+  if (!year || !month || !day) return date;
+
+  if (locale === 'en') {
+    return new Date(`${date}T12:00:00`).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  return `${day}/${month}/${year}`;
+}
+
 function directoryEvents(): Event[] {
-  return events.slice().sort(sortEventsByDate);
+  return getIndexableEvents().slice().sort(sortEventsByDate);
 }
 
 function getVenueIdentity(venue: string): { slug: string; name: string } {
@@ -129,31 +144,67 @@ function getArtistIdentity(event: Event): { slug: string; name: string } {
 function venueDescription(entry: Pick<VenueDirectoryEntry, 'name' | 'events' | 'upcomingEvents' | 'categories'>): LocalizedText {
   const total = entry.events.length;
   const upcoming = entry.upcomingEvents.length;
+  const nextEvent = entry.upcomingEvents[0];
+  const nextDateEs = nextEvent ? formatDirectoryDate(nextEvent.date, 'es') : null;
+  const nextDateEn = nextEvent ? formatDirectoryDate(nextEvent.date, 'en') : null;
   return {
-    es: clampMetaDescription(`${entry.name}: agenda en Granada con ${upcoming} próximas fechas, entradas, horarios, barrio y ${total} eventos registrados para planear tu visita.`),
-    en: clampMetaDescription(`${entry.name}: Granada agenda with ${upcoming} upcoming dates, tickets, times, neighbourhood details and ${total} listed events to plan your visit.`),
+    es: clampMetaDescription(
+      nextEvent && nextDateEs
+        ? `${entry.name} en Granada: próxima fecha el ${nextDateEs}, con ${upcoming} eventos activos, horarios, precios y contexto útil antes de ir.`
+        : `${entry.name} en Granada: agenda cultural con ${upcoming} próximas fechas, precios, horarios y ${total} eventos registrados.`
+    ),
+    en: clampMetaDescription(
+      nextEvent && nextDateEn
+        ? `${entry.name} in Granada: next confirmed date on ${nextDateEn}, plus ${upcoming} active listings, prices, times and useful venue context.`
+        : `${entry.name} in Granada: cultural agenda with ${upcoming} upcoming dates, prices, times and ${total} listed events.`
+    ),
   };
 }
 
 function venueIntro(entry: Pick<VenueDirectoryEntry, 'name' | 'upcomingEvents' | 'categories'>): LocalizedText {
+  const nextEvent = entry.upcomingEvents[0];
+  const nextDateEs = nextEvent ? formatDirectoryDate(nextEvent.date, 'es') : null;
+  const nextDateEn = nextEvent ? formatDirectoryDate(nextEvent.date, 'en') : null;
   return {
-    es: `${entry.name} forma parte del mapa cultural de Granada. Esta página agrupa su agenda actualizada, próximos eventos, precios visibles, horarios y enlaces a fichas con información práctica para decidir rápido.`,
-    en: `${entry.name} is part of Granada's cultural map. This page groups its updated agenda, upcoming events, visible prices, times and links to listings with practical information for quick decisions.`,
+    es: nextEvent && nextDateEs
+      ? `${entry.name} forma parte del circuito cultural activo de Granada. Aquí tienes la próxima fecha confirmada para ${nextDateEs}, los eventos ya publicados en este espacio y enlaces a cada ficha para revisar precios, horarios, tipo de plan y contexto local antes de decidir.`
+      : `${entry.name} forma parte del mapa cultural de Granada. Esta página reúne las fechas activas publicadas para este espacio, sus categorías más habituales y enlaces directos a cada evento para revisar precios, horarios y contexto local.`,
+    en: nextEvent && nextDateEn
+      ? `${entry.name} is part of Granada's active cultural circuit. Here you have the next confirmed date on ${nextDateEn}, the live listings already published for this venue and direct links to each page so you can check price, timing, plan type and local context before deciding.`
+      : `${entry.name} is part of Granada's cultural map. This page groups the active listings published for this venue, its most common categories and direct links to each event so you can review prices, timing and local context.`,
   };
 }
 
 function artistDescription(entry: Pick<ArtistDirectoryEntry, 'name' | 'events' | 'upcomingEvents'>): LocalizedText {
+  const nextEvent = entry.upcomingEvents[0];
+  const nextDateEs = nextEvent ? formatDirectoryDate(nextEvent.date, 'es') : null;
+  const nextDateEn = nextEvent ? formatDirectoryDate(nextEvent.date, 'en') : null;
   return {
-    es: clampMetaDescription(`${entry.name} en Granada: ${entry.upcomingEvents.length} próximas fechas, entradas, salas y eventos relacionados en la agenda musical local.`),
-    en: clampMetaDescription(`${entry.name} in Granada: ${entry.upcomingEvents.length} upcoming dates, tickets, venues and related events in the local music agenda.`),
+    es: clampMetaDescription(
+      nextEvent && nextDateEs
+        ? `${entry.name} en Granada: próxima fecha el ${nextDateEs} en ${nextEvent.venue}, con entradas, contexto del concierto y más planes musicales relacionados.`
+        : `${entry.name} en Granada: ${entry.upcomingEvents.length} próximas fechas, entradas, salas y eventos relacionados en la agenda musical local.`
+    ),
+    en: clampMetaDescription(
+      nextEvent && nextDateEn
+        ? `${entry.name} in Granada: next date on ${nextDateEn} at ${nextEvent.venue}, with ticket context, venue details and related music plans.`
+        : `${entry.name} in Granada: ${entry.upcomingEvents.length} upcoming dates, tickets, venues and related events in the local music agenda.`
+    ),
   };
 }
 
 function artistIntro(entry: Pick<ArtistDirectoryEntry, 'name' | 'venues' | 'upcomingEvents'>): LocalizedText {
   const venues = entry.venues.slice(0, 3).join(', ');
+  const nextEvent = entry.upcomingEvents[0];
+  const nextDateEs = nextEvent ? formatDirectoryDate(nextEvent.date, 'es') : null;
+  const nextDateEn = nextEvent ? formatDirectoryDate(nextEvent.date, 'en') : null;
   return {
-    es: `Ficha de ${entry.name} en GRN Urban: fechas en Granada, recintos, entradas cuando estén disponibles y eventos similares para seguir explorando la agenda musical local.${venues ? ` Recintos relacionados: ${venues}.` : ''}`,
-    en: `${entry.name} on GRN Urban: Granada dates, venues, tickets when available and similar events to keep exploring the local music agenda.${venues ? ` Related venues: ${venues}.` : ''}`,
+    es: nextEvent && nextDateEs
+      ? `Ficha de ${entry.name} en GRN URBAN: próxima fecha en Granada el ${nextDateEs}${nextEvent.venue ? ` en ${nextEvent.venue}` : ''}, con acceso rápido a la información del concierto, entradas cuando existan, recintos relacionados y otros planes musicales de la misma escena.${venues ? ` Salas frecuentes: ${venues}.` : ''}`
+      : `Ficha de ${entry.name} en GRN URBAN: fechas en Granada, recintos, entradas cuando estén disponibles y eventos similares para seguir explorando la agenda musical local.${venues ? ` Salas frecuentes: ${venues}.` : ''}`,
+    en: nextEvent && nextDateEn
+      ? `${entry.name} on GRN URBAN: next Granada date on ${nextDateEn}${nextEvent.venue ? ` at ${nextEvent.venue}` : ''}, with direct access to the live listing, tickets when available, related venues and similar music plans across the local scene.${venues ? ` Frequent venues: ${venues}.` : ''}`
+      : `${entry.name} on GRN URBAN: Granada dates, venues, tickets when available and similar events to keep exploring the local music agenda.${venues ? ` Frequent venues: ${venues}.` : ''}`,
   };
 }
 

@@ -129,6 +129,21 @@ export const antesDeLegarContent = {
 
 <hr/>
 
+<h2>8. Qué conviene dejar enlazado antes de viajar</h2>
+
+<p>La preparación útil no termina en los vuelos y el hotel. Si vienes a Granada dos o tres días, conviene llegar con resueltas las dudas que aparecen nada más aterrizar: qué hacer si la Alhambra está agotada, qué itinerario tiene sentido si solo tienes 48 horas y en qué zonas moverte cuando quieres gastar menos sin caer en lugares flojos.</p>
+
+<ul>
+  <li>Si llegas sin entrada a la Alhambra, abre antes esta guía sobre <a href="/guias/entradas-alhambra-agotadas/">qué hacer cuando los tickets están agotados</a>. Separa las alternativas reales de las que solo hacen perder tiempo.</li>
+  <li>Si vienes un fin de semana, combina este artículo con <a href="/guias/granada-fin-de-semana-48-horas/">Granada en 48 horas</a>. Te deja el viaje bastante más ordenado por barrios y franjas del día.</li>
+  <li>Si solo tienes una jornada, guarda también <a href="/guias/granada-en-un-dia-itinerario/">Granada en un día</a>. Evita el error clásico de meter demasiadas cuestas y demasiados monumentos en la misma mañana.</li>
+  <li>Si el presupuesto importa, sigue con <a href="/guias/granada-gratis-que-hacer-sin-gastar/">qué hacer gratis en Granada</a> y <a href="/guias/tapas-gratis-granada/">tapas gratis en Granada</a>. Entre ambas resuelven las dos preguntas económicas que peor calcula casi todo el mundo.</li>
+</ul>
+
+<p>También merece la pena dejar guardada una ruta completa para la primera tarde. Si quieres una llegada fácil, la <a href="/rutas/atardecer-miradores-albaicin/">ruta de miradores del Albaicín al atardecer</a> te da una lectura rápida de la ciudad. Si prefieres un plan sin fricción después de llegar en tren o bus, la <a href="/rutas/ruta-tapeo-tradicional/">ruta de tapeo tradicional</a> encaja con casi cualquier ventana de llegada.</p>
+
+<hr/>
+
 <h2>Lista de comprobación antes de salir</h2>
 
 <ul>
@@ -271,6 +286,21 @@ export const antesDeLegarContent = {
 <p><strong>Underestimating the Albaicín slope.</strong> Walking from the Paseo de los Tristes up to the Mirador de San Nicolás is 20 minutes of steep climbing. With luggage, impossible. With the wrong shoes, unpleasant. In July heat, brutal. Plan the ascent in cool hours and with comfortable footwear.</p>
 
 <p><strong>Going in high season without booking anything.</strong> Hotels, restaurants and the Alhambra sell out. In May or during Holy Week, if you arrive without reservations, you'll end up in the only place still available — which tends to be the worst or most expensive option.</p>
+
+<hr/>
+
+<h2>8. What to leave lined up before you travel</h2>
+
+<p>Useful preparation does not end with flights and a hotel. If you are coming to Granada for two or three days, also leave solved the questions that tend to show up the minute you arrive: what to do if the Alhambra is sold out, which itinerary makes sense if you only have 48 hours, and where to move when you want to spend less without drifting into weak areas.</p>
+
+<ul>
+  <li>If you are arriving without Alhambra tickets, go straight to our <a href="/en/guides/entradas-alhambra-agotadas">sold-out Alhambra tickets guide</a>. It separates real alternatives from time-wasting ones.</li>
+  <li>If you are coming for a weekend, pair this article with <a href="/en/guides/granada-fin-de-semana-48-horas">Granada in 48 hours</a>. That gives you a tighter day-by-day structure.</li>
+  <li>If you only have one day, save <a href="/en/guides/granada-en-un-dia-itinerario">Granada in one day</a>. It helps you avoid the classic mistake of overloading the same day with too many hills and too many monuments.</li>
+  <li>If budget matters, continue with <a href="/en/guides/granada-gratis-que-hacer-sin-gastar">free things to do in Granada</a> and <a href="/en/guides/tapas-gratis-granada">free tapas in Granada</a>. Together they solve the two budget questions most visitors get wrong.</li>
+</ul>
+
+<p>It is also worth saving one actual route before you leave home. If you want an easy first afternoon, the <a href="/en/routes/atardecer-miradores-albaicin">Albaicín viewpoints at sunset route</a> is a good first read on the city. If you want a low-friction plan after arriving by train or bus, the <a href="/en/routes/ruta-tapeo-tradicional">traditional tapas route</a> fits almost any arrival window.</p>
 
 <hr/>
 

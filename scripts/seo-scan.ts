@@ -39,7 +39,7 @@ function contentMatch(html: string, pattern: RegExp): string {
 }
 
 function isNoindex(html: string): boolean {
-  return /<meta name="robots" content="noindex,\s*nofollow"/i.test(html);
+  return /<meta name="robots" content="noindex,\s*(?:follow|nofollow)"/i.test(html);
 }
 
 function scanFile(filePath: string): SeoIssue[] {

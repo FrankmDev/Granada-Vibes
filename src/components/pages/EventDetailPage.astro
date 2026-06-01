@@ -8,7 +8,7 @@ import EventImage from '@components/ui/EventImage.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
-import { getAllArtistEntries, getAllEvents, getAllVenueEntries, getDirectoryHref } from '@data/index.js';
+import { getAllArtistEntries, getAllVenueEntries, getDirectoryHref, getIndexableEvents } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
@@ -34,6 +34,30 @@ interface Props {
 const { locale, event } = Astro.props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
+
+function normalizeLocalizedSeoText(value: string | undefined): string {
+  return (value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function hasDistinctEnglishEventCopy(currentEvent: Event): boolean {
+  const comparisons = [
+    [currentEvent.title.es, currentEvent.title.en],
+    [currentEvent.description.es, currentEvent.description.en],
+    [currentEvent.longDescription?.es, currentEvent.longDescription?.en],
+    [currentEvent.tips?.es, currentEvent.tips?.en],
+  ];
+
+  return comparisons.some(([spanishCopy, englishCopy]) => {
+    const spanish = normalizeLocalizedSeoText(spanishCopy);
+    const english = normalizeLocalizedSeoText(englishCopy);
+    return english.length > 0 && english !== spanish;
+  });
+}
 
 const categoryUrl = `${getRoute('events', locale)}#archive`;
 
@@ -152,7 +176,7 @@ const copy = isEnglish
     };
 
 const venueCoords = getVenueCoordinates(event.venue, event.neighborhood);
-const allEvents = getAllEvents().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+const allEvents = getIndexableEvents().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 const eventIndex = allEvents.findIndex((e) => e.id === event.id);
 const prevEvent = eventIndex > 0 ? allEvents[eventIndex - 1] : null;
 const nextEvent = eventIndex < allEvents.length - 1 ? allEvents[eventIndex + 1] : null;
@@ -203,7 +227,22 @@ const ogImage = eventImage || 'https://upload.wikimedia.org/wikipedia/commons/0/
 const priceLabel = formatPriceLabel(event, t);
 const seoTitle = getEventSeoTitle(event, locale);
 const seoDescription = getEventSeoDescription(event, locale, t);
-const eventDescription = event.description[locale]?.trim() || seoDescription;
+const needsEnglishGeneratedCopy = isEnglish && !hasDistinctEnglishEventCopy(event);
+const englishPriceContext = getPriceStatus(event) === 'free'
+  ? 'free entry'
+  : getPriceStatus(event) === 'paid'
+    ? `tickets from ${priceLabel}`
+    : 'price details to confirm';
+const localizedDescription = event.description[locale]?.trim();
+const eventDescription = needsEnglishGeneratedCopy
+  ? `${event.title.en} is scheduled in Granada on ${formatFullDate(event.date, locale)} at ${formatTime(event.time, locale)}. The event takes place at ${event.venue}, in the ${t(`neighborhoods.${event.neighborhood}`)} area, with ${englishPriceContext}. This page brings together the practical details, venue context and related plans so you can decide if it fits your time in the city.`
+  : localizedDescription || seoDescription;
+const eventLongDescription = needsEnglishGeneratedCopy
+  ? [
+      `Use this listing as the working plan for ${event.title.en}: check the date, time, venue and ticket context first, then use the related routes and guides on this page to build something useful before or after the event.`,
+      `For visitors, the important thing is not only the event itself but how it sits inside the day. GRN URBAN keeps this page connected to nearby plans, cultural routes and current events so the listing is useful beyond a single title and address.`,
+    ]
+  : event.longDescription?.[locale]?.split('\n\n') ?? [];
 
 const breadcrumb = [
   { name: copy.breadcrumb.home, url: getRoute('home', locale) },
@@ -292,9 +331,9 @@ faq.push({
 
             <div class="upg-body content-rich">
               <p class="upg-lead">{eventDescription}</p>
-              {event.longDescription?.[locale] && (
+              {eventLongDescription.length > 0 && (
                 <div class="upg-long-desc">
-                  {event.longDescription[locale].split('\n\n').map((paragraph) => (
+                  {eventLongDescription.map((paragraph) => (
                     <p>{paragraph}</p>
                   ))}
                 </div>

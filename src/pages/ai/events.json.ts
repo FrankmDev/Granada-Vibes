@@ -1,10 +1,10 @@
-import { getAllEvents } from '@data/index.js';
+import { getIndexableEvents } from '@data/index.js';
 import { getAiFeedMeta, jsonResponse, toAiEventFeedItem } from '@utils/ai-feed';
 
 export const prerender = true;
 
 export function GET(): Response {
-  const events = getAllEvents()
+  const events = getIndexableEvents()
     .slice()
     .sort((left, right) => left.date.localeCompare(right.date) || left.time.localeCompare(right.time))
     .map(toAiEventFeedItem);

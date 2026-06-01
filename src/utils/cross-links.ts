@@ -1,5 +1,5 @@
 import type { BlogPost, Event, Neighborhood, Route, RouteCategory } from '@types';
-import { getAllRoutes, getAllEvents, getAllPosts } from '@data/index.js';
+import { getAllRoutes, getAllPosts, getIndexableEvents } from '@data/index.js';
 
 // ═══════════════════════════════════════════════════════════════
 // CROSS-LINK ENGINE — finds related content across silos
@@ -130,7 +130,7 @@ export function getRelatedEventsForBlogPost(post: BlogPost, limit = 2): Event[] 
   const sourceTags = normalizedTags(post);
   const scorer = scoreAgainstSource(sourceTags, [], post.category, post.tags.join(' '));
 
-  const scored = getAllEvents().map((item) => ({
+  const scored = getIndexableEvents().map((item) => ({
     type: 'event' as const,
     item,
     score: scorer(item),
@@ -168,7 +168,7 @@ export function getRelatedEventsForRoute(route: Route, limit = 2): Event[] {
     route.title.es + ' ' + route.description.es
   );
 
-  const scored = getAllEvents().map((item) => ({
+  const scored = getIndexableEvents().map((item) => ({
     type: 'event' as const,
     item,
     score: scorer(item),

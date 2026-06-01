@@ -81,6 +81,48 @@ function hasQueryString(url: string): boolean {
   return new URL(url).search.length > 0;
 }
 
+function urlToHtmlPath(url: string): string {
+  const { pathname } = new URL(url);
+  const normalizedPath = pathname === '/' ? '/index.html' : `${pathname.replace(/\/$/, '')}/index.html`;
+  return path.join(distDir, normalizedPath);
+}
+
+function getMetaRobots(html: string): string {
+  return html.match(/<meta name="robots" content="([^"]+)"/i)?.[1] ?? '';
+}
+
+function getCanonicalUrl(html: string): string {
+  return html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1] ?? '';
+}
+
+function getSitemapHtmlIssues(sitemapUrls: Set<string>): { noindexUrls: string[]; canonicalMismatchUrls: string[]; missingHtmlUrls: string[] } {
+  const noindexUrls: string[] = [];
+  const canonicalMismatchUrls: string[] = [];
+  const missingHtmlUrls: string[] = [];
+
+  for (const url of sitemapUrls) {
+    const htmlPath = urlToHtmlPath(url);
+    if (!fs.existsSync(htmlPath)) {
+      missingHtmlUrls.push(url);
+      continue;
+    }
+
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    const robots = getMetaRobots(html);
+    const canonical = getCanonicalUrl(html);
+
+    if (/noindex/i.test(robots)) {
+      noindexUrls.push(url);
+    }
+
+    if (canonical && canonical !== url) {
+      canonicalMismatchUrls.push(`${url} -> ${canonical}`);
+    }
+  }
+
+  return { noindexUrls, canonicalMismatchUrls, missingHtmlUrls };
+}
+
 function getPastGeneratedEventSlugs(): string[] {
   assertFileExists(generatedEventsPath);
   if (!today) return [];
@@ -118,6 +160,7 @@ function main(): void {
   const pastGeneratedEventSlugs = getPastGeneratedEventSlugs();
   const missingFromSitemap = diff(expectedEventUrls, sitemapEventUrls);
   const staleInSitemap = diff(sitemapEventUrls, expectedEventUrls);
+  const sitemapHtmlIssues = getSitemapHtmlIssues(sitemapUrls);
 
   if (wrongDomainUrls.length > 0) {
     console.error('[FAIL] El sitemap contiene URLs con dominio incorrecto:');
@@ -149,9 +192,27 @@ function main(): void {
     process.exitCode = 1;
   }
 
+  if (sitemapHtmlIssues.missingHtmlUrls.length > 0) {
+    console.error('[FAIL] El sitemap contiene URLs sin HTML generado:');
+    for (const url of sitemapHtmlIssues.missingHtmlUrls) console.error(`  - ${url}`);
+    process.exitCode = 1;
+  }
+
+  if (sitemapHtmlIssues.noindexUrls.length > 0) {
+    console.error('[FAIL] El sitemap contiene URLs marcadas como noindex:');
+    for (const url of sitemapHtmlIssues.noindexUrls) console.error(`  - ${url}`);
+    process.exitCode = 1;
+  }
+
+  if (sitemapHtmlIssues.canonicalMismatchUrls.length > 0) {
+    console.error('[FAIL] El sitemap contiene URLs cuyo canonical apunta a otra URL:');
+    for (const url of sitemapHtmlIssues.canonicalMismatchUrls) console.error(`  - ${url}`);
+    process.exitCode = 1;
+  }
+
   if (process.exitCode === 1) return;
 
-  console.log(`[OK] Sitemap SEO verificado: ${expectedEventUrls.size} URLs de eventos, dominio ${expectedOrigin}, sin query params ni eventos generados pasados.`);
+  console.log(`[OK] Sitemap SEO verificado: ${expectedEventUrls.size} URLs de eventos, dominio ${expectedOrigin}, sin query params, noindex, canonicals cruzados ni eventos generados pasados.`);
 }
 
 main();

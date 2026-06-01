@@ -175,6 +175,10 @@ function getSitemapMeta(url, pastEventSlugs) {
     return { priority: 0.66, changefreq: 'weekly', lastmod: today };
   }
 
+  if (pathname.match(/^\/(?:en\/artists|artistas)\/[^/]+\/$/)) {
+    return { priority: 0.64, changefreq: 'weekly', lastmod: today };
+  }
+
   if (pathname.match(/^\/(?:en\/guides|guias)\/[^/]+\/$/)) {
     return { priority: 0.6, changefreq: 'monthly' };
   }
@@ -189,8 +193,6 @@ function getSitemapMeta(url, pastEventSlugs) {
 function shouldIndexPage(page, pastEventSlugs) {
   const pathname = normalizePathname(new URL(page).pathname);
   if (ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname)) return false;
-
-  if (pathname.match(/^\/(?:en\/artists|artistas|en\/venues|salas)\/[^/]+\/$/)) return false;
 
   const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
   if (eventMatch) {

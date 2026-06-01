@@ -6,7 +6,7 @@ import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import EventArchiveCard from '@components/events/EventArchiveCard.astro';
 import EventDiscoveryLinks from '@components/events/EventDiscoveryLinks.astro';
-import { getAllEvents } from '@data/index.js';
+import { getIndexableEvents } from '@data/index.js';
 import { eventHubs, type EventHubConfig } from '@data/seo/event-hubs.js';
 import { getEventDiscoveryLinks } from '@utils/event-hub-links';
 import { useTranslations } from '@i18n/utils';
@@ -71,12 +71,12 @@ function matchesHub(event: Event): boolean {
   return true;
 }
 
-const events = getAllEvents()
+const events = getIndexableEvents()
   .filter(matchesHub)
   .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
 
 const featuredEvents = events.slice(0, 6);
-const nearbyEvents = getAllEvents()
+const nearbyEvents = getIndexableEvents()
   .filter((event) => isUpcoming(event) && !events.some((item) => item.id === event.id))
   .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time))
   .slice(0, 4);

@@ -136,6 +136,21 @@ export const granadaGratisContent = {
 </ol>
 
 <p>Coste total del día: 8–12€ entre cafés y bebidas. Sin contar transporte al llegar a Granada ni alojamiento. El sistema de tapas lo hace posible.</p>
+
+<hr/>
+
+<h2>6 bis. Cómo convertir lo gratuito en un día bien armado</h2>
+
+<p>El error habitual no es no encontrar planes gratis. El error es encajarlos mal. Granada tiene cuestas, cambios de barrio y horarios de apertura que castigan mucho la improvisación. Si quieres que la parte gratuita de la ciudad se sienta generosa y no caótica, conviene agrupar los planes por zonas y apoyarte en rutas que ya resuelvan el orden.</p>
+
+<ul>
+  <li>Si tu prioridad son las vistas y el paseo, combina esta guía con la <a href="/rutas/atardecer-miradores-albaicin/">ruta de miradores del Albaicín al atardecer</a>. Ya deja ordenados San Nicolás, las callejas intermedias y la bajada al centro.</li>
+  <li>Si quieres comer barato sin caer en trampas para turistas, enlaza esta página con <a href="/guias/tapas-gratis-granada/">tapas gratis en Granada</a> y con la <a href="/rutas/ruta-tapeo-tradicional/">ruta de tapeo tradicional</a>.</li>
+  <li>Si prefieres una tarde más verde y tranquila, añade la <a href="/rutas/bosque-alhambra-acequias/">ruta del bosque de la Alhambra y las acequias</a>. Es la forma más sencilla de alargar la parte gratuita del día sin repetir siempre el mismo eje Catedral-Albaicín.</li>
+  <li>Si este es tu primer viaje, ten también abierta la guía de <a href="/guias/antes-de-llegar-granada/">antes de llegar a Granada</a>. Resolver bien fechas, entradas y alojamiento es lo que hace que luego encajen los planes gratuitos.</li>
+</ul>
+
+<p>El patrón que mejor suele funcionar es simple: patrimonio por la mañana, tapas al mediodía, descanso, bosque o miradores por la tarde y un último tramo de barrio en el que la vida local siga viéndose intacta. En Granada importa más el orden que la acumulación de lugares.</p>
 `,
 
   en: `
@@ -275,5 +290,20 @@ export const granadaGratisContent = {
 </ol>
 
 <p>Total day cost: €8–12, split between coffees and drinks. Not counting transport to Granada or accommodation. The tapa system makes it possible.</p>
+
+<hr/>
+
+<h2>6 bis. How to turn the free stuff into a well-built day</h2>
+
+<p>The usual mistake is not failing to find free plans. The mistake is stitching them together badly. Granada has hills, neighbourhood shifts and opening times that punish improvisation. If you want the free side of the city to feel generous instead of chaotic, group plans by area and use routes that already solve the order for you.</p>
+
+<ul>
+  <li>If your priority is views and walking, combine this guide with the <a href="/en/routes/atardecer-miradores-albaicin">Albaicín viewpoints sunset route</a>. It gives you a ready-made order between San Nicolás, side streets and the descent back to the centre.</li>
+  <li>If you want cheap food without falling into tourist traps, pair this page with <a href="/en/guides/tapas-gratis-granada">free tapas in Granada</a> and the <a href="/en/routes/ruta-tapeo-tradicional">traditional tapas route</a>.</li>
+  <li>If you prefer a greener and quieter afternoon, add the <a href="/en/routes/bosque-alhambra-acequias">Alhambra forest and acequias route</a>. It is the easiest way to extend the free part of the day without repeating the same Cathedral-Albaicín axis.</li>
+  <li>If this is your first trip, keep <a href="/en/guides/antes-de-llegar-granada">Before visiting Granada</a> open as well. Getting dates, tickets and accommodation right is what makes the free plans actually fit later.</li>
+</ul>
+
+<p>The pattern that tends to work best is simple: heritage in the morning, tapas at midday, rest, forest or viewpoints in the afternoon, and a final neighbourhood stretch where local life still feels intact. Granada rewards good sequencing more than brute-force sightseeing.</p>
 `,
 };

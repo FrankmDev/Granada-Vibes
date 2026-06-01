@@ -249,6 +249,23 @@ export const miradoresContent = {
     <strong class="text-[#e8622a] font-semibold">Ruta recomendada para una tarde:</strong> Sube en el C31 hasta San Cristóbal. Disfruta las vistas. Baja andando hasta San Nicolás (10 minutos). Sigue hasta Santa Isabel la Real (5 minutos). Baja por las callejuelas del Albaicín hasta el Paseo de los Tristes y cena en alguna terraza junto al río Darro. Tres miradores, una tarde perfecta.
   </p>
 </div>
+
+<h2 class="text-2xl font-bold text-[#e8622a] mt-12 mb-4">Qué hacer antes o después de subir</h2>
+
+<p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
+  Un mirador por sí solo rara vez llena bien un día. Granada funciona mejor cuando usas la subida como el punto alto de una secuencia: tapeo antes, paseo después o una ruta que haga que el desnivel tenga sentido y no parezca aleatorio. El orden correcto cambia mucho la experiencia.
+</p>
+
+<ul class="list-disc pl-6 space-y-2 mb-6 text-[var(--color-text-secondary)]">
+  <li>Si quieres un recorrido ya pensado entre varios miradores, usa la <a href="/rutas/atardecer-miradores-albaicin/">ruta de miradores del Albaicín al atardecer</a>.</li>
+  <li>Si buscas mantener el día barato, combina esta página con <a href="/guias/granada-gratis-que-hacer-sin-gastar/">qué hacer gratis en Granada</a>.</li>
+  <li>Si quieres terminar con comida local de verdad, baja de nuevo al centro y sigue con <a href="/guias/tapas-gratis-granada/">tapas gratis en Granada</a> o con la <a href="/rutas/ruta-tapeo-tradicional/">ruta de tapeo tradicional</a>.</li>
+  <li>Si todavía estás organizando todo el viaje, empieza antes por <a href="/guias/antes-de-llegar-granada/">antes de llegar a Granada</a>. La ciudad se disfruta mucho más cuando no gastas la mejor luz y la mejor energía en una mala secuencia.</li>
+</ul>
+
+<p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
+  Para una primera visita, la combinación que mejor funciona sigue siendo la más simple: subida suave a última hora de la tarde, uno o dos miradores con buena luz, bajada caminando por el Albaicín y cena en Realejo o en el centro histórico. No hace falta convertir cada vista en una maratón de cuestas.
+</p>
 `,
 
   en: `
@@ -501,5 +518,22 @@ export const miradoresContent = {
     <strong class="text-[#e8622a] font-semibold">Recommended route for an afternoon:</strong> Take bus C31 up to San Cristóbal. Enjoy the views. Walk down to San Nicolás (10 minutes). Continue to Santa Isabel la Real (5 minutes). Wind your way down through the alleys of the Albaicín to Paseo de los Tristes and have dinner at one of the terraces by the Darro river. Three viewpoints, one perfect afternoon.
   </p>
 </div>
+
+<h2 class="text-2xl font-bold text-[#e8622a] mt-12 mb-4">What to do before or after the viewpoints</h2>
+
+<p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
+  A viewpoint on its own rarely fills a day well. Granada works better when you use it as the high point of a sequence: tapas first, a walk after, or a route that makes the elevation feel earned instead of random. The right order changes the whole experience.
+</p>
+
+<ul class="list-disc pl-6 space-y-2 mb-6 text-[var(--color-text-secondary)]">
+  <li>If you want a ready-made order between several miradores, use the <a href="/en/routes/atardecer-miradores-albaicin">Albaicín viewpoints sunset route</a>.</li>
+  <li>If you are keeping the day cheap, combine this page with <a href="/en/guides/granada-gratis-que-hacer-sin-gastar">free things to do in Granada</a>.</li>
+  <li>If you want to finish with proper local food, drop back towards the centre and continue with <a href="/en/guides/tapas-gratis-granada">free tapas in Granada</a> or the <a href="/en/routes/ruta-tapeo-tradicional">traditional tapas route</a>.</li>
+  <li>If you are still organising the whole trip, start first with <a href="/en/guides/antes-de-llegar-granada">Before visiting Granada</a>. Granada is much better when you do not waste your best light and energy on bad sequencing.</li>
+</ul>
+
+<p class="text-[var(--color-text-secondary)] leading-relaxed mb-4">
+  For most first-time visitors, the best combination is still the simplest one: a soft climb in the late afternoon, one or two viewpoints with good light, a walk down through the Albaicín and dinner in Realejo or the historic centre. You do not need to turn every view into a hill marathon.
+</p>
 `,
 };

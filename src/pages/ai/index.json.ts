@@ -1,4 +1,4 @@
-import { getAllEvents, getAllPosts, getAllRoutes } from '@data/index.js';
+import { getAllPosts, getAllRoutes, getIndexableEvents } from '@data/index.js';
 import { SITE_CONFIG } from '@config/site';
 import { getAiFeedMeta, jsonResponse } from '@utils/ai-feed';
 
@@ -12,7 +12,7 @@ export function GET(): Response {
         name: 'Events',
         url: `${SITE_CONFIG.url}/ai/events.json`,
         description: 'Upcoming events in Granada with dates, venues, prices, images and canonical URLs.',
-        count: getAllEvents().length,
+        count: getIndexableEvents().length,
       },
       {
         name: 'Routes',

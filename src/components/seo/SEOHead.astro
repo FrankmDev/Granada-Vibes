@@ -56,8 +56,8 @@ const alternateUrls = getAlternateUrls(currentPath);
 <!-- Primary Meta Tags -->
 <title>{fullTitle}</title>
 <meta name="description" content={fullDescription} />
-<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
-<meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+<meta name="googlebot" content={noindex ? 'noindex, follow' : 'index, follow'} />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link rel="canonical" href={fullCanonical} />
 {googleSiteVerification && (

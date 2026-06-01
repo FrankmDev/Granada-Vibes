@@ -1,11 +1,11 @@
-import { getAllEvents, getAllPosts, getAllRoutes } from '@data/index.js';
+import { getAllPosts, getAllRoutes, getIndexableEvents } from '@data/index.js';
 import { SITE_CONFIG } from '@config/site';
 import { eventUrl, guideUrl, routeUrl, textResponse } from '@utils/ai-feed';
 
 export const prerender = true;
 
 function listEvents(): string {
-  return getAllEvents()
+  return getIndexableEvents()
     .slice()
     .sort((left, right) => left.date.localeCompare(right.date) || left.time.localeCompare(right.time))
     .slice(0, 40)
