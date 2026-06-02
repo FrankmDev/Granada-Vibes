@@ -20,6 +20,30 @@ const sourceNote = (label: string, links: string[]): string => `
 `;
 
 export const editorialMediaByBlogSlug: Record<string, EditorialMediaBlock> = {
+  'carocas-granada': {
+    es:
+      mediaFigure(
+        '/carocas3.webp',
+        'Plaza Bib-Rambla de Granada',
+        'Bib-Rambla sigue siendo el escenario esencial de las Carocas durante el Corpus de Granada.'
+      ) +
+      sourceNote('Fuentes contrastadas para esta guia', [
+        '<a href="https://turismo.granada.org/es/carocas" target="_blank" rel="noopener">Turismo Granada: que son las Carocas y seleccion municipal de veinte piezas</a>',
+        '<a href="https://www.granada.org/inet/wagenda.nsf/wwtod/E9AE00AE72536482C1258DFF003DAB72/%24file/PROGRAMA%20CORPUS%202026%20WEB.pdf" target="_blank" rel="noopener">Programa oficial del Corpus 2026: exposicion de Carocas en Plaza Bib-Rambla</a>',
+        '<a href="https://clm-granada.com/concurso-de-quintillas-y-carocas/" target="_blank" rel="noopener">Centro de Lenguas Modernas UGR: definicion tecnica de la quintilla y continuidad cultural de la tradicion</a>',
+      ]),
+    en:
+      mediaFigure(
+        '/carocas3.webp',
+        'Plaza Bib-Rambla in Granada',
+        'Bib-Rambla remains the essential setting for the Carocas during Granada Corpus week.'
+      ) +
+      sourceNote('Sources checked for this guide', [
+        '<a href="https://turismo.granada.org/es/carocas" target="_blank" rel="noopener">Turismo Granada: what the Carocas are and the municipal selection of twenty works</a>',
+        '<a href="https://www.granada.org/inet/wagenda.nsf/wwtod/E9AE00AE72536482C1258DFF003DAB72/%24file/PROGRAMA%20CORPUS%202026%20WEB.pdf" target="_blank" rel="noopener">Official Corpus 2026 programme: Carocas exhibition in Plaza Bib-Rambla</a>',
+        '<a href="https://clm-granada.com/concurso-de-quintillas-y-carocas/" target="_blank" rel="noopener">University of Granada CLM: technical definition of the quintilla and the modern educational adaptation of the tradition</a>',
+      ]),
+  },
   'entradas-alhambra-agotadas': {
     es:
       mediaFigure(

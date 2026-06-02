@@ -34,7 +34,7 @@ export const corpusGranada2026Content = {
 <h2>Dónde se vive el Corpus: centro histórico y ferial de Almanjáyar</h2>
 
 <h3>Centro histórico: tradición, Tarasca y procesión</h3>
-<p>El Corpus más antiguo se vive alrededor de la Catedral, Plaza del Carmen, Plaza Bib-Rambla, Puerta Real, Carrera de la Virgen y el entorno de la Fuente de las Batallas. Aquí están las carocas, los altares, el Corpus infantil, los títeres, la música municipal y la procesión religiosa. Es la parte más granadina para quien busca cultura, fotografía y ambiente de calle.</p>
+<p>El Corpus más antiguo se vive alrededor de la Catedral, Plaza del Carmen, Plaza Bib-Rambla, Puerta Real, Carrera de la Virgen y el entorno de la Fuente de las Batallas. Aquí están las carocas, los altares, el Corpus infantil, los títeres, la música municipal y la procesión religiosa. Es la parte más granadina para quien busca cultura, fotografía y ambiente de calle. Si quieres entender bien <strong>que son las carocas, como funcionan las quintillas y por que Bib-Rambla es parada obligatoria</strong>, tenemos una <a href="/guias/carocas-granada/">guia especifica sobre Las Carocas de Granada</a>.</p>
 
 <p>El miércoles 3 de junio, la <strong>Tarasca</strong> sale a las 12:00 h con gigantes, cabezudos, charangas y animación. En 2026 la viste Yolanda Ubago Linares, de Isamar Atelier, según el programa municipal. La gracia está en verla pasar entre familias, móviles levantados y comentarios sobre el vestido. Es una tradición muy nuestra: mitad desfile, mitad termómetro popular. Si quieres el detalle fino de <strong>hora, salida, recorrido habitual y mejores puntos para verla</strong>, tenemos una <a href="/guias/tarasca-granada-2026">guía específica de la Tarasca de Granada 2026</a>.</p>
 

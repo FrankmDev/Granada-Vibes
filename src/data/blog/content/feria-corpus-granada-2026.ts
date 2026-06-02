@@ -114,7 +114,7 @@ export const feriaCorpusGranada2026Content = {
 
 <p>La <strong>feria taurina del Corpus 2026</strong> también forma parte del conjunto festivo y se celebra entre el <strong>3 y el 7 de junio de 2026</strong> en la Plaza de Toros de Granada. No es lo mismo que el ferial de Almanjáyar, pero comparte semana, público y parte del ambiente general del Corpus.</p>
 
-<p>Además, durante esos días conviven pregón, altares, Tarasca, actividades infantiles, títeres, carocas y otros actos repartidos entre el centro histórico y el ferial. Si quieres entender bien cómo encaja todo, la secuencia práctica es esta: <strong>miércoles 3 de junio Tarasca</strong>, <strong>jueves 4 de junio Corpus</strong>, y el ferial funcionando como gran plan de tarde-noche durante toda la semana.</p>
+<p>Además, durante esos días conviven pregón, altares, Tarasca, actividades infantiles, títeres, carocas y otros actos repartidos entre el centro histórico y el ferial. Si quieres entender bien <strong>la parada de Bib-Rambla y el papel de las quintillas satíricas</strong>, suma tambien nuestra <a href="/guias/carocas-granada/">guia sobre Las Carocas de Granada</a>. La secuencia práctica es esta: <strong>miércoles 3 de junio Tarasca</strong>, <strong>jueves 4 de junio Corpus</strong>, y el ferial funcionando como gran plan de tarde-noche durante toda la semana.</p>
 
 <figure>
   <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Plaza%20de%20Toros%20de%20Granada%2C%20Corpus%20Christi%201916.jpg" alt="Plaza de Toros de Granada durante el Corpus" loading="lazy" />
@@ -157,7 +157,7 @@ export const feriaCorpusGranada2026Content = {
 
 <h2>Resumen rápido</h2>
 
-<p>Si necesitas la versión corta: la <strong>Feria del Corpus de Granada 2026</strong> se celebra del <strong>30 de mayo al 6 de junio</strong> en <strong>Almanjáyar</strong>, con <strong>72 casetas</strong>, <strong>entrada libre</strong>, atracciones, ambiente de tarde y de noche, y un transporte público reforzado que en 2026 queda condicionado por <strong>paros parciales del metro con servicios mínimos del 60%</strong>. Para afinar el viaje, combina esta guía con la de <a href="/guias/corpus-granada-2026">Corpus de Granada 2026</a>, la de <a href="/guias/tarasca-granada-2026">la Tarasca</a> y nuestra <a href="/rutas/ruta-corpus-granada-2026">ruta del Corpus para hacer centro, tapas y feria en un día</a>.</p>
+<p>Si necesitas la versión corta: la <strong>Feria del Corpus de Granada 2026</strong> se celebra del <strong>30 de mayo al 6 de junio</strong> en <strong>Almanjáyar</strong>, con <strong>72 casetas</strong>, <strong>entrada libre</strong>, atracciones, ambiente de tarde y de noche, y un transporte público reforzado que en 2026 queda condicionado por <strong>paros parciales del metro con servicios mínimos del 60%</strong>. Para afinar el viaje, combina esta guía con la de <a href="/guias/corpus-granada-2026">Corpus de Granada 2026</a>, la de <a href="/guias/tarasca-granada-2026">la Tarasca</a>, la de <a href="/guias/carocas-granada/">Las Carocas</a> y nuestra <a href="/rutas/ruta-corpus-granada-2026">ruta del Corpus para hacer centro, tapas y feria en un día</a>.</p>
 `,
 
   en: `
@@ -299,6 +299,6 @@ export const feriaCorpusGranada2026Content = {
 
 <h2>Quick Summary</h2>
 
-<p>If you only need the short version: <strong>Granada Corpus Fair 2026</strong> runs from <strong>30 May to 6 June</strong> in <strong>Almanjáyar</strong>, with <strong>72 casetas</strong>, <strong>free entry</strong>, rides, daytime and nighttime atmosphere, and reinforced public transport that in 2026 is affected by <strong>partial metro strike action with 60% minimum service</strong>. For the full picture, combine this with our guides to <a href="/en/guides/corpus-granada-2026">Corpus 2026</a>, <a href="/en/guides/tarasca-granada-2026">the Tarasca</a> and the <a href="/en/routes/ruta-corpus-granada-2026">one-day Corpus route linking the centre, tapas and the fairground</a>.</p>
+<p>If you only need the short version: <strong>Granada Corpus Fair 2026</strong> runs from <strong>30 May to 6 June</strong> in <strong>Almanjáyar</strong>, with <strong>72 casetas</strong>, <strong>free entry</strong>, rides, daytime and nighttime atmosphere, and reinforced public transport that in 2026 is affected by <strong>partial metro strike action with 60% minimum service</strong>. For the full picture, combine this with our guides to <a href="/en/guides/corpus-granada-2026">Corpus 2026</a>, <a href="/en/guides/tarasca-granada-2026">the Tarasca</a>, <a href="/en/guides/carocas-granada/">the Carocas</a> and the <a href="/en/routes/ruta-corpus-granada-2026">one-day Corpus route linking the centre, tapas and the fairground</a>.</p>
 `,
 };

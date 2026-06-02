@@ -12,8 +12,29 @@ import { granadaUnDiaContent } from './content/granada-un-dia.js';
 import { corpusGranada2026Content } from './content/corpus-granada-2026.js';
 import { tarascaGranada2026Content } from './content/tarasca-granada-2026.js';
 import { feriaCorpusGranada2026Content } from './content/feria-corpus-granada-2026.js';
+import { carocasGranadaContent } from './content/carocas-granada.js';
 
 export const posts: BlogPost[] = [
+  {
+    id: 'blog-014',
+    slug: 'carocas-granada',
+    title: {
+      es: 'Las Carocas de Granada: que son, donde verlas y por que importan en el Corpus 2026',
+      en: 'Granada Carocas: what they are, where to see them and why they matter in Corpus 2026',
+    },
+    description: {
+      es: 'Guia SEO y practica sobre las Carocas de Granada: que son, como funcionan las quintillas, donde verlas en Plaza Bib-Rambla, historia, concurso y claves de la edicion 2026 del Corpus.',
+      en: 'Practical SEO guide to Granada’s Carocas: what they are, how the quintillas work, where to see them in Plaza Bib-Rambla, their history, the contest and the main 2026 Corpus details.',
+    },
+    content: carocasGranadaContent,
+    publishDate: '2026-06-02',
+    category: 'cultura',
+    tags: ['carocas', 'carocas granada', 'quintillas', 'plaza bib-rambla', 'corpus', 'corpus granada 2026', 'bib-rambla', 'tradiciones granada'],
+    author: 'GRN URBAN',
+    image: '/carocas1.jpg',
+    readingTime: 9,
+    featured: true,
+  },
   {
     id: 'blog-013',
     slug: 'feria-corpus-granada-2026',
