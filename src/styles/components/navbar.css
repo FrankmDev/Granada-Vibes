@@ -551,15 +551,17 @@
     top: 14px;
     left: 50%;
     transform: translateX(-50%) translateY(-80px);
+    visibility: hidden;
     opacity: 0;
     z-index: 902;
     pointer-events: none;
-    transition: transform 0.55s var(--gg-expo), opacity 0.45s var(--gg-expo);
+    transition: transform 0.55s var(--gg-expo), opacity 0.45s var(--gg-expo), visibility 0.45s var(--gg-expo);
     white-space: nowrap;
   }
 
   .nb.is-scrolled .nb-capsule {
     transform: translateX(-50%) translateY(0);
+    visibility: visible;
     opacity: 1;
     pointer-events: auto;
   }

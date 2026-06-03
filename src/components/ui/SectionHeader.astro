@@ -23,6 +23,8 @@ interface Props {
   ctaLabel?: string;
   /** Show the dot+line decoration row below the header */
   showDecoration?: boolean;
+  /** Visual theme — defaults to cream for backward compatibility */
+  theme?: 'cream' | 'dark' | 'transparent';
 }
 
 const {
@@ -35,10 +37,16 @@ const {
   ctaHref,
   ctaLabel,
   showDecoration = false,
+  theme = 'cream',
 } = Astro.props;
 ---
 
-<header class:list={['section-header', size === 'compact' && 'section-header--compact']}>
+<header class:list={[
+  'section-header',
+  size === 'compact' && 'section-header--compact',
+  theme === 'dark' && 'section-header--dark',
+  theme === 'transparent' && 'section-header--transparent',
+]}>
   <div class="header-top">
     <div class="header-eyebrow">
       <span class="eyebrow-bracket">[</span>
@@ -91,6 +99,9 @@ const {
     display: flex;
     flex-direction: column;
   }
+
+  .section-header--dark { background: var(--color-bg, #080808); }
+  .section-header--transparent { background: transparent; }
 
   .header-top {
     border-top: 1px solid var(--s-border);

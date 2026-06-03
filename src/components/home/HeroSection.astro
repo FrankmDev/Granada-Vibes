@@ -20,10 +20,18 @@ const c = {
   ctaLink: getRoute('events', locale),
   label: t('home.hero.heritageDestination'),
   ariaLabel: t('home.hero.gatewayLabel'),
+  bootTagStart: t('home.hero.bootTagStart'),
+  bootTagVersion: t('home.hero.bootTagVersion'),
+  bootBrand: t('home.hero.bootBrand'),
+  bootTagline: t('home.hero.bootTagline'),
+  bootStatusInit: t('home.hero.bootStatusInit'),
+  bootBuild: t('home.hero.bootBuild'),
+  bootStatusLoading: t('home.hero.bootStatusLoading'),
+  bootStatusReady: t('home.hero.bootStatusReady'),
 };
 ---
 
-<section class="portal-hero" aria-label={c.ariaLabel}>
+<section class="portal-hero" aria-label={c.ariaLabel} data-locale={locale}>
   <h1 class="sr-only">{c.searchHeading}</h1>
 
   <!-- Cinematic Preloader — ultra light -->
@@ -51,8 +59,8 @@ const c = {
       <span class="b-tick"></span><span class="b-tick"></span><span class="b-tick"></span>
     </div>
 
-    <span class="boot-tag boot-tag-tl" aria-hidden="true">[00] INICIO</span>
-    <span class="boot-tag boot-tag-tr" aria-hidden="true">GRN.V1</span>
+    <span class="boot-tag boot-tag-tl" aria-hidden="true">{c.bootTagStart}</span>
+    <span class="boot-tag boot-tag-tr" aria-hidden="true">{c.bootTagVersion}</span>
 
     <div class="boot-brand-wrap">
       <div class="boot-logo-wrap">
@@ -64,13 +72,13 @@ const c = {
       </div>
 
       <div class="boot-lockup">
-        <div class="boot-brand-name">GRANADA URBAN</div>
-        <div class="boot-brand-tagline">Guía de la ciudad</div>
+        <div class="boot-brand-name">{c.bootBrand}</div>
+        <div class="boot-brand-tagline">{c.bootTagline}</div>
         <div class="boot-accent-line" aria-hidden="true"></div>
       </div>
 
       <div class="boot-readout">
-        <span class="boot-status" id="boot-status">Inicializando</span>
+        <span class="boot-status" id="boot-status" data-loading={c.bootStatusLoading} data-ready={c.bootStatusReady}>{c.bootStatusInit}</span>
         <span class="boot-counter" id="boot-counter">000</span>
       </div>
     </div>
@@ -83,7 +91,7 @@ const c = {
       <div class="boot-rule-percent" id="boot-rule-percent">0%</div>
     </div>
 
-    <div class="boot-build-info" aria-hidden="true">BUILD 2026.04.28 // GRN.V1.0.0</div>
+    <div class="boot-build-info" aria-hidden="true">{c.bootBuild}</div>
   </div>
 
   <!-- Camera Screen Frame -->
@@ -183,7 +191,7 @@ const c = {
           </div>
         </div>
         <div class="weather-display">
-          <span class="weather-icon" id="weather-icon-today">—</span>
+          <span class="weather-icon" id="weather-icon-today" aria-hidden="true">—</span>
           <span class="weather-temp" id="weather-today">--°</span>
         </div>
       </div>
@@ -232,8 +240,9 @@ const c = {
       const hEl = timeEl.querySelector('.time-h');
       const mEl = timeEl.querySelector('.time-m');
       const sEl = timeEl.querySelector('.time-s');
+      const heroLocale = section?.dataset.locale === 'en' ? 'en-GB' : 'es-ES';
       const updateTime = () => {
-        const parts = new Intl.DateTimeFormat('es-ES', {
+        const parts = new Intl.DateTimeFormat(heroLocale, {
           timeZone: 'Europe/Madrid',
           hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
         }).formatToParts(new Date());
@@ -382,7 +391,9 @@ const c = {
       if (bootCounter) bootCounter.textContent = String(pct);
       if (bootRuleFill) bootRuleFill.style.transform = `scaleX(${progress})`;
       if (bootPercent) bootPercent.textContent = `${pct}%`;
-      if (bootStatus) bootStatus.textContent = pct < 50 ? 'Cargando' : 'Listo';
+      const loadingText = bootStatus?.dataset.loading ?? 'Cargando';
+      const readyText = bootStatus?.dataset.ready ?? 'Listo';
+      if (bootStatus) bootStatus.textContent = pct < 50 ? loadingText : readyText;
     }, 40);
 
     const revealHero = () => {
@@ -396,7 +407,7 @@ const c = {
         if (bootCounter) bootCounter.textContent = '100';
         if (bootRuleFill) bootRuleFill.style.transform = 'scaleX(1)';
         if (bootPercent) bootPercent.textContent = '100%';
-        if (bootStatus) bootStatus.textContent = 'Listo';
+        if (bootStatus) bootStatus.textContent = readyText;
 
         section?.classList.add('is-ready');
         loadPortalVideo();

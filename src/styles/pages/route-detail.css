@@ -184,6 +184,25 @@
   .uri-arrow svg { width: 16px; height: 16px; }
   .upg-rel-item:hover .uri-arrow { background: var(--s-orange); color: #fff; }
 
+  /* Shared Navigation & Utility Modifiers */
+  .upg-nav-block { padding: 2rem 3rem; }
+  .upg-nav-flex { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .upg-nav-link { display: flex; flex-direction: column; text-decoration: none; max-width: 45%; }
+  .upg-nav-link--end { align-items: flex-end; text-align: right; }
+  .upg-nav-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem; }
+  .upg-nav-title { font-family: var(--font-body); font-size: 1.1rem; font-weight: 600; color: var(--s-ink); line-height: 1.3; }
+  .upg-nav-meta { font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2); margin-top: 0.25rem; }
+
+  .upg-block--compact { padding: 2rem 3rem; }
+  .upg-block--loose { padding: 2.5rem 3rem; }
+
+  /* Table of Contents */
+  .upg-toc { margin-bottom: 1.5rem; background: var(--s-bg-hi); border-radius: 20px; border: 1px solid var(--s-border); padding: 1.5rem 2rem; }
+  .upg-toc-title { font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); display: block; margin-bottom: 1rem; }
+  .upg-toc-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+  .upg-toc-item a { font-family: var(--font-display); font-size: 0.85rem; color: var(--s-ink-2); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+  .upg-toc-num { color: var(--s-orange); }
+
   @media (max-width: 1024px) {
     .upgraded-layout { grid-template-columns: 1fr; gap: 3rem; }
     .upg-sidebar-sticky { position: static; }
@@ -196,4 +215,5 @@
     .upg-tc-header, .upg-tc-price-wrap, .upg-tc-actions { padding-left: 1.5rem; padding-right: 1.5rem; }
     .tc-price-val { font-size: 2.8rem; }
     .upg-title { font-size: 1.8rem; }
+    .upg-nav-link { max-width: 48%; }
   }

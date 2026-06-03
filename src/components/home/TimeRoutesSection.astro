@@ -39,48 +39,48 @@ const durationConfig: Record<string, {
     accent: '#4a9e6b',
     accentRgb: '74, 158, 107',
     number: '02',
-    unit: 'HORAS',
-    label: 'Quick Tour',
+    unit: t('mixedRoutes.durationUnits.hours'),
+    label: t('mixedRoutes.durationLabels.2h'),
   },
   '6h': {
     gradient: 'linear-gradient(135deg, #d4873a 0%, #b8732e 100%)',
     accent: '#d4873a',
     accentRgb: '212, 135, 58',
     number: '06',
-    unit: 'HORAS',
-    label: 'Half Day',
+    unit: t('mixedRoutes.durationUnits.hours'),
+    label: t('mixedRoutes.durationLabels.6h'),
   },
   '12h': {
     gradient: 'linear-gradient(135deg, #e8622a 0%, #c94a1a 100%)',
     accent: '#e8622a',
     accentRgb: '232, 98, 42',
     number: '12',
-    unit: 'HORAS',
-    label: 'Full Day',
+    unit: t('mixedRoutes.durationUnits.hours'),
+    label: t('mixedRoutes.durationLabels.12h'),
   },
   '1day': {
     gradient: 'linear-gradient(135deg, #c9a84c 0%, #a88a3d 100%)',
     accent: '#c9a84c',
     accentRgb: '201, 168, 76',
     number: '01',
-    unit: 'DIA',
-    label: 'Adventure',
+    unit: t('mixedRoutes.durationUnits.day'),
+    label: t('mixedRoutes.durationLabels.1day'),
   },
   '2days': {
     gradient: 'linear-gradient(135deg, #6b5a9e 0%, #534878 100%)',
     accent: '#6b5a9e',
     accentRgb: '107, 90, 158',
     number: '02',
-    unit: 'DIAS',
-    label: 'Weekend',
+    unit: t('mixedRoutes.durationUnits.days'),
+    label: t('mixedRoutes.durationLabels.2days'),
   },
   '3days': {
     gradient: 'linear-gradient(135deg, #c94a4a 0%, #a83a3a 100%)',
     accent: '#c94a4a',
     accentRgb: '201, 74, 74',
     number: '03',
-    unit: 'DIAS',
-    label: 'Experience',
+    unit: t('mixedRoutes.durationUnits.days'),
+    label: t('mixedRoutes.durationLabels.3days'),
   },
 };
 
@@ -171,7 +171,7 @@ function getCategoryName(category: string): string {
       {displayPlans.map((plan, index) => {
         const config = durationConfig[plan.duration] || durationConfig['2h'];
         const { totalStops, uniqueCategories } = getPlanStats(plan);
-        const href = `/rutas/por-tiempo/${plan.slug}/`;
+        const href = `${getRoute('byTime', locale).replace(/\/$/, '')}/${plan.slug}/`;
         const isLarge = index === 1; // Middle card is larger
         
         return (
@@ -207,8 +207,8 @@ function getCategoryName(category: string): string {
 
                 <!-- Stops Counter -->
                 <div class="stops-badge">
-                  <span class="stops-icon">◉</span>
-                  <span class="stops-count">{totalStops} paradas</span>
+                  <span class="stops-icon" aria-hidden="true">◉</span>
+                  <span class="stops-count">{t('mixedRoutes.stopsCounter', { count: totalStops })}</span>
                 </div>
 
                 <!-- Corner Accents -->
@@ -311,7 +311,6 @@ function getCategoryName(category: string): string {
     background: var(--t-cream);
     padding: 6rem 0 8rem;
     overflow: hidden;
-    margin-top: 4rem;
   }
 
   /* Screen Frame Overrides */
@@ -1011,12 +1010,9 @@ function getCategoryName(category: string): string {
       margin: 0 auto;
     }
 
-    .card-large {
-      transform: none;
-    }
-
+    .card-large,
     .card-large.is-visible {
-      transform: none;
+      transform: none !important;
     }
 
     .card-small {

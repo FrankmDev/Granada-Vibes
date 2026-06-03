@@ -1,7 +1,7 @@
 ---
 /**
  * ReadingProgress — injects a top fixed bar that tracks scroll progress.
- * Uses a single scroll listener with requestAnimationFrame throttling.
+ * Uses CSS scroll-driven animation, avoiding scroll listeners and JS loops.
  */
 ---
 
@@ -13,19 +13,28 @@
     bar.id = 'read-progress';
     bar.setAttribute('aria-hidden', 'true');
     document.body.appendChild(bar);
-
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollTop = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-          bar.style.setProperty('--scroll-progress', `${progress}%`);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
   })();
 </script>
+
+<style is:global>
+  #read-progress {
+    width: 100% !important;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: none !important;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    #read-progress {
+      animation:
+        read-progress-grow linear both,
+        shimmer 2s linear infinite !important;
+      animation-timeline: scroll(root), auto;
+    }
+  }
+
+  @keyframes read-progress-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+</style>

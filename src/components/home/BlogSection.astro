@@ -105,7 +105,7 @@ function formatDate(dateStr: string): string {
                 <div class="feature-content">
                   {/* Category Tag */}
                   <div class="feature-tag">
-                    <span class="tag-icon">{catData?.icon ?? '◈'}</span>
+                    <span class="tag-icon" aria-hidden="true">{catData?.icon ?? '◈'}</span>
                     <span class="tag-label">{catData?.label ?? t('blog.fallbackCategory')}</span>
                   </div>
 
@@ -132,8 +132,8 @@ function formatDate(dateStr: string): string {
 
                 {/* Read Indicator */}
                 <div class="read-indicator">
-                  <span>Leer</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <span>{t('blog.readCta')}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
@@ -184,14 +184,14 @@ function formatDate(dateStr: string): string {
                 
                 {/* Category Tag */}
                 <div class="legend-tag" style={`background: ${catData?.color ?? '#e8622a'}`}>
-                  <span class="legend-symbol">{catData?.icon ?? '◈'}</span>
+                  <span class="legend-symbol" aria-hidden="true">{catData?.icon ?? '◈'}</span>
                   <span class="legend-text">{catData?.label ?? t('blog.fallbackArticle')}</span>
                 </div>
                 
                 {/* Featured Badge */}
                 {post.featured && (
                   <div class="featured-badge">
-                    <span class="featured-star">★</span>
+                    <span class="featured-star" aria-hidden="true">★</span>
                     <span class="featured-text">{t('routes.featured')}</span>
                   </div>
                 )}
@@ -202,7 +202,7 @@ function formatDate(dateStr: string): string {
                 {/* Top Row: Date */}
                 <div class="notes-header">
                   <div class="time-badge">
-                    <span class="time-icon">◎</span>
+                    <span class="time-icon" aria-hidden="true">◎</span>
                     <span class="time-text">{formatDate(post.publishDate)}</span>
                   </div>
                 </div>
@@ -224,7 +224,7 @@ function formatDate(dateStr: string): string {
                   <div class="reading-track">
                     <div class="reading-fill" style={`width: ${Math.min((post.readingTime / 15) * 100, 100)}%`}></div>
                   </div>
-                  <span class="reading-text">{post.readingTime} min de lectura</span>
+                  <span class="reading-text">{t('blog.readingTime', { minutes: post.readingTime })}</span>
                 </div>
               </div>
               
@@ -237,7 +237,7 @@ function formatDate(dateStr: string): string {
                     <path d="M50 10 L55 45 L90 50 L55 55 L50 90 L45 55 L10 50 L45 45 Z" fill="currentColor" opacity="0.8"/>
                     <circle cx="50" cy="50" r="4" fill="currentColor"/>
                   </svg>
-                  <span class="compass-text">LEER</span>
+                  <span class="compass-text">{t('blog.readCtaUpper')}</span>
                 </div>
               </div>
             </a>

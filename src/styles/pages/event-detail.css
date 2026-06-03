@@ -374,6 +374,20 @@
   .det-orn-star { color: var(--s-gold); }
   .det-orn-star svg { width: 16px; height: 16px; }
 
+  /* Shared Navigation & Utility Modifiers */
+  .upg-nav-block { padding: 2rem 3rem; }
+  .upg-nav-flex { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .upg-nav-link { display: flex; flex-direction: column; text-decoration: none; max-width: 45%; }
+  .upg-nav-link--end { align-items: flex-end; text-align: right; }
+  .upg-nav-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem; }
+  .upg-nav-title { font-family: var(--font-body); font-size: 1.1rem; font-weight: 600; color: var(--s-ink); line-height: 1.3; }
+  .upg-nav-meta { font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2); margin-top: 0.25rem; }
+
+  .upg-meta-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .upg-venue-badges { font-style: normal; }
+  .upg-block--compact { padding: 2rem 3rem; }
+  .upg-block--loose { padding: 2.5rem 3rem; }
+
   @media (max-width: 1024px) {
     .upgraded-layout { grid-template-columns: 1fr; gap: 3rem; }
     .upg-sidebar-sticky { position: static; }
@@ -388,4 +402,5 @@
     .upg-title { font-size: 1.8rem; }
     .upg-past-notice { display: grid; }
     .upg-intent-grid { grid-template-columns: 1fr 1fr; }
+    .upg-nav-link { max-width: 48%; }
   }

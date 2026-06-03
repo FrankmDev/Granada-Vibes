@@ -340,27 +340,27 @@ faq.push({
               )}
             </div>
 
-            <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
+            <div class="upg-meta-links">
               <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {t(`categories.${event.category}`)}
               </a>
               {neighborhoodLink && (
                 <a href={neighborhoodLink.url} class="upg-badge ghost" style="text-decoration:none;">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                  {neighborhoodLink.label}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                {neighborhoodLink.label}
                 </a>
               )}
               {venueDirectoryEntry && (
                 <a href={getDirectoryHref('venue', venueDirectoryEntry.slug, locale)} class="upg-badge ghost" style="text-decoration:none;">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-7h6v7"/></svg>
-                  {venueDirectoryEntry.name}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-7h6v7"/></svg>
+                {venueDirectoryEntry.name}
                 </a>
               )}
               {artistDirectoryEntry && (
                 <a href={getDirectoryHref('artist', artistDirectoryEntry.slug, locale)} class="upg-badge ghost" style="text-decoration:none;">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                  {artistDirectoryEntry.name}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                {artistDirectoryEntry.name}
                 </a>
               )}
             </div>
@@ -403,14 +403,14 @@ faq.push({
             <div class="upg-venue-grid">
               <div class="upg-venue-info">
                 <h2 class="upg-title upg-venue-title">{event.venue}</h2>
-                <address class="upg-venue-badges" style="font-style:normal;">
+                <address class="upg-venue-badges">
                   <span class="upg-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     {t(`neighborhoods.${event.neighborhood}`)}
                   </span>
                   {event.address && (
                     <span class="upg-badge ghost">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                       {event.address}
                     </span>
                   )}
@@ -468,7 +468,7 @@ faq.push({
 
             <div class="upg-tips-content" id="event-practical">
                 <div class="upg-tips-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <p class="upg-tips-text">{event.tips[locale]}</p>
               </div>
@@ -487,21 +487,21 @@ faq.push({
           )}
 
           {(prevEvent || nextEvent) && (
-            <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Event navigation' : 'Navegación de eventos'} style="padding: 2rem 3rem;">
+            <nav class="upg-block upg-nav-block" data-reveal aria-label={isEnglish ? 'Event navigation' : 'Navegación de eventos'}>
               <div class="upg-block-bg"></div>
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+              <div class="upg-nav-flex">
                 {prevEvent ? (
-                  <a href={getEventDetailUrl(prevEvent.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
-                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{prevEvent.title[locale]}</span>
-                    <time datetime={`${prevEvent.date}T${prevEvent.time}`} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatFullDate(prevEvent.date, locale)}</time>
+                  <a href={getEventDetailUrl(prevEvent.slug, locale)} class="upg-nav-link">
+                    <span class="upg-nav-label">{copy.nav.prev}</span>
+                    <span class="upg-nav-title">{prevEvent.title[locale]}</span>
+                    <time class="upg-nav-meta" datetime={`${prevEvent.date}T${prevEvent.time}`}>{formatFullDate(prevEvent.date, locale)}</time>
                   </a>
                 ) : <span />}
                 {nextEvent ? (
-                  <a href={getEventDetailUrl(nextEvent.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
-                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{nextEvent.title[locale]}</span>
-                    <time datetime={`${nextEvent.date}T${nextEvent.time}`} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatFullDate(nextEvent.date, locale)}</time>
+                  <a href={getEventDetailUrl(nextEvent.slug, locale)} class="upg-nav-link upg-nav-link--end">
+                    <span class="upg-nav-label">{copy.nav.next}</span>
+                    <span class="upg-nav-title">{nextEvent.title[locale]}</span>
+                    <time class="upg-nav-meta" datetime={`${nextEvent.date}T${nextEvent.time}`}>{formatFullDate(nextEvent.date, locale)}</time>
                   </a>
                 ) : <span />}
               </div>
@@ -509,7 +509,7 @@ faq.push({
           )}
 
           {crossLinks.length > 0 && (
-            <div class="upg-block" id="event-related" data-reveal style="padding: 2.5rem 3rem;">
+            <div class="upg-block upg-block--loose" id="event-related" data-reveal>
               <div class="upg-block-bg"></div>
               <header class="upg-header">
                 <span class="upg-num">05</span>
@@ -521,7 +521,7 @@ faq.push({
           )}
 
           {relatedEvents.length > 0 && (
-            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+            <div class="upg-block upg-block--loose" data-reveal>
               <div class="upg-block-bg"></div>
               <header class="upg-header">
                 <span class="upg-num">06</span>
@@ -542,7 +542,7 @@ faq.push({
                       <span class="urec-title">{related.title[locale]}</span>
                       <span class="urec-meta">{formatFullDate(related.date, locale)} · {related.venue}</span>
                     </div>
-                    <div class="urec-arrow">
+                    <div class="urec-arrow" aria-hidden="true">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                   </a>
@@ -566,7 +566,7 @@ faq.push({
                 </div>
                 <div class="upg-tc-info">
                   <span class="tc-time">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     <time datetime={event.time}>{formatTime(event.time, locale)}</time>
                   </span>
                   <span class="tc-category">{t(`categories.${event.category}`)}</span>
@@ -595,12 +595,12 @@ faq.push({
                     class="upg-btn-primary"
                   >
                     <span>{t('detail.getTickets')}</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </a>
                 ) : (
                   <div class="upg-btn-primary inert">
                     <span>{getPriceStatus(event) === 'free' ? t('events.free') : t('detail.unknown')}</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </div>
                 )}
 
@@ -636,7 +636,7 @@ faq.push({
                         <span class="uri-title">{related.title[locale]}</span>
                         <span class="uri-meta">{formatFullDate(related.date, locale)}</span>
                       </div>
-                      <div class="uri-arrow">
+                      <div class="uri-arrow" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       </div>
                     </a>
@@ -651,7 +651,7 @@ faq.push({
 
     <div class="det-footer-orn" aria-hidden="true">
       <span class="det-orn-line"></span>
-      <span class="det-orn-star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span class="det-orn-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
       <span class="det-orn-line"></span>
     </div>
   </div>

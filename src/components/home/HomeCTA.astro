@@ -2,6 +2,7 @@
 import type { Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import { useTranslations } from '../../i18n/utils';
+import { getRoute } from '../../utils/routes';
 
 interface Props {
   locale: Locale;
@@ -10,52 +11,30 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-const content = {
-  es: {
-    eyebrow: 'EXPERIENCIA',
-    title: 'VIVE',
-    subtitle: 'GRANADA',
-    supraLeft: 'DESTINO',
-    supraRight: 'PATRIMONIO',
-    line1: 'Más que una guía.',
-    line2: 'Una invitación',
-    line3: 'a descubrir',
-    ctaPrimary: t('home.hero.ctaEvents'),
-    ctaSecondary: t('home.hero.ctaRoutes'),
-    ctaPrimaryLink: '/eventos/',
-    ctaSecondaryLink: '/rutas/',
-    vol: 'VOL. I · 2026',
-    coords: '37°10′N  3°36′W',
-    meta: {
-      founded: '2024',
-      altitude: '738m',
-      population: '233K'
-    }
-  },
-  en: {
-    eyebrow: 'EXPERIENCE',
-    title: 'LIVE',
-    subtitle: 'GRANADA',
-    supraLeft: 'DESTINATION',
-    supraRight: 'HERITAGE',
-    line1: 'More than a guide.',
-    line2: 'An invitation',
-    line3: 'to discover',
-    ctaPrimary: t('home.hero.ctaEvents'),
-    ctaSecondary: t('home.hero.ctaRoutes'),
-    ctaPrimaryLink: '/en/events',
-    ctaSecondaryLink: '/en/routes',
-    vol: 'VOL. I · 2026',
-    coords: '37°10′N  3°36′W',
-    meta: {
-      founded: '2024',
-      altitude: '738m',
-      population: '233K'
-    }
+const c = {
+  eyebrow: t('home.cta.eyebrow'),
+  title: t('home.cta.title'),
+  subtitle: t('home.cta.subtitle'),
+  supraLeft: t('home.cta.supraLeft'),
+  supraRight: t('home.cta.supraRight'),
+  line1: t('home.cta.headline1'),
+  line2: t('home.cta.headline2'),
+  line3: t('home.cta.headline3'),
+  ctaPrimary: t('home.hero.ctaEvents'),
+  ctaSecondary: t('home.hero.ctaRoutes'),
+  ctaPrimaryLink: getRoute('events', locale),
+  ctaSecondaryLink: getRoute('routes', locale),
+  vol: t('home.cta.vol'),
+  coords: t('home.cta.coords'),
+  meta: {
+    foundedLabel: t('home.cta.founded'),
+    altitudeLabel: t('home.cta.altitude'),
+    populationLabel: t('home.cta.population'),
+    founded: '2024',
+    altitude: '738m',
+    population: '233K'
   }
 };
-
-const c = content[locale];
 
 // Split text for animation
 const splitText = (text: string, baseDelay = 0) =>
@@ -115,17 +94,17 @@ const splitText = (text: string, baseDelay = 0) =>
       <!-- Left: Metadata Panel -->
       <aside class="meta-panel">
         <div class="meta-item">
-          <span class="meta-label">{t('home.cta.founded')}</span>
+          <span class="meta-label">{c.meta.foundedLabel}</span>
           <span class="meta-value">{c.meta.founded}</span>
         </div>
         <div class="meta-divider" aria-hidden="true"></div>
         <div class="meta-item">
-          <span class="meta-label">{t('home.cta.altitude')}</span>
+          <span class="meta-label">{c.meta.altitudeLabel}</span>
           <span class="meta-value">{c.meta.altitude}</span>
         </div>
         <div class="meta-divider" aria-hidden="true"></div>
         <div class="meta-item">
-          <span class="meta-label">{t('home.cta.population')}</span>
+          <span class="meta-label">{c.meta.populationLabel}</span>
           <span class="meta-value">{c.meta.population}</span>
         </div>
       </aside>

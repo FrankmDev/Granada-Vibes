@@ -1,7 +1,7 @@
 ---
 import type { Event, Locale, EventCategory } from '@types';
 import { useTranslations } from '@i18n/utils';
-import { getRoute } from '@utils/routes';
+import { getRoute, getEventDetailUrl } from '@utils/routes';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import EventImage from '@components/ui/EventImage.astro';
 
@@ -39,6 +39,13 @@ const columns = [0, 1, 2].map((colIndex) =>
   events.filter((_, i) => i % 3 === colIndex).slice(0, 4)
 );
 
+// Dynamic container height: proportional to items so cards don't stretch to 260vh
+const maxItemsPerColumn = Math.max(...columns.map((c) => c.length), 1);
+const totalFlexUnits = COL_HEIGHTS[0]
+  .slice(0, maxItemsPerColumn)
+  .reduce((a, b) => a + b, 0);
+const columnHeight = `${Math.max(totalFlexUnits, 120)}vh`;
+
 function formatPrice(price: number | null): string {
   if (price === null) return t('events.free');
   return `${price}€`;
@@ -70,13 +77,13 @@ const eventsHref = getRoute('events', locale);
   />
 
   <!-- Masonry Grid — 3 columns -->
-  <div class="masonry-wrapper">
+  <div class="masonry-wrapper" style={`--masonry-height: ${columnHeight}`}>
     {columns.map((colEvents, colIndex) => (
       <div class={`masonry-col col-${['left','center','right'][colIndex]}`}>
         {colEvents.map((evt, idx) => {
           const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
           const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
-          const href = `/${locale === 'en' ? 'en/events' : 'eventos'}/${evt.slug}/`;
+          const href = getEventDetailUrl(evt.slug, locale);
 
           return (
             <article class="masonry-item" style={`--item-flex: ${heightVh};`}>
@@ -162,8 +169,8 @@ const eventsHref = getRoute('events', locale);
   }
 
   @media (min-width: 769px) {
-    .masonry-col { height: 260vh; }
-    .masonry-item { flex: var(--item-flex, 1) 1 0%; }
+    .masonry-col { height: var(--masonry-height, 260vh); }
+    .masonry-item { flex: var(--item-flex, 1) 1 0%; min-height: 180px; }
   }
 
   .item-link {

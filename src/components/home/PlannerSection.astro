@@ -12,54 +12,31 @@ const t = useTranslations(locale);
 const plannerHref = getRoute('planner', locale);
 const currentYear = new Date().getFullYear();
 
-const content = {
-  es: {
-    eyebrow: 'CONFIGURADOR',
-    title: 'PLANIFICA',
-    subtitle: 'TU VISITA',
-    line1: 'Dinos cuánto tiempo tienes,',
-    line2: 'con quién vas y qué te interesa.',
-    line3: 'Tu itinerario en segundos.',
-    stats: [
-      { label: 'Lugares', value: '60+' },
-      { label: 'Precio', value: 'Gratis' },
-      { label: 'Tiempo', value: '< 3s' },
-    ],
-    cta: 'CREAR MI ITINERARIO',
-    meta: {
-      ref: 'REF. 05',
-      coords: '37°10′N · 3°35′W',
-      edition: `ED. ${currentYear}`,
-    },
-  },
-  en: {
-    eyebrow: 'PLANNER',
-    title: 'PLAN YOUR',
-    subtitle: 'VISIT',
-    line1: 'Tell us how much time you have,',
-    line2: 'who you are with and what interests you.',
-    line3: 'Your itinerary in seconds.',
-    stats: [
-      { label: 'Places', value: '60+' },
-      { label: 'Price', value: 'Free' },
-      { label: 'Time', value: '< 3s' },
-    ],
-    cta: 'CREATE MY ITINERARY',
-    meta: {
-      ref: 'REF. 05',
-      coords: '37°10′N · 3°35′W',
-      edition: `ED. ${currentYear}`,
-    },
+const c = {
+  eyebrow: t('planner.sectionEyebrow'),
+  title: t('planner.sectionTitle'),
+  subtitle: t('planner.sectionSubtitle'),
+  line1: t('planner.sectionDescription') || 'Dinos cuánto tiempo tienes,',
+  line2: t('planner.sectionDescription2') || 'con quién vas y qué te interesa.',
+  line3: t('planner.sectionDescription3') || 'Tu itinerario en segundos.',
+  stats: [
+    { label: t('planner.statsLabelPlaces'), value: t('planner.statsValuePlaces') },
+    { label: t('planner.statsLabelPrice'), value: t('planner.statsValuePrice') },
+    { label: t('planner.statsLabelTime'), value: t('planner.statsValueTime') },
+  ],
+  cta: t('planner.sectionCta'),
+  meta: {
+    ref: t('planner.metaRef'),
+    coords: t('planner.metaCoords'),
+    edition: `ED. ${currentYear}`,
   },
 };
-
-const c = content[locale];
 
 const splitText = (text: string, baseDelay = 0) =>
   text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.03 }));
 ---
 
-<section class="planner-section" aria-label="Planifica tu visita">
+<section class="planner-section" aria-label={t('planner.sectionAriaLabel')}>
   <!-- Ambient layers -->
   <div class="ambient-grain" aria-hidden="true"></div>
   <div class="ambient-gradient" aria-hidden="true"></div>
@@ -881,16 +858,6 @@ const splitText = (text: string, baseDelay = 0) =>
   @keyframes slide-in-right {
     from { opacity: 0; transform: translateX(30px); }
     to   { opacity: 1; transform: translateX(0); }
-  }
-
-  @keyframes cin-fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  @keyframes char-rise {
-    from { opacity: 0; transform: translateY(60px); }
-    to   { opacity: 1; transform: translateY(0); }
   }
 
   /* Responsive */

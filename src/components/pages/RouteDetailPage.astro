@@ -238,14 +238,14 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
 
             <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
               <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {t(`categories.${route.category}`)}
               </a>
             </div>
           </article>
 
           {planningLinks.length > 0 && (
-            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
+            <div class="upg-block upg-block--loose" data-reveal>
               <div class="upg-block-bg"></div>
               <header class="upg-header">
                 <span class="upg-num">02</span>
@@ -281,31 +281,31 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                           <div style="display: flex; flex-direction: column; gap: 0.35rem;">
                             {highlight.address && (
                               <div style="display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-orange);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 <span>{highlight.address[locale]}</span>
                               </div>
                             )}
                             {highlight.duration && (
                               <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                                 <span>{formatDuration(highlight.duration, locale)}</span>
                               </div>
                             )}
                             {highlight.price && (
                               <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>{highlight.price[locale]}</span>
                               </div>
                             )}
                             {highlight.hours && (
                               <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 <span>{highlight.hours[locale]}</span>
                               </div>
                             )}
                             {highlight.tip && (
                               <div style="display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2); margin-top: 0.25rem; padding-top: 0.35rem; border-top: 1px dashed var(--s-border);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-gold);"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-gold);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>{highlight.tip[locale]}</span>
                               </div>
                             )}
@@ -333,7 +333,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 {route.tips.map((tip: RouteTip) => (
                   <div style="display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2rem;">
                     <div class="upg-tips-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <div>
                       <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--s-ink);">{tip.title[locale]}</h3>
@@ -414,21 +414,21 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
           )}
 
           {(prevRoute || nextRoute) && (
-            <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Route navigation' : 'Navegación de rutas'} style="padding: 2rem 3rem;">
+            <nav class="upg-block upg-nav-block" data-reveal aria-label={isEnglish ? 'Route navigation' : 'Navegación de rutas'}>
               <div class="upg-block-bg"></div>
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
+              <div class="upg-nav-flex">
                 {prevRoute ? (
-                  <a href={getRouteDetailUrl(prevRoute.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
-                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{getRouteDisplayTitle(prevRoute, locale)}</span>
-                    <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
+                  <a href={getRouteDetailUrl(prevRoute.slug, locale)} class="upg-nav-link">
+                    <span class="upg-nav-label">{copy.nav.prev}</span>
+                    <span class="upg-nav-title">{getRouteDisplayTitle(prevRoute, locale)}</span>
+                    <span class="upg-nav-meta">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
                   </a>
                 ) : <span />}
                 {nextRoute ? (
-                  <a href={getRouteDetailUrl(nextRoute.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
-                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{getRouteDisplayTitle(nextRoute, locale)}</span>
-                    <span style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
+                  <a href={getRouteDetailUrl(nextRoute.slug, locale)} class="upg-nav-link upg-nav-link--end">
+                    <span class="upg-nav-label">{copy.nav.next}</span>
+                    <span class="upg-nav-title">{getRouteDisplayTitle(nextRoute, locale)}</span>
+                    <span class="upg-nav-meta">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
                   </a>
                 ) : <span />}
               </div>
@@ -440,17 +440,17 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
         <aside class="upg-sidebar" aria-label={isEnglish ? 'Route details sidebar' : 'Barra lateral de detalles de ruta'}>
           <div class="upg-sidebar-sticky">
             {(route.highlights.length > 0 || route.tips.length > 0 || route.startingPoint || route.endingPoint) && (
-              <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
-                <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{isEnglish ? 'On this page' : 'En esta página'}</span>
-                <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
+              <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'}>
+                <span class="upg-toc-title">{isEnglish ? 'On this page' : 'En esta página'}</span>
+                <ul class="upg-toc-list">
                   {route.highlights.length > 0 && (
-                    <li><a href="#itinerary" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">01</span> {copy.sections.itineraryTitle}</a></li>
+                    <li class="upg-toc-item"><a href="#itinerary"><span class="upg-toc-num">01</span> {copy.sections.itineraryTitle}</a></li>
                   )}
                   {route.tips.length > 0 && (
-                    <li><a href="#tips" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">02</span> {copy.sections.tipsTitle}</a></li>
+                    <li class="upg-toc-item"><a href="#tips"><span class="upg-toc-num">02</span> {copy.sections.tipsTitle}</a></li>
                   )}
                   {(route.startingPoint || route.endingPoint || route.howToGetThere || route.estimatedBudget || route.whoIsItFor || route.accessibility || route.bestTimeToVisit) && (
-                    <li><a href="#practical-info" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">03</span> {t('detail.routeInfo')}</a></li>
+                    <li class="upg-toc-item"><a href="#practical-info"><span class="upg-toc-num">03</span> {t('detail.routeInfo')}</a></li>
                   )}
                 </ul>
               </nav>
@@ -465,7 +465,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 </div>
                 <div class="upg-tc-info">
                   <span class="tc-time" style="color:var(--s-ink);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     {formatDuration(route.duration, locale)}
                   </span>
                   <span class="tc-category">{t(`categories.${route.category}`)}</span>
@@ -490,7 +490,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                   <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
                     {route.whatToBring[locale].map((item: string) => (
                       <li style="display:flex; align-items:flex-start; gap:0.5rem; font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2);">
-                        <span style="color:#d4873a; margin-top:-2px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
+                        <span style="color:#d4873a; margin-top:-2px;" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
                         {item}
                       </li>
                     ))}
@@ -536,7 +536,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                         <span class="uri-title">{getRouteDisplayTitle(related, locale)}</span>
                         <span class="uri-meta">{formatDuration(related.duration, locale)}</span>
                       </div>
-                      <div class="uri-arrow">
+                      <div class="uri-arrow" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                       </div>
                     </a>
@@ -551,7 +551,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
 
     <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
       <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
-      <span style="color: var(--s-gold);"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span style="color: var(--s-gold);" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
       <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
     </div>
   </div>

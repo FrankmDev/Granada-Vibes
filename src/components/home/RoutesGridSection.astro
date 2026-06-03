@@ -114,7 +114,7 @@ const routesHref = getRoute('routes', locale);
                     <span class="glass-dot"></span>
                     <span class={`diff-${route.difficulty}`}>{diffLabel}</span>
                   </div>
-                  <div class="meta-action">
+                  <div class="meta-action" aria-hidden="true">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -131,7 +131,7 @@ const routesHref = getRoute('routes', locale);
   <div class="mobile-cta-wrapper">
     <a href={routesHref} class="header-cta mobile-cta">
       <span class="cta-text">{t('actions.viewAll').toUpperCase()}</span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
         <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
@@ -180,7 +180,6 @@ const routesHref = getRoute('routes', locale);
     background: var(--s-cream); 
     padding-top: 5rem;
     padding-bottom: 6rem;
-    margin-top: 4rem;
   }
 
   .routes-section :global(.cin-screen-frame) { border-color: rgba(26, 22, 25, 0.12); }
