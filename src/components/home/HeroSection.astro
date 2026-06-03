@@ -348,6 +348,8 @@ const c = {
     let hasRevealed = false;
     const MIN_BOOT_MS = 350;
     const MAX_BOOT_MS = 700;
+    const bootLoadingText = bootStatus?.dataset.loading ?? 'Cargando';
+    const bootReadyText = bootStatus?.dataset.ready ?? 'Listo';
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const connection = 'connection' in navigator
@@ -391,9 +393,7 @@ const c = {
       if (bootCounter) bootCounter.textContent = String(pct);
       if (bootRuleFill) bootRuleFill.style.transform = `scaleX(${progress})`;
       if (bootPercent) bootPercent.textContent = `${pct}%`;
-      const loadingText = bootStatus?.dataset.loading ?? 'Cargando';
-      const readyText = bootStatus?.dataset.ready ?? 'Listo';
-      if (bootStatus) bootStatus.textContent = pct < 50 ? loadingText : readyText;
+      if (bootStatus) bootStatus.textContent = pct < 50 ? bootLoadingText : bootReadyText;
     }, 40);
 
     const revealHero = () => {
@@ -407,7 +407,7 @@ const c = {
         if (bootCounter) bootCounter.textContent = '100';
         if (bootRuleFill) bootRuleFill.style.transform = 'scaleX(1)';
         if (bootPercent) bootPercent.textContent = '100%';
-        if (bootStatus) bootStatus.textContent = readyText;
+        if (bootStatus) bootStatus.textContent = bootReadyText;
 
         section?.classList.add('is-ready');
         loadPortalVideo();
