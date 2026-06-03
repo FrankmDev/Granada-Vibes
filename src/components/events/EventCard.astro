@@ -1,7 +1,7 @@
 ---
 import type { Event, Locale } from '@types';
 import { formatDateShort, formatTime, getTemporalProximity } from '@utils/dates';
-import { truncateTitle } from '@utils/strings';
+import { getEventDisplayTitle } from '@utils/event-seo';
 import { eventCategoryStyles, icons } from '@config/ui';
 import { getEventDetailUrl } from '@utils/routes';
 import EventImage from '@components/ui/EventImage.astro';
@@ -20,6 +20,7 @@ const temporalProximity = getTemporalProximity(event.date);
 const catStyle = eventCategoryStyles[event.category] ?? eventCategoryStyles.other;
 const catColor = catStyle.colorVar;
 const isPriorityImage = index < 3;
+const displayTitle = getEventDisplayTitle(event, locale);
 ---
 
 <article class:list={['group relative', { 'lg:col-span-2': featured }]}>
@@ -33,7 +34,7 @@ const isPriorityImage = index < 3;
         {(event.imageUrl || event.image) && (
           <EventImage
             event={event}
-            alt={event.title[locale]}
+            alt={displayTitle}
             class="absolute inset-0 transition-transform duration-700 group-hover:scale-110"
             loading={isPriorityImage ? 'eager' : 'lazy'}
             fetchpriority={isPriorityImage ? 'high' : undefined}
@@ -115,7 +116,7 @@ const isPriorityImage = index < 3;
           'font-bold text-white mb-3 transition-colors duration-300 line-clamp-2 group-hover:text-accent',
           featured ? 'text-xl lg:text-2xl' : 'text-lg'
         ]}>
-          {truncateTitle(event.title[locale])}
+          {displayTitle}
         </h3>
 
         <p class="text-sm text-white/50 line-clamp-2 mb-6 leading-relaxed">

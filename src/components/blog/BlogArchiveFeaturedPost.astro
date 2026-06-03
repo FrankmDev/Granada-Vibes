@@ -3,6 +3,7 @@ import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getBlogDetailUrl } from '@utils/routes';
+import { getBlogDisplayTitle } from '@utils/content-seo';
 
 interface Props {
   locale: Locale;
@@ -23,6 +24,7 @@ function formatDate(dateStr: string): string {
 const image = post.image || blogImages[post.id] || blogImages.default;
 const cat = categoryData[post.category];
 const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 16)).join(', ') ?? '232, 98, 42';
+const displayTitle = getBlogDisplayTitle(post, locale);
 ---
 
 <article class="featured-post" data-category={post.category} style={`--cat-color: ${cat.color}; --cat-rgb: ${catRgb}`}>
@@ -30,7 +32,7 @@ const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 1
     <div class="featured-visual">
       <OptimizedImage
         src={image}
-        alt={post.title[locale]}
+        alt={displayTitle}
         class="featured-image"
         loading="eager"
         fetchpriority="high"
@@ -84,7 +86,7 @@ const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 1
       </div>
 
       <h3 class="featured-title">
-        {post.title[locale]}
+        {displayTitle}
       </h3>
       
       <p class="featured-description">{post.description[locale]}</p>

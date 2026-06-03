@@ -2,6 +2,7 @@
 import type { BlogPost, Locale } from '@types';
 import { getBlogDetailUrl } from '@utils/routes';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import { getBlogDisplayTitle } from '@utils/content-seo';
 
 interface Props {
   post: BlogPost;
@@ -20,6 +21,7 @@ const formattedDate = new Date(post.publishDate).toLocaleDateString(
 );
 
 const categoryLabel = t(`blog.categories.${post.category}`);
+const displayTitle = getBlogDisplayTitle(post, locale);
 ---
 
 <a
@@ -34,7 +36,7 @@ const categoryLabel = t(`blog.categories.${post.category}`);
     {post.image ? (
       <OptimizedImage
         src={post.image}
-        alt={post.title[locale]}
+        alt={displayTitle}
         class="transition-transform duration-500 group-hover:scale-105"
         loading={isPriorityImage ? 'eager' : 'lazy'}
         fetchpriority={isPriorityImage ? 'high' : undefined}
@@ -67,7 +69,7 @@ const categoryLabel = t(`blog.categories.${post.category}`);
 
     {/* Title */}
     <h3 class="text-lg font-bold text-[var(--color-text-primary)] mb-2 line-clamp-2 group-hover:text-[var(--color-primary)] transition-colors duration-300">
-      {post.title[locale]}
+      {displayTitle}
     </h3>
 
     {/* Description */}

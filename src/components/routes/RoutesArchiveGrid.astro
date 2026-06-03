@@ -3,6 +3,7 @@ import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import type { Route, RouteCategory, RouteDifficulty, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRouteDetailUrl } from '@utils/routes';
+import { getRouteDisplayTitle } from '@utils/content-seo';
 
 interface Props {
   locale: Locale;
@@ -40,6 +41,7 @@ const timeOfDayIcons: Record<string, string> = {
     const catIcon = categoryIcons[route.category];
     const expeditionNum = String(idx + 1).padStart(2, '0');
     const timeLabel = t(`timeOfDay.${route.timeOfDay}`);
+    const displayTitle = getRouteDisplayTitle(route, locale);
 
     return (
       <article 
@@ -60,7 +62,7 @@ const timeOfDayIcons: Record<string, string> = {
             <div class="visual-frame">
               <OptimizedImage
                 src={bgImage}
-                alt={route.title[locale]}
+                alt={displayTitle}
                 class="expedition-img"
                 loading={idx < 3 ? 'eager' : 'lazy'}
                 fetchpriority={idx < 3 ? 'high' : undefined}
@@ -126,7 +128,7 @@ const timeOfDayIcons: Record<string, string> = {
             
             {/* Title */}
             <h3 class="expedition-title">
-              {route.title[locale]}
+              {displayTitle}
             </h3>
             
             {/* Description */}

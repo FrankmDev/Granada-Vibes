@@ -2,6 +2,10 @@ import type { BlogPost, Locale, Route } from '@types';
 import { formatDistance, formatDuration } from './dates';
 
 const BLOG_HEADING_OVERRIDES: Record<string, { es: string; en: string }> = {
+  'carocas-granada': {
+    es: 'Carocas de Granada',
+    en: 'Granada Carocas',
+  },
   'feria-corpus-granada-2026': {
     es: 'Feria del Corpus 2026',
     en: 'Granada Corpus Fair 2026',
@@ -53,6 +57,69 @@ const BLOG_HEADING_OVERRIDES: Record<string, { es: string; en: string }> = {
   'albaicin-a-pie': {
     es: 'Albaicín a pie',
     en: 'Albaicín on foot',
+  },
+};
+
+const ROUTE_HEADING_OVERRIDES: Record<string, { es: string; en: string }> = {
+  'ruta-corpus-granada-2026': {
+    es: 'Corpus 2026',
+    en: 'Corpus 2026',
+  },
+  'ruta-tapeo-tradicional': {
+    es: 'Tapeo clásico',
+    en: 'Classic tapas',
+  },
+  'hora-del-vermut-albaicin': {
+    es: 'Vermut en Albaicín',
+    en: 'Albaicin vermouth',
+  },
+  'atardecer-miradores-albaicin': {
+    es: 'Miradores al atardecer',
+    en: 'Sunset viewpoints',
+  },
+  'granada-monumental': {
+    es: 'Granada monumental',
+    en: 'Monumental Granada',
+  },
+  'rincones-secretos-realejo': {
+    es: 'Realejo secreto',
+    en: 'Secret Realejo',
+  },
+  'huellas-reyes-catolicos': {
+    es: 'Reyes Católicos',
+    en: 'Catholic Monarchs',
+  },
+  'ruta-flamenco-autentico': {
+    es: 'Flamenco auténtico',
+    en: 'Authentic flamenco',
+  },
+  'ruta-fotografia-sacromonte': {
+    es: 'Sacromonte fotográfico',
+    en: 'Photographic Sacromonte',
+  },
+  'senderismo-rio-darro': {
+    es: 'Río Darro',
+    en: 'Darro River',
+  },
+  'bosque-alhambra-acequias': {
+    es: 'Bosque de la Alhambra',
+    en: 'Alhambra forest',
+  },
+  'barrio-artesanos-taracea': {
+    es: 'Taracea y bazares',
+    en: 'Marquetry and bazaars',
+  },
+  'talleres-esparto-realejo': {
+    es: 'Esparto del Realejo',
+    en: 'Realejo esparto',
+  },
+  'sacromonte-flamenco-historia-gitana': {
+    es: 'Sacromonte al atardecer',
+    en: 'Sacromonte at sunset',
+  },
+  'granada-arabe-historia-nazari': {
+    es: 'Granada nazarí',
+    en: 'Nasrid Granada',
   },
 };
 
@@ -124,11 +191,15 @@ export function getBlogSeoDescription(post: BlogPost, locale: Locale): string {
 }
 
 export function getRouteDisplayTitle(route: Route, locale: Locale): string {
+  return ROUTE_HEADING_OVERRIDES[route.slug]?.[locale] ?? stripAfterColon(route.title[locale]);
+}
+
+function getRouteSeoBaseTitle(route: Route, locale: Locale): string {
   return stripAfterColon(route.title[locale]);
 }
 
 export function getRouteSeoTitle(route: Route, locale: Locale): string {
-  const title = getRouteDisplayTitle(route, locale);
+  const title = getRouteSeoBaseTitle(route, locale);
   const duration = formatDuration(route.duration, locale);
   const distance = formatDistance(route.distance, locale);
 
@@ -152,7 +223,7 @@ export function getRouteSeoDescription({
   neighborhoods,
   difficulty,
 }: RouteSeoDescriptionInput): string {
-  const title = getRouteDisplayTitle(route, locale);
+  const title = getRouteSeoBaseTitle(route, locale);
   const duration = formatDuration(route.duration, locale);
   const distance = formatDistance(route.distance, locale);
 

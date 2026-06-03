@@ -4,6 +4,7 @@ import { formatDuration, formatDistance } from '@utils/dates';
 import { routeCategoryStyles, difficultyStyles, timeOfDayStyles, icons } from '@config/ui';
 import { getRouteDetailUrl } from '@utils/routes';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import { getRouteDisplayTitle } from '@utils/content-seo';
 
 interface Props {
   route: Route;
@@ -20,6 +21,7 @@ const diffStyle = difficultyStyles[route.difficulty] ?? difficultyStyles.easy;
 const timeStyle = timeOfDayStyles[route.timeOfDay] ?? timeOfDayStyles.any;
 const diffLevel = diffStyle.bars;
 const isPriorityImage = index < 3;
+const displayTitle = getRouteDisplayTitle(route, locale);
 ---
 
 <article class="group h-full">
@@ -33,7 +35,7 @@ const isPriorityImage = index < 3;
           <div class="route-grid__image-wrapper">
             <OptimizedImage
               src={route.image}
-              alt={route.title[locale]}
+              alt={displayTitle}
               class="route-grid__image"
               loading={isPriorityImage ? 'eager' : 'lazy'}
               fetchpriority={isPriorityImage ? 'high' : undefined}
@@ -111,7 +113,7 @@ const isPriorityImage = index < 3;
         <div class="accent-line-animated mb-5"></div>
 
         <h3 class="font-bold text-xl text-white mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2">
-          {route.title[locale]}
+          {displayTitle}
         </h3>
 
         <p class="text-sm text-white/50 line-clamp-2 mb-6 leading-relaxed">

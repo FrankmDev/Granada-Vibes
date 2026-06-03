@@ -3,6 +3,7 @@ import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getBlogDetailUrl } from '@utils/routes';
+import { getBlogDisplayTitle } from '@utils/content-seo';
 
 interface Props {
   locale: Locale;
@@ -27,6 +28,7 @@ function formatDate(dateStr: string): string {
     const cat = categoryData[post.category];
     const readingPct = Math.min((post.readingTime / 15) * 100, 100);
     const catRgb = cat.color.replace('#', '').match(/.{2}/g)?.map(h => parseInt(h, 16)).join(', ') ?? '232, 98, 42';
+    const displayTitle = getBlogDisplayTitle(post, locale);
     
     return (
       <article 
@@ -46,7 +48,7 @@ function formatDate(dateStr: string): string {
             <div class="visual-frame">
               <OptimizedImage
                 src={post.image || blogImages[post.id] || blogImages.default}
-                alt={post.title[locale]}
+                alt={displayTitle}
                 class="card-image"
                 loading={idx < 3 ? 'eager' : 'lazy'}
                 fetchpriority={idx < 3 ? 'high' : undefined}
@@ -105,7 +107,7 @@ function formatDate(dateStr: string): string {
               </div>
               
               {/* Title */}
-              <h3 class="card-title">{post.title[locale]}</h3>
+              <h3 class="card-title">{displayTitle}</h3>
             </div>
             
             {/* Excerpt */}

@@ -4,6 +4,7 @@ import { useTranslations } from '@i18n/utils';
 import { getRoute, getEventDetailUrl } from '@utils/routes';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import EventImage from '@components/ui/EventImage.astro';
+import { getEventDisplayTitle } from '@utils/event-seo';
 
 interface Props {
   events: Event[];
@@ -84,13 +85,14 @@ const eventsHref = getRoute('events', locale);
           const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
           const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
           const href = getEventDetailUrl(evt.slug, locale);
+          const displayTitle = getEventDisplayTitle(evt, locale);
 
           return (
             <article class="masonry-item" style={`--item-flex: ${heightVh};`}>
               <a href={href} class="item-link">
                 <EventImage
                   event={evt}
-                  alt={evt.title[locale]}
+                  alt={displayTitle}
                   class="item-image"
                   loading="lazy"
                   decoding="async"
@@ -107,7 +109,7 @@ const eventsHref = getRoute('events', locale);
                 <div class="item-content">
                   <div class="item-text">
                     <div class="item-category">{category}</div>
-                    <h3 class="item-title">{evt.title[locale]}</h3>
+                    <h3 class="item-title">{displayTitle}</h3>
                     <div class="item-footer">
                       <span class="footer-venue">{evt.venue || 'Granada'}</span>
                       <span class="footer-separator"></span>

@@ -23,6 +23,10 @@ function compactEventName(name: string, maxLength: number): string {
   return `${(lastSpace > 24 ? truncated.slice(0, lastSpace) : truncated).trim()}...`;
 }
 
+export function getEventDisplayTitle(event: Event, locale: Locale, maxLength = 52): string {
+  return compactEventName(event.title[locale], maxLength);
+}
+
 function compactDateLabel(date: string, locale: Locale): string {
   const formatter = new Intl.DateTimeFormat(locale === 'es' ? 'es-ES' : 'en-GB', {
     day: 'numeric',

@@ -12,6 +12,7 @@ import { getEventDiscoveryLinks } from '@utils/event-hub-links';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute } from '@utils/routes';
 import { formatFullDate } from '@utils/dates';
+import { getEventDisplayTitle } from '@utils/event-seo';
 import { getPriceStatus } from '@utils/prices';
 import type { Event, Locale, EventCategory } from '@types';
 
@@ -208,7 +209,7 @@ const heroMetadata = [
         <div class="hub-secondary-grid">
           {nearbyEvents.map((event) => (
             <a href={getEventDetailUrl(event.slug, locale)} class="hub-more-link">
-              <span>{event.title[locale]}</span>
+              <span>{getEventDisplayTitle(event, locale)}</span>
               <small>{formatFullDate(event.date, locale)} · {event.venue}</small>
             </a>
           ))}

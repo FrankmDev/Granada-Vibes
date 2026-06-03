@@ -179,7 +179,7 @@ const breadcrumb = [
     items={[
       { label: copy.breadcrumb.home, href: getRoute('home', locale) },
       { label: copy.breadcrumb.listing, href: getRoute('blog', locale) },
-      { label: post.title[locale] },
+      { label: displayTitle },
     ]}
   />
 
@@ -206,7 +206,7 @@ const breadcrumb = [
             </details>
           )}
 
-          <article class="upg-block" id="article-content" data-reveal aria-label={post.title[locale]}>
+          <article class="upg-block" id="article-content" data-reveal aria-label={displayTitle}>
             <div class="upg-block-bg"></div>
             <header class="upg-header">
               <span class="upg-num">01</span>

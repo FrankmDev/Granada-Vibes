@@ -2,6 +2,7 @@
 import '@styles/components/event-archive-card.css';
 import EventImage from '@components/ui/EventImage.astro';
 import { formatPriceLabel, getPriceStatus } from '@utils/prices';
+import { getEventDisplayTitle } from '@utils/event-seo';
 import type { Event, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 
@@ -75,6 +76,7 @@ const priceClass = priceStatus === 'free'
 const cardStyle = heightVh !== undefined
   ? `--card-index: ${cardIndex}; height: ${heightVh}vh;`
   : `--card-index: ${cardIndex};`;
+const displayTitle = getEventDisplayTitle(event, locale);
 ---
 
 <article
@@ -95,7 +97,7 @@ const cardStyle = heightVh !== undefined
     {hasImage ? (
       <EventImage
         event={event}
-        alt={event.title[locale]}
+        alt={displayTitle}
         class="item-image"
         loading={loading}
         fetchpriority={fetchpriority}
@@ -129,7 +131,7 @@ const cardStyle = heightVh !== undefined
 
     <div class="item-content">
       <div class="item-text">
-        <h3 class="item-title">{event.title[locale]}</h3>
+        <h3 class="item-title">{displayTitle}</h3>
         <div class="item-footer">
           <span class="footer-venue">{event.venue || 'Granada'}</span>
           <span class="footer-separator"></span>

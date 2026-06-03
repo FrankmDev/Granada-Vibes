@@ -56,6 +56,7 @@ export {
 
 // Event SEO utilities
 export {
+  getEventDisplayTitle,
   getEventSeoDescription,
   getEventSeoTitle,
   getEventTicketIntentLabel,

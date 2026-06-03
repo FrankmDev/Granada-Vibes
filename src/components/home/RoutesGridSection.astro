@@ -5,6 +5,7 @@ import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
 import { getRoute, getRouteDetailUrl } from '@utils/routes';
+import { getRouteDisplayTitle } from '@utils/content-seo';
 
 interface Props {
   routes: Route[];
@@ -78,12 +79,13 @@ const routesHref = getRoute('routes', locale);
         const bgImage = route.image ?? ROUTE_FALLBACKS[route.category] ?? ROUTE_FALLBACKS.default;
         const diffLabel = difficultyLabels[route.difficulty] ?? route.difficulty;
         const catLabel = getCategoryLabel(route.category);
+        const displayTitle = getRouteDisplayTitle(route, locale);
 
         return (
           <a href={href} class={`route-pane ${idx === 0 ? 'is-active' : ''}`} data-index={idx}>
             <OptimizedImage
               src={bgImage}
-              alt={route.title[locale]}
+              alt={displayTitle}
               class="pane-img"
               loading="lazy"
               decoding="async"
@@ -105,7 +107,7 @@ const routesHref = getRoute('routes', locale);
               </div>
 
               <div class="pane-text-wrap">
-                <h3 class="pane-title">{route.title[locale]}</h3>
+                <h3 class="pane-title">{displayTitle}</h3>
                 <div class="pane-meta-glass">
                   <div class="meta-stats">
                     <span>{formatDuration(route.duration)}</span>

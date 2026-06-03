@@ -17,12 +17,14 @@ import { getRelatedRoutesForEvent, getRelatedPostsForEvent, getNeighborhoodLink 
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import {
   formatPriceLabel,
+  getEventDisplayTitle,
   getEventSeoDescription,
   getEventSeoTitle,
   getEventTicketIntentLabel,
   getPriceStatus,
   isPastEvent,
 } from '@utils';
+import { getBlogDisplayTitle, getRouteDisplayTitle } from '@utils/content-seo';
 import type { Event, Locale } from '@types';
 import '@styles/pages/event-detail.css';
 
@@ -198,17 +200,18 @@ const venueDirectoryEntry = getAllVenueEntries().find((entry) => entry.events.so
 const artistDirectoryEntry = getAllArtistEntries().find((entry) => entry.events.some((item) => item.id === event.id));
 const hasPassed = isPastEvent(event);
 const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
+const displayTitle = getEventDisplayTitle(event, locale);
 
 const crossLinks = [
   ...relatedRoutesForEvent.map((r) => ({
     url: getRouteDetailUrl(r.slug, locale),
-    title: r.title[locale],
+    title: getRouteDisplayTitle(r, locale),
     meta: `${formatDuration(r.duration, locale)} · ${t(`categories.${r.category}`)}`,
     image: r.image,
   })),
   ...relatedPostsForEvent.map((p) => ({
     url: getBlogDetailUrl(p.slug, locale),
-    title: p.title[locale],
+    title: getBlogDisplayTitle(p, locale),
     meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
     image: p.image,
   })),
@@ -311,7 +314,7 @@ faq.push({
     items={[
       { label: copy.breadcrumb.home, href: getRoute('home', locale) },
       { label: copy.breadcrumb.listing, href: getRoute('events', locale) },
-      { label: event.title[locale] },
+      { label: displayTitle },
     ]}
   />
 
@@ -493,14 +496,14 @@ faq.push({
                 {prevEvent ? (
                   <a href={getEventDetailUrl(prevEvent.slug, locale)} class="upg-nav-link">
                     <span class="upg-nav-label">{copy.nav.prev}</span>
-                    <span class="upg-nav-title">{prevEvent.title[locale]}</span>
+                    <span class="upg-nav-title">{getEventDisplayTitle(prevEvent, locale)}</span>
                     <time class="upg-nav-meta" datetime={`${prevEvent.date}T${prevEvent.time}`}>{formatFullDate(prevEvent.date, locale)}</time>
                   </a>
                 ) : <span />}
                 {nextEvent ? (
                   <a href={getEventDetailUrl(nextEvent.slug, locale)} class="upg-nav-link upg-nav-link--end">
                     <span class="upg-nav-label">{copy.nav.next}</span>
-                    <span class="upg-nav-title">{nextEvent.title[locale]}</span>
+                    <span class="upg-nav-title">{getEventDisplayTitle(nextEvent, locale)}</span>
                     <time class="upg-nav-meta" datetime={`${nextEvent.date}T${nextEvent.time}`}>{formatFullDate(nextEvent.date, locale)}</time>
                   </a>
                 ) : <span />}
@@ -533,13 +536,13 @@ faq.push({
                   <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-event-card" style={`--rd: ${index * 0.15}s`}>
                     <div class="urec-thumb">
                       {(related.imageUrl || related.image) ? (
-                        <EventImage event={related} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" width={400} height={250} />
+                        <EventImage event={related} alt={getEventDisplayTitle(related, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" width={400} height={250} />
                       ) : (
                         <div class="urec-thumb-fallback"></div>
                       )}
                     </div>
                     <div class="urec-content">
-                      <span class="urec-title">{related.title[locale]}</span>
+                      <span class="urec-title">{getEventDisplayTitle(related, locale)}</span>
                       <span class="urec-meta">{formatFullDate(related.date, locale)} · {related.venue}</span>
                     </div>
                     <div class="urec-arrow" aria-hidden="true">
@@ -627,13 +630,13 @@ faq.push({
                     <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
                       <div class="uri-thumb">
                         {(related.imageUrl || related.image) ? (
-                          <EventImage event={related} alt={related.title[locale]} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" width={280} height={180} />
+                          <EventImage event={related} alt={getEventDisplayTitle(related, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" width={280} height={180} />
                         ) : (
                           <div class="uri-thumb-fallback"></div>
                         )}
                       </div>
                       <div class="uri-content">
-                        <span class="uri-title">{related.title[locale]}</span>
+                        <span class="uri-title">{getEventDisplayTitle(related, locale)}</span>
                         <span class="uri-meta">{formatFullDate(related.date, locale)}</span>
                       </div>
                       <div class="uri-arrow" aria-hidden="true">

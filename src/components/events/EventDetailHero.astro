@@ -6,7 +6,7 @@ import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import { formatFullDate, formatTime, getTemporalProximity } from '@utils/dates';
 import { formatPriceLabel } from '@utils/prices';
-import { getEventSeoH1 } from '@utils/event-seo';
+import { getEventDisplayTitle } from '@utils/event-seo';
 
 interface Props {
   event: Event;
@@ -40,7 +40,7 @@ const eventTime = formatTime(event.time, locale);
 const neighborhoodLabel = t(`neighborhoods.${event.neighborhood}`);
 
 const exactLocation = event.address || event.venue;
-const seoHeading = getEventSeoH1(event, locale);
+const displayTitle = getEventDisplayTitle(event, locale, 60);
 
 // Editorial details
 const dayNum = new Date(event.date).getDate().toString().padStart(2, '0');
@@ -52,7 +52,7 @@ const frameTagBottomRight = '37°10′N';
 const archiveRef = `${dayNum}${monthNum}`;
 ---
 
-<section class="ev-hero" aria-label={seoHeading} data-ev-hero>
+<section class="ev-hero" aria-label={displayTitle} data-ev-hero>
   <!-- Deep ambient canvas -->
   <div class="ev-canvas" aria-hidden="true">
     <div class="ev-mesh" />
@@ -149,7 +149,7 @@ const archiveRef = `${dayNum}${monthNum}`;
         {
           (() => {
             let delayIndex = 0;
-            return seoHeading
+            return displayTitle
               .split(' ')
               .map((word) => (
                 <span class="ev-word">
