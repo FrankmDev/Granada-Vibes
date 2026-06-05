@@ -3,8 +3,10 @@ import type { Locale } from '@types';
 import { SITE_CONFIG } from '@config/site';
 import SEOHead from '@components/seo/SEOHead.astro';
 import SchemaMarkup from '@components/seo/SchemaMarkup.astro';
+import GoogleAnalytics from '@components/seo/GoogleAnalytics.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
+import CookieConsent from '@components/seo/CookieConsent.astro';
 import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 
@@ -66,10 +68,6 @@ const currentPath = Astro.url.pathname;
 <!doctype html>
 <html lang={locale} class="scroll-smooth">
   <head>
-    <!-- Google Tag Manager -->
-    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-NX8FRP5B');</script>
-    <!-- End Google Tag Manager -->
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
@@ -81,6 +79,7 @@ const currentPath = Astro.url.pathname;
     <link rel="preconnect" href="https://api.open-meteo.com" />
     <link rel="dns-prefetch" href="https://api.open-meteo.com" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <GoogleAnalytics />
 
     <!-- SEO -->
     <SEOHead
@@ -117,10 +116,6 @@ const currentPath = Astro.url.pathname;
   </head>
 
   <body class="min-h-screen flex flex-col bg-bg text-text-primary antialiased">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NX8FRP5B" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Header: override via <Fragment slot="header"> -->
@@ -194,5 +189,6 @@ const currentPath = Astro.url.pathname;
     </script>
 
     <Analytics />
+    <CookieConsent locale={locale} />
   </body>
 </html>

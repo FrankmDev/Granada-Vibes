@@ -772,6 +772,13 @@ ctaAriaLabel: 'Discover Granada',
     legalSeoDescription: 'GRN URBAN legal notice: contact details, general terms of use and editorial responsibility for the local Granada guide.',
   },
 
+  cookieConsent: {
+    eyebrow: 'Analytics',
+    text: 'We use Google Analytics to measure visits and improve the guide. You can accept or reject this measurement.',
+    accept: 'Accept',
+    reject: 'Reject',
+  },
+
   // Meta
   meta: {
     siteName: 'GRN URBAN',

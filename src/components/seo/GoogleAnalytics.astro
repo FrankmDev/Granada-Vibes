@@ -1,0 +1,33 @@
+---
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const isEnabled = typeof gaMeasurementId === 'string' && gaMeasurementId.startsWith('G-');
+---
+
+{isEnabled && (
+  <>
+    <script is:inline define:vars={{ gaMeasurementId }}>
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        window.dataLayer.push(arguments);
+      };
+
+      var storedConsent = null;
+      try {
+        storedConsent = window.localStorage.getItem('grn_analytics_consent');
+      } catch (_) {
+        storedConsent = null;
+      }
+
+      window.gtag('consent', 'default', {
+        analytics_storage: storedConsent === 'accepted' ? 'granted' : 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      });
+
+      window.gtag('js', new Date());
+      window.gtag('config', gaMeasurementId);
+    </script>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}></script>
+  </>
+)}

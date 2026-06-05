@@ -770,6 +770,13 @@ ctaAriaLabel: 'Descubre Granada',
     legalSeoDescription: 'Aviso legal de GRN URBAN: datos de contacto, condiciones generales de uso y responsabilidad editorial de la guía local de Granada.',
   },
 
+  cookieConsent: {
+    eyebrow: 'Analítica',
+    text: 'Usamos Google Analytics para medir visitas y mejorar la guía. Puedes aceptar o rechazar esta medición.',
+    accept: 'Aceptar',
+    reject: 'Rechazar',
+  },
+
   // Meta
   meta: {
     siteName: 'GRN URBAN',
