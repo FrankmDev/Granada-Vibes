@@ -35,6 +35,39 @@ const relatedPosts = getRelatedPosts(post, 3);
 const relatedRoutes = getRelatedRoutesForBlogPost(post, 2);
 const relatedEvents = getRelatedEventsForBlogPost(post, 2);
 const displayTitle = getBlogDisplayTitle(post, locale);
+const seasonalGuideSlugs = new Set([
+  'carocas-granada',
+  'corpus-granada-2026',
+  'feria-corpus-granada-2026',
+  'tarasca-granada-2026',
+]);
+const beforeTravelPost = allPosts.find((item) => item.slug === 'antes-de-llegar-granada');
+const oneDayPost = allPosts.find((item) => item.slug === 'granada-en-un-dia-itinerario');
+const tapasPost = allPosts.find((item) => item.slug === 'tapas-gratis-granada');
+const byTimeLink = {
+  url: getRoute('byTime', locale),
+  title: t('nav.byTime'),
+  meta: t('mixedRoutes.heroSubtitle'),
+  image: null,
+};
+const plannerLink = {
+  url: getRoute('planner', locale),
+  title: t('nav.planner'),
+  meta: t('planner.heroDescription'),
+  image: null,
+};
+const evergreenPostLinks = [
+  beforeTravelPost,
+  seasonalGuideSlugs.has(post.slug) ? oneDayPost : null,
+  seasonalGuideSlugs.has(post.slug) ? tapasPost : null,
+]
+  .filter((item): item is BlogPost => Boolean(item) && item.id !== post.id)
+  .map((item) => ({
+    url: getBlogDetailUrl(item.slug, locale),
+    title: getBlogDisplayTitle(item, locale),
+    meta: `${t('blog.readingTime', { minutes: item.readingTime })} · ${t(`blog.categories.${item.category}`)}`,
+    image: item.image,
+  }));
 
 const crossLinks = [
   ...relatedRoutes.map((r) => ({
@@ -51,7 +84,10 @@ const crossLinks = [
   })),
 ].slice(0, 4);
 
-const planningLinks = [
+const planningLinks = Array.from(new Map([
+  byTimeLink,
+  plannerLink,
+  ...evergreenPostLinks,
   ...relatedPosts.map((p) => ({
     url: getBlogDetailUrl(p.slug, locale),
     title: getBlogDisplayTitle(p, locale),
@@ -59,7 +95,7 @@ const planningLinks = [
     image: p.image,
   })),
   ...crossLinks,
-].slice(0, 5);
+].map((link) => [link.url, link])).values()).slice(0, 5);
 
 const publishedDate = new Date(post.publishDate);
 const dateLocale = isEnglish ? 'en-GB' : 'es-ES';
@@ -220,6 +256,14 @@ const breadcrumb = [
               <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {categoryLabel}
+              </a>
+              <a href={byTimeLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                {byTimeLink.title}
+              </a>
+              <a href={plannerLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
+                {plannerLink.title}
               </a>
             </div>
           </article>

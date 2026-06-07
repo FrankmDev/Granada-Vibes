@@ -77,7 +77,8 @@ const heroMetadata = [
   { label: t('routes.heroMetaDifficultiesLabel'), value: difficulties.length.toString() },
 ];
 
-const eventsPath = getRoute('events', locale);
+const byTimePath = getRoute('byTime', locale);
+const plannerPath = getRoute('planner', locale);
 ---
 
 <BaseLayout 
@@ -95,14 +96,18 @@ const eventsPath = getRoute('events', locale);
     eyebrowRight={t('routes.heroEyebrowRight')}
     description={t('routes.heroDescription')}
     ctaText={t('routes.heroCta')}
-    ctaLink="#featured-routes"
-    secondaryCtaText={t('routes.heroSecondaryCta')}
-    secondaryCtaLink="#time-plans"
+    ctaLink="#time-plans"
+    secondaryCtaText={t('nav.planner')}
+    secondaryCtaLink={plannerPath}
     pageNumber="02"
     coordinates="37°11′N 3°36′W"
     metadata={heroMetadata}
     variant="compact"
   />
+
+  <div id="time-plans">
+    <MixedRoutesFullGrid locale={locale} />
+  </div>
 
   <!-- CINEMATIC ACCORDION SECTION -->
   <div id="featured-routes" class="routes-accordion-wrap">
@@ -136,16 +141,13 @@ const eventsPath = getRoute('events', locale);
     </div>
   </section>
 
-  <!-- TIME PLANS SECTION -->
-  <MixedRoutesFullGrid locale={locale} />
-
   <!-- CTA SECTION -->
   <CinematicCTA 
     locale={locale}
-    ctaPrimaryText={t('routes.ctaBtn')}
-    ctaPrimaryLink={eventsPath}
-    ctaSecondaryText={t('routes.heroSecondaryCta')}
-    ctaSecondaryLink="#time-plans"
+    ctaPrimaryText={t('routes.heroSecondaryCta')}
+    ctaPrimaryLink={byTimePath}
+    ctaSecondaryText={t('nav.planner')}
+    ctaSecondaryLink={plannerPath}
   />
 
   <script>

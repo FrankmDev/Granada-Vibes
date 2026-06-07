@@ -21,7 +21,15 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const allPosts = getAllPosts();
 const featuredPosts = getFeaturedPosts();
-const featuredPost = featuredPosts[0] || allPosts[0];
+const preferredFeaturedSlugs = [
+  'antes-de-llegar-granada',
+  'granada-en-un-dia-itinerario',
+  'granada-fin-de-semana-48-horas',
+  'tapas-gratis-granada',
+];
+const featuredPost = preferredFeaturedSlugs
+  .map((slug) => allPosts.find((post) => post.slug === slug))
+  .find((post) => Boolean(post)) || featuredPosts[0] || allPosts[0];
 const remainingPosts = allPosts.filter(p => p.id !== featuredPost?.id);
 
 const categories: BlogCategory[] = ['guia', 'cultura', 'gastronomia', 'barrios', 'consejos'];
@@ -50,8 +58,8 @@ const BLOG_IMAGES: Record<string, string> = {
   default: 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg',
 };
 
-const routesPath = getRoute('routes', locale);
 const eventsPath = getRoute('events', locale);
+const byTimePath = getRoute('byTime', locale);
 ---
 
 <BaseLayout
@@ -70,8 +78,8 @@ const eventsPath = getRoute('events', locale);
     description={t('blog.heroDescription')}
     ctaText={t('blog.heroCta')}
     ctaLink="#content"
-    secondaryCtaText={t('blog.heroSecondaryCta')}
-    secondaryCtaLink={routesPath}
+    secondaryCtaText={t('nav.byTime')}
+    secondaryCtaLink={byTimePath}
     pageNumber="04"
     coordinates="37°10′N 3°36′W"
     metadata={heroMetadata}
@@ -150,15 +158,15 @@ const eventsPath = getRoute('events', locale);
   <CinematicCTA 
     locale={locale}
     ctaPrimaryText={t('actions.viewAll')}
-    ctaPrimaryLink={routesPath}
-    ctaSecondaryText={t('actions.viewAll')}
+    ctaPrimaryLink={byTimePath}
+    ctaSecondaryText={t('nav.events')}
     ctaSecondaryLink={eventsPath}
   />
 
   <!-- Mobile CTA -->
   <div class="mobile-cta-wrapper">
-    <a href={routesPath} class="mobile-cta">
-      <span>{t('detail.allRoutes')}</span>
+    <a href={byTimePath} class="mobile-cta">
+      <span>{t('nav.byTime')}</span>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>

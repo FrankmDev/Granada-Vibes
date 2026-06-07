@@ -140,8 +140,8 @@ export const eventHubs: EventHubConfig[] = [
       en: 'Go back to the full agenda to see theater, exhibitions, cinema and other cultural plans.',
     },
     category: 'concert',
-    spanishPath: '/eventos/conciertos-granada/',
-    englishPath: '/en/events/granada-concerts/',
+    spanishPath: '/eventos/conciertos/',
+    englishPath: '/en/events/concerts/',
     faqs: [
       {
         question: { es: '¿Dónde comprar entradas para conciertos en Granada?', en: 'Where can I buy concert tickets in Granada?' },

@@ -62,6 +62,18 @@ function hasDistinctEnglishEventCopy(currentEvent: Event): boolean {
 }
 
 const categoryUrl = `${getRoute('events', locale)}#archive`;
+const byTimeLink = {
+  url: getRoute('byTime', locale),
+  title: t('nav.byTime'),
+  meta: t('mixedRoutes.heroSubtitle'),
+  image: null,
+};
+const plannerLink = {
+  url: getRoute('planner', locale),
+  title: t('nav.planner'),
+  meta: t('planner.heroDescription'),
+  image: null,
+};
 
 const copy = isEnglish
   ? {
@@ -201,8 +213,14 @@ const artistDirectoryEntry = getAllArtistEntries().find((entry) => entry.events.
 const hasPassed = isPastEvent(event);
 const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
 const displayTitle = getEventDisplayTitle(event, locale);
+const beforeTravelPost = relatedPostsForEvent.find((item) => item.slug === 'antes-de-llegar-granada')
+  ?? null;
+const tapasPost = relatedPostsForEvent.find((item) => item.slug === 'tapas-gratis-granada')
+  ?? null;
 
-const crossLinks = [
+const crossLinks = Array.from(new Map([
+  byTimeLink,
+  plannerLink,
   ...relatedRoutesForEvent.map((r) => ({
     url: getRouteDetailUrl(r.slug, locale),
     title: getRouteDisplayTitle(r, locale),
@@ -223,7 +241,23 @@ const crossLinks = [
         image: null,
       }]
     : []),
-].slice(0, 4);
+  ...(beforeTravelPost
+    ? [{
+        url: getBlogDetailUrl(beforeTravelPost.slug, locale),
+        title: getBlogDisplayTitle(beforeTravelPost, locale),
+        meta: `${t('blog.readingTime', { minutes: beforeTravelPost.readingTime })} · ${t(`blog.categories.${beforeTravelPost.category}`)}`,
+        image: beforeTravelPost.image,
+      }]
+    : []),
+  ...(tapasPost
+    ? [{
+        url: getBlogDetailUrl(tapasPost.slug, locale),
+        title: getBlogDisplayTitle(tapasPost, locale),
+        meta: `${t('blog.readingTime', { minutes: tapasPost.readingTime })} · ${t(`blog.categories.${tapasPost.category}`)}`,
+        image: tapasPost.image,
+      }]
+    : []),
+].map((link) => [link.url, link])).values()).slice(0, 4);
 
 const eventImage = event.remoteImageUrl || event.imageUrl || event.image;
 const ogImage = eventImage || 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Granada_-_Teatro_Isabel_la_Cat%C3%B3lica_8.jpg';
@@ -347,6 +381,14 @@ faq.push({
               <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {t(`categories.${event.category}`)}
+              </a>
+              <a href={byTimeLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                {byTimeLink.title}
+              </a>
+              <a href={plannerLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
+                {plannerLink.title}
               </a>
               {neighborhoodLink && (
                 <a href={neighborhoodLink.url} class="upg-badge ghost" style="text-decoration:none;">

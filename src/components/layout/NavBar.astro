@@ -22,10 +22,10 @@ function getMobileLabel(label: string): string {
 }
 
 const navLinks = [
-  { href: getRoute('events', locale), label: t('nav.events'),  shortLabel: t('nav.events'),  num: '01', abbr: 'EV', mobileLabel: getMobileLabel(t('nav.events')) },
-  { href: getRoute('routes', locale), label: t('nav.routes'),  shortLabel: t('nav.routes'),  num: '02', abbr: 'RT', mobileLabel: getMobileLabel(t('nav.routes')) },
-  { href: getRoute('blog', locale),   label: t('nav.blog'),    shortLabel: t('nav.blog'),    num: '03', abbr: 'GU', mobileLabel: getMobileLabel(t('nav.blog')) },
-  { href: getRoute('planner', locale), label: t('nav.planner'), shortLabel: t('nav.planner'), num: '04', abbr: 'PL', mobileLabel: getMobileLabel(t('nav.planner')) },
+  { href: getRoute('routes', locale), label: t('nav.routes'),  shortLabel: t('nav.routes'),  num: '01', abbr: 'RT', mobileLabel: getMobileLabel(t('nav.routes')) },
+  { href: getRoute('blog', locale),   label: t('nav.blog'),    shortLabel: t('nav.blog'),    num: '02', abbr: 'GU', mobileLabel: getMobileLabel(t('nav.blog')) },
+  { href: getRoute('planner', locale), label: t('nav.planner'), shortLabel: t('nav.planner'), num: '03', abbr: 'PL', mobileLabel: getMobileLabel(t('nav.planner')) },
+  { href: getRoute('events', locale), label: t('nav.events'),  shortLabel: t('nav.events'),  num: '04', abbr: 'EV', mobileLabel: getMobileLabel(t('nav.events')) },
 ];
 
 const isHome = currentPath === '/' || currentPath === '/en/';

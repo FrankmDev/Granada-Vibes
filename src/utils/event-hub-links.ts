@@ -1,4 +1,5 @@
 import { eventHubs } from '@data/seo/event-hubs.js';
+import { getRoute } from '@utils/routes';
 import type { Locale } from '@types';
 
 export interface EventDiscoveryLink {
@@ -20,10 +21,27 @@ export function getEventDiscoveryLinks(
     hubs = hubs.slice(0, options.limit);
   }
 
-  return hubs.map((hub) => ({
+  const hubLinks = hubs.map((hub) => ({
     id: hub.id,
     href: locale === 'en' ? hub.englishPath : hub.spanishPath,
     eyebrow: hub.eyebrow[locale],
     label: hub.displayH1[locale],
   }));
+
+  const evergreenLinks: EventDiscoveryLink[] = [
+    {
+      id: 'by-time',
+      href: getRoute('byTime', locale),
+      eyebrow: locale === 'en' ? 'Time plans' : 'Planes por tiempo',
+      label: locale === 'en' ? 'BY TIME' : 'POR TIEMPO',
+    },
+    {
+      id: 'planner',
+      href: getRoute('planner', locale),
+      eyebrow: locale === 'en' ? 'Trip planner' : 'Planificador',
+      label: locale === 'en' ? 'PLAN' : 'PLANIFICA',
+    },
+  ];
+
+  return [...hubLinks, ...evergreenLinks];
 }

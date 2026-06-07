@@ -18,7 +18,7 @@ const ES_TO_EN_SEGMENTS = {
   artistas: 'artists',
   hoy: 'today',
   'este-fin-de-semana': 'this-weekend',
-  'conciertos-granada': 'granada-concerts',
+  conciertos: 'concerts',
   gratis: 'free',
 };
 
@@ -209,11 +209,11 @@ function getSitemapMeta(url, pastEventSlugs, directorySignals) {
   if (
     pathname === '/eventos/hoy/' ||
     pathname === '/eventos/este-fin-de-semana/' ||
-    pathname === '/eventos/conciertos-granada/' ||
+    pathname === '/eventos/conciertos/' ||
     pathname === '/eventos/gratis/' ||
     pathname === '/en/events/today/' ||
     pathname === '/en/events/this-weekend/' ||
-    pathname === '/en/events/granada-concerts/' ||
+    pathname === '/en/events/concerts/' ||
     pathname === '/en/events/free/'
   ) {
     return { priority: 0.85, changefreq: 'daily', lastmod: today };

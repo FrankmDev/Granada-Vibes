@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PlanHero from '@components/shared/PlanHero.astro';
-import { getAllMixedRoutes } from '@data';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+import { getAllMixedRoutes, getAllPosts } from '@data';
 import { useTranslations } from '@i18n/utils';
-import { getRoute, getPlanDetailUrl } from '@utils/routes';
+import { getBlogDisplayTitle } from '@utils/content-seo';
+import { getRoute, getPlanDetailUrl, getBlogDetailUrl } from '@utils/routes';
 import type { MixedRoute, MixedRouteStop, Locale } from '@types';
 import ShareButton from '@components/ui/ShareButton.astro';
 import ReadingProgress from '@components/ui/ReadingProgress.astro';
@@ -19,9 +21,13 @@ const t = useTranslations(locale);
 const isEnglish = locale === 'en';
 
 const allPlans = getAllMixedRoutes();
+const allPosts = getAllPosts();
 const planIndex = allPlans.findIndex((p) => p.id === plan.id);
 const prevPlan = planIndex > 0 ? allPlans[planIndex - 1] : null;
 const nextPlan = planIndex < allPlans.length - 1 ? allPlans[planIndex + 1] : null;
+const beforeTravelPost = allPosts.find((item) => item.slug === 'antes-de-llegar-granada');
+const tapasPost = allPosts.find((item) => item.slug === 'tapas-gratis-granada');
+const oneDayPost = allPosts.find((item) => item.slug === 'granada-en-un-dia-itinerario');
 
 const ogImage = plan.image || 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg';
 
@@ -66,6 +72,46 @@ const refCode = `PLN / ${refNum} · ${new Date().getFullYear()}`;
 const backHref = getRoute('byTime', locale);
 const backLabel = t('mixedRoutes.title');
 const eyebrowText = getDurationLabel(plan.duration).toUpperCase();
+const onwardLinks = Array.from(new Map([
+  {
+    url: getRoute('planner', locale),
+    title: t('nav.planner'),
+    meta: t('planner.heroDescription'),
+    image: null,
+  },
+  {
+    url: getRoute('routes', locale),
+    title: t('nav.routes'),
+    meta: t('routes.heroSubtitle'),
+    image: null,
+  },
+  ...(beforeTravelPost
+    ? [{
+        url: getBlogDetailUrl(beforeTravelPost.slug, locale),
+        title: getBlogDisplayTitle(beforeTravelPost, locale),
+        meta: `${t('blog.readingTime', { minutes: beforeTravelPost.readingTime })} · ${t(`blog.categories.${beforeTravelPost.category}`)}`,
+        image: beforeTravelPost.image,
+      }]
+    : []),
+  ...(plan.duration === '2h' || plan.duration === '6h'
+    ? oneDayPost
+      ? [{
+          url: getBlogDetailUrl(oneDayPost.slug, locale),
+          title: getBlogDisplayTitle(oneDayPost, locale),
+          meta: `${t('blog.readingTime', { minutes: oneDayPost.readingTime })} · ${t(`blog.categories.${oneDayPost.category}`)}`,
+          image: oneDayPost.image,
+        }]
+      : []
+    : []),
+  ...(tapasPost
+    ? [{
+        url: getBlogDetailUrl(tapasPost.slug, locale),
+        title: getBlogDisplayTitle(tapasPost, locale),
+        meta: `${t('blog.readingTime', { minutes: tapasPost.readingTime })} · ${t(`blog.categories.${tapasPost.category}`)}`,
+        image: tapasPost.image,
+      }]
+    : []),
+].map((link) => [link.url, link])).values()).slice(0, 4);
 
 const copy = isEnglish
   ? {
@@ -198,6 +244,18 @@ const copy = isEnglish
                   ))}
                 </div>
               </article>
+            )}
+
+            {onwardLinks.length > 0 && (
+              <div class="upg-block upg-block--loose" data-reveal>
+                <div class="upg-block-bg"></div>
+                <header class="upg-header">
+                  <span class="upg-num">08</span>
+                  <div class="upg-line"></div>
+                  <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
+                </header>
+                <CrossLinksSection title={t('detail.discoverMore')} links={onwardLinks} />
+              </div>
             )}
 
             {(prevPlan || nextPlan) && (

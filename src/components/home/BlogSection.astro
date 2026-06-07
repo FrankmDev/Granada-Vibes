@@ -448,8 +448,8 @@ function formatDate(dateStr: string): string {
   /* Expedition Number Stamp */
   .expedition-stamp {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 1.25rem;
+    left: 1.25rem;
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -575,16 +575,16 @@ function formatDate(dateStr: string): string {
     border-color: var(--j-gold);
   }
 
-  .corner-marker.tl { top: 0.5rem; left: 0.5rem; border-top-width: 2px; border-left-width: 2px; }
-  .corner-marker.tr { top: 0.5rem; right: 0.5rem; border-top-width: 2px; border-right-width: 2px; }
-  .corner-marker.bl { bottom: 0.5rem; left: 0.5rem; border-bottom-width: 2px; border-left-width: 2px; }
-  .corner-marker.br { bottom: 0.5rem; right: 0.5rem; border-bottom-width: 2px; border-right-width: 2px; }
+  .corner-marker.tl { top: 0.25rem; left: 0.25rem; border-top-width: 2px; border-left-width: 2px; border-radius: 12px 0 0 0; }
+  .corner-marker.tr { top: 0.25rem; right: 0.25rem; border-top-width: 2px; border-right-width: 2px; border-radius: 0 12px 0 0; }
+  .corner-marker.bl { bottom: 0.25rem; left: 0.25rem; border-bottom-width: 2px; border-left-width: 2px; border-radius: 0; }
+  .corner-marker.br { bottom: 0.25rem; right: 0.25rem; border-bottom-width: 2px; border-right-width: 2px; border-radius: 0; }
 
   /* Legend Tag (Category) */
   .legend-tag {
     position: absolute;
-    bottom: 0.75rem;
-    left: 0.75rem;
+    bottom: 1rem;
+    left: 1rem;
     z-index: 10;
     display: flex;
     align-items: center;
@@ -619,8 +619,8 @@ function formatDate(dateStr: string): string {
   /* Featured Badge */
   .featured-badge {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    top: 1rem;
+    right: 1rem;
     z-index: 10;
     display: flex;
     align-items: center;

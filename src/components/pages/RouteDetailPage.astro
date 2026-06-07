@@ -5,7 +5,7 @@ import Footer from '@components/layout/Footer.astro';
 import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
-import { getAllRoutes } from '@data/index.js';
+import { getAllPosts, getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
 import { getRoute, getRouteDetailUrl, getBlogDetailUrl, getEventDetailUrl } from '@utils/routes';
 import { formatDistance, formatDuration } from '@utils/dates';
@@ -37,6 +37,21 @@ const routeSeoDescription = getRouteSeoDescription({
 });
 
 const categoryUrl = `${getRoute('routes', locale)}#routes-grid`;
+const allPosts = getAllPosts();
+const beforeTravelPost = allPosts.find((item) => item.slug === 'antes-de-llegar-granada');
+const tapasPost = allPosts.find((item) => item.slug === 'tapas-gratis-granada');
+const byTimeLink = {
+  url: getRoute('byTime', locale),
+  title: t('nav.byTime'),
+  meta: t('mixedRoutes.heroSubtitle'),
+  image: null,
+};
+const plannerLink = {
+  url: getRoute('planner', locale),
+  title: t('nav.planner'),
+  meta: t('planner.heroDescription'),
+  image: null,
+};
 
 const copy = isEnglish
   ? {
@@ -134,6 +149,17 @@ if (relatedRoutes.length < 3) {
 
 const relatedPosts = getRelatedPostsForRoute(route, 3);
 const relatedEventsForRoute = getRelatedEventsForRoute(route, 2);
+const evergreenPostLinks = [
+  beforeTravelPost,
+  route.category === 'tapas' || route.category === 'flamenco' ? tapasPost : null,
+]
+  .filter((item): item is NonNullable<typeof beforeTravelPost> => Boolean(item))
+  .map((item) => ({
+    url: getBlogDetailUrl(item.slug, locale),
+    title: getBlogDisplayTitle(item, locale),
+    meta: `${t('blog.readingTime', { minutes: item.readingTime })} · ${t(`blog.categories.${item.category}`)}`,
+    image: item.image,
+  }));
 
 const crossLinks = [
   ...relatedPosts.map((p) => ({
@@ -150,7 +176,10 @@ const crossLinks = [
   })),
 ].slice(0, 4);
 
-const planningLinks = [
+const planningLinks = Array.from(new Map([
+  byTimeLink,
+  plannerLink,
+  ...evergreenPostLinks,
   ...crossLinks,
   ...relatedRoutes.map((r) => ({
     url: getRouteDetailUrl(r.slug, locale),
@@ -158,7 +187,7 @@ const planningLinks = [
     meta: `${formatDuration(r.duration, locale)} · ${t(`difficulty.${r.difficulty}`)}`,
     image: r.image,
   })),
-].slice(0, 5);
+].map((link) => [link.url, link])).values()).slice(0, 5);
 
 const ogImage = route.image || 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg';
 const breadcrumb = [
@@ -241,6 +270,14 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {t(`categories.${route.category}`)}
               </a>
+              <a href={byTimeLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                {byTimeLink.title}
+              </a>
+              <a href={plannerLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
+                {plannerLink.title}
+              </a>
             </div>
           </article>
 
@@ -252,7 +289,8 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 <div class="upg-line"></div>
                 <span class="upg-eyebrow">{copy.planningEyebrow}</span>
               </header>
-              <CrossLinksSection title={copy.planningTitle} links={planningLinks} />
+              <h2 class="upg-title" style="margin-bottom: 1.5rem;">{copy.planningTitle}</h2>
+              <CrossLinksSection title={copy.planningTitle} links={planningLinks} showHeader={false} />
             </div>
           )}
 
@@ -419,16 +457,30 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               <div class="upg-nav-flex">
                 {prevRoute ? (
                   <a href={getRouteDetailUrl(prevRoute.slug, locale)} class="upg-nav-link">
-                    <span class="upg-nav-label">{copy.nav.prev}</span>
-                    <span class="upg-nav-title">{getRouteDisplayTitle(prevRoute, locale)}</span>
-                    <span class="upg-nav-meta">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
+                    <span class="upg-nav-arrow" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"></path>
+                      </svg>
+                    </span>
+                    <span class="upg-nav-copy">
+                      <span class="upg-nav-label">{copy.nav.prev}</span>
+                      <span class="upg-nav-title">{getRouteDisplayTitle(prevRoute, locale)}</span>
+                      <span class="upg-nav-meta">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
+                    </span>
                   </a>
                 ) : <span />}
                 {nextRoute ? (
                   <a href={getRouteDetailUrl(nextRoute.slug, locale)} class="upg-nav-link upg-nav-link--end">
-                    <span class="upg-nav-label">{copy.nav.next}</span>
-                    <span class="upg-nav-title">{getRouteDisplayTitle(nextRoute, locale)}</span>
-                    <span class="upg-nav-meta">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
+                    <span class="upg-nav-copy">
+                      <span class="upg-nav-label">{copy.nav.next}</span>
+                      <span class="upg-nav-title">{getRouteDisplayTitle(nextRoute, locale)}</span>
+                      <span class="upg-nav-meta">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
+                    </span>
+                    <span class="upg-nav-arrow" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6"></path>
+                      </svg>
+                    </span>
                   </a>
                 ) : <span />}
               </div>

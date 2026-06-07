@@ -4,6 +4,7 @@ import SubpageHero from '@components/shared/SubpageHero.astro';
 import PlanificadorForm from '@components/PlanificadorForm.astro';
 import { lugares } from '@data/lugares';
 import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
 import type { Locale } from '@types';
 
 interface Props {
@@ -20,6 +21,7 @@ const heroMetadata = [
 ];
 
 const ogImage = 'https://upload.wikimedia.org/wikipedia/commons/6/65/Granada%2C_Mirador_Ojo_de_Granada%2C_Sierra_Nevada.jpg';
+const byTimePath = getRoute('byTime', locale);
 ---
 
 <BaseLayout
@@ -46,6 +48,8 @@ const ogImage = 'https://upload.wikimedia.org/wikipedia/commons/6/65/Granada%2C_
     description={t('planner.heroDescription')}
     ctaText={t('planner.heroCta')}
     ctaLink="#planner-app"
+    secondaryCtaText={t('nav.byTime')}
+    secondaryCtaLink={byTimePath}
     pageNumber="05"
     coordinates="37°10′N · 3°35′W"
     metadata={heroMetadata}

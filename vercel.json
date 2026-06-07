@@ -15,6 +15,20 @@
       }
     },
     {
+      "src": "/eventos/conciertos-granada/?",
+      "status": 308,
+      "headers": {
+        "Location": "/eventos/conciertos/"
+      }
+    },
+    {
+      "src": "/en/events/granada-concerts/?",
+      "status": 308,
+      "headers": {
+        "Location": "/en/events/concerts/"
+      }
+    },
+    {
       "handle": "filesystem"
     }
   ]

@@ -12,16 +12,19 @@ interface Props {
   title: string;
   links: CrossLink[];
   showArrow?: boolean;
+  showHeader?: boolean;
 }
 
-const { title, links, showArrow = true } = Astro.props;
+const { title, links, showArrow = true, showHeader = true } = Astro.props;
 ---
 
 {links.length > 0 && (
-  <div class="upg-related-bento" data-reveal>
-    <div class="upg-rb-header">
-      <span class="upg-rb-title">[ {title} ]</span>
-    </div>
+  <div class="upg-related-bento">
+    {showHeader && (
+      <div class="upg-rb-header">
+        <span class="upg-rb-title">[ {title} ]</span>
+      </div>
+    )}
 
     <div class="upg-rb-list">
       {links.map((link, index) => (
@@ -30,7 +33,12 @@ const { title, links, showArrow = true } = Astro.props;
             {link.image ? (
               <OptimizedImage src={link.image} alt={link.title} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
             ) : (
-              <div class="uri-thumb-fallback" />
+              <div class="uri-thumb-fallback" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 8v4l3 3"></path>
+                  <circle cx="12" cy="12" r="9"></circle>
+                </svg>
+              </div>
             )}
           </div>
           <div class="uri-content">
@@ -47,3 +55,98 @@ const { title, links, showArrow = true } = Astro.props;
     </div>
   </div>
 )}
+
+<style>
+  .upg-related-bento {
+    background: transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+  }
+  .upg-related-bento.is-visible { opacity: 1; transform: translateY(0); }
+
+  .upg-rb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-left: 0.5rem; }
+  .upg-rb-title { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-ink-3); text-transform: uppercase; }
+  .upg-rb-all { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-orange); text-decoration: none; transition: opacity 0.3s; }
+  .upg-rb-all:hover { opacity: 0.7; }
+
+  .upg-rb-list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .upg-rel-item {
+    display: flex; align-items: center; gap: 1rem; padding: 0.75rem;
+    background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 16px;
+    text-decoration: none; transition: all 0.3s ease;
+  }
+  .upg-rel-item:hover { transform: translateX(4px); box-shadow: 0 8px 24px rgba(0,0,0,0.04); border-color: rgba(201,168,76,0.3); }
+
+  .uri-thumb { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: rgba(26,22,25,0.04); }
+  .uri-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; filter: grayscale(20%); }
+  .upg-rel-item:hover .uri-thumb img { transform: scale(1.05); filter: grayscale(0%); }
+
+  .uri-content { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+  .uri-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; color: var(--s-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+  .uri-meta { font-family: var(--font-display); font-size: 0.7rem; color: var(--s-ink-3); }
+
+  .uri-arrow { width: 32px; height: 32px; border-radius: 50%; background: transparent; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
+  .uri-arrow svg { width: 16px; height: 16px; }
+  .upg-rel-item:hover .uri-arrow { background: var(--s-orange); color: #fff; }
+
+  .uri-thumb-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at top left, rgba(201, 168, 76, 0.24), transparent 58%),
+      linear-gradient(135deg, rgba(232, 98, 42, 0.12), rgba(26, 22, 25, 0.04));
+    color: rgba(26, 22, 25, 0.58);
+  }
+  .uri-thumb-fallback svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  :global(.upg-block--loose) .upg-related-bento {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(.upg-block--loose) .upg-rb-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  :global(.upg-block--loose) .upg-rel-item {
+    min-width: 0;
+    min-height: 96px;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  :global(.upg-block--loose) .uri-thumb {
+    width: 64px;
+    height: 64px;
+  }
+
+  :global(.upg-block--loose) .uri-content {
+    min-width: 0;
+    gap: 0.4rem;
+  }
+
+  :global(.upg-block--loose) .uri-title {
+    font-size: 0.95rem;
+  }
+
+  :global(.upg-block--loose) .uri-meta {
+    font-size: 0.74rem;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 640px) {
+    :global(.upg-block--loose) .upg-rb-list { grid-template-columns: 1fr; }
+    :global(.upg-block--loose) .upg-rel-item { min-height: 0; padding: 0.9rem; }
+    :global(.upg-block--loose) .uri-thumb { width: 56px; height: 56px; }
+  }
+</style>

@@ -218,35 +218,6 @@
   .upg-btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
   .upg-btn-primary:hover svg { transform: translateX(4px); }
 
-  /* Related Bento */
-  .upg-related-bento { background: transparent; opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
-  .upg-related-bento.is-visible { opacity: 1; transform: translateY(0); }
-  
-  .upg-rb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-left: 0.5rem; }
-  .upg-rb-title { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-ink-3); text-transform: uppercase; }
-  .upg-rb-all { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-orange); text-decoration: none; transition: opacity 0.3s; }
-  .upg-rb-all:hover { opacity: 0.7; }
-
-  .upg-rb-list { display: flex; flex-direction: column; gap: 0.75rem; }
-  .upg-rel-item {
-    display: flex; align-items: center; gap: 1rem; padding: 0.75rem;
-    background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 16px;
-    text-decoration: none; transition: all 0.3s ease;
-  }
-  .upg-rel-item:hover { transform: translateX(4px); box-shadow: 0 8px 24px rgba(0,0,0,0.04); border-color: rgba(201,168,76,0.3); }
-
-  .uri-thumb { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: rgba(26,22,25,0.04); }
-  .uri-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; filter: grayscale(20%); }
-  .upg-rel-item:hover .uri-thumb img { transform: scale(1.05); filter: grayscale(0%); }
-  
-  .uri-content { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
-  .uri-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; color: var(--s-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
-  .uri-meta { font-family: var(--font-display); font-size: 0.7rem; color: var(--s-ink-3); display: flex; align-items: center; gap: 0.3rem;}
-  
-  .uri-arrow { width: 32px; height: 32px; border-radius: 50%; background: transparent; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
-  .uri-arrow svg { width: 16px; height: 16px; }
-  .upg-rel-item:hover .uri-arrow { background: var(--s-orange); color: #fff; }
-
   /* Mobile auto-generated TOC */
   .blg-toc-mobile { display: none; margin-bottom: 1.5rem; background: #fff; border-radius: 20px; border: 1px solid var(--s-border); overflow: hidden; }
   .blg-toc-mobile summary {
