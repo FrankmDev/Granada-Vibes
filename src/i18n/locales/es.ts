@@ -301,9 +301,15 @@ export const es = {
     sections: {
       eventsEyebrow: 'AGENDA',
       eventsAriaLabel: 'Archivo de eventos',
+      eventsTitleSecondary: 'EN GRANADA',
+      eventsSubtitle: 'Conciertos, exposiciones, mercados y planes que no te puedes perder esta semana en la ciudad.',
       routesEyebrow: 'CARTOGRAFÍA',
       routesTitleLabel: 'ATLAS URBANO',
+      routesTitleSecondary: 'DESTACADAS',
+      routesSubtitle: 'Recorridos a pie por los barrios más emblemáticos, con paradas seleccionadas y consejos locales.',
       routesAriaLabel: 'Rutas destacadas',
+      blogEyebrow: 'EDICIÓN ESPECIAL',
+      blogTitleSecondary: 'LOCALES',
 ctaAriaLabel: 'Descubre Granada',
     },
     cta: {

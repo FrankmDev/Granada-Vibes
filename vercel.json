@@ -29,6 +29,50 @@
       }
     },
     {
+      "src": "/artistas(?:/(.*))?",
+      "status": 308,
+      "headers": {
+        "Location": "/salas/"
+      }
+    },
+    {
+      "src": "/en/artists(?:/(.*))?",
+      "status": 308,
+      "headers": {
+        "Location": "/en/venues/"
+      }
+    },
+    {
+      "src": "/_granada-assets/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "continue": true
+    },
+    {
+      "src": "/(.*)\\.(?:avif|webp|jpg|jpeg|png|svg|ico|mp4|webm|woff2?)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "continue": true
+    },
+    {
+      "src": "/ai/(.*)",
+      "headers": {
+        "X-Robots-Tag": "noindex, follow"
+      },
+      "continue": true
+    },
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+      },
+      "continue": true
+    },
+    {
       "handle": "filesystem"
     }
   ]

@@ -13,7 +13,6 @@ const ES_TO_EN_SEGMENTS: Record<string, string> = {
   planifica: 'planifica',
   colabora: 'collaborate',
   salas: 'venues',
-  artistas: 'artists',
   hoy: 'today',
   'este-fin-de-semana': 'this-weekend',
   conciertos: 'concerts',

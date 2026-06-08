@@ -303,9 +303,15 @@ export const en: Translations = {
     sections: {
       eventsEyebrow: 'AGENDA',
       eventsAriaLabel: 'Event archive',
+      eventsTitleSecondary: 'IN GRANADA',
+      eventsSubtitle: 'Concerts, exhibitions, markets and plans you can\'t miss this week in the city.',
       routesEyebrow: 'CARTOGRAPHY',
       routesTitleLabel: 'URBAN ATLAS',
+      routesTitleSecondary: 'FEATURED',
+      routesSubtitle: 'Walking routes through the most iconic neighbourhoods, with selected stops and local tips.',
       routesAriaLabel: 'Featured routes',
+      blogEyebrow: 'SPECIAL EDITION',
+      blogTitleSecondary: 'LOCAL',
 ctaAriaLabel: 'Discover Granada',
     },
     cta: {

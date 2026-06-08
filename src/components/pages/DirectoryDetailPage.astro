@@ -8,34 +8,27 @@ import EventArchiveCard from '@components/events/EventArchiveCard.astro';
 import { SITE_CONFIG } from '@config/site';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute } from '@utils/routes';
-import { artistDisplayTitle, venueDisplayTitle } from '@utils/page-display-title';
-import type { ArtistDirectoryEntry, VenueDirectoryEntry } from '@data/directories';
+import { venueDisplayTitle } from '@utils/page-display-title';
+import type { VenueDirectoryEntry } from '@data/directories';
 import type { Locale, EventCategory } from '@types';
 
 interface Props {
   locale: Locale;
-  kind: 'artist' | 'venue';
-  entry: ArtistDirectoryEntry | VenueDirectoryEntry;
+  entry: VenueDirectoryEntry;
 }
 
-const { locale, kind, entry } = Astro.props;
+const { locale, entry } = Astro.props;
 const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
-const isArtist = kind === 'artist';
-
-const indexPath = isArtist
-  ? locale === 'en' ? '/en/artists/' : '/artistas/'
-  : locale === 'en' ? '/en/venues/' : '/salas/';
-
-const indexLabel = isArtist ? t('directory.allArtists') : t('directory.allVenues');
-const detailMeta = isArtist ? t('directory.artistMeta') : t('directory.venueMeta');
-
-const heroTitle = isArtist ? artistDisplayTitle(entry.name) : venueDisplayTitle(entry.name);
+const indexPath = locale === 'en' ? '/en/venues/' : '/salas/';
+const indexLabel = t('directory.allVenues');
+const detailMeta = t('directory.venueMeta');
+const heroTitle = venueDisplayTitle(entry.name);
 
 const faq = [
   {
-    question: isArtist ? t('directory.artistFaqQuestion') : t('directory.venueFaqQuestion'),
-    answer: isArtist ? t('directory.artistFaqAnswer') : t('directory.venueFaqAnswer'),
+    question: t('directory.venueFaqQuestion'),
+    answer: t('directory.venueFaqAnswer'),
   },
 ];
 
@@ -46,6 +39,7 @@ const breadcrumb = [
 ];
 
 const eventsToShow = entry.upcomingEvents.length > 0 ? entry.upcomingEvents : entry.events;
+const shouldIndexDirectoryEntry = entry.events.length >= 2;
 
 const eventListSchema = {
   '@context': 'https://schema.org',
@@ -82,6 +76,7 @@ const heroMetadata = [
   locale={locale}
   title={entry.title[locale]}
   description={entry.description[locale]}
+  noindex={!shouldIndexDirectoryEntry}
   breadcrumb={breadcrumb}
   faq={faq}
 >
@@ -117,10 +112,10 @@ const heroMetadata = [
       <SectionHeader
         eyebrow={entry.upcomingEvents.length > 0 ? t('directory.upcomingEvents') : t('directory.eventHistory')}
         eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        titleLabel={detailMeta}
         title={heroTitle}
         size="compact"
         animateTitle={true}
+        theme="cream"
       />
 
       {eventsToShow.length > 0 ? (
@@ -151,8 +146,8 @@ const heroMetadata = [
       <SectionHeader
         eyebrow={t('directory.faqTitle')}
         eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        titleLabel={detailMeta}
         title={t('directory.faqTitle')}
+        theme="cream"
       />
       <div class="dir-meta-list">
         {faq.map((item) => (

@@ -23,7 +23,3 @@ export function compactDisplayTitle(value: string, maxLength = 22): string {
 export function venueDisplayTitle(name: string): string {
   return compactDisplayTitle(name, 24);
 }
-
-export function artistDisplayTitle(name: string): string {
-  return compactDisplayTitle(name, 20);
-}

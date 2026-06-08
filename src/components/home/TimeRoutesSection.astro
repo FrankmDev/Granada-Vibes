@@ -1,6 +1,7 @@
 ---
 import type { MixedRoute, Locale } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
@@ -13,9 +14,6 @@ interface Props {
 const { plans, locale } = Astro.props;
 const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
-
-const splitText = (text: string, baseDelay = 0) =>
-  text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.03 }));
 
 // Select 3 plans with best SEO potential
 const selectedDurations = ['2h', '1day', '2days'];
@@ -140,31 +138,13 @@ function getCategoryName(category: string): string {
 
   <div class="time-container">
     <!-- Epic Header -->
-    <header class="editorial-header">
-      <div class="header-eyebrow-line">
-        <span class="eyebrow-line"></span>
-        <span class="eyebrow-text">{t('mixedRoutes.sectionChooseRhythm')}</span>
-        <span class="eyebrow-line"></span>
-      </div>
-      <h2 class="masthead-title">
-        <span class="title-main">
-          {splitText(t('mixedRoutes.titleMain')).map(({ char, delay }) => (
-            <span class="title-char title-char-primary" style={`--delay: ${delay}s`}>
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
-        </span>
-        <span class="title-divider" aria-hidden="true">/</span>
-        <span class="title-secondary">
-          {splitText(t('mixedRoutes.titleSecondary'), t('mixedRoutes.titleMain').length * 0.03).map(({ char, delay }) => (
-            <span class="title-char title-char-secondary" style={`--delay: ${delay}s`}>
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
-        </span>
-      </h2>
-      <p class="header-subtitle">{t('mixedRoutes.sectionFullDescription')}</p>
-    </header>
+    <SectionHeader
+      eyebrow={t('mixedRoutes.sectionChooseRhythm')}
+      title={t('mixedRoutes.titleMain')}
+      titleSecondary={t('mixedRoutes.titleSecondary')}
+      subtitle={t('mixedRoutes.sectionFullDescription')}
+      theme="cream"
+    />
 
     <!-- Dramatic Cards Grid -->
     <div class="plans-showcase">
@@ -279,7 +259,7 @@ function getCategoryName(category: string): string {
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    document.querySelectorAll('.plan-card, .editorial-header').forEach((el) => {
+    document.querySelectorAll('.plan-card').forEach((el) => {
       observer.observe(el);
     });
   }
@@ -359,108 +339,6 @@ function getCategoryName(category: string): string {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 clamp(1.5rem, 5vw, 3rem);
-  }
-
-  /* ═══════════════════════════════════════════════════════════════
-     EPIC HEADER
-     ═══════════════════════════════════════════════════════════════ */
-  .editorial-header {
-    text-align: center;
-    margin-bottom: 5rem;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .editorial-header.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .header-eyebrow-line {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .eyebrow-line {
-    width: 80px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--t-border), transparent);
-  }
-
-  .eyebrow-text {
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.3em;
-    color: var(--t-orange);
-    text-transform: uppercase;
-  }
-
-  .masthead-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    margin: 0 0 1.5rem;
-  }
-
-  .title-main, .title-secondary {
-    display: flex;
-    font-family: var(--font-body);
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 200;
-    line-height: 0.9;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-  }
-
-  .title-char {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(40px);
-    animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
-    animation-play-state: paused;
-  }
-
-  .editorial-header.is-visible .title-char {
-    animation-play-state: running;
-  }
-
-  .title-char-primary {
-    color: var(--t-ink);
-  }
-
-  .title-char-secondary {
-    color: var(--t-orange);
-  }
-
-  .title-divider {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 300;
-    color: var(--t-border);
-    opacity: 0;
-    transform: translateY(40px);
-    animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-    animation-play-state: paused;
-  }
-
-  .editorial-header.is-visible .title-divider {
-    animation-play-state: running;
-  }
-
-  .header-subtitle {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    color: var(--t-ink-3);
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.7;
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -1060,18 +938,6 @@ function getCategoryName(category: string): string {
       margin-top: 0;
     }
 
-    .masthead-title {
-      gap: 0.75rem;
-    }
-
-    .title-main, .title-secondary {
-      font-size: clamp(2.5rem, 12vw, 5rem);
-    }
-
-    .title-divider {
-      display: none;
-    }
-
     .duration-number {
       font-size: 2.5rem;
     }
@@ -1092,10 +958,6 @@ function getCategoryName(category: string): string {
   @media (max-width: 480px) {
     .time-container {
       padding: 0 1rem;
-    }
-
-    .editorial-header {
-      margin-bottom: 3rem;
     }
 
     .card-content,
@@ -1126,8 +988,7 @@ function getCategoryName(category: string): string {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .plan-card,
-    .editorial-header {
+    .plan-card {
       opacity: 1;
       transform: none;
       transition: none;

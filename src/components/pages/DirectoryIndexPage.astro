@@ -7,31 +7,25 @@ import SectionHeader from '@components/ui/SectionHeader.astro';
 import { SITE_CONFIG } from '@config/site';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
-import type { ArtistDirectoryEntry, VenueDirectoryEntry } from '@data/directories';
+import type { VenueDirectoryEntry } from '@data/directories';
 import type { Locale } from '@types';
 
 interface Props {
   locale: Locale;
-  kind: 'artists' | 'venues';
-  entries: (ArtistDirectoryEntry | VenueDirectoryEntry)[];
+  entries: VenueDirectoryEntry[];
 }
 
-const { locale, kind, entries } = Astro.props;
+const { locale, entries } = Astro.props;
 const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
-const isArtists = kind === 'artists';
-
-const basePath = isArtists
-  ? locale === 'en' ? '/en/artists/' : '/artistas/'
-  : locale === 'en' ? '/en/venues/' : '/salas/';
-
-const title = isArtists ? t('directory.artistsTitle') : t('directory.venuesTitle');
-const description = isArtists ? t('directory.artistsDescription') : t('directory.venuesDescription');
-const h1 = isArtists ? t('directory.artistsH1') : t('directory.venuesH1');
-const displayH1 = isArtists ? t('directory.artistsDisplayH1') : t('directory.venuesDisplayH1');
-const intro = isArtists ? t('directory.artistsIntro') : t('directory.venuesIntro');
-const totalLabel = isArtists ? t('directory.totalArtists') : t('directory.totalVenues');
-const metaLabel = isArtists ? t('directory.artistMeta') : t('directory.venueMeta');
+const basePath = locale === 'en' ? '/en/venues/' : '/salas/';
+const title = t('directory.venuesTitle');
+const description = t('directory.venuesDescription');
+const h1 = t('directory.venuesH1');
+const displayH1 = t('directory.venuesDisplayH1');
+const intro = t('directory.venuesIntro');
+const totalLabel = t('directory.totalVenues');
+const metaLabel = t('directory.venueMeta');
 
 const topEntries = entries.slice(0, 48);
 const totalUpcoming = entries.reduce((sum, entry) => sum + entry.upcomingEvents.length, 0);
@@ -93,10 +87,10 @@ const heroMetadata = [
       <SectionHeader
         eyebrow={t('directory.featuredList')}
         eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        titleLabel={t('directory.indexEyebrow')}
         title={displayH1}
         size="compact"
         animateTitle={true}
+        theme="cream"
       />
 
       <div class="dir-grid">

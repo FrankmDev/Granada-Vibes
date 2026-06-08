@@ -15,7 +15,6 @@ const ES_TO_EN_SEGMENTS = {
   colabora: 'collaborate',
   planifica: 'planifica',
   salas: 'venues',
-  artistas: 'artists',
   hoy: 'today',
   'este-fin-de-semana': 'this-weekend',
   conciertos: 'concerts',
@@ -101,6 +100,87 @@ function readPastEventSlugs(rootDir) {
   return pastEventSlugs;
 }
 
+function wordCount(value) {
+  return String(value ?? '').trim().split(/\s+/).filter(Boolean).length;
+}
+
+function localizedWordCount(value) {
+  if (!value || typeof value !== 'object') return 0;
+  return Math.max(wordCount(value.es), wordCount(value.en));
+}
+
+function hasRepeatedShortCopy(value) {
+  if (!value || typeof value !== 'object') return false;
+
+  return [value.es, value.en].some((copy) => {
+    const normalized = String(copy ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (normalized.length < 40) return false;
+
+    const midpoint = Math.floor(normalized.length / 2);
+    const left = normalized.slice(0, midpoint).trim();
+    const right = normalized.slice(midpoint).trim();
+    return left.length > 20 && left === right;
+  });
+}
+
+function hasEditorialDepth(event) {
+  if (localizedWordCount(event.description) >= 18 && !hasRepeatedShortCopy(event.description)) {
+    return true;
+  }
+
+  if (localizedWordCount(event.longDescription) >= 40) {
+    return true;
+  }
+
+  if (localizedWordCount(event.tips) >= 16) {
+    return true;
+  }
+
+  return Math.max(event.highlights?.es?.length ?? 0, event.highlights?.en?.length ?? 0) >= 2;
+}
+
+function shouldIndexEvent(event, today) {
+  if (event.seoIndex === 'never') return false;
+  if (event.seoIndex === 'always') return true;
+
+  const eventEndDate = typeof event.endDate === 'string' ? event.endDate : event.date;
+  if (typeof eventEndDate !== 'string' || eventEndDate < today) return false;
+
+  return hasEditorialDepth(event);
+}
+
+function readEventIndexability(rootDir) {
+  const eventIndexability = new Map();
+
+  try {
+    const generatedPath = path.join(rootDir, 'src/data/events/generated.json');
+    const overridesPath = path.join(rootDir, 'src/data/events/overrides.ts');
+    const generatedEvents = JSON.parse(readFileSync(generatedPath, 'utf-8'));
+    const overridesSource = readFileSync(overridesPath, 'utf-8');
+    const overrideSlugs = new Set(
+      Array.from(overridesSource.matchAll(/^\s*(?:'([^']+)'|([a-zA-Z][\w-]*)):\s*\{/gm))
+        .map((match) => match[1] ?? match[2])
+        .filter(Boolean)
+    );
+    const today = new Date().toISOString().split('T')[0];
+
+    if (!Array.isArray(generatedEvents) || !today) return eventIndexability;
+
+    for (const event of generatedEvents) {
+      if (!event || typeof event !== 'object' || typeof event.slug !== 'string') continue;
+      if (overrideSlugs.has(event.slug)) {
+        eventIndexability.set(event.slug, shouldIndexEvent({ ...event, seoIndex: 'always' }, today));
+        continue;
+      }
+      eventIndexability.set(event.slug, shouldIndexEvent(event, today));
+    }
+  } catch {
+    return eventIndexability;
+  }
+
+  return eventIndexability;
+}
+
 const VENUE_ALIASES = {
   'sala industrial copera': { slug: 'industrial-copera', name: 'Industrial Copera' },
   'industrial copera': { slug: 'industrial-copera', name: 'Industrial Copera' },
@@ -111,8 +191,6 @@ const VENUE_ALIASES = {
   'palacio de congresos de granada': { slug: 'palacio-de-congresos-granada', name: 'Palacio de Congresos de Granada' },
   'palacio de congresos': { slug: 'palacio-de-congresos-granada', name: 'Palacio de Congresos de Granada' },
 };
-
-const ARTIST_PREFIX_PATTERN = /^(?:1001 músicas\s*-\s*caixabank|milnoff|dee fest)\s*[:|]\s*/i;
 
 function slugify(text) {
   return text
@@ -139,29 +217,12 @@ function getVenueSlug(venue) {
   return alias?.slug ?? slugify(venue).replace(/^sala-/, '');
 }
 
-function getArtistSlug(event) {
-  const title = typeof event?.title?.es === 'string' ? event.title.es : '';
-  const performer = typeof event?.performer?.es === 'string' ? event.performer.es.trim() : '';
-  const raw = performer.length > 0 ? performer : title;
-
-  const name = raw
-    .replace(ARTIST_PREFIX_PATTERN, '')
-    .replace(/\s+en\s+granada$/i, '')
-    .replace(/\s+\|\s+/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .replace(/[.。]+$/g, '')
-    .trim();
-
-  return name ? slugify(name) : '';
-}
-
 function incrementCount(map, key) {
   if (!key) return;
   map.set(key, (map.get(key) ?? 0) + 1);
 }
 
 function readDirectorySitemapSignals(rootDir) {
-  const artistCounts = new Map();
   const venueCounts = new Map();
 
   try {
@@ -170,7 +231,7 @@ function readDirectorySitemapSignals(rootDir) {
     const today = new Date().toISOString().split('T')[0];
 
     if (!Array.isArray(generatedEvents) || !today) {
-      return { artistCounts, venueCounts };
+      return { venueCounts };
     }
 
     for (const event of generatedEvents) {
@@ -182,16 +243,12 @@ function readDirectorySitemapSignals(rootDir) {
       if (typeof event.venue === 'string') {
         incrementCount(venueCounts, getVenueSlug(event.venue));
       }
-
-      if (event.category === 'concert') {
-        incrementCount(artistCounts, getArtistSlug(event));
-      }
     }
   } catch {
-    return { artistCounts, venueCounts };
+    return { venueCounts };
   }
 
-  return { artistCounts, venueCounts };
+  return { venueCounts };
 }
 
 function getSitemapMeta(url, pastEventSlugs, directorySignals) {
@@ -224,8 +281,6 @@ function getSitemapMeta(url, pastEventSlugs, directorySignals) {
     pathname === '/en/routes/' ||
     pathname === '/guias/' ||
     pathname === '/en/guides/' ||
-    pathname === '/artistas/' ||
-    pathname === '/en/artists/' ||
     pathname === '/salas/' ||
     pathname === '/en/venues/' ||
     pathname === '/rutas/por-tiempo/' ||
@@ -272,16 +327,6 @@ function getSitemapMeta(url, pastEventSlugs, directorySignals) {
     };
   }
 
-  if (pathname.match(/^\/(?:en\/artists|artistas)\/[^/]+\/$/)) {
-    const slug = pathname.split('/').filter(Boolean).at(-1);
-    const eventCount = slug ? directorySignals.artistCounts.get(slug) ?? 0 : 0;
-    return {
-      priority: eventCount >= 2 ? 0.62 : 0.45,
-      changefreq: eventCount >= 2 ? 'weekly' : 'monthly',
-      lastmod: eventCount >= 2 ? today : undefined,
-    };
-  }
-
   if (pathname.match(/^\/(?:en\/guides|guias)\/[^/]+\/$/)) {
     return { priority: 0.6, changefreq: 'monthly' };
   }
@@ -293,20 +338,15 @@ function getSitemapMeta(url, pastEventSlugs, directorySignals) {
   return { priority: 0.5, changefreq: 'monthly' };
 }
 
-function shouldIndexPage(page, pastEventSlugs, directorySignals) {
+function shouldIndexPage(page, pastEventSlugs, directorySignals, eventIndexability) {
   const pathname = normalizePathname(new URL(page).pathname);
   if (ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname)) return false;
 
   const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
   if (eventMatch) {
     const slug = eventMatch[1];
+    if (eventIndexability.has(slug)) return eventIndexability.get(slug) === true;
     return !pastEventSlugs.has(slug);
-  }
-
-  const artistMatch = pathname.match(/^\/(?:en\/artists|artistas)\/([^/]+)\/$/);
-  if (artistMatch) {
-    const slug = artistMatch[1];
-    return slug ? (directorySignals.artistCounts.get(slug) ?? 0) >= 2 : false;
   }
 
   const venueMatch = pathname.match(/^\/(?:en\/venues|salas)\/([^/]+)\/$/);
@@ -321,9 +361,10 @@ function shouldIndexPage(page, pastEventSlugs, directorySignals) {
 export function createSitemapConfig(rootDir) {
   const pastEventSlugs = readPastEventSlugs(rootDir);
   const directorySignals = readDirectorySitemapSignals(rootDir);
+  const eventIndexability = readEventIndexability(rootDir);
 
   return {
-    filter: (page) => shouldIndexPage(page, pastEventSlugs, directorySignals),
+    filter: (page) => shouldIndexPage(page, pastEventSlugs, directorySignals, eventIndexability),
     serialize(item) {
       const meta = getSitemapMeta(item.url, pastEventSlugs, directorySignals);
       return {

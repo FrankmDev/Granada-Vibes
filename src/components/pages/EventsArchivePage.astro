@@ -129,10 +129,10 @@ const discoveryLinks = getEventDiscoveryLinks(locale);
     <SectionHeader
       eyebrow={t('events.archiveEyebrow')}
       eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-      titleLabel={t('events.archiveTitleLabel')}
       title={t('events.heroTitle')}
       size="compact"
       animateTitle={true}
+      theme="cream"
     />
 
     <EventsArchiveFilter
@@ -168,7 +168,7 @@ const discoveryLinks = getEventDiscoveryLinks(locale);
 
   <script is:inline>
     (function() {
-      const sectionHeader = document.querySelector('.events-archive .section-header');
+      const sectionHeader = document.querySelector('.events-archive .sh-editorial');
       if (sectionHeader) {
         const io = new IntersectionObserver(
           (entries) => {

@@ -91,6 +91,11 @@ function getMetaRobots(html: string): string {
   return html.match(/<meta name="robots" content="([^"]+)"/i)?.[1] ?? '';
 }
 
+function isHtmlNoindex(htmlPath: string): boolean {
+  if (!fs.existsSync(htmlPath)) return false;
+  return /noindex/i.test(getMetaRobots(fs.readFileSync(htmlPath, 'utf8')));
+}
+
 function getCanonicalUrl(html: string): string {
   return html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1] ?? '';
 }
@@ -152,7 +157,7 @@ function main(): void {
   const expectedEventUrls = new Set([
     ...getEventUrls('es'),
     ...getEventUrls('en'),
-  ]);
+  ].filter((url) => !isHtmlNoindex(urlToHtmlPath(url))));
   const sitemapEventUrls = getEventSitemapUrls(sitemapUrls);
   const allSitemapUrls = [...Array.from(sitemapUrls), ...hreflangUrls];
   const wrongDomainUrls = allSitemapUrls.filter((url) => !url.startsWith(`${expectedOrigin}/`));

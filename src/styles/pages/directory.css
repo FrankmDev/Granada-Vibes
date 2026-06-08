@@ -20,16 +20,7 @@
 .dir-archive .cin-corner::after { background: var(--s-ink); opacity: 0.15; }
 .dir-archive .cin-frame-tag { color: var(--s-ink-3); }
 
-/* SectionHeader overrides for cream bg */
-.dir-archive .section-header { background: var(--s-bg); }
-.dir-archive .header-top { border-top: none; padding-top: 3rem; }
-.dir-archive .eyebrow-bracket { color: var(--s-orange); }
-.dir-archive .eyebrow-text { color: var(--s-ink-2); }
-.dir-archive .eyebrow-year { color: var(--s-ink-3); border-left-color: var(--s-border); }
-.dir-archive .title-label { color: var(--s-ink-3); }
-.dir-archive .title-char { color: var(--s-ink); }
-.dir-archive .decoration-line { background: var(--s-border); }
-.dir-archive .decoration-dot { background: var(--s-orange); }
+/* SectionHeader — uses sh-editorial with theme="cream" */
 
 .dir-wrap {
   width: min(1180px, 100%);

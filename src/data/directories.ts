@@ -16,18 +16,6 @@ export interface VenueDirectoryEntry {
   categories: EventCategory[];
 }
 
-export interface ArtistDirectoryEntry {
-  slug: string;
-  name: string;
-  title: LocalizedText;
-  description: LocalizedText;
-  intro: LocalizedText;
-  events: Event[];
-  upcomingEvents: Event[];
-  pastEvents: Event[];
-  venues: string[];
-}
-
 const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Europe/Madrid',
   year: 'numeric',
@@ -45,8 +33,6 @@ const VENUE_ALIASES: Record<string, { slug: string; name: string }> = {
   'palacio de congresos de granada': { slug: 'palacio-de-congresos-granada', name: 'Palacio de Congresos de Granada' },
   'palacio de congresos': { slug: 'palacio-de-congresos-granada', name: 'Palacio de Congresos de Granada' },
 };
-
-const ARTIST_PREFIX_PATTERN = /^(?:1001 músicas\s*-\s*caixabank|milnoff|dee fest)\s*[:|]\s*/i;
 
 function todayString(): string {
   return madridDateFormatter.format(new Date());
@@ -120,27 +106,6 @@ function getVenueIdentity(venue: string): { slug: string; name: string } {
   };
 }
 
-function cleanArtistName(event: Event): string {
-  const performer = event.performer?.es?.trim();
-  const raw = performer && performer.length > 0 ? performer : event.title.es;
-
-  return raw
-    .replace(ARTIST_PREFIX_PATTERN, '')
-    .replace(/\s+en\s+granada$/i, '')
-    .replace(/\s+\|\s+/g, ' ')
-    .replace(/\s{2,}/g, ' ')
-    .replace(/[.。]+$/g, '')
-    .trim();
-}
-
-function getArtistIdentity(event: Event): { slug: string; name: string } {
-  const name = cleanArtistName(event);
-  return {
-    slug: slugify(name),
-    name,
-  };
-}
-
 function venueDescription(entry: Pick<VenueDirectoryEntry, 'name' | 'events' | 'upcomingEvents' | 'categories'>): LocalizedText {
   const total = entry.events.length;
   const upcoming = entry.upcomingEvents.length;
@@ -172,39 +137,6 @@ function venueIntro(entry: Pick<VenueDirectoryEntry, 'name' | 'upcomingEvents' |
     en: nextEvent && nextDateEn
       ? `${entry.name} is part of Granada's active cultural circuit. Here you have the next confirmed date on ${nextDateEn}, the live listings already published for this venue and direct links to each page so you can check price, timing, plan type and local context before deciding.`
       : `${entry.name} is part of Granada's cultural map. This page groups the active listings published for this venue, its most common categories and direct links to each event so you can review prices, timing and local context.`,
-  };
-}
-
-function artistDescription(entry: Pick<ArtistDirectoryEntry, 'name' | 'events' | 'upcomingEvents'>): LocalizedText {
-  const nextEvent = entry.upcomingEvents[0];
-  const nextDateEs = nextEvent ? formatDirectoryDate(nextEvent.date, 'es') : null;
-  const nextDateEn = nextEvent ? formatDirectoryDate(nextEvent.date, 'en') : null;
-  return {
-    es: clampMetaDescription(
-      nextEvent && nextDateEs
-        ? `${entry.name} en Granada: próxima fecha el ${nextDateEs} en ${nextEvent.venue}, con entradas, contexto del concierto y más planes musicales relacionados.`
-        : `${entry.name} en Granada: ${entry.upcomingEvents.length} próximas fechas, entradas, salas y eventos relacionados en la agenda musical local.`
-    ),
-    en: clampMetaDescription(
-      nextEvent && nextDateEn
-        ? `${entry.name} in Granada: next date on ${nextDateEn} at ${nextEvent.venue}, with ticket context, venue details and related music plans.`
-        : `${entry.name} in Granada: ${entry.upcomingEvents.length} upcoming dates, tickets, venues and related events in the local music agenda.`
-    ),
-  };
-}
-
-function artistIntro(entry: Pick<ArtistDirectoryEntry, 'name' | 'venues' | 'upcomingEvents'>): LocalizedText {
-  const venues = entry.venues.slice(0, 3).join(', ');
-  const nextEvent = entry.upcomingEvents[0];
-  const nextDateEs = nextEvent ? formatDirectoryDate(nextEvent.date, 'es') : null;
-  const nextDateEn = nextEvent ? formatDirectoryDate(nextEvent.date, 'en') : null;
-  return {
-    es: nextEvent && nextDateEs
-      ? `Ficha de ${entry.name} en GRN URBAN: próxima fecha en Granada el ${nextDateEs}${nextEvent.venue ? ` en ${nextEvent.venue}` : ''}, con acceso rápido a la información del concierto, entradas cuando existan, recintos relacionados y otros planes musicales de la misma escena.${venues ? ` Salas frecuentes: ${venues}.` : ''}`
-      : `Ficha de ${entry.name} en GRN URBAN: fechas en Granada, recintos, entradas cuando estén disponibles y eventos similares para seguir explorando la agenda musical local.${venues ? ` Salas frecuentes: ${venues}.` : ''}`,
-    en: nextEvent && nextDateEn
-      ? `${entry.name} on GRN URBAN: next Granada date on ${nextDateEn}${nextEvent.venue ? ` at ${nextEvent.venue}` : ''}, with direct access to the live listing, tickets when available, related venues and similar music plans across the local scene.${venues ? ` Frequent venues: ${venues}.` : ''}`
-      : `${entry.name} on GRN URBAN: Granada dates, venues, tickets when available and similar events to keep exploring the local music agenda.${venues ? ` Frequent venues: ${venues}.` : ''}`,
   };
 }
 
@@ -252,53 +184,6 @@ export function getVenueEntryBySlug(slug: string): VenueDirectoryEntry | undefin
   return getAllVenueEntries().find((entry) => entry.slug === slug);
 }
 
-export function getAllArtistEntries(): ArtistDirectoryEntry[] {
-  const grouped = new Map<string, { name: string; events: Event[] }>();
-
-  for (const event of directoryEvents()) {
-    if (event.category !== 'concert') continue;
-    const identity = getArtistIdentity(event);
-    if (!identity.slug || !identity.name) continue;
-    const group = grouped.get(identity.slug) ?? { name: identity.name, events: [] };
-    group.events.push(event);
-    grouped.set(identity.slug, group);
-  }
-
-  return Array.from(grouped.entries())
-    .map(([slug, group]) => {
-      const groupedEvents = group.events.slice().sort(sortEventsByDate);
-      const upcomingEvents = groupedEvents.filter(isUpcomingEvent);
-      const pastEvents = groupedEvents.filter((event) => !isUpcomingEvent(event));
-      const venues = uniqueValues(groupedEvents.map((event) => event.venue));
-      const base = {
-        slug,
-        name: group.name,
-        title: {
-          es: compactTitle(group.name, ': conciertos en Granada'),
-          en: compactTitle(group.name, ': concerts in Granada'),
-        },
-        events: groupedEvents,
-        upcomingEvents,
-        pastEvents,
-        venues,
-      };
-
-      return {
-        ...base,
-        description: artistDescription(base),
-        intro: artistIntro(base),
-      };
-    })
-    .sort((a, b) => b.events.length - a.events.length || a.name.localeCompare(b.name));
-}
-
-export function getArtistEntryBySlug(slug: string): ArtistDirectoryEntry | undefined {
-  return getAllArtistEntries().find((entry) => entry.slug === slug);
-}
-
-export function getDirectoryHref(kind: 'artist' | 'venue', slug: string, locale: Locale): string {
-  if (kind === 'artist') {
-    return locale === 'en' ? `/en/artists/${slug}/` : `/artistas/${slug}/`;
-  }
+export function getDirectoryHref(kind: 'venue', slug: string, locale: Locale): string {
   return locale === 'en' ? `/en/venues/${slug}/` : `/salas/${slug}/`;
 }

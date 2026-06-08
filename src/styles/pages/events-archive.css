@@ -30,16 +30,7 @@
       mix-blend-mode: multiply;
     }
 
-    /* SectionHeader overrides for cream bg */
-    .events-archive .section-header { background: var(--s-bg); }
-    .events-archive .header-top { border-top: none; padding-top: 3rem; }
-    .events-archive .eyebrow-bracket { color: var(--s-orange); }
-    .events-archive .eyebrow-text { color: var(--s-ink-2); }
-    .events-archive .eyebrow-year { color: var(--s-ink-3); border-left-color: var(--s-border); }
-    .events-archive .title-label { color: var(--s-ink-3); }
-    .events-archive .title-char { color: var(--s-ink); }
-    .events-archive .decoration-line { background: var(--s-border); }
-    .events-archive .decoration-dot { background: var(--s-orange); }
+    /* SectionHeader — uses sh-editorial with theme="cream" */
 
     .events-archive .edl-wrap {
       width: auto;

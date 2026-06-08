@@ -63,6 +63,10 @@ export {
   isPastEvent,
 } from './event-seo';
 
+export {
+  shouldIndexEventDetail,
+} from './event-indexing';
+
 // Route utilities
 export {
   difficultyConfig,

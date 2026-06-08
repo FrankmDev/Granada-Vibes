@@ -21,16 +21,7 @@
 .hub-archive .cin-corner::after { background: var(--s-ink); opacity: 0.15; }
 .hub-archive .cin-frame-tag { color: var(--s-ink-3); }
 
-/* SectionHeader overrides for cream bg */
-.hub-archive .section-header { background: var(--s-bg); }
-.hub-archive .header-top { border-top: none; padding-top: 3rem; }
-.hub-archive .eyebrow-bracket { color: var(--s-orange); }
-.hub-archive .eyebrow-text { color: var(--s-ink-2); }
-.hub-archive .eyebrow-year { color: var(--s-ink-3); border-left-color: var(--s-border); }
-.hub-archive .title-label { color: var(--s-ink-3); }
-.hub-archive .title-char { color: var(--s-ink); }
-.hub-archive .decoration-line { background: var(--s-border); }
-.hub-archive .decoration-dot { background: var(--s-orange); }
+/* SectionHeader — uses sh-editorial with theme="cream" */
 
 .hub-archive > * {
   position: relative;

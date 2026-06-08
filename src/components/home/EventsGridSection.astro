@@ -13,7 +13,6 @@ interface Props {
 
 const { events, locale } = Astro.props;
 const t = useTranslations(locale);
-const currentYear = new Date().getFullYear();
 
 // Category labels sourced from i18n — no inline map needed
 const categoryLabels: Record<EventCategory, string> = {
@@ -69,12 +68,12 @@ const eventsHref = getRoute('events', locale);
   <!-- Cinematic Header -->
   <SectionHeader
     eyebrow={t('home.sections.eventsEyebrow')}
-    eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-    titleLabel={t('events.upcoming').toUpperCase()}
     title={t('nav.events').toUpperCase()}
+    titleSecondary={t('home.sections.eventsTitleSecondary')}
+    subtitle={t('home.sections.eventsSubtitle')}
     ctaHref={eventsHref}
     ctaLabel={t('actions.viewAll').toUpperCase()}
-    showDecoration={true}
+    theme="cream"
   />
 
   <!-- Masonry Grid — 3 columns -->
@@ -140,9 +139,13 @@ const eventsHref = getRoute('events', locale);
 
     position: relative;
     width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
     background: var(--s-cream);
     overflow: hidden;
     padding-top: 5rem;
+    padding-left: clamp(1.5rem, 5vw, 3rem);
+    padding-right: clamp(1.5rem, 5vw, 3rem);
   }
 
   /* ─── Masonry Grid ─── */

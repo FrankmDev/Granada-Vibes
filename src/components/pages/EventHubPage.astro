@@ -151,10 +151,10 @@ const heroMetadata = [
       <SectionHeader
         eyebrow={t('seoHub.upcomingEyebrow')}
         eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        titleLabel={t('seoHub.upcomingTitle')}
         title={config.displayH1[locale]}
         size="compact"
         animateTitle={true}
+        theme="cream"
       />
 
       <EventDiscoveryLinks
@@ -202,8 +202,8 @@ const heroMetadata = [
         <SectionHeader
           eyebrow={t('seoHub.moreEyebrow')}
           eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-          titleLabel={t('seoHub.moreTitle')}
           title={t('seoHub.moreTitle')}
+          theme="cream"
         />
 
         <div class="hub-secondary-grid">
@@ -223,8 +223,8 @@ const heroMetadata = [
       <SectionHeader
         eyebrow={t('seoHub.faqEyebrow')}
         eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        titleLabel={t('seoHub.faqTitle')}
         title={t('seoHub.faqTitle')}
+        theme="cream"
       />
 
       <div class="hub-secondary-grid">
@@ -240,7 +240,7 @@ const heroMetadata = [
 
   <script is:inline>
     (function() {
-      const sectionHeaders = document.querySelectorAll('.hub-archive .section-header');
+      const sectionHeaders = document.querySelectorAll('.hub-archive .sh-editorial');
       if (sectionHeaders.length === 0) return;
       const io = new IntersectionObserver(
         (entries) => {

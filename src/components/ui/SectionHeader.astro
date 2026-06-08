@@ -1,289 +1,456 @@
 ---
 /**
- * SectionHeader — shared masthead for home sections (cream palette).
- * Parent section must define --s-* CSS custom properties for theming.
+ * SectionHeader — unified editorial masthead for all sections.
+ * Centered layout with eyebrow lines, split title (primary / secondary),
+ * optional subtitle and CTA pill. Self-contained IntersectionObserver.
  */
 
 interface Props {
-  /** Text inside [brackets] at top */
   eyebrow: string;
-  /** Optional year / volume label beside eyebrow */
   eyebrowYear?: string;
-  /** Small label above the main title */
-  titleLabel?: string;
-  /** Main section title (rendered as h2) */
   title: string;
-  /** If true, title chars are animated one by one (char-rise) */
+  titleSecondary?: string;
+  subtitle?: string;
   animateTitle?: boolean;
-  /** Archive / hub subpages: short label copy, same display scale */
-  size?: 'default' | 'compact';
-  /** Optional href for the CTA button */
   ctaHref?: string;
-  /** CTA button label */
   ctaLabel?: string;
-  /** Show the dot+line decoration row below the header */
-  showDecoration?: boolean;
-  /** Visual theme — defaults to cream for backward compatibility */
   theme?: 'cream' | 'dark' | 'transparent';
+  size?: 'default' | 'compact';
+  showDecoration?: boolean;
 }
 
 const {
   eyebrow,
   eyebrowYear,
-  titleLabel,
   title,
-  animateTitle = false,
-  size = 'default',
+  titleSecondary,
+  subtitle,
+  animateTitle = true,
   ctaHref,
   ctaLabel,
-  showDecoration = false,
   theme = 'cream',
+  size = 'default',
+  showDecoration = false,
 } = Astro.props;
+
+const splitText = (text: string, baseDelay = 0) =>
+  text.split('').map((char, i) => ({ char, delay: baseDelay + i * 0.03 }));
+
+const primaryChars = splitText(title);
+const secondaryChars = titleSecondary
+  ? splitText(titleSecondary, title.length * 0.03)
+  : [];
 ---
 
-<header class:list={[
-  'section-header',
-  size === 'compact' && 'section-header--compact',
-  theme === 'dark' && 'section-header--dark',
-  theme === 'transparent' && 'section-header--transparent',
-]}>
-  <div class="header-top">
-    <div class="header-eyebrow">
-      <span class="eyebrow-bracket">[</span>
-      <span class="eyebrow-text">{eyebrow}</span>
-      <span class="eyebrow-bracket">]</span>
-      {eyebrowYear && <span class="eyebrow-year">{eyebrowYear}</span>}
-    </div>
+<header
+  class:list={[
+    'sh-editorial',
+    `sh-theme--${theme}`,
+    size === 'compact' && 'sh--compact',
+  ]}
+>
+  <div class="sh-eyebrow-row">
+    <span class="sh-eyebrow-line"></span>
+    <span class="sh-eyebrow-text">{eyebrow}</span>
+    {eyebrowYear && <span class="sh-eyebrow-year">{eyebrowYear}</span>}
+    <span class="sh-eyebrow-line"></span>
   </div>
 
-  <div class="header-main">
-    <div class="title-block">
-      {titleLabel && <span class="title-label">{titleLabel}</span>}
-      <h2 class="section-title" aria-label={title}>
-        {animateTitle
-          ? title.split('').map((ch: string, i: number) => (
-              <span class="title-char anim" style={`--delay: ${i * 0.055}s`}>{ch === ' ' ? '\u00A0' : ch}</span>
-            ))
-          : <span class="title-char">{title}</span>
-        }
-      </h2>
-    </div>
-
-    {ctaHref && ctaLabel && (
-      <a href={ctaHref} class="header-cta desktop-cta">
-        <span class="cta-text">{ctaLabel}</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+  <h2 class="sh-title" aria-label={titleSecondary ? `${title} ${titleSecondary}` : title}>
+    <span class="sh-title-primary">
+      {animateTitle
+        ? primaryChars.map(({ char, delay }) => (
+            <span class="sh-char sh-char--anim" style={`--delay: ${delay}s`}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))
+        : <span class="sh-char">{title}</span>
+      }
+    </span>
+    {titleSecondary && (
+      <>
+        <span class="sh-divider" aria-hidden="true">/</span>
+        <span class="sh-title-secondary">
+          {animateTitle
+            ? secondaryChars.map(({ char, delay }) => (
+                <span class="sh-char sh-char--anim" style={`--delay: ${delay}s`}>
+                  {char === ' ' ? '\u00A0' : char}
+                </span>
+              ))
+            : <span class="sh-char">{titleSecondary}</span>
+          }
+        </span>
+      </>
     )}
-  </div>
+  </h2>
+
+  {subtitle && <p class="sh-subtitle">{subtitle}</p>}
+
+  {ctaHref && ctaLabel && (
+    <a href={ctaHref} class="sh-cta">
+      <span>{ctaLabel}</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  )}
 
   {showDecoration && (
-    <div class="header-decoration">
-      <div class="decoration-line"></div>
-      <div class="decoration-dot"></div>
-      <div class="decoration-line"></div>
+    <div class="sh-decoration">
+      <div class="sh-decoration-line"></div>
+      <div class="sh-decoration-dot"></div>
+      <div class="sh-decoration-line"></div>
     </div>
   )}
 
   <slot />
 </header>
 
+<script>
+  function initSectionHeaders() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    document.querySelectorAll('.sh-editorial:not(.is-visible)').forEach((el) => {
+      observer.observe(el);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initSectionHeaders);
+  document.addEventListener('astro:page-load', initSectionHeaders);
+</script>
+
 <style>
-  .section-header {
+  /* ═══════════════════════════════════════════════════════════════
+     BASE
+     ═══════════════════════════════════════════════════════════════ */
+  .sh-editorial {
+    --sh-ink:        #1a1619;
+    --sh-ink-2:      #3d3632;
+    --sh-ink-3:      #6b6058;
+    --sh-cream:      #f5f0ea;
+    --sh-orange:     #e8622a;
+    --sh-gold:       #c9a84c;
+    --sh-border:     rgba(26, 22, 25, 0.08);
+
     position: relative;
     z-index: 10;
-    background: var(--s-cream);
-    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    text-align: center;
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sh-editorial.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Dark theme ── */
+  .sh-theme--dark {
+    --sh-ink:        #f0ede8;
+    --sh-ink-2:      #b8b0a8;
+    --sh-ink-3:      #9a9490;
+    --sh-cream:      #080808;
+    --sh-orange:     #e8622a;
+    --sh-border:     rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── Transparent theme ── */
+  .sh-theme--transparent {
+    --sh-ink:        #f0ede8;
+    --sh-ink-2:      #b8b0a8;
+    --sh-ink-3:      #9a9490;
+    --sh-border:     rgba(255, 255, 255, 0.08);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     EYEBROW
+     ═══════════════════════════════════════════════════════════════ */
+  .sh-eyebrow-row {
     display: flex;
-    flex-direction: column;
-  }
-
-  .section-header--dark { background: var(--color-bg, #080808); }
-  .section-header--transparent { background: transparent; }
-
-  .header-top {
-    border-top: 1px solid var(--s-border);
-    padding-top: 2.5rem;
-    padding-bottom: 1.5rem;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--s-border-s, rgba(26, 22, 25, 0.06));
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
-  .header-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    opacity: 0;
-    animation: cin-fade-in 0.8s ease 0.2s forwards;
-    animation-play-state: paused;
+  .sh-eyebrow-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sh-border), transparent);
   }
 
-  :global(.in-view) .header-eyebrow,
-  :global(.in-view) .title-label,
-  :global(.in-view) .header-cta {
-    animation-play-state: running;
-  }
-
-  :global(.in-view) .title-char.anim,
-  :global(.in-view) .title-char:not(.anim) {
-    animation-play-state: running;
-  }
-
-  .eyebrow-bracket { color: var(--s-orange); font-weight: 700; }
-  .eyebrow-text    { color: var(--s-ink-2); }
-  .eyebrow-year    {
-    color: var(--s-ink-3);
-    font-weight: 400;
-    padding-left: 1rem;
-    border-left: 1px solid var(--s-border);
-  }
-
-  .header-main {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: flex-end;
-    gap: 2rem;
-    padding-top: 1.75rem;
-    padding-bottom: 1rem;
-  }
-
-  .title-block { display: flex; flex-direction: column; gap: 0; }
-
-  .title-label {
-    font-family: var(--font-display);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--s-ink-3);
-    margin-bottom: 0.5rem;
-    opacity: 0;
-    animation: char-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-    animation-play-state: paused;
-  }
-
-  .section-title { margin: 0; line-height: 0.88; display: flex; flex-wrap: wrap; }
-
-  .title-char {
-    display: inline-block;
-    font-family: var(--font-body);
-    font-size: clamp(4.5rem, 13vw, 9rem);
-    font-weight: 100;
-    letter-spacing: -0.02em;
-    -webkit-font-smoothing: antialiased;
-    text-transform: uppercase;
-    color: var(--s-ink);
-  }
-
-  /* Animated variant — used when animateTitle=true */
-  .title-char.anim {
-    opacity: 0;
-    transform: translateY(40px);
-    animation: char-rise 1s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
-    animation-play-state: paused;
-  }
-
-  /* Non-animated title has its own subtle entrance */
-  .title-char:not(.anim) {
-    opacity: 0;
-    animation: char-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-    animation-play-state: paused;
-  }
-
-  .header-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
+  .sh-eyebrow-text {
     font-family: var(--font-display);
     font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.3em;
+    color: var(--sh-orange);
     text-transform: uppercase;
-    color: var(--s-ink);
-    background: transparent;
-    text-decoration: none;
-    padding: 1rem 1.75rem;
-    border: 1.5px solid var(--s-ink);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sh-eyebrow-year {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--sh-ink-3);
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--sh-border);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     TITLE
+     ═══════════════════════════════════════════════════════════════ */
+  .sh-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 0 0 1.5rem;
+  }
+
+  .sh-title-primary,
+  .sh-title-secondary {
+    display: flex;
+    font-family: var(--font-body);
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 200;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  .sh-title-primary {
+    color: var(--sh-ink);
+  }
+
+  .sh-title-secondary {
+    color: var(--sh-orange);
+  }
+
+  .sh-char {
+    display: inline-block;
+  }
+
+  .sh-char--anim {
     opacity: 0;
-    animation: cin-fade-in 0.8s ease 0.4s forwards;
+    transform: translateY(40px);
+    animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay) forwards;
     animation-play-state: paused;
-    white-space: nowrap;
-    align-self: flex-end;
   }
 
-  .header-cta:hover {
-    background: var(--s-orange);
-    border-color: var(--s-orange);
-    color: var(--s-cream);
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 rgba(26, 22, 25, 0.12);
+  .sh-editorial.is-visible .sh-char--anim {
+    animation-play-state: running;
   }
-  .header-cta:hover svg { transform: translateX(4px); }
-  .header-cta svg { transition: transform 0.25s ease; }
 
-  .header-decoration {
+  .sh-divider {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--sh-border);
+    opacity: 0;
+    transform: translateY(40px);
+    animation: char-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    animation-play-state: paused;
+  }
+
+  .sh-editorial.is-visible .sh-divider {
+    animation-play-state: running;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SUBTITLE
+     ═══════════════════════════════════════════════════════════════ */
+  .sh-subtitle {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--sh-ink-3);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     CTA PILL
+     ═══════════════════════════════════════════════════════════════ */
+  .sh-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding: 0.875rem 2.25rem;
+    background: var(--sh-ink);
+    border-radius: 100px;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--sh-cream);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 24px rgba(26, 22, 25, 0.15);
+  }
+
+  .sh-theme--dark .sh-cta {
+    background: var(--sh-orange);
+    color: white;
+    box-shadow: 0 8px 24px rgba(232, 98, 42, 0.25);
+  }
+
+  .sh-cta:hover {
+    background: var(--sh-orange);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(232, 98, 42, 0.35);
+  }
+
+  .sh-theme--dark .sh-cta:hover {
+    background: var(--sh-ink);
+    box-shadow: 0 16px 40px rgba(26, 22, 25, 0.4);
+  }
+
+  .sh-cta svg {
+    transition: transform 0.3s ease;
+  }
+
+  .sh-cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     DECORATION
+     ═══════════════════════════════════════════════════════════════ */
+  .sh-decoration {
     display: flex;
     align-items: center;
     gap: 0;
-    padding-bottom: 2.5rem;
-    border-bottom: 1px solid var(--s-border);
+    margin-top: 2.5rem;
   }
 
-  .decoration-line { flex: 1; height: 1px; background: var(--s-border); }
-  .decoration-dot {
-    width: 5px; height: 5px;
-    background: var(--s-orange);
+  .sh-decoration-line {
+    flex: 1;
+    height: 1px;
+    background: var(--sh-border);
+  }
+
+  .sh-decoration-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--sh-orange);
     border-radius: 50%;
     margin: 0 1rem;
     flex-shrink: 0;
   }
 
-  .section-header--compact .title-char {
-    font-size: clamp(4rem, 12vw, 8.5rem);
-    line-height: 0.88;
+  /* ═══════════════════════════════════════════════════════════════
+     COMPACT SIZE
+     ═══════════════════════════════════════════════════════════════ */
+  .sh--compact {
+    margin-bottom: 3rem;
   }
 
-  .section-header--compact .header-main {
-    padding-top: 1.25rem;
+  .sh--compact .sh-title-primary,
+  .sh--compact .sh-title-secondary {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
   }
 
-  /* ── Responsive ── */
+  .sh--compact .sh-divider {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════════════════════════ */
   @media (max-width: 1024px) {
-    .title-char {
-      font-size: clamp(3.75rem, 14vw, 7rem);
-    }
-
-    .section-header--compact .title-char {
-      font-size: clamp(3.5rem, 13vw, 6.5rem);
+    .sh-title-primary,
+    .sh-title-secondary {
+      font-size: clamp(2.75rem, 10vw, 6rem);
     }
   }
 
   @media (max-width: 768px) {
-    .section-header { padding: 0 1rem; }
-    .header-main { grid-template-columns: 1fr; gap: 1.25rem; padding-top: 1.25rem; }
-    .title-char { font-size: clamp(3.25rem, 16vw, 5.5rem) !important; }
-    .section-header--compact .title-char {
-      font-size: clamp(3rem, 15vw, 5.25rem) !important;
+    .sh-editorial {
+      margin-bottom: 3rem;
     }
-    .desktop-cta { display: none; }
+
+    .sh-title {
+      gap: 0.75rem;
+    }
+
+    .sh-title-primary,
+    .sh-title-secondary {
+      font-size: clamp(2.25rem, 12vw, 4.5rem);
+    }
+
+    .sh-divider {
+      display: none;
+    }
+
+    .sh-subtitle {
+      font-size: 0.95rem;
+    }
+
+    .sh-cta {
+      padding: 0.75rem 1.75rem;
+      font-size: 0.7rem;
+    }
   }
 
   @media (max-width: 480px) {
-    .header-eyebrow { font-size: 0.6rem; }
-    .header-top { padding-top: 2rem; padding-bottom: 1rem; }
-    .title-char { font-size: clamp(2.75rem, 18vw, 4.5rem) !important; }
-    .section-header--compact .title-char {
-      font-size: clamp(2.65rem, 17vw, 4.25rem) !important;
+    .sh-eyebrow-text {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+    }
+
+    .sh-eyebrow-line {
+      width: 40px;
+    }
+
+    .sh-title-primary,
+    .sh-title-secondary {
+      font-size: clamp(2rem, 14vw, 3.5rem) !important;
+    }
+
+    .sh--compact .sh-title-primary,
+    .sh--compact .sh-title-secondary {
+      font-size: clamp(1.75rem, 13vw, 3rem) !important;
+    }
+
+    .sh-subtitle {
+      font-size: 0.875rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sh-editorial {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .sh-char--anim {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    .sh-divider {
+      opacity: 1;
+      transform: none;
+      animation: none;
     }
   }
 </style>
