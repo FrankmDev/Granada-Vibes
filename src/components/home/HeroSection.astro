@@ -119,8 +119,9 @@ const c = {
       loop
       playsinline
       preload="none"
-      poster="/hero-poster-apex-20260526.jpg"
-      data-src="/hero-video-ambient-apex-20260526.mp4"
+      poster="/hero-poster-1920-apex-20260526.jpg"
+      data-src-mobile="/hero-video-ambient-apex-20260526.mp4"
+      data-src-desktop="/hero-video-1080-apex-20260526.mp4"
       aria-hidden="true"
     >
     </video>
@@ -312,7 +313,7 @@ const c = {
       titleLayer?.style.setProperty('transform',
         `translate3d(${mouseX * -30}px, ${mouseY * -20}px, 0)`);
       ambientLayer?.style.setProperty('transform',
-        `translate3d(${mouseX * 10}px, ${mouseY * 10}px, 0) scale(1.04)`);
+        `translate3d(${mouseX * 8}px, ${mouseY * 8}px, 0) scale(1.018)`);
       portal?.style.setProperty('transform',
         `translate3d(${mouseX * 20}px, ${mouseY * 14}px, 0) rotateY(${mouseX * 4}deg) rotateX(${-mouseY * 4}deg)`);
       glare?.style.setProperty('transform',
@@ -383,7 +384,10 @@ const c = {
 
     const loadAmbientVideo = () => {
       if (!ambientVideo || shouldSkipVideo || ambientVideo.src) return;
-      loadVideo(ambientVideo, ambientVideo.dataset.src, 'is-playable');
+      const selectedSrc = window.matchMedia('(min-width: 900px)').matches
+        ? ambientVideo.dataset.srcDesktop
+        : ambientVideo.dataset.srcMobile;
+      loadVideo(ambientVideo, selectedSrc, 'is-playable');
     };
 
     const tick = setInterval(() => {

@@ -41,6 +41,16 @@
   /* ── Typography ── */
   --font-display: 'DM Sans', sans-serif;
   --font-body:    'Fraunces', serif;
+  --font-ui:      var(--font-display);
+  --font-heading: var(--font-body);
+
+  --type-caption: 0.75rem;
+  --type-small:   0.875rem;
+  --type-body:    1rem;
+  --type-lead:    1.125rem;
+  --type-title:   clamp(1.35rem, 2.3vw, 1.75rem);
+  --type-heading: clamp(2rem, 5vw, 3.5rem);
+  --type-display: clamp(2.5rem, 7vw, 5rem);
 
   /* ── Layout ── */
   --header-height:        64px;

@@ -136,7 +136,12 @@ const currentPath = Astro.url.pathname;
     <!-- Scroll reveal animation -->
     <script is:inline>
       (function () {
-        if (!('IntersectionObserver' in window)) return;
+        if (!('IntersectionObserver' in window)) {
+          document.querySelectorAll('.scroll-animate, [data-reveal]').forEach(function (el) {
+            el.classList.add('is-visible');
+          });
+          return;
+        }
 
         /* Generic scroll-animate elements */
         const revealObserver = new IntersectionObserver(

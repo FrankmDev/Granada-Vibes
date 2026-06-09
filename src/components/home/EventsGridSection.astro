@@ -64,67 +64,69 @@ const eventsHref = getRoute('events', locale);
 ---
 
 <section class="editorial-section" aria-label={t('home.sections.eventsAriaLabel')}>
+  <div class="events-container">
 
-  <!-- Cinematic Header -->
-  <SectionHeader
-    eyebrow={t('home.sections.eventsEyebrow')}
-    title={t('nav.events').toUpperCase()}
-    titleSecondary={t('home.sections.eventsTitleSecondary')}
-    subtitle={t('home.sections.eventsSubtitle')}
-    ctaHref={eventsHref}
-    ctaLabel={t('actions.viewAll').toUpperCase()}
-    animateTitle={false}
-    theme="cream"
-  />
+    <!-- Cinematic Header -->
+    <SectionHeader
+      eyebrow={t('home.sections.eventsEyebrow')}
+      title={t('nav.events').toUpperCase()}
+      titleSecondary={t('home.sections.eventsTitleSecondary')}
+      subtitle={t('home.sections.eventsSubtitle')}
+      ctaHref={eventsHref}
+      ctaLabel={t('actions.viewAll').toUpperCase()}
+      animateTitle={false}
+      theme="cream"
+    />
 
-  <!-- Masonry Grid — 3 columns -->
-  <div class="masonry-wrapper" style={`--masonry-height: ${columnHeight}`}>
-    {columns.map((colEvents, colIndex) => (
-      <div class={`masonry-col col-${['left','center','right'][colIndex]}`}>
-        {colEvents.map((evt, idx) => {
-          const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
-          const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
-          const href = getEventDetailUrl(evt.slug, locale);
-          const displayTitle = getEventDisplayTitle(evt, locale);
+    <!-- Masonry Grid — 3 columns -->
+    <div class="masonry-wrapper" style={`--masonry-height: ${columnHeight}`}>
+      {columns.map((colEvents, colIndex) => (
+        <div class={`masonry-col col-${['left','center','right'][colIndex]}`} style={`--col-index: ${colIndex};`}>
+          {colEvents.map((evt, idx) => {
+            const heightVh = COL_HEIGHTS[colIndex]![idx] ?? 65;
+            const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
+            const href = getEventDetailUrl(evt.slug, locale);
+            const displayTitle = getEventDisplayTitle(evt, locale);
 
-          return (
-            <article class="masonry-item" style={`--item-flex: ${heightVh};`}>
-              <a href={href} class="item-link">
-                <EventImage
-                  event={evt}
-                  alt={displayTitle}
-                  class="item-image"
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  width={900}
-                  height={1200}
-                />
-                <div class="item-overlay"></div>
+            return (
+              <article class="masonry-item" style={`--item-flex: ${heightVh}; --item-index: ${idx}; --col-index: ${colIndex};`}>
+                <a href={href} class="item-link">
+                  <EventImage
+                    event={evt}
+                    alt={displayTitle}
+                    class="item-image"
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    width={900}
+                    height={1200}
+                  />
+                  <div class="item-overlay"></div>
 
-                <div class="date-badge">
-                  <span class="date-text">{formatDate(evt.date)}</span>
-                </div>
+                  <div class="date-badge">
+                    <span class="date-text">{formatDate(evt.date)}</span>
+                  </div>
 
-                <div class="item-content">
-                  <div class="item-text">
-                    <div class="item-category">{category}</div>
-                    <h3 class="item-title">{displayTitle}</h3>
-                    <div class="item-footer">
-                      <span class="footer-venue">{evt.venue || 'Granada'}</span>
-                      <span class="footer-separator"></span>
-                      <span class="footer-price">{formatPrice(evt.price)}</span>
+                  <div class="item-content">
+                    <div class="item-text">
+                      <div class="item-category">{category}</div>
+                      <h3 class="item-title">{displayTitle}</h3>
+                      <div class="item-footer">
+                        <span class="footer-venue">{evt.venue || 'Granada'}</span>
+                        <span class="footer-separator"></span>
+                        <span class="footer-price">{formatPrice(evt.price)}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
-            </article>
-          );
-        })}
-      </div>
-    ))}
-  </div>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      ))}
+    </div>
 
+  </div>
 </section>
 
 <style>
@@ -137,30 +139,80 @@ const eventsHref = getRoute('events', locale);
     --s-orange:   #e8622a;
     --s-border:   rgba(26, 22, 25, 0.10);
     --s-border-s: rgba(26, 22, 25, 0.06);
+    --s-rail: 1560px;
+    --s-gutter: clamp(2rem, 3vw, 3rem);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 
     position: relative;
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+    box-sizing: border-box;
     background: var(--s-cream);
     overflow: hidden;
-    padding-top: 5rem;
-    padding-left: clamp(1.5rem, 5vw, 3rem);
-    padding-right: clamp(1.5rem, 5vw, 3rem);
+    padding-top: clamp(5rem, 6vw, 6.5rem);
+  }
+
+  .events-container {
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .editorial-section :global(.sh-editorial) {
+    width: 100%;
+    max-width: var(--s-rail);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--s-gutter);
+    padding-right: var(--s-gutter);
+    box-sizing: border-box;
   }
 
   /* ─── Masonry Grid ─── */
   .masonry-wrapper {
+    position: relative;
     display: flex;
     width: 100%;
     background: var(--s-border);
     border-bottom: 1px solid var(--s-border);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .masonry-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(245, 240, 234, 0.12) 32%,
+      rgba(232, 98, 42, 0.34) 50%,
+      rgba(245, 240, 234, 0.12) 68%,
+      transparent 100%
+    );
+    opacity: 0;
+    transform: translate3d(-110%, 0, 0);
+  }
+
+  .editorial-section.in-view .masonry-wrapper::before {
+    animation: events-light-sweep 1200ms var(--ease-out-quint) 140ms both;
   }
 
   .masonry-col {
     display: flex;
     flex-direction: column;
     background: var(--s-cream);
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(0);
+  }
+
+  .editorial-section.in-view .masonry-col {
+    animation: event-column-open 980ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--col-index, 0) * 130ms);
   }
 
   .col-left   { flex: 1; border-right: 1px solid var(--s-border); }
@@ -172,6 +224,31 @@ const eventsHref = getRoute('events', locale);
     width: 100%;
     overflow: hidden;
     border-bottom: 1px solid var(--s-border);
+    background: var(--s-ink);
+  }
+
+  .masonry-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    background:
+      linear-gradient(135deg, rgba(245, 240, 234, 0.92), rgba(245, 240, 234, 0.74)),
+      linear-gradient(90deg, transparent, rgba(232, 98, 42, 0.18), transparent);
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(0 0 0 0);
+  }
+
+  .editorial-section.in-view .masonry-item {
+    animation: event-card-settle 920ms var(--ease-out-expo) both;
+    animation-delay: calc((var(--col-index, 0) * 120ms) + (var(--item-index, 0) * 70ms));
+  }
+
+  .editorial-section.in-view .masonry-item::before {
+    animation: event-curtain-reveal 920ms var(--ease-out-expo) both;
+    animation-delay: calc((var(--col-index, 0) * 120ms) + (var(--item-index, 0) * 70ms));
   }
 
   @media (min-width: 769px) {
@@ -185,6 +262,32 @@ const eventsHref = getRoute('events', locale);
     position: relative;
     text-decoration: none;
     color: inherit;
+    overflow: hidden;
+  }
+
+  .item-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border: 1px solid rgba(245, 240, 234, 0);
+    box-shadow: inset 0 0 0 0 rgba(245, 240, 234, 0);
+    transition:
+      border-color 280ms var(--ease-out-expo),
+      box-shadow 280ms var(--ease-out-expo);
+  }
+
+  .item-link:focus-visible {
+    outline: none;
+  }
+
+  .item-link:focus-visible::after,
+  .masonry-item:hover .item-link::after {
+    border-color: rgba(245, 240, 234, 0.62);
+    box-shadow:
+      inset 0 0 0 8px rgba(245, 240, 234, 0.06),
+      inset 0 0 42px rgba(232, 98, 42, 0.15);
   }
 
   .item-image {
@@ -192,12 +295,15 @@ const eventsHref = getRoute('events', locale);
     inset: 0;
     filter: grayscale(25%) contrast(1.05) brightness(0.8);
     transform: scale(1.08);
-    transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), filter 0.8s ease;
+    transition:
+      transform 1.2s cubic-bezier(0.19, 1, 0.22, 1),
+      filter 0.8s ease;
   }
 
-  .masonry-item:hover .item-image {
-    transform: scale(1.0);
-    filter: grayscale(0%) contrast(1.02) brightness(0.88);
+  .masonry-item:hover .item-image,
+  .masonry-item:focus-within .item-image {
+    transform: scale(1.015);
+    filter: grayscale(0%) contrast(1.06) brightness(0.92) saturate(1.08);
   }
 
   .item-overlay {
@@ -212,7 +318,8 @@ const eventsHref = getRoute('events', locale);
     z-index: 1;
   }
 
-  .masonry-item:hover .item-overlay {
+  .masonry-item:hover .item-overlay,
+  .masonry-item:focus-within .item-overlay {
     background: linear-gradient(to top,
       rgba(0,0,0,0.96) 0%,
       rgba(0,0,0,0.82) 25%,
@@ -241,7 +348,11 @@ const eventsHref = getRoute('events', locale);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--s-ink);
-    transition: all 0.4s ease;
+    transition:
+      transform 360ms var(--ease-out-expo),
+      background 360ms var(--ease-out-expo),
+      border-color 360ms var(--ease-out-expo),
+      box-shadow 360ms var(--ease-out-expo);
     box-shadow: 0 4px 16px rgba(0,0,0,0.25);
   }
   @media (min-width: 769px) {
@@ -251,21 +362,27 @@ const eventsHref = getRoute('events', locale);
     }
   }
 
-  .masonry-item:hover .date-badge {
-    transform: translateY(-3px);
+  .masonry-item:hover .date-badge,
+  .masonry-item:focus-within .date-badge {
+    transform: translateY(-5px) rotate(-1deg);
     background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.34);
   }
 
   .date-text { display: block; line-height: 1; }
 
   .item-text {
     max-width: 100%;
-    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    transition:
+      transform 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+      opacity 0.35s var(--ease-out-expo);
     display: flex; flex-direction: column; gap: 0.5rem;
   }
 
-  .masonry-item:hover .item-text { transform: translateY(-5px); }
+  .masonry-item:hover .item-text,
+  .masonry-item:focus-within .item-text {
+    transform: translateY(-8px);
+  }
 
   .item-category {
     font-family: var(--font-display);
@@ -274,6 +391,24 @@ const eventsHref = getRoute('events', locale);
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--color-accent-hover);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .item-category::before {
+    content: '';
+    width: 0.75rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0.55);
+    transform-origin: left center;
+    transition: transform 320ms var(--ease-out-expo);
+  }
+
+  .masonry-item:hover .item-category::before,
+  .masonry-item:focus-within .item-category::before {
+    transform: scaleX(1.55);
   }
 
   .item-title {
@@ -308,17 +443,105 @@ const eventsHref = getRoute('events', locale);
 
   .footer-price { color: var(--color-success); font-weight: 700; }
 
+  @keyframes events-light-sweep {
+    0% {
+      opacity: 0;
+      transform: translate3d(-110%, 0, 0);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(110%, 0, 0);
+    }
+  }
+
+  @keyframes event-card-settle {
+    0% {
+      filter: saturate(0.75) brightness(0.7);
+      transform: translate3d(0, 28px, 0) scale(0.985);
+    }
+    62% {
+      filter: saturate(1.08) brightness(1.08);
+    }
+    100% {
+      filter: saturate(1) brightness(1);
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes event-curtain-reveal {
+    0% {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: translate3d(0, 0, 0);
+    }
+    58% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      transform: translate3d(0, -12px, 0);
+    }
+  }
+
+  @keyframes event-column-open {
+    0% {
+      opacity: 0.72;
+      clip-path: inset(0 0 12% 0);
+      transform: translate3d(0, 34px, 0);
+    }
+    100% {
+      opacity: 1;
+      clip-path: inset(0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
   /* ─── Responsive ─── */
   @media (max-width: 768px) {
-    .editorial-section { padding-top: 3rem; }
+    .editorial-section {
+      --s-gutter: 1.5rem;
+      padding-top: 4rem;
+    }
     .masonry-wrapper { flex-direction: column; }
     .col-left, .col-center, .col-right { width: 100%; border-right: none; }
     .masonry-item { height: 50vh !important; }
   }
 
   @media (max-width: 480px) {
-    .editorial-section { padding-top: 2.5rem; }
+    .editorial-section {
+      --s-gutter: 1.25rem;
+      padding-top: 3.5rem;
+    }
     .masonry-item { height: 60vh !important; }
     .item-title { font-size: 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .masonry-wrapper::before,
+    .editorial-section.in-view .masonry-wrapper::before,
+    .editorial-section.in-view .masonry-col,
+    .editorial-section.in-view .masonry-item,
+    .editorial-section.in-view .masonry-item::before {
+      animation: none;
+    }
+
+    .masonry-col,
+    .editorial-section.in-view .masonry-col,
+    .item-image,
+    .item-text,
+    .date-badge {
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0);
+      transition: none;
+    }
+
+    .masonry-item::before {
+      display: none;
+    }
   }
 </style>

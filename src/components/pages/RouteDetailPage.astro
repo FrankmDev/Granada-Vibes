@@ -5,6 +5,7 @@ import Footer from '@components/layout/Footer.astro';
 import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import { getAllPosts, getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
 import { getRoute, getRouteDetailUrl, getBlogDetailUrl, getEventDetailUrl } from '@utils/routes';
@@ -236,15 +237,17 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
     <div class="det-content-wrap">
       <div class="upgraded-layout">
         <main id="main-content" class="upgraded-main">
-          <article class="upg-block" data-reveal>
+          <article class="upg-block upg-block--intro" data-reveal>
             <div class="upg-block-bg"></div>
-            <header class="upg-header">
-              <span class="upg-num">01</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">{copy.sections.aboutEyebrow}</span>
-            </header>
-
-            <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
+            <div class="upg-section-heading">
+              <SectionHeader
+                eyebrow={copy.sections.aboutEyebrow}
+                title={copy.sections.aboutTitle}
+                theme="cream"
+                size="compact"
+                animateTitle={false}
+              />
+            </div>
 
             <div class="upg-body content-rich">
               <p class="upg-lead">{route.description[locale]}</p>
@@ -256,7 +259,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 <span class="upg-rn-label">{copy.sections.neighborhoods}</span>
                 <div class="upg-tags-list">
                   {route.neighborhoods.map((neighborhood: Neighborhood) => (
-                    <a href={`${getRoute('routes', locale)}#routes-grid`} class="upg-badge ghost" style="text-decoration:none;">
+                    <a href={`${getRoute('routes', locale)}#routes-grid`} class="upg-badge ghost">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                       {t(`neighborhoods.${neighborhood}`)}
                     </a>
@@ -265,16 +268,16 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               </div>
             )}
 
-            <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
-              <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
+            <div class="upg-meta-links">
+              <a href={categoryUrl} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {t(`categories.${route.category}`)}
               </a>
-              <a href={byTimeLink.url} class="upg-badge ghost" style="text-decoration:none;">
+              <a href={byTimeLink.url} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 {byTimeLink.title}
               </a>
-              <a href={plannerLink.url} class="upg-badge ghost" style="text-decoration:none;">
+              <a href={plannerLink.url} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
                 {plannerLink.title}
               </a>
@@ -289,7 +292,7 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 <div class="upg-line"></div>
                 <span class="upg-eyebrow">{copy.planningEyebrow}</span>
               </header>
-              <h2 class="upg-title" style="margin-bottom: 1.5rem;">{copy.planningTitle}</h2>
+              <h2 class="upg-title upg-title--compact">{copy.planningTitle}</h2>
               <CrossLinksSection title={copy.planningTitle} links={planningLinks} showHeader={false} />
             </div>
           )}
@@ -311,39 +314,39 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                       <span class="upg-hl-num">{(index + 1).toString().padStart(2, '0')}</span>
                     </div>
                     <div class="upg-hl-content">
-                      <h3 class="tl-title" style="margin-bottom:0.4rem; font-family: var(--font-display); font-size:1.1rem; color:var(--s-ink);">{highlight.title[locale]}</h3>
-                      <p class="upg-hl-text" style="padding-top:0;">{highlight.description[locale]}</p>
+                      <h3 class="tl-title">{highlight.title[locale]}</h3>
+                      <p class="upg-hl-text upg-hl-text--flush">{highlight.description[locale]}</p>
                       {(highlight.address || highlight.price || highlight.hours || highlight.duration || highlight.tip) && (
-                        <div class="upg-hl-meta" style="margin-top: 1rem; padding: 1rem; background: rgba(26,22,25,0.03); border-radius: 12px; border: 1px solid var(--s-border);">
-                          <div style="font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; color: var(--s-ink-3); text-transform: uppercase; margin-bottom: 0.5rem;">{t('detail.stopInfo')}</div>
-                          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                        <div class="upg-hl-meta">
+                          <div class="upg-hl-meta-title">{t('detail.stopInfo')}</div>
+                          <div class="upg-hl-meta-list">
                             {highlight.address && (
-                              <div style="display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-orange);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                              <div class="upg-hl-meta-row upg-hl-meta-row--start">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 <span>{highlight.address[locale]}</span>
                               </div>
                             )}
                             {highlight.duration && (
-                              <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                              <div class="upg-hl-meta-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                                 <span>{formatDuration(highlight.duration, locale)}</span>
                               </div>
                             )}
                             {highlight.price && (
-                              <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                              <div class="upg-hl-meta-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>{highlight.price[locale]}</span>
                               </div>
                             )}
                             {highlight.hours && (
-                              <div style="display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; color: var(--s-orange);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                              <div class="upg-hl-meta-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 <span>{highlight.hours[locale]}</span>
                               </div>
                             )}
                             {highlight.tip && (
-                              <div style="display: flex; align-items: flex-start; gap: 0.5rem; font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2); margin-top: 0.25rem; padding-top: 0.35rem; border-top: 1px dashed var(--s-border);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink: 0; margin-top: 2px; color: var(--s-gold);" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                              <div class="upg-hl-meta-row upg-hl-meta-row--tip upg-hl-meta-row--start">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 <span>{highlight.tip[locale]}</span>
                               </div>
                             )}
@@ -367,15 +370,15 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               </header>
               <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
 
-              <div class="upg-tips-content" style="flex-direction: column;">
+              <div class="upg-tips-content upg-tips-content--stack">
                 {route.tips.map((tip: RouteTip) => (
-                  <div style="display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 2rem;">
+                  <div class="upg-tip-item">
                     <div class="upg-tips-icon">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <div>
-                      <h3 style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--s-ink);">{tip.title[locale]}</h3>
-                      <p class="upg-tips-text" style="font-style: normal;">{tip.content[locale]}</p>
+                      <h3 class="upg-tip-title">{tip.title[locale]}</h3>
+                      <p class="upg-tips-text upg-tips-text--plain">{tip.content[locale]}</p>
                     </div>
                   </div>
                 ))}
@@ -393,47 +396,47 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               </header>
               <h2 class="upg-title">{t('detail.routeInfo')}</h2>
 
-              <div class="upg-body content-rich" style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div class="upg-body content-rich upg-practical-list">
                 {route.startingPoint && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.startingPoint')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.startingPoint[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.startingPoint')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.startingPoint[locale]}</p>
                   </div>
                 )}
                 {route.endingPoint && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.endingPoint')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.endingPoint[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.endingPoint')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.endingPoint[locale]}</p>
                   </div>
                 )}
                 {route.howToGetThere && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.howToGetThere')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.howToGetThere[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.howToGetThere')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.howToGetThere[locale]}</p>
                   </div>
                 )}
                 {route.estimatedBudget && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.estimatedBudget')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.estimatedBudget[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.estimatedBudget')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.estimatedBudget[locale]}</p>
                   </div>
                 )}
                 {route.whoIsItFor && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.whoIsItFor')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.whoIsItFor[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.whoIsItFor')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.whoIsItFor[locale]}</p>
                   </div>
                 )}
                 {route.accessibility && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.accessibility')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.accessibility[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.accessibility')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.accessibility[locale]}</p>
                   </div>
                 )}
                 {route.bestTimeToVisit && (
-                  <div>
-                    <h4 style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem;">{t('detail.bestTimeToVisit')}</h4>
-                    <p class="upg-text-secondary" style="margin-top: 0;">{route.bestTimeToVisit[locale]}</p>
+                  <div class="upg-practical-item">
+                    <h4 class="upg-practical-label">{t('detail.bestTimeToVisit')}</h4>
+                    <p class="upg-text-secondary upg-text-secondary--flush">{route.bestTimeToVisit[locale]}</p>
                   </div>
                 )}
               </div>
@@ -512,11 +515,11 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
 
               <div class="upg-tc-header">
                 <div class="upg-tc-date-box">
-                  <span class="tc-day" style="font-size: 1rem; font-weight:600; font-family:var(--font-display);">{t(`timeOfDay.${route.timeOfDay}`).slice(0, 3).toUpperCase()}</span>
+                  <span class="tc-day tc-day--time">{t(`timeOfDay.${route.timeOfDay}`).slice(0, 3).toUpperCase()}</span>
                   <span class="tc-month">{copy.sections.timeLabel}</span>
                 </div>
                 <div class="upg-tc-info">
-                  <span class="tc-time" style="color:var(--s-ink);">
+                  <span class="tc-time">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     {formatDuration(route.duration, locale)}
                   </span>
@@ -527,22 +530,22 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               <div class="upg-tc-price-wrap">
                 <span class="tc-price-label">{t('detail.distance')}</span>
                 <span class="tc-price-val">
-                  {distValue}<span style="font-size:1.5rem; margin-left:5px;">{distUnit}</span>
+                  {distValue}<span class="tc-price-unit">{distUnit}</span>
                 </span>
               </div>
 
-              <div style="padding: 0 2.5rem 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-family: var(--font-display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--s-orange);">{t(`difficulty.${route.difficulty}`)}</span>
-                <div style="flex:1; height: 1px; background: var(--s-border);"></div>
+              <div class="upg-difficulty-row">
+                <span>{t(`difficulty.${route.difficulty}`)}</span>
+                <div></div>
               </div>
 
               {route.whatToBring && (
-                <div style="padding: 0 2.5rem 1rem;">
-                  <span class="tc-price-label" style="display:block; margin-bottom:0.75rem;">{copy.sections.bringLabel}</span>
-                  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
+                <div class="upg-bring">
+                  <span class="tc-price-label">{copy.sections.bringLabel}</span>
+                  <ul class="upg-bring-list">
                     {route.whatToBring[locale].map((item: string) => (
-                      <li style="display:flex; align-items:flex-start; gap:0.5rem; font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2);">
-                        <span style="color:#d4873a; margin-top:-2px;" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
+                      <li>
+                        <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
                         {item}
                       </li>
                     ))}
@@ -601,10 +604,10 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
       </div>
     </div>
 
-    <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
-      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
-      <span style="color: var(--s-gold);" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
-      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+    <div class="det-footer-orn" aria-hidden="true">
+      <span class="det-orn-line"></span>
+      <span class="det-orn-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
+      <span class="det-orn-line"></span>
     </div>
   </div>
 

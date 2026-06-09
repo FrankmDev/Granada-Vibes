@@ -292,6 +292,8 @@ function formatDate(dateStr: string): string {
     --j-gold: #c9a84c;
     --j-border: rgba(26, 22, 25, 0.08);
     --j-border-2: rgba(26, 22, 25, 0.12);
+    --j-rail: 1560px;
+    --j-gutter: clamp(2rem, 3vw, 3rem);
 
     /* aliases for SectionHeader compatibility */
     --s-cream: var(--j-cream);
@@ -305,7 +307,7 @@ function formatDate(dateStr: string): string {
     position: relative;
     width: 100%;
     background: var(--j-cream);
-    padding: 5rem 0 6rem;
+    padding: clamp(5rem, 6vw, 6.5rem) 0 clamp(5.5rem, 7vw, 7rem);
     overflow: visible;
     margin-top: 3rem;
     z-index: 1;
@@ -323,7 +325,7 @@ function formatDate(dateStr: string): string {
   .deco-dots { position: absolute; bottom: 15%; left: 8%; width: 120px; height: 120px; background-image: radial-gradient(circle, var(--j-border) 1px, transparent 1px); background-size: 12px 12px; opacity: 0.6; }
 
   /* Container */
-  .journal-container { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2.5rem); }
+  .journal-container { position: relative; z-index: 2; max-width: var(--j-rail); margin: 0 auto; padding: 0 var(--j-gutter); }
 
   /* ═══════════════════════════════════════════════════════════════
      BENTO GRID
@@ -332,7 +334,7 @@ function formatDate(dateStr: string): string {
     display: grid; 
     grid-template-columns: 1.4fr 1fr; 
     grid-template-rows: 1fr 1fr; 
-    gap: 1.25rem; 
+    gap: clamp(1rem, 1.5vw, 1.5rem);
     min-height: 600px;
     height: auto;
   }
@@ -813,7 +815,7 @@ function formatDate(dateStr: string): string {
   /* ═══════════════════════════════════════════════════════════════
      RESPONSIVE
      ═══════════════════════════════════════════════════════════════ */
-  @media (max-width: 1024px) {
+  @media (max-width: 900px) {
     .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; min-height: auto; height: auto; gap: 1rem; }
     .item-feature { grid-row: span 1; }
     .item-side:nth-child(2),
@@ -827,7 +829,10 @@ function formatDate(dateStr: string): string {
   }
 
   @media (max-width: 640px) {
-    .journal-section { padding: 3rem 0 4rem; }
+    .journal-section {
+      --j-gutter: 1.25rem;
+      padding: 3.5rem 0 4.5rem;
+    }
     .title-main { font-size: 2rem; }
     .title-sub { font-size: 0.8rem; }
     .feature-link { aspect-ratio: 1/1; }

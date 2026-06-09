@@ -92,7 +92,7 @@ const routesHref = getRoute('routes', locale);
               class="pane-img"
               loading="lazy"
               decoding="async"
-              sizes="(max-width: 1024px) 100vw, 40vw"
+              sizes="(max-width: 900px) 100vw, 40vw"
             />
             <div class="pane-overlay"></div>
 
@@ -154,13 +154,13 @@ const routesHref = getRoute('routes', locale);
 
     panes.forEach((pane) => {
       pane.addEventListener('mouseenter', () => {
-        if (window.innerWidth <= 1024) return;
+        if (window.innerWidth <= 900) return;
         panes.forEach((p) => p.classList.remove('is-active'));
         pane.classList.add('is-active');
       });
 
       pane.addEventListener('focus', () => {
-        if (window.innerWidth <= 1024) return;
+        if (window.innerWidth <= 900) return;
         panes.forEach((p) => p.classList.remove('is-active'));
         pane.classList.add('is-active');
       });
@@ -181,11 +181,13 @@ const routesHref = getRoute('routes', locale);
     --s-gold:     #c9a84c;
     --s-border:   rgba(26, 22, 25, 0.15);
     --s-border-s: rgba(26, 22, 25, 0.08);
+    --s-rail: 1560px;
+    --s-gutter: clamp(2rem, 3vw, 3rem);
 
     position: relative; width: 100%; box-sizing: border-box;
     background: var(--s-cream); 
-    padding-top: 5rem;
-    padding-bottom: 6rem;
+    padding-top: clamp(5rem, 6vw, 6.5rem);
+    padding-bottom: clamp(5.5rem, 7vw, 7rem);
   }
 
   .routes-section :global(.cin-screen-frame) { border-color: rgba(26, 22, 25, 0.12); }
@@ -193,7 +195,7 @@ const routesHref = getRoute('routes', locale);
   .routes-section :global(.cin-corner::after) { background: var(--s-ink); opacity: 0.3; }
   .routes-section :global(.cin-frame-tag) { color: var(--s-ink-3); }
 
-  .routes-section :global(.sh-editorial) { max-width: 1400px; margin-left: auto; margin-right: auto; padding-left: clamp(1.5rem, 5vw, 4rem); padding-right: clamp(1.5rem, 5vw, 4rem); }
+  .routes-section :global(.sh-editorial) { max-width: var(--s-rail); margin-left: auto; margin-right: auto; padding-left: var(--s-gutter); padding-right: var(--s-gutter); box-sizing: border-box; }
 
   .cin-grain {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -220,8 +222,8 @@ const routesHref = getRoute('routes', locale);
   /* ─── Cinematic Flex Accordion Gallery ─── */
   .accordion-container {
     position: relative; z-index: 5;
-    padding: 0 clamp(1.5rem, 5vw, 4rem);
-    width: 100%; max-width: 1400px; margin: 0 auto; box-sizing: border-box;
+    padding: 0 var(--s-gutter);
+    width: 100%; max-width: var(--s-rail); margin: 0 auto; box-sizing: border-box;
   }
 
   .routes-accordion {
@@ -348,8 +350,12 @@ const routesHref = getRoute('routes', locale);
   .diff-challenging { color: var(--color-difficulty-hard) !important; }
 
   /* ─── Responsive ─── */
-  @media (max-width: 1024px) {
-    .routes-section { padding-top: 3rem; margin-top: 2.5rem; }
+  @media (max-width: 900px) {
+    .routes-section {
+      --s-gutter: 1.5rem;
+      padding-top: 4rem;
+      margin-top: 0;
+    }
     .routes-accordion { flex-direction: column; height: auto; min-height: auto; max-height: none; gap: 2rem; }
     .route-pane { flex: none; height: 50vh; min-height: 400px; }
     .route-pane.is-active { flex: none; }
@@ -363,13 +369,16 @@ const routesHref = getRoute('routes', locale);
   }
 
   @media (max-width: 768px) {
-    .routes-section { padding-top: 2.5rem; margin-top: 2rem; }
+    .routes-section { padding-top: 3.5rem; }
     .mobile-cta-wrapper { display: flex; }
-    .accordion-container { padding: 0 1rem; }
+    .accordion-container { padding: 0 var(--s-gutter); }
   }
 
   @media (max-width: 480px) {
-    .routes-section { padding-top: 2rem; margin-top: 1.5rem; }
+    .routes-section {
+      --s-gutter: 1.25rem;
+      padding-top: 3rem;
+    }
     .route-pane { height: 55vh; }
   }
 </style>

@@ -286,11 +286,13 @@ function getCategoryName(category: string): string {
     --t-orange:       #e8622a;
     --t-gold:         #c9a84c;
     --t-border:       rgba(26, 22, 25, 0.08);
+    --t-rail:         1560px;
+    --t-gutter:       clamp(2rem, 3vw, 3rem);
 
     position: relative;
     width: 100%;
     background: var(--t-cream);
-    padding: 6rem 0 8rem;
+    padding: clamp(5rem, 6.5vw, 7rem) 0 clamp(6rem, 8vw, 8rem);
     overflow: hidden;
   }
 
@@ -337,9 +339,9 @@ function getCategoryName(category: string): string {
   .time-container {
     position: relative;
     z-index: 2;
-    max-width: 1400px;
+    max-width: var(--t-rail);
     margin: 0 auto;
-    padding: 0 clamp(1.5rem, 5vw, 3rem);
+    padding: 0 var(--t-gutter);
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -348,7 +350,7 @@ function getCategoryName(category: string): string {
   .plans-showcase {
     display: grid;
     grid-template-columns: 1fr 1.3fr 1fr;
-    gap: 1.5rem;
+    gap: clamp(1rem, 1.5vw, 1.75rem);
     align-items: start;
   }
 
@@ -882,7 +884,7 @@ function getCategoryName(category: string): string {
   /* ═══════════════════════════════════════════════════════════════
      RESPONSIVE
      ═══════════════════════════════════════════════════════════════ */
-  @media (max-width: 1024px) {
+  @media (max-width: 900px) {
     .plans-showcase {
       grid-template-columns: minmax(0, 34rem);
       justify-content: center;
@@ -923,8 +925,9 @@ function getCategoryName(category: string): string {
 
   @media (max-width: 768px) {
     .time-editorial {
-      padding: 4rem 0 6rem;
-      margin-top: 2.5rem;
+      --t-gutter: 1.5rem;
+      padding: 4rem 0 5.5rem;
+      margin-top: 0;
     }
 
     .plans-showcase {
@@ -957,8 +960,12 @@ function getCategoryName(category: string): string {
   }
 
   @media (max-width: 480px) {
+    .time-editorial {
+      --t-gutter: 1.25rem;
+    }
+
     .time-container {
-      padding: 0 1rem;
+      padding: 0 var(--t-gutter);
     }
 
     .card-content,

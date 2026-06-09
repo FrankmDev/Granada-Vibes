@@ -199,10 +199,13 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     --ph-min-height: 56vh;
     --ph-pt: calc(var(--header-height) + 4rem);
     --ph-pb: 3.5rem;
+    --ph-gutter: clamp(1.25rem, 4vw, 4rem);
+    --ph-frame-inset: clamp(0.75rem, 1.6vw, 1.25rem);
+    --ph-content-max: 1200px;
 
     position: relative;
     width: 100%;
-    min-height: var(--ph-min-height);
+    min-height: max(var(--ph-min-height), 30rem);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -216,7 +219,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
      ==================================================== */
   .ph-frame {
     position: absolute;
-    inset: 1.25rem;
+    inset: var(--ph-frame-inset);
     pointer-events: none;
     z-index: 50;
   }
@@ -443,9 +446,11 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     z-index: 10;
     padding-top: var(--ph-pt);
     padding-bottom: var(--ph-pb);
+    padding-inline: var(--ph-gutter);
     flex: 1;
     display: flex;
     align-items: flex-end;
+    width: 100%;
   }
 
   /* Colossal background page number */
@@ -471,10 +476,9 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: min(1200px, calc(100% - 12rem));
+    max-width: var(--ph-content-max);
     margin: 0 auto;
-    padding: 0 2rem;
-    padding-right: clamp(2rem, 14vw, 11rem);
+    padding-right: clamp(0rem, 10vw, 9rem);
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -483,6 +487,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
   .page-header--centered .ph-inner {
     align-items: center;
     text-align: center;
+    padding-right: 0;
   }
 
   /* ====================================================
@@ -533,11 +538,18 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     overflow: visible;
     word-break: keep-all;
     overflow-wrap: normal;
+    max-width: 11ch;
   }
 
   /* Short label (e.g. EVENTOS) — same scale, fewer words */
   .ph-title--compact {
     flex-wrap: nowrap;
+    max-width: 100%;
+  }
+
+  .page-header--centered .ph-title {
+    justify-content: center;
+    max-width: 12ch;
   }
 
   .ph-title-line {
@@ -584,6 +596,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
 
   .page-header--centered .ph-subtitle {
     max-width: 44ch;
+    margin-inline: auto;
   }
 
   /* ====================================================
@@ -642,12 +655,19 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
   .ph-dock {
     position: relative;
     z-index: 20;
+    width: 100%;
   }
 
   .dock-inner {
+    position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 1.5rem;
+    width: 100%;
+    min-height: 4.5rem;
+    padding: 0.95rem var(--ph-gutter);
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(32px) saturate(140%);
     -webkit-backdrop-filter: blur(32px) saturate(140%);
@@ -682,9 +702,35 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     color: rgba(255, 255, 255, 0.2);
     white-space: nowrap;
     flex-shrink: 0;
-    padding: 0 1.5rem;
     pointer-events: none;
     user-select: none;
+  }
+
+  .ph-dock :global(a),
+  .ph-dock :global(button),
+  .ph-dock :global(.btn) {
+    min-height: 2.75rem;
+  }
+
+  .ph-dock :global(.btn),
+  .ph-dock :global(a.btn),
+  .ph-dock :global(button.btn) {
+    padding-inline: clamp(1rem, 3vw, 2rem);
+    text-align: center;
+  }
+
+  .ph-dock :global([class*='bar']),
+  .ph-dock :global([class*='actions']),
+  .ph-dock :global([class*='meta']) {
+    min-width: 0;
+  }
+
+  .ph-dock :global([class*='actions']) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
   /* Hide line number when dock slot is empty */
@@ -776,7 +822,7 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
   @media (max-width: 1024px) {
     .ph-inner {
       max-width: 100%;
-      padding-right: clamp(1.25rem, 8vw, 5rem);
+      padding-right: clamp(0rem, 5vw, 4rem);
     }
 
     .ph-title {
@@ -789,28 +835,61 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
   }
 
   @media (max-width: 768px) {
-    .ph-frame { inset: 0.75rem; }
+    .page-header {
+      --ph-gutter: clamp(1rem, 5vw, 1.5rem);
+      --ph-frame-inset: 0.75rem;
+      min-height: max(var(--ph-min-height), 32rem);
+    }
+
+    .page-header--large {
+      min-height: max(var(--ph-min-height), 36rem);
+    }
+
+    .ph-content {
+      padding-top: calc(var(--header-height) + 3.25rem);
+      padding-bottom: 2rem;
+      align-items: center;
+    }
 
     .ph-inner {
-      padding: 0 1.25rem;
       max-width: 100%;
-      padding-right: 1.25rem;
+      padding-right: 0;
     }
 
     .ph-bg-number {
       font-size: clamp(5rem, 24vw, 8rem);
       right: -4%;
+      top: 58%;
       opacity: 0;
       animation: ph-bg-number-reveal 2s ease 0.3s forwards;
     }
 
     .ph-separator { display: none; }
 
+    .ph-eyebrow {
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .eyebrow-rule {
+      height: 18px;
+    }
+
+    .eyebrow-text {
+      font-size: 0.54rem;
+      letter-spacing: 0.18em;
+      line-height: 1.4;
+    }
+
     .ph-title {
       font-size: clamp(3.25rem, 14vw, 5.75rem);
       max-width: 100%;
       flex-wrap: wrap;
-      line-height: 0.92;
+      line-height: 0.96;
+      margin-bottom: 1.1rem;
+      gap: 0.12em 0.2em;
+      word-break: normal;
+      overflow-wrap: anywhere;
     }
 
     .page-header--large .ph-title {
@@ -824,20 +903,156 @@ const editionLabel = overline ? `№ 01 · ${overline} · 2026` : null;
     .ph-title--compact {
       flex-wrap: wrap;
     }
+
+    .ph-subtitle {
+      max-width: 34rem;
+      margin-bottom: 1.35rem;
+      font-size: clamp(0.92rem, 3.6vw, 1.05rem);
+      line-height: 1.65;
+    }
+
+    .ph-data-strip {
+      display: none;
+    }
+
+    .ph-frame-tag {
+      display: none;
+    }
+
+    .ph-dock {
+      padding-inline: var(--ph-frame-inset);
+      padding-bottom: var(--ph-frame-inset);
+    }
+
+    .dock-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      justify-content: stretch;
+      align-items: stretch;
+      gap: 0.75rem;
+      min-height: 0;
+      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+    }
+
+    .dock-line-number {
+      width: 100%;
+      text-align: center;
+      padding-bottom: 0.1rem;
+    }
+
+    .dock-inner > :global(*:not(.dock-line-number)) {
+      display: block !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+    }
+
+    .ph-dock :global(a),
+    .ph-dock :global(button),
+    .ph-dock :global([role='button']),
+    .ph-dock :global(.btn),
+    .ph-dock :global([class*='btn']),
+    .ph-dock :global([class*='cta']) {
+      display: flex !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+      align-items: center;
+      justify-content: center !important;
+      min-height: 3rem;
+      text-align: center;
+    }
+
+    .ph-dock :global([class*='bar']),
+    .ph-dock :global([class*='actions']),
+    .ph-dock :global([class*='buttons']),
+    .ph-dock :global([class*='cta']) {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+    }
+
+    .ph-dock :global([class*='actions']),
+    .ph-dock :global([class*='buttons']) {
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: stretch;
+      gap: 0.625rem;
+    }
+
+    .ph-dock :global([class*='actions'] > a),
+    .ph-dock :global([class*='actions'] > button),
+    .ph-dock :global([class*='actions'] > .btn),
+    .ph-dock :global([class*='buttons'] > a),
+    .ph-dock :global([class*='buttons'] > button),
+    .ph-dock :global([class*='buttons'] > .btn) {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+    }
+
+    .ph-dock :global(.btn),
+    .ph-dock :global(a.btn),
+    .ph-dock :global(button.btn) {
+      padding-inline: 1rem;
+    }
   }
 
   @media (max-width: 480px) {
+    .page-header {
+      min-height: max(var(--ph-min-height), 31rem);
+    }
+
+    .ph-content {
+      padding-top: calc(var(--header-height) + 2.75rem);
+      padding-bottom: 1.5rem;
+    }
+
     .ph-title {
-      font-size: clamp(2.75rem, 17vw, 4.5rem);
+      font-size: clamp(2.45rem, 16vw, 4.25rem);
       letter-spacing: -0.025em;
+      line-height: 1;
     }
 
     .page-header--large .ph-title {
-      font-size: clamp(3rem, 18vw, 5rem);
+      font-size: clamp(2.75rem, 17vw, 4.75rem);
     }
 
     .ph-bg-number {
       font-size: clamp(4rem, 22vw, 6.5rem);
+    }
+
+    .ph-subtitle {
+      font-size: 0.92rem;
+    }
+
+    .ph-dock :global([class*='actions']) {
+      grid-template-columns: 1fr;
+    }
+
+    .dock-inner {
+      border-radius: 16px;
+      padding: 0.625rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .ph-title {
+      font-size: clamp(2.15rem, 15vw, 3.4rem);
+    }
+
+    .page-header--large .ph-title {
+      font-size: clamp(2.3rem, 16vw, 3.75rem);
+    }
+
+    .ph-subtitle {
+      font-size: 0.875rem;
+      line-height: 1.58;
     }
   }
 </style>

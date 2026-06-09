@@ -8,6 +8,7 @@ import EventImage from '@components/ui/EventImage.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import { getAllVenueEntries, getDirectoryHref, getIndexableEvents } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
@@ -358,15 +359,17 @@ faq.push({
     <div class="det-content-wrap">
       <div class="upgraded-layout">
         <main id="main-content" class="upgraded-main">
-          <article class="upg-block" data-reveal>
+          <article class="upg-block upg-block--intro" data-reveal>
             <div class="upg-block-bg"></div>
-            <header class="upg-header">
-              <span class="upg-num">01</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">{copy.sections.aboutEyebrow}</span>
-            </header>
-
-            <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
+            <div class="upg-section-heading">
+              <SectionHeader
+                eyebrow={copy.sections.aboutEyebrow}
+                title={copy.sections.aboutTitle}
+                theme="cream"
+                size="compact"
+                animateTitle={false}
+              />
+            </div>
 
             <div class="upg-body content-rich">
               <p class="upg-lead">{eventDescription}</p>
@@ -380,26 +383,26 @@ faq.push({
             </div>
 
             <div class="upg-meta-links">
-              <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
+              <a href={categoryUrl} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
                 {t(`categories.${event.category}`)}
               </a>
-              <a href={byTimeLink.url} class="upg-badge ghost" style="text-decoration:none;">
+              <a href={byTimeLink.url} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 {byTimeLink.title}
               </a>
-              <a href={plannerLink.url} class="upg-badge ghost" style="text-decoration:none;">
+              <a href={plannerLink.url} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
                 {plannerLink.title}
               </a>
               {neighborhoodLink && (
-                <a href={neighborhoodLink.url} class="upg-badge ghost" style="text-decoration:none;">
+                <a href={neighborhoodLink.url} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 {neighborhoodLink.label}
                 </a>
               )}
               {venueDirectoryEntry && (
-                <a href={getDirectoryHref('venue', venueDirectoryEntry.slug, locale)} class="upg-badge ghost" style="text-decoration:none;">
+                <a href={getDirectoryHref('venue', venueDirectoryEntry.slug, locale)} class="upg-badge ghost">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-7h6v7"/></svg>
                 {venueDirectoryEntry.name}
                 </a>
@@ -507,7 +510,7 @@ faq.push({
               </header>
               <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
 
-            <div class="upg-tips-content" id="event-practical">
+              <div class="upg-tips-content" id="event-practical">
                 <div class="upg-tips-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>

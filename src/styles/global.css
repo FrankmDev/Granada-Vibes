@@ -39,17 +39,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-kerning: normal;
   }
 
   body {
-    font-family: var(--font-display);
-    font-size: 1rem;
+    font-family: var(--font-ui);
+    font-size: var(--type-body);
     font-weight: 400;
     line-height: 1.6;
     color: var(--color-text-primary);
     background-color: var(--color-bg);
     min-height: 100vh;
     overflow-x: hidden;
+    font-optical-sizing: auto;
+    font-synthesis-weight: none;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
   }
 
   ::selection {
@@ -102,16 +106,18 @@
   ::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+    font-family: var(--font-heading);
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.02em;
     color: var(--color-text-primary);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
   }
 
-  h1 { font-size: clamp(2.5rem, 7vw, 5rem); }
-  h2 { font-size: clamp(2rem, 5vw, 3.5rem); }
-  h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+  h1 { font-size: var(--type-display); }
+  h2 { font-size: var(--type-heading); }
+  h3 { font-size: var(--type-title); }
   h4 { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 700; }
   h5 { font-size: 0.9375rem; font-weight: 700; }
   h6 {
@@ -125,6 +131,12 @@
   p {
     color: var(--color-text-secondary);
     line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  li,
+  blockquote {
+    text-wrap: pretty;
   }
 
   a {
