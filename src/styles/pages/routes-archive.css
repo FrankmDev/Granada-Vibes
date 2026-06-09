@@ -732,8 +732,11 @@
 
     .difficulty-fill {
       height: 100%;
+      width: 100%;
       border-radius: 2px;
-      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: scaleX(var(--difficulty-progress, 0));
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .difficulty-text {
@@ -1339,11 +1342,12 @@
       width: 24px;
       height: 1px;
       background: currentColor;
-      transition: width 0.3s ease;
+      transform-origin: left;
+      transition: transform 0.3s ease;
     }
 
     .view-all-btn:hover .btn-line {
-      width: 40px;
+      transform: scaleX(1.667);
     }
 
     /* ═══════════════════════════════════════════════════════════════

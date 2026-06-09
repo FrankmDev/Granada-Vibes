@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-09T10:30:00Z",
+  "title": "Design System: Granada Urban",
+  "extensions": {
+    "colorMeta": {
+      "alhambra-noir": {
+        "role": "neutral",
+        "displayName": "Alhambra Noir",
+        "canonical": "oklch(5% 0.005 60)",
+        "tonalRamp": [
+          "oklch(5% 0.005 60)",
+          "oklch(10% 0.005 60)",
+          "oklch(15% 0.005 60)",
+          "oklch(20% 0.005 60)",
+          "oklch(30% 0.005 60)",
+          "oklch(50% 0.005 60)",
+          "oklch(75% 0.005 60)",
+          "oklch(95% 0.005 60)"
+        ]
+      },
+      "terracotta": {
+        "role": "primary",
+        "displayName": "Terracotta",
+        "canonical": "oklch(60% 0.20 25)",
+        "tonalRamp": [
+          "oklch(20% 0.20 25)",
+          "oklch(30% 0.20 25)",
+          "oklch(40% 0.20 25)",
+          "oklch(50% 0.20 25)",
+          "oklch(60% 0.20 25)",
+          "oklch(70% 0.20 25)",
+          "oklch(80% 0.20 25)",
+          "oklch(90% 0.20 25)"
+        ]
+      },
+      "alhambra-gold": {
+        "role": "secondary",
+        "displayName": "Alhambra Gold",
+        "canonical": "oklch(65% 0.15 85)",
+        "tonalRamp": [
+          "oklch(25% 0.15 85)",
+          "oklch(35% 0.15 85)",
+          "oklch(45% 0.15 85)",
+          "oklch(55% 0.15 85)",
+          "oklch(65% 0.15 85)",
+          "oklch(75% 0.15 85)",
+          "oklch(85% 0.15 85)",
+          "oklch(95% 0.15 85)"
+        ]
+      },
+      "warm-white": {
+        "role": "neutral",
+        "displayName": "Warm White",
+        "canonical": "oklch(95% 0.01 60)",
+        "tonalRamp": [
+          "oklch(20% 0.01 60)",
+          "oklch(35% 0.01 60)",
+          "oklch(50% 0.01 60)",
+          "oklch(65% 0.01 60)",
+          "oklch(75% 0.01 60)",
+          "oklch(85% 0.01 60)",
+          "oklch(92% 0.01 60)",
+          "oklch(95% 0.01 60)"
+        ]
+      },
+      "granada-cream": {
+        "role": "neutral",
+        "displayName": "Granada Cream",
+        "canonical": "oklch(94% 0.02 60)",
+        "tonalRamp": [
+          "oklch(25% 0.02 60)",
+          "oklch(40% 0.02 60)",
+          "oklch(55% 0.02 60)",
+          "oklch(70% 0.02 60)",
+          "oklch(80% 0.02 60)",
+          "oklch(88% 0.02 60)",
+          "oklch(92% 0.02 60)",
+          "oklch(94% 0.02 60)"
+        ]
+      },
+      "ink-brown": {
+        "role": "neutral",
+        "displayName": "Ink Brown",
+        "canonical": "oklch(10% 0.02 30)",
+        "tonalRamp": [
+          "oklch(10% 0.02 30)",
+          "oklch(20% 0.02 30)",
+          "oklch(30% 0.02 30)",
+          "oklch(40% 0.02 30)",
+          "oklch(50% 0.02 30)",
+          "oklch(60% 0.02 30)",
+          "oklch(75% 0.02 30)",
+          "oklch(90% 0.02 30)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines, monumental lockup, largest type on the page. Fraunces."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headers, page titles. Fraunces."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles, sub-section headers. Fraunces."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraphs, descriptions, content text. DM Sans. Max 65–75ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, nav links, category badges, frame tags. DM Sans, uppercase."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient-soft",
+        "value": "0 4px 16px rgba(10, 10, 10, 0.2)",
+        "purpose": "Diffuse subtle shadow for mild lift on dark surfaces."
+      },
+      {
+        "name": "ambient-medium",
+        "value": "0 8px 24px rgba(10, 10, 10, 0.25)",
+        "purpose": "Moderate lift for cards or modals."
+      },
+      {
+        "name": "accent-glow",
+        "value": "0 12px 40px var(--color-accent-glow)",
+        "purpose": "Hover glow on accent-colored elements. Atmospheric."
+      },
+      {
+        "name": "gold-glow",
+        "value": "0 12px 40px var(--color-gold-muted)",
+        "purpose": "Hover glow on gold-accented elements. Decorative."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Primary easing. Reveals, entrances, hover transitions."
+      },
+      {
+        "name": "ease-spring",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "purpose": "Playful bounce. Pill states, micro-interactions."
+      },
+      {
+        "name": "ease-smooth",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Standard material easing. Subtle transitions."
+      },
+      {
+        "name": "ease-editorial",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Slow, dramatic reveals. Hero boot sequence."
+      },
+      {
+        "name": "duration-fast",
+        "value": "100ms",
+        "purpose": "Button hover, link underline, micro-feedback."
+      },
+      {
+        "name": "duration-normal",
+        "value": "200ms",
+        "purpose": "State transitions, toggles, standard feedback."
+      },
+      {
+        "name": "duration-slow",
+        "value": "300ms",
+        "purpose": "Modals, overlays, larger state shifts."
+      },
+      {
+        "name": "duration-slower",
+        "value": "700ms",
+        "purpose": "Hero reveals, page transitions, dramatic entrances."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Sharp rectangular button for main CTAs on dark backgrounds.",
+      "html": "<button class=\"ds-btn-primary\">EXPLORAR EVENTOS</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.875rem 2rem; cursor: pointer; border: 1px solid #f0ede8; background: #f0ede8; color: #080808; transition: background 100ms ease, border-color 100ms ease, color 100ms ease; } .ds-btn-primary:hover { background: #e8622a; border-color: #e8622a; color: #f0ede8; } .ds-btn-primary:focus-visible { outline: 2px solid #e8622a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Transparent button with border for secondary actions on dark backgrounds.",
+      "html": "<button class=\"ds-btn-secondary\">VER MAPA</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.875rem 2rem; cursor: pointer; border: 1px solid #242424; background: transparent; color: #f0ede8; transition: background 100ms ease, border-color 100ms ease; } .ds-btn-secondary:hover { background: #111111; border-color: #5a5550; } .ds-btn-secondary:focus-visible { outline: 2px solid #e8622a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Screen Frame",
+      "kind": "custom",
+      "refersTo": "screen-frame",
+      "description": "Cinematic inset border with corner brackets and optional tags. Signature spatial device.",
+      "html": "<div class=\"ds-screen-frame\" aria-hidden=\"true\"><div class=\"ds-corner ds-corner-tl\"></div><div class=\"ds-corner ds-corner-tr\"></div><div class=\"ds-corner ds-corner-bl\"></div><div class=\"ds-corner ds-corner-br\"></div><span class=\"ds-frame-tag ds-frame-tag-tl\">EDITORIAL</span><span class=\"ds-frame-tag ds-frame-tag-br\">GRANADA</span></div>",
+      "css": ".ds-screen-frame { position: absolute; inset: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.06); pointer-events: none; z-index: 20; } .ds-corner { position: absolute; width: 12px; height: 12px; } .ds-corner::before, .ds-corner::after { content: ''; position: absolute; background: rgba(201, 162, 39, 0.45); } .ds-corner::before { width: 12px; height: 1px; } .ds-corner::after { width: 1px; height: 12px; } .ds-corner-tl { top: -1px; left: -1px; } .ds-corner-tl::before { top: 0; left: 0; } .ds-corner-tl::after { top: 0; left: 0; } .ds-corner-tr { top: -1px; right: -1px; } .ds-corner-tr::before { top: 0; right: 0; } .ds-corner-tr::after { top: 0; right: 0; } .ds-corner-bl { bottom: -1px; left: -1px; } .ds-corner-bl::before { bottom: 0; left: 0; } .ds-corner-bl::after { bottom: 0; left: 0; } .ds-corner-br { bottom: -1px; right: -1px; } .ds-corner-br::before { bottom: 0; right: 0; } .ds-corner-br::after { bottom: 0; right: 0; } .ds-frame-tag { position: absolute; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255, 255, 255, 0.25); white-space: nowrap; } .ds-frame-tag-tl { top: -1.5rem; left: 0; } .ds-frame-tag-br { bottom: -1.5rem; right: 0; }"
+    },
+    {
+      "name": "Dark Card",
+      "kind": "card",
+      "refersTo": "card-dark",
+      "description": "Content container for dark sections with corner bracket hover reveal.",
+      "html": "<article class=\"ds-card-dark\"><div class=\"ds-card-img-wrap\"><img class=\"ds-card-img\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'/%3E\" alt=\"Event\" /></div><div class=\"ds-card-body\"><h3 class=\"ds-card-title\">Festival de Música</h3><p class=\"ds-card-meta\">12 Jun · Teatro Isabel</p></div></article>",
+      "css": ".ds-card-dark { position: relative; background: #171717; border-radius: 12px; overflow: hidden; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-dark:hover { transform: translateY(-4px); } .ds-card-dark .ds-card-img-wrap { position: relative; overflow: hidden; } .ds-card-dark .ds-card-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(25%) contrast(1.05) brightness(0.8); transform: scale(1.08); transition: filter 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1); } .ds-card-dark:hover .ds-card-img { filter: grayscale(0%) brightness(0.88); transform: scale(1); } .ds-card-dark .ds-card-body { padding: 1.5rem; } .ds-card-dark .ds-card-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; font-weight: 700; line-height: 1.1; color: #f0ede8; margin: 0 0 0.5rem; } .ds-card-dark .ds-card-meta { font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.875rem; color: #9a9490; margin: 0; }"
+    },
+    {
+      "name": "Light Card",
+      "kind": "card",
+      "refersTo": "card-light",
+      "description": "Content container for light editorial sections.",
+      "html": "<article class=\"ds-card-light\"><div class=\"ds-card-img-wrap\"><img class=\"ds-card-img\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'/%3E\" alt=\"Route\" /></div><div class=\"ds-card-body\"><h3 class=\"ds-card-title\">Ruta del Albaicín</h3><p class=\"ds-card-meta\">2h · 3.5km · Fácil</p></div></article>",
+      "css": ".ds-card-light { position: relative; background: #f5f0ea; border-radius: 12px; overflow: hidden; border: 1px solid rgba(26, 22, 25, 0.12); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-light:hover { transform: translateY(-4px); } .ds-card-light .ds-card-img-wrap { position: relative; overflow: hidden; } .ds-card-light .ds-card-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(25%) contrast(1.05) brightness(0.8); transform: scale(1.08); transition: filter 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1); } .ds-card-light:hover .ds-card-img { filter: grayscale(0%) brightness(0.88); transform: scale(1); } .ds-card-light .ds-card-body { padding: 1.5rem; } .ds-card-light .ds-card-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; font-weight: 700; line-height: 1.1; color: #1a1619; margin: 0 0 0.5rem; } .ds-card-light .ds-card-meta { font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.875rem; color: #5a4f47; margin: 0; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Numbered nav link with animated underline hover and active state.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-link is-active\"><span class=\"ds-nav-num\" aria-hidden=\"true\">[01]</span><span class=\"ds-nav-label\">EVENTOS</span><span class=\"ds-nav-line\" aria-hidden=\"true\"></span></a><a href=\"#\" class=\"ds-nav-link\"><span class=\"ds-nav-num\" aria-hidden=\"true\">[02]</span><span class=\"ds-nav-label\">RUTAS</span><span class=\"ds-nav-line\" aria-hidden=\"true\"></span></a></nav>",
+      "css": ".ds-nav { display: flex; gap: 2rem; align-items: center; } .ds-nav-link { position: relative; display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f0ede8; text-decoration: none; padding: 0.25rem 0; transition: color 100ms ease; } .ds-nav-link:hover { color: #e8622a; } .ds-nav-link.is-active { color: #e8622a; } .ds-nav-num { color: rgba(240, 237, 232, 0.4); font-weight: 500; } .ds-nav-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: #e8622a; transform: scaleX(0); transform-origin: left; transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-link:hover .ds-nav-line, .ds-nav-link.is-active .ds-nav-line { transform: scaleX(1); } .ds-nav-link:focus-visible { outline: 2px solid #e8622a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter Pill",
+      "kind": "chip",
+      "refersTo": "filter-pill",
+      "description": "Pill-shaped toggle for filtering events or routes.",
+      "html": "<div class=\"ds-pill-group\"><button class=\"ds-pill\">Concierto</button><button class=\"ds-pill is-selected\">Festival</button><button class=\"ds-pill\">Teatro</button></div>",
+      "css": ".ds-pill-group { display: flex; flex-wrap: wrap; gap: 0.5rem; } .ds-pill { display: inline-flex; align-items: center; justify-content: center; font-family: 'DM Sans', system-ui, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.5rem 1rem; cursor: pointer; border-radius: 9999px; border: 1px solid rgba(255, 255, 255, 0.15); background: transparent; color: #f0ede8; transition: background 100ms ease, border-color 100ms ease, color 100ms ease; } .ds-pill:hover { border-color: rgba(255, 255, 255, 0.3); } .ds-pill.is-selected { background: #e8622a; border-color: #e8622a; color: #f0ede8; } .ds-pill:focus-visible { outline: 2px solid #e8622a; outline-offset: 2px; }"
+    },
+    {
+      "name": "Glass Dock",
+      "kind": "custom",
+      "refersTo": "glass-dock",
+      "description": "Floating pill-shaped bar with live time, weather, and CTA. The hero's signature UI element.",
+      "html": "<div class=\"ds-glass-dock\"><div class=\"ds-dock-section\"><div class=\"ds-dock-time\"><span class=\"ds-dock-dot\"></span><span class=\"ds-dock-h\">14</span><span class=\"ds-dock-sep\">:</span><span class=\"ds-dock-m\">32</span></div><div class=\"ds-dock-weather\"><span class=\"ds-dock-icon\">☀️</span><span class=\"ds-dock-temp\">24°</span></div></div><div class=\"ds-dock-divider\"></div><a href=\"#\" class=\"ds-dock-cta\">Ver Eventos<svg class=\"ds-dock-arrow\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\"><path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M14 5l7 7m0 0l-7 7m7-7H3\"/></svg></a></div>",
+      "css": ".ds-glass-dock { display: inline-flex; align-items: center; gap: 1rem; padding: 0.75rem 1.5rem; border-radius: 9999px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(40px) saturate(140%); border: 1px solid rgba(255, 255, 255, 0.08); font-family: 'DM Sans', system-ui, sans-serif; color: #f0ede8; } .ds-dock-section { display: flex; align-items: center; gap: 1rem; } .ds-dock-time { display: flex; align-items: center; gap: 0.25rem; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.05em; } .ds-dock-dot { width: 6px; height: 6px; border-radius: 50%; background: #e8622a; animation: pulseLive 1.5s ease-in-out infinite; } @keyframes pulseLive { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } } .ds-dock-sep { opacity: 0.5; } .ds-dock-weather { display: flex; align-items: center; gap: 0.375rem; font-size: 0.875rem; } .ds-dock-icon { font-size: 1rem; } .ds-dock-temp { font-weight: 500; } .ds-dock-divider { width: 1px; height: 1.5rem; background: rgba(255, 255, 255, 0.15); } .ds-dock-cta { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #f0ede8; text-decoration: none; transition: color 100ms ease; } .ds-dock-cta:hover { color: #e8622a; } .ds-dock-arrow { transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-dock-cta:hover .ds-dock-arrow { transform: translateX(4px); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Alhambra After Dark",
+    "overview": "A palace that glows at night. The design moves from cinematic darkness into sun-lit editorial space. The hero is a portal — deep black, warm terracotta, aged gold — like standing in the Alhambra at dusk. The content sections are warm and editorial, like a beautifully printed guide left on a marble table in a boutique hotel. The transition between dark and light is the emotional journey of the site: from anticipation to discovery.",
+    "keyCharacteristics": [
+      "Dual-mode palette: dark cinematic (hero/portal) and warm editorial (content/body)",
+      "Inverted font naming: CSS variables call DM Sans 'display' and Fraunces 'body'; Tailwind inverts them. The browser renders Fraunces for headlines and DM Sans for UI.",
+      "Ambient motion only: parallax, grain, screen-frame corners, subtle glow. No performative animation.",
+      "Signature patterns: Screen Frame, Grain Texture, Glass Dock, Corner Brackets, Char-by-Char Reveal"
+    ],
+    "rules": [
+      {
+        "name": "The Dual-Mode Rule",
+        "body": "Every section must commit to one mode: dark or light. No mixed-mode cards within a section. The transition between sections is the palette's punctuation.",
+        "section": "colors"
+      },
+      {
+        "name": "The Terracotta Rarity Rule",
+        "body": "The accent appears on ≤10% of any given screen. Its power is in restraint. A hero CTA, an active nav link, a hover state — never a background fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The One-Voice Rule",
+        "body": "The Fraunces + DM Sans pairing is the only font pairing. Never add a third font. Weight and size contrast create hierarchy, not font switches.",
+        "section": "typography"
+      },
+      {
+        "name": "The Letter-Spacing Floor",
+        "body": "Display headings must have letter-spacing ≥ -0.04em. Anything tighter and letters touch; cramped, not designed.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. Borders and background color steps create hierarchy. Drop shadows are reserved for interactive states and atmospheric effects.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No-Shadow-On-Light Rule",
+        "body": "Light-mode sections use tonal layering through background color and subtle borders. No drop shadows on cream surfaces. The contrast between cream and ink-brown is sufficient.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the dual-mode palette consistently: dark sections for cinematic/hero moments, light sections for editorial content.",
+      "Do cap the accent color at ≤10% of any given screen surface. Terracotta is an exclamation point, not a paragraph.",
+      "Do use the Screen Frame on cinematic sections. It is the signature spatial device.",
+      "Do use Fraunces for headlines and DM Sans for UI/body. The inversion is documented; do not add a third font.",
+      "Do apply text-wrap: balance on h1–h3 for even line lengths.",
+      "Do use text-wrap: pretty on long prose paragraphs to reduce orphans.",
+      "Do cap body line length at 65–75ch.",
+      "Do use 0.05–0.1 extra line-height on light text against dark backgrounds. Light type reads lighter and needs more breathing room.",
+      "Do use the grain texture overlay on dark sections that feel too flat. The analog noise adds depth without shadow.",
+      "Do implement @media (prefers-reduced-motion: reduce) for all animations. The alternative is a crossfade or instant transition.",
+      "Do use focus-visible: 2px solid var(--color-accent) with 3px offset for all interactive elements.",
+      "Do verify contrast: body text ≥4.5:1, large text ≥3:1. The WCAG AAA target is non-negotiable."
+    ],
+    "donts": [
+      "Don't use generic travel-blog templates, cookie-cutter card grids, or stock hero imagery. The design must be unmistakably Granada.",
+      "Don't create flat, personality-free UI that could be any city anywhere. Every choice must signal local curation.",
+      "Don't use side-stripe borders (border-left or border-right > 1px) as colored accents on cards or list items. Use full borders, background tints, or nothing.",
+      "Don't use gradient text (background-clip: text with gradient). Decorative, never meaningful. Use a single solid color.",
+      "Don't use glassmorphism as a default. Blurs are rare and purposeful; the Glass Dock is the one exception.",
+      "Don't use the hero-metric template (big number + small label + gradient). Not a SaaS product.",
+      "Don't use tiny uppercase tracked eyebrow text above every section heading. One deliberate kicker is voice; repeating it as grammar is AI scaffolding.",
+      "Don't use numbered section markers (01 · About / 02 · Process) as default scaffolding. Numbers earn their place only when order carries information.",
+      "Don't use all-caps body copy. Uppercase is reserved for short labels only.",
+      "Don't animate CSS layout properties (width, height, top, left) unless truly needed. Use transform and opacity.",
+      "Don't use 9999 or arbitrary z-index values. Build a semantic scale: dropdown → sticky → modal-backdrop → modal → toast → tooltip.",
+      "Don't use em dashes in copy. Use commas, colons, semicolons, periods, or parentheses.",
+      "Don't use marketing buzzwords: streamline, empower, supercharge, leverage, unleash, transform, seamless, world-class, enterprise-grade, next-generation, cutting-edge, game-changer, mission-critical.",
+      "Don't rely on color alone for difficulty indicators or category tags. Always pair with icon or text for color blindness accessibility.",
+      "Don't let text overflow its container. Test headings at every breakpoint. If a long word plus a large clamp scale causes overflow, reduce the clamp max or rewrite the copy."
+    ]
+  }
+}

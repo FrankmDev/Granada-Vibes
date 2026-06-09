@@ -150,7 +150,7 @@ const timeOfDayIcons: Record<string, string> = {
               <div class="difficulty-track">
                 <div 
                   class="difficulty-fill" 
-                  style={`width: ${route.difficulty === 'easy' ? '33%' : route.difficulty === 'moderate' ? '66%' : '100%'}; background: ${diffColor}`}
+                  style={`--difficulty-progress: ${route.difficulty === 'easy' ? '0.33' : route.difficulty === 'moderate' ? '0.66' : '1'}; background: ${diffColor}`}
                 ></div>
               </div>
               <span class="difficulty-text">{difficultyLabels[route.difficulty]}</span>

@@ -70,6 +70,7 @@ const routesHref = getRoute('routes', locale);
     subtitle={t('home.sections.routesSubtitle')}
     ctaHref={routesHref}
     ctaLabel={t('actions.viewAll').toUpperCase()}
+    animateTitle={false}
     theme="cream"
   />
 
@@ -99,6 +100,7 @@ const routesHref = getRoute('routes', locale);
             <div class="pane-vertical-label">
               <span class="vertical-num">{(idx + 1).toString().padStart(2, '0')}</span>
               <span class="vertical-text">{catLabel}</span>
+              <span class="vertical-route-title">{displayTitle}</span>
             </div>
 
             <!-- Active: Full HUD Content -->
@@ -275,6 +277,19 @@ const routesHref = getRoute('routes', locale);
     font-family: var(--font-display); font-size: 0.8rem; font-weight: 600;
     letter-spacing: 0.3em; text-transform: uppercase;
     color: var(--color-text-primary); white-space: nowrap;
+  }
+  .vertical-route-title {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    max-height: 16rem;
+    overflow: hidden;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    color: rgba(240, 237, 232, 0.72);
+    text-wrap: balance;
   }
   .route-pane.is-active .pane-vertical-label { opacity: 0; transform: translateX(-50%) translateY(20px); pointer-events: none; }
 

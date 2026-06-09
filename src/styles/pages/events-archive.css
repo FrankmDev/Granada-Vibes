@@ -484,7 +484,7 @@
       .filter-inner { padding: 0; }
       .filter-bar { padding: 1.25rem; }
       .filter-chips { justify-content: flex-start; }
-      .filter-chip { padding: 0.55rem 1rem; font-size: 0.6rem; }
+      .filter-chip { padding: 0.75rem 1.25rem; font-size: 0.75rem; }
       .masonry-wrapper { flex-direction: column; }
       .col-left, .col-center, .col-right { flex: 1; border-right: none; width: 100%; }
       .filter-spacer { display: none; }
@@ -495,6 +495,6 @@
     }
 
     @media (max-width: 480px) {
-      .filter-chip { padding: 0.5rem 0.875rem; font-size: 0.55rem; }
+      .filter-chip { padding: 0.75rem 1.125rem; font-size: 0.75rem; }
       .empty-title { font-size: 1.25rem; }
     }

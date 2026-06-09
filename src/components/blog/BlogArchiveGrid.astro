@@ -135,7 +135,7 @@ function formatDate(dateStr: string): string {
               
               <div class="reading-bar">
                 <div class="reading-track">
-                  <div class="reading-fill" style={`width: ${readingPct}%`}></div>
+                  <div class="reading-fill" style={`--reading-progress: ${readingPct / 100}`}></div>
                 </div>
                 <span class="reading-label">{post.readingTime} min</span>
               </div>

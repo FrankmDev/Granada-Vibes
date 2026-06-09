@@ -473,22 +473,23 @@
   .tl {
     display: block;
     height: 1px;
+    width: 18px;
     background: rgba(240, 237, 232, 0.7);
-    transition: width 0.5s var(--gg-expo), background 0.4s var(--gg-expo), transform 0.5s var(--gg-expo), box-shadow 0.4s var(--gg-expo), opacity 0.35s ease;
+    transition: transform 0.5s var(--gg-expo), background 0.4s var(--gg-expo), box-shadow 0.4s var(--gg-expo), opacity 0.35s ease;
     transform-origin: center;
   }
 
-  .tl:nth-child(1) { width: 18px; }
-  .tl:nth-child(2) { width: 14px; }
-  .tl--short       { width: 10px; }
+  .tl:nth-child(1) { transform: scaleX(1) translateX(0); }
+  .tl:nth-child(2) { transform: scaleX(0.777) translateX(0); }
+  .tl--short       { transform: scaleX(0.555) translateX(0); }
 
   .nb-trigger:hover .tl {
     background: var(--gg-gold);
     box-shadow: 0 0 6px rgba(201, 168, 76, 0.35);
   }
-  .nb-trigger:hover .tl:nth-child(1) { width: 18px; transform: translateX(1px); }
-  .nb-trigger:hover .tl:nth-child(2) { width: 18px; }
-  .nb-trigger:hover .tl--short { width: 18px; transform: translateX(-1px); }
+  .nb-trigger:hover .tl:nth-child(1) { transform: scaleX(1) translateX(1px); }
+  .nb-trigger:hover .tl:nth-child(2) { transform: scaleX(1) translateX(0); }
+  .nb-trigger:hover .tl--short { transform: scaleX(1) translateX(-1px); }
 
   .nb-trigger[aria-expanded="true"] .tl:nth-child(1) {
     transform: translateY(5px) rotate(45deg);
@@ -806,21 +807,21 @@
   .cm-bar {
     display: block;
     height: 1px;
+    width: 11px;
     background: var(--gg-gold);
-    transition: width 0.4s var(--gg-expo), transform 0.4s var(--gg-expo), box-shadow 0.4s var(--gg-expo);
+    transition: transform 0.4s var(--gg-expo), box-shadow 0.4s var(--gg-expo);
     position: relative;
     z-index: 1;
   }
 
-  .cm-bar:first-child { width: 11px; }
-  .cm-bar:last-child  { width: 7px; }
+  .cm-bar:first-child { transform: scaleX(1) translateX(0); }
+  .cm-bar:last-child  { transform: scaleX(0.636) translateX(0); }
 
   .cap-menu:hover .cm-bar {
-    width: 11px;
     box-shadow: 0 0 4px rgba(201, 168, 76, 0.5);
   }
-  .cap-menu:hover .cm-bar:first-child { transform: translateX(1px); }
-  .cap-menu:hover .cm-bar:last-child  { transform: translateX(-1px); }
+  .cap-menu:hover .cm-bar:first-child { transform: scaleX(1) translateX(1px); }
+  .cap-menu:hover .cm-bar:last-child  { transform: scaleX(1) translateX(-1px); }
 
   /* ═══════════════════════════════════════════════════════
      GRAND GATE — Full-screen overlay
@@ -1211,7 +1212,7 @@
     padding: 1.4rem 0;
     text-decoration: none;
     overflow: hidden;
-    transition: padding-left 0.45s var(--gg-expo), color 0.4s ease;
+    transition: transform 0.45s var(--gg-expo), color 0.4s ease;
   }
 
   /* Hover wash */
@@ -1239,7 +1240,7 @@
     transition: transform 0.65s var(--gg-expo);
   }
 
-  .gate-link:hover { padding-left: 0.75rem; }
+  .gate-link:hover { transform: translateX(0.75rem); }
   .gate-link:hover::before { transform: scaleX(1); }
   .gate-link:hover::after { transform: scaleX(1); }
 
