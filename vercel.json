@@ -43,6 +43,123 @@
       }
     },
     {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "category"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "neighborhood"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "type"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "difficulty"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "duration"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "timeofday"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "date"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "price"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
+      "src": "/(eventos|en/events|rutas|en/routes|guias|en/guides)/?",
+      "has": [
+        {
+          "type": "query",
+          "key": "q"
+        }
+      ],
+      "status": 308,
+      "headers": {
+        "Location": "/$1/"
+      }
+    },
+    {
       "src": "/_granada-assets/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"

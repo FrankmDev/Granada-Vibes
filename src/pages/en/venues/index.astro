@@ -1,6 +1,6 @@
 ---
 import DirectoryIndexPage from '@components/pages/DirectoryIndexPage.astro';
-import { getAllVenueEntries } from '@data/index.js';
+import { getIndexableVenueEntries } from '@data/index.js';
 ---
 
-<DirectoryIndexPage locale="en" entries={getAllVenueEntries()} />
+<DirectoryIndexPage locale="en" entries={getIndexableVenueEntries()} />

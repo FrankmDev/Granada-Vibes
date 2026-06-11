@@ -1,9 +1,9 @@
 ---
 import DirectoryDetailPage from '@components/pages/DirectoryDetailPage.astro';
-import { getAllVenueEntries } from '@data/index.js';
+import { getIndexableVenueEntries } from '@data/index.js';
 
 export const getStaticPaths = () =>
-  getAllVenueEntries().map((entry) => ({
+  getIndexableVenueEntries().map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));

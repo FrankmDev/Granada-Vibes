@@ -1,4 +1,5 @@
 import type { Event, EventCategory, Neighborhood } from '@types';
+import { shouldIndexEventDetail } from '../../utils/event-indexing.js';
 import { events } from './repository.js';
 
 function byDateAscending(a: Event, b: Event): number {
@@ -37,15 +38,8 @@ export function getUpcomingEvents(limit: number, fromDate: Date = new Date()): E
 }
 
 export function getIndexableEvents(fromDate: Date = new Date()): Event[] {
-  const from = fromDate.toISOString().split('T')[0];
-  if (!from) return [];
-
   return events
-    .filter((event) => {
-      if (event.seoIndex === 'never') return false;
-      if (event.seoIndex === 'always') return true;
-      return (event.endDate ?? event.date) >= from;
-    })
+    .filter((event) => shouldIndexEventDetail(event, fromDate))
     .slice()
     .sort(byDateAscending);
 }

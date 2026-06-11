@@ -9,7 +9,7 @@ import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
-import { getAllVenueEntries, getDirectoryHref, getIndexableEvents } from '@data/index.js';
+import { getDirectoryHref, getIndexableEvents, getIndexableVenueEntries } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
@@ -210,7 +210,7 @@ const relatedEvents = allEvents
 const relatedRoutesForEvent = getRelatedRoutesForEvent(event, 2);
 const relatedPostsForEvent = getRelatedPostsForEvent(event, 2);
 const neighborhoodLink = getNeighborhoodLink(event.neighborhood, locale);
-const venueDirectoryEntry = getAllVenueEntries().find((entry) => entry.events.some((item) => item.id === event.id));
+const venueDirectoryEntry = getIndexableVenueEntries().find((entry) => entry.events.some((item) => item.id === event.id));
 const hasPassed = isPastEvent(event);
 const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
 const displayTitle = getEventDisplayTitle(event, locale);

@@ -52,5 +52,7 @@ export { lugares } from './lugares.js';
 export {
   getAllVenueEntries,
   getDirectoryHref,
+  getIndexableVenueEntries,
   getVenueEntryBySlug,
+  isIndexableVenueEntry,
 } from './directories.js';
