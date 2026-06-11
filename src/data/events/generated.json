@@ -1,66 +1,5 @@
 [
   {
-    "id": "eb-1497161503359",
-    "slug": "gastrocata-luxury-granada",
-    "title": {
-      "es": "Gastrocata Luxury Granada",
-      "en": "Gastrocata Luxury Granada"
-    },
-    "description": {
-      "es": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail.",
-      "en": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail."
-    },
-    "category": "other",
-    "date": "2026-06-09",
-    "endDate": "2026-06-10",
-    "time": "20:30",
-    "venue": "Hotel Monasterio Granada Adults Only",
-    "neighborhood": "centro",
-    "price": 99,
-    "currency": "EUR",
-    "tags": [
-      "Food & Drink"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1497161503359",
-    "sourceUrl": "https://www.eventbrite.es/e/gastrocata-luxury-granada-tickets-1497161503359",
-    "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1497161503359",
-    "imageUrl": "9afc837a142dac16bd3e.webp",
-    "lastSyncedAt": "2026-06-09T17:48:02.996Z",
-    "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1074985763%2F2829674272701%2F1%2Foriginal.20250716-173744?auto=format%2Ccompress&q=75&sharp=10&s=6d1bebeb3f20600a792ee5be576257e3"
-  },
-  {
-    "id": "eb-1989096190250",
-    "slug": "kcn-desayuno-de-networking-granada-10-de-junio",
-    "title": {
-      "es": "KCN Desayuno de Networking Granada - 10 de junio",
-      "en": "KCN Desayuno de Networking Granada - 10 de junio"
-    },
-    "description": {
-      "es": "KCN Desayuno de Networking",
-      "en": "KCN Desayuno de Networking"
-    },
-    "category": "other",
-    "date": "2026-06-10",
-    "time": "09:30",
-    "venue": "Coworking Muon",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Business & Professional"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1989096190250",
-    "sourceUrl": "https://www.eventbrite.es/e/entradas-kcn-desayuno-de-networking-granada-10-de-junio-1989096190250",
-    "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1989096190250",
-    "imageUrl": "de3f809ce31000bcc145.webp",
-    "lastSyncedAt": "2026-05-26T09:59:25.247Z",
-    "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1184120676%2F2806210538291%2F1%2Foriginal.20260508-140142?auto=format%2Ccompress&q=75&sharp=10&s=ca784cb780ea0a9afd940065955c9914"
-  },
-  {
     "id": "eb-1497161513389",
     "slug": "gastrocata-luxury-granada-2",
     "title": {
@@ -92,94 +31,6 @@
     "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1074985763%2F2829674272701%2F1%2Foriginal.20250716-173744?auto=format%2Ccompress&q=75&sharp=10&s=6d1bebeb3f20600a792ee5be576257e3"
   },
   {
-    "id": "eb-1978344098454",
-    "slug": "escape-room-al-aire-libre-en-granada",
-    "title": {
-      "es": "Escape Room al Aire Libre en Granada",
-      "en": "Escape Room al Aire Libre en Granada"
-    },
-    "description": {
-      "es": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego.",
-      "en": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego."
-    },
-    "category": "other",
-    "date": "2026-06-10",
-    "time": "12:00",
-    "venue": "Pl. de Bib-Rambla, 6",
-    "neighborhood": "centro",
-    "price": 15,
-    "currency": "EUR",
-    "tags": [
-      "Travel & Outdoor"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1978344098454",
-    "sourceUrl": "https://www.eventbrite.com/e/escape-room-al-aire-libre-en-granada-tickets-1978344098454",
-    "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1978344098454",
-    "imageUrl": "22820a76fcd810c20ff0.webp",
-    "lastSyncedAt": "2026-06-10T05:47:11.168Z",
-    "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1173148462%2F2986668976361%2F1%2Foriginal.20251217-182050?auto=format%2Ccompress&q=75&sharp=10&s=3cff2122ed3e2ab0e1e08a047adc8e81"
-  },
-  {
-    "id": "cg-nhfb2v",
-    "slug": "milnoff-la-tana-con-la-guitarra-de-paquete",
-    "title": {
-      "es": "Milnoff. La Tana con la Guitarra de Paquete.",
-      "en": "Milnoff. La Tana con la Guitarra de Paquete."
-    },
-    "description": {
-      "es": "Precio: 25€.",
-      "en": "Precio: 25€."
-    },
-    "category": "concert",
-    "date": "2026-06-10",
-    "time": "21:30",
-    "venue": "Teatro La Chumbera",
-    "neighborhood": "centro",
-    "price": 25,
-    "currency": "EUR",
-    "tags": [
-      "Flamenco/Copla"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "nhfb2v",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/117330-la-tana-con-la-guitarra-de-paquete",
-    "imageUrl": "b71397d355c205608c3c.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
-    "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/latanaconl_20260610.jpg"
-  },
-  {
-    "id": "cg-x0g7pa",
-    "slug": "coro-gospel-oyk",
-    "title": {
-      "es": "Coro Góspel OYK.",
-      "en": "Coro Góspel OYK."
-    },
-    "description": {
-      "es": "Precio: 12€.",
-      "en": "Precio: 12€."
-    },
-    "category": "concert",
-    "date": "2026-06-10",
-    "time": "22:00",
-    "venue": "Ool Ya Koo",
-    "neighborhood": "centro",
-    "price": 12,
-    "currency": "EUR",
-    "tags": [
-      "Jazz/Swing"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "x0g7pa",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/119343-coro-gospel-oyk",
-    "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
-    "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
-  },
-  {
     "id": "tg-3fj9py",
     "slug": "concierto-los-ninos-en-un-viaje-por-el-tiempo",
     "title": {
@@ -207,6 +58,67 @@
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/corororor.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
+    "id": "eb-1497161523419",
+    "slug": "gastrocata-luxury-granada",
+    "title": {
+      "es": "Gastrocata Luxury Granada",
+      "en": "Gastrocata Luxury Granada"
+    },
+    "description": {
+      "es": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail.",
+      "en": "Exclusive wine/beer tasting in one of the most beautifull rooftops of Granada. You will have 4 dishes as well as  a dessert+ cocktail."
+    },
+    "category": "other",
+    "date": "2026-06-11",
+    "endDate": "2026-06-12",
+    "time": "20:30",
+    "venue": "Hotel Monasterio Granada Adults Only",
+    "neighborhood": "centro",
+    "price": 99,
+    "currency": "EUR",
+    "tags": [
+      "Food & Drink"
+    ],
+    "featured": false,
+    "source": "eventbrite",
+    "sourceId": "1497161523419",
+    "sourceUrl": "https://www.eventbrite.es/e/gastrocata-luxury-granada-tickets-1497161523419",
+    "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1497161523419",
+    "imageUrl": "9afc837a142dac16bd3e.webp",
+    "lastSyncedAt": "2026-06-11T07:52:46.067Z",
+    "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1074985763%2F2829674272701%2F1%2Foriginal.20250716-173744?auto=format%2Ccompress&q=75&sharp=10&s=6d1bebeb3f20600a792ee5be576257e3"
+  },
+  {
+    "id": "eb-1978344099457",
+    "slug": "escape-room-al-aire-libre-en-granada",
+    "title": {
+      "es": "Escape Room al Aire Libre en Granada",
+      "en": "Escape Room al Aire Libre en Granada"
+    },
+    "description": {
+      "es": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego.",
+      "en": "Resuelve enigmas, sigue pistas y supera el reto: un escape room urbano que convierte Granada en tu tablero de juego."
+    },
+    "category": "other",
+    "date": "2026-06-11",
+    "time": "12:00",
+    "venue": "Pl. de Bib-Rambla, 6",
+    "neighborhood": "centro",
+    "price": 15,
+    "currency": "EUR",
+    "tags": [
+      "Travel & Outdoor"
+    ],
+    "featured": false,
+    "source": "eventbrite",
+    "sourceId": "1978344099457",
+    "sourceUrl": "https://www.eventbrite.com/e/escape-room-al-aire-libre-en-granada-tickets-1978344099457",
+    "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1978344099457",
+    "imageUrl": "22820a76fcd810c20ff0.webp",
+    "lastSyncedAt": "2026-06-11T07:52:46.067Z",
+    "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1173148462%2F2986668976361%2F1%2Foriginal.20251217-182050?auto=format%2Ccompress&q=75&sharp=10&s=3cff2122ed3e2ab0e1e08a047adc8e81"
+  },
+  {
     "id": "cg-ajcke4",
     "slug": "tobogan-andaluz",
     "title": {
@@ -232,7 +144,7 @@
     "sourceId": "ajcke4",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119358-tobogan-andaluz",
     "imageUrl": "b578989f65394d013ca3.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/tobogan-andaluz-en-granada-202620260611.jpg"
   },
   {
@@ -261,7 +173,7 @@
     "sourceId": "j5d65r",
     "sourceUrl": "https://conciertosengranada.es/conciertos/113635-los-primos-chicos",
     "imageUrl": "6212b29eca7a76ffb042.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_Planta_Baja.jpg"
   },
   {
@@ -290,7 +202,7 @@
     "sourceId": "zbpyhe",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120256-el-nino-garbanzo",
     "imageUrl": "51d0cf59bf94d0d4bc4e.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2019/a_elninogarbanzo.jpg"
   },
   {
@@ -319,7 +231,7 @@
     "sourceId": "cou7v8",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117332-bailaores",
     "imageUrl": "e2fc86560c5cf14fe5f2.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/festivalfl_20260611.jpg"
   },
   {
@@ -348,7 +260,7 @@
     "sourceId": "pd9azv",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117061-toin-bull",
     "imageUrl": "8e9614adfa19b9d9d0fd.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_toinbull2606.jpg"
   },
   {
@@ -377,7 +289,7 @@
     "sourceId": "dxugu3",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119875-noche-boricua",
     "imageUrl": "3f74f5e1ca816c3c79f6.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_trova2606.jpg"
   },
   {
@@ -404,7 +316,7 @@
     "sourceId": "ouhl0e",
     "sourceUrl": "https://www.turgranada.es/es/eventos/xvii-ciclo-m%C3%BAsica-en-el-aljibe",
     "imageUrl": "4deb7db7fd793d8003b4.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/Agenda_Aljibe_del_Rey.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -431,7 +343,7 @@
     "sourceId": "q8o2t0",
     "sourceUrl": "https://www.turgranada.es/es/eventos/74-edici%C3%B3n-festival-internacional-de-m%C3%BAsica-y-danza",
     "imageUrl": "e03c99fcddb51a5d34d4.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/festival26.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -458,7 +370,7 @@
     "sourceId": "mjltsa",
     "sourceUrl": "https://www.turgranada.es/es/eventos/festival-sugar-fest",
     "imageUrl": "4792e8e48f131a3da879.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/sugar.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -485,7 +397,7 @@
     "sourceId": "bmzl06",
     "sourceUrl": "https://www.turgranada.es/es/eventos/concierto-alfredo-robles",
     "imageUrl": "1afa123b590e532f70df.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/alfredorobles.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -512,7 +424,7 @@
     "sourceId": "aoj01u",
     "sourceUrl": "https://www.turgranada.es/es/eventos/veladas-musicales-2026-en-ronda",
     "imageUrl": "8723638cdcdbe9edad17.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/vrladasmusicalesronda.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -539,8 +451,35 @@
     "sourceId": "x9bs56",
     "sourceUrl": "https://www.turgranada.es/es/eventos/noches-m%C3%A1gicas-en-el-castillo-de-la-calahorra",
     "imageUrl": "577590afff00133f6ffc.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/2HZ3kT3uOOnXvKpWlgR2rSJZiRkUx.2e16d0ba.fill-275x202-c100.jpg"
+  },
+  {
+    "id": "tg-mire5o",
+    "slug": "guadix-clasica-avecillas-musica-al-santisimo-sacramento",
+    "title": {
+      "es": "Guadix clásica. Avecillas. Música al Santísimo Sacramento",
+      "en": "Guadix clásica. Avecillas. Música al Santísimo Sacramento"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "other",
+    "date": "2026-06-12",
+    "time": "Por confirmar",
+    "venue": "Granada",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "turgranada",
+    "sourceId": "mire5o",
+    "sourceUrl": "https://www.turgranada.es/es/eventos/guadix-cl%C3%A1sica-avecillas-m%C3%BAsica-al-sant%C3%ADsimo-sacramento",
+    "imageUrl": "d5c1359bbc14a211e4d8.webp",
+    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/Cartel-GuadixClasica_2026_NHc.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
     "id": "cg-mxyq90",
@@ -568,7 +507,7 @@
     "sourceId": "mxyq90",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119415-joselu-manteca",
     "imageUrl": "55c12ea98efaafbd2157.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_JJ2.jpg"
   },
   {
@@ -597,7 +536,7 @@
     "sourceId": "r4zt83",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116466-red-soul-community-no-picky",
     "imageUrl": "ba0a3abf1126df09db10.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2025/a_redsoulcommunity.jpg"
   },
   {
@@ -626,7 +565,7 @@
     "sourceId": "wnxusq",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117329-pedro-el-granaino",
     "imageUrl": "fd5ffd1f438d85ec809c.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/pedroelgra_20260612.jpg"
   },
   {
@@ -655,7 +594,7 @@
     "sourceId": "71av1f",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119359-bloody-kalma",
     "imageUrl": "416b1eb0dcafe3c72705.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_bloodykalma.jpg"
   },
   {
@@ -684,8 +623,37 @@
     "sourceId": "inlwtr",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120245-david-margam-the-magnetics",
     "imageUrl": "3436494fa51e9fcce822.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_davidmargam2606.jpeg"
+  },
+  {
+    "id": "cg-mfzgn6",
+    "slug": "darren-anderson-the-fat-cats",
+    "title": {
+      "es": "Darren Anderson & The Fat Cats",
+      "en": "Darren Anderson & The Fat Cats"
+    },
+    "description": {
+      "es": "Precio: 5€.",
+      "en": "Precio: 5€."
+    },
+    "category": "concert",
+    "date": "2026-06-12",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 5,
+    "currency": "EUR",
+    "tags": [
+      "Americana/Folk Rock/Country"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "mfzgn6",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120254-darren-anderson-the-fat-cats",
+    "imageUrl": "3b19743c5e68cdccde23.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
+    "remoteImageUrl": "https://conciertos.club/doc/a/2025/a_darrenardensonfatcats.jpg"
   },
   {
     "id": "cg-r61nd9",
@@ -713,7 +681,7 @@
     "sourceId": "r61nd9",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119762-blues-shoots",
     "imageUrl": "79b353b44bc02d7075f5.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_liberia2606.jpg"
   },
   {
@@ -742,7 +710,7 @@
     "sourceId": "yljyin",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119874-numero-primo-bread-crumbs",
     "imageUrl": "3fa27d0194c0af9f7803.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_numeroprimo2606.jpg"
   },
   {
@@ -771,7 +739,7 @@
     "sourceId": "w2c29f",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120128-fauno-loop",
     "imageUrl": "07244dc8f27682119922.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2022/a_faunoloop.jpg"
   },
   {
@@ -800,8 +768,35 @@
     "sourceId": "4wo43o",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116717-elegante-y-embustero",
     "imageUrl": "1387210bb0a075f41bd8.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_eleganteyembustero.jpg"
+  },
+  {
+    "id": "tg-haiutu",
+    "slug": "x-gran-mercado-zoco-medieval-de-ogijares",
+    "title": {
+      "es": "X Gran mercado Zoco Medieval de Ogíjares",
+      "en": "X Gran mercado Zoco Medieval de Ogíjares"
+    },
+    "description": {
+      "es": "",
+      "en": ""
+    },
+    "category": "market",
+    "date": "2026-06-12",
+    "time": "Por confirmar",
+    "venue": "Granada",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "turgranada",
+    "sourceId": "haiutu",
+    "sourceUrl": "https://www.turgranada.es/es/eventos/x-gran-mercado-zoco-medieval-de-og%C3%ADjares",
+    "imageUrl": "34463602c8e28610a8d5.webp",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
+    "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/image.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
     "id": "tg-mk31m2",
@@ -827,35 +822,8 @@
     "sourceId": "mk31m2",
     "sourceUrl": "https://www.turgranada.es/es/eventos/fiestas-de-san-antonio-2026",
     "imageUrl": "b4ad3ee4244fff6bc39d.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
+    "lastSyncedAt": "2026-06-11T07:52:16.535Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/fiestasdesanantionio.2e16d0ba.fill-275x202-c100.jpg"
-  },
-  {
-    "id": "tg-mire5o",
-    "slug": "guadix-clasica-avecillas-musica-al-santisimo-sacramento",
-    "title": {
-      "es": "Guadix clásica. Avecillas. Música al Santísimo Sacramento",
-      "en": "Guadix clásica. Avecillas. Música al Santísimo Sacramento"
-    },
-    "description": {
-      "es": "",
-      "en": ""
-    },
-    "category": "other",
-    "date": "2026-06-12",
-    "time": "Por confirmar",
-    "venue": "Granada",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "turgranada",
-    "sourceId": "mire5o",
-    "sourceUrl": "https://www.turgranada.es/es/eventos/guadix-cl%C3%A1sica-avecillas-m%C3%BAsica-al-sant%C3%ADsimo-sacramento",
-    "imageUrl": "d5c1359bbc14a211e4d8.webp",
-    "lastSyncedAt": "2026-06-10T05:46:41.284Z",
-    "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/Cartel-GuadixClasica_2026_NHc.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
     "id": "tg-fmc66v",
@@ -908,7 +876,7 @@
     "sourceId": "c58eet",
     "sourceUrl": "https://conciertosengranada.es/conciertos/111839-miguel-poveda",
     "imageUrl": "3e6afd877bb8d4053974.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/M/ban_miguelpoveda.jpg"
   },
   {
@@ -937,7 +905,7 @@
     "sourceId": "azrs3u",
     "sourceUrl": "https://conciertosengranada.es/conciertos/88641-xoel-lopez-sanguijuelas-del-guadiana-los-punsetes-90roll",
     "imageUrl": "47a027f8544d80b9985b.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2025/c_deefest2026.jpg"
   },
   {
@@ -966,7 +934,7 @@
     "sourceId": "vtnsph",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119344-escuela-de-jazz",
     "imageUrl": "0fad825dcf462f552d14.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk-escuelajazz2606.jpg"
   },
   {
@@ -995,7 +963,7 @@
     "sourceId": "d8kn1l",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119360-maniacs",
     "imageUrl": "ae990e8dd7e69c8e0f38.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_maniacs.jpg"
   },
   {
@@ -1024,7 +992,7 @@
     "sourceId": "a0rgmy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115747-puroindie-tributo-al-indie-espanol",
     "imageUrl": "c211508871439908d012.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_puroindie.jpg"
   },
   {
@@ -1053,7 +1021,7 @@
     "sourceId": "s6doq1",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119411-albertucho",
     "imageUrl": "7e4cb8a782e8ba38eca6.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/albertucho_20260613.jpg"
   },
   {
@@ -1082,7 +1050,7 @@
     "sourceId": "e0isu5",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119669-orquesta-ciudad-de-granada",
     "imageUrl": "d00223b3aa1237f983b6.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_ocg.jpg"
   },
   {
@@ -1111,8 +1079,37 @@
     "sourceId": "hiquuy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117328-rafael-riqueni",
     "imageUrl": "432effc683eddcd0ffdc.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/rafaelriqu_20260613.jpg"
+  },
+  {
+    "id": "cg-jcotp9",
+    "slug": "jam-session",
+    "title": {
+      "es": "Jam session",
+      "en": "Jam session"
+    },
+    "description": {
+      "es": "Precio: Entrada libre.",
+      "en": "Precio: Entrada libre."
+    },
+    "category": "concert",
+    "date": "2026-06-13",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Varios"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "jcotp9",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120255-jam-session",
+    "imageUrl": "4c6b22c4ad9901b460d7.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
+    "remoteImageUrl": "https://conciertos.club/doc/l/l_LaLolaina_Gra.jpg"
   },
   {
     "id": "cg-7ntb3w",
@@ -1140,7 +1137,7 @@
     "sourceId": "7ntb3w",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119345-stocker-collective",
     "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
   },
   {
@@ -1169,7 +1166,7 @@
     "sourceId": "hzob50",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119873-velx-colegas-y-tal",
     "imageUrl": "a569201ccb7fd79e6d1a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_velx2606.jpeg"
   },
   {
@@ -1198,7 +1195,7 @@
     "sourceId": "2m4xoo",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119955-fernandevich-friends",
     "imageUrl": "af1ee6155c51188eb957.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_CarlotaBraunMusica_Gra.jpg"
   },
   {
@@ -1227,7 +1224,7 @@
     "sourceId": "kgn6nh",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119361-state-line-road",
     "imageUrl": "5ec85144d04eba8114ac.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2025/a_statelineroad.jpg"
   },
   {
@@ -1256,7 +1253,7 @@
     "sourceId": "8lmoyc",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115447-candlelight",
     "imageUrl": "2a70f3c156f14e6c4910.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg"
   },
   {
@@ -1285,7 +1282,7 @@
     "sourceId": "fr3f6x",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117327-el-ultimo-suspiro-de-granada",
     "imageUrl": "1a89ae580429842cdf34.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/elultimosu_20260614.jpg"
   },
   {
@@ -1314,8 +1311,37 @@
     "sourceId": "m449dp",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119347-liane-carroll",
     "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
+  },
+  {
+    "id": "cg-zg1wyo",
+    "slug": "casa-flores",
+    "title": {
+      "es": "Casa Flores",
+      "en": "Casa Flores"
+    },
+    "description": {
+      "es": "Precio: 5€.",
+      "en": "Precio: 5€."
+    },
+    "category": "concert",
+    "date": "2026-06-14",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 5,
+    "currency": "EUR",
+    "tags": [
+      "Versiones/Tributos"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "zg1wyo",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120259-casa-flores",
+    "imageUrl": "4c6b22c4ad9901b460d7.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
+    "remoteImageUrl": "https://conciertos.club/doc/l/l_LaLolaina_Gra.jpg"
   },
   {
     "id": "cg-5ekxn5",
@@ -1343,7 +1369,7 @@
     "sourceId": "5ekxn5",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117405-el-vez-con-lord-rochester",
     "imageUrl": "1a51002692e8689aae9a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/serpiente-negra-presenta-el-vez-con-lord-rochester20260616.jpg"
   },
   {
@@ -1372,7 +1398,7 @@
     "sourceId": "wb1kwc",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119362-guillermo-crovetto",
     "imageUrl": "8273a657f68e3411f75c.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2023/a_guillermocrovetto.jpg"
   },
   {
@@ -1401,7 +1427,7 @@
     "sourceId": "rt9n8e",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119193-kirsti-blow",
     "imageUrl": "8e9614adfa19b9d9d0fd.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_toinbull2606.jpg"
   },
   {
@@ -1430,7 +1456,7 @@
     "sourceId": "e5n4n5",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119363-popi-gonzalez",
     "imageUrl": "ec5548a17f9852b6a69a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_popi.jpg"
   },
   {
@@ -1459,7 +1485,7 @@
     "sourceId": "3doo83",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119364-artesonado",
     "imageUrl": "1cd2b8b1129be49008f3.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_LemonRock_Gra.jpg"
   },
   {
@@ -1488,7 +1514,7 @@
     "sourceId": "sitppv",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120257-caraperro",
     "imageUrl": "bc367d39495c77f4434a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_caraperro.jpg"
   },
   {
@@ -1517,7 +1543,7 @@
     "sourceId": "mss5vj",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119191-le-gatto-swing",
     "imageUrl": "d6370cd51c0134cd2cb5.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2023/a_legattoswing2.jpg"
   },
   {
@@ -1546,7 +1572,7 @@
     "sourceId": "jzp5ih",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119892-los-bomberos",
     "imageUrl": "e24cb70a4798f673f93e.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_losbomberos.jpg"
   },
   {
@@ -1575,7 +1601,7 @@
     "sourceId": "44s6ui",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119194-pike-delta",
     "imageUrl": "3abd0e1b4510365a827a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_pikedelta2606.jpg"
   },
   {
@@ -1604,7 +1630,7 @@
     "sourceId": "356nfl",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119763-soulayr-band",
     "imageUrl": "79b353b44bc02d7075f5.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_liberia2606.jpg"
   },
   {
@@ -1633,7 +1659,7 @@
     "sourceId": "qubtiy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119872-d-rockados",
     "imageUrl": "5af8f667cb8e195a45df.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_derockados2606.jpg"
   },
   {
@@ -1662,7 +1688,7 @@
     "sourceId": "w3hybj",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120129-lady-oro",
     "imageUrl": "af1ee6155c51188eb957.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_CarlotaBraunMusica_Gra.jpg"
   },
   {
@@ -1691,7 +1717,7 @@
     "sourceId": "b1fxmr",
     "sourceUrl": "https://conciertosengranada.es/conciertos/110243-granada-latina-festival",
     "imageUrl": "c62ebf8aa37568a910b0.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2025/c_granadalatina2026.jpg"
   },
   {
@@ -1720,8 +1746,37 @@
     "sourceId": "yr7ybd",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116753-the-fixed-trio",
     "imageUrl": "9c2303eca631607e32ac.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2018/a_thefixed.jpg"
+  },
+  {
+    "id": "cg-i7xztx",
+    "slug": "italianini",
+    "title": {
+      "es": "Italianini",
+      "en": "Italianini"
+    },
+    "description": {
+      "es": "Precio: 6€.",
+      "en": "Precio: 6€."
+    },
+    "category": "concert",
+    "date": "2026-06-20",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 6,
+    "currency": "EUR",
+    "tags": [
+      "World Music/Música Étnica"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "i7xztx",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120261-italianini",
+    "imageUrl": "1198710776146c003c67.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
+    "remoteImageUrl": "https://conciertos.club/doc/a/2025/a_italianini.jpg"
   },
   {
     "id": "cg-3aktmd",
@@ -1749,7 +1804,7 @@
     "sourceId": "3aktmd",
     "sourceUrl": "https://conciertosengranada.es/conciertos/109808-dani-fernandez",
     "imageUrl": "4ec4abe1718c674dc893.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2025/c_danifernandez2026.jpg"
   },
   {
@@ -1778,7 +1833,7 @@
     "sourceId": "pku2db",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117326-orquesta-panorama",
     "imageUrl": "11eaf09fabf1d7019d01.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/panoramati_20260620.jpg"
   },
   {
@@ -1807,7 +1862,7 @@
     "sourceId": "bmuh0o",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119348-baile-swing-con-carlos-ligero-cuarteto",
     "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
   },
   {
@@ -1836,7 +1891,7 @@
     "sourceId": "2h6zyw",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119870-sonido-banga-falsas-nubes",
     "imageUrl": "8b61234d3e2e8d522c28.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_sonidobanga.jpg"
   },
   {
@@ -1865,7 +1920,7 @@
     "sourceId": "9ynmek",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120130-pablo-g-y-jesus-coca",
     "imageUrl": "9746f7f258c3a7357a41.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2024/a_pablogyjesuscoca.jpg"
   },
   {
@@ -1884,7 +1939,7 @@
     "time": "15:00",
     "venue": "La Lolaina",
     "neighborhood": "centro",
-    "price": null,
+    "price": 5,
     "currency": "EUR",
     "tags": [
       "Blues/RNB"
@@ -1894,7 +1949,7 @@
     "sourceId": "ypkhzr",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119954-fernandevich-friends",
     "imageUrl": "4c6b22c4ad9901b460d7.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_LaLolaina_Gra.jpg"
   },
   {
@@ -1923,7 +1978,7 @@
     "sourceId": "ibampy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119349-cine-performance-el-palacio-del-fondo-del-mar",
     "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
   },
   {
@@ -1952,8 +2007,37 @@
     "sourceId": "9nan3k",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115755-tchotchke-blanca-adelfa",
     "imageUrl": "ff02907d39f3456cc694.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_tcho2606.jpg"
+  },
+  {
+    "id": "cg-ph49i1",
+    "slug": "shannon-og",
+    "title": {
+      "es": "Shannon OG",
+      "en": "Shannon OG"
+    },
+    "description": {
+      "es": "Precio: 6€.",
+      "en": "Precio: 6€."
+    },
+    "category": "concert",
+    "date": "2026-06-24",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 6,
+    "currency": "EUR",
+    "tags": [
+      "Folk"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "ph49i1",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120263-shannon-og",
+    "imageUrl": "f085d0f22bc635c08a84.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
+    "remoteImageUrl": "https://conciertos.club/doc/a/2018/a_shannonog.jpg"
   },
   {
     "id": "cg-5osuk1",
@@ -1981,8 +2065,37 @@
     "sourceId": "5osuk1",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120258-bad-monday",
     "imageUrl": "18f078ecb0bc7c80ab8a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_ColegioAbogadosGranada_Gra.jpg"
+  },
+  {
+    "id": "cg-89axcq",
+    "slug": "el-flamenco-del-valle",
+    "title": {
+      "es": "El Flamenco del Valle",
+      "en": "El Flamenco del Valle"
+    },
+    "description": {
+      "es": "Ver mapa, ficha y próximos conciertos en La Lolaina",
+      "en": "Ver mapa, ficha y próximos conciertos en La Lolaina"
+    },
+    "category": "concert",
+    "date": "2026-06-25",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": null,
+    "currency": "EUR",
+    "tags": [
+      "Flamenco/Copla"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "89axcq",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120264-el-flamenco-del-valle",
+    "imageUrl": "4c6b22c4ad9901b460d7.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
+    "remoteImageUrl": "https://conciertos.club/doc/l/l_LaLolaina_Gra.jpg"
   },
   {
     "id": "cg-agxccv",
@@ -2010,7 +2123,7 @@
     "sourceId": "agxccv",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119764-recital-flamenco",
     "imageUrl": "79b353b44bc02d7075f5.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_liberia2606.jpg"
   },
   {
@@ -2037,7 +2150,7 @@
     "sourceId": "o61pkn",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=456",
     "imageUrl": "c56e6abba97e362a63cd.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/456.png"
   },
   {
@@ -2064,7 +2177,7 @@
     "sourceId": "Z698xZ2qZ16v0JqSOZ",
     "sourceUrl": "https://www.ticketmaster.es/event/pablo-alboran-tickets/1926773800?language=en-us",
     "imageUrl": "93f61dca73c8d7c69c19.webp",
-    "lastSyncedAt": "2026-06-10T05:46:39.294Z",
+    "lastSyncedAt": "2026-06-11T07:52:14.482Z",
     "remoteImageUrl": "https://s1.ticketm.net/dam/a/097/4c04e381-32d7-4c29-b8d5-9426dfdc5097_SOURCE"
   },
   {
@@ -2093,7 +2206,7 @@
     "sourceId": "pefa3u",
     "sourceUrl": "https://conciertosengranada.es/conciertos/113955-molan-los-2000",
     "imageUrl": "ac3131387ebd9e81613b.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_molan2000granada2606.jpg"
   },
   {
@@ -2122,8 +2235,37 @@
     "sourceId": "4k2q86",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116276-the-filthy-six-lluis-coloma-radio-crooner",
     "imageUrl": "f6cd33f8fac4581bad53.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_jazztedigo2026.jpg"
+  },
+  {
+    "id": "cg-gc1ht7",
+    "slug": "rodriguez-celtic-band",
+    "title": {
+      "es": "Rodríguez Celtic Band",
+      "en": "Rodríguez Celtic Band"
+    },
+    "description": {
+      "es": "Precio: 6€.",
+      "en": "Precio: 6€."
+    },
+    "category": "concert",
+    "date": "2026-06-26",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 6,
+    "currency": "EUR",
+    "tags": [
+      "Folk"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "gc1ht7",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120265-rodriguez-celtic-band",
+    "imageUrl": "86ce8f36409695009891.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
+    "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_rcb.jpg"
   },
   {
     "id": "cg-x2373n",
@@ -2151,7 +2293,7 @@
     "sourceId": "x2373n",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117600-yanub",
     "imageUrl": "18f078ecb0bc7c80ab8a.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/l/l_ColegioAbogadosGranada_Gra.jpg"
   },
   {
@@ -2180,7 +2322,7 @@
     "sourceId": "2lwmya",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119871-the-new-raemon-pigmy",
     "imageUrl": "bb987ee1af501ecfbe5f.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_thenewraemon2606.jpg"
   },
   {
@@ -2209,7 +2351,7 @@
     "sourceId": "x0bo3g",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119260-pedro-navarro",
     "imageUrl": "cb1f61e70af65e605fef.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_pedronavarro2606.jpg"
   },
   {
@@ -2238,7 +2380,7 @@
     "sourceId": "gqr4gs",
     "sourceUrl": "https://conciertosengranada.es/conciertos/113954-molan-los-90",
     "imageUrl": "0ecbcee6cdfd27327e10.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_molanlos90granada2606.jpg"
   },
   {
@@ -2267,7 +2409,7 @@
     "sourceId": "88dmxd",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116277-al-dual-mississippi-queen-the-wet-dogs",
     "imageUrl": "f6cd33f8fac4581bad53.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_jazztedigo2026.jpg"
   },
   {
@@ -2296,8 +2438,37 @@
     "sourceId": "fp37er",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119257-silly-sally-my-left-foot",
     "imageUrl": "aee9d23f4e91e488f1c3.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/silly-sally-my-left-foot-punk-rock-party20260627.jpg"
+  },
+  {
+    "id": "cg-5mvc03",
+    "slug": "ernesto-baquero-y-mar",
+    "title": {
+      "es": "Ernesto Baquero y Mar.",
+      "en": "Ernesto Baquero y Mar."
+    },
+    "description": {
+      "es": "Precio: 3€.",
+      "en": "Precio: 3€."
+    },
+    "category": "concert",
+    "date": "2026-06-27",
+    "time": "21:30",
+    "venue": "La Lolaina",
+    "neighborhood": "centro",
+    "price": 3,
+    "currency": "EUR",
+    "tags": [
+      "Versiones/Tributos"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "5mvc03",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120266-ernesto-baquero-y-mar",
+    "imageUrl": "4c6b22c4ad9901b460d7.webp",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
+    "remoteImageUrl": "https://conciertos.club/doc/l/l_LaLolaina_Gra.jpg"
   },
   {
     "id": "cg-3yzkte",
@@ -2325,7 +2496,7 @@
     "sourceId": "3yzkte",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119350-tony-molina-trio",
     "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
   },
   {
@@ -2355,7 +2526,7 @@
     "sourceId": "o1u2jx",
     "sourceUrl": "https://conciertosengranada.es/conciertos/110306-candlelight",
     "imageUrl": "2a70f3c156f14e6c4910.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2025/a_candlelight.jpg"
   },
   {
@@ -2384,7 +2555,7 @@
     "sourceId": "46bbsz",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119351-alex-oliveira",
     "imageUrl": "22997e58ffe049dc5fd1.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_oyk2606.jpg"
   },
   {
@@ -2413,7 +2584,7 @@
     "sourceId": "6cew7s",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117414-the-pains-of-being-pure-at-heart",
     "imageUrl": "ac999452956d81cdca1d.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.626Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_thepainsofbeingpureatheart.jpg"
   },
   {
@@ -2467,7 +2638,7 @@
     "sourceId": "kpwwj6",
     "sourceUrl": "https://conciertosengranada.es/conciertos/117128-danny-ocean",
     "imageUrl": "a4969e333ed6d222e8f8.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/D/ban_dannyocean.jpg"
   },
   {
@@ -2494,7 +2665,7 @@
     "sourceId": "o2tp0",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119617-raimundo-amador",
     "imageUrl": "d64fd692894e600f73e6.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/R/ban_raimundoamador.jpg"
   },
   {
@@ -2521,7 +2692,7 @@
     "sourceId": "tfy2i4",
     "sourceUrl": "https://conciertosengranada.es/conciertos/108292-sting",
     "imageUrl": "956e4408d99b579c30a0.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/S/ban_sting.jpg"
   },
   {
@@ -2548,7 +2719,7 @@
     "sourceId": "ck3sas",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=490",
     "imageUrl": "7a4454a47ef32167dbba.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/490.png"
   },
   {
@@ -2575,7 +2746,7 @@
     "sourceId": "Z698xZ2qZ1ka9q-Py",
     "sourceUrl": "https://www.ticketmaster.es/event/1001-musicas-caixabank-%7C-sting-tickets/257761979?language=en-us",
     "imageUrl": "34e8f740f539fc56c7ca.webp",
-    "lastSyncedAt": "2026-06-10T05:46:39.294Z",
+    "lastSyncedAt": "2026-06-11T07:52:14.482Z",
     "remoteImageUrl": "https://s1.ticketm.net/dam/e/a87/b621e4c5-cd89-4492-b8a3-b9feca871a87_TABLET_LANDSCAPE_LARGE_16_9.jpg"
   },
   {
@@ -2602,7 +2773,7 @@
     "sourceId": "5qylk9",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115270-zenet",
     "imageUrl": "569a25c0d00b2870424c.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/Z/ban_zenet.jpg"
   },
   {
@@ -2629,7 +2800,7 @@
     "sourceId": "69u06t",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115271-revolver",
     "imageUrl": "87d04772156158058482.webp",
-    "lastSyncedAt": "2026-06-10T05:46:48.352Z",
+    "lastSyncedAt": "2026-06-11T07:52:23.625Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/R/ban_revolver.jpg"
   },
   {
@@ -2710,7 +2881,7 @@
     "sourceId": "hda02m",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=488",
     "imageUrl": "a22d09be5e450b38e10e.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/488.png"
   },
   {
@@ -2737,7 +2908,7 @@
     "sourceId": "fg2sca",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=483",
     "imageUrl": "23920927fa679a9c5214.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/483.png"
   },
   {
@@ -2765,7 +2936,7 @@
     "sourceUrl": "https://www.eventbrite.nl/e/urban-sketching-retreat-in-granada-5-days-of-art-culture-tickets-1983361150592",
     "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1983361150592",
     "imageUrl": "79f89f8607185e4b56e3.webp",
-    "lastSyncedAt": "2026-06-10T05:47:11.169Z",
+    "lastSyncedAt": "2026-06-11T07:52:46.067Z",
     "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1185422416%2F109914328939%2F1%2Foriginal.20260526-105621?auto=format%2Ccompress&q=75&sharp=10&s=10a21ba9dfa4935b9be5bc9ab970114f"
   },
   {
@@ -2818,7 +2989,7 @@
     "sourceId": "dh7vd",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=489",
     "imageUrl": "2e2eb185a8b92b978fec.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/489.png"
   },
   {
@@ -2845,7 +3016,7 @@
     "sourceId": "7aahll",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=504",
     "imageUrl": "125e362a2094984af17b.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/504.png"
   },
   {
@@ -2872,7 +3043,7 @@
     "sourceId": "8xfj7h",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=497",
     "imageUrl": "ec59eef0e63e6e40859e.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/497.png"
   },
   {
@@ -2953,7 +3124,7 @@
     "sourceId": "8esraw",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=507",
     "imageUrl": "7f949610dd755e15906a.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/507.png"
   },
   {
@@ -2980,7 +3151,7 @@
     "sourceId": "zrfki",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=500",
     "imageUrl": "13cc6b361e6988f1e866.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/500.png"
   },
   {
@@ -3007,7 +3178,7 @@
     "sourceId": "leugvp",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=512",
     "imageUrl": "5c590bafd94a2086c458.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/512.png"
   },
   {
@@ -3034,7 +3205,7 @@
     "sourceId": "wcacp0",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=448",
     "imageUrl": "c8f68cd4a52a916d1ef5.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/448.png"
   },
   {
@@ -3087,7 +3258,7 @@
     "sourceId": "c54hmk",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=510",
     "imageUrl": "9f2881c5acaf8c98c38c.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/510.png"
   },
   {
@@ -3114,7 +3285,7 @@
     "sourceId": "adtqcp",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=496",
     "imageUrl": "961f159735db963a11f8.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/496.png"
   },
   {
@@ -3141,7 +3312,7 @@
     "sourceId": "4f1e3r",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=491",
     "imageUrl": "025d556e39c5cc041e46.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/491.png"
   },
   {
@@ -3168,7 +3339,7 @@
     "sourceId": "dcb4q6",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=502",
     "imageUrl": "8a100b28615d32c6d530.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/502.png"
   },
   {
@@ -3195,7 +3366,7 @@
     "sourceId": "h8dlts",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=485",
     "imageUrl": "561f073f314cb478180f.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/485.png"
   },
   {
@@ -3222,7 +3393,7 @@
     "sourceId": "6k5y0s",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=505",
     "imageUrl": "771bd4a918ee8137ecde.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/505.png"
   },
   {
@@ -3249,7 +3420,7 @@
     "sourceId": "vt0ytk",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=508",
     "imageUrl": "cab2641d9312a83c99c3.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/508.png"
   },
   {
@@ -3276,7 +3447,7 @@
     "sourceId": "7plp9q",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=509",
     "imageUrl": "4d0b8264184dd3673a49.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/509.png"
   },
   {
@@ -3303,7 +3474,7 @@
     "sourceId": "rkdyfi",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=506",
     "imageUrl": "3a9cbeb19d3c6e89ad7a.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/506.png"
   },
   {
@@ -3330,7 +3501,7 @@
     "sourceId": "2oz3lu",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=511",
     "imageUrl": "6a28472b8698acd30474.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/511.png"
   },
   {
@@ -3357,7 +3528,7 @@
     "sourceId": "kt5102",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=494",
     "imageUrl": "7ce3250a485fb64e2dc2.webp",
-    "lastSyncedAt": "2026-06-10T05:47:20.676Z",
+    "lastSyncedAt": "2026-06-11T07:52:54.534Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/494.png"
   },
   {
@@ -3387,7 +3558,7 @@
     "sourceUrl": "https://www.eventbrite.com/e/entradas-fedh-en-granada-1988263510683",
     "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1988263510683",
     "imageUrl": "506c3279fa32c5b7d4d8.webp",
-    "lastSyncedAt": "2026-06-10T05:47:11.169Z",
+    "lastSyncedAt": "2026-06-11T07:52:46.067Z",
     "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1183056277%2F2999845154463%2F1%2Foriginal.20260426-091926?auto=format%2Ccompress&q=75&sharp=10&s=f516bcdfacb4646d01e0466c7409692c"
   }
 ]
