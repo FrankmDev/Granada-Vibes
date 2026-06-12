@@ -4,7 +4,6 @@ import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import { useTranslations } from '@i18n/utils';
-import { getRoute } from '@utils/routes';
 import type { Locale } from '@types';
 
 const locale: Locale = 'en';
@@ -70,7 +69,7 @@ const mailto = `mailto:${t('collaborate.ctaEmail')}?subject=${encodeURIComponent
             <h3 class="colab-card__title">{card.title}</h3>
             <p class="colab-card__desc">{card.description}</p>
             <div class="colab-card__footer">
-              <a href={mailto} class="colab-card__cta">
+              <a href={mailto} class="colab-card__cta" data-track="generate_lead">
                 <span>{card.cta}</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </a>
@@ -86,7 +85,7 @@ const mailto = `mailto:${t('collaborate.ctaEmail')}?subject=${encodeURIComponent
           <span class="cta-orn-line"></span>
         </div>
         <p class="colab-cta-text">{t('collaborate.ctaText')}</p>
-        <a href={mailto} class="colab-cta-btn">
+        <a href={mailto} class="colab-cta-btn" data-track="generate_lead">
           <span class="cta-btn-glow" aria-hidden="true"></span>
           <span class="cta-btn-label">{t('collaborate.ctaEmail')}</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>

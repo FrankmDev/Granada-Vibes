@@ -2,7 +2,8 @@
 import { SITE_CONFIG } from '@config/site';
 import { resolveOgImageUrl } from '@utils/seo';
 import { getPriceStatus } from '@utils/prices';
-import type { Event, Route, BlogPost } from '@types';
+import type { Event, Route, BlogPost, MixedRoute } from '@types';
+import type { VenueDirectoryEntry } from '@data/directories';
 
 interface BreadcrumbItem {
   name: string;
@@ -15,8 +16,8 @@ interface FaqItem {
 }
 
 interface Props {
-  type: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article';
-  data?: Event | Route | BlogPost;
+  type: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article' | 'venue';
+  data?: Event | Route | BlogPost | MixedRoute | VenueDirectoryEntry;
   locale: 'es' | 'en';
   path?: string;
   breadcrumb?: BreadcrumbItem[];
@@ -362,9 +363,9 @@ switch (type) {
       const planData = data as import('@types').MixedRoute;
       const planImages = [resolveImageUrl(planData.image)].filter(Boolean);
       const itemListElements: unknown[] = [];
-      planData.days.forEach((day, dayIdx) => {
+      planData.days.forEach((day) => {
         day.blocks.forEach((block) => {
-          block.stops.forEach((stop, stopIdx) => {
+          block.stops.forEach((stop) => {
             itemListElements.push({
               '@type': 'ListItem',
               position: itemListElements.length + 1,
@@ -467,6 +468,44 @@ switch (type) {
           logo: `${siteUrl}/favicon.svg`,
         },
         inLanguage: locale,
+      };
+    }
+    break;
+
+  case 'venue':
+    if (data && 'upcomingEvents' in data && 'name' in data) {
+      const venueData = data as VenueDirectoryEntry;
+      primarySchema = {
+        '@context': 'https://schema.org',
+        '@type': 'Place',
+        '@id': `${siteUrl}${path}#place`,
+        name: venueData.name,
+        description: venueData.description[locale],
+        url: `${siteUrl}${path}`,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Granada',
+          addressRegion: 'Andalucía',
+          addressCountry: 'ES',
+        },
+        containedInPlace: {
+          '@type': 'City',
+          name: 'Granada',
+        },
+        subjectOf: {
+          '@type': 'ItemList',
+          name: locale === 'en' ? `Upcoming events at ${venueData.name}` : `Próximos eventos en ${venueData.name}`,
+          itemListElement: venueData.upcomingEvents.slice(0, 8).map((event, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            item: {
+              '@type': 'Event',
+              name: event.title[locale],
+              startDate: event.date,
+              url: `${siteUrl}${locale === 'en' ? '/en/events/' : '/eventos/'}${event.slug}/`,
+            },
+          })),
+        },
       };
     }
     break;

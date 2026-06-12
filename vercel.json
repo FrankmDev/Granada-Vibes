@@ -30,16 +30,16 @@
     },
     {
       "src": "/artistas(?:/(.*))?",
-      "status": 308,
+      "status": 410,
       "headers": {
-        "Location": "/salas/"
+        "X-Robots-Tag": "noindex, follow"
       }
     },
     {
       "src": "/en/artists(?:/(.*))?",
-      "status": 308,
+      "status": 410,
       "headers": {
-        "Location": "/en/venues/"
+        "X-Robots-Tag": "noindex, follow"
       }
     },
     {

@@ -1,7 +1,7 @@
 ---
 import { SITE_CONFIG, DEFAULT_OG_IMAGE } from '@config/site';
 import { buildSeoTitle, clampMetaDescription } from '@utils/seo-text';
-import { absoluteSiteUrl, getAlternateUrls, resolveOgImageUrl } from '@utils/seo';
+import { absoluteSiteUrl, getAlternateUrls, resolveOgImageUrl, shouldRenderAlternateUrls } from '@utils/seo';
 import type { Locale } from '@types';
 
 interface Props {
@@ -40,7 +40,6 @@ const {
   articleTags,
 } = Astro.props;
 
-const siteUrl = SITE_CONFIG.url;
 const currentPath = path || Astro.url.pathname;
 
 const fullTitle = title
@@ -51,6 +50,7 @@ const fullDescription = clampMetaDescription(description ?? SITE_CONFIG.descript
 const fullCanonical = canonical ? absoluteSiteUrl(canonical) : absoluteSiteUrl(currentPath);
 const fullOgImage = resolveOgImageUrl(ogImage);
 const alternateUrls = getAlternateUrls(currentPath);
+const renderAlternateUrls = !noindex && shouldRenderAlternateUrls(currentPath);
 ---
 
 <!-- Primary Meta Tags -->
@@ -65,9 +65,13 @@ const alternateUrls = getAlternateUrls(currentPath);
 )}
 
 <!-- Hreflang -->
-<link rel="alternate" hreflang="es" href={alternateUrls.es} />
-<link rel="alternate" hreflang="en" href={alternateUrls.en} />
-<link rel="alternate" hreflang="x-default" href={alternateUrls.es} />
+{renderAlternateUrls && (
+  <>
+    <link rel="alternate" hreflang="es" href={alternateUrls.es} />
+    <link rel="alternate" hreflang="en" href={alternateUrls.en} />
+    <link rel="alternate" hreflang="x-default" href={alternateUrls.es} />
+  </>
+)}
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />

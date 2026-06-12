@@ -1,8 +1,15 @@
+/* global URL */
 import { readFileSync } from 'fs';
 import path from 'path';
 
 const ROUTES_EXCLUDED_FROM_SITEMAP = [
   '/404/',
+];
+
+const ROUTE_PREFIXES_EXCLUDED_FROM_SITEMAP = [
+  '/ai/',
+  '/artistas/',
+  '/en/artists/',
 ];
 
 const ES_TO_EN_SEGMENTS = {
@@ -341,6 +348,9 @@ function getSitemapMeta(url, pastEventSlugs, directorySignals) {
 function shouldIndexPage(page, pastEventSlugs, directorySignals, eventIndexability) {
   const pathname = normalizePathname(new URL(page).pathname);
   if (ROUTES_EXCLUDED_FROM_SITEMAP.includes(pathname)) return false;
+  if (ROUTE_PREFIXES_EXCLUDED_FROM_SITEMAP.some((prefix) => pathname.startsWith(prefix))) {
+    return false;
+  }
 
   const eventMatch = pathname.match(/^\/(?:en\/events|eventos)\/([^/]+)\/$/);
   if (eventMatch) {

@@ -5,7 +5,6 @@ import Footer from '@components/layout/Footer.astro';
 import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
 import EventImage from '@components/ui/EventImage.astro';
-import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
@@ -417,7 +416,7 @@ faq.push({
             )}
 
             <div class="upg-intent-grid" aria-label={copy.status.intentLabel}>
-              <a href={(event.ticketsUrl || event.sourceUrl) ?? getRoute('events', locale)} target={(event.ticketsUrl || event.sourceUrl) ? '_blank' : undefined} rel={(event.ticketsUrl || event.sourceUrl) ? 'noopener noreferrer' : undefined}>
+              <a href={(event.ticketsUrl || event.sourceUrl) ?? getRoute('events', locale)} target={(event.ticketsUrl || event.sourceUrl) ? '_blank' : undefined} rel={(event.ticketsUrl || event.sourceUrl) ? 'noopener noreferrer' : undefined} data-track={(event.ticketsUrl || event.sourceUrl) ? 'click_ticket' : undefined}>
                 <span>{copy.status.tickets}</span>
                 <strong>{ticketIntentLabel}</strong>
               </a>
@@ -637,6 +636,7 @@ faq.push({
                     target="_blank"
                     rel="noopener noreferrer"
                     class="upg-btn-primary"
+                    data-track="click_ticket"
                   >
                     <span>{t('detail.getTickets')}</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>

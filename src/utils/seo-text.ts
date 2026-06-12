@@ -1,4 +1,5 @@
 const BRAND_PATTERNS = [
+  /\s*\|\s*GranadaUrban\s*$/i,
   /\s*\|\s*GRN\s+URBAN\s*$/i,
   /\s*[·•-]\s*GRN\s+URBAN\s*$/i,
 ];
@@ -28,6 +29,7 @@ export function normalizeSeoTitle(title: string): string {
 export function buildSeoTitle(title: string | undefined, siteName: string): string {
   const cleanTitle = normalizeSeoTitle(title ?? siteName);
   if (!cleanTitle || cleanTitle.toLowerCase() === siteName.toLowerCase()) return siteName;
+  if (cleanTitle.toLowerCase().startsWith(`${siteName.toLowerCase()} |`)) return cleanTitle;
 
   const suffix = ` | ${siteName}`;
   const maxBaseLength = 68 - suffix.length;

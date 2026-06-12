@@ -2,6 +2,7 @@ import eslint from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import astroeslint from 'eslint-plugin-astro';
+import astroParser from 'astro-eslint-parser';
 
 export default [
   eslint.configs.recommended,
@@ -29,7 +30,7 @@ export default [
       astro: astroeslint,
     },
     languageOptions: {
-      parser: astroeslint.parsers.astro,
+      parser: astroParser,
       parserOptions: {
         parser: tsparser,
         extraFileExtensions: ['.astro'],

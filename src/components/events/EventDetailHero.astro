@@ -167,7 +167,7 @@ const archiveRef = `${dayNum}${monthNum}`;
               .reduce(
                 (prev, curr, i) =>
                   i === 0 ? [curr] : [...prev, ' ', curr],
-                [] as (JSX.Element | string)[]
+                [] as unknown[]
               );
           })()
         }
@@ -244,6 +244,7 @@ const archiveRef = `${dayNum}${monthNum}`;
           class="ev-cta"
           target={hasLink ? '_blank' : undefined}
           rel={hasLink ? 'noopener noreferrer' : undefined}
+          data-track={hasLink ? 'click_ticket' : undefined}
         >
           <span>{ctaText}</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>

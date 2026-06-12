@@ -35,6 +35,12 @@ const { title, url, label, copiedLabel = label, class: className = '', labelClas
       if (navigator.share) {
         try {
           await navigator.share({ title, text: title, url });
+          if (typeof window.grnTrackEvent === 'function') {
+            window.grnTrackEvent('share', {
+              method: 'web_share',
+              content_id: window.location.pathname,
+            });
+          }
           return;
         } catch (_) {}
       }
@@ -45,6 +51,12 @@ const { title, url, label, copiedLabel = label, class: className = '', labelClas
           const orig = labelSpan.textContent;
           labelSpan.textContent = copiedLabel;
           setTimeout(() => { labelSpan.textContent = orig; }, 2000);
+        }
+        if (typeof window.grnTrackEvent === 'function') {
+          window.grnTrackEvent('share', {
+            method: 'clipboard',
+            content_id: window.location.pathname,
+          });
         }
       } catch (_) {}
     });

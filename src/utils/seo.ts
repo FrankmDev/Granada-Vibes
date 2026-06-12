@@ -72,6 +72,13 @@ export function getAlternateUrls(path: string): Record<Locale, string> {
   };
 }
 
+export function shouldRenderAlternateUrls(path: string): boolean {
+  const normalizedPath = normalizeUrlPath(path);
+  if (normalizedPath.startsWith('/ai/')) return false;
+  if (normalizedPath.startsWith('/artistas/') || normalizedPath.startsWith('/en/artists/')) return false;
+  return true;
+}
+
 /**
  * Generate meta description for an event page.
  * Pattern: "[Name] en Granada — [date]. [Venue]. [Price]."
@@ -81,7 +88,7 @@ export function getEventMetaDescription(event: Event, locale: Locale): string {
   const venue = event.venue;
   const price = event.price === null
     ? (locale === 'es' ? 'Gratis' : 'Free')
-    : `${event.price}€`;
+    : `${String(event.price)}€`;
 
   const date = new Date(event.date).toLocaleDateString(
     locale === 'es' ? 'es-ES' : 'en-US',
@@ -101,7 +108,7 @@ export function getEventMetaDescription(event: Event, locale: Locale): string {
 export function getRouteMetaDescription(route: Route, locale: Locale): string {
   const name = route.title[locale];
   const hours = Math.round(route.duration / 60);
-  const distance = `${route.distance} km`;
+  const distance = `${String(route.distance)} km`;
 
   const difficultyMap: Record<string, { es: string; en: string }> = {
     easy:        { es: 'fácil',    en: 'easy' },
@@ -110,7 +117,7 @@ export function getRouteMetaDescription(route: Route, locale: Locale): string {
   };
 
   const difficulty = difficultyMap[route.difficulty]?.[locale] ?? route.difficulty;
-  const durationLabel = locale === 'es' ? `${hours}h` : `${hours}h`;
+  const durationLabel = `${String(hours)}h`;
 
   if (locale === 'es') {
     return `${name}: ${durationLabel}, ${distance}. Dificultad ${difficulty}.`;
