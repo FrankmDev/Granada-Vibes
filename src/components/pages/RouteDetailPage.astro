@@ -2,17 +2,20 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
 import Footer from '@components/layout/Footer.astro';
-import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import { getAllPosts, getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
-import { getRoute, getRouteDetailUrl, getBlogDetailUrl, getEventDetailUrl } from '@utils/routes';
+import { getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
 import { formatDistance, formatDuration } from '@utils/dates';
-import { formatFullDate } from '@utils/dates';
-import { getRelatedPostsForRoute, getRelatedEventsForRoute } from '@utils/cross-links';
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+import RelatedGuides from '@components/related/RelatedGuides.astro';
+import RelatedEvents from '@components/related/RelatedEvents.astro';
+import RelatedRoutes from '@components/related/RelatedRoutes.astro';
+import RelatedVenues from '@components/related/RelatedVenues.astro';
+import ContinueExploring from '@components/related/ContinueExploring.astro';
+import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
 import { getBlogDisplayTitle, getRouteDisplayTitle, getRouteSeoDescription, getRouteSeoTitle } from '@utils/content-seo';
 import type { Locale, Neighborhood, Route, RouteHighlight, RouteTip } from '@types';
 import '@styles/pages/route-detail.css';
@@ -148,8 +151,6 @@ if (relatedRoutes.length < 3) {
   relatedRoutes.push(...moreRoutes);
 }
 
-const relatedPosts = getRelatedPostsForRoute(route, 3);
-const relatedEventsForRoute = getRelatedEventsForRoute(route, 2);
 const evergreenPostLinks = [
   beforeTravelPost,
   route.category === 'tapas' || route.category === 'flamenco' ? tapasPost : null,
@@ -162,26 +163,10 @@ const evergreenPostLinks = [
     image: item.image,
   }));
 
-const crossLinks = [
-  ...relatedPosts.map((p) => ({
-    url: getBlogDetailUrl(p.slug, locale),
-    title: getBlogDisplayTitle(p, locale),
-    meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
-    image: p.image,
-  })),
-  ...relatedEventsForRoute.map((e) => ({
-    url: getEventDetailUrl(e.slug, locale),
-    title: e.title[locale],
-    meta: `${formatFullDate(e.date, locale)} · ${t(`categories.${e.category}`)}`,
-    image: e.imageUrl || e.image,
-  })),
-].slice(0, 4);
-
 const planningLinks = Array.from(new Map([
   byTimeLink,
   plannerLink,
   ...evergreenPostLinks,
-  ...crossLinks,
   ...relatedRoutes.map((r) => ({
     url: getRouteDetailUrl(r.slug, locale),
     title: getRouteDisplayTitle(r, locale),
@@ -223,15 +208,6 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
   faq={faq.length > 0 ? faq : undefined}
 >
   <RouteDetailHero route={route} locale={locale} displayTitle={displayTitle} />
-
-  <Breadcrumbs
-    variant="light"
-    items={[
-      { label: copy.breadcrumb.home, href: getRoute('home', locale) },
-      { label: copy.breadcrumb.listing, href: getRoute('routes', locale) },
-      { label: displayTitle },
-    ]}
-  />
 
   <div class="det-page route-page-override">
     <div class="det-content-wrap">
@@ -454,6 +430,21 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
             </div>
           )}
 
+          <div class="upg-block upg-block--loose" id="route-related" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">06</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
+            </header>
+            <div class="upg-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
+              <RelatedRoutes type="route" route={route} locale={locale} title={t('detail.similarRoutes')} limit={3} />
+              <RelatedEvents type="route" route={route} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+              <RelatedGuides type="route" route={route} locale={locale} title={t('detail.relatedGuides')} limit={3} />
+              <RelatedVenues type="route" route={route} locale={locale} title={t('detail.relatedVenues')} limit={2} />
+            </div>
+          </div>
+
           {(prevRoute || nextRoute) && (
             <nav class="upg-block upg-nav-block" data-reveal aria-label={isEnglish ? 'Route navigation' : 'Navegación de rutas'}>
               <div class="upg-block-bg"></div>
@@ -600,11 +591,17 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               </div>
             )}
           </div>
-        </aside>
+          </aside>
+        </div>
       </div>
-    </div>
 
-    <div class="det-footer-orn" aria-hidden="true">
+      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
+        <CollaborateCTA locale={locale} variant="route" />
+      </div>
+
+      <ContinueExploring locale={locale} />
+
+      <div class="det-footer-orn" aria-hidden="true">
       <span class="det-orn-line"></span>
       <span class="det-orn-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
       <span class="det-orn-line"></span>

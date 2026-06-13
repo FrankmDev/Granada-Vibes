@@ -5,6 +5,12 @@ import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import EventArchiveCard from '@components/events/EventArchiveCard.astro';
+import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
+import RelatedEvents from '@components/related/RelatedEvents.astro';
+import RelatedVenues from '@components/related/RelatedVenues.astro';
+import RelatedRoutes from '@components/related/RelatedRoutes.astro';
+import RelatedGuides from '@components/related/RelatedGuides.astro';
+import ContinueExploring from '@components/related/ContinueExploring.astro';
 import { SITE_CONFIG } from '@config/site';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute } from '@utils/routes';
@@ -143,6 +149,29 @@ const heroMetadata = [
     </div>
   </section>
 
+  <section class="dir-archive" aria-label={t('detail.alsoInteresting')}>
+    <div class="dir-wrap">
+      <SectionHeader
+        eyebrow={`[ ${t('detail.alsoInteresting')} ]`}
+        eyebrowYear={`${currentYear - 1} — ${currentYear}`}
+        title={t('detail.alsoInteresting')}
+        theme="cream"
+      />
+      <div class="dir-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
+        <RelatedEvents type="venue" venue={entry} locale={locale} title={t('detail.upcomingAtVenue')} limit={4} />
+        <RelatedVenues type="venue" venue={entry} locale={locale} title={t('detail.otherVenues')} limit={3} />
+        <RelatedRoutes type="venue" venue={entry} locale={locale} title={t('detail.routesNearVenue')} limit={3} />
+        <RelatedGuides type="venue" venue={entry} locale={locale} title={t('detail.guidesForVenue')} limit={3} />
+      </div>
+    </div>
+  </section>
+
+  <section class="dir-archive" aria-label={locale === 'en' ? 'Venue collaboration' : 'Colaboración con la sala'}>
+    <div class="dir-wrap">
+      <CollaborateCTA locale={locale} variant="venue" />
+    </div>
+  </section>
+
   <section class="dir-archive" aria-label={t('directory.faqTitle')}>
     <div class="dir-wrap">
       <SectionHeader
@@ -161,6 +190,8 @@ const heroMetadata = [
       </div>
     </div>
   </section>
+
+  <ContinueExploring locale={locale} />
 
   <script is:inline>
     (function() {

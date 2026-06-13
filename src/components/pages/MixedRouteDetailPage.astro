@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PlanHero from '@components/shared/PlanHero.astro';
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
 import { getAllMixedRoutes, getAllPosts } from '@data';
 import { useTranslations } from '@i18n/utils';
 import { getBlogDisplayTitle } from '@utils/content-seo';
@@ -359,6 +360,10 @@ const copy = isEnglish
           </aside>
 
         </div>
+      </div>
+
+      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
+        <CollaborateCTA locale={locale} variant="timePlan" />
       </div>
 
       <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">

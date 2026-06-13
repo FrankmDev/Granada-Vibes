@@ -1,0 +1,70 @@
+---
+import type { BlogPost, Event, Locale, Route } from '@types';
+import type { VenueDirectoryEntry } from '@data/directories';
+import { useTranslations } from '@i18n/utils';
+import { getDirectoryHref } from '@data/index.js';
+import {
+  getRelatedVenuesForPost,
+  getRelatedVenuesForRoute,
+  getRelatedVenuesForEvent,
+  getRelatedVenuesForVenue,
+} from '@utils/related-content';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+
+interface BaseProps {
+  locale: Locale;
+  title?: string;
+  limit?: number;
+}
+
+interface PostContext extends BaseProps {
+  type: 'post';
+  post: BlogPost;
+}
+
+interface RouteContext extends BaseProps {
+  type: 'route';
+  route: Route;
+}
+
+interface EventContext extends BaseProps {
+  type: 'event';
+  event: Event;
+}
+
+interface VenueContext extends BaseProps {
+  type: 'venue';
+  venue: VenueDirectoryEntry;
+}
+
+type Props = PostContext | RouteContext | EventContext | VenueContext;
+
+const props = Astro.props;
+const { locale, type, title: customTitle, limit = 3 } = props;
+const t = useTranslations(locale);
+
+let venues: VenueDirectoryEntry[] = [];
+
+if (type === 'post') {
+  venues = getRelatedVenuesForPost(props.post, limit);
+} else if (type === 'route') {
+  venues = getRelatedVenuesForRoute(props.route, limit);
+} else if (type === 'event') {
+  venues = getRelatedVenuesForEvent(props.event, limit);
+} else if (type === 'venue') {
+  venues = getRelatedVenuesForVenue(props.venue, limit);
+}
+
+const title = customTitle ?? t('detail.relatedVenues');
+
+const links = venues.map((venue) => ({
+  url: getDirectoryHref('venue', venue.slug, locale),
+  title: venue.name,
+  meta: `${venue.upcomingEvents.length} ${t('directory.upcomingDates')} · ${venue.events.length} ${t('directory.listedEvents')}`,
+  image: null,
+}));
+---
+
+{links.length > 0 && (
+  <CrossLinksSection title={title} links={links} />
+)}

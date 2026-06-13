@@ -1,0 +1,220 @@
+---
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
+
+interface Props {
+  locale: Locale;
+  showCollaborate?: boolean;
+}
+
+const { locale, showCollaborate = false } = Astro.props;
+const t = useTranslations(locale);
+const isEnglish = locale === 'en';
+
+const hubs = [
+  {
+    key: 'events',
+    href: getRoute('events', locale),
+    title: t('nav.events'),
+    meta: t('detail.exploreEvents'),
+  },
+  {
+    key: 'eventsToday',
+    href: isEnglish ? '/en/events/today/' : '/eventos/hoy/',
+    title: t('events.today'),
+    meta: t('detail.exploreEventsToday'),
+  },
+  {
+    key: 'routes',
+    href: getRoute('routes', locale),
+    title: t('nav.routes'),
+    meta: t('detail.exploreRoutes'),
+  },
+  {
+    key: 'guides',
+    href: getRoute('blog', locale),
+    title: t('nav.blog'),
+    meta: t('detail.exploreGuides'),
+  },
+  {
+    key: 'venues',
+    href: isEnglish ? '/en/venues/' : '/salas/',
+    title: t('directory.allVenues'),
+    meta: t('detail.exploreVenues'),
+  },
+  ...(showCollaborate
+    ? [
+        {
+          key: 'collaborate',
+          href: getRoute('collaborate', locale),
+          title: t('collaborate.footerGroup'),
+          meta: t('detail.sendProgramming'),
+        },
+      ]
+    : []),
+];
+---
+
+<section class="ce-section" aria-label={t('detail.continueExploring')}>
+  <div class="ce-header">
+    <span class="ce-eyebrow">[ {t('detail.continueExploring')} ]</span>
+    <h2 class="ce-title">{t('detail.continueExploring')}</h2>
+  </div>
+
+  <div class="ce-grid">
+    {hubs.map((hub, index) => (
+      <a
+        href={hub.href}
+        class="ce-card"
+        style={`--rd: ${index * 0.1}s`}
+        data-track="continue_exploring_click"
+        data-track-detail={hub.key}
+      >
+        <span class="ce-card-title">{hub.title}</span>
+        <span class="ce-card-meta">{hub.meta}</span>
+        <span class="ce-card-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .ce-section {
+    --s-bg: #f5f0ea;
+    --s-bg-hi: #faf8f5;
+    --s-ink: #1a1619;
+    --s-ink-2: #5a4f47;
+    --s-ink-3: #8a7f77;
+    --s-orange: #e8622a;
+    --s-gold: #c9a84c;
+    --s-border: rgba(26, 22, 25, 0.10);
+
+    position: relative;
+    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+    background: var(--s-bg);
+    z-index: 2;
+  }
+
+  .ce-header {
+    max-width: 1300px;
+    margin: 0 auto 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ce-eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+  }
+
+  .ce-title {
+    font-family: var(--font-body);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--s-ink);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .ce-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .ce-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.25rem;
+    background: var(--s-bg-hi);
+    border: 1px solid var(--s-border);
+    border-radius: 18px;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: cell-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--rd, 0s) + 0.15s) forwards;
+    transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .ce-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201, 168, 76, 0.35);
+    background: #fff;
+  }
+
+  .ce-card-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--s-ink);
+  }
+
+  .ce-card-meta {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--s-ink-3);
+    line-height: 1.4;
+  }
+
+  .ce-card-arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--s-ink-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .ce-card-arrow svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ce-card:hover .ce-card-arrow {
+    background: var(--s-orange);
+    color: #fff;
+  }
+
+  @media (max-width: 640px) {
+    .ce-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .ce-card {
+      padding: 1rem;
+    }
+
+    .ce-card-title {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ce-card {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>

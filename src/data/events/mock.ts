@@ -102,6 +102,14 @@ export const mockEvents: Event[] = [
       en: 'Various international jazz ensembles',
     },
     source: 'mock',
+    relatedRoutes: [
+      'ruta-corpus-granada-2026',
+      'granada-monumental',
+    ],
+    relatedGuides: [
+      'granada-fin-de-semana-48-horas',
+      'tapas-gratis-granada',
+    ],
   },
   {
     id: 'evt-009',
@@ -149,6 +157,17 @@ export const mockEvents: Event[] = [
       en: 'Free entry. Hours: Tuesday to Sunday, 11 AM–2 PM and 5 PM–9 PM. Pick up the printed map at the entrance and walk the Albaicín following the photos: it\'s the best self-guided tour of the neighborhood.',
     },
     source: 'mock',
+    relatedRoutes: [
+      'atardecer-miradores-albaicin',
+      'hora-del-vermut-albaicin',
+    ],
+    relatedGuides: [
+      'miradores-granada-guia-completa',
+      'albaicin-a-pie',
+    ],
+    relatedEvents: [
+      'taller-fotografia-nocturna',
+    ],
   },
   {
     id: 'evt-010',
@@ -200,6 +219,17 @@ export const mockEvents: Event[] = [
       en: 'Carmen Linares',
     },
     source: 'mock',
+    relatedRoutes: [
+      'bosque-alhambra-acequias',
+      'granada-monumental',
+    ],
+    relatedGuides: [
+      'flamenco-granada-guia-autentica',
+      'entradas-alhambra-agotadas',
+    ],
+    relatedEvents: [
+      'noche-flamenca-tablaos',
+    ],
   },
   {
     id: 'evt-012',
@@ -297,6 +327,16 @@ export const mockEvents: Event[] = [
       en: 'Venta El Gallo Artists',
     },
     source: 'mock',
+    relatedRoutes: [
+      'ruta-flamenco-autentico',
+      'sacromonte-flamenco-historia-gitana',
+    ],
+    relatedGuides: [
+      'flamenco-granada-guia-autentica',
+    ],
+    relatedEvents: [
+      'concierto-carmen-linares',
+    ],
   },
   {
     id: 'evt-017',
@@ -343,6 +383,17 @@ export const mockEvents: Event[] = [
       en: 'Bring a tripod if you have one (some loaners available). Wear warm clothes: Albaicín nights get quite cool. Phone/camera battery fully charged. Meeting point is next to the Church of San Nicolás.',
     },
     source: 'mock',
+    relatedRoutes: [
+      'atardecer-miradores-albaicin',
+      'senderismo-rio-darro',
+    ],
+    relatedGuides: [
+      'miradores-granada-guia-completa',
+      'albaicin-a-pie',
+    ],
+    relatedEvents: [
+      'exposicion-fotografia-albaicin',
+    ],
   },
   {
     id: 'evt-018',

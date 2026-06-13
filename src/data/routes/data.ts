@@ -206,6 +206,20 @@ export const routes: Route[] = [
       es: 'Miércoles 3 de junio de 2026 si quieres la versión Tarasca. Jueves 4 de junio de 2026 si prefieres la procesión. En ambos casos, la feria se disfruta mejor desde última hora de la tarde.',
       en: 'Wednesday 3 June 2026 if you want the Tarasca version. Thursday 4 June 2026 if you prefer the procession version. In both cases, the fairground is best from late afternoon onward.',
     },
+    relatedGuides: [
+      'corpus-granada-2026',
+      'tarasca-granada-2026',
+      'feria-corpus-granada-2026',
+      'carocas-granada',
+    ],
+    relatedRoutes: [
+      'granada-monumental',
+      'ruta-tapeo-tradicional',
+    ],
+    relatedEvents: [
+      'concierto-jazz-plaza-trinidad',
+      'festival-cine-europeo',
+    ],
   },
 
   // ——————————————————————————————————————————
@@ -335,6 +349,15 @@ export const routes: Route[] = [
       es: 'Cualquier día de la semana funciona, pero los martes y miércoles los bares están menos concurridos. En verano, empieza más tarde (21:30) para evitar el calor. En invierno, la hora ideal es 20:30.',
       en: 'Any day of the week works, but Tuesdays and Wednesdays the bars are less crowded. In summer, start later (21:30) to avoid the heat. In winter, the ideal time is 20:30.',
     },
+    relatedGuides: [
+      'tapas-gratis-granada',
+      'granada-fin-de-semana-48-horas',
+      'granada-en-un-dia-itinerario',
+    ],
+    relatedRoutes: [
+      'hora-del-vermut-albaicin',
+      'granada-monumental',
+    ],
   },
   {
     id: 'rte-002',
@@ -439,6 +462,15 @@ export const routes: Route[] = [
       es: 'Sábado entre las 13:00 y las 15:00. En verano, empieza a las 12:30 para coger sombra. En invierno, la terraza del Huerto puede estar cerrada si llueve — confirma antes.',
       en: 'Saturday between 1 PM and 3 PM. In summer, start at 12:30 to get shade. In winter, El Huerto\'s terrace may be closed if it rains — confirm beforehand.',
     },
+    relatedGuides: [
+      'tapas-gratis-granada',
+      'albaicin-a-pie',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'atardecer-miradores-albaicin',
+      'senderismo-rio-darro',
+    ],
   },
 
   // ——————————————————————————————————————————
@@ -554,6 +586,19 @@ export const routes: Route[] = [
       es: 'Llega 45 minutos antes del atardecer. En verano, el sol se pone sobre las 21:30; en invierno, sobre las 18:15. Las mejores fotos son 20 minutos antes de que el sol desaparezca.',
       en: 'Arrive 45 minutes before sunset. In summer the sun sets around 21:30; in winter around 18:15. The best photos are taken 20 minutes before the sun disappears.',
     },
+    relatedGuides: [
+      'miradores-granada-guia-completa',
+      'albaicin-a-pie',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'hora-del-vermut-albaicin',
+      'senderismo-rio-darro',
+    ],
+    relatedEvents: [
+      'exposicion-fotografia-albaicin',
+      'taller-fotografia-nocturna',
+    ],
   },
   {
     id: 'rte-004',
@@ -665,6 +710,19 @@ export const routes: Route[] = [
       es: 'Empieza a las 10:00 en punto. En temporada alta (Semana Santa, julio-agosto), compra entradas online con antelación. Los martes por la mañana suelen ser los días más tranquilos.',
       en: 'Start at 10:00 sharp. In high season (Easter Week, July–August), buy tickets online in advance. Tuesday mornings are usually the quietest days.',
     },
+    relatedGuides: [
+      'entradas-alhambra-agotadas',
+      'granada-en-un-dia-itinerario',
+      'antes-de-llegar-granada',
+    ],
+    relatedRoutes: [
+      'huellas-reyes-catolicos',
+      'ruta-corpus-granada-2026',
+    ],
+    relatedEvents: [
+      'ciclo-cine-alhambra',
+      'teatro-clasico-alhambra',
+    ],
   },
   {
     id: 'rte-005',
@@ -991,6 +1049,18 @@ export const routes: Route[] = [
       es: 'El museo abre por la mañana. La Canastera es a las 21:00. La Platería solo los jueves a las 21:30. La mejor combinación es museo por la tarde (17:00-18:00), cena en el Albaicín, y espectáculo después.',
       en: 'The museum opens in the morning. La Canastera is at 21:00. La Platería is only on Thursdays at 21:30. The best combination is museum in the late afternoon (17:00–18:00), dinner in the Albaicín, and a show afterwards.',
     },
+    relatedGuides: [
+      'flamenco-granada-guia-autentica',
+      'granada-en-un-dia-itinerario',
+    ],
+    relatedRoutes: [
+      'sacromonte-flamenco-historia-gitana',
+      'ruta-fotografia-sacromonte',
+    ],
+    relatedEvents: [
+      'noche-flamenca-tablaos',
+      'concierto-carmen-linares',
+    ],
   },
   {
     id: 'rte-008',
@@ -1189,6 +1259,15 @@ export const routes: Route[] = [
       es: 'Primavera (marzo-mayo) es la mejor época: el Darro lleva caudal, el bosque está verde y la temperatura es ideal. Otoño también es bueno. Evita julio y agosto por el calor.',
       en: 'Spring (March–May) is the best time: the Darro has water flow, the forest is green, and the temperature is ideal. Autumn is also good. Avoid July and August because of the heat.',
     },
+    relatedGuides: [
+      'albaicin-a-pie',
+      'miradores-granada-guia-completa',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'atardecer-miradores-albaicin',
+      'hora-del-vermut-albaicin',
+    ],
   },
   {
     id: 'rte-010',

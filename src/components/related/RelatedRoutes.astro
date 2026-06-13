@@ -1,0 +1,72 @@
+---
+import type { BlogPost, Event, Locale, Route } from '@types';
+import type { VenueDirectoryEntry } from '@data/directories';
+import { useTranslations } from '@i18n/utils';
+import { getRouteDetailUrl } from '@utils/routes';
+import { formatDuration } from '@utils/dates';
+import { getRouteDisplayTitle } from '@utils/content-seo';
+import {
+  getRelatedRoutesForPost,
+  getRelatedRoutesForRoute,
+  getRelatedRoutesForEvent,
+  getRelatedRoutesForVenue,
+} from '@utils/related-content';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+
+interface BaseProps {
+  locale: Locale;
+  title?: string;
+  limit?: number;
+}
+
+interface PostContext extends BaseProps {
+  type: 'post';
+  post: BlogPost;
+}
+
+interface RouteContext extends BaseProps {
+  type: 'route';
+  route: Route;
+}
+
+interface EventContext extends BaseProps {
+  type: 'event';
+  event: Event;
+}
+
+interface VenueContext extends BaseProps {
+  type: 'venue';
+  venue: VenueDirectoryEntry;
+}
+
+type Props = PostContext | RouteContext | EventContext | VenueContext;
+
+const props = Astro.props;
+const { locale, type, title: customTitle, limit = 3 } = props;
+const t = useTranslations(locale);
+
+let routes: Route[] = [];
+
+if (type === 'post') {
+  routes = getRelatedRoutesForPost(props.post, limit);
+} else if (type === 'route') {
+  routes = getRelatedRoutesForRoute(props.route, limit);
+} else if (type === 'event') {
+  routes = getRelatedRoutesForEvent(props.event, limit);
+} else if (type === 'venue') {
+  routes = getRelatedRoutesForVenue(props.venue, limit);
+}
+
+const title = customTitle ?? t('detail.relatedRoutes');
+
+const links = routes.map((route) => ({
+  url: getRouteDetailUrl(route.slug, locale),
+  title: getRouteDisplayTitle(route, locale),
+  meta: `${formatDuration(route.duration, locale)} · ${t(`difficulty.${route.difficulty}`)}`,
+  image: route.image || null,
+}));
+---
+
+{links.length > 0 && (
+  <CrossLinksSection title={title} links={links} />
+)}

@@ -34,6 +34,16 @@ export const posts: BlogPost[] = [
     image: '/carocas1.jpg',
     readingTime: 9,
     featured: true,
+    zone: 'centro',
+    relatedGuides: [
+      'corpus-granada-2026',
+      'tarasca-granada-2026',
+      'feria-corpus-granada-2026',
+    ],
+    relatedRoutes: [
+      'ruta-corpus-granada-2026',
+      'granada-monumental',
+    ],
   },
   {
     id: 'blog-013',
@@ -54,6 +64,15 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/2/28/Casetas_en_la_Feria_de_Granada_2007.jpg',
     readingTime: 9,
     featured: true,
+    zone: 'almanjayar',
+    relatedGuides: [
+      'corpus-granada-2026',
+      'tarasca-granada-2026',
+      'carocas-granada',
+    ],
+    relatedRoutes: [
+      'ruta-corpus-granada-2026',
+    ],
   },
   {
     id: 'blog-012',
@@ -74,6 +93,17 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/TARASCA_DE_GRANADA_02.jpg',
     readingTime: 8,
     featured: true,
+    zone: 'centro',
+    relatedGuides: [
+      'corpus-granada-2026',
+      'carocas-granada',
+      'feria-corpus-granada-2026',
+    ],
+    relatedRoutes: [
+      'ruta-corpus-granada-2026',
+      'granada-monumental',
+      'ruta-tapeo-tradicional',
+    ],
   },
   {
     id: 'blog-011',
@@ -94,6 +124,17 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Corpus_Christi_en_la_Catedral_de_Granada_01.jpg',
     readingTime: 12,
     featured: true,
+    zone: 'centro',
+    relatedGuides: [
+      'tarasca-granada-2026',
+      'carocas-granada',
+      'feria-corpus-granada-2026',
+    ],
+    relatedRoutes: [
+      'ruta-corpus-granada-2026',
+      'granada-monumental',
+      'ruta-tapeo-tradicional',
+    ],
   },
   {
     id: 'blog-001',
@@ -154,6 +195,18 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/5/59/GRANADA_-_La_Alhambra_vista_desde_el_mirador_de_San_Nicolas_-_panoramio.jpg',
     readingTime: 10,
     featured: false,
+    zone: 'albaicin',
+    relatedGuides: [
+      'albaicin-a-pie',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'atardecer-miradores-albaicin',
+      'senderismo-rio-darro',
+    ],
+    relatedEvents: [
+      'taller-fotografia-nocturna',
+    ],
   },
   {
     id: 'blog-004',
@@ -174,6 +227,17 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Granada%2C_La_Fontana%2C_tapas.jpg',
     readingTime: 12,
     featured: false,
+    zone: 'centro',
+    relatedGuides: [
+      'granada-fin-de-semana-48-horas',
+      'granada-en-un-dia-itinerario',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'ruta-tapeo-tradicional',
+      'hora-del-vermut-albaicin',
+      'granada-monumental',
+    ],
   },
   {
     id: 'blog-006',
@@ -194,6 +258,19 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/6/68/Aa_interpretation_centre_in_sacromonte_-_etnographical_and_environmontal_museum_showing_life_and_customs_in_a_group_of_caves_1.jpg',
     readingTime: 12,
     featured: true,
+    zone: 'sacromonte',
+    relatedGuides: [
+      'granada-fin-de-semana-48-horas',
+      'granada-en-un-dia-itinerario',
+    ],
+    relatedRoutes: [
+      'ruta-flamenco-autentico',
+      'sacromonte-flamenco-historia-gitana',
+    ],
+    relatedEvents: [
+      'noche-flamenca-tablaos',
+      'concierto-carmen-linares',
+    ],
   },
   {
     id: 'blog-010',
@@ -214,6 +291,17 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Cathedral_%26_Capilla_Real_Granada_Spain.jpg',
     readingTime: 10,
     featured: true,
+    zone: 'centro',
+    relatedGuides: [
+      'antes-de-llegar-granada',
+      'tapas-gratis-granada',
+      'entradas-alhambra-agotadas',
+    ],
+    relatedRoutes: [
+      'granada-monumental',
+      'ruta-tapeo-tradicional',
+      'atardecer-miradores-albaicin',
+    ],
   },
   {
     id: 'blog-009',
@@ -274,6 +362,16 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/c/c1/A_view_of_Granada_from_the_Alhambra.jpg',
     readingTime: 10,
     featured: true,
+    zone: 'granada',
+    relatedGuides: [
+      'granada-en-un-dia-itinerario',
+      'entradas-alhambra-agotadas',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'granada-monumental',
+      'ruta-tapeo-tradicional',
+    ],
   },
   {
     id: 'blog-005',
@@ -294,5 +392,18 @@ export const posts: BlogPost[] = [
     image: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Aa_a_street_of_albaicin_small_street_2016_white_in_granada_in_spain.jpg',
     readingTime: 11,
     featured: false,
+    zone: 'albaicin',
+    relatedGuides: [
+      'miradores-granada-guia-completa',
+      'granada-gratis-que-hacer-sin-gastar',
+    ],
+    relatedRoutes: [
+      'atardecer-miradores-albaicin',
+      'hora-del-vermut-albaicin',
+      'senderismo-rio-darro',
+    ],
+    relatedEvents: [
+      'exposicion-fotografia-albaicin',
+    ],
   },
 ];

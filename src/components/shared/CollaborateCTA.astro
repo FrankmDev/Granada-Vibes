@@ -1,0 +1,266 @@
+---
+/**
+ * CollaborateCTA — Discrete commercial CTA block embedded in detail pages.
+ *
+ * Tono editorial, no marketing agresivo. Encaja en el sistema de bloques
+ * "upg-block" de las detail pages. Acompaña a la página /colabora sin
+ * reemplazar la estética ni saturar la lectura.
+ *
+ * Tracking:
+ *   - data-track="generate_lead" -> lo recoge scripts/utils/analytics.ts
+ *     y emite el evento 'generate_lead' (gtag).
+ */
+
+import type { Locale } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getRoute } from '@utils/routes';
+
+export type CollaborateCtaVariant = 'event' | 'venue' | 'guide' | 'route' | 'timePlan';
+
+interface Props {
+  locale: Locale;
+  variant: CollaborateCtaVariant;
+  theme?: 'cream' | 'dark';
+}
+
+const { locale, variant, theme = 'cream' } = Astro.props;
+const t = useTranslations(locale);
+
+const copy = {
+  eyebrow: t(`collaborate.inPageCta.${variant}.eyebrow`),
+  title: t(`collaborate.inPageCta.${variant}.title`),
+  subtitle: t(`collaborate.inPageCta.${variant}.subtitle`),
+  cta: t(`collaborate.inPageCta.${variant}.cta`),
+};
+const href = getRoute('collaborate', locale);
+const ariaLabel = `${copy.cta} — ${copy.title}`;
+---
+
+<aside
+  class:list={['ccta', `ccta--${theme}`]}
+  data-reveal
+  aria-label={copy.title}
+>
+  <div class="ccta-frame" aria-hidden="true">
+    <span class="ccta-corner ccta-corner--tl"></span>
+    <span class="ccta-corner ccta-corner--tr"></span>
+    <span class="ccta-corner ccta-corner--bl"></span>
+    <span class="ccta-corner ccta-corner--br"></span>
+  </div>
+
+  <div class="ccta-inner">
+    <span class="ccta-eyebrow">
+      <span class="ccta-bracket">[</span>
+      <span class="ccta-eyebrow-text">{copy.eyebrow}</span>
+      <span class="ccta-bracket">]</span>
+    </span>
+
+    <h2 class="ccta-title">{copy.title}</h2>
+
+    <p class="ccta-subtitle">{copy.subtitle}</p>
+
+    <a
+      href={href}
+      class="ccta-button"
+      data-track="generate_lead"
+      aria-label={ariaLabel}
+    >
+      <span>{copy.cta}</span>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </a>
+  </div>
+</aside>
+
+<style>
+  .ccta {
+    --ccta-bg: #ffffff;
+    --ccta-border: rgba(26, 22, 25, 0.1);
+    --ccta-ink: #1a1619;
+    --ccta-ink-2: #3a3532;
+    --ccta-ink-3: #6b6058;
+    --ccta-orange: #e8622a;
+    --ccta-gold: #c9a84c;
+    --ccta-on-dark: #f5f0ea;
+
+    position: relative;
+    display: block;
+    margin: clamp(2rem, 4vw, 3rem) 0;
+    padding: clamp(2rem, 4vw, 2.75rem) clamp(1.25rem, 4vw, 2.5rem);
+    background: var(--ccta-bg);
+    border: 1px solid var(--ccta-border);
+    border-radius: 22px;
+    overflow: hidden;
+    transition: border-color 0.5s ease, transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .ccta.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ccta:hover {
+    border-color: rgba(201, 168, 76, 0.45);
+  }
+
+  .ccta--dark {
+    --ccta-bg: rgba(255, 255, 255, 0.04);
+    --ccta-border: rgba(255, 255, 255, 0.12);
+    --ccta-ink: #f0ede8;
+    --ccta-ink-2: #d8d0c8;
+    --ccta-ink-3: #9a9490;
+  }
+
+  /* Decorative corner brackets (consistent con ScreenFrame) */
+  .ccta-frame {
+    position: absolute;
+    inset: 0.5rem;
+    pointer-events: none;
+  }
+
+  .ccta-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--ccta-gold);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.55;
+    transition: opacity 0.4s ease, width 0.4s ease, height 0.4s ease;
+  }
+
+  .ccta-corner--tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+  .ccta-corner--tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+  .ccta-corner--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+  .ccta-corner--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .ccta:hover .ccta-corner {
+    opacity: 1;
+    width: 16px;
+    height: 16px;
+  }
+
+  .ccta-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.85rem;
+    max-width: 56ch;
+    margin: 0 auto;
+  }
+
+  .ccta-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .ccta-eyebrow-text { color: var(--ccta-orange); }
+
+  .ccta-bracket {
+    color: var(--ccta-gold);
+    font-weight: 400;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  .ccta-title {
+    font-family: var(--font-body);
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ccta-ink);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .ccta-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(0.9rem, 1.1vw, 0.98rem);
+    line-height: 1.6;
+    color: var(--ccta-ink-2);
+    margin: 0;
+    max-width: 52ch;
+    text-wrap: pretty;
+  }
+
+  .ccta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+    padding: 0.85rem 1.75rem;
+    background: var(--ccta-ink);
+    color: var(--ccta-on-dark);
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 6px 18px rgba(26, 22, 25, 0.08);
+    min-height: 44px;
+  }
+
+  .ccta-button:hover {
+    background: var(--ccta-orange);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(232, 98, 42, 0.28);
+  }
+
+  .ccta-button:focus-visible {
+    outline: none;
+    box-shadow:
+      0 6px 18px rgba(26, 22, 25, 0.08),
+      0 0 0 3px rgba(232, 98, 42, 0.35);
+  }
+
+  .ccta-button svg { transition: transform 0.3s ease; }
+  .ccta-button:hover svg { transform: translateX(3px); }
+
+  /* Dark theme button colour */
+  .ccta--dark .ccta-button {
+    background: var(--ccta-orange);
+    color: #fff;
+  }
+  .ccta--dark .ccta-button:hover {
+    background: var(--ccta-gold);
+    color: #1a1619;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ccta,
+    .ccta-corner,
+    .ccta-button,
+    .ccta-button svg {
+      transition: none;
+      animation: none;
+    }
+    .ccta { opacity: 1; transform: none; }
+  }
+</style>

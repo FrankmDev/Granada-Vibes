@@ -2,19 +2,22 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
-import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import BlogDetailHero from '@components/blog/BlogDetailHero.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import ReadingProgress from '@components/ui/ReadingProgress.astro';
 import { getRelatedPosts, getAllPosts } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
-import { getBlogDetailUrl, getRoute, getRouteDetailUrl, getEventDetailUrl } from '@utils/routes';
-import { getRelatedRoutesForBlogPost, getRelatedEventsForBlogPost } from '@utils/cross-links';
+import { getBlogDetailUrl, getRoute } from '@utils/routes';
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
-import { formatDuration, formatFullDate } from '@utils/dates';
+import RelatedGuides from '@components/related/RelatedGuides.astro';
+import RelatedEvents from '@components/related/RelatedEvents.astro';
+import RelatedRoutes from '@components/related/RelatedRoutes.astro';
+import RelatedVenues from '@components/related/RelatedVenues.astro';
+import ContinueExploring from '@components/related/ContinueExploring.astro';
+import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
 import { clampMetaDescription } from '@utils/seo-text';
-import { getBlogDisplayTitle, getBlogSeoDescription, getRouteDisplayTitle } from '@utils/content-seo';
+import { getBlogDisplayTitle, getBlogSeoDescription } from '@utils/content-seo';
 import { editorialMediaByBlogSlug } from '@data/editorial-media';
 import type { BlogPost, Locale } from '@types';
 import '@styles/pages/blog-detail.css';
@@ -32,8 +35,6 @@ const postIndex = allPosts.findIndex((p) => p.id === post.id);
 const prevPost = postIndex > 0 ? allPosts[postIndex - 1] : null;
 const nextPost = postIndex < allPosts.length - 1 ? allPosts[postIndex + 1] : null;
 const relatedPosts = getRelatedPosts(post, 3);
-const relatedRoutes = getRelatedRoutesForBlogPost(post, 2);
-const relatedEvents = getRelatedEventsForBlogPost(post, 2);
 const displayTitle = getBlogDisplayTitle(post, locale);
 const seasonalGuideSlugs = new Set([
   'carocas-granada',
@@ -69,21 +70,6 @@ const evergreenPostLinks = [
     image: item.image,
   }));
 
-const crossLinks = [
-  ...relatedRoutes.map((r) => ({
-    url: getRouteDetailUrl(r.slug, locale),
-    title: getRouteDisplayTitle(r, locale),
-    meta: `${formatDuration(r.duration, locale)} · ${t(`categories.${r.category}`)}`,
-    image: r.image,
-  })),
-  ...relatedEvents.map((e) => ({
-    url: getEventDetailUrl(e.slug, locale),
-    title: e.title[locale],
-    meta: `${formatFullDate(e.date, locale)} · ${t(`categories.${e.category}`)}`,
-    image: e.imageUrl || e.image,
-  })),
-].slice(0, 4);
-
 const planningLinks = Array.from(new Map([
   byTimeLink,
   plannerLink,
@@ -94,7 +80,6 @@ const planningLinks = Array.from(new Map([
     meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
     image: p.image,
   })),
-  ...crossLinks,
 ].map((link) => [link.url, link])).values()).slice(0, 5);
 
 const publishedDate = new Date(post.publishDate);
@@ -208,16 +193,7 @@ const breadcrumb = [
 >
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
-  <BlogDetailHero post={post} locale={locale} formattedDate={formattedDate} readingMinutes={calculatedReadingTime} displayTitle={displayTitle} />
-
-  <Breadcrumbs
-    variant="light"
-    items={[
-      { label: copy.breadcrumb.home, href: getRoute('home', locale) },
-      { label: copy.breadcrumb.listing, href: getRoute('blog', locale) },
-      { label: displayTitle },
-    ]}
-  />
+  <BlogDetailHero post={post} locale={locale} readingMinutes={calculatedReadingTime} displayTitle={displayTitle} />
 
   <div class="det-page blog-page-override">
     <div class="det-content-wrap">
@@ -305,6 +281,21 @@ const breadcrumb = [
             </div>
           )}
 
+          <div class="upg-block upg-block--loose" id="also-interesting" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">03</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">[ {t('detail.alsoInteresting')} ]</span>
+            </header>
+            <div class="upg-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
+              <RelatedGuides type="post" post={post} locale={locale} title={t('detail.relatedGuides')} limit={3} />
+              <RelatedEvents type="post" post={post} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+              <RelatedRoutes type="post" post={post} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+              <RelatedVenues type="post" post={post} locale={locale} title={t('detail.relatedVenues')} limit={3} />
+            </div>
+          </div>
+
           {(prevPost || nextPost) && (
             <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Article navigation' : 'Navegación de artículos'} style="padding: 2rem 3rem;">
               <div class="upg-block-bg"></div>
@@ -327,36 +318,6 @@ const breadcrumb = [
             </nav>
           )}
 
-          {relatedRoutes.length > 0 && (
-            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">03</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">[ {isEnglish ? 'Recommended routes' : 'Rutas recomendadas'} ]</span>
-              </header>
-              <div class="blg-related-routes">
-                {relatedRoutes.map((route, index) => (
-                  <a href={getRouteDetailUrl(route.slug, locale)} class="blg-rel-route-card" style={`--rd: ${index * 0.15}s`}>
-                    <div class="brr-thumb">
-                      {route.image ? (
-                        <OptimizedImage src={route.image} alt={getRouteDisplayTitle(route, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" />
-                      ) : (
-                        <div class="brr-thumb-fallback"></div>
-                      )}
-                    </div>
-                    <div class="brr-content">
-                      <span class="brr-title">{getRouteDisplayTitle(route, locale)}</span>
-                      <span class="brr-meta">{formatDuration(route.duration, locale)} · {t(`difficulty.${route.difficulty}`)}</span>
-                    </div>
-                    <div class="brr-arrow">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
         </main>
 
         <aside class="upg-sidebar" aria-label={isEnglish ? 'Article sidebar' : 'Barra lateral del artículo'}>
@@ -466,9 +427,15 @@ const breadcrumb = [
               </div>
             )}
           </div>
-        </aside>
+          </aside>
+        </div>
       </div>
-    </div>
+
+      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
+        <CollaborateCTA locale={locale} variant="guide" />
+      </div>
+
+      <ContinueExploring locale={locale} />
 
     <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
       <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>

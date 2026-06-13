@@ -9,6 +9,14 @@ export interface LocalizedText {
   en: string;
 }
 
+export interface ContentRelations {
+  relatedGuides?: string[];
+  relatedEvents?: string[];
+  relatedRoutes?: string[];
+  relatedVenues?: string[];
+  relatedArtists?: string[];
+}
+
 // ============================================
 // EVENT TYPES
 // ============================================
@@ -50,7 +58,7 @@ export type Neighborhood =
   | 'zaidin'
   | 'otro';
 
-export interface Event {
+export interface Event extends ContentRelations {
   id: string;
   slug: string;
   title: LocalizedText;
@@ -119,7 +127,7 @@ export interface RouteTip {
   content: LocalizedText;
 }
 
-export interface Route {
+export interface Route extends ContentRelations {
   id: string;
   slug: string;
   title: LocalizedText;
@@ -204,7 +212,7 @@ export interface MixedRoute {
 
 export type BlogCategory = 'guia' | 'cultura' | 'gastronomia' | 'barrios' | 'consejos';
 
-export interface BlogPost {
+export interface BlogPost extends ContentRelations {
   id: string;
   slug: string;
   title: LocalizedText;
@@ -217,6 +225,7 @@ export interface BlogPost {
   image?: string;
   readingTime: number; // minutes
   featured: boolean;
+  zone?: string;
 }
 
 // ============================================

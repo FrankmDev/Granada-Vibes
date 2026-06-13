@@ -1,0 +1,73 @@
+---
+import type { BlogPost, Event, Locale, Route } from '@types';
+import type { VenueDirectoryEntry } from '@data/directories';
+import { useTranslations } from '@i18n/utils';
+import { getEventDetailUrl } from '@utils/routes';
+import { formatFullDate } from '@utils/dates';
+import { getEventDisplayTitle } from '@utils/event-seo';
+import {
+  getRelatedEventsForPost,
+  getRelatedEventsForRoute,
+  getRelatedEventsForEvent,
+  getRelatedEventsForVenue,
+} from '@utils/related-content';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+
+interface BaseProps {
+  locale: Locale;
+  title?: string;
+  limit?: number;
+}
+
+interface PostContext extends BaseProps {
+  type: 'post';
+  post: BlogPost;
+}
+
+interface RouteContext extends BaseProps {
+  type: 'route';
+  route: Route;
+}
+
+interface EventContext extends BaseProps {
+  type: 'event';
+  event: Event;
+}
+
+interface VenueContext extends BaseProps {
+  type: 'venue';
+  venue: VenueDirectoryEntry;
+  excludeEventId?: string;
+}
+
+type Props = PostContext | RouteContext | EventContext | VenueContext;
+
+const props = Astro.props;
+const { locale, type, title: customTitle, limit = 3 } = props;
+const t = useTranslations(locale);
+
+let events: Event[] = [];
+
+if (type === 'post') {
+  events = getRelatedEventsForPost(props.post, limit);
+} else if (type === 'route') {
+  events = getRelatedEventsForRoute(props.route, limit);
+} else if (type === 'event') {
+  events = getRelatedEventsForEvent(props.event, limit);
+} else if (type === 'venue') {
+  events = getRelatedEventsForVenue(props.venue, limit, props.excludeEventId);
+}
+
+const title = customTitle ?? t('detail.relatedEvents');
+
+const links = events.map((event) => ({
+  url: getEventDetailUrl(event.slug, locale),
+  title: getEventDisplayTitle(event, locale),
+  meta: `${formatFullDate(event.date, locale)} · ${event.venue}`,
+  image: event.imageUrl || event.image || null,
+}));
+---
+
+{links.length > 0 && (
+  <CrossLinksSection title={title} links={links} />
+)}

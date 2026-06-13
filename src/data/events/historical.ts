@@ -22,7 +22,7 @@ export const historicalEvents: Event[] = [
     currency: 'EUR',
     tags: ['la-plazuela', 'flamenco-urbano', 'funk', 'plaza-de-toros', 'entradas'],
     featured: false,
-    seoIndex: 'never',
+    seoIndex: 'always',
     source: 'manual',
     sourceUrl: 'https://www.ondacero.es/emisoras/andalucia/granada/noticias/plazuela-presenta-show-granada-mano-cervezas-alhambra-dentro-gira-2026_202605116a01a767b5b06629960bee32.html',
     performer: {

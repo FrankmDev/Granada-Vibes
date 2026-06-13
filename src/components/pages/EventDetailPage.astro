@@ -2,7 +2,6 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
-import Breadcrumbs from '@components/layout/Breadcrumbs.astro';
 import VenueMap from '@components/ui/VenueMap.astro';
 import EventImage from '@components/ui/EventImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
@@ -11,10 +10,15 @@ import SectionHeader from '@components/ui/SectionHeader.astro';
 import { getDirectoryHref, getIndexableEvents, getIndexableVenueEntries } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
-import { getEventDetailUrl, getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
-import { formatFullDate, formatTime, formatDuration } from '@utils/dates';
-import { getRelatedRoutesForEvent, getRelatedPostsForEvent, getNeighborhoodLink } from '@utils/cross-links';
-import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+import { getEventDetailUrl, getRoute } from '@utils/routes';
+import { formatFullDate, formatTime } from '@utils/dates';
+import { getNeighborhoodLink } from '@utils/cross-links';
+import RelatedGuides from '@components/related/RelatedGuides.astro';
+import RelatedEvents from '@components/related/RelatedEvents.astro';
+import RelatedRoutes from '@components/related/RelatedRoutes.astro';
+import RelatedVenues from '@components/related/RelatedVenues.astro';
+import ContinueExploring from '@components/related/ContinueExploring.astro';
+import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
 import {
   formatPriceLabel,
   getEventDisplayTitle,
@@ -25,7 +29,6 @@ import {
   isPastEvent,
   shouldIndexEventDetail,
 } from '@utils';
-import { getBlogDisplayTitle, getRouteDisplayTitle } from '@utils/content-seo';
 import type { Event, Locale } from '@types';
 import '@styles/pages/event-detail.css';
 
@@ -206,58 +209,11 @@ const relatedEvents = allEvents
   })
   .slice(0, 3);
 
-const relatedRoutesForEvent = getRelatedRoutesForEvent(event, 2);
-const relatedPostsForEvent = getRelatedPostsForEvent(event, 2);
 const neighborhoodLink = getNeighborhoodLink(event.neighborhood, locale);
 const venueDirectoryEntry = getIndexableVenueEntries().find((entry) => entry.events.some((item) => item.id === event.id));
 const hasPassed = isPastEvent(event);
 const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
 const displayTitle = getEventDisplayTitle(event, locale);
-const beforeTravelPost = relatedPostsForEvent.find((item) => item.slug === 'antes-de-llegar-granada')
-  ?? null;
-const tapasPost = relatedPostsForEvent.find((item) => item.slug === 'tapas-gratis-granada')
-  ?? null;
-
-const crossLinks = Array.from(new Map([
-  byTimeLink,
-  plannerLink,
-  ...relatedRoutesForEvent.map((r) => ({
-    url: getRouteDetailUrl(r.slug, locale),
-    title: getRouteDisplayTitle(r, locale),
-    meta: `${formatDuration(r.duration, locale)} · ${t(`categories.${r.category}`)}`,
-    image: r.image,
-  })),
-  ...relatedPostsForEvent.map((p) => ({
-    url: getBlogDetailUrl(p.slug, locale),
-    title: getBlogDisplayTitle(p, locale),
-    meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
-    image: p.image,
-  })),
-  ...(neighborhoodLink
-    ? [{
-        url: neighborhoodLink.url,
-        title: neighborhoodLink.label,
-        meta: t('detail.exploreNeighborhood'),
-        image: null,
-      }]
-    : []),
-  ...(beforeTravelPost
-    ? [{
-        url: getBlogDetailUrl(beforeTravelPost.slug, locale),
-        title: getBlogDisplayTitle(beforeTravelPost, locale),
-        meta: `${t('blog.readingTime', { minutes: beforeTravelPost.readingTime })} · ${t(`blog.categories.${beforeTravelPost.category}`)}`,
-        image: beforeTravelPost.image,
-      }]
-    : []),
-  ...(tapasPost
-    ? [{
-        url: getBlogDetailUrl(tapasPost.slug, locale),
-        title: getBlogDisplayTitle(tapasPost, locale),
-        meta: `${t('blog.readingTime', { minutes: tapasPost.readingTime })} · ${t(`blog.categories.${tapasPost.category}`)}`,
-        image: tapasPost.image,
-      }]
-    : []),
-].map((link) => [link.url, link])).values()).slice(0, 4);
 
 const eventImage = event.remoteImageUrl || event.imageUrl || event.image;
 const ogImage = eventImage || 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Granada_-_Teatro_Isabel_la_Cat%C3%B3lica_8.jpg';
@@ -344,15 +300,6 @@ faq.push({
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
   <EventDetailHero event={event} locale={locale} />
-
-  <Breadcrumbs
-    variant="light"
-    items={[
-      { label: copy.breadcrumb.home, href: getRoute('home', locale) },
-      { label: copy.breadcrumb.listing, href: getRoute('events', locale) },
-      { label: displayTitle },
-    ]}
-  />
 
   <div class="det-page">
     <div class="det-content-wrap">
@@ -551,48 +498,20 @@ faq.push({
             </nav>
           )}
 
-          {crossLinks.length > 0 && (
-            <div class="upg-block upg-block--loose" id="event-related" data-reveal>
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">05</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">[ {t('detail.discoverMore')} ]</span>
-              </header>
-              <CrossLinksSection title={t('detail.discoverMore')} links={crossLinks} />
+          <div class="upg-block upg-block--loose" id="event-related" data-reveal>
+            <div class="upg-block-bg"></div>
+            <header class="upg-header">
+              <span class="upg-num">05</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
+            </header>
+            <div class="upg-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
+              <RelatedVenues type="event" event={event} locale={locale} title={t('detail.relatedVenues')} limit={2} />
+              <RelatedEvents type="event" event={event} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+              <RelatedRoutes type="event" event={event} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+              <RelatedGuides type="event" event={event} locale={locale} title={t('detail.relatedGuides')} limit={3} />
             </div>
-          )}
-
-          {relatedEvents.length > 0 && (
-            <div class="upg-block upg-block--loose" data-reveal>
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">06</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">[ {isEnglish ? 'You may also like' : 'Otros eventos que te pueden interesar'} ]</span>
-              </header>
-              <div class="upg-related-events-grid">
-                {relatedEvents.map((related, index) => (
-                  <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-event-card" style={`--rd: ${index * 0.15}s`}>
-                    <div class="urec-thumb">
-                      {(related.imageUrl || related.image) ? (
-                        <EventImage event={related} alt={getEventDisplayTitle(related, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 400px" width={400} height={250} />
-                      ) : (
-                        <div class="urec-thumb-fallback"></div>
-                      )}
-                    </div>
-                    <div class="urec-content">
-                      <span class="urec-title">{getEventDisplayTitle(related, locale)}</span>
-                      <span class="urec-meta">{formatFullDate(related.date, locale)} · {related.venue}</span>
-                    </div>
-                    <div class="urec-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
+          </div>
         </main>
 
         <aside class="upg-sidebar">
@@ -689,11 +608,17 @@ faq.push({
               </div>
             )}
           </div>
-        </aside>
+          </aside>
+        </div>
       </div>
-    </div>
 
-    <div class="det-footer-orn" aria-hidden="true">
+      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
+        <CollaborateCTA locale={locale} variant="event" />
+      </div>
+
+      <ContinueExploring locale={locale} />
+
+      <div class="det-footer-orn" aria-hidden="true">
       <span class="det-orn-line"></span>
       <span class="det-orn-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
       <span class="det-orn-line"></span>

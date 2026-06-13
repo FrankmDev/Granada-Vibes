@@ -1,0 +1,71 @@
+---
+import type { BlogPost, Event, Locale, Route } from '@types';
+import type { VenueDirectoryEntry } from '@data/directories';
+import { useTranslations } from '@i18n/utils';
+import { getBlogDetailUrl } from '@utils/routes';
+import { getBlogDisplayTitle } from '@utils/content-seo';
+import {
+  getRelatedGuidesForPost,
+  getRelatedGuidesForRoute,
+  getRelatedGuidesForEvent,
+  getRelatedGuidesForVenue,
+} from '@utils/related-content';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+
+interface BaseProps {
+  locale: Locale;
+  title?: string;
+  limit?: number;
+}
+
+interface PostContext extends BaseProps {
+  type: 'post';
+  post: BlogPost;
+}
+
+interface RouteContext extends BaseProps {
+  type: 'route';
+  route: Route;
+}
+
+interface EventContext extends BaseProps {
+  type: 'event';
+  event: Event;
+}
+
+interface VenueContext extends BaseProps {
+  type: 'venue';
+  venue: VenueDirectoryEntry;
+}
+
+type Props = PostContext | RouteContext | EventContext | VenueContext;
+
+const props = Astro.props;
+const { locale, type, title: customTitle, limit = 3 } = props;
+const t = useTranslations(locale);
+
+let guides: BlogPost[] = [];
+
+if (type === 'post') {
+  guides = getRelatedGuidesForPost(props.post, limit);
+} else if (type === 'route') {
+  guides = getRelatedGuidesForRoute(props.route, limit);
+} else if (type === 'event') {
+  guides = getRelatedGuidesForEvent(props.event, limit);
+} else if (type === 'venue') {
+  guides = getRelatedGuidesForVenue(props.venue, limit);
+}
+
+const title = customTitle ?? t('detail.relatedGuides');
+
+const links = guides.map((guide) => ({
+  url: getBlogDetailUrl(guide.slug, locale),
+  title: getBlogDisplayTitle(guide, locale),
+  meta: `${t('blog.readingTime', { minutes: guide.readingTime })} · ${t(`blog.categories.${guide.category}`)}`,
+  image: guide.image || null,
+}));
+---
+
+{links.length > 0 && (
+  <CrossLinksSection title={title} links={links} />
+)}
