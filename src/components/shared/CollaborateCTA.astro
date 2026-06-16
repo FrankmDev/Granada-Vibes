@@ -15,7 +15,7 @@ import type { Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 
-export type CollaborateCtaVariant = 'event' | 'venue' | 'guide' | 'route' | 'timePlan';
+type CollaborateCtaVariant = 'event' | 'venue' | 'guide' | 'route' | 'timePlan';
 
 interface Props {
   locale: Locale;
@@ -89,7 +89,6 @@ const ariaLabel = `${copy.cta} — ${copy.title}`;
     --ccta-border: rgba(26, 22, 25, 0.1);
     --ccta-ink: #1a1619;
     --ccta-ink-2: #3a3532;
-    --ccta-ink-3: #6b6058;
     --ccta-orange: #e8622a;
     --ccta-gold: #c9a84c;
     --ccta-on-dark: #f5f0ea;
@@ -121,7 +120,6 @@ const ariaLabel = `${copy.cta} — ${copy.title}`;
     --ccta-border: rgba(255, 255, 255, 0.12);
     --ccta-ink: #f0ede8;
     --ccta-ink-2: #d8d0c8;
-    --ccta-ink-3: #9a9490;
   }
 
   /* Decorative corner brackets (consistent con ScreenFrame) */

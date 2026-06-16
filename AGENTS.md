@@ -346,3 +346,162 @@ Ejecutar **el mismo día** que se apunte el dominio definitivo a Vercel/Netlify:
 - **Fase 1 (actual)**: Web estática con datos mock. Filtros funcionales. Páginas de detalle completas. SEO bien trabajado.
 - **Fase 2**: CMS Sanity. Formulario de contacto con Resend. Mapa interactivo (Mapbox o Leaflet).
 - **Fase 3**: IA contextual ("tengo 2h en el Albaicín, qué hago"). Autenticación. Rutas guardadas. Modo Semana Santa.
+
+---
+
+## BlogDetailHero — v13 "ALHAMBRA SPREAD" (integrada)
+
+`src/components/blog/BlogDetailHero.astro` es el hero oscuro de las páginas de detalle de guías (`/guias/[slug]/`). v13 es un **spread editorial de revista**: la imagen de portada a la izquierda con tratamiento cinematográfico (corner brackets, vignette, glare, stamp, glow, shadow) y el título monumental a la derecha con lead + italic accent focal y un folio editorial "PLIEGO Nº 003" encima. Sin data dock, sin ghost label.
+
+### Concepto
+
+Un spread abierto: la imagen de portada actúa como "cover photo" y el título como "cover title". La asimetría (grid 38fr / 62fr) crea tensión. La **marca de folio "PLIEGO Nº 003"** sobre el título da carácter editorial y ata con el número de archivo del stamp. La estrella nazarí y los deco-rings son las únicas decoraciones figurativas.
+
+### Reglas de integración obligatorias
+
+- **Tokens globales**: usar SIEMPRE `var(--color-*)` de `src/styles/tokens.css`. NUNCA tokens locales `--s-*`.
+- **Header spacing real**: la NavBar fija mide **72px** (no usar `var(--header-height)` que es 64px). Back link y REF a `top: calc(72px + 1.5rem)`. Stage con `padding-top: calc(72px + 4rem)`.
+- **ScreenFrame**: importar `<ScreenFrame />` de `@components/ui/ScreenFrame.astro`. TL = `ARCHIVO · {archiveRef}`, TR = `categoryLabel`, BL = `GRN URBAN`, BR = `coordinates`.
+- **Capas atmosféricas (3)**: `bhero-mesh` (gradiente + #0a0a0a), `bhero-radial` (radial gold/orange), `bhero-grain` (SVG turbulence con mix-blend soft-light). Mismas que `CinematicHero`.
+- **Capa decorativa (5)**: `deco-ring r1/r2`, `deco-dot d1`, `deco-line v1` (vertical 38%), `deco-line h1` (horizontal 18% top-right). Sin ghost label.
+- **Cover image treatment**: `OptimizedImage` con `aspect-ratio: 3/4`, `object-fit: cover`, `filter: saturate(1.05) contrast(1.08) brightness(0.92)`. Wrapper con `border-radius: 14px`, shadow 3-layer, corner brackets 22px (crecen a 36px en hover con gold), vignette radial + glare sweep. Stamp "CULTURA Nº 003" rotated -1.5deg top-left. Ribbon "DESTACADA" orange top-right si `featured`. Glow gold radial detrás.
+- **Folio editorial**: línea con `— line + "PLIEGO Nº 003" + line —` en italic Fraunces gold encima del título.
+- **Title char-by-char** con stagger y NBSP para espacios. `text-wrap: pretty`. Lead en block cream, focal en italic accent con hanging indent.
+- **Bottom bar**: `categoryLabel ◆ VOL. I · 2026 ◆ 37°10′N · 3°35′W`. Sin scroll-hint en desktop (overlap). Scroll-hint solo en mobile.
+- **Sin gimmicks eliminados**: NO data dock, NO ghost label, NO bento card, NO numeral romano, NO eyebrow rule triple, NO ornament.
+
+### Estructura del template
+
+```
+<section class="bhero" data-bhero>
+  <ScreenFrame ... />
+
+  <!-- 3 capas atmosféricas (z-index 1) -->
+  <div class="bhero-canvas">
+    <div class="bhero-mesh" /> <div class="bhero-radial" /> <div class="bhero-grain" />
+  </div>
+
+  <!-- Capa decorativa (z-index 2) -->
+  <div class="bhero-deco">
+    <span class="deco-ring r1/r2" /> <span class="deco-dot d1" />
+    <span class="deco-line v1" /> <span class="deco-line h1" />
+  </div>
+
+  <!-- Nav scrim (z-index 5) -->
+  <div class="bhero-nav-scrim" />
+
+  <!-- Back link top-left a top: calc(72px + 1.5rem) (z-index 30) -->
+  <a class="bhero-back">← {backLabel}</a>
+
+  <!-- Archive REF top-right (z-index 30) -->
+  <div class="bhero-ref">REF. {archiveRef}</div>
+
+  <!-- Main spread 38fr/62fr (z-index 10) -->
+  <div class="bhero-stage">
+    <div class="bhero-spread">
+      <!-- LEFT: Cover image -->
+      <figure class="bhero-figure">
+        <div class="bhero-figure-wrap">
+          <OptimizedImage /> | <fallback nazarí SVG />
+          <span class="bhero-figure-vignette" />
+          <span class="bhero-figure-glare" />
+          <span class="bracket tl/tr/bl/br" /> <!-- 4 corner brackets -->
+          <div class="bhero-stamp">{category} · Nº {ref}</div>
+          {featured && <div class="bhero-ribbon">★ {featuredLabel}</div>}
+        </div>
+        <div class="bhero-figure-glow" /> <div class="bhero-figure-shadow" />
+        <figcaption class="bhero-caption">ARCHIVO · {ref} · coords</figcaption>
+      </figure>
+
+      <!-- RIGHT: Editorial lockup -->
+      <div class="bhero-text">
+        <div class="lockup-rule" />
+        <div class="bhero-eyebrow">line + EDICIÓN · GUÍA / {category} + line</div>
+        <div class="bhero-meta">
+          <span class="bhero-cat">{category}</span>
+          <span class="bhero-sections">{N} secciones</span>
+        </div>
+        <div class="bhero-folio">— PLIEGO Nº 003 —</div> <!-- NEW editorial mark -->
+        <h1 class="bhero-title">
+          <span class="bhero-title-lead">{lead}</span>      <!-- huge regular cream -->
+          <span class="bhero-title-focal">{focal}</span>   <!-- huge italic accent hanging -->
+        </h1>
+        <p class="bhero-lead">"{description}"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar (hidden on mobile) -->
+  <div class="bhero-bottom-bar">categoryLabel ◆ VOL. I · 2026 ◆ 37°10′N · 3°35′W</div>
+
+  <!-- Scroll hint (mobile only) -->
+  <div class="scroll-hint">line + scroll text</div>
+</section>
+```
+
+### Stagger de animaciones (todos usan `var(--ease-expo)`)
+
+| Delay | Elemento |
+|---|---|
+| 0.20s | `.bhero-back` |
+| 0.30s | `.bhero-ref` |
+| 0.35s | `.lockup-rule` |
+| 0.40s | `.bhero-figure` (slide + rotate) |
+| 0.45s | `.bhero-eyebrow` |
+| 0.55s | `.bhero-meta` |
+| 0.70s | `.bhero-folio` |
+| 0.35s + i·0.028s | `.bhero-char` (todos los chars del lead) |
+| + i·0.028s (continuación) | `.bhero-char--focal` (chars del focal) |
+| 0.95s | `.bhero-lead` |
+| 1.00s | `.bhero-stamp` (rotate-in) |
+| 1.10s | `.bhero-ribbon` (drop-in) |
+| 1.20s | `.bhero-bottom-bar` |
+| 1.30s | `.bhero-caption` |
+| 9s loop | `.bhero-figure-glow` (breathe) |
+
+### Title char-by-char y `text-wrap: pretty`
+
+El título se renderiza palabra por palabra, char por char con stagger. Los espacios entre palabras son `<span class="bhero-space">{'\u00A0'}</span>` con NBSP (`\u00A0`) porque Astro colapsa espacios normales dentro de spans. CSS: `.bhero-space { display: inline-block; width: 0.28em; min-width: 0.28em; }`.
+
+`text-wrap: pretty` se aplica al título y al lead. Adicionalmente: `word-break: normal; overflow-wrap: normal; hyphens: none;`.
+
+### Title split (lead + focal)
+
+Frontmatter logic — same as v11 (skip words ES+EN, strong words ≥5 chars, isSkip/isStrong helpers). Resultado:
+- "Miradores de Granada" → `Miradores` / `de Granada` ✓
+- "Sierra Nevada desde Granada" → `Sierra Nevada` / `desde Granada` ✓
+- "Tapas gratis en Granada" → `Tapas gratis` / `en Granada` ✓
+- "Carocas de Granada" → `Carocas` / `de Granada` ✓
+- "Albaicín a pie" → `Albaicín` / `a pie` ✓
+
+### Cover image fallback
+
+Si `post.image` es undefined, se muestra un SVG nazarí centrado con fondo gradiente `#1a1410 → #2a1f15`. Sin corner brackets ni stamp.
+
+### Responsive
+
+- **Desktop ≥1024px**: spread 38fr/62fr, title max 8.2rem
+- **Tablet 768-1024px**: spread 34fr/66fr, title 4.5rem, image 4/5
+- **Mobile <768px**: stack vertical (image on top, text below), title 3.6rem
+- **Mobile <480px**: image max-width 260px, title 2.8rem
+
+### Props del componente
+
+```typescript
+interface Props {
+  post: BlogPost;
+  locale: Locale;
+  readingMinutes: number;     // ya no se usa (sin dock), pero se mantiene para compatibilidad
+  sectionCount: number;       // usado en bhero-sections badge
+  displayTitle?: string;      // ya aplicado getBlogDisplayTitle
+}
+```
+
+### Archivos relacionados (NO modificar al extender)
+
+- `src/components/ui/ScreenFrame.astro` — componente global del marco cinematic
+- `src/components/ui/OptimizedImage.astro` — usado para la cover image (soporta local + remote)
+- `src/styles/tokens.css` — tokens `--color-*`, `--ease-out-expo`, `--font-display/body`
+- `src/styles/global.css` — `.cin-screen-frame`, `.cin-corner`, `.cin-frame-tag`, `.cin-grain`, `@keyframes char-rise`
+- `src/components/events/EventDetailHero.astro` — referencia para el tratamiento cinematográfico de la imagen (corner brackets, vignette, glare, stamp, ribbon)
+- `src/styles/pages/blog-detail.css` — estilos del artículo cream debajo del hero (NO tocar)

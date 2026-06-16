@@ -1,6 +1,5 @@
 import type { ImageMetadata } from 'astro';
 
-// ── ROUTES ───────────────────────────────────────────────────────────
 import imgArtesanos from '@assets/images/routes/artesanos.avif';
 import imgBosqueAlhambra from '@assets/images/routes/bosque-alhambra.avif';
 import imgEspartoRealejo from '@assets/images/routes/esparto-realejo.avif';
@@ -16,7 +15,6 @@ import imgSacromonteFlamenco from '@assets/images/routes/sacromonte-flamenco.avi
 import imgTapeo from '@assets/images/routes/tapeo.avif';
 import imgVermutAlbaicin from '@assets/images/routes/vermut-albaicin.avif';
 
-// ── BLOG ─────────────────────────────────────────────────────────────
 import imgAlbaicinPie from '@assets/images/blog/albaicin-pie.avif';
 import imgAlhambraEntradas from '@assets/images/blog/alhambra-entradas.avif';
 import imgAntesDeLlegar from '@assets/images/blog/antes-de-llegar.avif';
@@ -29,7 +27,6 @@ import imgSierraNevada from '@assets/images/blog/sierra-nevada.avif';
 import imgTapasGratis from '@assets/images/blog/tapas-gratis.avif';
 
 const localImageMap: Record<string, ImageMetadata> = {
-  // routes
   '/images/routes/artesanos.avif': imgArtesanos,
   '/images/routes/bosque-alhambra.avif': imgBosqueAlhambra,
   '/images/routes/esparto-realejo.avif': imgEspartoRealejo,
@@ -45,7 +42,6 @@ const localImageMap: Record<string, ImageMetadata> = {
   '/images/routes/tapeo.avif': imgTapeo,
   '/images/routes/vermut-albaicin.avif': imgVermutAlbaicin,
 
-  // blog
   '/images/blog/albaicin-pie.avif': imgAlbaicinPie,
   '/images/blog/alhambra-entradas.avif': imgAlhambraEntradas,
   '/images/blog/antes-de-llegar.avif': imgAntesDeLlegar,
@@ -58,7 +54,7 @@ const localImageMap: Record<string, ImageMetadata> = {
   '/images/blog/tapas-gratis.avif': imgTapasGratis,
 };
 
-export type ResolvedImage =
+type ResolvedImage =
   | { type: 'import'; image: ImageMetadata }
   | { type: 'remote'; url: string };
 

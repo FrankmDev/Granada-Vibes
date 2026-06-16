@@ -17,14 +17,9 @@ export const SITE_CONFIG: SiteConfig = {
   },
 };
 
-export const LOCALE_LABELS: Record<Locale, string> = {
-  es: 'Español',
-  en: 'English',
-};
-
 export const LOCALE_PATHS: Record<Locale, string> = {
   es: '',
   en: '/en',
 };
 
-export const DEFAULT_OG_IMAGE = '/og-default.png';
+export const DEFAULT_OG_IMAGE = '/favicon.jpg';

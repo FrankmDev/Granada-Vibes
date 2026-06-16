@@ -2,7 +2,7 @@
  * Short labels for on-page heroes and section headers.
  * Long SEO copy belongs in BaseLayout `title` / meta description only.
  */
-export function compactDisplayTitle(value: string, maxLength = 22): string {
+function compactDisplayTitle(value: string, maxLength = 22): string {
   const trimmed = value.trim();
   if (trimmed.length <= maxLength) return trimmed.toUpperCase();
 

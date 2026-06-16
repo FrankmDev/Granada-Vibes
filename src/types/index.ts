@@ -212,6 +212,11 @@ export interface MixedRoute {
 
 export type BlogCategory = 'guia' | 'cultura' | 'gastronomia' | 'barrios' | 'consejos';
 
+export interface BlogGuideFact {
+  label: LocalizedText;
+  value: LocalizedText;
+}
+
 export interface BlogPost extends ContentRelations {
   id: string;
   slug: string;
@@ -226,6 +231,7 @@ export interface BlogPost extends ContentRelations {
   readingTime: number; // minutes
   featured: boolean;
   zone?: string;
+  guideFacts?: BlogGuideFact[];
 }
 
 // ============================================

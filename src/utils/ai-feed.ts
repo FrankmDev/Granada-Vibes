@@ -1,7 +1,7 @@
 import { SITE_CONFIG } from '@config/site';
 import type { BlogPost, Event, Locale, Route } from '@types';
 
-export const AI_FEED_UPDATED_AT = new Date().toISOString();
+const AI_FEED_UPDATED_AT = new Date().toISOString();
 
 export interface AiFeedMeta {
   name: string;
@@ -91,7 +91,7 @@ export function getAiFeedMeta(description: string, language: AiFeedMeta['languag
   };
 }
 
-export function absoluteUrl(value: string | undefined): string | undefined {
+function absoluteUrl(value: string | undefined): string | undefined {
   if (!value) return undefined;
   if (value.startsWith('https://') || value.startsWith('http://')) return value;
   if (value.startsWith('/')) return `${SITE_CONFIG.url}${value}`;

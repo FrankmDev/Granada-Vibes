@@ -78,14 +78,14 @@ function resolveSlugs<T extends { slug: string }>(
   return result;
 }
 
-export function resolveRelatedGuides(
+function resolveRelatedGuides(
   slugs: string[] | undefined,
   excludeSlug?: string
 ): BlogPost[] {
   return resolveSlugs(slugs, getPostBySlug, excludeSlug);
 }
 
-export function resolveRelatedEvents(
+function resolveRelatedEvents(
   slugs: string[] | undefined,
   excludeId?: string
 ): Event[] {
@@ -107,14 +107,14 @@ export function resolveRelatedEvents(
   return result;
 }
 
-export function resolveRelatedRoutes(
+function resolveRelatedRoutes(
   slugs: string[] | undefined,
   excludeSlug?: string
 ): Route[] {
   return resolveSlugs(slugs, getRouteBySlug, excludeSlug);
 }
 
-export function resolveRelatedVenues(slugs: string[] | undefined): VenueDirectoryEntry[] {
+function resolveRelatedVenues(slugs: string[] | undefined): VenueDirectoryEntry[] {
   if (!slugs || slugs.length === 0) return [];
 
   const seen = new Set<string>();

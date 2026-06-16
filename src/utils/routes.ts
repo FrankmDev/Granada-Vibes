@@ -1,4 +1,4 @@
-import type { Locale, RouteDifficulty } from '@types';
+import type { Locale } from '@types';
 
 type RouteName = 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal' | 'collaborate';
 
@@ -52,14 +52,4 @@ export function getPlanDetailUrl(slug: string, locale: Locale): string {
 
 export function getSwitchLangUrl(locale: Locale): string {
   return locale === 'es' ? '/en/' : '/';
-}
-
-export const difficultyConfig: Record<RouteDifficulty, { bars: string; level: 1 | 2 | 3 }> = {
-  easy: { bars: '■□□', level: 1 },
-  moderate: { bars: '■■□', level: 2 },
-  challenging: { bars: '■■■', level: 3 },
-};
-
-export function getDifficultyBars(difficulty: RouteDifficulty): string {
-  return difficultyConfig[difficulty].bars;
 }

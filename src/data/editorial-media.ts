@@ -1,4 +1,4 @@
-export interface EditorialMediaBlock {
+interface EditorialMediaBlock {
   es: string;
   en: string;
 }

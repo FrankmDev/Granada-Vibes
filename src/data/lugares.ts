@@ -2,7 +2,7 @@
 // BASE DE DATOS DE LUGARES — inventario editorial verificado de Granada
 // ============================================================
 
-export type LugarTipo =
+type LugarTipo =
   | 'monumento'
   | 'mirador'
   | 'bar'

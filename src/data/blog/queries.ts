@@ -1,4 +1,4 @@
-import type { BlogPost, BlogCategory } from '@types';
+import type { BlogPost } from '@types';
 import { posts } from './posts.js';
 
 export function getAllPosts(): BlogPost[] {
@@ -7,10 +7,6 @@ export function getAllPosts(): BlogPost[] {
 
 export function getFeaturedPosts(): BlogPost[] {
   return getAllPosts().filter((p) => p.featured);
-}
-
-export function getPostsByCategory(category: BlogCategory): BlogPost[] {
-  return getAllPosts().filter((p) => p.category === category);
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
@@ -22,8 +18,4 @@ export function getRelatedPosts(post: BlogPost, limit = 3): BlogPost[] {
     .filter((p) => p.id !== post.id)
     .filter((p) => p.category === post.category || p.tags.some((t) => post.tags.includes(t)))
     .slice(0, limit);
-}
-
-export function getPostsByTag(tag: string): BlogPost[] {
-  return getAllPosts().filter((p) => p.tags.includes(tag));
 }

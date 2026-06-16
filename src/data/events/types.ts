@@ -4,9 +4,9 @@ export type EventInput = Omit<Event, 'price'> & {
   price?: Event['price'];
 };
 
-export type EventPatch = Partial<Event>;
+type EventPatch = Partial<Event>;
 
-export interface EventBuildContext {
+interface EventBuildContext {
   source: 'generated' | 'mock';
 }
 

@@ -35,14 +35,8 @@ const defaultSizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw';
 const baseClasses = 'optimized-img';
 const combinedClasses = className ? `${baseClasses} ${className}` : baseClasses;
 
-// Only run Astro's image pipeline for stable image hosts. Wikimedia is kept as
-// a runtime <img> source because it rate-limits build-time optimization bursts.
-const OPTIMIZABLE_HOSTNAMES = [
-];
-
 let resolvedImage: ImageMetadata | null = null;
 let remoteUrl: string | null = null;
-let remoteOptimizable = false;
 
 if (typeof src === 'string') {
   if (isLocalResolvable(src)) {
@@ -50,16 +44,6 @@ if (typeof src === 'string') {
     if (resolved && resolved.type === 'import') {
       resolvedImage = resolved.image;
     }
-  } else if (src.startsWith('http://') || src.startsWith('https://')) {
-    try {
-      const hostname = new URL(src).hostname;
-      remoteOptimizable = OPTIMIZABLE_HOSTNAMES.some(
-        (h) => hostname === h || hostname.endsWith('.' + h)
-      );
-    } catch {
-      remoteOptimizable = false;
-    }
-    remoteUrl = src;
   } else {
     remoteUrl = src;
   }
@@ -68,8 +52,6 @@ if (typeof src === 'string') {
 }
 
 const imgSizes = sizes || defaultSizes;
-const fallbackWidth = width || 800;
-const fallbackHeight = height || 600;
 const responsiveWidths = widths ?? [360, 640, 960, 1280, 1600];
 ---
 
@@ -86,20 +68,6 @@ const responsiveWidths = widths ?? [360, 640, 960, 1280, 1600];
     {...(fetchpriority ? { fetchpriority } : {})}
     class={combinedClasses}
     inferSize
-  />
-) : remoteOptimizable && remoteUrl ? (
-  <Image
-    src={remoteUrl}
-    alt={alt}
-    width={fallbackWidth}
-    height={fallbackHeight}
-    sizes={imgSizes}
-    quality={quality}
-    widths={responsiveWidths}
-    loading={loading}
-    decoding={decoding}
-    {...(fetchpriority ? { fetchpriority } : {})}
-    class={combinedClasses}
   />
 ) : (
   <img

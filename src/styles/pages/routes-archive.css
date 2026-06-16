@@ -8,11 +8,9 @@
       --r-ink-2:    #3d3632;
       --r-ink-3:    #6b6058;
       --r-orange:   #e8622a;
-      --r-orange-2: #f07040;
       --r-gold:     #c9a84c;
-      --r-gold-2:   #e6c587;
       --r-border:   rgba(26, 22, 25, 0.08);
-      --r-border-2: rgba(26, 22, 25, 0.12);
+      --r-border-2:   rgba(26, 22, 25, 0.12);
     }
 
     /* ═══════════════════════════════════════════════════════════════
@@ -852,12 +850,10 @@
        ═══════════════════════════════════════════════════════════════ */
     .rhythm-section {
       --rh-cream:     #f5f0ea;
-      --rh-cream-2:   #faf7f3;
       --rh-ink:       #1a1619;
       --rh-ink-2:     #3d3632;
       --rh-ink-3:     #6b6058;
       --rh-orange:    #e8622a;
-      --rh-gold:      #c9a84c;
       --rh-border:    rgba(26, 22, 25, 0.08);
 
       position: relative;
@@ -1355,13 +1351,10 @@
        ═══════════════════════════════════════════════════════════════ */
     .routes-cta-section {
       --c-cream:    #f5f0ea;
-      --c-cream-2:  #ede8e0;
       --c-ink:      #1a1619;
       --c-ink-2:    #3a3532;
-      --c-ink-3:    #5a4f47;
       --c-ink-4:    #8a7f77;
       --c-orange:   #e8622a;
-      --c-gold:     #c9a84c;
       --c-border:   rgba(26, 22, 25, 0.12);
 
       position: relative;

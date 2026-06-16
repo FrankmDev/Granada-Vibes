@@ -3,22 +3,26 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import BlogDetailHero from '@components/blog/BlogDetailHero.astro';
-import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import InstagramIcon from '@components/icons/InstagramIcon.astro';
+import WhatsAppIcon from '@components/icons/WhatsAppIcon.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
 import ReadingProgress from '@components/ui/ReadingProgress.astro';
-import { getRelatedPosts, getAllPosts } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
 import { getBlogDetailUrl, getRoute } from '@utils/routes';
-import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import RelatedGuides from '@components/related/RelatedGuides.astro';
 import RelatedEvents from '@components/related/RelatedEvents.astro';
 import RelatedRoutes from '@components/related/RelatedRoutes.astro';
 import RelatedVenues from '@components/related/RelatedVenues.astro';
 import ContinueExploring from '@components/related/ContinueExploring.astro';
-import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
 import { clampMetaDescription } from '@utils/seo-text';
 import { getBlogDisplayTitle, getBlogSeoDescription } from '@utils/content-seo';
 import { editorialMediaByBlogSlug } from '@data/editorial-media';
+import {
+  getRelatedEventsForPost,
+  getRelatedGuidesForPost,
+  getRelatedRoutesForPost,
+  getRelatedVenuesForPost,
+} from '@utils/related-content';
 import type { BlogPost, Locale } from '@types';
 import '@styles/pages/blog-detail.css';
 
@@ -27,60 +31,28 @@ interface Props {
   post: BlogPost;
 }
 
+interface TocItem {
+  text: string;
+  id: string;
+}
+
+interface GuideFact {
+  label: string;
+  value: string;
+}
+
+interface ShareAction {
+  id: 'whatsapp' | 'instagram' | 'facebook';
+  label: string;
+  ariaLabel: string;
+  href?: string;
+  copyOnly?: boolean;
+}
+
 const { locale, post } = Astro.props as Props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
-const allPosts = getAllPosts();
-const postIndex = allPosts.findIndex((p) => p.id === post.id);
-const prevPost = postIndex > 0 ? allPosts[postIndex - 1] : null;
-const nextPost = postIndex < allPosts.length - 1 ? allPosts[postIndex + 1] : null;
-const relatedPosts = getRelatedPosts(post, 3);
 const displayTitle = getBlogDisplayTitle(post, locale);
-const seasonalGuideSlugs = new Set([
-  'carocas-granada',
-  'corpus-granada-2026',
-  'feria-corpus-granada-2026',
-  'tarasca-granada-2026',
-]);
-const beforeTravelPost = allPosts.find((item) => item.slug === 'antes-de-llegar-granada');
-const oneDayPost = allPosts.find((item) => item.slug === 'granada-en-un-dia-itinerario');
-const tapasPost = allPosts.find((item) => item.slug === 'tapas-gratis-granada');
-const byTimeLink = {
-  url: getRoute('byTime', locale),
-  title: t('nav.byTime'),
-  meta: t('mixedRoutes.heroSubtitle'),
-  image: null,
-};
-const plannerLink = {
-  url: getRoute('planner', locale),
-  title: t('nav.planner'),
-  meta: t('planner.heroDescription'),
-  image: null,
-};
-const evergreenPostLinks = [
-  beforeTravelPost,
-  seasonalGuideSlugs.has(post.slug) ? oneDayPost : null,
-  seasonalGuideSlugs.has(post.slug) ? tapasPost : null,
-]
-  .filter((item): item is BlogPost => Boolean(item) && item.id !== post.id)
-  .map((item) => ({
-    url: getBlogDetailUrl(item.slug, locale),
-    title: getBlogDisplayTitle(item, locale),
-    meta: `${t('blog.readingTime', { minutes: item.readingTime })} · ${t(`blog.categories.${item.category}`)}`,
-    image: item.image,
-  }));
-
-const planningLinks = Array.from(new Map([
-  byTimeLink,
-  plannerLink,
-  ...evergreenPostLinks,
-  ...relatedPosts.map((p) => ({
-    url: getBlogDetailUrl(p.slug, locale),
-    title: getBlogDisplayTitle(p, locale),
-    meta: `${t('blog.readingTime', { minutes: p.readingTime })} · ${t(`blog.categories.${p.category}`)}`,
-    image: p.image,
-  })),
-].map((link) => [link.url, link])).values()).slice(0, 5);
 
 const publishedDate = new Date(post.publishDate);
 const dateLocale = isEnglish ? 'en-GB' : 'es-ES';
@@ -89,84 +61,140 @@ const formattedDate = publishedDate.toLocaleDateString(dateLocale, {
   month: 'long',
   day: 'numeric',
 });
-const dayNum = publishedDate.getDate().toString().padStart(2, '0');
-const monthShort = publishedDate.toLocaleDateString(dateLocale, { month: 'short' }).toUpperCase();
 const categoryLabel = t(`blog.categories.${post.category}`);
 const categoryUrl = `${getRoute('blog', locale)}#content`;
 const ogImage = post.image ?? 'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg';
 
-// ── Auto-generated Table of Contents ──
+function stripHtml(value: string): string {
+  return value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function slugifyHeading(value: string, fallbackIndex: number): string {
+  const slug = value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' y ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+  return slug || `seccion-${fallbackIndex + 1}`;
+}
+
+function getUniqueHeadingId(baseId: string, usedIds: Map<string, number>): string {
+  const count = usedIds.get(baseId) ?? 0;
+  usedIds.set(baseId, count + 1);
+  return count === 0 ? baseId : `${baseId}-${count + 1}`;
+}
+
+function pushFact(facts: GuideFact[], fact: GuideFact | null, maxFacts: number): void {
+  if (!fact || !fact.label.trim() || !fact.value.trim() || facts.length >= maxFacts) return;
+  const key = `${fact.label}::${fact.value}`.toLowerCase();
+  const exists = facts.some((item) => `${item.label}::${item.value}`.toLowerCase() === key);
+  if (!exists) facts.push(fact);
+}
+
+function isHiddenGuideFact(fact: GuideFact): boolean {
+  const label = fact.label
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  return ['tipo', 'type', 'zona', 'zonas', 'area', 'areas'].includes(label);
+}
+
 const rawContent = post.content[locale];
-const plainText = rawContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-const wordCount = plainText.split(' ').length;
+const plainText = stripHtml(rawContent);
+const wordCount = plainText ? plainText.split(' ').length : 0;
 const calculatedReadingTime = Math.max(1, Math.ceil(wordCount / 220));
-const hasLongContent = wordCount > 800;
 
 let headingCounter = 0;
-interface TocItem { level: number; text: string; id: string }
 const tocItems: TocItem[] = [];
-
+const usedHeadingIds = new Map<string, number>();
 const mediaBlock = editorialMediaByBlogSlug[post.slug]?.[locale] ?? '';
 const contentWithMedia = mediaBlock
   ? rawContent.replace(/<\/p>/i, (match) => `${match}${mediaBlock}`)
   : rawContent;
 
-const processedContent = contentWithMedia.replace(/<(h2|h3)([^>]*)>([\s\S]*?)<\/\1>/gi, (_fullMatch, tag, attrs, innerHtml) => {
-  const text = innerHtml.replace(/<[^>]+>/g, '').trim();
-  const id = `section-${headingCounter++}`;
-  tocItems.push({ level: tag === 'h2' ? 2 : 3, text, id });
-  return `<${tag}${attrs} id="${id}">${innerHtml}</${tag}>`;
-});
+const processedContent = contentWithMedia.replace(
+  /<h2([^>]*)>([\s\S]*?)<\/h2>/gi,
+  (_fullMatch: string, attrs: string, innerHtml: string) => {
+    const text = stripHtml(innerHtml);
+    const id = getUniqueHeadingId(slugifyHeading(text, headingCounter), usedHeadingIds);
+    headingCounter += 1;
+    tocItems.push({ text, id });
+    const cleanedAttrs = attrs.replace(/\s+id=(["']).*?\1/i, '');
+    return `<h2${cleanedAttrs} id="${id}">${innerHtml}</h2>`;
+  }
+);
 
-const showAutoToc = hasLongContent && tocItems.length > 0;
+const keyFacts: GuideFact[] = [];
+const maxKeyFacts = 4;
+const guideFacts = post.guideFacts?.map((fact) => ({
+  label: fact.label[locale],
+  value: fact.value[locale],
+})).filter((fact) => !isHiddenGuideFact(fact)) ?? [];
 
-const copy = isEnglish
-  ? {
-      breadcrumb: {
-        home: 'Home',
-        listing: t('blog.title'),
-      },
-      section: {
-        article: '[ Article ]',
-        authorByline: 'Written by',
-        authorBio: 'GRN URBAN contributor specialising in local culture and experiential travel.',
-        infoLabel: 'INFORMATION',
-        shareLabel: 'Share article',
-        shareCopied: 'Link copied!',
-        tags: '[ Tags ]',
-        tocLabel: 'Contents',
-      },
-      seoDescription: clampMetaDescription(getBlogSeoDescription(post, locale)),
-      nav: {
-        prev: 'Previous article',
-        next: 'Next article',
-      },
-      planningTitle: 'Keep planning Granada',
-      planningEyebrow: '[ Related plans ]',
-    }
-  : {
-      breadcrumb: {
-        home: 'Inicio',
-        listing: t('blog.title'),
-      },
-      section: {
-        article: '[ Artículo ]',
-        authorByline: 'Escrito por',
-        authorBio: 'Colaborador de GRN URBAN especializado en cultura local y turismo experiencial.',
-        infoLabel: 'INFORMACIÓN',
-        shareLabel: 'Compartir artículo',
-        shareCopied: '¡Enlace copiado!',
-        tags: '[ Etiquetas ]',
-        tocLabel: 'Contenido',
-      },
-      seoDescription: clampMetaDescription(getBlogSeoDescription(post, locale)),
-      nav: {
-        prev: 'Artículo anterior',
-        next: 'Artículo siguiente',
-      },
-      planningTitle: 'Sigue preparando Granada',
-      planningEyebrow: '[ Planes relacionados ]',
-    };
+for (const fact of guideFacts) {
+  pushFact(keyFacts, fact, maxKeyFacts);
+}
+
+pushFact(keyFacts, { label: t('detail.readingTime'), value: t('blog.readingTime', { minutes: calculatedReadingTime }) }, maxKeyFacts);
+pushFact(keyFacts, { label: t('detail.publishDate'), value: formattedDate }, maxKeyFacts);
+const sidebarTocItems = tocItems.slice(0, 4);
+
+const shareUrl = Astro.url.href;
+const encodedShareUrl = encodeURIComponent(shareUrl);
+const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
+const shareActions: ShareAction[] = [
+  {
+    id: 'whatsapp',
+    label: t('detail.shareWhatsApp'),
+    ariaLabel: t('detail.shareOnWhatsApp'),
+    href: `https://wa.me/?text=${encodedShareText}%20${encodedShareUrl}`,
+  },
+  {
+    id: 'instagram',
+    label: t('detail.shareInstagram'),
+    ariaLabel: t('detail.copyForInstagram'),
+    copyOnly: true,
+  },
+  {
+    id: 'facebook',
+    label: t('detail.shareFacebook'),
+    ariaLabel: t('detail.shareOnFacebook'),
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`,
+  },
+];
+
+const relatedGuides = getRelatedGuidesForPost(post, 3);
+const relatedEvents = getRelatedEventsForPost(post, 3);
+const relatedRoutes = getRelatedRoutesForPost(post, 3);
+const relatedVenues = getRelatedVenuesForPost(post, 3);
+const hasRelatedContent =
+  relatedGuides.length > 0 ||
+  relatedEvents.length > 0 ||
+  relatedRoutes.length > 0 ||
+  relatedVenues.length > 0;
+
+const copy = {
+  breadcrumb: {
+    home: t('nav.home'),
+    listing: t('blog.title'),
+  },
+  section: {
+    article: t('detail.navArticle'),
+    keyFacts: t('detail.keyFacts'),
+    tocLabel: t('detail.inThisGuide'),
+    shareTitle: t('detail.shareGuideTitle'),
+    shareIntro: t('detail.shareGuideIntro'),
+    shareLabel: t('detail.share'),
+    shareCopied: t('detail.copied'),
+    tags: t('detail.tags'),
+  },
+  seoDescription: clampMetaDescription(getBlogSeoDescription(post, locale)),
+  relatedTitle: t('detail.alsoInteresting'),
+};
 
 const breadcrumb = [
   { name: copy.breadcrumb.home, url: getRoute('home', locale) },
@@ -187,262 +215,175 @@ const breadcrumb = [
   breadcrumb={breadcrumb}
   articlePublishedTime={post.publishDate}
   articleModifiedTime={post.publishDate}
-  articleAuthor={post.author}
   articleSection={categoryLabel}
   articleTags={post.tags}
 >
   <NavBar slot="header" locale={locale} currentPath={Astro.url.pathname} />
 
-  <BlogDetailHero post={post} locale={locale} readingMinutes={calculatedReadingTime} displayTitle={displayTitle} />
+  <BlogDetailHero
+    post={post}
+    locale={locale}
+    readingMinutes={calculatedReadingTime}
+    sectionCount={tocItems.length}
+    displayTitle={displayTitle}
+  />
 
   <div class="det-page blog-page-override">
     <div class="det-content-wrap">
-      <div class="upgraded-layout">
-        <main id="main-content" class="upgraded-main">
-          {/* Mobile collapsible TOC */}
-          {showAutoToc && (
-            <details class="blg-toc-mobile" data-reveal>
-              <summary>
-                <span class="blg-toc-m-label">{copy.section.tocLabel}</span>
-                <span class="blg-toc-m-toggle">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-              </summary>
-              <ol class="blg-toc-m-list">
-                {tocItems.map((item) => (
-                  <li class={`blg-toc-m-item level-${item.level}`}>
-                    <a href={`#${item.id}`}>{item.text}</a>
-                  </li>
-                ))}
-              </ol>
-            </details>
-          )}
-
-          <article class="upg-block" id="article-content" data-reveal aria-label={displayTitle}>
-            <div class="upg-block-bg"></div>
+      <div class="guide-meta-row">
+        <main class="upgraded-main" aria-label={displayTitle}>
+          <article class="upg-block guide-article-card" id="article-content" data-reveal>
             <header class="upg-header">
-              <span class="upg-num">01</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">{copy.section.article}</span>
+              <span class="upg-num">03</span>
+              <span class="upg-line" aria-hidden="true"></span>
+              <span class="upg-eyebrow">[ {copy.section.article} ]</span>
             </header>
 
             <div class="blg-prose content-rich" set:html={processedContent} />
 
-            <div class="upg-meta-links" style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:2rem;">
-              <a href={categoryUrl} class="upg-badge ghost" style="text-decoration:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-                {categoryLabel}
-              </a>
-              <a href={byTimeLink.url} class="upg-badge ghost" style="text-decoration:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                {byTimeLink.title}
-              </a>
-              <a href={plannerLink.url} class="upg-badge ghost" style="text-decoration:none;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
-                {plannerLink.title}
-              </a>
-            </div>
-          </article>
-
-          <article class="upg-block" id="author" data-reveal style="padding: 2.5rem 3rem;">
-            <div class="upg-block-bg"></div>
-            <div style="display:flex; gap: 1.5rem; align-items: center;">
-              <div class="upg-author-avatar">
-                <span class="upg-author-initial">{post.author.charAt(0)}</span>
-              </div>
-              <div>
-                <span style="font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--s-ink-3); text-transform: uppercase; display: block; margin-bottom: 0.2rem;">{copy.section.authorByline}</span>
-                <span style="font-family: var(--font-body); font-size: 1.5rem; font-weight: 600; color: var(--s-ink); display: block; margin-bottom: 0.4rem;">{post.author}</span>
-                <span style="font-family: var(--font-display); font-size: 0.9rem; color: var(--s-ink-2); line-height: 1.5; display: block;">{copy.section.authorBio}</span>
-              </div>
-            </div>
-          </article>
-
-          {post.tags.length > 0 && (
-            <div class="upg-tags" id="tags" data-reveal>
-              <span class="upg-tags-title">{copy.section.tags}</span>
-              <div class="upg-tags-list">
-              {post.tags.map((tag: string) => (
-                  <span class="upg-tag">#{tag}</span>
+            {(post.tags.length > 0 || categoryLabel) && (
+              <footer class="guide-article-footer" id="tags">
+                <a href={categoryUrl} class="guide-pill-link">{categoryLabel}</a>
+                {post.tags.slice(0, 8).map((tag) => (
+                  <span class="guide-tag">#{tag}</span>
                 ))}
-              </div>
-            </div>
-          )}
+              </footer>
+            )}
+          </article>
+        </main>
 
-          {planningLinks.length > 0 && (
-            <div class="upg-block" data-reveal style="padding: 2.5rem 3rem;">
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">02</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">{copy.planningEyebrow}</span>
-              </header>
-              <CrossLinksSection title={copy.planningTitle} links={planningLinks} />
-            </div>
-          )}
-
-          <div class="upg-block upg-block--loose" id="also-interesting" data-reveal>
-            <div class="upg-block-bg"></div>
-            <header class="upg-header">
-              <span class="upg-num">03</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">[ {t('detail.alsoInteresting')} ]</span>
+        <aside class="flex flex-col gap-4 lg:sticky lg:top-24 lg:self-start" aria-label={copy.section.keyFacts}>
+          <section class="guide-keyfacts-card" aria-labelledby="guide-keyfacts-title" data-reveal>
+            <header class="guide-section-head">
+              <span class="guide-section-num">01</span>
+              <span class="guide-section-line" aria-hidden="true"></span>
+              <h2 id="guide-keyfacts-title" class="guide-section-title">{copy.section.keyFacts}</h2>
             </header>
-            <div class="upg-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
-              <RelatedGuides type="post" post={post} locale={locale} title={t('detail.relatedGuides')} limit={3} />
-              <RelatedEvents type="post" post={post} locale={locale} title={t('detail.relatedEvents')} limit={3} />
-              <RelatedRoutes type="post" post={post} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
-              <RelatedVenues type="post" post={post} locale={locale} title={t('detail.relatedVenues')} limit={3} />
-            </div>
-          </div>
 
-          {(prevPost || nextPost) && (
-            <nav class="upg-block" data-reveal aria-label={isEnglish ? 'Article navigation' : 'Navegación de artículos'} style="padding: 2rem 3rem;">
-              <div class="upg-block-bg"></div>
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
-                {prevPost ? (
-                  <a href={getBlogDetailUrl(prevPost.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-start; text-decoration:none; max-width:45%;">
-                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.prev}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3;">{getBlogDisplayTitle(prevPost, locale)}</span>
-                    <time datetime={prevPost.publishDate} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{prevPost.publishDate}</time>
-                  </a>
-                ) : <span />}
-                {nextPost ? (
-                  <a href={getBlogDetailUrl(nextPost.slug, locale)} style="display:flex; flex-direction:column; align-items:flex-end; text-decoration:none; max-width:45%;">
-                    <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); margin-bottom:0.35rem;">{copy.nav.next}</span>
-                    <span style="font-family:var(--font-body); font-size:1.1rem; font-weight:600; color:var(--s-ink); line-height:1.3; text-align:right;">{getBlogDisplayTitle(nextPost, locale)}</span>
-                    <time datetime={nextPost.publishDate} style="font-family:var(--font-display); font-size:0.8rem; color:var(--s-ink-2); margin-top:0.25rem;">{nextPost.publishDate}</time>
-                  </a>
-                ) : <span />}
-              </div>
+            <dl class="guide-facts-grid">
+              {keyFacts.map((fact) => (
+                <div class="guide-fact">
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          {sidebarTocItems.length > 0 && (
+            <nav class="guide-toc-card" data-reveal aria-labelledby="guide-toc-title">
+              <header class="guide-section-head">
+                <span class="guide-section-num">02</span>
+                <span class="guide-section-line" aria-hidden="true"></span>
+                <h2 id="guide-toc-title" class="guide-section-title">{copy.section.tocLabel}</h2>
+              </header>
+
+              <ol class="guide-toc-list">
+                {sidebarTocItems.map((item, index) => (
+                  <li>
+                    <a href={`#${item.id}`} class="guide-toc-link">
+                      <span>{(index + 1).toString().padStart(2, '0')}</span>
+                      <strong>{item.text}</strong>
+                    </a>
+                  </li>
+                ))}
+              </ol>
             </nav>
           )}
 
-        </main>
+          <section class="blg-share-card" data-reveal aria-labelledby="guide-share-title">
+            <header class="guide-section-head">
+              <span class="guide-section-num">03</span>
+              <span class="guide-section-line" aria-hidden="true"></span>
+              <h2 id="guide-share-title" class="guide-section-title">{copy.section.shareTitle}</h2>
+            </header>
 
-        <aside class="upg-sidebar" aria-label={isEnglish ? 'Article sidebar' : 'Barra lateral del artículo'}>
-          <div class="upg-sidebar-sticky">
-            {showAutoToc ? (
-              <nav class="upg-toc blg-toc-auto" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
-                <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{copy.section.tocLabel}</span>
-                <ol style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.5rem;">
-                  {tocItems.map((item) => (
-                    <li style={`padding-left: ${item.level === 3 ? '1rem' : '0'}`}>
-                      <a href={`#${item.id}`} style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem; transition: color 0.2s;">
-                        <span style={`color:var(--s-orange); font-size: 0.7rem; font-weight: 700; ${item.level === 3 ? 'opacity: 0.6' : ''}`}>{item.level === 2 ? '§' : '›'}</span>
-                        <span>{item.text}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
-            ) : (
-              <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'} style="margin-bottom:1.5rem; background:#fff; border-radius:20px; border:1px solid var(--s-border); padding:1.5rem 2rem;">
-                <span style="font-family:var(--font-display); font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--s-ink-3); display:block; margin-bottom:1rem;">{isEnglish ? 'On this page' : 'En esta página'}</span>
-                <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:0.6rem;">
-                  <li><a href="#article-content" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">01</span> {isEnglish ? 'Article' : 'Artículo'}</a></li>
-                  <li><a href="#author" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">02</span> {isEnglish ? 'Author' : 'Autor'}</a></li>
-                  {post.tags.length > 0 && (
-                    <li><a href="#tags" style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2); text-decoration:none; display:flex; align-items:center; gap:0.5rem;"><span style="color:var(--s-orange);">03</span> {isEnglish ? 'Tags' : 'Etiquetas'}</a></li>
-                  )}
-                </ul>
-              </nav>
-            )}
+            <p class="blg-share-intro">{copy.section.shareIntro}</p>
 
-            <div class="upg-ticket-card" data-reveal>
-              <div class="upg-ticket-glass"></div>
+            <ShareButton
+              title={post.title[locale]}
+              url={shareUrl}
+              label={copy.section.shareLabel}
+              copiedLabel={copy.section.shareCopied}
+              class="blg-share-btn"
+            />
 
-              <div class="upg-tc-header">
-                <div class="upg-tc-date-box">
-                  <time datetime={post.publishDate} class="tc-day" style="font-size: 1.4rem;">{dayNum}</time>
-                  <span class="tc-month">{monthShort}</span>
-                </div>
-                <div class="upg-tc-info">
-                  <span class="tc-time" style="color:var(--s-ink);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    {t('blog.readingTime', { minutes: calculatedReadingTime })}
-                  </span>
-                  <span class="tc-category">{categoryLabel}</span>
-                </div>
-              </div>
-
-              <div style="padding: 0 2.5rem 1rem;">
-                <span class="tc-price-label" style="display:block; margin-bottom:1rem;">{copy.section.infoLabel}</span>
-                <div style="display:flex; flex-direction:column; gap:0.75rem;">
-                  <div style="display:flex; align-items:center; gap:0.6rem;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;color:var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                    <span style="font-family:var(--font-display); font-size:0.85rem; font-weight:600; color:var(--s-ink);">{post.author}</span>
-                  </div>
-                  <div style="display:flex; align-items:center; gap:0.6rem;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px;color:var(--s-orange);"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    <time datetime={post.publishDate} style="font-family:var(--font-display); font-size:0.85rem; color:var(--s-ink-2);">{formattedDate}</time>
-                  </div>
-                </div>
-              </div>
-
-              <div class="upg-tc-divider">
-                <span class="tcd-hole left"></span>
-                <div class="tcd-dashed"></div>
-                <span class="tcd-hole right"></span>
-              </div>
-
-              <div class="upg-tc-actions">
-                <ShareButton
-                  title={post.title[locale]}
-                  url={Astro.url.href}
-                  label={copy.section.shareLabel}
-                  copiedLabel={copy.section.shareCopied}
-                  class="upg-btn-primary"
-                />
-              </div>
+            <div class="blg-share-channels" aria-label={copy.section.shareTitle}>
+              {shareActions.map((action) => (
+                action.copyOnly ? (
+                  <button
+                    type="button"
+                    class={`blg-share-channel blg-share-channel--${action.id}`}
+                    data-share-copy
+                    data-share-url={shareUrl}
+                    data-share-method={action.id}
+                    aria-label={action.ariaLabel}
+                    title={action.ariaLabel}
+                  >
+                    <span class="blg-share-icon" aria-hidden="true">
+                      {action.id === 'instagram' && (
+                        <InstagramIcon />
+                      )}
+                    </span>
+                    <span class="blg-share-label">{action.label}</span>
+                  </button>
+                ) : (
+                  <a
+                    class={`blg-share-channel blg-share-channel--${action.id}`}
+                    href={action.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={action.ariaLabel}
+                    title={action.ariaLabel}
+                  >
+                    <span class="blg-share-icon" aria-hidden="true">
+                      {action.id === 'whatsapp' && (
+                        <WhatsAppIcon />
+                      )}
+                      {action.id === 'facebook' && (
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.52 1.5-3.91 3.8-3.91 1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.25 0-1.64.78-1.64 1.57v1.89h2.8l-.45 2.91h-2.35V22A10 10 0 0 0 22 12.06Z"/>
+                        </svg>
+                      )}
+                    </span>
+                    <span class="blg-share-label">{action.label}</span>
+                  </a>
+                )
+              ))}
             </div>
+          </section>
+        </aside>
+      </div>
 
-            {relatedPosts.length > 0 && (
-              <div class="upg-related-bento" data-reveal>
-                <div class="upg-rb-header">
-                  <span class="upg-rb-title">[ {t('detail.relatedPosts')} ]</span>
-                  <a href={getRoute('blog', locale)} class="upg-rb-all">{t('detail.allPosts')} →</a>
-                </div>
-
-                <div class="upg-rb-list">
-                  {relatedPosts.map((relatedPost, index) => (
-                    <a href={getBlogDetailUrl(relatedPost.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
-                      <div class="uri-thumb">
-                        {relatedPost.image ? (
-                          <OptimizedImage src={relatedPost.image} alt={getBlogDisplayTitle(relatedPost, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
-                        ) : (
-                          <div class="uri-thumb-fallback"></div>
-                        )}
-                      </div>
-                      <div class="uri-content">
-                        <span class="uri-title">{getBlogDisplayTitle(relatedPost, locale)}</span>
-                        <span class="uri-meta">{t('blog.readingTime', { minutes: relatedPost.readingTime })}</span>
-                      </div>
-                      <div class="uri-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
+      {hasRelatedContent && (
+        <section class="upg-block upg-block--loose guide-related-full" id="also-interesting" data-reveal aria-labelledby="guide-related-title">
+          <header class="upg-header">
+            <span class="upg-num">04</span>
+            <span class="upg-line" aria-hidden="true"></span>
+            <h2 id="guide-related-title" class="upg-eyebrow">[ {copy.relatedTitle} ]</h2>
+          </header>
+          <div class="upg-related-stack">
+            <RelatedGuides type="post" post={post} locale={locale} title={t('detail.relatedGuides')} limit={3} />
+            <RelatedEvents type="post" post={post} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+            <RelatedRoutes type="post" post={post} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+            <RelatedVenues type="post" post={post} locale={locale} title={t('detail.relatedVenues')} limit={3} />
           </div>
-          </aside>
-        </div>
-      </div>
+        </section>
+      )}
+    </div>
 
-      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
-        <CollaborateCTA locale={locale} variant="guide" />
-      </div>
+    <ContinueExploring locale={locale} />
 
-      <ContinueExploring locale={locale} />
-
-    <div class="det-footer-orn" aria-hidden="true" style="display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 3rem clamp(1.5rem, 5vw, 4rem) 4rem; opacity: 0.3;">
-      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
-      <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
-      <span style="color: var(--s-gold); margin: 0 0.5rem;"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
-      <span style="width: 6px; height: 6px; background: var(--s-gold); transform: rotate(45deg);"></span>
-      <span style="flex: 1; max-width: 120px; height: 1px; background: var(--s-border);"></span>
+    <div class="det-footer-orn" aria-hidden="true">
+      <span></span>
+      <i></i>
+      <b>
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/>
+        </svg>
+      </b>
+      <i></i>
+      <span></span>
     </div>
   </div>
 
@@ -450,3 +391,33 @@ const breadcrumb = [
 </BaseLayout>
 
 <ReadingProgress />
+
+<script is:inline>
+  (function () {
+    if (window.__guideShareCopyInitialized) return;
+    window.__guideShareCopyInitialized = true;
+
+    document.addEventListener('click', async function (event) {
+      const button = event.target.closest('[data-share-copy]');
+      if (!button) return;
+
+      const url = button.dataset.shareUrl ?? window.location.href;
+      const method = button.dataset.shareMethod ?? 'copy';
+
+      try {
+        await navigator.clipboard.writeText(url);
+        button.classList.add('is-copied');
+        window.setTimeout(function () {
+          button.classList.remove('is-copied');
+        }, 1600);
+
+        if (typeof window.grnTrackEvent === 'function') {
+          window.grnTrackEvent('share', {
+            method,
+            content_id: window.location.pathname,
+          });
+        }
+      } catch (_) {}
+    });
+  })();
+</script>

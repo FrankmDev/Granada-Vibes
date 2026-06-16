@@ -1,4 +1,7 @@
 import { DAY_START_TIME } from './constants.js';
+import { formatDuration } from '@utils/dates';
+
+export { formatDuration };
 
 export function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const radius = 6371;
@@ -37,33 +40,18 @@ export function toTimeString(totalMinutes: number): string {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 }
 
-export function addMinutes(time: string, minutes: number): string {
+function addMinutes(time: string, minutes: number): string {
   return toTimeString(toMinutes(time) + minutes);
 }
 
-export function maxTime(...times: Array<string | null | undefined>): string {
+function maxTime(...times: Array<string | null | undefined>): string {
   return times
     .filter((time): time is string => Boolean(time))
     .reduce((latest, current) => (toMinutes(current) > toMinutes(latest) ? current : latest), DAY_START_TIME);
 }
 
-export function minutesFromDayStart(time: string): number {
+function minutesFromDayStart(time: string): number {
   return toMinutes(time) - toMinutes(DAY_START_TIME);
-}
-
-export function formatDuration(minutes: number, locale: 'es' | 'en'): string {
-  const hours = Math.floor(minutes / 60);
-  const remainder = minutes % 60;
-
-  if (locale === 'en') {
-    if (hours === 0) return `${remainder} min`;
-    if (remainder === 0) return `${hours} h`;
-    return `${hours} h ${remainder} min`;
-  }
-
-  if (hours === 0) return `${remainder} min`;
-  if (remainder === 0) return `${hours} h`;
-  return `${hours} h ${remainder} min`;
 }
 
 export function formatCostRange(min: number, max: number, locale: 'es' | 'en'): string {
@@ -93,7 +81,7 @@ export function getWeekdayInMadrid(date: string): string {
   return normalizeText(weekday);
 }
 
-export function hashString(value: string): number {
+function hashString(value: string): number {
   let hash = 0;
   for (let index = 0; index < value.length; index += 1) {
     hash = (hash * 31 + value.charCodeAt(index)) >>> 0;

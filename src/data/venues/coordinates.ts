@@ -3,7 +3,7 @@
  * Keyed by normalized venue name (lowercase, trimmed).
  */
 
-export interface VenueCoords {
+interface VenueCoords {
   lat: number;
   lng: number;
 }

@@ -3,19 +3,13 @@
        ═══════════════════════════════════════════════════════════════ */
     .timeline-section {
       --t-cream:      #f5f0ea;
-      --t-cream-2:    #faf7f3;
-      --t-cream-3:    #fffefc;
       --t-ink:        #1a1619;
       --t-ink-2:      #3d3632;
       --t-ink-3:      #6b6058;
-      --t-ink-4:      #9a9088;
       --t-orange:     #e8622a;
       --t-gold:       #c9a84c;
-      --t-green:      #4a9e6b;
-      --t-amber:      #d4873a;
       --t-border:     rgba(26, 22, 25, 0.08);
       --t-border-2:   rgba(26, 22, 25, 0.12);
-      --t-shadow:     rgba(26, 22, 25, 0.06);
 
       position: relative;
       width: 100%;

@@ -7,10 +7,7 @@
   /* ── Surfaces ── */
   --color-bg:             #080808;
   --color-bg-raised:      #111111;
-  --color-bg-card:        #171717;
-  --color-bg-subtle:      #1e1e1e;
   --color-border:         #242424;
-  --color-border-subtle:  #1a1a1a;
 
   /* ── Text ── */
   --color-text-primary:   #f0ede8;
@@ -21,13 +18,11 @@
   /* ── Accent — terracota (granada el fruto) ── */
   --color-accent:         #e8622a;
   --color-accent-hover:   #f07040;
-  --color-accent-muted:   rgba(232, 98, 42, 0.10);
 
   /* ── Gold — Alhambra ── */
   --color-gold:           #c9a84c;
   --color-gold-text:      #e6c587;
   --color-gold-dim:       rgba(201, 162, 39, 0.45);
-  --color-gold-muted:     rgba(201, 168, 76, 0.10);
 
   /* ── Semantic ── */
   --color-success:        #4a9e6b;
@@ -44,10 +39,7 @@
   --font-ui:      var(--font-display);
   --font-heading: var(--font-body);
 
-  --type-caption: 0.75rem;
-  --type-small:   0.875rem;
   --type-body:    1rem;
-  --type-lead:    1.125rem;
   --type-title:   clamp(1.35rem, 2.3vw, 1.75rem);
   --type-heading: clamp(2rem, 5vw, 3.5rem);
   --type-display: clamp(2.5rem, 7vw, 5rem);
@@ -56,19 +48,10 @@
   --header-height:        64px;
 
   /* ── Border Radius ── */
-  --radius-sm:    4px;
-  --radius-md:    8px;
-  --radius-lg:    12px;
-  --radius-full:  9999px;
 
   /* ── Transitions ── */
   --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-smooth:    cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-editorial: cubic-bezier(0.65, 0, 0.35, 1);
 
   --duration-fast:   100ms;
-  --duration-normal: 200ms;
-  --duration-slow:   300ms;
-  --duration-slower: 700ms;
 }

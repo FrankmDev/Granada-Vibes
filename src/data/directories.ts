@@ -140,7 +140,7 @@ function venueIntro(entry: Pick<VenueDirectoryEntry, 'name' | 'upcomingEvents' |
   };
 }
 
-export function getAllVenueEntries(): VenueDirectoryEntry[] {
+function getAllVenueEntries(): VenueDirectoryEntry[] {
   const grouped = new Map<string, { name: string; events: Event[] }>();
 
   for (const event of directoryEvents()) {
@@ -180,16 +180,12 @@ export function getAllVenueEntries(): VenueDirectoryEntry[] {
     .sort((a, b) => b.events.length - a.events.length || a.name.localeCompare(b.name));
 }
 
-export function isIndexableVenueEntry(entry: VenueDirectoryEntry): boolean {
+function isIndexableVenueEntry(entry: VenueDirectoryEntry): boolean {
   return entry.events.length >= 2;
 }
 
 export function getIndexableVenueEntries(): VenueDirectoryEntry[] {
   return getAllVenueEntries().filter(isIndexableVenueEntry);
-}
-
-export function getVenueEntryBySlug(slug: string): VenueDirectoryEntry | undefined {
-  return getAllVenueEntries().find((entry) => entry.slug === slug);
 }
 
 export function getDirectoryHref(kind: 'venue', slug: string, locale: Locale): string {

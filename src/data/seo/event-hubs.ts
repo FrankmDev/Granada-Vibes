@@ -1,6 +1,6 @@
 import type { EventCategory, LocalizedText } from '@types';
 
-export type EventHubKind = 'today' | 'weekend' | 'concerts' | 'free' | 'venue';
+type EventHubKind = 'today' | 'weekend' | 'concerts' | 'free' | 'venue';
 
 export interface EventHubConfig {
   id: string;

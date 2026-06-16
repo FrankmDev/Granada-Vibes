@@ -40,7 +40,7 @@ function venueRule(
   };
 }
 
-export const eventVenueRules: EventVenueRule[] = [
+const eventVenueRules: EventVenueRule[] = [
   venueRule('lemon-rock', ['lemon rock', 'lemonrock'], {
     canonicalVenue: 'Lemon Rock',
     neighborhood: 'centro',

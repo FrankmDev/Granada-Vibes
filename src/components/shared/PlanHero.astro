@@ -241,7 +241,6 @@ const tickCount = Math.min(totalStops + 1, 12);
   .plan-hero {
     --h-gold:     #c9a84c;
     --h-gold-dim: rgba(201, 162, 39, 0.45);
-    --h-gold-bright: #e6c587;
     --h-orange:   #e8622a;
     --h-cream:    #f0ede8;
     --h-muted:    rgba(240, 237, 232, 0.45);
@@ -250,7 +249,8 @@ const tickCount = Math.min(totalStops + 1, 12);
     position: relative;
     z-index: 1;
     background: #050505;
-    padding: calc(var(--header-height, 64px) + 3.5rem) clamp(1.5rem, 5vw, 3rem) 4rem;
+    margin-top: var(--header-height, 64px);
+    padding: 3.5rem clamp(1.5rem, 5vw, 3rem) 4rem;
     overflow: hidden;
   }
 
@@ -342,7 +342,7 @@ const tickCount = Math.min(totalStops + 1, 12);
 
   /* ---- BACK LINK ---- */
   .ph-back {
-    position: absolute; top: calc(var(--header-height, 64px) + 1.25rem); left: clamp(1.5rem, 4vw, 3rem); z-index: 10;
+    position: absolute; top: 1.25rem; left: clamp(1.5rem, 4vw, 3rem); z-index: 10;
     display: inline-flex; align-items: center; gap: 0.5rem;
     font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
     color: rgba(240,237,232,0.80); text-decoration: none;
@@ -358,7 +358,7 @@ const tickCount = Math.min(totalStops + 1, 12);
 
   /* ---- ARCHIVE REF ---- */
   .ph-ref {
-    position: absolute; top: calc(var(--header-height, 64px) + 1.25rem); right: clamp(1.5rem, 4vw, 3rem); z-index: 10;
+    position: absolute; top: 1.25rem; right: clamp(1.5rem, 4vw, 3rem); z-index: 10;
     display: flex; align-items: center; gap: 0.35rem;
     font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em;
     color: rgba(240,237,232,0.40);
@@ -490,7 +490,7 @@ const tickCount = Math.min(totalStops + 1, 12);
   }
 
   @media (max-width: 768px) {
-    .plan-hero { padding: calc(var(--header-height, 64px) + 2.5rem) clamp(1.25rem, 4vw, 2rem) 3rem; }
+    .plan-hero { padding: 2.5rem clamp(1.25rem, 4vw, 2rem) 3rem; }
     .ph-frame { display: none; }
     .ph-title { font-size: clamp(1.9rem, 7vw, 2.8rem); line-height: 1.12; }
     .ph-lead { max-width: 100%; }

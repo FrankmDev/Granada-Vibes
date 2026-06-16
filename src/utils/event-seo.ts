@@ -188,19 +188,6 @@ export function getEventSeoDescription(event: Event, locale: Locale, t: Translat
   );
 }
 
-export function getEventSeoH1(event: Event, locale: Locale): string {
-  const override = eventSeoOverrides[event.slug]?.h1[locale];
-  if (override) return override;
-
-  const cleanName = cleanEventName(event.title[locale]);
-
-  if (locale === 'en') {
-    return cleanName.toLowerCase().includes('granada') ? cleanName : `${cleanName} in Granada`;
-  }
-
-  return cleanName.toLowerCase().includes('granada') ? cleanName : `${cleanName} en Granada`;
-}
-
 export function isPastEvent(event: Event, fromDate: Date = new Date()): boolean {
   const today = new Date(fromDate);
   today.setHours(0, 0, 0, 0);

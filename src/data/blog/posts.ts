@@ -35,6 +35,24 @@ export const posts: BlogPost[] = [
     readingTime: 9,
     featured: true,
     zone: 'centro',
+    guideFacts: [
+      {
+        label: { es: 'Lugar', en: 'Place' },
+        value: { es: 'Plaza Bib-Rambla', en: 'Plaza Bib-Rambla' },
+      },
+      {
+        label: { es: 'Fechas', en: 'Dates' },
+        value: { es: '3-7 junio 2026', en: '3-7 June 2026' },
+      },
+      {
+        label: { es: 'Precio', en: 'Price' },
+        value: { es: 'Gratis', en: 'Free' },
+      },
+      {
+        label: { es: 'Tipo', en: 'Type' },
+        value: { es: 'Quintillas satíricas', en: 'Satirical quintillas' },
+      },
+    ],
     relatedGuides: [
       'corpus-granada-2026',
       'tarasca-granada-2026',
@@ -65,6 +83,28 @@ export const posts: BlogPost[] = [
     readingTime: 9,
     featured: true,
     zone: 'almanjayar',
+    guideFacts: [
+      {
+        label: { es: 'Fechas', en: 'Dates' },
+        value: { es: '30 mayo - 6 junio 2026', en: '30 May - 6 June 2026' },
+      },
+      {
+        label: { es: 'Zona', en: 'Area' },
+        value: { es: 'Almanjáyar', en: 'Almanjáyar' },
+      },
+      {
+        label: { es: 'Casetas', en: 'Casetas' },
+        value: { es: '72 en total', en: '72 in total' },
+      },
+      {
+        label: { es: 'Entrada', en: 'Entry' },
+        value: { es: 'Acceso libre a casetas', en: 'Free entry to casetas' },
+      },
+      {
+        label: { es: 'Transporte', en: 'Transport' },
+        value: { es: 'Bus, metro, taxi', en: 'Bus, metro, taxi' },
+      },
+    ],
     relatedGuides: [
       'corpus-granada-2026',
       'tarasca-granada-2026',
@@ -94,6 +134,28 @@ export const posts: BlogPost[] = [
     readingTime: 8,
     featured: true,
     zone: 'centro',
+    guideFacts: [
+      {
+        label: { es: 'Fecha', en: 'Date' },
+        value: { es: 'Miércoles 3 junio 2026', en: 'Wednesday 3 June 2026' },
+      },
+      {
+        label: { es: 'Hora', en: 'Time' },
+        value: { es: '12:00 h', en: '12:00' },
+      },
+      {
+        label: { es: 'Salida', en: 'Start' },
+        value: { es: 'Plaza del Carmen', en: 'Plaza del Carmen' },
+      },
+      {
+        label: { es: 'Recorrido', en: 'Route' },
+        value: { es: 'Centro histórico', en: 'Historic centre' },
+      },
+      {
+        label: { es: 'Consejo', en: 'Tip' },
+        value: { es: 'Llega antes de 11:15', en: 'Arrive before 11:15' },
+      },
+    ],
     relatedGuides: [
       'corpus-granada-2026',
       'carocas-granada',
@@ -125,6 +187,28 @@ export const posts: BlogPost[] = [
     readingTime: 12,
     featured: true,
     zone: 'centro',
+    guideFacts: [
+      {
+        label: { es: 'Fechas', en: 'Dates' },
+        value: { es: '30 mayo - 6 junio 2026', en: '30 May - 6 June 2026' },
+      },
+      {
+        label: { es: 'Día grande', en: 'Main day' },
+        value: { es: 'Jueves 4 junio 2026', en: 'Thursday 4 June 2026' },
+      },
+      {
+        label: { es: 'Zonas', en: 'Areas' },
+        value: { es: 'Centro y Almanjáyar', en: 'Centre and Almanjáyar' },
+      },
+      {
+        label: { es: 'Actos clave', en: 'Key moments' },
+        value: { es: 'Tarasca y procesión', en: 'Tarasca and procession' },
+      },
+      {
+        label: { es: 'Consejo', en: 'Tip' },
+        value: { es: 'Revisa la agenda municipal', en: 'Check the municipal agenda' },
+      },
+    ],
     relatedGuides: [
       'tarasca-granada-2026',
       'carocas-granada',

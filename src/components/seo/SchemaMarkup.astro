@@ -16,7 +16,7 @@ interface FaqItem {
 }
 
 interface Props {
-  type: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article' | 'venue';
+  type: 'website' | 'event' | 'route' | 'timePlan' | 'article' | 'venue';
   data?: Event | Route | BlogPost | MixedRoute | VenueDirectoryEntry;
   locale: 'es' | 'en';
   path?: string;
@@ -54,7 +54,7 @@ const organizationSchema = {
   name: SITE_CONFIG.name,
   description: SITE_CONFIG.description[locale],
   url: siteUrl,
-  logo: `${siteUrl}/favicon.svg`,
+  logo: `${siteUrl}/favicon.jpg`,
   email: SITE_CONFIG.email,
   sameAs: [
     SITE_CONFIG.social.instagram,
@@ -178,10 +178,6 @@ switch (type) {
     primarySchema = websiteSchema;
     break;
 
-  case 'organization':
-    primarySchema = organizationSchema;
-    break;
-
   case 'event':
     if (data && 'date' in data) {
       const eventData = data as Event;
@@ -268,7 +264,7 @@ switch (type) {
           '@type': 'Organization',
           name: SITE_CONFIG.name,
           url: siteUrl,
-          logo: `${siteUrl}/favicon.svg`,
+          logo: `${siteUrl}/favicon.jpg`,
         },
         about: {
           '@type': 'Thing',
@@ -473,16 +469,11 @@ switch (type) {
         articleSection: postData.category,
         wordCount: articleWordCount,
         keywords: postData.tags.join(', '),
-        author: {
-          '@type': 'Person',
-          name: postData.author,
-          url: siteUrl,
-        },
         publisher: {
           '@type': 'Organization',
           name: SITE_CONFIG.name,
           url: siteUrl,
-          logo: `${siteUrl}/favicon.svg`,
+          logo: `${siteUrl}/favicon.jpg`,
         },
         inLanguage: locale,
       };
