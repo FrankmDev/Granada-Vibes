@@ -92,21 +92,14 @@ const COL_HEIGHTS = rawColumns.map((col, ci) => {
 const columns = rawColumns;
 
 // 3 quick links: today, this weekend, free — derived from eventHubs data
-const QUICK_HUB_KEYS = [
-  { id: 'today', subtitleKey: 'events.quickTodaySubtitle' },
-  { id: 'weekend', subtitleKey: 'events.quickWeekendSubtitle' },
-  { id: 'free', subtitleKey: 'events.quickFreeSubtitle' },
-] as const;
-
-const quickLinks = QUICK_HUB_KEYS
-  .map((entry, i) => {
-    const hub = eventHubs.find((h) => h.id === entry.id);
+const QUICK_HUB_IDS = ['today', 'weekend', 'free'] as const;
+const quickLinks = QUICK_HUB_IDS
+  .map((id) => {
+    const hub = eventHubs.find((h) => h.id === id);
     if (!hub) return null;
     return {
       href: locale === 'en' ? hub.englishPath : hub.spanishPath,
-      indexLabel: `0${i + 1}`,
-      eyebrow: hub.eyebrow[locale],
-      label: t(entry.subtitleKey),
+      label: hub.eyebrow[locale],
     };
   })
   .filter((q): q is NonNullable<typeof q> => q !== null);

@@ -702,19 +702,39 @@ const archiveRef = `${dayNum}${monthNum}`;
   }
 
   @media (max-width: 768px) {
-    .ev-stage { grid-template-columns: 1fr; align-items: center; gap: 2.5rem; padding: 2.5rem clamp(1.25rem, 4vw, 2rem) 2.5rem; }
+    .ev-hero {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .ev-hero :global(.cin-screen-frame) {
+      top: 1rem; left: 1rem; right: 1rem; bottom: 1rem;
+    }
+    .ev-stage {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: center;
+      gap: 2rem;
+      padding: 4.25rem 1rem 2rem;
+    }
     .ev-lockup,
     .ev-visual { grid-column: 1; }
-    .ev-visual { order: -1; grid-row: auto; }
-    .ev-img-wrap { max-width: 300px; height: auto; max-height: none; }
-    .ev-lockup { align-items: center; text-align: center; width: 100%; }
-    .ev-eyebrow { justify-content: center; }
-    .ev-title { font-size: clamp(1.6rem, 6.2vw, 2.1rem); line-height: 1.1; }
-    .ev-lead { max-width: 42ch; }
+    .ev-visual { order: -1; grid-row: auto; width: 100%; min-width: 0; }
+    .ev-img-wrap { max-width: min(300px, 82vw); height: auto; max-height: none; }
+    .ev-lockup { align-items: center; text-align: center; width: 100%; max-width: 100%; min-width: 0; }
+    .ev-eyebrow { justify-content: center; max-width: 100%; min-width: 0; flex-wrap: wrap; }
+    .eyebrow-text { white-space: normal; text-align: center; line-height: 1.35; overflow-wrap: anywhere; }
+    .ev-title { max-width: 100%; font-size: clamp(1.6rem, 6.2vw, 2.1rem); line-height: 1.1; overflow-wrap: anywhere; }
+    .ev-word { white-space: normal; }
+    .ev-lead { max-width: 42ch; margin-inline: auto; }
     .data-sheet { max-width: 100%; padding: 1rem; }
-    .data-sheet-body { gap: 0.4rem; }
+    .data-sheet-body { flex-direction: column; gap: 0.4rem; }
     .data-sep { display: none; }
     .data-cell { padding: 0.4rem 0.3rem; }
+    .dsh-label { white-space: normal; line-height: 1.35; }
     .data-value { font-size: 0.78rem; }
     .ev-actions {
       width: 100%;
@@ -731,10 +751,15 @@ const archiveRef = `${dayNum}${monthNum}`;
       justify-content: center;
       box-sizing: border-box;
     }
-    .ev-back { top: 1.25rem; left: 1.25rem; font-size: 0.6rem; padding: 0.5rem 0.85rem; }
-    .deco-ring { display: none; }
+    .ev-back { top: 1.25rem; left: 1rem; font-size: 0.6rem; padding: 0.5rem 0.85rem; max-width: calc(100% - 2rem); }
+    .deco-ring,
+    .deco-line,
+    .deco-dot,
+    .deco-dots,
+    .deco-filmstrip,
+    .deco-star { display: none; }
     .ev-ghost-label { display: none; }
-    .ev-bottom-bar { padding-bottom: 1.5rem; }
+    .ev-bottom-bar { display: none; }
     .ev-nb-tag { display: none; }
     .scroll-hint { display: none; }
   }
@@ -747,7 +772,8 @@ const archiveRef = `${dayNum}${monthNum}`;
     .data-value { font-size: 0.72rem; }
     .ev-cta { padding: 0.95rem 1.6rem; font-size: 0.72rem; }
     .ev-price-ticket { font-size: 0.65rem; padding: 0.8rem 0.9rem; }
-    .ev-img-wrap { max-width: 260px; height: auto; border-radius: 16px; }
+    .ev-stage { padding-inline: 0.875rem; }
+    .ev-img-wrap { max-width: min(260px, 78vw); height: auto; border-radius: 16px; }
     .ev-cat, .ev-prox, .ev-feat { font-size: 0.55rem; padding: 0.3rem 0.7rem; }
     .ev-bottom-bar { gap: 0.6rem; }
     .bar-item { font-size: 0.52rem; letter-spacing: 0.1em; }

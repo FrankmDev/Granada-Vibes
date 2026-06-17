@@ -16,6 +16,8 @@
     background: var(--s-bg);
     position: relative;
     padding-bottom: 0rem;
+    max-width: 100%;
+    overflow-x: clip;
   }
   .route-page-override::before {
     content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; mix-blend-mode: multiply; opacity: 0.025;
@@ -23,7 +25,7 @@
   }
 
   /* UPGRADED LAYOUT */
-  .det-content-wrap { width: 100%; max-width: 1440px; margin: 0 auto; padding: clamp(2.75rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem) 2rem; position: relative; z-index: 2; box-sizing: border-box; }
+  .det-content-wrap { width: 100%; max-width: 1440px; margin: 0 auto; padding: clamp(2.75rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem) 2rem; position: relative; z-index: 2; box-sizing: border-box; min-width: 0; overflow-x: clip; }
   .route-meta-row {
     display: grid;
     grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
@@ -31,13 +33,21 @@
     max-width: 1320px;
     margin: 0 auto clamp(1.75rem, 3.5vw, 2.75rem);
     align-items: stretch;
+    min-width: 0;
+  }
+
+  .route-meta-row > *,
+  .route-page-override .upgraded-main,
+  .route-page-override .upg-sidebar,
+  .route-page-override .upg-sidebar-sticky {
+    min-width: 0;
   }
 
   /* LEFT TRACK: MAIN */
   .upgraded-main { display: flex; flex-direction: column; background: transparent; gap: clamp(1.75rem, 3vw, 2.5rem); }
 
   .upg-block {
-    position: relative; padding: clamp(2.25rem, 4vw, 3rem); background: var(--s-bg-hi);
+    position: relative; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; padding: clamp(2.25rem, 4vw, 3rem); background: var(--s-bg-hi);
     border: 1px solid var(--s-border); border-radius: 20px; opacity: 0; transform: translateY(30px);
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 20px rgba(0,0,0,0.015);
   }
@@ -126,12 +136,14 @@
 
   .upg-badge {
     display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem;
+    min-width: 0; max-width: 100%;
     border-radius: 8px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em;
     background: rgba(201,168,76,0.15); color: var(--s-gold-ink); border: 1px solid rgba(201,168,76,0.3);
     text-decoration: none;
   }
   .upg-badge.ghost { background: transparent; border-color: var(--s-border); color: var(--s-ink-2); }
   .upg-badge svg { width: 14px; height: 14px; }
+  .upg-badge { overflow-wrap: anywhere; text-wrap: pretty; }
   .upg-badge:hover { border-color: rgba(232,98,42,0.35); color: var(--s-orange); }
   .upg-badge:focus-visible,
   .upg-toc-item a:focus-visible,
@@ -177,7 +189,7 @@
   }
   .upg-tips-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
     gap: 1rem;
   }
   .upg-tip-card {
@@ -314,12 +326,16 @@
     height: fit-content;
     max-height: calc(100svh - 72px - 3rem);
     overflow: visible;
+    min-width: 0;
   }
 
   .upg-sidebar-sticky { display: flex; flex-direction: column; gap: 0.85rem; }
 
   .route-side-card {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     border-radius: 20px;
     padding: clamp(0.95rem, 1.8vw, 1.2rem);
     display: flex;
@@ -449,7 +465,7 @@
   }
   .route-bring-list--inline {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
     gap: 0.6rem;
     margin-top: 0.5rem;
   }
@@ -790,13 +806,21 @@
   }
 
   @media (max-width: 1024px) {
-    .route-meta-row { grid-template-columns: 1fr; gap: 1rem; }
+    .route-meta-row { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
     .upg-sidebar { position: static; }
   }
 
   @media (max-width: 640px) {
-    .det-content-wrap { padding-top: 2.25rem; }
-    .upg-block { padding: 2rem 1.5rem; }
+    .route-page-override { overflow-x: hidden; }
+    .det-content-wrap {
+      padding: 2.25rem 1rem 1.5rem;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .route-meta-row,
+    .route-page-override .guide-related-full,
+    .route-nav-full { width: 100%; max-width: 100%; }
+    .upg-block { padding: 1.55rem 1rem; border-radius: 18px; }
     .route-article-card { padding: clamp(1.75rem, 5vw, 2.5rem) clamp(1.15rem, 4vw, 1.75rem); }
     .route-article-card::before { left: 0.65rem; top: 1.6rem; bottom: 1.6rem; }
     .route-entry-section { padding-block: 2rem; }
@@ -807,8 +831,31 @@
     .upg-tc-header, .upg-tc-price-wrap, .upg-tc-actions, .upg-difficulty-row, .upg-bring { padding-left: 1.5rem; padding-right: 1.5rem; }
     .tc-price-val { font-size: 2.8rem; }
     .upg-title { font-size: 1.8rem; }
-    .upg-nav-flex { align-items: stretch; }
-    .upg-nav-link { max-width: 48%; gap: 0.65rem; }
+    .upg-header,
+    .route-side-head {
+      gap: 0.75rem;
+    }
+    .upg-eyebrow,
+    .route-side-title {
+      min-width: 0;
+      letter-spacing: 0.14em;
+      overflow-wrap: anywhere;
+    }
+    .route-facts-grid,
+    .upg-tc-channels {
+      grid-template-columns: 1fr;
+    }
+    .route-fact dt,
+    .route-fact dd,
+    .route-toc-link strong,
+    .upg-tc-channel-label {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+    .upg-nav-flex { flex-direction: column; align-items: stretch; }
+    .upg-nav-link { max-width: 100%; width: 100%; gap: 0.65rem; }
+    .upg-nav-link--end { align-items: flex-start; text-align: left; }
     .upg-nav-arrow { width: 2.2rem; height: 2.2rem; }
     .upg-nav-title { font-size: 1rem; }
     .upg-nav-meta { font-size: 0.75rem; }
@@ -817,6 +864,8 @@
     .upg-hl-item { gap: 1rem; }
     .upg-related-bento { padding: 1rem; }
     .route-collab-section { padding-inline: 1rem; }
+    .upg-block--compact,
+    .upg-block--loose { padding: 1.5rem 1rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

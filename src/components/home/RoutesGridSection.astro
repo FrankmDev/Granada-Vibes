@@ -96,6 +96,12 @@ const routesHref = getRoute('routes', locale);
             />
             <div class="pane-overlay"></div>
 
+            <!-- Editorial corner brackets (gold, fade in on hover/active/focus) -->
+            <span class="pane-cb pane-cb-tl" aria-hidden="true"></span>
+            <span class="pane-cb pane-cb-tr" aria-hidden="true"></span>
+            <span class="pane-cb pane-cb-bl" aria-hidden="true"></span>
+            <span class="pane-cb pane-cb-br" aria-hidden="true"></span>
+
             <!-- Inactive: Vertical Label -->
             <div class="pane-vertical-label">
               <span class="vertical-num">{(idx + 1).toString().padStart(2, '0')}</span>
@@ -245,6 +251,77 @@ const routesHref = getRoute('routes', locale);
 
   .route-pane.is-active { flex: 7; }
 
+  /* Top accent hairline on the active pane (gold gradient) */
+  .route-pane.is-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(201, 168, 76, 0.6) 18%,
+      rgba(201, 168, 76, 0.95) 50%,
+      rgba(201, 168, 76, 0.6) 82%,
+      transparent 100%
+    );
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  /* Bottom hairline on the active pane */
+  .route-pane.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(201, 168, 76, 0.4) 25%,
+      rgba(201, 168, 76, 0.7) 50%,
+      rgba(201, 168, 76, 0.4) 75%,
+      transparent 100%
+    );
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  /* Focus-visible gold ring on the active pane */
+  .route-pane:focus-visible {
+    outline: none;
+    box-shadow:
+      inset 0 0 0 1px rgba(201, 168, 76, 0.85),
+      inset 0 0 0 4px rgba(201, 168, 76, 0.12);
+  }
+
+  /* Editorial corner brackets on the active pane (gold L-brackets) */
+  .pane-cb {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-style: solid;
+    border-color: rgba(201, 168, 76, 0.85);
+    border-width: 0;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 360ms ease;
+  }
+  .route-pane.is-active .pane-cb,
+  .route-pane:hover .pane-cb,
+  .route-pane:focus-visible .pane-cb {
+    opacity: 1;
+  }
+  .pane-cb-tl { top: 1.5rem; left: 1.5rem; border-top-width: 1.5px; border-left-width: 1.5px; border-radius: 2px 0 0 0; }
+  .pane-cb-tr { top: 1.5rem; right: 1.5rem; border-top-width: 1.5px; border-right-width: 1.5px; border-radius: 0 2px 0 0; }
+  .pane-cb-bl { bottom: 1.5rem; left: 1.5rem; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .pane-cb-br { bottom: 1.5rem; right: 1.5rem; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
   .pane-img {
     position: absolute; inset: 0;
     filter: grayscale(100%) contrast(1.2) brightness(0.5);
@@ -324,10 +401,22 @@ const routesHref = getRoute('routes', locale);
   }
 
   .pane-meta-glass {
+    position: relative;
     display: flex; justify-content: space-between; align-items: center;
     background: rgba(245, 240, 234, 0.95);
     border: 1px solid rgba(245, 240, 234, 0.6); padding: 1rem 1.5rem; border-radius: 8px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  }
+
+  /* Gold hairline accent on the top-left of the meta-glass */
+  .pane-meta-glass::before {
+    content: '';
+    position: absolute;
+    top: 0.6rem;
+    left: 1.5rem;
+    width: 1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.95), rgba(201, 168, 76, 0.3));
   }
   @media (min-width: 769px) {
     .pane-meta-glass {

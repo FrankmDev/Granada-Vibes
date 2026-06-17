@@ -266,6 +266,7 @@ const splitText = (text: string, baseDelay = 0) =>
     transform: translate(-50%, -50%);
     border-radius: 50%;
     border: 1px solid var(--s-border);
+    box-shadow: 0 0 50px rgba(201, 168, 76, 0.035), inset 0 0 0 rgba(201, 168, 76, 0);
     opacity: 0;
     animation: portal-expand 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
@@ -347,11 +348,11 @@ const splitText = (text: string, baseDelay = 0) =>
 
   .eyebrow-text {
     font-family: var(--font-display);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--s-ink-4);
+    color: var(--s-ink-2);
   }
 
   .masthead-title {
@@ -382,12 +383,12 @@ const splitText = (text: string, baseDelay = 0) =>
 
   .title-char-primary {
     color: var(--s-ink);
-    text-shadow: 0 4px 30px rgba(26, 22, 25, 0.15);
+    text-shadow: 0 2px 0 rgba(26, 22, 25, 0.04), 0 4px 30px rgba(26, 22, 25, 0.12);
   }
 
   .title-char-secondary {
     color: var(--s-orange);
-    text-shadow: 0 4px 30px rgba(232, 98, 42, 0.2);
+    text-shadow: 0 2px 0 rgba(232, 98, 42, 0.08), 0 4px 30px rgba(232, 98, 42, 0.18);
   }
 
   .title-divider {
@@ -476,7 +477,7 @@ const splitText = (text: string, baseDelay = 0) =>
     display: inline-block;
     font-family: var(--font-body);
     font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 200;
+    font-weight: 300;
     line-height: 1.2;
     letter-spacing: -0.01em;
     opacity: 0;
@@ -486,7 +487,7 @@ const splitText = (text: string, baseDelay = 0) =>
   }
 
   .hl-muted { color: var(--s-ink-4); }
-  .hl-accent { color: var(--s-orange); }
+  .hl-accent { color: var(--s-orange); font-style: italic; }
   .hl-bright { color: var(--s-ink-2); }
 
   /* Nazari Decoration */
@@ -590,7 +591,7 @@ const splitText = (text: string, baseDelay = 0) =>
     background: var(--s-ink);
     color: var(--s-cream);
     border: 1px solid var(--s-ink);
-    box-shadow: 0 4px 20px rgba(26, 22, 25, 0.1);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.28) inset, 0 4px 20px rgba(26, 22, 25, 0.1);
   }
 
   .cta-primary:hover {
@@ -601,7 +602,7 @@ const splitText = (text: string, baseDelay = 0) =>
   .cta-secondary {
     background: transparent;
     color: var(--s-ink-2);
-    border: 1px solid var(--s-border);
+    border: 1px solid rgba(26,22,25,0.22);
   }
 
   .cta-secondary:hover {
@@ -650,7 +651,12 @@ const splitText = (text: string, baseDelay = 0) =>
   .bar-line {
     flex: 1;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--s-border), transparent);
+    background: linear-gradient(90deg, transparent, var(--s-border));
+  }
+
+  /* Right-hand rule mirrors the left for a subtle editorial bracket. */
+  .bar-line:last-child {
+    background: linear-gradient(90deg, var(--s-border), transparent);
   }
 
   .bar-content {
@@ -821,8 +827,8 @@ const splitText = (text: string, baseDelay = 0) =>
   }
 
   // Mouse glow effect for primary CTA
-  document.querySelectorAll('.cta-primary').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
+  document.querySelectorAll<HTMLElement>('.cta-primary').forEach((btn) => {
+    btn.addEventListener('mousemove', (e: MouseEvent) => {
       const rect = btn.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;

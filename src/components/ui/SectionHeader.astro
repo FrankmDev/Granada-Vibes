@@ -133,10 +133,10 @@ const secondaryChars = titleSecondary
      BASE
      ═══════════════════════════════════════════════════════════════ */
   .sh-editorial {
-    --sh-ink:        #1a1619;
-    --sh-ink-3:      #6b6058;
-    --sh-cream:      #f5f0ea;
-    --sh-orange:     #e8622a;
+    --sh-ink:        var(--color-text-inverse);
+    --sh-ink-3:      var(--color-text-muted);
+    --sh-cream:      var(--color-text-primary);
+    --sh-orange:     var(--color-accent);
     --sh-border:     rgba(26, 22, 25, 0.08);
 
     position: relative;
@@ -155,10 +155,10 @@ const secondaryChars = titleSecondary
 
   /* ── Dark theme ── */
   .sh-theme--dark {
-    --sh-ink:        #f0ede8;
-    --sh-ink-3:      #9a9490;
-    --sh-cream:      #080808;
-    --sh-orange:     #e8622a;
+    --sh-ink:        var(--color-text-primary);
+    --sh-ink-3:      var(--color-text-secondary);
+    --sh-cream:      var(--color-bg);
+    --sh-orange:     var(--color-accent);
     --sh-border:     rgba(255, 255, 255, 0.08);
   }
 
@@ -183,7 +183,7 @@ const secondaryChars = titleSecondary
   .sh-eyebrow-line {
     width: 80px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--sh-border), transparent);
+    background: linear-gradient(90deg, transparent, var(--sh-border) 30%, var(--sh-border) 70%, transparent);
   }
 
   .sh-eyebrow-text {
@@ -228,6 +228,7 @@ const secondaryChars = titleSecondary
     letter-spacing: -0.03em;
     text-transform: uppercase;
     overflow-wrap: anywhere;
+    text-shadow: 0 1px 0 rgba(26,22,25,0.04);
   }
 
   .sh-title-primary {
@@ -236,6 +237,7 @@ const secondaryChars = titleSecondary
 
   .sh-title-secondary {
     color: var(--sh-orange);
+    text-shadow: 0 1px 0 rgba(232, 98, 42, 0.06);
   }
 
   .sh-char {
@@ -305,15 +307,15 @@ const secondaryChars = titleSecondary
 
   .sh-theme--dark .sh-cta {
     background: var(--sh-orange);
-    color: white;
+    color: var(--color-text-primary);
     box-shadow: 0 8px 24px rgba(232, 98, 42, 0.25);
   }
 
   .sh-cta:hover {
     background: var(--sh-orange);
-    color: white;
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px rgba(232, 98, 42, 0.35);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(232, 98, 42, 0.3);
   }
 
   .sh-theme--dark .sh-cta:hover {

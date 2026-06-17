@@ -134,6 +134,10 @@
     z-index: 2;
   }
 
+  .nb-bar > .nb-rule {
+    mix-blend-mode: screen;
+  }
+
   /* ── LOGO ── */
   .nb-logo {
     position: relative;
@@ -143,6 +147,8 @@
     gap: 1rem;
     text-decoration: none;
     flex-shrink: 0;
+    transition: transform 0.55s var(--gg-expo);
+    border-radius: 4px;
   }
 
   .nb-logo-mark {
@@ -153,11 +159,6 @@
     filter: drop-shadow(0 0 10px rgba(201, 168, 76, 0.35)) drop-shadow(0 1px 8px rgba(0, 0, 0, 0.6));
     transition: transform 0.8s var(--gg-expo), filter 0.55s var(--gg-expo);
     flex-shrink: 0;
-  }
-
-  .nb-logo {
-    transition: transform 0.55s var(--gg-expo);
-    border-radius: 4px;
   }
 
   .nb-logo:hover {
@@ -389,7 +390,7 @@
     height: 4px;
     border-radius: 50%;
     background: var(--gg-gold);
-    opacity: 0.6;
+    opacity: 0.7;
     flex-shrink: 0;
     transition: opacity 0.4s var(--gg-expo), transform 0.4s var(--gg-spring), box-shadow 0.4s var(--gg-expo);
   }
@@ -397,7 +398,7 @@
   .nb-lang:hover .nb-lang-dot {
     opacity: 1;
     transform: scale(1.6);
-    box-shadow: 0 0 8px rgba(201, 168, 76, 0.6);
+    box-shadow: 0 0 6px rgba(201, 168, 76, 0.45);
   }
 
   .nb-lang-code {
@@ -517,7 +518,7 @@
 
   .nb-trigger:hover .nb-trigger-label {
     color: var(--gg-gold-b);
-    letter-spacing: 0.26em;
+    letter-spacing: 0.22em;
   }
 
   .nb-trigger:active {
@@ -724,6 +725,7 @@
 
   .cap-link.is-active {
     color: var(--gg-accent);
+    font-weight: 700;
     background: rgba(232, 98, 42, 0.1);
     box-shadow: inset 0 0 0 1px rgba(232, 98, 42, 0.2), 0 0 18px rgba(232, 98, 42, 0.12), inset 0 1px 0 rgba(255,255,255,0.03);
     transform: translateY(-1px);

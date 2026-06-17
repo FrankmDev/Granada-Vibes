@@ -820,33 +820,53 @@ const scrollLabel = locale === 'en' ? 'Scroll to explore' : 'Desplázate para ex
     .rhero {
       height: auto;
       min-height: calc(100svh - 72px);
+      max-width: 100%;
+      overflow-x: hidden;
     }
-    .rhero-stage { padding: 2rem 1.5rem 1.5rem; }
+    .rhero :global(.cin-screen-frame) {
+      top: 1rem; left: 1rem; right: 1rem; bottom: 1rem;
+    }
+    .rhero-stage {
+      width: 100%;
+      max-width: 100%;
+      padding: 4.25rem 1rem 1.5rem;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
     .rhero-spread {
       grid-template-columns: 1fr;
       gap: 1.5rem;
       align-items: start;
       height: auto;
+      min-width: 0;
     }
-    .rhero-figure { max-width: 340px; margin: 0 auto; width: 100%; }
+    .rhero-figure { max-width: min(340px, 82vw); margin: 0 auto; width: 100%; min-width: 0; }
     .rhero-figure-wrap { aspect-ratio: 3 / 4; max-height: none; width: 100%; }
+    .rhero-text { width: 100%; max-width: 100%; min-width: 0; align-items: center; text-align: center; }
+    .rhero-eyebrow { justify-content: center; max-width: 100%; min-width: 0; }
+    .eyebrow-text { white-space: normal; text-align: center; line-height: 1.35; overflow-wrap: anywhere; }
     .rhero-title-lead, .rhero-title-focal { font-size: clamp(2.3rem, 8.5vw, 3.4rem); }
-    .rhero-title-focal { padding-left: 0.6rem; }
-    .rhero-lead { max-width: 42ch; }
+    .rhero-title { max-width: 100%; text-align: center; overflow-wrap: anywhere; }
+    .rhero-title-focal { padding-left: 0; width: auto; max-width: 100%; }
+    .rhero-title-focal::before { left: 0; right: 0; }
+    .rhero-word { white-space: normal; }
+    .rhero-lead { max-width: 42ch; margin-inline: auto; }
     .rhero-bottom-bar { display: none; }
     .scroll-hint { display: flex; }
     .deco-ring, .deco-compass { display: none; }
-    .rhero-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; top: 1.5rem; left: 1.5rem; }
-    .rhero-caption { font-size: 0.5rem; }
+    .rhero-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; top: 1.25rem; left: 1rem; max-width: calc(100% - 2rem); }
+    .rhero-caption { font-size: 0.5rem; max-width: 100%; }
+    .caption-text { white-space: normal; overflow-wrap: anywhere; }
     .rhero-shaft, .rhero-grid { display: none; }
     .rhero-title-aura { inset: -0.16em -0.12em -0.08em; filter: blur(10px); }
-    .rhero-title-mark { width: 104px; right: 0; opacity: 0.55; }
+    .rhero-title-mark { display: none; }
   }
 
   @media (max-width: 480px) {
     .rhero-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
     .eyebrow-line { width: 24px; }
-    .rhero-figure { max-width: 280px; }
+    .rhero-stage { padding-inline: 0.875rem; }
+    .rhero-figure { max-width: min(280px, 78vw); }
     .rhero-title-lead, .rhero-title-focal { font-size: clamp(2rem, 8vw, 2.72rem); }
     .rhero-title-focal::after { display: none; }
     .rhero-lead { font-size: 0.88rem; }

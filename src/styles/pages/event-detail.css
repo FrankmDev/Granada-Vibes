@@ -16,6 +16,8 @@
     background: var(--s-bg);
     position: relative;
     overflow: visible;
+    max-width: 100%;
+    overflow-x: clip;
   }
   .det-page::before {
     content: '';
@@ -34,6 +36,10 @@
     padding: clamp(3rem, 5vw, 4.75rem) clamp(1.5rem, 5vw, 4rem) 2rem;
     position: relative;
     z-index: 2;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: clip;
   }
 
   /* UPGRADED LAYOUT */
@@ -44,6 +50,14 @@
     grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
     max-width: 1320px;
     margin: 0 auto;
+    min-width: 0;
+  }
+
+  .upgraded-layout > *,
+  .upgraded-main,
+  .upg-sidebar,
+  .upg-sidebar-sticky {
+    min-width: 0;
   }
 
   /* LEFT TRACK: MAIN */
@@ -56,6 +70,10 @@
 
   .upg-block {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     padding: clamp(2.25rem, 4vw, 3rem);
     background:
       linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.36)),
@@ -127,12 +145,18 @@
   .upg-venue-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
   .upg-badge {
     display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem;
+    min-width: 0;
+    max-width: 100%;
     border-radius: 8px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em;
     background: rgba(201,168,76,0.15); color: var(--s-gold-ink); border: 1px solid rgba(201,168,76,0.3);
     text-decoration: none;
   }
   .upg-badge.ghost { background: transparent; border-color: var(--s-border); color: var(--s-ink-2); }
   .upg-badge svg { width: 14px; height: 14px; }
+  .upg-badge {
+    overflow-wrap: anywhere;
+    text-wrap: pretty;
+  }
   .upg-badge:hover { border-color: rgba(232,98,42,0.35); color: var(--s-orange); }
   .upg-badge:focus-visible,
   .upg-nav-link:focus-visible,
@@ -291,12 +315,16 @@
     height: fit-content;
     max-height: calc(100svh - 72px - 3rem);
     overflow: visible;
+    min-width: 0;
   }
   .upg-sidebar-sticky { display: flex; flex-direction: column; gap: 0.85rem; }
 
   /* SIDE CARDS — Key facts, In this event, Share */
   .event-side-card {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     border-radius: 20px;
     padding: clamp(0.95rem, 1.8vw, 1.2rem);
     display: flex;
@@ -449,6 +477,7 @@
     box-shadow: 0 22px 60px rgba(26, 22, 25, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02);
     overflow: visible;
     isolation: isolate;
+    max-width: 100%;
   }
   /* Top gold accent bar */
   .event-share-card::before {
@@ -761,6 +790,9 @@
   /* Related content stack — visual styles for cards come from CrossLinksSection
      (scoped to that component) and the loose-variant override there. */
   .event-related-full {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     max-width: 1320px;
     margin: clamp(2rem, 4vw, 3rem) auto 0;
     overflow: hidden;
@@ -779,19 +811,54 @@
   }
 
   @media (max-width: 1024px) {
-    .upgraded-layout { grid-template-columns: 1fr; gap: 1.25rem; }
+    .upgraded-layout { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
     .upg-sidebar { position: static; }
   }
 
   @media (max-width: 640px) {
-    .det-content-wrap { padding-top: 2.25rem; }
-    .upg-block { padding: 2rem 1.5rem; }
-    .upg-venue-info { padding: 0 1.5rem 1.5rem; }
-    .upg-venue-block .upg-header { padding: 2rem 1.5rem 0; }
+    .det-page { overflow-x: hidden; }
+    .det-content-wrap {
+      padding: 2.25rem 1rem 1.5rem;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    .upgraded-layout,
+    .event-related-full { width: 100%; max-width: 100%; }
+    .upg-block { padding: 1.55rem 1rem; border-radius: 18px; }
+    .event-article-card { padding: clamp(1.7rem, 5vw, 2.35rem) clamp(1.05rem, 4vw, 1.45rem); }
+    .event-article-card::before { left: 0.62rem; top: 1.5rem; bottom: 1.5rem; }
+    .event-entry-section { padding-block: 1.9rem; }
+    .upg-venue-info { padding: 1.2rem 1rem 1.2rem; }
+    .upg-venue-block .upg-header { padding: 1.5rem 1rem 0; }
     .upg-venue-map-wrapper { height: clamp(300px, 50vh, 420px); }
     .upg-title { font-size: 1.8rem; }
+    .upg-header,
+    .event-side-head {
+      gap: 0.75rem;
+    }
+    .upg-eyebrow,
+    .event-side-title {
+      min-width: 0;
+      letter-spacing: 0.14em;
+      overflow-wrap: anywhere;
+    }
+    .event-facts-grid,
+    .event-share-channels {
+      grid-template-columns: 1fr;
+    }
+    .event-fact dt,
+    .event-fact dd,
+    .event-share-label {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
     .upg-past-notice { display: grid; }
-    .upg-nav-link { max-width: 48%; }
+    .upg-nav-flex { flex-direction: column; align-items: stretch; }
+    .upg-nav-link { max-width: 100%; width: 100%; }
+    .upg-nav-link--end { align-items: flex-start; text-align: left; }
+    .upg-block--compact,
+    .upg-block--loose { padding: 1.5rem 1rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -11,7 +11,7 @@ import { eventHubs, type EventHubConfig } from '@data/seo/event-hubs.js';
 import { getEventDiscoveryLinks } from '@utils/event-hub-links';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute } from '@utils/routes';
-import { formatFullDate } from '@utils/dates';
+import { formatDateShort } from '@utils/dates';
 import { getEventDisplayTitle } from '@utils/event-seo';
 import { getPriceStatus } from '@utils/prices';
 import type { Event, Locale, EventCategory } from '@types';
@@ -107,6 +107,48 @@ const faq = config.faqs.map((item) => ({
   answer: item.answer[locale],
 }));
 
+// ─── Premium hub micro-data ────────────────────────────────────────
+const kindLabels: Record<string, string> = {
+  today: isEnglish ? 'TODAY' : 'HOY',
+  weekend: isEnglish ? 'WEEKEND' : 'FIN DE SEMANA',
+  concerts: isEnglish ? 'CONCERTS' : 'CONCIERTOS',
+  free: isEnglish ? 'FREE' : 'GRATIS',
+  venue: isEnglish ? 'VENUE' : 'SALA',
+};
+const kindLabel = kindLabels[config.kind] ?? config.kind.toUpperCase();
+
+const rangeLabel = (() => {
+  if (config.kind === 'today') {
+    return formatDateShort(today, locale).toUpperCase();
+  }
+  if (config.kind === 'weekend') {
+    const { start, end } = getWeekendWindow();
+    return `${formatDateShort(start, locale).toUpperCase()} → ${formatDateShort(end, locale).toUpperCase()}`;
+  }
+  return kindLabel;
+})();
+
+// Asymmetric height rhythm: hero → mid → tall → mid → tall → mid
+const HEIGHT_PATTERN = [72, 50, 64, 48, 60, 52];
+
+// Distribute featured events across 3 columns for an editorial magazine
+// layout. Each column becomes a flex stack; each card keeps its own
+// height via the existing `heightVh` prop on EventArchiveCard.
+const NUM_COLS = 3;
+const cardColumns: Event[][] = Array.from({ length: NUM_COLS }, (_, colIndex) =>
+  featuredEvents.filter((_, i) => i % NUM_COLS === colIndex),
+);
+
+// Default height for any pattern miss (defensive — pattern wraps the
+// index so this should never actually fire, but noUncheckedIndexedAccess
+// requires we coalesce the `| undefined` from array access).
+const DEFAULT_HEIGHT = HEIGHT_PATTERN[0] ?? 60;
+
+// Edition / folio numbers (decorative, derived from hub order)
+const editionIndex = eventHubs.findIndex((hub) => hub.id === config.id);
+const volLabel = `VOL. ${String(editionIndex + 1).padStart(2, '0')}`;
+const refLabel = `Nº ${String(editionIndex + 1).padStart(3, '0')}`;
+
 const heroMetadata = [
   { label: t('seoHub.eventsCount'), value: events.length.toString(), icon: 'calendar' },
   { label: t('seoHub.alternativesCount'), value: nearbyEvents.length.toString(), icon: 'layers' },
@@ -138,8 +180,19 @@ const heroMetadata = [
     variant="compact"
   />
 
+  <!-- ════════════════════════════════════════════════════════════════
+       BLOCK 01 — MAIN ARCHIVE / CARTELERA
+       ════════════════════════════════════════════════════════════════ -->
   <section class="hub-archive" aria-label={config.h1[locale]}>
     <div class="cin-grain" aria-hidden="true"></div>
+
+    <!-- Vertical rail label (left side) -->
+    <aside class="hub-rail" aria-hidden="true">
+      <span class="hub-rail-num">{refLabel}</span>
+      <span class="hub-rail-rule"></span>
+      <span class="hub-rail-text">{kindLabel}</span>
+    </aside>
+
     <ScreenFrame
       tagTopLeft={t('events.archiveFrameTagTopLeft')}
       tagTopRight={t('events.archiveFrameTagTopRight')}
@@ -148,69 +201,177 @@ const heroMetadata = [
     />
 
     <div class="hub-grid-wrap">
+      <!-- INTRO STRIP / FOLIO HEADER -->
+      <header class="hub-folio" aria-label={t('seoHub.folioAriaLabel')}>
+        <div class="hub-folio-cell">
+          <span class="hub-folio-eyebrow">{t('seoHub.instrumentBlock')}</span>
+          <span class="hub-folio-value">{refLabel}</span>
+        </div>
+        <span class="hub-folio-rule" aria-hidden="true"></span>
+        <div class="hub-folio-cell">
+          <span class="hub-folio-eyebrow">{t('seoHub.instrumentVolume')}</span>
+          <span class="hub-folio-value">{volLabel}</span>
+        </div>
+        <span class="hub-folio-rule" aria-hidden="true"></span>
+        <div class="hub-folio-cell">
+          <span class="hub-folio-eyebrow">{t('seoHub.instrumentSection')}</span>
+          <span class="hub-folio-value">{kindLabel}</span>
+        </div>
+        <span class="hub-folio-rule" aria-hidden="true"></span>
+        <div class="hub-folio-cell">
+          <span class="hub-folio-eyebrow">{t('seoHub.instrumentRange')}</span>
+          <span class="hub-folio-value">{rangeLabel}</span>
+        </div>
+        <span class="hub-folio-rule" aria-hidden="true"></span>
+        <div class="hub-folio-cell hub-folio-cell--live">
+          <span class="hub-folio-eyebrow">{t('seoHub.instrumentLive')}</span>
+          <span class="hub-folio-value hub-folio-value--live">
+            <span class="hub-folio-pulse" aria-hidden="true"></span>
+            GRN
+          </span>
+        </div>
+      </header>
+
+      <!-- MAIN HEADER (compact, no char animation) -->
       <SectionHeader
         eyebrow={t('seoHub.upcomingEyebrow')}
         eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        title={config.displayH1[locale]}
+        title={config.h1[locale]}
+        titleSecondary={config.displayH1[locale]}
         size="compact"
-        animateTitle={true}
+        animateTitle={false}
         theme="cream"
       />
 
+      <!-- DISCOVERY LINKS PANEL -->
       <EventDiscoveryLinks
         links={discoveryLinks}
         ariaLabel={t('seoHub.quickLinks')}
         panelLabel={t('seoHub.discoveryPanelLabel')}
       />
 
-      <div class="hub-count-row" aria-label={t('seoHub.statsLabel')}>
-        <span class="hub-count-line"></span>
-        <div class="hub-count-text">
-          <span class="hub-count-value">{events.length}</span>
-          <span class="hub-count-label">{t('seoHub.eventsCount')}</span>
+      <!-- INSTRUMENT PANEL (control-panel read-out) -->
+      <div class="hub-instrument" role="group" aria-label={t('seoHub.statsLabel')}>
+        <div class="hub-instrument-cell">
+          <span class="hub-instrument-label">{t('seoHub.instrumentResults')}</span>
+          <div class="hub-instrument-value-wrap">
+            <span class="hub-instrument-value">{events.length}</span>
+            <span class="hub-instrument-suffix">{t('seoHub.eventsCount')}</span>
+          </div>
         </div>
-        <span class="hub-count-line"></span>
+        <div class="hub-instrument-divider" aria-hidden="true"></div>
+        <div class="hub-instrument-cell">
+          <span class="hub-instrument-label">{t('seoHub.instrumentRange')}</span>
+          <div class="hub-instrument-value-wrap">
+            <span class="hub-instrument-value">{formatDateShort(today, locale).toUpperCase()}</span>
+            <span class="hub-instrument-suffix">{t('seoHub.instrumentCurrentDate')}</span>
+          </div>
+        </div>
+        <div class="hub-instrument-divider" aria-hidden="true"></div>
+        <div class="hub-instrument-cell">
+          <span class="hub-instrument-label">{t('seoHub.instrumentBlock')}</span>
+          <div class="hub-instrument-value-wrap">
+            <span class="hub-instrument-value">{refLabel}</span>
+            <span class="hub-instrument-suffix">{volLabel}</span>
+          </div>
+        </div>
+        <div class="hub-instrument-divider" aria-hidden="true"></div>
+        <div class="hub-instrument-cell hub-instrument-cell--live">
+          <span class="hub-instrument-label">{t('seoHub.instrumentLive')}</span>
+          <div class="hub-instrument-value-wrap">
+            <span class="hub-instrument-pulse" aria-hidden="true"></span>
+            <span class="hub-instrument-value hub-instrument-value--live">GRN</span>
+            <span class="hub-instrument-suffix">{t('seoHub.instrumentSynced')}</span>
+          </div>
+        </div>
       </div>
 
+      <!-- ASYMMETRIC CARD GRID — 3 columns, height variation per index -->
       {featuredEvents.length > 0 ? (
-        <div class="hub-card-grid">
-          {featuredEvents.map((event, idx) => (
-            <EventArchiveCard
-              event={event}
-              locale={locale}
-              href={getEventDetailUrl(event.slug, locale)}
-              categoryLabel={categoryLabels[event.category] ?? event.category.toUpperCase()}
-              cardIndex={idx}
-              loading={idx < 3 ? 'eager' : 'lazy'}
-              sizes="(max-width: 768px) 100vw, 33vw"
-            />
+        <div class="hub-asym-grid">
+          {cardColumns.map((colEvents, colIndex) => (
+            <div class="hub-asym-col" style={`--col-index: ${colIndex};`}>
+              {colEvents.map((event, idx) => {
+                const flatIndex = colIndex * Math.ceil(featuredEvents.length / NUM_COLS) + idx;
+                const patternIdx = (colIndex + idx * NUM_COLS) % HEIGHT_PATTERN.length;
+                return (
+                  <EventArchiveCard
+                    event={event}
+                    locale={locale}
+                    href={getEventDetailUrl(event.slug, locale)}
+                    categoryLabel={categoryLabels[event.category] ?? event.category.toUpperCase()}
+                    cardIndex={flatIndex}
+                    heightVh={HEIGHT_PATTERN[patternIdx] ?? DEFAULT_HEIGHT}
+                    loading={colIndex === 0 && idx === 0 ? 'eager' : 'lazy'}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                );
+              })}
+            </div>
           ))}
         </div>
       ) : (
         <div class="hub-empty">
-          <h2>{config.emptyTitle[locale]}</h2>
-          <p>{config.emptyText[locale]}</p>
-          <a href={getRoute('events', locale)}>{t('detail.allEvents')}</a>
+          <span class="hub-empty-folio">{refLabel}</span>
+          <div class="hub-empty-body">
+            <h2>{config.emptyTitle[locale]}</h2>
+            <p>{config.emptyText[locale]}</p>
+            <a href={getRoute('events', locale)}>
+              <span>{t('detail.allEvents')}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
         </div>
       )}
     </div>
   </section>
 
+  <!-- ════════════════════════════════════════════════════════════════
+       BLOCK 02 — AGENDA RELACIONADA
+       ════════════════════════════════════════════════════════════════ -->
   {nearbyEvents.length > 0 && (
-    <section class="hub-archive" aria-label={t('seoHub.moreTitle')}>
+    <section class="hub-archive hub-archive--secondary" aria-label={t('seoHub.moreTitle')}>
       <div class="hub-grid-wrap">
-        <SectionHeader
-          eyebrow={t('seoHub.moreEyebrow')}
-          eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-          title={t('seoHub.moreTitle')}
-          theme="cream"
-        />
+        <header class="hub-block-header">
+          <span class="hub-block-folio" aria-hidden="true">02</span>
+          <span class="hub-block-rule" aria-hidden="true"></span>
+          <div class="hub-block-header-text">
+            <SectionHeader
+              eyebrow={t('seoHub.moreEyebrow')}
+              title={t('seoHub.moreTitle')}
+              size="compact"
+              animateTitle={false}
+              theme="cream"
+            />
+          </div>
+        </header>
 
-        <div class="hub-secondary-grid">
-          {nearbyEvents.map((event) => (
-            <a href={getEventDetailUrl(event.slug, locale)} class="hub-more-link">
-              <span>{getEventDisplayTitle(event, locale)}</span>
-              <small>{formatFullDate(event.date, locale)} · {event.venue}</small>
+        <div class="hub-agenda" role="list">
+          <div class="hub-agenda-header" aria-hidden="true">
+            <span class="hub-agenda-h-cell hub-agenda-h-idx">{t('seoHub.agendaColIdx')}</span>
+            <span class="hub-agenda-h-cell hub-agenda-h-date">{t('seoHub.agendaColDate')}</span>
+            <span class="hub-agenda-h-cell hub-agenda-h-title">{t('seoHub.agendaColEvent')}</span>
+            <span class="hub-agenda-h-cell hub-agenda-h-venue">{t('seoHub.agendaColVenue')}</span>
+            <span class="hub-agenda-h-cell hub-agenda-h-arrow"></span>
+          </div>
+          {nearbyEvents.map((event, idx) => (
+            <a
+              href={getEventDetailUrl(event.slug, locale)}
+              class="hub-agenda-row"
+              role="listitem"
+              style={`--row-index: ${idx};`}
+            >
+              <span class="hub-agenda-cell hub-agenda-idx">{String(idx + 1).padStart(2, '0')}</span>
+              <span class="hub-agenda-cell hub-agenda-date">{formatDateShort(event.date, locale).toUpperCase()}</span>
+              <span class="hub-agenda-cell hub-agenda-title">{getEventDisplayTitle(event, locale)}</span>
+              <span class="hub-agenda-cell hub-agenda-venue">{event.venue}</span>
+              <span class="hub-agenda-cell hub-agenda-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </a>
           ))}
         </div>
@@ -218,42 +379,40 @@ const heroMetadata = [
     </section>
   )}
 
-  <section class="hub-archive" aria-label={t('seoHub.faqTitle')}>
+  <!-- ════════════════════════════════════════════════════════════════
+       BLOCK 03 — FAQ / INFORMACIÓN PRÁCTICA
+       ════════════════════════════════════════════════════════════════ -->
+  <section class="hub-archive hub-archive--secondary" aria-label={t('seoHub.faqTitle')}>
     <div class="hub-grid-wrap">
-      <SectionHeader
-        eyebrow={t('seoHub.faqEyebrow')}
-        eyebrowYear={`${currentYear - 1} — ${currentYear}`}
-        title={t('seoHub.faqTitle')}
-        theme="cream"
-      />
+      <header class="hub-block-header">
+        <span class="hub-block-folio" aria-hidden="true">03</span>
+        <span class="hub-block-rule" aria-hidden="true"></span>
+        <div class="hub-block-header-text">
+          <SectionHeader
+            eyebrow={t('seoHub.faqEyebrow')}
+            title={t('seoHub.faqTitle')}
+            size="compact"
+            animateTitle={false}
+            theme="cream"
+          />
+        </div>
+      </header>
 
-      <div class="hub-secondary-grid">
-        {config.faqs.map((item) => (
-          <article class="hub-faq-card">
-            <h3>{item.question[locale]}</h3>
-            <p>{item.answer[locale]}</p>
+      <div class="hub-faq">
+        {config.faqs.map((item, idx) => (
+          <article class="hub-faq-row" style={`--row-index: ${idx};`}>
+            <div class="hub-faq-meta" aria-hidden="true">
+              <span class="hub-faq-num">{String(idx + 1).padStart(2, '0')}</span>
+              <span class="hub-faq-tag">{t('seoHub.faqMarker')}.</span>
+            </div>
+            <div class="hub-faq-body">
+              <h3>{item.question[locale]}</h3>
+              <p>{item.answer[locale]}</p>
+            </div>
+            <div class="hub-faq-rule" aria-hidden="true"></div>
           </article>
         ))}
       </div>
     </div>
   </section>
-
-  <script is:inline>
-    (function() {
-      const sectionHeaders = document.querySelectorAll('.hub-archive .sh-editorial');
-      if (sectionHeaders.length === 0) return;
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('in-view');
-              io.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      sectionHeaders.forEach(sh => io.observe(sh));
-    })();
-  </script>
 </BaseLayout>

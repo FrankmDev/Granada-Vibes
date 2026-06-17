@@ -35,10 +35,31 @@ const c = {
 <section class="portal-hero" aria-label={c.ariaLabel} data-locale={locale}>
   <h1 class="sr-only">{c.searchHeading}</h1>
 
-  <!-- Cinematic Preloader — ultra light -->
+  <!-- Cinematic Preloader — calibration ritual -->
   <div class="hero-boot-screen" id="hero-boot-screen" aria-hidden="true">
+    <!-- Atmospheric layers (z-index 1-3) -->
+    <div class="boot-mesh" aria-hidden="true"></div>
+    <div class="boot-grid" aria-hidden="true"></div>
+    <div class="boot-scanlines" aria-hidden="true"></div>
     <div class="boot-vignette" aria-hidden="true"></div>
 
+    <!-- Side rails with tick markers (decorative, no text) -->
+    <div class="boot-rail boot-rail-left" aria-hidden="true">
+      <span class="boot-rail-tick" style="--pos: 8%"></span>
+      <span class="boot-rail-tick" style="--pos: 22%"></span>
+      <span class="boot-rail-tick" style="--pos: 50%"></span>
+      <span class="boot-rail-tick" style="--pos: 78%"></span>
+      <span class="boot-rail-tick" style="--pos: 92%"></span>
+    </div>
+    <div class="boot-rail boot-rail-right" aria-hidden="true">
+      <span class="boot-rail-tick boot-rail-tick--right" style="--pos: 8%"></span>
+      <span class="boot-rail-tick boot-rail-tick--right" style="--pos: 22%"></span>
+      <span class="boot-rail-tick boot-rail-tick--right" style="--pos: 50%"></span>
+      <span class="boot-rail-tick boot-rail-tick--right" style="--pos: 78%"></span>
+      <span class="boot-rail-tick boot-rail-tick--right" style="--pos: 92%"></span>
+    </div>
+
+    <!-- Frame -->
     <div class="boot-frame" aria-hidden="true">
       <svg class="boot-corner boot-corner-tl" viewBox="0 0 40 40" aria-hidden="true">
         <path d="M0 40 L0 8 A8 8 0 0 1 8 0 L40 0" fill="none" stroke="currentColor" stroke-width="1"/>
@@ -65,6 +86,28 @@ const c = {
 
     <div class="boot-brand-wrap">
       <div class="boot-logo-wrap">
+        <!-- Aperture / orbit (rotates slowly around the star) -->
+        <div class="boot-orbit-stage" aria-hidden="true">
+          <div class="boot-orbit-rotate">
+            <svg class="boot-orbit" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="0.4" opacity="0.18"/>
+              <line x1="50" y1="0" x2="50" y2="4" stroke="currentColor" stroke-width="0.7" opacity="0.6"/>
+              <line x1="50" y1="96" x2="50" y2="100" stroke="currentColor" stroke-width="0.7" opacity="0.6"/>
+              <line x1="0" y1="50" x2="4" y2="50" stroke="currentColor" stroke-width="0.7" opacity="0.6"/>
+              <line x1="96" y1="50" x2="100" y2="50" stroke="currentColor" stroke-width="0.7" opacity="0.6"/>
+              <line x1="16" y1="16" x2="19" y2="19" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+              <line x1="81" y1="16" x2="84" y2="19" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+              <line x1="16" y1="84" x2="19" y2="81" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+              <line x1="81" y1="84" x2="84" y2="81" stroke="currentColor" stroke-width="0.6" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="boot-orbit-rotate-reverse">
+            <svg class="boot-orbit" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" stroke-width="0.4" stroke-dasharray="1 2.5" opacity="0.32"/>
+            </svg>
+          </div>
+        </div>
+
         <svg class="boot-star" viewBox="0 0 44 44" fill="none" aria-hidden="true">
           <path d="M22 3 L25.2 13.8 L36 8 L29.2 17.5 L38 22 L29.2 26.5 L36 36 L25.2 30.2 L22 41 L18.8 30.2 L8 36 L14.8 26.5 L6 22 L14.8 17.5 L8 8 L18.8 13.8 Z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
           <circle cx="22" cy="22" r="3.5" fill="currentColor"/>
@@ -73,6 +116,10 @@ const c = {
       </div>
 
       <div class="boot-lockup">
+        <span class="boot-lockup-bracket boot-lockup-bracket--tl" aria-hidden="true"></span>
+        <span class="boot-lockup-bracket boot-lockup-bracket--tr" aria-hidden="true"></span>
+        <span class="boot-lockup-bracket boot-lockup-bracket--bl" aria-hidden="true"></span>
+        <span class="boot-lockup-bracket boot-lockup-bracket--br" aria-hidden="true"></span>
         <div class="boot-brand-name">{c.bootBrand}</div>
         <div class="boot-brand-tagline">{c.bootTagline}</div>
         <div class="boot-accent-line" aria-hidden="true"></div>
@@ -80,19 +127,34 @@ const c = {
 
       <div class="boot-readout">
         <span class="boot-status" id="boot-status" data-loading={c.bootStatusLoading} data-ready={c.bootStatusReady}>{c.bootStatusInit}</span>
-        <span class="boot-counter" id="boot-counter">000</span>
+        <div class="boot-counter-row">
+          <span class="boot-counter-marker" aria-hidden="true"></span>
+          <span class="boot-counter" id="boot-counter">000</span>
+        </div>
       </div>
     </div>
 
     <div class="boot-rule-wrap" aria-hidden="true">
+      <div class="boot-rule-ticks">
+        <span class="boot-rule-tick" style="--pos: 0%"></span>
+        <span class="boot-rule-tick" style="--pos: 25%"></span>
+        <span class="boot-rule-tick" style="--pos: 50%"></span>
+        <span class="boot-rule-tick" style="--pos: 75%"></span>
+        <span class="boot-rule-tick" style="--pos: 100%"></span>
+      </div>
       <div class="boot-rule-track">
         <div class="boot-rule-track-bg"></div>
         <div class="boot-rule-fill" id="boot-rule-fill"></div>
       </div>
-      <div class="boot-rule-percent" id="boot-rule-percent">0%</div>
+      <div class="boot-rule-foot">
+        <span class="boot-rule-percent" id="boot-rule-percent">0%</span>
+      </div>
     </div>
 
     <div class="boot-build-info" aria-hidden="true">{c.bootBuild}</div>
+
+    <!-- Exit sweep (wipes across screen when .is-hidden) -->
+    <div class="boot-exit-sweep" aria-hidden="true"></div>
   </div>
 
   <!-- Camera Screen Frame -->
