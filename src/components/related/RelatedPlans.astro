@@ -1,0 +1,45 @@
+---
+import type { Locale, MixedRoute } from '@types';
+import { useTranslations } from '@i18n/utils';
+import { getPlanDetailUrl, getRoute } from '@utils/routes';
+import { getRelatedMixedRoutesForMixedRoute } from '@utils/related-content';
+import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+
+interface Props {
+  locale: Locale;
+  plan: MixedRoute;
+  title?: string;
+  limit?: number;
+}
+
+const { locale, plan, title, limit = 3 } = Astro.props;
+const t = useTranslations(locale);
+
+const relatedPlans = getRelatedMixedRoutesForMixedRoute(plan, limit);
+
+const sectionTitle = title ?? t('detail.relatedPlans');
+
+const slugDurationLabels: Record<string, string> = {
+  '2h': t('mixedRoutes.slugDurationLabels.2h'),
+  '6h': t('mixedRoutes.slugDurationLabels.6h'),
+  '12h': t('mixedRoutes.slugDurationLabels.12h'),
+  '1day': t('mixedRoutes.slugDurationLabels.1day'),
+  '2days': t('mixedRoutes.slugDurationLabels.2days'),
+  '3days': t('mixedRoutes.slugDurationLabels.3days'),
+};
+const getDurationLabel = (dur: string) => slugDurationLabels[dur] ?? dur;
+
+const links = relatedPlans.map((p) => ({
+  url: getPlanDetailUrl(p.slug, locale),
+  title: p.title[locale],
+  meta: `${getDurationLabel(p.duration)} · ${p.neighborhoods.length} ${t('mixedRoutes.stops')}`,
+  image: p.image || null,
+}));
+---
+
+{links.length > 0 && (
+  <CrossLinksSection
+    title={sectionTitle}
+    links={links}
+  />
+)}

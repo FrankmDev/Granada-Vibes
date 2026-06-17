@@ -349,26 +349,26 @@ Ejecutar **el mismo día** que se apunte el dominio definitivo a Vercel/Netlify:
 
 ---
 
-## BlogDetailHero — v13 "ALHAMBRA SPREAD" (integrada)
+## BlogDetailHero — v15 "ALHAMBRA SPREAD · Refined" (integrada)
 
-`src/components/blog/BlogDetailHero.astro` es el hero oscuro de las páginas de detalle de guías (`/guias/[slug]/`). v13 es un **spread editorial de revista**: la imagen de portada a la izquierda con tratamiento cinematográfico (corner brackets, vignette, glare, stamp, glow, shadow) y el título monumental a la derecha con lead + italic accent focal y un folio editorial "PLIEGO Nº 003" encima. Sin data dock, sin ghost label.
+`src/components/blog/BlogDetailHero.astro` es el hero oscuro de las páginas de detalle de guías (`/guias/[slug]/`). v15 es un **spread editorial de revista**: la imagen de portada a la izquierda con tratamiento cinematográfico (corner brackets, vignette, glare, stamp, glow, shadow) y el título monumental a la derecha con lead + italic accent focal, decorado con un aura radial y un mark diamante. Sin data dock, sin ghost label, sin folio PLIEGO.
 
 ### Concepto
 
-Un spread abierto: la imagen de portada actúa como "cover photo" y el título como "cover title". La asimetría (grid 38fr / 62fr) crea tensión. La **marca de folio "PLIEGO Nº 003"** sobre el título da carácter editorial y ata con el número de archivo del stamp. La estrella nazarí y los deco-rings son las únicas decoraciones figurativas.
+Un spread abierto: la imagen de portada actúa como "cover photo" y el título como "cover title". La asimetría (grid 38fr / 62fr) crea tensión. El **title aura** (gradiente radial detrás del título) y el **title mark** (diamante rotado 45° a la derecha) dan carácter editorial sin romper la limpieza. La brújula y el eje en la capa decorativa aportan profundidad cartográfica.
 
 ### Reglas de integración obligatorias
 
 - **Tokens globales**: usar SIEMPRE `var(--color-*)` de `src/styles/tokens.css`. NUNCA tokens locales `--s-*`.
-- **Header spacing real**: la NavBar fija mide **72px** (no usar `var(--header-height)` que es 64px). Back link y REF a `top: calc(72px + 1.5rem)`. Stage con `padding-top: calc(72px + 4rem)`.
-- **ScreenFrame**: importar `<ScreenFrame />` de `@components/ui/ScreenFrame.astro`. TL = `ARCHIVO · {archiveRef}`, TR = `categoryLabel`, BL = `GRN URBAN`, BR = `coordinates`.
-- **Capas atmosféricas (3)**: `bhero-mesh` (gradiente + #0a0a0a), `bhero-radial` (radial gold/orange), `bhero-grain` (SVG turbulence con mix-blend soft-light). Mismas que `CinematicHero`.
-- **Capa decorativa (5)**: `deco-ring r1/r2`, `deco-dot d1`, `deco-line v1` (vertical 38%), `deco-line h1` (horizontal 18% top-right). Sin ghost label.
-- **Cover image treatment**: `OptimizedImage` con `aspect-ratio: 3/4`, `object-fit: cover`, `filter: saturate(1.05) contrast(1.08) brightness(0.92)`. Wrapper con `border-radius: 14px`, shadow 3-layer, corner brackets 22px (crecen a 36px en hover con gold), vignette radial + glare sweep. Stamp "CULTURA Nº 003" rotated -1.5deg top-left. Ribbon "DESTACADA" orange top-right si `featured`. Glow gold radial detrás.
-- **Folio editorial**: línea con `— line + "PLIEGO Nº 003" + line —` en italic Fraunces gold encima del título.
-- **Title char-by-char** con stagger y NBSP para espacios. `text-wrap: pretty`. Lead en block cream, focal en italic accent con hanging indent.
-- **Bottom bar**: `categoryLabel ◆ VOL. I · 2026 ◆ 37°10′N · 3°35′W`. Sin scroll-hint en desktop (overlap). Scroll-hint solo en mobile.
-- **Sin gimmicks eliminados**: NO data dock, NO ghost label, NO bento card, NO numeral romano, NO eyebrow rule triple, NO ornament.
+- **Header spacing real**: la NavBar fija mide **72px** (no usar `var(--header-height)` que es 64px). Back link y REF a `top: 2.25rem` desde la sección (bhero). Stage con `padding-top: 4.5rem` (bhero + 4.5rem clearance bajo el back-link).
+- **ScreenFrame**: importar `<ScreenFrame />` de `@components/ui/ScreenFrame.astro`. TL = `ARCHIVO · {archiveRef}`, TR = `categoryLabel`, BL = `GRN URBAN`, BR = `coordinates`. Frame inset: `1.5rem` en los 4 lados.
+- **Capas atmosféricas (6)**: `bhero-mesh` (3 radial gradients sobre `#0a0a0a`), `bhero-radial` (2 spotlights gold/orange), `bhero-shaft` (gradiente diagonal 118° en screen blend), `bhero-grid` (cuadrícula 80px enmascarada con radial), `bhero-vignette` (corners darken), `bhero-grain` (SVG turbulence mix-blend soft-light).
+- **Capa decorativa (7)**: `deco-ring r1/r2`, `deco-dot d1`, `deco-line v1/h1`, `deco-compass c1` (doble cuadrado rotado), `deco-axis a1` (línea con remates diamante). Sin ghost label.
+- **Cover image treatment**: `OptimizedImage` con `aspect-ratio: 3/4`, `width: 100%`, `max-height: calc(100svh - 220px)`, `object-fit: cover`, `filter: saturate(1.05) contrast(1.08) brightness(0.92)`. Wrapper con `border-radius: 14px`, shadow 3-layer, corner brackets 22px (crecen a 36px en hover con gold), vignette radial + glare sweep. Stamp "CULTURA Nº 003" rotated -1.5deg top-left. Ribbon "DESTACADA" orange top-right si `featured`. Glow gold radial detrás.
+- **Title decorations**: `bhero-title-aura` (gradiente radial orange/gold detrás del título con `filter: blur(14px)` y `opacity: 0`). `bhero-title-mark` (cuadrado rotado 45° con `border: 1px solid gold`, `position: absolute` a la derecha del título, 96-170px responsive).
+- **Title char-by-char** con stagger y NBSP para espacios. `text-wrap: pretty`. Lead en Fraunces Thin (100), focal en Fraunces ExtraLight italic (200) orange con hanging indent, `::before` swipe gradient bajo focal, `::after` small rule sobre focal.
+- **Bottom bar**: `categoryLabel ◆ VOL. I · 2026 ◆ 37°10′N · 3°35′W`. `align-items: flex-start` + `padding-bottom: 1.5rem` (matching frame inset) para evitar que el texto del bar pise la línea inferior del ScreenFrame.
+- **Sin gimmicks eliminados**: NO data dock, NO ghost label, NO bento card, NO numeral romano, NO eyebrow rule triple, NO ornament, NO PLIEGO folio.
 
 ### Estructura del template
 
@@ -376,21 +376,23 @@ Un spread abierto: la imagen de portada actúa como "cover photo" y el título c
 <section class="bhero" data-bhero>
   <ScreenFrame ... />
 
-  <!-- 3 capas atmosféricas (z-index 1) -->
+  <!-- 6 capas atmosféricas (z-index 1) -->
   <div class="bhero-canvas">
-    <div class="bhero-mesh" /> <div class="bhero-radial" /> <div class="bhero-grain" />
+    <div class="bhero-mesh" /> <div class="bhero-radial" /> <div class="bhero-shaft" />
+    <div class="bhero-grid" /> <div class="bhero-vignette" /> <div class="bhero-grain" />
   </div>
 
   <!-- Capa decorativa (z-index 2) -->
   <div class="bhero-deco">
     <span class="deco-ring r1/r2" /> <span class="deco-dot d1" />
     <span class="deco-line v1" /> <span class="deco-line h1" />
+    <span class="deco-compass c1" /> <span class="deco-axis a1" />
   </div>
 
   <!-- Nav scrim (z-index 5) -->
   <div class="bhero-nav-scrim" />
 
-  <!-- Back link top-left a top: calc(72px + 1.5rem) (z-index 30) -->
+  <!-- Back link top-left a top: 2.25rem (z-index 30) -->
   <a class="bhero-back">← {backLabel}</a>
 
   <!-- Archive REF top-right (z-index 30) -->
@@ -421,9 +423,10 @@ Un spread abierto: la imagen de portada actúa como "cover photo" y el título c
           <span class="bhero-cat">{category}</span>
           <span class="bhero-sections">{N} secciones</span>
         </div>
-        <div class="bhero-folio">— PLIEGO Nº 003 —</div> <!-- NEW editorial mark -->
         <h1 class="bhero-title">
-          <span class="bhero-title-lead">{lead}</span>      <!-- huge regular cream -->
+          <span class="bhero-title-aura" />   <!-- radial gradient behind title -->
+          <span class="bhero-title-mark" />   <!-- diamond mark on right -->
+          <span class="bhero-title-lead">{lead}</span>     <!-- huge regular cream -->
           <span class="bhero-title-focal">{focal}</span>   <!-- huge italic accent hanging -->
         </h1>
         <p class="bhero-lead">"{description}"</p>
@@ -431,7 +434,7 @@ Un spread abierto: la imagen de portada actúa como "cover photo" y el título c
     </div>
   </div>
 
-  <!-- Bottom bar (hidden on mobile) -->
+  <!-- Bottom bar (hidden on mobile) — content above ScreenFrame bottom line -->
   <div class="bhero-bottom-bar">categoryLabel ◆ VOL. I · 2026 ◆ 37°10′N · 3°35′W</div>
 
   <!-- Scroll hint (mobile only) -->
@@ -449,41 +452,66 @@ Un spread abierto: la imagen de portada actúa como "cover photo" y el título c
 | 0.40s | `.bhero-figure` (slide + rotate) |
 | 0.45s | `.bhero-eyebrow` |
 | 0.55s | `.bhero-meta` |
-| 0.70s | `.bhero-folio` |
+| 0.65s | `.bhero-title-aura` (fade-in) |
+| 0.82s | `.bhero-title-mark` (scale + rotate-in) |
 | 0.35s + i·0.028s | `.bhero-char` (todos los chars del lead) |
 | + i·0.028s (continuación) | `.bhero-char--focal` (chars del focal) |
 | 0.95s | `.bhero-lead` |
 | 1.00s | `.bhero-stamp` (rotate-in) |
+| 1.05s | `.bhero-title-focal::before` (focal swipe) |
 | 1.10s | `.bhero-ribbon` (drop-in) |
+| 1.15s | `.bhero-title-focal::after` (focal rule) |
 | 1.20s | `.bhero-bottom-bar` |
 | 1.30s | `.bhero-caption` |
-| 9s loop | `.bhero-figure-glow` (breathe) |
+| 1.8s | `.deco-compass` (rotate + scale-in) |
+| 1.4s | `.deco-axis` (scaleX-in) |
+| 6-9s loop | `.bhero-figure-glow` (breathe), `.deco-dot` (float) |
 
 ### Title char-by-char y `text-wrap: pretty`
 
-El título se renderiza palabra por palabra, char por char con stagger. Los espacios entre palabras son `<span class="bhero-space">{'\u00A0'}</span>` con NBSP (`\u00A0`) porque Astro colapsa espacios normales dentro de spans. CSS: `.bhero-space { display: inline-block; width: 0.28em; min-width: 0.28em; }`.
+El título se renderiza palabra por palabra, char por char con stagger. Los espacios entre palabras son `<span class="bhero-space">{'\u00A0'}</span>` con NBSP (`\u00A0`) porque Astro colapsa espacios normales dentro de spans. CSS: `.bhero-space { display: inline-block; width: 0.24em; min-width: 0.24em; }`.
 
 `text-wrap: pretty` se aplica al título y al lead. Adicionalmente: `word-break: normal; overflow-wrap: normal; hyphens: none;`.
 
 ### Title split (lead + focal)
 
-Frontmatter logic — same as v11 (skip words ES+EN, strong words ≥5 chars, isSkip/isStrong helpers). Resultado:
+Frontmatter logic — skip words ES+EN, strong words ≥5 chars, isSkip/isStrong helpers. Resultado:
 - "Miradores de Granada" → `Miradores` / `de Granada` ✓
 - "Sierra Nevada desde Granada" → `Sierra Nevada` / `desde Granada` ✓
 - "Tapas gratis en Granada" → `Tapas gratis` / `en Granada` ✓
 - "Carocas de Granada" → `Carocas` / `de Granada` ✓
 - "Albaicín a pie" → `Albaicín` / `a pie` ✓
 
+### Title decorations (aura + mark)
+
+- **`.bhero-title-aura`**: `position: absolute`, `z-index: -2`, `inset: -0.22em -0.18em -0.08em -0.14em`, doble radial gradient (orange 67% 58% + gold 28% 38%), `filter: blur(14px)`, fade-in 0.65s.
+- **`.bhero-title-mark`**: `position: absolute`, `z-index: -1`, `width: clamp(96px, 10vw, 170px)`, `aspect-ratio: 1`, `right: clamp(0rem, 4vw, 2rem)`, `top: 50%`, `transform: translateY(-50%) rotate(45deg) scale(0.88)`, `border: 1px solid gold`, con `::before` y `::after` para capas internas, scale-in 0.82s.
+
+### Title focal enhancements
+
+- `padding-left: clamp(0.85rem, 5.9vw, 4.35rem)` — hanging indent
+- `width: fit-content` — focal se ajusta al contenido
+- `::before` — gradient swipe bajo el focal (skewX -18deg, scaleX 0→1)
+- `::after` — small gold rule encima del focal (rotate -18deg, scaleX 0→1)
+
 ### Cover image fallback
 
 Si `post.image` es undefined, se muestra un SVG nazarí centrado con fondo gradiente `#1a1410 → #2a1f15`. Sin corner brackets ni stamp.
 
+### Geometry constraints
+
+- **Hero height**: `height: calc(100svh - 72px)` — exact fit, no scroll
+- **Stage padding**: `4.5rem top / 1.5rem bottom` — keeps image below back-link area
+- **Spread**: `align-items: center` — both columns visually balanced
+- **Figure-wrap**: `aspect-ratio: 3/4` + `max-height: calc(100svh - 220px)` — never overflows, never stretches
+- **Bottom bar**: `align-items: flex-start` + `padding-bottom: 1.5rem` — bar text above frame line
+
 ### Responsive
 
-- **Desktop ≥1024px**: spread 38fr/62fr, title max 8.2rem
-- **Tablet 768-1024px**: spread 34fr/66fr, title 4.5rem, image 4/5
-- **Mobile <768px**: stack vertical (image on top, text below), title 3.6rem
-- **Mobile <480px**: image max-width 260px, title 2.8rem
+- **Desktop ≥1024px**: spread 38fr/62fr, title max 7.85rem, mark 96-170px
+- **Tablet 768-1024px**: spread 34fr/66fr, title 4.45rem, mark scaled down
+- **Mobile <768px**: stack vertical (image on top, text below), title 3.4rem, mark width 104px
+- **Mobile <480px**: image max-width 260px, title 2.72rem, focal `::after` hidden
 
 ### Props del componente
 
@@ -491,7 +519,7 @@ Si `post.image` es undefined, se muestra un SVG nazarí centrado con fondo gradi
 interface Props {
   post: BlogPost;
   locale: Locale;
-  readingMinutes: number;     // ya no se usa (sin dock), pero se mantiene para compatibilidad
+  readingMinutes: number;     // legacy, ya no se usa (sin dock)
   sectionCount: number;       // usado en bhero-sections badge
   displayTitle?: string;      // ya aplicado getBlogDisplayTitle
 }

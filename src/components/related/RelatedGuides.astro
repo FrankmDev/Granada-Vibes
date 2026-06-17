@@ -1,12 +1,13 @@
 ---
-import type { BlogPost, Event, Locale, Route } from '@types';
+import type { BlogPost, Event, Locale, MixedRoute, Route } from '@types';
 import type { VenueDirectoryEntry } from '@data/directories';
 import { useTranslations } from '@i18n/utils';
-import { getBlogDetailUrl } from '@utils/routes';
+import { getBlogDetailUrl, getRoute } from '@utils/routes';
 import { getBlogDisplayTitle } from '@utils/content-seo';
 import {
   getRelatedGuidesForPost,
   getRelatedGuidesForRoute,
+  getRelatedGuidesForMixedRoute,
   getRelatedGuidesForEvent,
   getRelatedGuidesForVenue,
 } from '@utils/related-content';
@@ -28,6 +29,11 @@ interface RouteContext extends BaseProps {
   route: Route;
 }
 
+interface MixedRouteContext extends BaseProps {
+  type: 'mixedRoute';
+  plan: MixedRoute;
+}
+
 interface EventContext extends BaseProps {
   type: 'event';
   event: Event;
@@ -38,7 +44,7 @@ interface VenueContext extends BaseProps {
   venue: VenueDirectoryEntry;
 }
 
-type Props = PostContext | RouteContext | EventContext | VenueContext;
+type Props = PostContext | RouteContext | MixedRouteContext | EventContext | VenueContext;
 
 const props = Astro.props;
 const { locale, type, title: customTitle, limit = 3 } = props;
@@ -50,6 +56,8 @@ if (type === 'post') {
   guides = getRelatedGuidesForPost(props.post, limit);
 } else if (type === 'route') {
   guides = getRelatedGuidesForRoute(props.route, limit);
+} else if (type === 'mixedRoute') {
+  guides = getRelatedGuidesForMixedRoute(props.plan, limit);
 } else if (type === 'event') {
   guides = getRelatedGuidesForEvent(props.event, limit);
 } else if (type === 'venue') {
@@ -67,5 +75,10 @@ const links = guides.map((guide) => ({
 ---
 
 {links.length > 0 && (
-  <CrossLinksSection title={title} links={links} />
+  <CrossLinksSection
+    title={title}
+    links={links}
+    viewAllHref={getRoute('blog', locale)}
+    viewAllLabel={t('actions.viewAll')}
+  />
 )}

@@ -6,8 +6,9 @@ import VenueMap from '@components/ui/VenueMap.astro';
 import EventImage from '@components/ui/EventImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
-import SectionHeader from '@components/ui/SectionHeader.astro';
-import { getDirectoryHref, getIndexableEvents, getIndexableVenueEntries } from '@data/index.js';
+import InstagramIcon from '@components/icons/InstagramIcon.astro';
+import WhatsAppIcon from '@components/icons/WhatsAppIcon.astro';
+import { getDirectoryHref, getIndexableEvents } from '@data/index.js';
 import { getVenueCoordinates } from '@data/venues/coordinates.js';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl, getRoute } from '@utils/routes';
@@ -24,7 +25,6 @@ import {
   getEventDisplayTitle,
   getEventSeoDescription,
   getEventSeoTitle,
-  getEventTicketIntentLabel,
   getPriceStatus,
   isPastEvent,
   shouldIndexEventDetail,
@@ -93,8 +93,9 @@ const copy = isEnglish
       },
       sections: {
         aboutEyebrow: '[ About the event ]',
-        aboutTitle: 'Description',
+        aboutTitle: 'About the Event',
         locationEyebrow: '[ Location ]',
+        locationTitle: 'Where',
         experienceEyebrow: '[ Experience ]',
         experienceTitle: 'What to expect',
         tipsEyebrow: '[ Practical tips ]',
@@ -120,15 +121,17 @@ const copy = isEnglish
       },
       status: {
         past: 'This event has already taken place. Use this page as a reference and browse related upcoming events in Granada.',
-        intentLabel: 'Search intent',
-        tickets: 'Tickets',
-        venue: 'Venue',
-        date: 'Date and time',
-        related: 'Related plans',
       },
       share: {
         label: 'Share',
         copied: 'Copied!',
+        intro: 'Send this listing to whoever is planning time in Granada.',
+        whatsappLabel: 'WhatsApp',
+        whatsappAria: 'Share this event on WhatsApp',
+        instagramLabel: 'Instagram',
+        instagramAria: 'Copy link to share on Instagram',
+        facebookLabel: 'Facebook',
+        facebookAria: 'Share this event on Facebook',
       },
       seoSuffix: 'Discover all the details on GRN URBAN.',
       nav: {
@@ -149,8 +152,9 @@ const copy = isEnglish
       },
       sections: {
         aboutEyebrow: '[ Sobre el evento ]',
-        aboutTitle: 'Descripción',
+        aboutTitle: 'Sobre el Evento',
         locationEyebrow: '[ Ubicación ]',
+        locationTitle: 'Dónde',
         experienceEyebrow: '[ Experiencia ]',
         experienceTitle: 'Qué esperar',
         tipsEyebrow: '[ Recomendación ]',
@@ -176,15 +180,17 @@ const copy = isEnglish
       },
       status: {
         past: 'Este evento ya se celebró. Usa esta ficha como referencia y consulta otros próximos eventos relacionados en Granada.',
-        intentLabel: 'Intención de búsqueda',
-        tickets: 'Entradas',
-        venue: 'Recinto',
-        date: 'Fecha y hora',
-        related: 'Planes relacionados',
       },
       share: {
         label: 'Compartir',
         copied: '¡Copiado!',
+        intro: 'Envía esta ficha a quien esté organizando un plan por Granada.',
+        whatsappLabel: 'WhatsApp',
+        whatsappAria: 'Compartir este evento por WhatsApp',
+        instagramLabel: 'Instagram',
+        instagramAria: 'Copiar enlace para compartir en Instagram',
+        facebookLabel: 'Facebook',
+        facebookAria: 'Compartir este evento en Facebook',
       },
       seoSuffix: 'Descubre todos los detalles en GRN URBAN.',
       nav: {
@@ -201,18 +207,8 @@ const nextEvent = eventIndex < allEvents.length - 1 ? allEvents[eventIndex + 1] 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
-const relatedEvents = allEvents
-  .filter((candidate) => {
-    const candidateDate = new Date(candidate.date);
-    candidateDate.setHours(0, 0, 0, 0);
-    return candidate.category === event.category && candidate.id !== event.id && candidateDate >= today;
-  })
-  .slice(0, 3);
-
 const neighborhoodLink = getNeighborhoodLink(event.neighborhood, locale);
-const venueDirectoryEntry = getIndexableVenueEntries().find((entry) => entry.events.some((item) => item.id === event.id));
 const hasPassed = isPastEvent(event);
-const ticketIntentLabel = getEventTicketIntentLabel(event, locale, t);
 const displayTitle = getEventDisplayTitle(event, locale);
 
 const eventImage = event.remoteImageUrl || event.imageUrl || event.image;
@@ -284,6 +280,18 @@ faq.push({
   question: copy.faq.nearbyQuestion,
   answer: copy.faq.nearbyAnswer,
 });
+
+// Key facts for sidebar — date, time, price, neighborhood only
+const eventFacts: Array<{ label: string; value: string }> = [
+  { label: t('detail.date'), value: formatFullDate(event.date, locale) },
+  { label: t('detail.time'), value: formatTime(event.time, locale) },
+  { label: t('detail.price'), value: priceLabel },
+  { label: t('detail.zones'), value: t(`neighborhoods.${event.neighborhood}`) },
+];
+
+const shareUrl = Astro.url.href;
+const encodedShareUrl = encodeURIComponent(shareUrl);
+const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
 ---
 
 <BaseLayout
@@ -305,320 +313,331 @@ faq.push({
     <div class="det-content-wrap">
       <div class="upgraded-layout">
         <main id="main-content" class="upgraded-main">
-          <article class="upg-block upg-block--intro" data-reveal>
-            <div class="upg-block-bg"></div>
-            <div class="upg-section-heading">
-              <SectionHeader
-                eyebrow={copy.sections.aboutEyebrow}
-                title={copy.sections.aboutTitle}
-                theme="cream"
-                size="compact"
-                animateTitle={false}
-              />
-            </div>
+          <article class="upg-block event-article-card" id="event-content" data-reveal>
+            <!-- 01 — Description -->
+            <section class="event-entry-section event-entry-section--intro" id="event-intro">
+              <header class="upg-header">
+                <span class="upg-num">01</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.sections.aboutEyebrow}</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
 
-            <div class="upg-body content-rich">
-              <p class="upg-lead">{eventDescription}</p>
-              {eventLongDescription.length > 0 && (
-                <div class="upg-long-desc">
-                  {eventLongDescription.map((paragraph) => (
-                    <p>{paragraph}</p>
+              <div class="upg-body content-rich">
+                <p class="upg-lead">{eventDescription}</p>
+                {eventLongDescription.length > 0 && (
+                  <div class="upg-long-desc">
+                    {eventLongDescription.map((paragraph) => (
+                      <p>{paragraph}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div class="upg-meta-links">
+                <a href={categoryUrl} class="upg-badge ghost">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+                  {t(`categories.${event.category}`)}
+                </a>
+                <a href={byTimeLink.url} class="upg-badge ghost">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  {byTimeLink.title}
+                </a>
+                <a href={plannerLink.url} class="upg-badge ghost">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
+                  {plannerLink.title}
+                </a>
+                {neighborhoodLink && (
+                  <a href={neighborhoodLink.url} class="upg-badge ghost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {neighborhoodLink.label}
+                  </a>
+                )}
+              </div>
+
+              {hasPassed && (
+                <div class="upg-past-notice">
+                  <strong>{copy.status.past}</strong>
+                  <a href={getRoute('events', locale)}>{t('detail.allEvents')}</a>
+                </div>
+              )}
+            </section>
+
+            <!-- 02 — Location -->
+            <section class="event-entry-section" id="event-location">
+              <header class="upg-header">
+                <span class="upg-num">02</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">{copy.sections.locationEyebrow}</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.locationTitle}</h2>
+
+              <div class="upg-venue-block">
+                <div class="upg-venue-grid">
+                  <div class="upg-venue-info">
+                    <h3 class="upg-venue-title">{event.venue}</h3>
+                    <address class="upg-venue-badges">
+                      <span class="upg-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        {t(`neighborhoods.${event.neighborhood}`)}
+                      </span>
+                      {event.address && (
+                        <span class="upg-badge ghost">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                          {event.address}
+                        </span>
+                      )}
+                    </address>
+                    {event.venueDescription && (
+                      <p class="upg-venue-desc">{event.venueDescription[locale]}</p>
+                    )}
+                  </div>
+
+                  <div class="upg-venue-map-wrapper">
+                    <div class="upg-map-glass-overlay"></div>
+                    {venueCoords ? (
+                      <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} theme="light" locale={locale} />
+                    ) : (
+                      <div class="upg-map-placeholder">
+                        <span>{t('detail.mapComingSoon')}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- 03 — Experience / Highlights -->
+            {event.highlights?.[locale] && event.highlights[locale].length > 0 && (
+              <section class="event-entry-section" id="event-experience">
+                <header class="upg-header">
+                  <span class="upg-num">03</span>
+                  <div class="upg-line"></div>
+                  <span class="upg-eyebrow">{copy.sections.experienceEyebrow}</span>
+                </header>
+                <h2 class="upg-title">{copy.sections.experienceTitle}</h2>
+
+                <div class="upg-highlights">
+                  {event.highlights[locale].map((item, index) => (
+                    <div class="upg-hl-item" style={`--hl-delay: ${index * 0.1}s`}>
+                      <div class="upg-hl-num-wrap">
+                        <span class="upg-hl-num">{(index + 1).toString().padStart(2, '0')}</span>
+                      </div>
+                      <p class="upg-hl-text">{item}</p>
+                    </div>
                   ))}
                 </div>
-              )}
-            </div>
-
-            <div class="upg-meta-links">
-              <a href={categoryUrl} class="upg-badge ghost">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
-                {t(`categories.${event.category}`)}
-              </a>
-              <a href={byTimeLink.url} class="upg-badge ghost">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                {byTimeLink.title}
-              </a>
-              <a href={plannerLink.url} class="upg-badge ghost">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01"/></svg>
-                {plannerLink.title}
-              </a>
-              {neighborhoodLink && (
-                <a href={neighborhoodLink.url} class="upg-badge ghost">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                {neighborhoodLink.label}
-                </a>
-              )}
-              {venueDirectoryEntry && (
-                <a href={getDirectoryHref('venue', venueDirectoryEntry.slug, locale)} class="upg-badge ghost">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-7h6v7"/></svg>
-                {venueDirectoryEntry.name}
-                </a>
-              )}
-            </div>
-
-            {hasPassed && (
-              <div class="upg-past-notice">
-                <strong>{copy.status.past}</strong>
-                <a href={getRoute('events', locale)}>{t('detail.allEvents')}</a>
-              </div>
+              </section>
             )}
 
-            <div class="upg-intent-grid" aria-label={copy.status.intentLabel}>
-              <a href={(event.ticketsUrl || event.sourceUrl) ?? getRoute('events', locale)} target={(event.ticketsUrl || event.sourceUrl) ? '_blank' : undefined} rel={(event.ticketsUrl || event.sourceUrl) ? 'noopener noreferrer' : undefined} data-track={(event.ticketsUrl || event.sourceUrl) ? 'click_ticket' : undefined}>
-                <span>{copy.status.tickets}</span>
-                <strong>{ticketIntentLabel}</strong>
-              </a>
-              <a href="#event-location">
-                <span>{copy.status.venue}</span>
-                <strong>{event.venue}</strong>
-              </a>
-              <a href="#event-practical">
-                <span>{copy.status.date}</span>
-                <strong>{formatFullDate(event.date, locale)}</strong>
-              </a>
-              <a href="#event-related">
-                <span>{copy.status.related}</span>
-                <strong>{t('detail.discoverMore')}</strong>
-              </a>
-            </div>
-          </article>
+            <!-- 04 — Tips -->
+            {event.tips?.[locale] && (
+              <section class="event-entry-section block-tips" id="event-tips">
+                <header class="upg-header">
+                  <span class="upg-num">04</span>
+                  <div class="upg-line"></div>
+                  <span class="upg-eyebrow">{copy.sections.tipsEyebrow}</span>
+                </header>
+                <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
 
-          <article class="upg-block upg-venue-block" id="event-location" data-reveal>
-            <div class="upg-block-bg"></div>
-            <header class="upg-header">
-              <span class="upg-num">02</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">{copy.sections.locationEyebrow}</span>
-            </header>
-
-            <div class="upg-venue-grid">
-              <div class="upg-venue-info">
-                <h2 class="upg-title upg-venue-title">{event.venue}</h2>
-                <address class="upg-venue-badges">
-                  <span class="upg-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    {t(`neighborhoods.${event.neighborhood}`)}
-                  </span>
-                  {event.address && (
-                    <span class="upg-badge ghost">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                      {event.address}
-                    </span>
-                  )}
-                </address>
-                {event.venueDescription && (
-                  <p class="upg-venue-desc">{event.venueDescription[locale]}</p>
-                )}
-              </div>
-
-              <div class="upg-venue-map-wrapper">
-                <div class="upg-map-glass-overlay"></div>
-                {venueCoords ? (
-                  <VenueMap lat={venueCoords.lat} lng={venueCoords.lng} venueName={event.venue} theme="light" locale={locale} />
-                ) : (
-                  <div class="upg-map-placeholder">
-                    <span>{t('detail.mapComingSoon')}</span>
+                <div class="upg-tips-content">
+                  <div class="upg-tips-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                   </div>
-                )}
-              </div>
-            </div>
-          </article>
-
-          {event.highlights?.[locale] && event.highlights[locale].length > 0 && (
-            <article class="upg-block" data-reveal>
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">03</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">{copy.sections.experienceEyebrow}</span>
-              </header>
-              <h2 class="upg-title">{copy.sections.experienceTitle}</h2>
-
-              <div class="upg-highlights">
-                {event.highlights[locale].map((item, index) => (
-                  <div class="upg-hl-item" style={`--hl-delay: ${index * 0.1}s`}>
-                    <div class="upg-hl-num-wrap">
-                      <span class="upg-hl-num">{(index + 1).toString().padStart(2, '0')}</span>
-                    </div>
-                    <p class="upg-hl-text">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </article>
-          )}
-
-          {event.tips?.[locale] && (
-            <article class="upg-block block-tips" data-reveal>
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">04</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">{copy.sections.tipsEyebrow}</span>
-              </header>
-              <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
-
-              <div class="upg-tips-content" id="event-practical">
-                <div class="upg-tips-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <p class="upg-tips-text">{event.tips[locale]}</p>
                 </div>
-                <p class="upg-tips-text">{event.tips[locale]}</p>
-              </div>
-            </article>
-          )}
+              </section>
+            )}
 
-          {event.tags.length > 0 && (
-            <div class="upg-tags" data-reveal>
-              <span class="upg-tags-title">{copy.sections.tags}</span>
-              <div class="upg-tags-list">
-                {event.tags.map((tag) => (
-                  <span class="upg-tag">#{tag}</span>
-                ))}
-              </div>
-            </div>
-          )}
+            <!-- 05 — Tags -->
+            {event.tags.length > 0 && (
+              <section class="event-entry-section" id="event-tags">
+                <div class="upg-tags">
+                  <span class="upg-tags-title">{copy.sections.tags}</span>
+                  <div class="upg-tags-list">
+                    {event.tags.map((tag) => (
+                      <span class="upg-tag">#{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            )}
+          </article>
 
+          <!-- Prev/Next event navigation -->
           {(prevEvent || nextEvent) && (
             <nav class="upg-block upg-nav-block" data-reveal aria-label={isEnglish ? 'Event navigation' : 'Navegación de eventos'}>
-              <div class="upg-block-bg"></div>
               <div class="upg-nav-flex">
                 {prevEvent ? (
                   <a href={getEventDetailUrl(prevEvent.slug, locale)} class="upg-nav-link">
-                    <span class="upg-nav-label">{copy.nav.prev}</span>
-                    <span class="upg-nav-title">{getEventDisplayTitle(prevEvent, locale)}</span>
-                    <time class="upg-nav-meta" datetime={`${prevEvent.date}T${prevEvent.time}`}>{formatFullDate(prevEvent.date, locale)}</time>
+                    <span class="upg-nav-arrow" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"></path>
+                      </svg>
+                    </span>
+                    <span class="upg-nav-copy">
+                      <span class="upg-nav-label">{copy.nav.prev}</span>
+                      <span class="upg-nav-title">{getEventDisplayTitle(prevEvent, locale)}</span>
+                      <time class="upg-nav-meta" datetime={`${prevEvent.date}T${prevEvent.time}`}>{formatFullDate(prevEvent.date, locale)}</time>
+                    </span>
                   </a>
                 ) : <span />}
                 {nextEvent ? (
                   <a href={getEventDetailUrl(nextEvent.slug, locale)} class="upg-nav-link upg-nav-link--end">
-                    <span class="upg-nav-label">{copy.nav.next}</span>
-                    <span class="upg-nav-title">{getEventDisplayTitle(nextEvent, locale)}</span>
-                    <time class="upg-nav-meta" datetime={`${nextEvent.date}T${nextEvent.time}`}>{formatFullDate(nextEvent.date, locale)}</time>
+                    <span class="upg-nav-copy">
+                      <span class="upg-nav-label">{copy.nav.next}</span>
+                      <span class="upg-nav-title">{getEventDisplayTitle(nextEvent, locale)}</span>
+                      <time class="upg-nav-meta" datetime={`${nextEvent.date}T${nextEvent.time}`}>{formatFullDate(nextEvent.date, locale)}</time>
+                    </span>
+                    <span class="upg-nav-arrow" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18l6-6-6-6"></path>
+                      </svg>
+                    </span>
                   </a>
                 ) : <span />}
               </div>
             </nav>
           )}
-
-          <div class="upg-block upg-block--loose" id="event-related" data-reveal>
-            <div class="upg-block-bg"></div>
-            <header class="upg-header">
-              <span class="upg-num">05</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
-            </header>
-            <div class="upg-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
-              <RelatedVenues type="event" event={event} locale={locale} title={t('detail.relatedVenues')} limit={2} />
-              <RelatedEvents type="event" event={event} locale={locale} title={t('detail.relatedEvents')} limit={3} />
-              <RelatedRoutes type="event" event={event} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
-              <RelatedGuides type="event" event={event} locale={locale} title={t('detail.relatedGuides')} limit={3} />
-            </div>
-          </div>
         </main>
 
-        <aside class="upg-sidebar">
+        <aside class="upg-sidebar" aria-label={isEnglish ? 'Event details sidebar' : 'Barra lateral de detalles del evento'}>
           <div class="upg-sidebar-sticky">
-            <div class="upg-ticket-card" data-reveal>
-              <div class="upg-ticket-glass"></div>
+            <!-- 01 — Key facts -->
+            <section class="event-side-card event-keyfacts-card" aria-labelledby="event-keyfacts-title" data-reveal>
+              <header class="event-side-head event-side-head--plain">
+                <h2 id="event-keyfacts-title" class="event-side-title">{t('detail.keyFacts')}</h2>
+                <span class="event-side-rule" aria-hidden="true"></span>
+              </header>
 
-              <div class="upg-tc-header">
-                <div class="upg-tc-date-box">
-                  <time datetime={event.date} class="tc-day">{new Date(event.date).getDate().toString().padStart(2, '0')}</time>
-                  <span class="tc-month">
-                    {new Intl.DateTimeFormat(isEnglish ? 'en-GB' : 'es-ES', { month: 'short' }).format(new Date(event.date)).toUpperCase()}
-                  </span>
-                </div>
-                <div class="upg-tc-info">
-                  <span class="tc-time">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <time datetime={event.time}>{formatTime(event.time, locale)}</time>
-                  </span>
-                  <span class="tc-category">{t(`categories.${event.category}`)}</span>
-                </div>
-              </div>
-
-              <div class="upg-tc-price-wrap">
-                <span class="tc-price-label">{t('detail.price')}</span>
-                <span class:list={['tc-price-val', getPriceStatus(event) === 'free' && 'is-free', getPriceStatus(event) === 'tickets' && 'is-tickets']}>
-                  {priceLabel}
-                </span>
-              </div>
-
-              <div class="upg-tc-divider">
-                <span class="tcd-hole left"></span>
-                <div class="tcd-dashed"></div>
-                <span class="tcd-hole right"></span>
-              </div>
-
-              <div class="upg-tc-actions">
-                {(event.ticketsUrl || event.sourceUrl) ? (
-                  <a
-                    href={event.ticketsUrl || event.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="upg-btn-primary"
-                    data-track="click_ticket"
-                  >
-                    <span>{t('detail.getTickets')}</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </a>
-                ) : (
-                  <div class="upg-btn-primary inert">
-                    <span>{getPriceStatus(event) === 'free' ? t('events.free') : t('detail.unknown')}</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <dl class="event-facts-grid">
+                {eventFacts.map((fact) => (
+                  <div class="event-fact">
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
                   </div>
-                )}
+                ))}
+              </dl>
 
+              {event.ticketsUrl && (
+                <a
+                  href={event.ticketsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="upg-btn-primary"
+                  style="margin-top: 0.85rem; width: 100%;"
+                  data-track="click_ticket"
+                >
+                  <span>{t('detail.getTickets')}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              )}
+            </section>
+
+            <!-- 02 — Share (ticket-shaped) -->
+            <section class="event-side-card event-share-card" data-reveal aria-labelledby="event-share-title">
+              <div class="event-share-card-top">
+                <header class="event-side-head event-side-head--plain">
+                  <h2 id="event-share-title" class="event-side-title event-side-title--light">{copy.share.label}</h2>
+                  <span class="event-side-rule event-side-rule--gold" aria-hidden="true"></span>
+                </header>
+                <p class="event-share-intro">{copy.share.intro}</p>
+                <span class="event-share-stamp">{priceLabel}</span>
+              </div>
+
+              <div class="event-share-card-divider" aria-hidden="true">
+                <span class="ticket-notch ticket-notch--left"></span>
+                <span class="ticket-dashed"></span>
+                <span class="ticket-notch ticket-notch--right"></span>
+              </div>
+
+              <div class="event-share-card-bottom">
                 <ShareButton
                   title={event.title[locale]}
-                  url={Astro.url.href}
+                  url={shareUrl}
                   label={copy.share.label}
                   copiedLabel={copy.share.copied}
-                  class="upg-btn-secondary"
-                  labelClass="upg-share-label"
+                  class="event-share-btn"
                 />
-              </div>
-            </div>
 
-            {relatedEvents.length > 0 && (
-              <div class="upg-related-bento" data-reveal>
-                <div class="upg-rb-header">
-                  <span class="upg-rb-title">[ {t('detail.upcomingEvents')} ]</span>
-                  <a href={getRoute('events', locale)} class="upg-rb-all">{t('detail.allEvents')} →</a>
-                </div>
-
-                <div class="upg-rb-list">
-                  {relatedEvents.map((related, index) => (
-                    <a href={getEventDetailUrl(related.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
-                      <div class="uri-thumb">
-                        {(related.imageUrl || related.image) ? (
-                          <EventImage event={related} alt={getEventDisplayTitle(related, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" width={280} height={180} />
-                        ) : (
-                          <div class="uri-thumb-fallback"></div>
-                        )}
-                      </div>
-                      <div class="uri-content">
-                        <span class="uri-title">{getEventDisplayTitle(related, locale)}</span>
-                        <span class="uri-meta">{formatFullDate(related.date, locale)}</span>
-                      </div>
-                      <div class="uri-arrow" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </div>
-                    </a>
-                  ))}
+                <div class="event-share-channels" aria-label={copy.share.label}>
+                  <a
+                    class="event-share-channel event-share-channel--whatsapp"
+                    href={`https://wa.me/?text=${encodedShareText}%20${encodedShareUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={copy.share.whatsappAria}
+                    title={copy.share.whatsappAria}
+                  >
+                    <span class="event-share-icon" aria-hidden="true">
+                      <WhatsAppIcon />
+                    </span>
+                    <span class="event-share-label">{copy.share.whatsappLabel}</span>
+                  </a>
+                  <button
+                    type="button"
+                    class="event-share-channel event-share-channel--instagram"
+                    data-share-copy
+                    data-share-url={shareUrl}
+                    data-share-method="instagram"
+                    aria-label={copy.share.instagramAria}
+                    title={copy.share.instagramAria}
+                  >
+                    <span class="event-share-icon" aria-hidden="true">
+                      <InstagramIcon />
+                    </span>
+                    <span class="event-share-label">{copy.share.instagramLabel}</span>
+                  </button>
+                  <a
+                    class="event-share-channel event-share-channel--facebook"
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={copy.share.facebookAria}
+                    title={copy.share.facebookAria}
+                  >
+                    <span class="event-share-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.52 1.5-3.91 3.8-3.91 1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.25 0-1.64.78-1.64 1.57v1.89h2.8l-.45 2.91h-2.35V22A10 10 0 0 0 22 12.06Z"/>
+                      </svg>
+                    </span>
+                    <span class="event-share-label">{copy.share.facebookLabel}</span>
+                  </a>
                 </div>
               </div>
-            )}
+
+              <span class="event-share-panel-bracket event-share-panel-bracket--tl" aria-hidden="true"></span>
+              <span class="event-share-panel-bracket event-share-panel-bracket--tr" aria-hidden="true"></span>
+              <span class="event-share-panel-bracket event-share-panel-bracket--bl" aria-hidden="true"></span>
+              <span class="event-share-panel-bracket event-share-panel-bracket--br" aria-hidden="true"></span>
+            </section>
           </div>
-          </aside>
+        </aside>
+      </div>
+
+      <section class="event-related-full upg-block upg-block--loose" id="event-related" data-reveal>
+        <div class="upg-block-bg"></div>
+        <header class="upg-header event-related-header">
+          <span class="upg-num">05</span>
+          <div class="upg-line"></div>
+          <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
+        </header>
+        <div class="upg-related-stack">
+          <RelatedVenues type="event" event={event} locale={locale} title={t('detail.relatedVenues')} limit={2} />
+          <RelatedEvents type="event" event={event} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+          <RelatedRoutes type="event" event={event} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+          <RelatedGuides type="event" event={event} locale={locale} title={t('detail.relatedGuides')} limit={3} />
         </div>
-      </div>
+      </section>
+    </div>
 
-      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
-        <CollaborateCTA locale={locale} variant="event" />
-      </div>
+    <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
+      <CollaborateCTA locale={locale} variant="event" />
+    </div>
 
-      <ContinueExploring locale={locale} />
+    <ContinueExploring locale={locale} />
 
-      <div class="det-footer-orn" aria-hidden="true">
+    <div class="det-footer-orn" aria-hidden="true">
       <span class="det-orn-line"></span>
       <span class="det-orn-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
       <span class="det-orn-line"></span>
@@ -627,3 +646,33 @@ faq.push({
 
   <Footer slot="footer" locale={locale} />
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    if (window.__eventShareCopyInitialized) return;
+    window.__eventShareCopyInitialized = true;
+
+    document.addEventListener('click', async function (event) {
+      const button = event.target.closest('[data-share-copy]');
+      if (!button) return;
+
+      const url = button.dataset.shareUrl ?? window.location.href;
+      const method = button.dataset.shareMethod ?? 'copy';
+
+      try {
+        await navigator.clipboard.writeText(url);
+        button.classList.add('is-copied');
+        window.setTimeout(function () {
+          button.classList.remove('is-copied');
+        }, 1600);
+
+        if (typeof window.grnTrackEvent === 'function') {
+          window.grnTrackEvent('share', {
+            method,
+            content_id: window.location.pathname,
+          });
+        }
+      } catch (_) {}
+    });
+  })();
+</script>

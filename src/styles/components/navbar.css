@@ -605,8 +605,8 @@
 
   .cap-logo-mark {
     display: block;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
     background: transparent;
     filter: drop-shadow(0 0 3px rgba(201, 168, 76, 0.5));
@@ -1073,14 +1073,21 @@
   }
 
   .ghost-num {
-    font-family: var(--font-body);
+    font-family: var(--font-display);
     font-size: clamp(6rem, 12vw, 11rem);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 0.85;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "lnum" 1;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(201, 168, 76, 0.16);
-    paint-order: stroke;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgba(201, 168, 76, 0.16);
+    text-shadow: none;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    paint-order: stroke fill;
     opacity: 0;
     transform: translateX(-30px);
     transition: opacity 0.24s ease 0s, transform 0.24s var(--gg-expo) 0s;

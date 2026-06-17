@@ -707,27 +707,29 @@
 
 /* ── Tables: editorial dark header + alternating rows ── */
 .blg-prose table {
-  max-width: calc(64ch + 8rem);
+  max-width: calc(100% - 2rem);
   width: 100%;
-  margin: 2.5rem auto;
+  margin: 2.5rem 0;
   border-collapse: separate;
   border-spacing: 0;
   font-family: var(--font-display);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   line-height: 1.5;
   color: var(--s-ink-2);
   border: 1px solid var(--s-border-soft);
   border-radius: 14px;
   overflow: hidden;
   background: var(--s-bg);
+  table-layout: auto;
 }
 
 .blg-prose th,
 .blg-prose td {
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1.1rem;
   vertical-align: top;
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
   border-bottom: 1px solid var(--s-border-soft);
   border-right: 1px solid var(--s-border-soft);
 }

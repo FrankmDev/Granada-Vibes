@@ -2,20 +2,60 @@
 import type { EventCategory, Neighborhood, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 
+interface QuickLink {
+  href: string;
+  indexLabel: string;
+  eyebrow: string;
+  label: string;
+}
+
 interface Props {
   locale: Locale;
   categories: EventCategory[];
   eventsCount: number;
   neighborhoods: Neighborhood[];
+  quickLinks?: QuickLink[];
 }
 
-const { locale, categories, eventsCount, neighborhoods } = Astro.props;
+const { locale, categories, eventsCount, neighborhoods, quickLinks = [] } = Astro.props;
 const t = useTranslations(locale);
 ---
 
 <div class="filter-section">
   <div class="filter-inner">
-    <div class="filter-bar">
+    <div class="filter-panel">
+      <!-- Panel header -->
+      <header class="filter-panel-header">
+        <span class="filter-panel-eyebrow-rule" aria-hidden="true"></span>
+        <span class="filter-panel-eyebrow">{t('events.filterPanelEyebrow')}</span>
+        <span class="filter-panel-tag" aria-hidden="true">{t('events.filterPanelTag')}</span>
+        <span class="filter-panel-eyebrow-rule filter-panel-eyebrow-rule--end" aria-hidden="true"></span>
+      </header>
+
+      <!-- Quick access: 3 editorial cards in a row -->
+      {quickLinks.length > 0 && (
+        <nav class="quick-access" aria-label={t('events.quickAccessLabel')}>
+          {quickLinks.map((link) => (
+            <a class="quick-link" href={link.href}>
+              <span class="quick-link-idx" aria-hidden="true">{link.indexLabel}</span>
+              <div class="quick-link-body">
+                <span class="quick-link-eyebrow">{link.eyebrow}</span>
+                <span class="quick-link-label">{link.label}</span>
+              </div>
+              <span class="quick-link-arrow" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </span>
+              <span class="quick-link-corner quick-link-corner-tl" aria-hidden="true"></span>
+              <span class="quick-link-corner quick-link-corner-br" aria-hidden="true"></span>
+            </a>
+          ))}
+        </nav>
+      )}
+
+      <div class="filter-divider" aria-hidden="true"></div>
+
       <!-- Category Chips -->
       <div class="filter-chips" role="group" aria-label={t('events.filters.title')}>
         <button class="filter-chip active" data-category="all" aria-pressed="true">
@@ -30,7 +70,7 @@ const t = useTranslations(locale);
         ))}
       </div>
 
-      <div class="filter-divider"></div>
+      <div class="filter-divider" aria-hidden="true"></div>
 
       <!-- Secondary Filters -->
       <div class="filter-controls">
@@ -76,16 +116,18 @@ const t = useTranslations(locale);
           <span>{t('actions.clear')}</span>
         </button>
       </div>
-    </div>
 
-    <!-- Results Counter -->
-    <div class="results-counter">
-      <div class="results-line"></div>
-      <span class="results-text">
-        <span class="results-number" id="results-count">{eventsCount}</span>
-        <span class="results-label">{t('events.resultsLabel')}</span>
-      </span>
-      <div class="results-line"></div>
+      <div class="filter-divider" aria-hidden="true"></div>
+
+      <!-- Results Counter -->
+      <div class="results-counter">
+        <div class="results-line"></div>
+        <span class="results-text">
+          <span class="results-number" id="results-count">{eventsCount}</span>
+          <span class="results-label">{t('events.resultsLabel')}</span>
+        </span>
+        <div class="results-line"></div>
+      </div>
     </div>
   </div>
 </div>

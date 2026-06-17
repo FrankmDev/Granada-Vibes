@@ -1,5 +1,5 @@
 ---
-import { SITE_CONFIG } from '@config/site';
+import { APPLE_TOUCH_ICON, SITE_CONFIG } from '@config/site';
 import { resolveOgImageUrl } from '@utils/seo';
 import { getPriceStatus } from '@utils/prices';
 import type { Event, Route, BlogPost, MixedRoute } from '@types';
@@ -54,7 +54,7 @@ const organizationSchema = {
   name: SITE_CONFIG.name,
   description: SITE_CONFIG.description[locale],
   url: siteUrl,
-  logo: `${siteUrl}/favicon.jpg`,
+  logo: `${siteUrl}${APPLE_TOUCH_ICON}`,
   email: SITE_CONFIG.email,
   sameAs: [
     SITE_CONFIG.social.instagram,
@@ -264,7 +264,7 @@ switch (type) {
           '@type': 'Organization',
           name: SITE_CONFIG.name,
           url: siteUrl,
-          logo: `${siteUrl}/favicon.jpg`,
+          logo: `${siteUrl}${APPLE_TOUCH_ICON}`,
         },
         about: {
           '@type': 'Thing',
@@ -473,7 +473,7 @@ switch (type) {
           '@type': 'Organization',
           name: SITE_CONFIG.name,
           url: siteUrl,
-          logo: `${siteUrl}/favicon.jpg`,
+          logo: `${siteUrl}${APPLE_TOUCH_ICON}`,
         },
         inLanguage: locale,
       };

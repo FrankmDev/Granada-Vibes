@@ -18,6 +18,7 @@ export const mixedRoutes: MixedRoute[] = [
     },
     totalHours: 2,
     neighborhoods: ['centro', 'albaicin'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/c1/A_view_of_Granada_from_the_Alhambra.jpg',
     bestFor: {
       es: 'Escalas, tardes libres cortas, primera toma de contacto',
       en: 'Stopovers, short free afternoons, first contact with the city',
@@ -99,9 +100,10 @@ export const mixedRoutes: MixedRoute[] = [
     },
     totalHours: 6,
     neighborhoods: ['albaicin', 'centro', 'realejo'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/6/65/Granada%2C_Mirador_Ojo_de_Granada%2C_Sierra_Nevada.jpg',
     bestFor: {
-      es: 'Viajeros con medio día libre, cruceristas, escapadas rápidas',
-      en: 'Travelers with a free half-day, cruise passengers, quick getaways',
+      es: 'Medio día, escala larga, primer día en Granada',
+      en: 'Half day, long layover, first day in Granada',
     },
     days: [
       {
@@ -217,9 +219,10 @@ export const mixedRoutes: MixedRoute[] = [
     },
     totalHours: 12,
     neighborhoods: ['albaicin', 'centro', 'realejo', 'sacromonte'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg',
     bestFor: {
-      es: 'Viajeros con un día completo, visitas de fin de semana',
-      en: 'Travelers with a full day, weekend visits',
+      es: 'Día completo sin Alhambra, primera visita larga',
+      en: 'Full day without Alhambra, first long visit',
     },
     days: [
       {
@@ -374,6 +377,7 @@ export const mixedRoutes: MixedRoute[] = [
     },
     totalHours: 14,
     neighborhoods: ['alhambra', 'centro', 'realejo', 'albaicin', 'sacromonte'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d4/Patio_de_los_Leones%2C_Alhambra%2C_Granada%2C_Espa%C3%B1a.JPG',
     bestFor: {
       es: 'Primera visita a Granada, viajes organizados de un día',
       en: 'First visit to Granada, organized day trips',
@@ -521,6 +525,7 @@ export const mixedRoutes: MixedRoute[] = [
     },
     totalHours: 28,
     neighborhoods: ['alhambra', 'centro', 'realejo', 'albaicin', 'sacromonte'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Arco_del_Corral_del_carb%C3%B3n.jpg',
     bestFor: {
       es: 'Fin de semana en Granada, viajes culturales, parejas',
       en: 'Weekend in Granada, cultural trips, couples',
@@ -747,6 +752,7 @@ export const mixedRoutes: MixedRoute[] = [
     },
     totalHours: 42,
     neighborhoods: ['alhambra', 'centro', 'realejo', 'albaicin', 'sacromonte', 'cartuja'],
+    image: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Sierra_Nevada_desde_Granada.jpg',
     bestFor: {
       es: 'Viajes largos, exploradores, amantes de la cultura, familias',
       en: 'Longer trips, explorers, culture lovers, families',

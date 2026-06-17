@@ -25,7 +25,7 @@ const isLight = theme === 'light';
 <div class:list={['venue-map-wrap', isLight ? 'is-light' : 'is-dark']}>
   <div
     id="venue-map"
-    style="width:100%;height:280px;"
+    style="width:100%;height:100%;"
     data-lat={lat}
     data-lng={lng}
     data-venue={venueName}
@@ -117,27 +117,20 @@ const isLight = theme === 'light';
 <style>
   .venue-map-wrap {
     position: relative;
-    border-radius: 12px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-  }
-
-  .venue-map-wrap.is-dark {
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .venue-map-wrap.is-light {
-    border: 1px solid rgba(26, 22, 25, 0.12);
   }
 
   .directions-btn {
     position: absolute;
-    bottom: 12px;
-    right: 12px;
+    bottom: 14px;
+    right: 14px;
     z-index: 1000;
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 14px;
+    padding: 8px 14px;
     border-radius: 8px;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;

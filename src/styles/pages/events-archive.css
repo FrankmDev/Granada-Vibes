@@ -11,11 +11,16 @@
       --s-border:  rgba(26, 22, 25, 0.10);
       --s-border-s: rgba(26, 22, 25, 0.06);
 
+      --panel-radius:  1.25rem;
+      --card-radius:   0.875rem;
+      --ease-expo:     cubic-bezier(0.16, 1, 0.3, 1);
+
       position: relative;
       width: 100%;
       background: var(--s-bg);
       color: var(--s-ink);
       overflow: hidden;
+      padding: 6rem 0 4rem;
     }
 
     .events-archive .cin-screen-frame { border-color: var(--s-border); }
@@ -32,20 +37,13 @@
 
     /* SectionHeader — uses sh-editorial with theme="cream" */
 
-    .events-archive .edl-wrap {
-      width: auto;
-      max-width: none;
-      margin-left: clamp(1.5rem, 5vw, 4rem);
-      margin-right: clamp(1.5rem, 5vw, 4rem);
-    }
-
     /* ═══════════════════════════════════════════════════════════════
-       FILTER SECTION
+       FILTER SECTION (single cohesive panel — quick access + filters)
        ═══════════════════════════════════════════════════════════════ */
     .filter-section {
       position: relative;
       z-index: 5;
-      padding: 0 0 2rem;
+      padding: 0 0 2.5rem;
       background: var(--s-bg);
     }
 
@@ -53,17 +51,183 @@
       padding: 0 clamp(1.5rem, 5vw, 4rem);
     }
 
-    .filter-bar {
+    .filter-panel {
+      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
-      padding: 1.5rem 2rem;
-      background: rgba(255, 255, 255, 0.55);
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem 1.75rem;
+      background: rgba(255, 255, 255, 0.6);
       border: 1px solid var(--s-border);
-      border-radius: 1rem;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--panel-radius);
+      backdrop-filter: blur(24px) saturate(140%);
+      -webkit-backdrop-filter: blur(24px) saturate(140%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.55) inset,
+        0 18px 40px -28px rgba(26, 22, 25, 0.15);
     }
+
+    /* Panel header (small editorial masthead inside the panel) */
+    .filter-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 0.25rem 0;
+    }
+
+    .filter-panel-eyebrow-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--s-border), transparent);
+    }
+
+    .filter-panel-eyebrow-rule--end {
+      background: linear-gradient(90deg, transparent, var(--s-border), transparent);
+    }
+
+    .filter-panel-eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--s-orange);
+      white-space: nowrap;
+    }
+
+    .filter-panel-tag {
+      font-family: var(--font-display);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--s-ink-3);
+      padding: 0.3rem 0.65rem;
+      background: rgba(26, 22, 25, 0.04);
+      border: 1px solid var(--s-border-s);
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* Quick access row (3 editorial cards) */
+    .quick-access {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .quick-link {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-height: 6.5rem;
+      padding: 1.1rem 1.15rem 1rem;
+      text-decoration: none;
+      color: var(--s-ink);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--s-border);
+      border-radius: var(--card-radius);
+      transition:
+        border-color 0.4s var(--ease-expo),
+        background 0.4s var(--ease-expo),
+        transform 0.4s var(--ease-expo),
+        box-shadow 0.4s var(--ease-expo);
+      overflow: hidden;
+    }
+
+    .quick-link:hover {
+      border-color: var(--s-orange);
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -16px rgba(232, 98, 42, 0.35);
+    }
+
+    .quick-link-idx {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.85rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 200;
+      letter-spacing: 0.04em;
+      color: var(--s-ink-3);
+      line-height: 1;
+      transition: color 0.35s var(--ease-expo);
+    }
+
+    .quick-link:hover .quick-link-idx { color: var(--s-orange); }
+
+    .quick-link-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding-right: 1.75rem;
+    }
+
+    .quick-link-eyebrow {
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--s-orange);
+      line-height: 1.1;
+    }
+
+    .quick-link-label {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+      font-weight: 200;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      text-transform: uppercase;
+      color: var(--s-ink);
+    }
+
+    .quick-link-arrow {
+      position: absolute;
+      right: 0.85rem;
+      bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.65rem;
+      height: 1.65rem;
+      color: var(--s-ink-3);
+      background: rgba(26, 22, 25, 0.04);
+      border-radius: 50%;
+      opacity: 0.85;
+      transform: translateX(-3px);
+      transition:
+        opacity 0.35s var(--ease-expo),
+        transform 0.45s var(--ease-expo),
+        color 0.35s var(--ease-expo),
+        background 0.35s var(--ease-expo);
+    }
+
+    .quick-link:hover .quick-link-arrow {
+      opacity: 1;
+      transform: translateX(0);
+      color: #fff;
+      background: var(--s-orange);
+    }
+
+    .quick-link-corner {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: var(--s-gold);
+      border-style: solid;
+      border-width: 0;
+      opacity: 0;
+      transition: opacity 0.35s var(--ease-expo);
+      pointer-events: none;
+    }
+
+    .quick-link:hover .quick-link-corner { opacity: 0.6; }
+    .quick-link-corner-tl { top: 6px; left: 6px; border-top-width: 1px; border-left-width: 1px; }
+    .quick-link-corner-br { right: 6px; bottom: 6px; border-bottom-width: 1px; border-right-width: 1px; }
 
     /* Category Chips */
     .filter-chips {
@@ -288,7 +452,7 @@
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
-      margin-top: 1.5rem;
+      margin-top: 0;
     }
 
     .results-line {
@@ -474,15 +638,25 @@
        RESPONSIVE - Mobile Optimized
        ═══════════════════════════════════════════════════════════════ */
     @media (max-width: 1024px) {
+      .events-archive { padding: 4.5rem 0 3rem; }
       .masonry-wrapper { flex-wrap: wrap; }
       .col-left, .col-center { flex: 1 1 50%; }
       .col-right { flex: 1 1 100%; border-right: none; }
     }
 
     @media (max-width: 768px) {
+      .events-archive { padding: 3.5rem 0 2.5rem; }
       .filter-section { padding: 0 1rem 1.5rem; }
       .filter-inner { padding: 0; }
-      .filter-bar { padding: 1.25rem; }
+      .filter-panel { padding: 1.25rem 1.25rem 1.4rem; gap: 1.15rem; }
+      .filter-panel-tag { display: none; }
+      .filter-panel-eyebrow-rule { display: none; }
+      .filter-panel-header { justify-content: center; }
+      .filter-panel-eyebrow { letter-spacing: 0.28em; }
+      .quick-access { grid-template-columns: 1fr; gap: 0.5rem; }
+      .quick-link { min-height: 0; padding: 0.9rem 1rem 0.85rem; }
+      .quick-link-idx { font-size: 0.75rem; top: 0.55rem; right: 0.75rem; }
+      .quick-link-arrow { right: 0.75rem; bottom: 0.65rem; }
       .filter-chips { justify-content: flex-start; }
       .filter-chip { padding: 0.75rem 1.25rem; font-size: 0.75rem; }
       .masonry-wrapper { flex-direction: column; }
@@ -491,10 +665,14 @@
       .filter-clear { width: 100%; justify-content: center; margin-top: 0.5rem; }
       .results-counter { gap: 1rem; }
       .results-line { max-width: 60px; }
+      .results-number { font-size: 1.4rem; }
       .mobile-cta-wrapper { display: flex; }
     }
 
     @media (max-width: 480px) {
+      .filter-panel { padding: 1.1rem 1rem 1.25rem; }
+      .filter-panel-eyebrow { font-size: 0.6rem; }
+      .quick-link-label { font-size: 0.95rem; }
       .filter-chip { padding: 0.75rem 1.125rem; font-size: 0.75rem; }
       .empty-title { font-size: 1.25rem; }
     }

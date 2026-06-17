@@ -3,6 +3,14 @@ import type { Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 
+interface Hub {
+  key: string;
+  href: string;
+  title: string;
+  meta: string;
+  glyph: 'events' | 'today' | 'routes' | 'guides' | 'venues' | 'collab';
+}
+
 interface Props {
   locale: Locale;
   showCollaborate?: boolean;
@@ -12,36 +20,41 @@ const { locale, showCollaborate = false } = Astro.props;
 const t = useTranslations(locale);
 const isEnglish = locale === 'en';
 
-const hubs = [
+const hubs: Hub[] = [
   {
     key: 'events',
     href: getRoute('events', locale),
     title: t('nav.events'),
     meta: t('detail.exploreEvents'),
-  },
-  {
-    key: 'eventsToday',
-    href: isEnglish ? '/en/events/today/' : '/eventos/hoy/',
-    title: t('events.today'),
-    meta: t('detail.exploreEventsToday'),
+    glyph: 'events',
   },
   {
     key: 'routes',
     href: getRoute('routes', locale),
     title: t('nav.routes'),
     meta: t('detail.exploreRoutes'),
+    glyph: 'routes',
   },
   {
     key: 'guides',
     href: getRoute('blog', locale),
     title: t('nav.blog'),
     meta: t('detail.exploreGuides'),
+    glyph: 'guides',
   },
   {
     key: 'venues',
     href: isEnglish ? '/en/venues/' : '/salas/',
     title: t('directory.allVenues'),
     meta: t('detail.exploreVenues'),
+    glyph: 'venues',
+  },
+  {
+    key: 'eventsToday',
+    href: isEnglish ? '/en/events/today/' : '/eventos/hoy/',
+    title: t('nav.eventsToday'),
+    meta: t('detail.exploreEventsToday'),
+    glyph: 'today',
   },
   ...(showCollaborate
     ? [
@@ -50,34 +63,53 @@ const hubs = [
           href: getRoute('collaborate', locale),
           title: t('collaborate.footerGroup'),
           meta: t('detail.sendProgramming'),
+          glyph: 'collab' as const,
         },
       ]
     : []),
 ];
+
+const gridHubs = hubs.slice(0, 3);
+
+const headerCopy = {
+  eyebrow: t('detail.continueExploring'),
+  intro: t('detail.continueExploringIntro'),
+  viewAll: t('actions.viewAll'),
+};
 ---
 
 <section class="ce-section" aria-label={t('detail.continueExploring')}>
   <div class="ce-header">
-    <span class="ce-eyebrow">[ {t('detail.continueExploring')} ]</span>
+    <span class="ce-eyebrow">[ {headerCopy.eyebrow} ]</span>
     <h2 class="ce-title">{t('detail.continueExploring')}</h2>
+    {headerCopy.intro && <p class="ce-intro">{headerCopy.intro}</p>}
   </div>
 
   <div class="ce-grid">
-    {hubs.map((hub, index) => (
+    {gridHubs.map((hub, index) => (
       <a
         href={hub.href}
-        class="ce-card"
-        style={`--rd: ${index * 0.1}s`}
+        class="ce-card ce-card--mini"
+        style={`--rd: ${index * 0.08}s`}
         data-track="continue_exploring_click"
         data-track-detail={hub.key}
       >
-        <span class="ce-card-title">{hub.title}</span>
-        <span class="ce-card-meta">{hub.meta}</span>
+        <span class="ce-thumb" data-glyph={hub.glyph} aria-hidden="true">
+          <span>{(index + 1).toString().padStart(2, '0')}</span>
+        </span>
+        <div class="ce-card-body">
+          <span class="ce-card-title">{hub.title}</span>
+          <span class="ce-card-meta">{hub.meta}</span>
+        </div>
         <span class="ce-card-arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </span>
+        <span class="ce-bracket ce-bracket--tl" aria-hidden="true"></span>
+        <span class="ce-bracket ce-bracket--tr" aria-hidden="true"></span>
+        <span class="ce-bracket ce-bracket--bl" aria-hidden="true"></span>
+        <span class="ce-bracket ce-bracket--br" aria-hidden="true"></span>
       </a>
     ))}
   </div>
@@ -93,121 +125,383 @@ const hubs = [
     --s-orange: #e8622a;
     --s-gold: #c9a84c;
     --s-border: rgba(26, 22, 25, 0.10);
+    --s-border-strong: rgba(26, 22, 25, 0.18);
 
     position: relative;
-    padding: 3rem clamp(1.5rem, 5vw, 4rem);
+    padding: clamp(1.75rem, 3vw, 2.5rem) clamp(1.25rem, 4vw, 3rem);
     background: var(--s-bg);
     z-index: 2;
+    overflow: visible;
   }
+
+  .ce-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgba(232, 98, 42, 0.06), transparent 45%),
+      radial-gradient(ellipse at 100% 100%, rgba(201, 168, 76, 0.07), transparent 50%);
+    z-index: 0;
+  }
+
+  .ce-section > * { position: relative; z-index: 1; }
 
   .ce-header {
     max-width: 1300px;
-    margin: 0 auto 2rem;
+    margin: 0 auto clamp(1rem, 2vw, 1.35rem);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.55rem;
   }
 
   .ce-eyebrow {
     font-family: var(--font-display);
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--s-ink-3);
+    color: var(--s-orange);
   }
 
   .ce-title {
     font-family: var(--font-body);
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 300;
+    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-weight: 200;
     letter-spacing: -0.02em;
     color: var(--s-ink);
-    line-height: 1.2;
+    line-height: 1.1;
     margin: 0;
+    text-wrap: balance;
+  }
+
+  .ce-intro {
+    font-family: var(--font-display);
+    font-size: clamp(0.82rem, 1vw, 0.9rem);
+    font-weight: 300;
+    line-height: 1.55;
+    color: var(--s-ink-2);
+    margin: 0;
+    max-width: 60ch;
+    text-wrap: pretty;
   }
 
   .ce-grid {
     max-width: 1300px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.5rem, 1vw, 0.65rem);
   }
 
   .ce-card {
     position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    padding: 1.25rem;
-    background: var(--s-bg-hi);
-    border: 1px solid var(--s-border);
-    border-radius: 18px;
     text-decoration: none;
+    color: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.48), rgba(255,255,255,0.18));
+    border: 1px solid var(--s-border);
+    border-radius: 13px;
     opacity: 0;
-    transform: translateY(12px);
-    animation: cell-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--rd, 0s) + 0.15s) forwards;
-    transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    transform: translateY(10px);
+    animation: cell-reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--rd, 0s) + 0.1s) forwards;
+    transition:
+      transform 0.4s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+      border-color 0.4s ease,
+      background-color 0.4s ease,
+      box-shadow 0.4s ease;
   }
 
   .ce-card:hover {
-    transform: translateY(-3px);
+    transform: translateX(3px);
     border-color: rgba(201, 168, 76, 0.35);
-    background: #fff;
+    background: rgba(255,255,255,0.72);
+    box-shadow: 0 10px 24px -18px rgba(26, 22, 25, 0.22);
+  }
+
+  /* Featured card spans two rows on the left */
+  .ce-card--featured {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    flex-direction: column;
+    padding: clamp(0.9rem, 1.8vw, 1.25rem);
+    background:
+      linear-gradient(180deg, #1a1410 0%, #0f0a08 100%);
+    border: 1px solid rgba(201, 168, 76, 0.28);
+    color: var(--s-bg-hi);
+    overflow: hidden;
+    isolation: isolate;
+    gap: 0.7rem;
+  }
+
+  .ce-card--featured:hover {
+    background: linear-gradient(180deg, #1f1812 0%, #14100c 100%);
+    border-color: rgba(201, 168, 76, 0.6);
+  }
+
+  .ce-card--featured .ce-card-body { color: inherit; }
+
+  .ce-card--featured .ce-card-kicker {
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--s-gold);
+  }
+
+  .ce-card--featured .ce-card-title {
+    font-family: var(--font-body);
+    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--s-bg-hi);
+    text-wrap: balance;
+  }
+
+  .ce-card--featured .ce-card-meta {
+    font-family: var(--font-display);
+    font-size: 0.76rem;
+    color: rgba(240, 237, 232, 0.62);
+    line-height: 1.45;
+  }
+
+  .ce-card--featured .ce-card-arrow {
+    background: rgba(201, 168, 76, 0.18);
+    color: var(--s-gold);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+  }
+
+  .ce-card--featured:hover .ce-card-arrow {
+    background: var(--s-orange);
+    color: #fff;
+    transform: translate(2px, -2px);
+  }
+
+  .ce-card-media {
+    position: relative;
+    height: clamp(56px, 7vw, 90px);
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(201, 168, 76, 0.18), transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(232, 98, 42, 0.12), transparent 60%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .ce-card-nazari {
+    color: var(--s-gold);
+    z-index: 2;
+    filter: drop-shadow(0 0 14px rgba(201, 168, 76, 0.35));
+    transition: transform 0.6s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+
+  .ce-card--featured:hover .ce-card-nazari {
+    transform: rotate(8deg) scale(1.06);
+  }
+
+  .ce-card-nazari svg {
+    width: clamp(32px, 4vw, 48px);
+    height: clamp(32px, 4vw, 48px);
+  }
+
+  .ce-card-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201, 168, 76, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 168, 76, 0.06) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse at center, #000 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 75%);
+  }
+
+  .ce-card-glow {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(circle at 70% 30%, rgba(232, 98, 42, 0.22), transparent 55%);
+    opacity: 0.7;
+    transition: opacity 0.6s ease;
+  }
+
+  .ce-card--featured:hover .ce-card-glow {
+    opacity: 1;
+  }
+
+  /* Mini cards (right side, 2x2 grid) */
+  .ce-card--mini {
+    grid-column: auto;
+    grid-row: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.55rem 2.75rem 0.55rem 0.55rem;
+    min-height: 0;
+  }
+
+  .ce-thumb {
+    position: relative;
+    flex: 0 0 62px;
+    width: 62px;
+    height: 62px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 24% 18%, rgba(201,168,76,0.18), transparent 54%),
+      linear-gradient(135deg, rgba(26,22,25,0.045), rgba(232,98,42,0.055));
+    border: 1px solid rgba(26,22,25,0.07);
+  }
+
+  .ce-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(26,22,25,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,22,25,0.04) 1px, transparent 1px);
+    background-size: 14px 14px;
+    opacity: 0.5;
+  }
+
+  .ce-thumb span {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--s-gold);
+    z-index: 1;
+  }
+
+  .ce-card-num--lg {
+    position: static;
+    align-self: flex-start;
+    color: var(--s-gold);
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    margin: 0;
+  }
+
+  .ce-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+    min-width: 0;
+    flex: 1;
   }
 
   .ce-card-title {
-    font-family: var(--font-display);
-    font-size: 1rem;
-    font-weight: 700;
+    font-family: var(--font-body);
+    font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+    font-weight: 300;
     color: var(--s-ink);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .ce-card-meta {
     font-family: var(--font-display);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--s-ink-3);
-    line-height: 1.4;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .ce-card-arrow {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 28px;
-    height: 28px;
+    bottom: auto;
+    top: 50%;
+    right: 0.7rem;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     background: transparent;
     color: var(--s-ink-3);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.35s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
   }
 
   .ce-card-arrow svg {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
   }
 
   .ce-card:hover .ce-card-arrow {
     background: var(--s-orange);
     color: #fff;
+    transform: translate(2px, -50%);
+  }
+
+  /* Corner brackets — subtle hover signature */
+  .ce-bracket {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-style: solid;
+    border-color: var(--s-gold);
+    border-width: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease, width 0.4s ease, height 0.4s ease;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .ce-card--featured .ce-bracket {
+    width: 18px;
+    height: 18px;
+    border-color: var(--s-gold);
+  }
+
+  .ce-card:hover .ce-bracket { opacity: 0.38; }
+
+  .ce-card--featured:hover .ce-bracket {
+    width: 26px;
+    height: 26px;
+    border-color: var(--s-gold);
+  }
+
+  .ce-bracket--tl { top: 0.5rem; left: 0.5rem; border-top-width: 1.5px; border-left-width: 1.5px; }
+  .ce-bracket--tr { top: 0.5rem; right: 0.5rem; border-top-width: 1.5px; border-right-width: 1.5px; }
+  .ce-bracket--bl { bottom: 0.5rem; left: 0.5rem; border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .ce-bracket--br { bottom: 0.5rem; right: 0.5rem; border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+  .ce-card--featured .ce-bracket--tl { top: 0.7rem; left: 0.7rem; }
+  .ce-card--featured .ce-bracket--tr { top: 0.7rem; right: 0.7rem; }
+  .ce-card--featured .ce-bracket--bl { bottom: 0.7rem; left: 0.7rem; }
+  .ce-card--featured .ce-bracket--br { bottom: 0.7rem; right: 0.7rem; }
+
+  @media (max-width: 1024px) {
+    .ce-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media (max-width: 640px) {
+    .ce-section { padding: 1.75rem 1rem; }
     .ce-grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.6rem;
     }
-
-    .ce-card {
-      padding: 1rem;
-    }
-
-    .ce-card-title {
-      font-size: 0.9rem;
-    }
+    .ce-card--mini { padding: 0.8rem 2.8rem 0.8rem 0.9rem; }
+    .ce-thumb { flex-basis: 56px; width: 56px; height: 56px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -216,5 +510,7 @@ const hubs = [
       transform: none;
       animation: none;
     }
+    .ce-card:hover { transform: none; }
+    .ce-card:hover .ce-card-nazari { transform: none; }
   }
 </style>

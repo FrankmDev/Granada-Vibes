@@ -42,6 +42,8 @@ type Props = PostContext | RouteContext | EventContext | VenueContext;
 const props = Astro.props;
 const { locale, type, title: customTitle, limit = 3 } = props;
 const t = useTranslations(locale);
+const isEnglish = locale === 'en';
+const venuesIndexHref = isEnglish ? '/en/venues/' : '/salas/';
 
 let venues: VenueDirectoryEntry[] = [];
 
@@ -66,5 +68,10 @@ const links = venues.map((venue) => ({
 ---
 
 {links.length > 0 && (
-  <CrossLinksSection title={title} links={links} />
+  <CrossLinksSection
+    title={title}
+    links={links}
+    viewAllHref={venuesIndexHref}
+    viewAllLabel={t('actions.viewAll')}
+  />
 )}

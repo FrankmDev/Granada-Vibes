@@ -22,4 +22,6 @@ export const LOCALE_PATHS: Record<Locale, string> = {
   en: '/en',
 };
 
-export const DEFAULT_OG_IMAGE = '/favicon.jpg';
+export const DEFAULT_OG_IMAGE = '/og-image.jpg';
+export const FAVICON_IMAGE = '/1.ico';
+export const APPLE_TOUCH_ICON = '/apple-touch-icon.png';

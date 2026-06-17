@@ -1,9 +1,29 @@
 ---
+/**
+ * RouteDetailHero — "ALHAMBRA SPREAD · Refined"
+ *
+ * Editorial magazine-cover spread for individual route pages.
+ * Mirrors the v14 ALHAMBRA SPREAD architecture used by BlogDetailHero:
+ *  - Cover image on the LEFT with cinematic treatment
+ *    (corner brackets, vignette, glare, stamp, glow, shadow)
+ *  - Editorial lockup on the RIGHT
+ *    (eyebrow + meta badges + huge title with hanging-indent focal + lead)
+ *  - Compact bottom bar (category · coords)
+ *
+ * Key facts (duration, distance, stops, time of day, difficulty, neighbourhoods)
+ * are exposed in the route content sidebar instead of the hero.
+ *
+ * Geometry: hero is exactly 100svh - 72px (NavBar). Content must fit.
+ * Aligned with GRN URBAN "Alhambra Noir" — global tokens only.
+ * Title uses Fraunces Thin (100) + ExtraLight italic (200) for editorial weight.
+ * `text-wrap: pretty` prevents mid-word breaks.
+ * Reduced-motion safe.
+ */
 import type { Route, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
-import { formatDuration, formatDistance } from '@utils/dates';
-import CinematicHero from '@components/shared/CinematicHero.astro';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
   route: Route;
@@ -14,73 +34,836 @@ interface Props {
 const { route, locale, displayTitle = route.title[locale] } = Astro.props;
 const t = useTranslations(locale);
 
-const routeImage    = route.image;
-const refCode       = `RUT / ${route.id.toString().padStart(3, '0')} · ${new Date().getFullYear()}`;
-const backHref      = getRoute('routes', locale);
-const backLabel     = t('nav.routes');
-const catLabel      = t(`categories.${route.category}`).toUpperCase();
-const featuredLabel = route.featured ? t('routes.featured').toUpperCase() : undefined;
-const dockLabel     = t('detail.routeInfo');
-const description   = route.description[locale];
+const backHref = getRoute('routes', locale);
+const backLabel = t('detail.backToRoutes');
+const catLabel = t(`categories.${route.category}`).toUpperCase();
+const catLabelRaw = t(`categories.${route.category}`);
+const featuredLabel = route.featured ? t('routes.featured').toUpperCase() : null;
+const coordinates = t('detail.coordinates');
 
-const difficultyColor: Record<string, string> = {
-  easy: '#4a9e6b', moderate: '#d4873a', challenging: '#c94a4a',
-};
-const diffColor = difficultyColor[route.difficulty] ?? '#4a9e6b';
-const diffIconClass = route.difficulty === 'easy' ? 'green' : route.difficulty === 'moderate' ? 'orange' : 'orange';
-const timeIconClass = (route.timeOfDay === 'evening' || route.timeOfDay === 'sunset') ? 'cream' : 'gold';
+const idMatch = route.id.match(/(\d+)/);
+const archiveRef = idMatch?.[1]?.padStart(3, '0') ?? '000';
+const refCode = `RUT / ${archiveRef} · ${new Date().getFullYear()}`;
+
+const eyebrowEdition = locale === 'en' ? 'EDITION' : 'EDICIÓN';
+const eyebrowType = t('detail.routeLabel').toUpperCase();
+const eyebrowText = `${eyebrowEdition} · ${eyebrowType}`;
+
+// Short lead for the editorial lockup
+const description = route.description[locale];
+const descTrimmed = description.length > 220 ? `${description.slice(0, 220).trim()}…` : description;
+
+// Title split (lead + focal italic) — same heuristics as BlogDetailHero v14
+const titleWords = displayTitle.split(/\s+/).filter(Boolean);
+const skipWords = new Set([
+  'el', 'la', 'las', 'los', 'un', 'una', 'unos', 'unas',
+  'de', 'del', 'en', 'a', 'al', 'por', 'para', 'con', 'sin',
+  'sobre', 'tras', 'entre', 'y', 'o', 'u',
+  'que', 'qué', 'como', 'cuál', 'cuáles', 'lo', 'le', 'les',
+  'mi', 'tu', 'su', 'the', 'of', 'in', 'on', 'at', 'to', 'for',
+  'with', 'and', 'or',
+]);
+const isSkip = (w: string | undefined): boolean => !w || w.length < 4 || skipWords.has(w.toLowerCase());
+const isStrong = (w: string | undefined): boolean => !!w && w.length >= 5 && !skipWords.has(w.toLowerCase());
+
+let titleLead = '';
+let titleFocal = '';
+if (titleWords.length <= 1) {
+  titleLead = titleWords[0] ?? displayTitle;
+} else if (titleWords.length === 2) {
+  titleLead = titleWords[0] ?? '';
+  titleFocal = titleWords[1] ?? '';
+} else {
+  const w0 = titleWords[0] ?? '';
+  const w1 = titleWords[1] ?? '';
+  if (isSkip(w0) && !isSkip(w1)) {
+    titleLead = `${w0} ${w1}`;
+    titleFocal = titleWords.slice(2).join(' ');
+  } else if (isStrong(w0) && isStrong(w1)) {
+    titleLead = `${w0} ${w1}`;
+    titleFocal = titleWords.slice(2).join(' ');
+  } else {
+    titleLead = w0;
+    titleFocal = titleWords.slice(1).join(' ');
+  }
+}
+
+const leadSegments = titleLead.split(/(\s+)/).filter((s) => s.length > 0);
+const focalSegments = titleFocal.split(/(\s+)/).filter((s) => s.length > 0);
+let leadCharIndex = 0;
+let focalCharIndex = 0;
+const leadTokens = leadSegments.map((seg) => {
+  if (/^\s+$/.test(seg)) {
+    leadCharIndex += 1;
+    return { kind: 'space' as const };
+  }
+  const chars = seg.split('').map((c) => {
+    const d = 0.35 + leadCharIndex * 0.028;
+    leadCharIndex += 1;
+    return { char: c, delay: d };
+  });
+  return { kind: 'word' as const, chars };
+});
+const focalTokens = focalSegments.map((seg) => {
+  if (/^\s+$/.test(seg)) {
+    focalCharIndex += 1;
+    return { kind: 'space' as const };
+  }
+  const chars = seg.split('').map((c) => {
+    const d = 0.35 + (leadCharIndex + focalCharIndex) * 0.028;
+    focalCharIndex += 1;
+    return { char: c, delay: d };
+  });
+  return { kind: 'word' as const, chars };
+});
+
+const stopsCount = route.highlights.length;
+const hasImage = !!route.image;
+const imageAlt = `${displayTitle} — ${catLabelRaw}`;
+const imageSrc = hasImage ? (route.image as string) : '';
+
+// Scroll hint translation
+const scrollLabel = locale === 'en' ? 'Scroll to explore' : 'Desplázate para explorar';
 ---
 
-<CinematicHero
-  locale={locale}
-  backHref={backHref}
-  backLabel={backLabel}
-  refCode={refCode}
-  title={displayTitle}
-  imageUrl={routeImage}
-  eyebrowText={catLabel}
-  featuredLabel={featuredLabel}
-  dockAriaLabel={dockLabel}
-  description={description}
->
-  <div slot="dock" class="cin-dock-cell">
-    <div class="cin-dock-cell-icon orange">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    </div>
-    <span class="cin-dock-label">{t('detail.duration')}</span>
-    <span class="cin-dock-value">{formatDuration(route.duration, locale)}</span>
+<section class="rhero" aria-label={displayTitle} data-rhero>
+  <!-- ScreenFrame -->
+  <ScreenFrame
+    tagTopLeft={`${t('detail.archiveTag')} · ${archiveRef}`}
+    tagTopRight={catLabel}
+    tagBottomLeft="GRN URBAN"
+    tagBottomRight={coordinates}
+  />
+
+  <!-- Ambient canvas: 6 stacked layers for depth -->
+  <div class="rhero-canvas" aria-hidden="true">
+    <div class="rhero-mesh"></div>
+    <div class="rhero-radial"></div>
+    <div class="rhero-shaft"></div>
+    <div class="rhero-grid"></div>
+    <div class="rhero-vignette"></div>
+    <div class="rhero-grain"></div>
   </div>
-  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
-  <div slot="dock" class="cin-dock-cell">
-    <div class="cin-dock-cell-icon cream">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-    </div>
-    <span class="cin-dock-label">{t('detail.distance')}</span>
-    <span class="cin-dock-value">{formatDistance(route.distance, locale)}</span>
+
+  <!-- Decorative layer (rings, dot, compass only — minimal editorial cartography) -->
+  <div class="rhero-deco" aria-hidden="true">
+    <span class="deco-ring r1"></span>
+    <span class="deco-dot d1"></span>
+    <span class="deco-compass c1"></span>
   </div>
-  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
-  <div slot="dock" class="cin-dock-cell">
-    <div class:list={['cin-dock-cell-icon', diffIconClass]}>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-    </div>
-    <span class="cin-dock-label">{t('detail.difficulty')}</span>
-    <span class="cin-dock-value rut-dock-diff" style={`--dc: ${diffColor}`}>
-      {t(`difficulty.${route.difficulty}`)}
-    </span>
+
+  <!-- Nav scrim -->
+  <div class="rhero-nav-scrim" aria-hidden="true"></div>
+
+  <!-- Back link -->
+  <a href={backHref} class="rhero-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    <span>{backLabel}</span>
+  </a>
+
+  <!-- Archive REF badge -->
+  <div class="rhero-ref" aria-hidden="true">
+    <span class="ref-label">REF.</span>
+    <span class="ref-num">{archiveRef}</span>
   </div>
-  <div slot="dock" class="cin-dock-sep" aria-hidden="true"></div>
-  <div slot="dock" class="cin-dock-cell">
-    <div class:list={['cin-dock-cell-icon', timeIconClass]}>
-      {(route.timeOfDay === 'evening' || route.timeOfDay === 'sunset')
-        ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
-        : <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      }
+
+  <!-- Main spread: cover image left, editorial lockup right -->
+  <div class="rhero-stage">
+    <div class="rhero-spread">
+
+      <!-- LEFT: Cover image with cinematic treatment -->
+      <figure class="rhero-figure">
+        <div class="rhero-figure-wrap">
+          {hasImage && (
+            <OptimizedImage
+              src={imageSrc}
+              alt={imageAlt}
+              class="rhero-img"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              sizes="(max-width: 768px) 100vw, 38vw"
+              width={900}
+              height={1200}
+            />
+          )}
+          {!hasImage && (
+            <div class="rhero-img-fallback" aria-hidden="true">
+              <svg viewBox="0 0 60 60" fill="none">
+                <path d="M30 4 L34.5 22.5 L52 15 L39 28.5 L56 30 L39 31.5 L52 45 L34.5 37.5 L30 56 L25.5 37.5 L8 45 L21 31.5 L4 30 L21 28.5 L8 15 L25.5 22.5 Z"
+                  stroke="var(--h-gold)" stroke-width="0.6" stroke-opacity="0.45" fill="none"/>
+                <path d="M30 12 L32.5 24.5 L42 20 L36 28.5 L46 30 L36 31.5 L42 40 L32.5 35.5 L30 48 L27.5 35.5 L18 40 L24 31.5 L14 30 L24 28.5 L18 20 L27.5 24.5 Z"
+                  fill="var(--h-gold)" fill-opacity="0.10" stroke="none"/>
+              </svg>
+            </div>
+          )}
+          <div class="rhero-figure-vignette" aria-hidden="true"></div>
+          <div class="rhero-figure-glare" aria-hidden="true"></div>
+
+          <!-- Corner brackets -->
+          <span class="bracket tl" aria-hidden="true"></span>
+          <span class="bracket tr" aria-hidden="true"></span>
+          <span class="bracket bl" aria-hidden="true"></span>
+          <span class="bracket br" aria-hidden="true"></span>
+
+          <!-- Expedition stamp -->
+          <div class="rhero-stamp" aria-hidden="true">
+            <span class="stamp-prefix">{catLabel}</span>
+            <span class="stamp-num">Nº {archiveRef}</span>
+          </div>
+
+          <!-- Featured ribbon -->
+          {featuredLabel && (
+            <div class="rhero-ribbon" aria-hidden="true">
+              <svg viewBox="0 0 12 12" fill="currentColor">
+                <path d="M6 0l1.5 4.5H12L8.5 7l1.5 5L6 9.5 2 12l1.5-5L0 4.5h4.5z" />
+              </svg>
+              <span>{featuredLabel}</span>
+            </div>
+          )}
+        </div>
+
+        <!-- Glow + shadow behind the figure -->
+        <div class="rhero-figure-glow" aria-hidden="true"></div>
+        <div class="rhero-figure-shadow" aria-hidden="true"></div>
+
+        <figcaption class="rhero-caption">
+          <span class="caption-line"></span>
+          <span class="caption-text">{t('detail.archiveTag')} · {archiveRef} · {refCode}</span>
+        </figcaption>
+      </figure>
+
+      <!-- RIGHT: Editorial lockup -->
+      <div class="rhero-text">
+        <div class="lockup-rule" aria-hidden="true"></div>
+
+        <div class="rhero-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span class="eyebrow-text">
+            {eyebrowText}
+            <span class="eyebrow-slash">/</span>
+            {catLabel}
+          </span>
+          <span class="eyebrow-line"></span>
+        </div>
+
+        <div class="rhero-meta">
+          <span class="rhero-cat">{catLabel}</span>
+          <span class="rhero-stops">
+            {stopsCount} {t('routes.stops')}
+          </span>
+        </div>
+
+        <h1 class="rhero-title" style="text-wrap: pretty; word-break: normal; overflow-wrap: normal; hyphens: none;">
+          <span class="rhero-title-aura" aria-hidden="true"></span>
+          <span class="rhero-title-mark" aria-hidden="true"></span>
+          <span class="rhero-title-lead">
+            {leadTokens.map((tok) => (
+              tok.kind === 'word' ? (
+                <span class="rhero-word">
+                  {tok.chars.map((c) => (
+                    <span class="rhero-char" style={`--delay: ${c.delay}s`}>{c.char}</span>
+                  ))}
+                </span>
+              ) : (
+                <span class="rhero-space" aria-hidden="true">{'\u00A0'}</span>
+              )
+            ))}
+          </span>
+          {titleFocal && (
+            <span class="rhero-title-focal">
+              {focalTokens.map((tok) => (
+                tok.kind === 'word' ? (
+                  <span class="rhero-word">
+                    {tok.chars.map((c) => (
+                      <span class="rhero-char rhero-char--focal" style={`--delay: ${c.delay}s`}>{c.char}</span>
+                    ))}
+                  </span>
+                ) : (
+                  <span class="rhero-space rhero-space--focal" aria-hidden="true">{'\u00A0'}</span>
+                )
+              ))}
+            </span>
+          )}
+        </h1>
+
+        <p class="rhero-lead">
+          <span class="lead-quote">“</span>
+          {descTrimmed}
+          <span class="lead-quote">”</span>
+        </p>
+      </div>
     </div>
-    <span class="cin-dock-label">{t('detail.bestTime')}</span>
-    <span class="cin-dock-value">{t(`timeOfDay.${route.timeOfDay}`)}</span>
   </div>
-</CinematicHero>
+
+  <!-- Bottom bar -->
+  <div class="rhero-bottom-bar">
+    <div class="bar-content">
+      <span class="bar-item">{catLabel}</span>
+      <span class="bar-dot" aria-hidden="true"></span>
+      <span class="bar-item">{coordinates}</span>
+    </div>
+  </div>
+
+  <!-- Scroll hint (mobile only) -->
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">{scrollLabel}</span>
+  </div>
+</section>
 
 <style>
-  .rut-dock-diff { color: var(--dc, #f0ede8); font-weight: 600; }
+  /* ================================================================
+     RouteDetailHero — "Alhambra Spread · Refined"
+     Image-left, text-right editorial magazine cover.
+     Hero is exactly 100svh - 72px (NavBar) — content must fit.
+     Title uses Fraunces Thin (100) + ExtraLight italic (200).
+     ================================================================ */
+  .rhero {
+    --h-gold:     var(--color-gold);
+    --h-gold-dim: var(--color-gold-dim);
+    --h-orange:   var(--color-accent);
+    --h-cream:    var(--color-text-primary);
+    --h-muted:    rgba(240, 237, 232, 0.45);
+    --ease-expo:  var(--ease-out-expo);
+
+    position: relative;
+    width: 100%;
+    height: calc(100svh - 72px);
+    min-height: 600px;
+    margin-top: 72px;
+    background: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    contain: layout;
+  }
+
+  /* ---- ScreenFrame overrides ---- */
+  .rhero :global(.cin-screen-frame) {
+    top: 1.5rem; left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .rhero :global(.cin-corner::before),
+  .rhero :global(.cin-corner::after) { background: var(--h-gold); opacity: 0.3; }
+  .rhero :global(.cin-frame-tag) {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* ================================================================
+     CANVAS — 6 atmospheric layers
+     ================================================================ */
+  .rhero-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+  .rhero-mesh {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 18% 14%, rgba(201, 168, 76, 0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 82% 88%, rgba(232, 98, 42, 0.07) 0%, transparent 50%),
+      radial-gradient(ellipse 90% 60% at 50% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 65%),
+      var(--color-bg);
+  }
+  .rhero-radial {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 32% 28% at 25% 45%, rgba(201, 168, 76, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 26% 22% at 80% 60%, rgba(232, 98, 42, 0.05) 0%, transparent 55%);
+  }
+  .rhero-shaft {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(118deg, transparent 32%, rgba(201, 168, 76, 0.05) 42%, rgba(232, 98, 42, 0.025) 50%, transparent 62%),
+      linear-gradient(118deg, transparent 60%, rgba(255, 255, 255, 0.018) 75%, transparent 92%);
+    mix-blend-mode: screen;
+    opacity: 0.85;
+  }
+  .rhero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-position: center;
+    -webkit-mask-image: radial-gradient(ellipse 80% 75% at center, black 25%, transparent 85%);
+    mask-image: radial-gradient(ellipse 80% 75% at center, black 25%, transparent 85%);
+    opacity: 0.9;
+  }
+  .rhero-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 110% 90% at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  }
+  .rhero-grain {
+    position: absolute; inset: 0;
+    mix-blend-mode: soft-light;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ================================================================
+     DECORATIVE LAYER
+     ================================================================ */
+  .rhero-deco { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .deco-ring { position: absolute; border-radius: 50%; border: 1px solid var(--h-gold); opacity: 0; animation: deco-ring-in 2s var(--ease-expo) forwards; }
+  .deco-ring.r1 { width: 280px; height: 280px; top: 18%; left: 5%; animation-delay: 0.4s; --target-opacity: 0.07; }
+  @keyframes deco-ring-in { from { opacity: 0; transform: scale(0.8); } to { opacity: var(--target-opacity, 0.07); transform: scale(1); } }
+  .deco-dot { position: absolute; border-radius: 50%; animation: ev-float 7s ease-in-out infinite; }
+  .deco-dot.d1 { width: 110px; height: 110px; top: 68%; right: 5%; background: radial-gradient(circle, rgba(201, 168, 76, 0.15), transparent 70%); animation-duration: 9s; }
+  @keyframes ev-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  .deco-compass {
+    position: absolute;
+    width: clamp(110px, 11vw, 170px);
+    aspect-ratio: 1;
+    left: clamp(2.25rem, 5vw, 5rem);
+    bottom: clamp(2.5rem, 6vh, 4rem);
+    opacity: 0;
+    transform: rotate(-22deg) scale(0.9);
+    animation: compass-in 1.8s var(--ease-expo) 0.85s forwards;
+  }
+  .deco-compass::before,
+  .deco-compass::after {
+    content: "";
+    position: absolute;
+    inset: 16%;
+    border: 1px solid rgba(201, 168, 76, 0.12);
+    transform: rotate(45deg);
+  }
+  .deco-compass::after {
+    inset: 31%;
+    border-color: rgba(240, 237, 232, 0.05);
+    transform: rotate(0deg);
+  }
+  @keyframes compass-in { to { opacity: 0.3; transform: rotate(0deg) scale(1); } }
+
+  /* ---- NAV SCRIM ---- */
+  .rhero-nav-scrim { position: absolute; top: 0; left: 0; right: 0; height: 160px; background: linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.20) 60%, transparent 100%); pointer-events: none; z-index: 5; }
+
+  /* ---- BACK LINK ---- */
+  .rhero-back {
+    position: absolute; top: 2.25rem; left: 2.25rem; z-index: 30;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.85); text-decoration: none;
+    padding: 0.55rem 1rem; border-radius: 100px;
+    background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    transition: all 0.3s ease;
+    opacity: 0; animation: fadeInUp 0.8s ease 0.2s both;
+  }
+  .rhero-back svg { transition: transform 0.25s ease; }
+  .rhero-back:hover { background: rgba(201, 168, 76, 0.15); border-color: rgba(201, 168, 76, 0.3); transform: translateY(-1px); }
+  .rhero-back:hover svg { transform: translateX(-3px); }
+
+  /* ---- ARCHIVE REF ---- */
+  .rhero-ref {
+    position: absolute; top: 2.25rem; right: 2.25rem; z-index: 30;
+    display: flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em;
+    color: rgba(240, 237, 232, 0.5);
+    opacity: 0; animation: fadeInUp 0.8s ease 0.3s both;
+  }
+  .ref-label { text-transform: uppercase; }
+  .ref-num { color: var(--h-gold); font-weight: 800; }
+
+  /* ================================================================
+     STAGE — flex column, allows children to shrink
+     ================================================================ */
+  .rhero-stage {
+    position: relative; z-index: 10;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex; align-items: center;
+    max-width: 1480px; margin: 0 auto; width: 100%;
+    padding: 4.5rem clamp(2.25rem, 5vw, 3.5rem) 1.5rem;
+  }
+
+  /* ================================================================
+     SPREAD: 38fr / 62fr (image left, text right)
+     align-items: center keeps both columns visually balanced.
+     ================================================================ */
+  .rhero-spread {
+    display: grid;
+    grid-template-columns: 38fr 62fr;
+    gap: clamp(2rem, 4.5vw, 4rem);
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  /* ============================
+     LEFT — COVER IMAGE
+     ============================ */
+  .rhero-figure {
+    position: relative;
+    margin: 0;
+    display: flex; flex-direction: column; align-items: stretch; gap: 0.85rem;
+    min-height: 0;
+    opacity: 0; transform: translateX(-30px) rotate(-1deg);
+    animation: figure-enter 1.4s var(--ease-expo) 0.4s forwards;
+  }
+  @keyframes figure-enter {
+    to { opacity: 1; transform: translateX(0) rotate(0deg); }
+  }
+
+  .rhero-figure-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    max-height: calc(100svh - 220px);
+    align-self: center;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #14110d;
+    box-shadow:
+      0 40px 80px rgba(0, 0, 0, 0.55),
+      0 16px 32px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: transform 0.5s var(--ease-expo);
+  }
+
+  .rhero-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(1.05) contrast(1.08) brightness(0.92); }
+  .rhero-img-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a1410 0%, #2a1f15 100%);
+  }
+  .rhero-img-fallback svg { width: 38%; height: 38%; }
+
+  .rhero-figure-vignette {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.35) 100%);
+    mix-blend-mode: multiply;
+  }
+  .rhero-figure-glare {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.10) 48%, rgba(255, 255, 255, 0.20) 50%, rgba(255, 255, 255, 0.10) 52%, transparent 60%);
+    opacity: 0; transition: opacity 0.6s ease;
+  }
+  .rhero-figure-wrap:hover .rhero-figure-glare { opacity: 1; animation: glare-sweep 1.2s ease forwards; }
+  @keyframes glare-sweep { 0% { transform: translateX(-100%); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+
+  /* Corner brackets */
+  .bracket {
+    position: absolute; width: 22px; height: 22px; z-index: 4;
+    border-color: rgba(255, 255, 255, 0.6); border-style: solid; border-width: 0;
+    opacity: 0.75; pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .rhero-figure-wrap:hover .bracket { width: 36px; height: 36px; border-color: var(--h-gold); opacity: 1; }
+  .bracket.tl { top: 1rem; left: 1rem; border-top-width: 2px; border-left-width: 2px; }
+  .bracket.tr { top: 1rem; right: 1rem; border-top-width: 2px; border-right-width: 2px; }
+  .bracket.bl { bottom: 1rem; left: 1rem; border-bottom-width: 2px; border-left-width: 2px; }
+  .bracket.br { bottom: 1rem; right: 1rem; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* Stamp */
+  .rhero-stamp {
+    position: absolute; top: 1.1rem; right: 1.1rem; z-index: 5;
+    display: flex; flex-direction: column; align-items: flex-end;
+    padding: 0.5rem 0.875rem;
+    background: rgba(8, 8, 8, 0.82);
+    border: 1.5px solid var(--h-gold); border-radius: 6px;
+    transform: rotate(-1.5deg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    animation: stamp-in 0.6s var(--ease-expo) 1.0s both;
+    backdrop-filter: blur(6px);
+  }
+  .rhero-figure-wrap:hover .rhero-stamp { transform: rotate(0deg) scale(1.03); }
+  @keyframes stamp-in { from { opacity: 0; transform: rotate(-3deg) scale(0.9); } to { opacity: 1; transform: rotate(-1.5deg) scale(1); } }
+  .stamp-prefix { font-family: var(--font-display); font-size: 0.55rem; font-weight: 700; letter-spacing: 0.18em; color: var(--h-gold); }
+  .stamp-num { font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.06em; color: var(--h-cream); line-height: 1.1; }
+
+  /* Featured ribbon */
+  .rhero-ribbon {
+    position: absolute; top: 0; right: 1.5rem; z-index: 5;
+    display: flex; align-items: center; gap: 0.35rem;
+    padding: 0.45rem 0.85rem;
+    background: linear-gradient(135deg, var(--h-orange), #d45520);
+    color: #fff;
+    font-family: var(--font-display); font-size: 0.55rem; font-weight: 800;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 14px rgba(232, 98, 42, 0.4);
+    opacity: 0; animation: ribbon-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s both;
+  }
+  .rhero-ribbon svg { width: 9px; height: 9px; }
+  @keyframes ribbon-drop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Glow + shadow behind figure */
+  .rhero-figure-glow { position: absolute; inset: -15%; z-index: -1; pointer-events: none; background: radial-gradient(circle at 50% 45%, rgba(201, 168, 76, 0.10) 0%, transparent 60%); animation: glow-breathe 6s ease-in-out infinite; }
+  @keyframes glow-breathe { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+  .rhero-figure-shadow { position: absolute; bottom: -14px; left: 10%; right: 10%; height: 28px; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55) 0%, transparent 70%); filter: blur(16px); }
+
+  /* Caption */
+  .rhero-caption {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-display); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.4);
+    flex: 0 0 auto;
+    opacity: 0; animation: fadeInUp 0.8s ease 1.3s both;
+  }
+  .caption-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent); }
+  .caption-text { white-space: nowrap; }
+
+  /* ============================
+     RIGHT — EDITORIAL LOCKUP
+     ============================ */
+  .rhero-text {
+    position: relative;
+    display: flex; flex-direction: column; align-items: flex-start;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 0;
+    min-width: 0;
+  }
+  .lockup-rule {
+    position: absolute; left: -1.1rem; top: 0.4rem; bottom: 0.4rem; width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--h-gold) 20%, var(--h-orange) 80%, transparent);
+    opacity: 0.5; border-radius: 2px;
+    animation: fadeInUp 0.8s ease 0.35s both;
+  }
+
+  /* Eyebrow */
+  .rhero-eyebrow { display: flex; align-items: center; gap: 0.85rem; opacity: 0; animation: fadeInUp 0.8s ease 0.45s both; }
+  .eyebrow-line { width: 36px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15) 50%, transparent); }
+  .eyebrow-text { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--h-muted); white-space: nowrap; }
+  .eyebrow-slash { opacity: 0.4; margin: 0 0.3em; }
+
+  /* Meta badges */
+  .rhero-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; opacity: 0; animation: fadeInUp 0.8s ease 0.55s both; }
+  .rhero-cat { display: inline-flex; padding: 0.35rem 0.9rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--h-gold); background: rgba(201, 168, 76, 0.10); border: 1px solid rgba(201, 168, 76, 0.22); border-radius: 100px; }
+  .rhero-stops { display: inline-flex; padding: 0.35rem 0.9rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(240, 237, 232, 0.55); background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; }
+
+  /* ================================================================
+     TITLE — Fraunces Thin (100) lead + ExtraLight (200) italic focal
+     ================================================================ */
+  .rhero-title {
+    position: relative;
+    isolation: isolate;
+    font-family: var(--font-body);
+    font-weight: 100;
+    color: var(--h-cream);
+    line-height: 0.9;
+    letter-spacing: -0.045em;
+    margin: 0.85rem 0 0;
+    max-width: 100%;
+    text-align: left;
+    text-shadow:
+      0 2px 18px rgba(0, 0, 0, 0.58),
+      0 18px 52px rgba(0, 0, 0, 0.45);
+  }
+  .rhero-title-aura {
+    position: absolute;
+    z-index: -2;
+    inset: -0.22em -0.18em -0.08em -0.14em;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 58% 42% at 67% 58%, rgba(232, 98, 42, 0.18), transparent 68%),
+      radial-gradient(ellipse 52% 44% at 28% 38%, rgba(201, 168, 76, 0.12), transparent 72%);
+    filter: blur(14px);
+    opacity: 0;
+    animation: title-aura-in 1.25s var(--ease-expo) 0.65s forwards;
+  }
+  .rhero-title-mark {
+    position: absolute;
+    z-index: -1;
+    width: clamp(96px, 10vw, 170px);
+    aspect-ratio: 1;
+    right: clamp(0rem, 4vw, 2rem);
+    top: 50%;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    transform: translateY(-50%) rotate(45deg) scale(0.88);
+    opacity: 0;
+    animation: title-mark-in 1.15s var(--ease-expo) 0.82s forwards;
+  }
+  .rhero-title-mark::before,
+  .rhero-title-mark::after {
+    content: "";
+    position: absolute;
+    inset: 23%;
+    border: 1px solid rgba(240, 237, 232, 0.08);
+  }
+  .rhero-title-mark::after {
+    inset: 42%;
+    background: var(--h-gold);
+    border: 0;
+    opacity: 0.38;
+  }
+  .rhero-title-lead {
+    position: relative;
+    z-index: 1;
+    display: block;
+    font-size: clamp(2.7rem, 7.1vw, 7.85rem);
+    font-weight: 100;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 0;
+  }
+  .rhero-title-focal {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: -0.015em;
+    padding-left: clamp(0.85rem, 5.9vw, 4.35rem);
+    padding-right: 0.08em;
+    font-size: clamp(2.7rem, 7.1vw, 7.85rem);
+    font-style: italic;
+    font-weight: 200;
+    color: var(--h-orange);
+    font-variation-settings: 'opsz' 144, 'SOFT' 80, 'WONK' 1;
+    text-shadow:
+      0 1px 0 rgba(240, 237, 232, 0.08),
+      0 12px 34px rgba(232, 98, 42, 0.24),
+      0 20px 56px rgba(0, 0, 0, 0.48);
+  }
+  .rhero-title-focal::before {
+    content: "";
+    position: absolute;
+    left: clamp(0.85rem, 5.9vw, 4.35rem);
+    right: 0.08em;
+    bottom: 0.02em;
+    height: 0.12em;
+    z-index: -1;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0), rgba(201, 168, 76, 0.32) 18%, rgba(232, 98, 42, 0.20) 74%, rgba(232, 98, 42, 0));
+    transform: skewX(-18deg) scaleX(0);
+    transform-origin: left center;
+    filter: blur(0.5px);
+    animation: focal-swipe 1.25s var(--ease-expo) 1.05s forwards;
+  }
+  .rhero-title-focal::after {
+    content: "";
+    position: absolute;
+    left: clamp(0.15rem, 2vw, 1.25rem);
+    top: 0.13em;
+    width: clamp(26px, 3.2vw, 54px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.75), transparent);
+    transform: rotate(-18deg) scaleX(0);
+    transform-origin: center;
+    animation: focal-rule-in 0.95s var(--ease-expo) 1.15s forwards;
+  }
+  .rhero-word { display: inline-block; white-space: nowrap; }
+  .rhero-space { display: inline-block; width: 0.24em; min-width: 0.24em; }
+  .rhero-char { display: inline-block; opacity: 0; transform: translateY(60px); animation: char-rise 1.4s var(--ease-expo) var(--delay) forwards; will-change: transform, opacity; }
+  .rhero-char--focal { transform: translateY(60px) rotateX(8deg); transform-origin: center bottom; }
+  @keyframes title-aura-in { to { opacity: 1; } }
+  @keyframes title-mark-in { to { opacity: 1; transform: translateY(-50%) rotate(45deg) scale(1); } }
+  @keyframes focal-swipe { to { transform: skewX(-18deg) scaleX(1); } }
+  @keyframes focal-rule-in { to { transform: rotate(-18deg) scaleX(1); } }
+
+  /* Lead */
+  .rhero-lead {
+    font-family: var(--font-display);
+    font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+    line-height: 1.65;
+    color: rgba(240, 237, 232, 0.65);
+    max-width: 56ch;
+    margin: 0.25rem 0 0;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 0.95s both;
+    text-wrap: pretty;
+  }
+  .lead-quote { color: var(--h-gold); opacity: 0.35; font-family: var(--font-body); font-size: 1.1em; font-weight: 200; }
+
+  /* ---- BOTTOM BAR ---- */
+  .rhero-bottom-bar {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+    flex: 0 0 auto;
+    padding: 0.4rem clamp(2.25rem, 5vw, 3.5rem) 1.25rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 1.2s both;
+  }
+  .bar-content { display: flex; align-items: center; gap: 0.75rem; white-space: nowrap; }
+  .bar-item { font-family: var(--font-display); font-size: 0.55rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(240, 237, 232, 0.32); }
+  .bar-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(201, 168, 76, 0.45); display: inline-block; }
+
+  /* ---- SCROLL HINT (mobile only) ---- */
+  .scroll-hint {
+    position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+    z-index: 10;
+    display: none; flex-direction: column; align-items: center; gap: 0.4rem;
+    opacity: 0; animation: fadeInUp 0.8s ease 1.4s both;
+  }
+  .scroll-line { width: 1px; height: 28px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent); animation: scroll-pulse 2s ease-in-out infinite; }
+  .scroll-text { font-family: var(--font-display); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(240, 237, 232, 0.3); }
+  @keyframes scroll-pulse { 0%, 100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 0.8; transform: scaleY(1.15); } }
+
+  /* ================================================================
+     RESPONSIVE
+     ================================================================ */
+  @media (max-width: 1180px) {
+    .rhero-spread { grid-template-columns: 36fr 64fr; gap: 2.5rem; }
+  }
+
+  @media (max-width: 1024px) {
+    .rhero-stage { padding-top: 2rem; padding-bottom: 1rem; }
+    .rhero-spread { grid-template-columns: 34fr 66fr; gap: 2rem; }
+    .rhero-title-lead, .rhero-title-focal { font-size: clamp(2.15rem, 5.65vw, 4.45rem); letter-spacing: -0.04em; }
+    .rhero-title-focal { padding-left: clamp(0.6rem, 4.5vw, 3rem); }
+    .rhero-title-focal::before { left: clamp(0.6rem, 4.5vw, 3rem); }
+    .lockup-rule { display: none; }
+    .rhero-ref { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .rhero-spread { grid-template-columns: 40fr 60fr; }
+  }
+
+  @media (max-width: 768px) {
+    .rhero {
+      height: auto;
+      min-height: calc(100svh - 72px);
+    }
+    .rhero-stage { padding: 2rem 1.5rem 1.5rem; }
+    .rhero-spread {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      height: auto;
+    }
+    .rhero-figure { max-width: 340px; margin: 0 auto; width: 100%; }
+    .rhero-figure-wrap { aspect-ratio: 3 / 4; max-height: none; width: 100%; }
+    .rhero-title-lead, .rhero-title-focal { font-size: clamp(2.3rem, 8.5vw, 3.4rem); }
+    .rhero-title-focal { padding-left: 0.6rem; }
+    .rhero-lead { max-width: 42ch; }
+    .rhero-bottom-bar { display: none; }
+    .scroll-hint { display: flex; }
+    .deco-ring, .deco-compass { display: none; }
+    .rhero-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; top: 1.5rem; left: 1.5rem; }
+    .rhero-caption { font-size: 0.5rem; }
+    .rhero-shaft, .rhero-grid { display: none; }
+    .rhero-title-aura { inset: -0.16em -0.12em -0.08em; filter: blur(10px); }
+    .rhero-title-mark { width: 104px; right: 0; opacity: 0.55; }
+  }
+
+  @media (max-width: 480px) {
+    .rhero-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
+    .eyebrow-line { width: 24px; }
+    .rhero-figure { max-width: 280px; }
+    .rhero-title-lead, .rhero-title-focal { font-size: clamp(2rem, 8vw, 2.72rem); }
+    .rhero-title-focal::after { display: none; }
+    .rhero-lead { font-size: 0.88rem; }
+    .rhero-back { font-size: 0.55rem; padding: 0.4rem 0.75rem; }
+    .rhero-cat, .rhero-stops { font-size: 0.55rem; padding: 0.3rem 0.7rem; }
+    .bracket { width: 16px; height: 16px; }
+    .bracket.tl, .bracket.tr { top: 0.7rem; }
+    .bracket.bl, .bracket.br { bottom: 0.7rem; }
+    .bracket.tl, .bracket.bl { left: 0.7rem; }
+    .bracket.tr, .bracket.br { right: 0.7rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rhero-char, .rhero-char--focal, .rhero-back, .rhero-ref, .rhero-eyebrow, .rhero-meta, .rhero-lead, .rhero-figure, .rhero-caption, .rhero-bottom-bar, .deco-ring, .deco-dot, .deco-compass, .scroll-hint, .lockup-rule, .rhero-stamp, .rhero-ribbon, .rhero-figure-glow, .rhero-title-aura, .rhero-title-mark {
+      animation: none !important; opacity: 1 !important; transform: none !important;
+    }
+    .rhero-title-focal::before,
+    .rhero-title-focal::after { animation: none !important; transform: none !important; }
+  }
 </style>

@@ -1,6 +1,28 @@
 ---
+/**
+ * PlanHero — Time-based mixed route hero
+ *
+ * Editorial magazine-cover spread for time-based mixed route pages
+ * (rutas por tiempo). Mirrors the v14 ALHAMBRA SPREAD architecture
+ * used by BlogDetailHero and RouteDetailHero:
+ *  - Cover image on the LEFT with cinematic treatment
+ *    (corner brackets, vignette, glare, stamp, glow, shadow)
+ *  - Editorial lockup on the RIGHT
+ *    (eyebrow + meta pills + title + lead)
+ *  - Compact bottom bar (category · coords)
+ *
+ * If `image` is undefined, falls back to a nazarí SVG placeholder.
+ *
+ * Geometry: hero is exactly 100svh - 72px (NavBar). Content must fit.
+ * Aligned with GRN URBAN "Alhambra Noir" — global tokens only.
+ * Title uses Fraunces Thin (100) for editorial drama.
+ * `text-wrap: pretty` prevents mid-word breaks.
+ * Reduced-motion safe.
+ */
 import type { Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
+import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import OptimizedImage from '@components/ui/OptimizedImage.astro';
 
 interface Props {
   locale: Locale;
@@ -14,6 +36,7 @@ interface Props {
   totalStops: number;
   neighborhoods: string[];
   bestFor?: string;
+  image?: string;
 }
 
 const {
@@ -28,92 +51,42 @@ const {
   totalStops,
   neighborhoods,
   bestFor,
+  image,
 } = Astro.props;
 const t = useTranslations(locale);
 
 const refNum = refCode.split(' / ').pop()?.split(' · ')[0] ?? refCode;
 
-const ghostMap: Record<string, string> = {
-  '2h': '2H', '6h': '6H', '12h': '12H',
-  '1day': '1D', '2days': '2D', '3days': '3D',
-};
-const ghostNum = ghostMap[duration] ?? duration.toUpperCase();
+const hasImage = !!image;
+const imageAlt = `${title} — ${eyebrowText}`;
 
-// Generate SVG route path with waypoints based on stops count
-const waypointCount = Math.min(totalStops, 7);
-const waypoints = Array.from({ length: waypointCount }, (_, i) => ({
-  x: 8 + (i / (waypointCount - 1 || 1)) * 84 + (Math.sin(i * 3.7) * 3),
-  y: 50 + (Math.cos(i * 2.3) * 25) + (i % 2 === 0 ? -10 : 10),
-}));
-
-const pathD = waypoints.length > 1
-  ? waypoints.reduce((acc, p, i) => {
-      if (i === 0) return `M ${p.x} ${p.y}`;
-      const prev = waypoints[i - 1];
-      const cpx = (prev.x + p.x) / 2;
-      return `${acc} Q ${cpx} ${prev.y} ${p.x} ${p.y}`;
-    }, '')
-  : '';
-
-// Timeline ticks for the strip
-const tickCount = Math.min(totalStops + 1, 12);
+// Scroll hint translation
+const scrollLabel = locale === 'en' ? 'Scroll to explore' : 'Desplázate para explorar';
 ---
 
-<section class="plan-hero" aria-label={title}>
-  <!-- Deep ambient canvas -->
+<section class="ph" aria-label={title} data-ph>
+  <!-- ScreenFrame -->
+  <ScreenFrame
+    tagTopLeft={`${t('detail.archiveTag')} · ${refNum}`}
+    tagTopRight={eyebrowText}
+    tagBottomLeft="GRN URBAN"
+    tagBottomRight={t('detail.coordinates')}
+  />
+
+  <!-- Ambient canvas -->
   <div class="ph-canvas" aria-hidden="true">
     <div class="ph-bg"></div>
-    <div class="ph-orb o1"></div>
-    <div class="ph-orb o2"></div>
+    <div class="ph-radial"></div>
+    <div class="ph-shaft"></div>
     <div class="ph-grid"></div>
     <div class="ph-vignette"></div>
     <div class="ph-grain"></div>
   </div>
 
-  <!-- Route topology watermark -->
-  <div class="ph-route-watermark" aria-hidden="true">
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-      {pathD && (
-        <>
-          <path d={pathD} fill="none" stroke="rgba(201,168,76,0.08)" stroke-width="0.4" stroke-linecap="round" />
-          {waypoints.map((wp, i) => (
-            <circle
-              cx={wp.x}
-              cy={wp.y}
-              r={1.2 + (i % 3) * 0.4}
-              fill={i === 0 || i === waypoints.length - 1 ? 'rgba(232,98,42,0.25)' : 'rgba(201,168,76,0.15)'}
-            />
-          ))}
-        </>
-      )}
-    </svg>
-  </div>
-
-  <!-- Ghost duration number -->
-  <div class="ph-ghost" aria-hidden="true">
-    <span class="ph-ghost-num">{ghostNum}</span>
-  </div>
-
-  <!-- Decorative star -->
-  <div class="ph-star" aria-hidden="true">
-    <svg viewBox="0 0 60 60" fill="none">
-      <path d="M30 4 L34.5 22.5 L52 15 L39 28.5 L56 30 L39 31.5 L52 45 L34.5 37.5 L30 56 L25.5 37.5 L8 45 L21 31.5 L4 30 L21 28.5 L8 15 L25.5 22.5 Z"
-        fill="none" stroke="var(--h-gold)" stroke-width="0.6" stroke-opacity="0.15"/>
-    </svg>
-  </div>
-
-  <!-- Frame with corner brackets -->
-  <div class="ph-frame" aria-hidden="true">
-    <span class="ph-corner tl"></span>
-    <span class="ph-corner tr"></span>
-    <span class="ph-corner bl"></span>
-    <span class="ph-corner br"></span>
-    <span class="ph-bracket btl"></span>
-    <span class="ph-bracket btr"></span>
-    <span class="ph-bracket bbl"></span>
-    <span class="ph-bracket bbr"></span>
-    <span class="ph-tag left">[{refCode}]</span>
-    <span class="ph-tag right">GRN URBAN</span>
+  <!-- Decorative layer (subtle rings + dot) -->
+  <div class="ph-deco" aria-hidden="true">
+    <span class="deco-ring r1"></span>
+    <span class="deco-dot d1"></span>
   </div>
 
   <!-- Nav scrim -->
@@ -121,7 +94,7 @@ const tickCount = Math.min(totalStops + 1, 12);
 
   <!-- Back link -->
   <a href={backHref} class="ph-back">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     <span>{backLabel}</span>
   </a>
 
@@ -131,114 +104,172 @@ const tickCount = Math.min(totalStops + 1, 12);
     <span class="ph-ref-num">{refNum}</span>
   </div>
 
-  <!-- Content stage -->
+  <!-- Main spread: image left, editorial lockup right -->
   <div class="ph-stage">
-    <div class="ph-lockup">
-      <!-- Gold vertical accent rule -->
-      <div class="ph-rule-vertical" aria-hidden="true"></div>
+    <div class="ph-spread">
 
-      <div class="ph-eyebrow">
-        <span class="ph-eyebrow-line"></span>
-        <span class="ph-eyebrow-text">
-          {'GRANADA'}
-          <span class="ph-eyebrow-slash">/</span>
-          {eyebrowText}
-        </span>
-        <span class="ph-eyebrow-line"></span>
-      </div>
-
-      <h1 class="ph-title">
-        {
-          (() => {
-            let delayIndex = 0;
-            return title
-              .split(' ')
-              .map((word) => (
-                <span class="ph-word">
-                  {word.split('').map((char) => {
-                    const d = 0.3 + delayIndex * 0.045;
-                    delayIndex++;
-                    return (
-                      <span class="ph-char" style={`--delay: ${d}s`}>
-                        {char}
-                      </span>
-                    );
-                  })}
-                </span>
-              ))
-              .reduce(
-                (prev, curr, i) =>
-                  i === 0 ? [curr] : [...prev, ' ', curr],
-                [] as (JSX.Element | string)[]
-              );
-          })()
-        }
-      </h1>
-
-      {description && (
-        <p class="ph-lead">{description}</p>
-      )}
-
-      <!-- Metadata pills bar -->
-      <div class="ph-meta-bar">
-        <div class="ph-meta-pill">
-          <span class="ph-meta-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <span class="ph-meta-label">{t('mixedRoutes.dockDuration')}</span>
-          <span class="ph-meta-value">{eyebrowText}</span>
-        </div>
-        <div class="ph-meta-divider" aria-hidden="true"></div>
-        <div class="ph-meta-pill">
-          <span class="ph-meta-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3"/></svg>
-          </span>
-          <span class="ph-meta-label">{t('mixedRoutes.dockStops')}</span>
-          <span class="ph-meta-value">{totalStops}</span>
-        </div>
-        <div class="ph-meta-divider" aria-hidden="true"></div>
-        <div class="ph-meta-pill">
-          <span class="ph-meta-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <span class="ph-meta-label">{t('mixedRoutes.dockZones')}</span>
-          <span class="ph-meta-value">{neighborhoods.length}</span>
-        </div>
-        {bestFor && (
-          <>
-            <div class="ph-meta-divider" aria-hidden="true"></div>
-            <div class="ph-meta-pill">
-              <span class="ph-meta-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-              <span class="ph-meta-label">{t('mixedRoutes.idealFor')}</span>
-              <span class="ph-meta-value">{bestFor}</span>
+      <!-- LEFT: Cover image -->
+      <figure class="ph-figure">
+        <div class="ph-figure-wrap">
+          {hasImage && (
+            <OptimizedImage
+              src={image as string}
+              alt={imageAlt}
+              class="ph-img"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              sizes="(max-width: 768px) 100vw, 38vw"
+              width={900}
+              height={1200}
+            />
+          )}
+          {!hasImage && (
+            <div class="ph-img-fallback" aria-hidden="true">
+              <svg viewBox="0 0 60 60" fill="none">
+                <path d="M30 4 L34.5 22.5 L52 15 L39 28.5 L56 30 L39 31.5 L52 45 L34.5 37.5 L30 56 L25.5 37.5 L8 45 L21 31.5 L4 30 L21 28.5 L8 15 L25.5 22.5 Z"
+                  stroke="var(--h-gold)" stroke-width="0.6" stroke-opacity="0.45" fill="none"/>
+                <path d="M30 12 L32.5 24.5 L42 20 L36 28.5 L46 30 L36 31.5 L42 40 L32.5 35.5 L30 48 L27.5 35.5 L18 40 L24 31.5 L14 30 L24 28.5 L18 20 L27.5 24.5 Z"
+                  fill="var(--h-gold)" fill-opacity="0.10" stroke="none"/>
+              </svg>
             </div>
-          </>
-        )}
-      </div>
+          )}
+          <div class="ph-figure-vignette" aria-hidden="true"></div>
+          <div class="ph-figure-glare" aria-hidden="true"></div>
 
-      <!-- Timeline strip -->
-      <div class="ph-timeline" aria-hidden="true">
-        <div class="ph-timeline-line"></div>
-        {Array.from({ length: tickCount }).map((_, i) => (
-          <span
-            class="ph-timeline-tick"
-            style={`left: ${(i / (tickCount - 1 || 1)) * 100}%; --tick-delay: ${0.9 + i * 0.06}s;`}
-          ></span>
-        ))}
-        <span class="ph-timeline-start" aria-hidden="true">00:00</span>
-        <span class="ph-timeline-end" aria-hidden="true">{ghostNum}</span>
+          <!-- Corner brackets -->
+          <span class="bracket tl" aria-hidden="true"></span>
+          <span class="bracket tr" aria-hidden="true"></span>
+          <span class="bracket bl" aria-hidden="true"></span>
+          <span class="bracket br" aria-hidden="true"></span>
+
+          <!-- Expedition stamp -->
+          <div class="ph-stamp" aria-hidden="true">
+            <span class="stamp-prefix">{eyebrowText}</span>
+            <span class="stamp-num">Nº {refNum}</span>
+          </div>
+        </div>
+
+        <!-- Glow + shadow behind the figure -->
+        <div class="ph-figure-glow" aria-hidden="true"></div>
+        <div class="ph-figure-shadow" aria-hidden="true"></div>
+
+        <figcaption class="ph-caption">
+          <span class="caption-line"></span>
+          <span class="caption-text">{t('detail.archiveTag')} · {refNum} · {refCode}</span>
+        </figcaption>
+      </figure>
+
+      <!-- RIGHT: Editorial lockup -->
+      <div class="ph-text">
+        <div class="lockup-rule" aria-hidden="true"></div>
+
+        <div class="ph-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span class="eyebrow-text">
+            GRANADA
+            <span class="eyebrow-slash">/</span>
+            {eyebrowText}
+          </span>
+          <span class="eyebrow-line"></span>
+        </div>
+
+        <h1 class="ph-title" style="text-wrap: pretty; word-break: normal; overflow-wrap: normal; hyphens: none;">
+          {
+            (() => {
+              let delayIndex = 0;
+              return title
+                .split(' ')
+                .map((word) => (
+                  <span class="ph-word">
+                    {word.split('').map((char) => {
+                      const d = 0.3 + delayIndex * 0.045;
+                      delayIndex++;
+                      return (
+                        <span class="ph-char" style={`--delay: ${d}s`}>
+                          {char}
+                        </span>
+                      );
+                    })}
+                  </span>
+                ))
+                .reduce(
+                  (prev, curr, i) =>
+                    i === 0 ? [curr] : [...prev, ' ', curr],
+                  [] as unknown[]
+                );
+            })()
+          }
+        </h1>
+
+        {description && (
+          <p class="ph-lead">
+            <span class="lead-quote">“</span>
+            {description}
+            <span class="lead-quote">”</span>
+          </p>
+        )}
+
+        <!-- Metadata pills bar -->
+        <div class="ph-meta-bar">
+          <div class="ph-meta-pill">
+            <span class="ph-meta-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="ph-meta-label">{t('mixedRoutes.dockDuration')}</span>
+            <span class="ph-meta-value">{eyebrowText}</span>
+          </div>
+          <div class="ph-meta-divider" aria-hidden="true"></div>
+          <div class="ph-meta-pill">
+            <span class="ph-meta-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <span class="ph-meta-label">{t('mixedRoutes.dockStops')}</span>
+            <span class="ph-meta-value">{totalStops}</span>
+          </div>
+          <div class="ph-meta-divider" aria-hidden="true"></div>
+          <div class="ph-meta-pill">
+            <span class="ph-meta-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="ph-meta-label">{t('mixedRoutes.dockZones')}</span>
+            <span class="ph-meta-value">{neighborhoods.length}</span>
+          </div>
+          {bestFor && (
+            <>
+              <div class="ph-meta-divider" aria-hidden="true"></div>
+              <div class="ph-meta-pill">
+                <span class="ph-meta-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="ph-meta-label">{t('mixedRoutes.idealFor')}</span>
+                <span class="ph-meta-value">{bestFor}</span>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Bottom transition rule -->
-  <div class="ph-bottom-rule" aria-hidden="true"></div>
+  <!-- Bottom bar -->
+  <div class="ph-bottom-bar">
+    <div class="bar-content">
+      <span class="bar-item">{eyebrowText}</span>
+      <span class="bar-dot" aria-hidden="true"></span>
+      <span class="bar-item">{t('detail.coordinates')}</span>
+    </div>
+  </div>
+
+  <!-- Scroll hint (mobile only) -->
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span class="scroll-text">{scrollLabel}</span>
+  </div>
 </section>
 
 <style>
-  .plan-hero {
+  .ph {
     --h-gold:     #c9a84c;
     --h-gold-dim: rgba(201, 162, 39, 0.45);
     --h-orange:   #e8622a;
@@ -247,15 +278,32 @@ const tickCount = Math.min(totalStops + 1, 12);
     --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
 
     position: relative;
-    z-index: 1;
+    width: 100%;
+    height: calc(100svh - 72px);
+    min-height: 560px;
+    margin-top: 72px;
     background: #050505;
-    margin-top: var(--header-height, 64px);
-    padding: 3.5rem clamp(1.5rem, 5vw, 3rem) 4rem;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
+    contain: layout;
+  }
+
+  /* ---- ScreenFrame overrides ---- */
+  .ph :global(.cin-screen-frame) {
+    top: 1.5rem; left: 1.5rem; right: 1.5rem; bottom: 1.5rem;
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .ph :global(.cin-corner::before),
+  .ph :global(.cin-corner::after) { background: var(--h-gold); opacity: 0.3; }
+  .ph :global(.cin-frame-tag) {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
   }
 
   /* ---- CANVAS ---- */
-  .ph-canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .ph-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
   .ph-bg {
     position: absolute; inset: 0;
     background:
@@ -264,104 +312,72 @@ const tickCount = Math.min(totalStops + 1, 12);
       radial-gradient(ellipse at 50% 100%, rgba(201,168,76,0.02) 0%, transparent 40%),
       #050505;
   }
-  .ph-orb {
-    position: absolute; border-radius: 50%; pointer-events: none;
-    filter: blur(60px); opacity: 0;
-    animation: orb-in 2s var(--ease-expo) forwards;
+  .ph-radial {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 35% 30% at 22% 45%, rgba(201, 168, 76, 0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 26% 22% at 80% 60%, rgba(232, 98, 42, 0.05) 0%, transparent 55%);
   }
-  .ph-orb.o1 { width: 200px; height: 200px; top: -5%; right: 10%; background: rgba(201,168,76,0.07); animation-delay: 0.5s; }
-  .ph-orb.o2 { width: 140px; height: 140px; bottom: 10%; left: 5%; background: rgba(232,98,42,0.04); animation-delay: 0.8s; }
-  @keyframes orb-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
+  .ph-shaft {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(118deg, transparent 32%, rgba(201, 168, 76, 0.05) 42%, rgba(232, 98, 42, 0.025) 50%, transparent 62%),
+      linear-gradient(118deg, transparent 60%, rgba(255, 255, 255, 0.018) 75%, transparent 92%);
+    mix-blend-mode: screen;
+    opacity: 0.85;
+  }
   .ph-grid {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at 40% 30%, black 0%, transparent 60%);
-    -webkit-mask-image: radial-gradient(ellipse at 40% 30%, black 0%, transparent 60%);
+      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: 80px 80px;
+    background-position: center;
+    -webkit-mask-image: radial-gradient(ellipse 80% 75% at center, black 25%, transparent 85%);
+    mask-image: radial-gradient(ellipse 80% 75% at center, black 25%, transparent 85%);
+    opacity: 0.9;
   }
-  .ph-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%); }
+  .ph-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 110% 90% at center, transparent 55%, rgba(0,0,0,0.55) 100%); }
   .ph-grain {
     position: absolute; inset: 0; pointer-events: none;
-    mix-blend-mode: soft-light; opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light; opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* ---- ROUTE WATERMARK ---- */
-  .ph-route-watermark { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; animation: fadeInUp 1.5s ease 0.4s both; }
-  .ph-route-watermark svg { width: 100%; height: 100%; }
-
-  /* ---- GHOST NUMBER ---- */
-  .ph-ghost { position: absolute; top: 50%; right: 5%; transform: translateY(-50%); z-index: 1; pointer-events: none; }
-  .ph-ghost-num {
-    font-family: var(--font-body);
-    font-size: clamp(8rem, 22vw, 18rem);
-    font-weight: 200;
-    color: #fff;
-    opacity: 0.018;
-    letter-spacing: -0.04em;
-    line-height: 1;
-    user-select: none;
-    animation: ghost-breathe 8s ease-in-out infinite;
-  }
-  @keyframes ghost-breathe { 0%,100% { opacity: 0.015; } 50% { opacity: 0.028; } }
-
-  /* ---- DECORATIVE STAR ---- */
-  .ph-star { position: absolute; top: 20%; right: 18%; z-index: 1; pointer-events: none; width: 36px; height: 36px; opacity: 0; animation: star-rotate-in 2s ease 0.6s both; }
-  @keyframes star-rotate-in { from { opacity: 0; transform: rotate(-30deg) scale(0.8); } to { opacity: 0.5; transform: rotate(0deg) scale(1); } }
-  .ph-star svg { width: 100%; height: 100%; animation: star-spin 40s linear infinite; }
-  @keyframes star-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-  /* ---- FRAME ---- */
-  .ph-frame { position: absolute; inset: 1.25rem; border: 1px solid rgba(255,255,255,0.06); pointer-events: none; z-index: 5; }
-  .ph-corner { position: absolute; width: 12px; height: 12px; border-color: var(--h-gold-dim); border-style: solid; border-width: 0; }
-  .ph-corner.tl { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
-  .ph-corner.tr { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
-  .ph-corner.bl { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
-  .ph-corner.br { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
-
-  /* Corner brackets */
-  .ph-bracket { position: absolute; width: 24px; height: 24px; border-color: rgba(201,168,76,0.2); border-style: solid; border-width: 0; opacity: 0; animation: bracket-in 0.8s ease 0.5s both; }
-  @keyframes bracket-in { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-  .ph-bracket.btl { top: 8px; left: 8px; border-top-width: 1.5px; border-left-width: 1.5px; }
-  .ph-bracket.btr { top: 8px; right: 8px; border-top-width: 1.5px; border-right-width: 1.5px; }
-  .ph-bracket.bbl { bottom: 8px; left: 8px; border-bottom-width: 1.5px; border-left-width: 1.5px; }
-  .ph-bracket.bbr { bottom: 8px; right: 8px; border-bottom-width: 1.5px; border-right-width: 1.5px; }
-
-  .ph-tag {
-    position: absolute; top: -0.75rem; font-family: var(--font-display); font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.28); padding: 0 0.5rem; background: #050505;
-  }
-  .ph-tag.left  { left: 1.25rem; }
-  .ph-tag.right { right: 1.25rem; }
+  /* ---- DECORATIVE LAYER ---- */
+  .ph-deco { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .deco-ring { position: absolute; border-radius: 50%; border: 1px solid var(--h-gold); opacity: 0; animation: deco-ring-in 2s var(--ease-expo) forwards; }
+  .deco-ring.r1 { width: 280px; height: 280px; top: 18%; left: 5%; animation-delay: 0.4s; --target-opacity: 0.07; }
+  @keyframes deco-ring-in { from { opacity: 0; transform: scale(0.8); } to { opacity: var(--target-opacity, 0.07); transform: scale(1); } }
+  .deco-dot { position: absolute; border-radius: 50%; animation: ev-float 7s ease-in-out infinite; }
+  .deco-dot.d1 { width: 110px; height: 110px; top: 68%; right: 5%; background: radial-gradient(circle, rgba(201, 168, 76, 0.15), transparent 70%); animation-duration: 9s; }
+  @keyframes ev-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
   /* ---- NAV SCRIM ---- */
-  .ph-nav-scrim { position: absolute; top: 0; left: 0; right: 0; height: 140px; background: linear-gradient(180deg, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.15) 60%, transparent 100%); pointer-events: none; z-index: 4; }
+  .ph-nav-scrim { position: absolute; top: 0; left: 0; right: 0; height: 160px; background: linear-gradient(180deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.20) 60%, transparent 100%); pointer-events: none; z-index: 5; }
 
   /* ---- BACK LINK ---- */
   .ph-back {
-    position: absolute; top: 1.25rem; left: clamp(1.5rem, 4vw, 3rem); z-index: 10;
+    position: absolute; top: 2.25rem; left: 2.25rem; z-index: 30;
     display: inline-flex; align-items: center; gap: 0.5rem;
     font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(240,237,232,0.80); text-decoration: none;
+    color: rgba(240, 237, 232, 0.85); text-decoration: none;
     padding: 0.55rem 1rem; border-radius: 100px;
-    background: rgba(0,0,0,0.30); backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     transition: all 0.3s ease;
     opacity: 0; animation: fadeInUp 0.8s ease 0.2s both;
   }
   .ph-back svg { transition: transform 0.25s ease; }
-  .ph-back:hover { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.25); transform: translateY(-1px); color: var(--h-cream); }
+  .ph-back:hover { background: rgba(201, 168, 76, 0.15); border-color: rgba(201, 168, 76, 0.3); transform: translateY(-1px); }
   .ph-back:hover svg { transform: translateX(-3px); }
 
   /* ---- ARCHIVE REF ---- */
   .ph-ref {
-    position: absolute; top: 1.25rem; right: clamp(1.5rem, 4vw, 3rem); z-index: 10;
+    position: absolute; top: 2.25rem; right: 2.25rem; z-index: 30;
     display: flex; align-items: center; gap: 0.35rem;
     font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em;
-    color: rgba(240,237,232,0.40);
+    color: rgba(240, 237, 232, 0.5);
     opacity: 0; animation: fadeInUp 0.8s ease 0.3s both;
   }
   .ph-ref-label { text-transform: uppercase; }
@@ -370,58 +386,189 @@ const tickCount = Math.min(totalStops + 1, 12);
   /* ---- STAGE ---- */
   .ph-stage {
     position: relative; z-index: 10;
-    max-width: 1320px; margin: 0 auto; width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex; align-items: center;
+    max-width: 1480px; margin: 0 auto; width: 100%;
+    padding: 4.5rem clamp(2.25rem, 5vw, 3.5rem) 1.5rem;
   }
 
-  /* ---- LOCKUP ---- */
-  .ph-lockup {
-    display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem; min-width: 0;
-    position: relative; max-width: 900px;
-    padding-left: 1.5rem;
+  /* ---- SPREAD 38/62 ---- */
+  .ph-spread {
+    display: grid;
+    grid-template-columns: 38fr 62fr;
+    gap: clamp(2rem, 4.5vw, 4rem);
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
   }
 
-  /* Gold vertical accent rule */
-  .ph-rule-vertical {
-    position: absolute; left: 0; top: 0.25rem; bottom: 0.5rem; width: 2px;
-    background: linear-gradient(to bottom, var(--h-gold), var(--h-orange) 60%, transparent);
-    opacity: 0.35; border-radius: 2px;
-    opacity: 0; animation: fadeInUp 0.8s ease 0.35s both;
+  /* ============================
+     LEFT — COVER IMAGE
+     ============================ */
+  .ph-figure {
+    position: relative;
+    margin: 0;
+    display: flex; flex-direction: column; align-items: stretch; gap: 0.85rem;
+    min-height: 0;
+    opacity: 0; transform: translateX(-30px) rotate(-1deg);
+    animation: figure-enter 1.4s var(--ease-expo) 0.4s forwards;
+  }
+  @keyframes figure-enter {
+    to { opacity: 1; transform: translateX(0) rotate(0deg); }
+  }
+
+  .ph-figure-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    max-height: calc(100svh - 220px);
+    align-self: center;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #14110d;
+    box-shadow:
+      0 40px 80px rgba(0, 0, 0, 0.55),
+      0 16px 32px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: transform 0.5s var(--ease-expo);
+  }
+
+  :global(.ph-img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(1.05) contrast(1.08) brightness(0.92); }
+  .ph-img-fallback {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a1410 0%, #2a1f15 100%);
+  }
+  .ph-img-fallback svg { width: 38%; height: 38%; }
+
+  .ph-figure-vignette {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.35) 100%);
+    mix-blend-mode: multiply;
+  }
+  .ph-figure-glare {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.10) 48%, rgba(255, 255, 255, 0.20) 50%, rgba(255, 255, 255, 0.10) 52%, transparent 60%);
+    opacity: 0; transition: opacity 0.6s ease;
+  }
+  .ph-figure-wrap:hover .ph-figure-glare { opacity: 1; animation: glare-sweep 1.2s ease forwards; }
+  @keyframes glare-sweep { 0% { transform: translateX(-100%); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+
+  /* Corner brackets */
+  .bracket {
+    position: absolute; width: 22px; height: 22px; z-index: 4;
+    border-color: rgba(255, 255, 255, 0.6); border-style: solid; border-width: 0;
+    opacity: 0.75; pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .ph-figure-wrap:hover .bracket { width: 36px; height: 36px; border-color: var(--h-gold); opacity: 1; }
+  .bracket.tl { top: 1rem; left: 1rem; border-top-width: 2px; border-left-width: 2px; }
+  .bracket.tr { top: 1rem; right: 1rem; border-top-width: 2px; border-right-width: 2px; }
+  .bracket.bl { bottom: 1rem; left: 1rem; border-bottom-width: 2px; border-left-width: 2px; }
+  .bracket.br { bottom: 1rem; right: 1rem; border-bottom-width: 2px; border-right-width: 2px; }
+
+  /* Stamp */
+  .ph-stamp {
+    position: absolute; top: 1.1rem; right: 1.1rem; z-index: 5;
+    display: flex; flex-direction: column; align-items: flex-end;
+    padding: 0.5rem 0.875rem;
+    background: rgba(8, 8, 8, 0.82);
+    border: 1.5px solid var(--h-gold); border-radius: 6px;
+    transform: rotate(-1.5deg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    animation: stamp-in 0.6s var(--ease-expo) 1.0s both;
+    backdrop-filter: blur(6px);
+  }
+  .ph-figure-wrap:hover .ph-stamp { transform: rotate(0deg) scale(1.03); }
+  @keyframes stamp-in { from { opacity: 0; transform: rotate(-3deg) scale(0.9); } to { opacity: 1; transform: rotate(-1.5deg) scale(1); } }
+  .stamp-prefix { font-family: var(--font-display); font-size: 0.55rem; font-weight: 700; letter-spacing: 0.18em; color: var(--h-gold); }
+  .stamp-num { font-family: var(--font-display); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.06em; color: var(--h-cream); line-height: 1.1; }
+
+  /* Glow + shadow behind figure */
+  .ph-figure-glow { position: absolute; inset: -15%; z-index: -1; pointer-events: none; background: radial-gradient(circle at 50% 45%, rgba(201, 168, 76, 0.10) 0%, transparent 60%); animation: glow-breathe 6s ease-in-out infinite; }
+  @keyframes glow-breathe { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+  .ph-figure-shadow { position: absolute; bottom: -14px; left: 10%; right: 10%; height: 28px; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55) 0%, transparent 70%); filter: blur(16px); }
+
+  /* Caption */
+  .ph-caption {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-family: var(--font-display); font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.4);
+    flex: 0 0 auto;
+    opacity: 0; animation: fadeInUp 0.8s ease 1.3s both;
+  }
+  .caption-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent); }
+  .caption-text { white-space: nowrap; }
+
+  /* ============================
+     RIGHT — EDITORIAL LOCKUP
+     ============================ */
+  .ph-text {
+    position: relative;
+    display: flex; flex-direction: column; align-items: flex-start;
+    justify-content: center;
+    gap: 0.85rem;
+    min-height: 0;
+    min-width: 0;
+  }
+  .lockup-rule {
+    position: absolute; left: -1.1rem; top: 0.4rem; bottom: 0.4rem; width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--h-gold) 20%, var(--h-orange) 80%, transparent);
+    opacity: 0.5; border-radius: 2px;
+    animation: fadeInUp 0.8s ease 0.35s both;
   }
 
   /* Eyebrow */
-  .ph-eyebrow { display: flex; align-items: center; gap: 0.85rem; opacity: 0; animation: fadeInUp 0.8s ease 0.4s both; }
-  .ph-eyebrow-line { width: 36px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12) 50%, transparent); }
-  .ph-eyebrow-text { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--h-muted); white-space: nowrap; }
-  .ph-eyebrow-slash { opacity: 0.35; margin: 0 0.3em; }
+  .ph-eyebrow { display: flex; align-items: center; gap: 0.85rem; opacity: 0; animation: fadeInUp 0.8s ease 0.45s both; }
+  .eyebrow-line { width: 36px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15) 50%, transparent); }
+  .eyebrow-text { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--h-muted); white-space: nowrap; }
+  .eyebrow-slash { opacity: 0.4; margin: 0 0.3em; }
 
   /* Title */
   .ph-title {
     font-family: var(--font-body);
-    font-size: clamp(2.4rem, 5vw, 4.5rem);
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.08;
+    font-size: clamp(2.4rem, 5.5vw, 5.4rem);
+    font-weight: 100;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
     color: var(--h-cream);
-    margin: 0;
-    max-width: 900px;
-    perspective: 1200px;
+    margin: 0.25rem 0 0;
+    max-width: 100%;
+    text-shadow:
+      0 2px 18px rgba(0, 0, 0, 0.58),
+      0 18px 52px rgba(0, 0, 0, 0.45);
   }
   .ph-word { display: inline-block; white-space: nowrap; }
-  .ph-char { display: inline-block; opacity: 0; transform: translateY(40px); animation: char-rise 1.3s var(--ease-expo) var(--delay) forwards; }
+  .ph-char { display: inline-block; opacity: 0; transform: translateY(60px); animation: char-rise 1.4s var(--ease-expo) var(--delay) forwards; will-change: transform, opacity; }
 
   /* Lead */
-  .ph-lead { font-family: var(--font-display); font-size: clamp(0.92rem, 1.05vw, 1.05rem); line-height: 1.7; color: rgba(240,237,232,0.52); max-width: 60ch; margin: 0; opacity: 0; animation: fadeInUp 0.8s ease 0.75s both; }
+  .ph-lead {
+    font-family: var(--font-display);
+    font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+    line-height: 1.65;
+    color: rgba(240, 237, 232, 0.65);
+    max-width: 60ch;
+    margin: 0.25rem 0 0;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 0.75s both;
+    text-wrap: pretty;
+  }
+  .lead-quote { color: var(--h-gold); opacity: 0.35; font-family: var(--font-body); font-size: 1.1em; font-weight: 200; }
 
   /* ---- METADATA BAR ---- */
   .ph-meta-bar {
-    display: flex; align-items: center; gap: 0;
-    flex-wrap: wrap;
+    display: flex; align-items: center; gap: 0; flex-wrap: wrap;
     opacity: 0; animation: fadeInUp 0.8s ease 0.85s both;
     margin-top: 0.25rem;
   }
   .ph-meta-pill {
     display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.6rem 1rem;
+    padding: 0.6rem 0.95rem;
     font-family: var(--font-display);
     transition: background 0.3s ease;
   }
@@ -429,6 +576,7 @@ const tickCount = Math.min(totalStops + 1, 12);
   .ph-meta-icon {
     width: 18px; height: 18px; color: var(--h-gold); opacity: 0.7;
     display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
   .ph-meta-icon svg { width: 100%; height: 100%; }
   .ph-meta-label {
@@ -444,80 +592,92 @@ const tickCount = Math.min(totalStops + 1, 12);
     background: linear-gradient(180deg, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent);
   }
 
-  /* ---- TIMELINE STRIP ---- */
-  .ph-timeline {
-    position: relative;
-    width: 100%; max-width: 520px; height: 24px;
-    margin-top: 0.25rem;
-    opacity: 0; animation: fadeInUp 0.8s ease 0.95s both;
+  /* ---- BOTTOM BAR ---- */
+  .ph-bottom-bar {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%;
+    flex: 0 0 auto;
+    padding: 0.4rem clamp(2.25rem, 5vw, 3.5rem) 1.25rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease 1.1s both;
   }
-  .ph-timeline-line {
-    position: absolute; top: 11px; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, rgba(201,168,76,0.25), rgba(201,168,76,0.08) 60%, transparent);
-  }
-  .ph-timeline-tick {
-    position: absolute; top: 7px;
-    width: 1px; height: 9px;
-    background: rgba(201,168,76,0.3);
-    opacity: 0; animation: tick-pop 0.5s ease var(--tick-delay) forwards;
-  }
-  @keyframes tick-pop { from { opacity: 0; transform: scaleY(0); } to { opacity: 0.6; transform: scaleY(1); } }
-  .ph-timeline-start {
-    position: absolute; bottom: 0; left: 0;
-    font-family: var(--font-display); font-size: 0.5rem; font-weight: 600;
-    letter-spacing: 0.1em; color: rgba(255,255,255,0.2);
-  }
-  .ph-timeline-end {
-    position: absolute; bottom: 0; right: 0;
-    font-family: var(--font-display); font-size: 0.5rem; font-weight: 600;
-    letter-spacing: 0.1em; color: rgba(255,255,255,0.2);
-  }
+  .bar-content { display: flex; align-items: center; gap: 0.75rem; white-space: nowrap; }
+  .bar-item { font-family: var(--font-display); font-size: 0.55rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(240, 237, 232, 0.32); }
+  .bar-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(201, 168, 76, 0.45); display: inline-block; }
 
-  /* Bottom rule */
-  .ph-bottom-rule {
-    position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
-    z-index: 10; pointer-events: none;
-    opacity: 0; animation: fadeInUp 0.8s ease 1.1s both;
+  /* ---- SCROLL HINT (mobile only) ---- */
+  .scroll-hint {
+    position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+    z-index: 10;
+    display: none; flex-direction: column; align-items: center; gap: 0.4rem;
+    opacity: 0; animation: fadeInUp 0.8s ease 1.3s both;
   }
+  .scroll-line { width: 1px; height: 28px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent); animation: scroll-pulse 2s ease-in-out infinite; }
+  .scroll-text { font-family: var(--font-display); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(240, 237, 232, 0.3); }
+  @keyframes scroll-pulse { 0%, 100% { opacity: 0.4; transform: scaleY(1); } 50% { opacity: 0.8; transform: scaleY(1.15); } }
 
   /* ---- RESPONSIVE ---- */
+  @media (max-width: 1180px) {
+    .ph-spread { grid-template-columns: 36fr 64fr; gap: 2.5rem; }
+  }
+
   @media (max-width: 1024px) {
+    .ph-stage { padding-top: 2rem; padding-bottom: 1rem; }
+    .ph-spread { grid-template-columns: 34fr 66fr; gap: 2rem; }
     .ph-title { font-size: clamp(2rem, 5vw, 3.5rem); }
     .ph-ref { display: none; }
-    .ph-ghost-num { font-size: 35vw; opacity: 0.012; }
-    .ph-star { display: none; }
+    .lockup-rule { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .ph-spread { grid-template-columns: 40fr 60fr; }
   }
 
   @media (max-width: 768px) {
-    .plan-hero { padding: 2.5rem clamp(1.25rem, 4vw, 2rem) 3rem; }
-    .ph-frame { display: none; }
+    .ph {
+      height: auto;
+      min-height: calc(100svh - 72px);
+    }
+    .ph-stage { padding: 2rem 1.5rem 1.5rem; }
+    .ph-spread {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      height: auto;
+    }
+    .ph-figure { max-width: 340px; margin: 0 auto; width: 100%; }
+    .ph-figure-wrap { aspect-ratio: 3 / 4; max-height: none; width: 100%; }
     .ph-title { font-size: clamp(1.9rem, 7vw, 2.8rem); line-height: 1.12; }
     .ph-lead { max-width: 100%; }
-    .ph-bottom-rule { left: 5%; right: 5%; }
-    .ph-lockup { padding-left: 1rem; }
-    .ph-rule-vertical { width: 1.5px; }
-    .ph-meta-bar { gap: 0; }
-    .ph-meta-pill { padding: 0.5rem 0.75rem; }
-    .ph-timeline { max-width: 100%; }
-    .ph-route-watermark { opacity: 0.4; }
+    .ph-bottom-bar { display: none; }
+    .scroll-hint { display: flex; }
+    .deco-ring, .deco-dot { display: none; }
+    .ph-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; top: 1.5rem; left: 1.5rem; }
+    .ph-caption { font-size: 0.5rem; }
+    .ph-shaft, .ph-grid { display: none; }
   }
 
   @media (max-width: 480px) {
     .ph-eyebrow { flex-wrap: wrap; gap: 0.5rem; }
-    .ph-back { font-size: 0.6rem; padding: 0.5rem 0.85rem; }
+    .eyebrow-line { width: 24px; }
+    .ph-figure { max-width: 280px; }
     .ph-title { font-size: clamp(1.7rem, 6.5vw, 2.4rem); }
     .ph-lead { font-size: 0.88rem; }
     .ph-meta-pill { gap: 0.35rem; padding: 0.45rem 0.6rem; }
     .ph-meta-label { font-size: 0.52rem; }
     .ph-meta-value { font-size: 0.72rem; }
     .ph-meta-divider { height: 16px; }
+    .bracket { width: 16px; height: 16px; }
+    .bracket.tl, .bracket.tr { top: 0.7rem; }
+    .bracket.bl, .bracket.br { bottom: 0.7rem; }
+    .bracket.tl, .bracket.bl { left: 0.7rem; }
+    .bracket.tr, .bracket.br { right: 0.7rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ph-char, .ph-back, .ph-ref, .ph-eyebrow, .ph-lead, .ph-meta-bar, .ph-timeline, .ph-bottom-rule, .ph-rule-vertical, .ph-orb, .ph-star {
+    .ph-char, .ph-back, .ph-ref, .ph-eyebrow, .ph-lead, .ph-meta-bar, .ph-figure, .ph-caption, .ph-bottom-bar, .deco-ring, .deco-dot, .scroll-hint, .lockup-rule, .ph-stamp, .ph-figure-glow, .ph-figure {
       animation: none !important; opacity: 1 !important; transform: none !important;
     }
-    .ph-ghost-num { animation: none !important; }
   }
 </style>

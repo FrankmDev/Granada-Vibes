@@ -15,7 +15,7 @@
 
     background: var(--s-bg);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
   }
   .det-page::before {
     content: '';
@@ -29,9 +29,9 @@
   }
 
   .det-content-wrap {
-    max-width: 1440px;
+    max-width: 1460px;
     margin: 0 auto;
-    padding: clamp(2.75rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem) 2rem;
+    padding: clamp(3rem, 5vw, 4.75rem) clamp(1.5rem, 5vw, 4rem) 2rem;
     position: relative;
     z-index: 2;
   }
@@ -40,9 +40,9 @@
   .upgraded-layout {
     display: grid;
     align-items: start;
-    gap: 5rem;
-    grid-template-columns: 1fr 380px;
-    max-width: 1300px;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 1fr);
+    max-width: 1320px;
     margin: 0 auto;
   }
 
@@ -51,19 +51,21 @@
     display: flex;
     flex-direction: column;
     background: transparent;
-    gap: 3rem;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
   }
 
   .upg-block {
     position: relative;
     padding: clamp(2.25rem, 4vw, 3rem);
-    background: var(--s-bg-hi);
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.36)),
+      var(--s-bg-hi);
     border: 1px solid var(--s-border);
-    border-radius: 20px;
+    border-radius: 28px;
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.015);
+    box-shadow: 0 18px 60px rgba(26,22,25,0.035), inset 0 1px 0 rgba(255,255,255,0.62);
   }
   
   .upg-block:hover {
@@ -105,6 +107,7 @@
     margin-bottom: 1.5rem;
     line-height: 1.2;
     text-wrap: balance;
+    text-align: left;
   }
 
   .upg-lead { font-family: var(--font-display); font-size: 1.1rem; line-height: 1.8; color: var(--s-ink-2); max-width: 68ch; }
@@ -113,19 +116,15 @@
   .upg-long-desc p { font-family: var(--font-display); font-size: 1rem; line-height: 1.75; color: var(--s-ink-2); max-width: 68ch; }
 
 
-  /* VENUE BLOCK Upgrades */
-  .upg-venue-block { padding: 0; overflow: hidden; }
-  .upg-venue-block .upg-header { padding: 3rem 3rem 0; margin-bottom: 1.5rem; }
-  
+  /* VENUE BLOCK — self-contained internal card. The new typography and shape
+     for .upg-venue-title and .upg-venue-block live in the EVENT ARTICLE CARD
+     section below (overrides here for tighter integration). */
   .upg-venue-grid {
     display: flex;
     flex-direction: column;
   }
 
-  .upg-venue-info { padding: 0 3rem 3rem; }
-  .upg-venue-title { font-size: 2.8rem; margin-bottom: 1rem; }
-  
-  .upg-venue-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .upg-venue-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
   .upg-badge {
     display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem;
     border-radius: 8px; font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em;
@@ -136,26 +135,110 @@
   .upg-badge svg { width: 14px; height: 14px; }
   .upg-badge:hover { border-color: rgba(232,98,42,0.35); color: var(--s-orange); }
   .upg-badge:focus-visible,
-  .upg-intent-grid a:focus-visible,
   .upg-nav-link:focus-visible,
-  .upg-rel-item:focus-visible,
-  .upg-rel-event-card:focus-visible,
   .upg-btn-primary:focus-visible,
   .upg-btn-secondary:focus-visible {
     outline: 2px solid var(--s-orange);
     outline-offset: 3px;
   }
 
-  .upg-venue-desc { font-size: 1rem; line-height: 1.7; color: var(--s-ink-2); max-width: 60ch; }
-  
+  /* EVENT ARTICLE CARD — single card wrapping multiple entry sections.
+     Mirrors route-article-card: gold left rule, internal section dividers,
+     left-aligned section titles. */
+  .event-article-card {
+    width: 100%;
+    opacity: 1;
+    transform: none;
+    padding: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 4vw, 3.5rem);
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+    border-radius: 22px;
+    box-shadow: 0 4px 18px rgba(26, 22, 25, 0.025);
+  }
+  .event-article-card::before {
+    content: '';
+    position: absolute;
+    top: clamp(2.25rem, 4.5vw, 4rem);
+    bottom: clamp(2.25rem, 4.5vw, 4rem);
+    left: clamp(1.1rem, 2.5vw, 1.6rem);
+    width: 1px;
+    background: linear-gradient(to bottom, transparent 0%, var(--s-gold) 6%, var(--s-gold) 94%, transparent 100%);
+    opacity: 0.26;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .event-article-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(ellipse at top right, rgba(201, 168, 76, 0.05) 0%, transparent 55%);
+  }
+  .event-article-card > * {
+    position: relative;
+    z-index: 1;
+  }
+  .event-entry-section {
+    padding-block: clamp(2.2rem, 4vw, 3.2rem);
+    border-top: 1px solid var(--s-border);
+  }
+  .event-entry-section:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .event-entry-section:last-of-type {
+    padding-bottom: 0;
+  }
+  .event-entry-section .upg-header {
+    margin-bottom: clamp(1.5rem, 2.6vw, 2.2rem);
+  }
+  .event-entry-section h2 {
+    text-align: left;
+  }
+
+  /* Venue block — self-contained internal card inside the event-article-card.
+     The map sits flush at the bottom of this card (no padding below it). */
+  .event-article-card .upg-venue-block {
+    border-radius: 16px;
+    border: 1px solid var(--s-border);
+    background: linear-gradient(180deg, var(--s-bg-hi) 0%, var(--s-bg) 100%);
+    box-shadow: 0 4px 18px rgba(26, 22, 25, 0.025);
+    overflow: hidden;
+  }
+
+  .upg-venue-info {
+    padding: 1.5rem 1.5rem 1.35rem;
+  }
+
+  /* Venue title — editorial serif, matches section-title hierarchy */
+  .upg-venue-title {
+    font-family: var(--font-body);
+    font-size: clamp(1.5rem, 2.4vw, 1.85rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: var(--s-ink);
+    text-align: left;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+
+  .upg-venue-desc { font-size: 0.95rem; line-height: 1.7; color: var(--s-ink-2); max-width: 60ch; margin: 0; }
+
   .upg-venue-map-wrapper {
     position: relative;
-    height: 300px;
+    height: clamp(420px, 52vh, 560px);
     border-top: 1px solid var(--s-border);
+    background:
+      radial-gradient(circle at 12% 16%, rgba(232,98,42,0.08), transparent 30%),
+      linear-gradient(135deg, rgba(26,22,25,0.04), rgba(201,168,76,0.08));
+    overflow: hidden;
   }
   .upg-map-glass-overlay {
     position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    box-shadow: inset 0 20px 20px rgba(250,248,245,0.8);
+    box-shadow: inset 0 22px 22px rgba(250,248,245,0.7);
   }
 
   /* HIGHLIGHTS Upgrades */
@@ -201,73 +284,379 @@
   .upg-tag:hover { background: var(--s-ink); color: var(--s-white); }
 
   /* RIGHT TRACK: SIDEBAR */
-  .upg-sidebar-sticky { position: sticky; top: calc(var(--header-height, 64px) + 2rem); display: flex; flex-direction: column; gap: 2rem; }
+  .upg-sidebar {
+    position: sticky;
+    top: calc(72px + 1.5rem);
+    align-self: start;
+    height: fit-content;
+    max-height: calc(100svh - 72px - 3rem);
+    overflow: visible;
+  }
+  .upg-sidebar-sticky { display: flex; flex-direction: column; gap: 0.85rem; }
 
-  /* Premium Ticket Card */
-  .upg-ticket-card {
+  /* SIDE CARDS — Key facts, In this event, Share */
+  .event-side-card {
+    width: 100%;
+    border-radius: 20px;
+    padding: clamp(0.95rem, 1.8vw, 1.2rem);
+    display: flex;
+    flex-direction: column;
+    background: var(--s-bg-hi);
+    border: 1px solid var(--s-border);
+    box-shadow: 0 18px 55px rgba(26, 22, 25, 0.055);
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.8s var(--ease-out-expo),
+      transform 0.8s var(--ease-out-expo),
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+  .event-side-card.is-visible { opacity: 1; transform: translateY(0); }
+  .event-side-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(201, 168, 76, 0.28);
+    box-shadow: 0 14px 44px rgba(26, 22, 25, 0.06);
+  }
+  .event-side-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  /* Plain head — no num, just title + a subtle accent rule below */
+  .event-side-head--plain {
+    display: block;
+    margin-bottom: 0.85rem;
+  }
+  .event-side-num {
+    flex: 0 0 auto;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--s-orange);
+  }
+  .event-side-line {
+    display: block;
+    width: min(64px, 18vw);
+    height: 1px;
+    background: linear-gradient(90deg, var(--s-orange), transparent);
+    opacity: 0.5;
+  }
+  .event-side-rule {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: 0.55rem;
+    background: linear-gradient(90deg, var(--s-gold) 0%, var(--s-border) 28%, transparent 100%);
+    opacity: 0.7;
+  }
+  .event-side-rule--gold {
+    background: linear-gradient(90deg, var(--s-gold) 0%, var(--s-orange) 60%, transparent 100%);
+    opacity: 0.55;
+  }
+  .event-side-title {
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+    margin: 0;
+  }
+  /* Slightly darker for the share card so it reads on a richer background */
+  .event-side-title--light { color: var(--s-ink); }
+
+  .event-facts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin: 0;
+  }
+  /* Premium key fact cell — subtle gold left accent, gradient background, left-aligned */
+  .event-fact {
+    min-width: 0;
+    padding: 0.8rem 0.9rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.32rem;
+    background: linear-gradient(180deg, var(--s-bg-hi) 0%, var(--s-bg) 100%);
+    border: 1px solid rgba(26, 22, 25, 0.06);
+    border-radius: 12px;
     position: relative;
-    background: var(--s-white);
-    border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
     overflow: hidden;
-    opacity: 0; transform: translateY(40px) scale(0.98);
-    transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .upg-ticket-card.is-visible { opacity: 1; transform: translateY(0) scale(1); }
-  
-  .upg-tc-header { padding: 2.5rem 2.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; }
-  .upg-tc-date-box {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    width: 64px; height: 64px; border-radius: 16px; background: rgba(201,168,76,0.15); color: var(--s-gold-ink);
-    border: 1px solid rgba(201,168,76,0.3);
+  .event-fact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--s-gold) 0%, var(--s-orange) 100%);
+    opacity: 0.55;
   }
-  .tc-day { font-family: var(--font-body); font-size: 1.5rem; font-weight: 400; line-height: 1; }
-  .tc-month { font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; margin-top: 0.2rem; }
-  
-  .upg-tc-info { display: flex; flex-direction: column; gap: 0.4rem; }
-  .tc-time { display: flex; align-items: center; gap: 0.4rem; font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; color: var(--s-ink); }
-  .tc-time svg { width: 16px; height: 16px; color: var(--s-orange); }
-  .tc-category { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.05em; color: var(--s-ink-3); text-transform: uppercase; }
+  .event-fact dt {
+    flex: 0 0 auto;
+    font-family: var(--font-display);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    max-width: 100%;
+    text-align: left;
+    text-transform: uppercase;
+    color: var(--s-ink-3);
+    padding-left: 0.55rem;
+  }
+  .event-fact dd {
+    min-width: 0;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--s-ink);
+    text-align: left;
+    word-break: break-word;
+    padding-left: 0.55rem;
+  }
 
-  .upg-tc-price-wrap { padding: 0 2.5rem 2rem; display: flex; flex-direction: column; gap: 0.2rem; }
-  .tc-price-label { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-ink-3); text-transform: uppercase; letter-spacing: 0.1em; }
-  .tc-price-val { font-family: var(--font-body); font-size: 3.5rem; font-weight: 300; color: var(--s-ink); line-height: 1; letter-spacing: -0.03em; }
-  .tc-price-val.is-free { color: var(--s-success); font-size: 2.8rem; }
-  .tc-price-val.is-tickets { color: var(--s-orange); font-size: 2.8rem; }
-
-  /* Ticket divider (dashed with holes) */
-  .upg-tc-divider {
-    position: relative; display: flex; align-items: center; height: 32px;
+  .event-share-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
   }
-  .tcd-hole {
-    width: 32px; height: 32px; background: var(--s-bg); border-radius: 50%;
-    position: absolute; top: 0; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-  }
-  .tcd-hole.left { left: -16px; }
-  .tcd-hole.right { right: -16px; }
-  .tcd-dashed { flex: 1; margin: 0 20px; border-top: 2px dashed rgba(26,22,25,0.1); }
 
-  .upg-tc-actions { padding: 2rem 2.5rem 2.5rem; display: flex; flex-direction: column; align-items: stretch; gap: 1rem; }
-  
+  /* ====================================================================
+     TICKET-SHAPED SHARE CARD — restored/improved ticket feel.
+     Vertical-center notches, dashed divider, richer gradient, panel
+     corner brackets, larger primary button, prettier channels.
+     ==================================================================== */
+  .event-share-card {
+    position: relative;
+    padding: 0;
+    border-radius: 20px;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(201, 168, 76, 0.18) 0%, transparent 42%),
+      radial-gradient(circle at 100% 100%, rgba(232, 98, 42, 0.10) 0%, transparent 48%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(250, 248, 245, 0.98) 100%);
+    border: 1px solid rgba(26, 22, 25, 0.08);
+    box-shadow: 0 22px 60px rgba(26, 22, 25, 0.07), 0 1px 3px rgba(0, 0, 0, 0.02);
+    overflow: visible;
+    isolation: isolate;
+  }
+  /* Top gold accent bar */
+  .event-share-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--s-gold) 22%, var(--s-orange) 50%, var(--s-gold) 78%, transparent);
+    border-radius: 0 0 2px 2px;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .event-share-card-top {
+    padding: 1.35rem 1.35rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  /* Divider with ticket notches on left and right at the vertical midpoint */
+  .event-share-card-divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 22px;
+  }
+  .ticket-notch {
+    position: absolute;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    background: var(--s-bg);
+    border-radius: 50%;
+    box-shadow: inset 0 2px 4px rgba(26, 22, 25, 0.04);
+  }
+  .ticket-notch--left { left: -11px; }
+  .ticket-notch--right { right: -11px; }
+  .ticket-dashed {
+    flex: 1;
+    height: 0;
+    border-top: 1.5px dashed rgba(26, 22, 25, 0.16);
+    margin: 0 18px;
+  }
+  .event-share-card-bottom {
+    padding: 1.1rem 1.35rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Editorial stamp with price */
+  .event-share-stamp {
+    align-self: flex-start;
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    color: var(--s-ink);
+    background: rgba(201, 168, 76, 0.12);
+    border: 1px solid rgba(201, 168, 76, 0.32);
+    border-radius: 4px;
+    transform: rotate(-1deg);
+  }
+
+  /* Panel corner brackets (subtle gold, intensify on card hover) */
+  .event-share-panel-bracket {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(201, 168, 76, 0.45);
+    border-style: solid;
+    border-width: 0;
+    transition: border-color 0.4s ease, width 0.4s ease, height 0.4s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .event-share-card:hover .event-share-panel-bracket {
+    width: 20px;
+    height: 20px;
+    border-color: rgba(201, 168, 76, 0.7);
+  }
+  .event-share-panel-bracket--tl { top: 12px;    left: 12px;    border-top-width: 1.5px;    border-left-width: 1.5px; }
+  .event-share-panel-bracket--tr { top: 12px;    right: 12px;   border-top-width: 1.5px;    border-right-width: 1.5px; }
+  .event-share-panel-bracket--bl { bottom: 12px; left: 12px;    border-bottom-width: 1.5px; border-left-width: 1.5px; }
+  .event-share-panel-bracket--br { bottom: 12px; right: 12px;   border-bottom-width: 1.5px; border-right-width: 1.5px; }
+
+  .event-share-intro {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--s-ink-2);
+  }
+  /* Larger, more premium primary share button */
+  .event-share-btn {
+    width: 100%;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 0.95rem 1.2rem;
+    border: 1px solid var(--s-ink);
+    border-radius: 12px;
+    background: var(--s-ink);
+    color: var(--s-bg-hi);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 18px rgba(26, 22, 25, 0.18);
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .event-share-btn svg { width: 17px; height: 17px; transition: transform 0.3s ease; }
+  .event-share-btn:hover {
+    transform: translateY(-2px);
+    background: var(--s-orange);
+    border-color: var(--s-orange);
+    box-shadow: 0 14px 30px rgba(232, 98, 42, 0.32);
+  }
+  .event-share-btn:hover svg { transform: translateX(3px); }
+  .event-share-channels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .event-share-channel {
+    min-width: 0;
+    min-height: 62px;
+    padding: 0.55rem 0.35rem;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border: 1px solid rgba(26, 22, 25, 0.08);
+    border-radius: 12px;
+    background: var(--s-bg);
+    color: var(--s-ink-2);
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.22s ease, border-color 0.22s ease, background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .event-share-channel:hover,
+  .event-share-channel:focus-visible {
+    color: var(--s-orange);
+    border-color: rgba(232, 98, 42, 0.35);
+    background: rgba(232, 98, 42, 0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(232, 98, 42, 0.15);
+  }
+  .event-share-channel.is-copied {
+    color: var(--s-ink);
+    border-color: rgba(201, 168, 76, 0.45);
+    background: rgba(201, 168, 76, 0.14);
+  }
+  .event-share-icon {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--s-bg-hi);
+    border: 1px solid var(--s-border);
+    transition: background 0.22s ease, border-color 0.22s ease;
+  }
+  .event-share-channel:hover .event-share-icon {
+    background: var(--s-bg-hi);
+    border-color: rgba(232, 98, 42, 0.35);
+  }
+  .event-share-icon svg { width: 14px; height: 14px; display: block; }
+  .event-share-channel--facebook .event-share-icon svg { width: 17px; height: 17px; }
+  .event-share-label { font-size: 0.58rem; letter-spacing: 0.1em; }
+
+  /* Primary CTA — used inside event-entry-section (e.g. tickets inline) */
   .upg-btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-    width: 100%; min-width: 0; box-sizing: border-box;
-    padding: 1.25rem 1.5rem; border-radius: 12px; background: var(--s-ink); color: var(--s-white);
-    font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    padding: 0.95rem 1.4rem; border-radius: 12px; background: var(--s-ink); color: var(--s-white);
+    font-family: var(--font-display); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
     text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden;
   }
-  .upg-btn-primary:not(.inert):hover { transform: scale(1.02); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
-  .upg-btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
+  .upg-btn-primary:not(.inert):hover { transform: translateY(-2px); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
+  .upg-btn-primary svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
   .upg-btn-primary:not(.inert):hover svg { transform: translateX(4px); }
 
   .upg-btn-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-    width: 100%; min-width: 0; box-sizing: border-box;
-    padding: 1rem 1.5rem; border-radius: 12px; background: rgba(26,22,25,0.03); color: var(--s-ink-2);
-    font-family: var(--font-display); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; border: none; cursor: pointer;
-    transition: all 0.3s ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    padding: 0.78rem 1.1rem; border-radius: 12px; background: rgba(26,22,25,0.035); color: var(--s-ink-2);
+    font-family: var(--font-display); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; border: 1px solid var(--s-border); cursor: pointer;
+    transition: all 0.3s ease; text-decoration: none;
   }
-  .upg-btn-secondary:hover { background: rgba(26,22,25,0.06); color: var(--s-ink); }
+  .upg-btn-secondary:hover { background: rgba(26,22,25,0.06); color: var(--s-ink); border-color: rgba(201,168,76,0.3); }
   .upg-btn-secondary svg { width: 16px; height: 16px; }
 
   .upg-past-notice {
@@ -298,73 +687,6 @@
     text-decoration: none;
   }
 
-  .upg-intent-grid {
-    margin-top: 1.5rem;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--s-border);
-    border: 1px solid var(--s-border);
-  }
-
-  .upg-intent-grid a {
-    min-width: 0;
-    padding: 1rem;
-    background: var(--s-bg);
-    color: inherit;
-    text-decoration: none;
-    display: grid;
-    gap: 0.45rem;
-  }
-
-  .upg-intent-grid span {
-    font-family: var(--font-display);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--s-ink-3);
-  }
-
-  .upg-intent-grid strong {
-    font-family: var(--font-display);
-    font-size: 0.9rem;
-    line-height: 1.25;
-    color: var(--s-ink);
-    overflow-wrap: anywhere;
-  }
-
-  .upg-intent-grid a:hover {
-    background: var(--s-bg-hi);
-  }
-
-  .upg-intent-grid a:hover strong {
-    color: var(--s-orange);
-  }
-
-  /* Related events grid (main content) */
-  .upg-related-events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  .upg-rel-event-card {
-    display: flex; flex-direction: column; gap: 0.75rem;
-    background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 20px;
-    padding: 1rem; text-decoration: none; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    opacity: 0; transform: translateY(12px); animation: cell-reveal 0.6s var(--ease-expo) calc(var(--rd, 0s) + 0.2s) forwards;
-  }
-  .upg-rel-event-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.06); border-color: rgba(201,168,76,0.35); }
-  .urec-thumb { width: 100%; aspect-ratio: 16/10; border-radius: 14px; overflow: hidden; background: rgba(26,22,25,0.04); }
-  .urec-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); filter: grayscale(20%) contrast(1.05); }
-  .upg-rel-event-card:hover .urec-thumb img { transform: scale(1.05); filter: grayscale(0%) contrast(1.05); }
-  .urec-thumb-fallback { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(232,98,42,0.06), rgba(201,168,76,0.04)); }
-  .urec-content { display: flex; flex-direction: column; gap: 0.25rem; padding: 0 0.25rem; }
-  .urec-title { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; color: var(--s-ink); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .urec-meta { font-family: var(--font-display); font-size: 0.7rem; color: var(--s-ink-3); letter-spacing: 0.02em; }
-  .urec-arrow { width: 36px; height: 36px; border-radius: 50%; background: transparent; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; margin-top: auto; align-self: flex-end; }
-  .urec-arrow svg { width: 16px; height: 16px; }
-  .upg-rel-event-card:hover .urec-arrow { background: var(--s-orange); color: var(--s-white); }
-  @media (max-width: 768px) {
-    .upg-related-events-grid { grid-template-columns: 1fr; }
-  }
-
   /* Footer ornament */
   .det-footer-orn {
     display: flex;
@@ -381,8 +703,37 @@
   /* Shared Navigation & Utility Modifiers */
   .upg-nav-block { padding: 2rem 3rem; }
   .upg-nav-flex { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-  .upg-nav-link { display: flex; flex-direction: column; text-decoration: none; max-width: 45%; }
+  .upg-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    text-decoration: none;
+    max-width: 45%;
+    min-width: 0;
+  }
+  .upg-nav-copy { display: flex; flex-direction: column; min-width: 0; }
   .upg-nav-link--end { align-items: flex-end; text-align: right; }
+  .upg-nav-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--s-border);
+    color: var(--s-ink-3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  }
+  .upg-nav-arrow svg { width: 1rem; height: 1rem; }
+  .upg-nav-link:hover .upg-nav-arrow {
+    background: var(--s-orange);
+    border-color: var(--s-orange);
+    color: var(--s-white);
+  }
+  .upg-nav-link:hover .upg-nav-title { color: var(--s-orange); }
+  .upg-nav-link:hover .upg-nav-arrow { transform: translateX(-2px); }
+  .upg-nav-link--end:hover .upg-nav-arrow { transform: translateX(2px); }
   .upg-nav-label { font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink-3); margin-bottom: 0.35rem; }
   .upg-nav-title { font-family: var(--font-body); font-size: 1.1rem; font-weight: 600; color: var(--s-ink); line-height: 1.3; }
   .upg-nav-meta { font-family: var(--font-display); font-size: 0.8rem; color: var(--s-ink-2); margin-top: 0.25rem; }
@@ -407,58 +758,47 @@
     text-align: center;
   }
 
-  .upg-related-bento { background: var(--s-bg-hi); border: 1px solid var(--s-border); border-radius: 20px; padding: 1.25rem; opacity: 0; transform: translateY(16px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-  .upg-related-bento.is-visible { opacity: 1; transform: translateY(0); }
-  .upg-rb-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-  .upg-rb-title { font-family: var(--font-display); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--s-ink-3); text-transform: uppercase; }
-  .upg-rb-all { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; color: var(--s-orange); text-decoration: none; white-space: nowrap; }
-  .upg-rb-list { display: flex; flex-direction: column; gap: 0.75rem; }
-  .upg-rel-item { display: flex; align-items: center; gap: 0.9rem; padding: 0.75rem; background: var(--s-bg); border: 1px solid var(--s-border); border-radius: 16px; color: inherit; text-decoration: none; opacity: 0; transform: translateY(10px); animation: cell-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--rd, 0s) + 0.15s) forwards; transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease; }
-  .upg-rel-item:hover { transform: translateX(4px); border-color: rgba(201,168,76,0.3); background: var(--s-white); }
-  .uri-thumb { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: rgba(26,22,25,0.04); }
-  .uri-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; filter: grayscale(20%); }
-  .upg-rel-item:hover .uri-thumb img { transform: scale(1.05); filter: grayscale(0%); }
-  .uri-thumb-fallback { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(232,98,42,0.06), rgba(201,168,76,0.08)); }
-  .uri-content { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
-  .uri-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; color: var(--s-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
-  .uri-meta { font-family: var(--font-display); font-size: 0.7rem; color: var(--s-ink-3); }
-  .uri-arrow { width: 32px; height: 32px; border-radius: 50%; background: transparent; color: var(--s-ink-3); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
-  .uri-arrow svg { width: 16px; height: 16px; }
-  .upg-rel-item:hover .uri-arrow { background: var(--s-orange); color: var(--s-white); }
+  /* Related content stack — visual styles for cards come from CrossLinksSection
+     (scoped to that component) and the loose-variant override there. */
+  .event-related-full {
+    max-width: 1320px;
+    margin: clamp(2rem, 4vw, 3rem) auto 0;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 8% 0%, rgba(232,98,42,0.08), transparent 28%),
+      radial-gradient(circle at 92% 12%, rgba(201,168,76,0.13), transparent 30%),
+      linear-gradient(180deg, rgba(250,248,245,0.92), rgba(245,240,234,0.72));
+  }
+
+  .event-related-header { margin-bottom: clamp(1.2rem, 2vw, 1.75rem); }
+
+  .upg-related-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.25rem, 2.4vw, 2rem);
+  }
 
   @media (max-width: 1024px) {
-    .upgraded-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .upg-sidebar-sticky { position: static; }
+    .upgraded-layout { grid-template-columns: 1fr; gap: 1.25rem; }
+    .upg-sidebar { position: static; }
   }
 
   @media (max-width: 640px) {
     .det-content-wrap { padding-top: 2.25rem; }
     .upg-block { padding: 2rem 1.5rem; }
-    .upg-section-heading .sh-editorial { margin-bottom: 1.5rem; }
-    .upg-venue-info { padding: 0 1.5rem 2rem; }
+    .upg-venue-info { padding: 0 1.5rem 1.5rem; }
     .upg-venue-block .upg-header { padding: 2rem 1.5rem 0; }
-    .upg-tc-header, .upg-tc-price-wrap, .upg-tc-actions { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .upg-tc-actions { align-items: stretch; }
-    .upg-tc-actions > .upg-btn-primary,
-    .upg-tc-actions > .upg-btn-secondary {
-      width: 100%;
-    }
-    .tc-price-val { font-size: 2.8rem; }
+    .upg-venue-map-wrapper { height: clamp(300px, 50vh, 420px); }
     .upg-title { font-size: 1.8rem; }
     .upg-past-notice { display: grid; }
-    .upg-intent-grid { grid-template-columns: 1fr 1fr; }
     .upg-nav-link { max-width: 48%; }
-    .upg-related-bento { padding: 1rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .upg-block,
-    .upg-ticket-card,
+    .event-side-card,
     .upg-tags,
-    .upg-related-bento,
-    .upg-hl-item,
-    .upg-rel-item,
-    .upg-rel-event-card {
+    .upg-hl-item {
       opacity: 1;
       transform: none;
       animation: none;

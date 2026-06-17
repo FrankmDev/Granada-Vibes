@@ -1,4 +1,4 @@
-import type { BlogPost, Event, Route } from '@types';
+import type { BlogPost, Event, MixedRoute, Route } from '@types';
 import {
   getPostBySlug,
   getAllRoutes,
@@ -7,6 +7,7 @@ import {
   getEventBySlug,
   getIndexableVenueEntries,
   getRelatedPosts,
+  getAllMixedRoutes,
 } from '@data/index.js';
 import type { VenueDirectoryEntry } from '@data/directories';
 import { getVenueRelations } from '@data/venues/relations.js';
@@ -22,6 +23,7 @@ import {
 let indexableEventsCache: Event[] | undefined;
 let indexableVenueEntriesCache: VenueDirectoryEntry[] | undefined;
 let routesCache: Route[] | undefined;
+let mixedRoutesCache: MixedRoute[] | undefined;
 let eventBySlugCache: Map<string, Event> | undefined;
 let venueBySlugCache: Map<string, VenueDirectoryEntry> | undefined;
 
@@ -38,6 +40,11 @@ function getCachedVenueEntries(): VenueDirectoryEntry[] {
 function getCachedRoutes(): Route[] {
   routesCache ??= getAllRoutes();
   return routesCache;
+}
+
+function getCachedMixedRoutes(): MixedRoute[] {
+  mixedRoutesCache ??= getAllMixedRoutes();
+  return mixedRoutesCache;
 }
 
 function getEventBySlugFromIndex(slug: string): Event | undefined {
@@ -262,20 +269,25 @@ export function getRelatedVenuesForEvent(event: Event, limit = 3): VenueDirector
 
 function getSimilarRoutes(route: Route, limit: number): Route[] {
   const routes = getCachedRoutes();
-  const byCategory = routes.filter(
-    (candidate) => candidate.category === route.category && candidate.id !== route.id
-  );
+  const sourceNeighborhoods = new Set(route.neighborhoods);
+  const sourceTags = route.tags.map((t) => t.toLowerCase());
 
-  if (byCategory.length >= limit) return byCategory.slice(0, limit);
+  // Score every candidate (excluding self) and pick top N by composite score
+  const scored = routes
+    .filter((candidate) => candidate.id !== route.id)
+    .map((candidate) => {
+      let score = 0;
+      if (candidate.category === route.category) score += 6;
+      if (candidate.difficulty === route.difficulty) score += 3;
+      const neighOverlap = candidate.neighborhoods.filter((n) => sourceNeighborhoods.has(n)).length;
+      score += neighOverlap * 2;
+      const candTags = candidate.tags.map((t) => t.toLowerCase());
+      score += candTags.filter((t) => sourceTags.includes(t)).length;
+      return { route: candidate, score };
+    })
+    .sort((a, b) => b.score - a.score);
 
-  const byDifficulty = routes.filter(
-    (candidate) =>
-      candidate.difficulty === route.difficulty &&
-      candidate.id !== route.id &&
-      !byCategory.some((item) => item.id === candidate.id)
-  );
-
-  return [...byCategory, ...byDifficulty].slice(0, limit);
+  return scored.slice(0, limit).map((item) => item.route);
 }
 
 export function getRelatedRoutesForRoute(route: Route, limit = 3): Route[] {
@@ -309,7 +321,22 @@ export function getRelatedEventsForRoute(route: Route, limit = 3): Event[] {
 }
 
 export function getRelatedVenuesForRoute(route: Route, limit = 3): VenueDirectoryEntry[] {
-  return resolveRelatedVenues(route.relatedVenues).slice(0, limit);
+  const manual = resolveRelatedVenues(route.relatedVenues);
+
+  // Fallback: venues whose events list overlaps with the route's neighborhoods.
+  const sourceNeighborhoods = new Set(route.neighborhoods);
+  const fallback = getCachedVenueEntries()
+    .map((entry) => {
+      const eventNeighborhoods = entry.events
+        .map((event) => event.neighborhood)
+        .filter((n) => sourceNeighborhoods.has(n));
+      return { entry, score: eventNeighborhoods.length };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.entry);
+
+  return mergeManualAndFallback(manual, limit, () => fallback, (item) => item.slug);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -349,4 +376,96 @@ export function getRelatedVenuesForVenue(venue: VenueDirectoryEntry, limit = 3):
   return resolveRelatedVenues(relations.relatedVenues)
     .filter((entry) => entry.slug !== venue.slug)
     .slice(0, limit);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MIXED ROUTE related content
+// Pure fallback ranking (MixedRoute has no manual relations).
+// ═══════════════════════════════════════════════════════════════
+
+function getSimilarMixedRoutes(plan: MixedRoute, limit: number): MixedRoute[] {
+  const sourceNeighborhoods = new Set(plan.neighborhoods);
+  const sourceDuration = plan.duration;
+
+  // Duration proximity: closer durations score higher
+  const durationRank: Record<string, number> = {
+    '2h': 1, '6h': 2, '12h': 3, '1day': 4, '2days': 5, '3days': 6,
+  };
+  const sourceRank = durationRank[sourceDuration] ?? 3;
+
+  const scored = getCachedMixedRoutes()
+    .filter((candidate) => candidate.id !== plan.id)
+    .map((candidate) => {
+      let score = 0;
+      const neighOverlap = candidate.neighborhoods.filter((n) => sourceNeighborhoods.has(n)).length;
+      score += neighOverlap * 4;
+      const candRank = durationRank[candidate.duration] ?? 3;
+      const dist = Math.abs(candRank - sourceRank);
+      score += Math.max(0, 4 - dist); // closer duration ranks higher
+      return { plan: candidate, score };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  return scored.slice(0, limit).map((item) => item.plan);
+}
+
+function getRoutesForMixedRoute(plan: MixedRoute, limit: number): Route[] {
+  const sourceNeighborhoods = new Set(plan.neighborhoods);
+
+  const scored = getCachedRoutes().map((candidate) => {
+    const neighOverlap = candidate.neighborhoods.filter((n) => sourceNeighborhoods.has(n)).length;
+    return { route: candidate, score: neighOverlap };
+  });
+
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((item) => item.route);
+}
+
+function getGuidesForMixedRoute(plan: MixedRoute, limit: number): BlogPost[] {
+  // Reuse the cross-link engine keyed on a proxy route whose neighborhoods
+  // overlap the plan's. This keeps ranking consistent with route pages.
+  const sourceNeighborhoods = new Set(plan.neighborhoods);
+  const proxy = getCachedRoutes().find((r) =>
+    r.neighborhoods.some((n) => sourceNeighborhoods.has(n))
+  );
+  if (!proxy) return [];
+  return getRelatedPostsForRoute(proxy, limit);
+}
+
+function getEventsForMixedRoute(plan: MixedRoute, limit: number): Event[] {
+  const sourceNeighborhoods = new Set(plan.neighborhoods);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const candidates = getCachedIndexableEvents()
+    .filter((event) => {
+      const eventDate = new Date(event.date);
+      eventDate.setHours(0, 0, 0, 0);
+      return eventDate >= today;
+    })
+    .map((event) => ({
+      event,
+      score: sourceNeighborhoods.has(event.neighborhood) ? 3 : 0,
+    }))
+    .sort((a, b) => b.score - a.score);
+
+  return candidates.slice(0, limit).map((item) => item.event);
+}
+
+export function getRelatedMixedRoutesForMixedRoute(plan: MixedRoute, limit = 3): MixedRoute[] {
+  return getSimilarMixedRoutes(plan, limit);
+}
+
+export function getRelatedGuidesForMixedRoute(plan: MixedRoute, limit = 3): BlogPost[] {
+  return getGuidesForMixedRoute(plan, limit);
+}
+
+export function getRelatedEventsForMixedRoute(plan: MixedRoute, limit = 3): Event[] {
+  return getEventsForMixedRoute(plan, limit);
+}
+
+export function getRelatedRoutesForMixedRoute(plan: MixedRoute, limit = 3): Route[] {
+  return getRoutesForMixedRoute(plan, limit);
 }

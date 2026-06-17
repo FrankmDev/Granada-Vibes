@@ -693,24 +693,6 @@ const imageAlt = `${displayTitle} — ${catLabelRaw}`;
   .bhero-cat { display: inline-flex; padding: 0.35rem 0.9rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--h-gold); background: rgba(201, 168, 76, 0.10); border: 1px solid rgba(201, 168, 76, 0.22); border-radius: 100px; }
   .bhero-sections { display: inline-flex; padding: 0.35rem 0.9rem; font-family: var(--font-display); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(240, 237, 232, 0.55); background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 100px; }
 
-  /* Editorial folio line */
-  .bhero-folio {
-    display: flex; align-items: center; gap: 0.85rem;
-    font-family: var(--font-body);
-    color: var(--h-gold);
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(0.95rem, 1.15vw, 1.2rem);
-    letter-spacing: 0.02em;
-    font-variation-settings: 'opsz' 14, 'SOFT' 50, 'WONK' 1;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.7s both;
-  }
-  .folio-line { flex: 0 0 auto; width: 64px; height: 1px; background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.5), transparent); }
-  .folio-text { display: inline-flex; align-items: baseline; gap: 0.45rem; }
-  .folio-prefix { letter-spacing: 0.18em; text-transform: uppercase; font-size: 0.7em; font-weight: 700; font-style: normal; font-family: var(--font-display); }
-  .folio-num { font-weight: 500; font-style: italic; }
-
   /* ================================================================
      TITLE — Fraunces Thin (100) lead + ExtraLight (200) italic focal
      Lightest possible weight for editorial drama.
@@ -723,8 +705,9 @@ const imageAlt = `${displayTitle} — ${catLabelRaw}`;
     color: var(--h-cream);
     line-height: 0.9;
     letter-spacing: -0.045em;
-    margin: 0.15rem 0 0;
+    margin: 0.85rem 0 0;
     max-width: 100%;
+    text-align: left;
     text-shadow:
       0 2px 18px rgba(0, 0, 0, 0.58),
       0 18px 52px rgba(0, 0, 0, 0.45);
@@ -843,14 +826,16 @@ const imageAlt = `${displayTitle} — ${catLabelRaw}`;
   }
   .lead-quote { color: var(--h-gold); opacity: 0.4; font-family: var(--font-body); font-size: 1.2em; font-weight: 200; }
 
-  /* ---- BOTTOM BAR ---- */
+  /* ---- BOTTOM BAR ----
+     align-items: flex-start + padding-bottom: 1.5rem keeps the bar
+     content above the ScreenFrame's bottom edge (also at 1.5rem). */
   .bhero-bottom-bar {
     position: relative; z-index: 10;
-    display: flex; align-items: center; gap: 1.25rem;
+    display: flex; align-items: flex-start; gap: 1.25rem;
     max-width: 720px; margin: 0 auto;
     width: 100%;
     flex: 0 0 auto;
-    padding: 0 clamp(2.25rem, 5vw, 3.5rem) 1.1rem;
+    padding: 0 clamp(2.25rem, 5vw, 3.5rem) 1.5rem;
     opacity: 0;
     animation: fadeInUp 0.8s ease 1.2s both;
   }
@@ -883,8 +868,6 @@ const imageAlt = `${displayTitle} — ${catLabelRaw}`;
     .bhero-title-lead, .bhero-title-focal { font-size: clamp(2.15rem, 5.65vw, 4.45rem); letter-spacing: -0.04em; }
     .bhero-title-focal { padding-left: clamp(0.6rem, 4.5vw, 3rem); }
     .bhero-title-focal::before { left: clamp(0.6rem, 4.5vw, 3rem); }
-    .bhero-folio { font-size: 0.95rem; gap: 0.6rem; }
-    .folio-line { max-width: 50px; }
     .lockup-rule { display: none; }
     .bhero-ref { display: none; }
   }
@@ -909,8 +892,6 @@ const imageAlt = `${displayTitle} — ${catLabelRaw}`;
     .bhero-figure-wrap { aspect-ratio: 3 / 4; max-height: none; width: 100%; }
     .bhero-title-lead, .bhero-title-focal { font-size: clamp(2.3rem, 8.5vw, 3.4rem); }
     .bhero-title-focal { padding-left: 0.6rem; }
-    .bhero-folio { font-size: 0.85rem; gap: 0.5rem; }
-    .folio-line { max-width: 36px; }
     .bhero-lead { max-width: 42ch; }
     .bhero-bottom-bar { display: none; }
     .scroll-hint { display: flex; }

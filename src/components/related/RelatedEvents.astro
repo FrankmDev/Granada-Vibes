@@ -1,17 +1,33 @@
 ---
-import type { BlogPost, Event, Locale, Route } from '@types';
+import type { ImageMetadata } from 'astro';
+import type { BlogPost, Event, Locale, MixedRoute, Route } from '@types';
 import type { VenueDirectoryEntry } from '@data/directories';
 import { useTranslations } from '@i18n/utils';
-import { getEventDetailUrl } from '@utils/routes';
+import { getEventDetailUrl, getRoute } from '@utils/routes';
 import { formatFullDate } from '@utils/dates';
 import { getEventDisplayTitle } from '@utils/event-seo';
 import {
   getRelatedEventsForPost,
   getRelatedEventsForRoute,
+  getRelatedEventsForMixedRoute,
   getRelatedEventsForEvent,
   getRelatedEventsForVenue,
 } from '@utils/related-content';
 import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
+
+const allEventImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/events/*.{webp,jpg,jpeg,png,avif}',
+  { eager: true }
+);
+
+function resolveEventImage(event: Event): string | null {
+  const filename = event.imageUrl ?? event.image;
+  if (!filename) return null;
+  const imageName = filename.split('/').pop();
+  if (!imageName) return null;
+  const imageModule = allEventImages[`/src/assets/images/events/${imageName}`];
+  return imageModule?.default?.src ?? null;
+}
 
 interface BaseProps {
   locale: Locale;
@@ -29,6 +45,11 @@ interface RouteContext extends BaseProps {
   route: Route;
 }
 
+interface MixedRouteContext extends BaseProps {
+  type: 'mixedRoute';
+  plan: MixedRoute;
+}
+
 interface EventContext extends BaseProps {
   type: 'event';
   event: Event;
@@ -40,7 +61,7 @@ interface VenueContext extends BaseProps {
   excludeEventId?: string;
 }
 
-type Props = PostContext | RouteContext | EventContext | VenueContext;
+type Props = PostContext | RouteContext | MixedRouteContext | EventContext | VenueContext;
 
 const props = Astro.props;
 const { locale, type, title: customTitle, limit = 3 } = props;
@@ -52,6 +73,8 @@ if (type === 'post') {
   events = getRelatedEventsForPost(props.post, limit);
 } else if (type === 'route') {
   events = getRelatedEventsForRoute(props.route, limit);
+} else if (type === 'mixedRoute') {
+  events = getRelatedEventsForMixedRoute(props.plan, limit);
 } else if (type === 'event') {
   events = getRelatedEventsForEvent(props.event, limit);
 } else if (type === 'venue') {
@@ -64,10 +87,15 @@ const links = events.map((event) => ({
   url: getEventDetailUrl(event.slug, locale),
   title: getEventDisplayTitle(event, locale),
   meta: `${formatFullDate(event.date, locale)} · ${event.venue}`,
-  image: event.imageUrl || event.image || null,
+  image: resolveEventImage(event),
 }));
 ---
 
 {links.length > 0 && (
-  <CrossLinksSection title={title} links={links} />
+  <CrossLinksSection
+    title={title}
+    links={links}
+    viewAllHref={getRoute('events', locale)}
+    viewAllLabel={t('actions.viewAll')}
+  />
 )}

@@ -6,9 +6,8 @@ import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import EventsArchiveFilter from '@components/events/EventsArchiveFilter.astro';
 import EventsArchiveGrid from '@components/events/EventsArchiveGrid.astro';
-import EventDiscoveryLinks from '@components/events/EventDiscoveryLinks.astro';
 import { getIndexableEvents } from '@data/index.js';
-import { getEventDiscoveryLinks } from '@utils/event-hub-links';
+import { eventHubs } from '@data/seo/event-hubs.js';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import type { EventCategory, Neighborhood, Locale } from '@types';
@@ -91,7 +90,26 @@ const COL_HEIGHTS = rawColumns.map((col, ci) => {
 });
 
 const columns = rawColumns;
-const discoveryLinks = getEventDiscoveryLinks(locale);
+
+// 3 quick links: today, this weekend, free — derived from eventHubs data
+const QUICK_HUB_KEYS = [
+  { id: 'today', subtitleKey: 'events.quickTodaySubtitle' },
+  { id: 'weekend', subtitleKey: 'events.quickWeekendSubtitle' },
+  { id: 'free', subtitleKey: 'events.quickFreeSubtitle' },
+] as const;
+
+const quickLinks = QUICK_HUB_KEYS
+  .map((entry, i) => {
+    const hub = eventHubs.find((h) => h.id === entry.id);
+    if (!hub) return null;
+    return {
+      href: locale === 'en' ? hub.englishPath : hub.spanishPath,
+      indexLabel: `0${i + 1}`,
+      eyebrow: hub.eyebrow[locale],
+      label: t(entry.subtitleKey),
+    };
+  })
+  .filter((q): q is NonNullable<typeof q> => q !== null);
 ---
 
 <BaseLayout
@@ -140,12 +158,7 @@ const discoveryLinks = getEventDiscoveryLinks(locale);
       categories={categories}
       eventsCount={events.length}
       neighborhoods={neighborhoods}
-    />
-
-    <EventDiscoveryLinks
-      links={discoveryLinks}
-      ariaLabel={t('seoHub.discoveryLinks')}
-      panelLabel={t('seoHub.discoveryPanelLabel')}
+      quickLinks={quickLinks}
     />
 
     <EventsArchiveGrid

@@ -2,21 +2,26 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
 import Footer from '@components/layout/Footer.astro';
-import OptimizedImage from '@components/ui/OptimizedImage.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
-import SectionHeader from '@components/ui/SectionHeader.astro';
-import { getAllPosts, getAllRoutes } from '@data/index.js';
+import InstagramIcon from '@components/icons/InstagramIcon.astro';
+import WhatsAppIcon from '@components/icons/WhatsAppIcon.astro';
+import { getAllRoutes } from '@data/index.js';
 import { useTranslations } from '@i18n/utils';
-import { getRoute, getRouteDetailUrl, getBlogDetailUrl } from '@utils/routes';
+import { getRoute, getRouteDetailUrl } from '@utils/routes';
 import { formatDistance, formatDuration } from '@utils/dates';
-import CrossLinksSection from '@components/ui/CrossLinksSection.astro';
 import RelatedGuides from '@components/related/RelatedGuides.astro';
 import RelatedEvents from '@components/related/RelatedEvents.astro';
 import RelatedRoutes from '@components/related/RelatedRoutes.astro';
 import RelatedVenues from '@components/related/RelatedVenues.astro';
+import {
+  getRelatedGuidesForRoute,
+  getRelatedEventsForRoute,
+  getRelatedRoutesForRoute,
+  getRelatedVenuesForRoute,
+} from '@utils/related-content';
 import ContinueExploring from '@components/related/ContinueExploring.astro';
 import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
-import { getBlogDisplayTitle, getRouteDisplayTitle, getRouteSeoDescription, getRouteSeoTitle } from '@utils/content-seo';
+import { getRouteDisplayTitle, getRouteSeoDescription, getRouteSeoTitle } from '@utils/content-seo';
 import type { Locale, Neighborhood, Route, RouteHighlight, RouteTip } from '@types';
 import '@styles/pages/route-detail.css';
 
@@ -41,9 +46,6 @@ const routeSeoDescription = getRouteSeoDescription({
 });
 
 const categoryUrl = `${getRoute('routes', locale)}#routes-grid`;
-const allPosts = getAllPosts();
-const beforeTravelPost = allPosts.find((item) => item.slug === 'antes-de-llegar-granada');
-const tapasPost = allPosts.find((item) => item.slug === 'tapas-gratis-granada');
 const byTimeLink = {
   url: getRoute('byTime', locale),
   title: t('nav.byTime'),
@@ -84,14 +86,18 @@ const copy = isEnglish
       share: {
         label: 'Share route',
         copied: 'Copied!',
+        whatsappLabel: 'WhatsApp',
+        whatsappAria: 'Share this route on WhatsApp',
+        instagramLabel: 'Instagram',
+        instagramAria: 'Copy link to share on Instagram',
+        facebookLabel: 'Facebook',
+        facebookAria: 'Share this route on Facebook',
       },
       seo: routeSeoDescription,
       nav: {
         prev: 'Previous route',
         next: 'Next route',
       },
-      planningTitle: 'What to do next',
-      planningEyebrow: '[ Nearby ideas ]',
     }
   : {
       breadcrumb: {
@@ -119,14 +125,18 @@ const copy = isEnglish
       share: {
         label: 'Compartir ruta',
         copied: '¡Copiado!',
+        whatsappLabel: 'WhatsApp',
+        whatsappAria: 'Compartir esta ruta por WhatsApp',
+        instagramLabel: 'Instagram',
+        instagramAria: 'Copiar enlace para compartir en Instagram',
+        facebookLabel: 'Facebook',
+        facebookAria: 'Compartir esta ruta en Facebook',
       },
       seo: routeSeoDescription,
       nav: {
         prev: 'Ruta anterior',
         next: 'Ruta siguiente',
       },
-      planningTitle: 'Qué hacer después',
-      planningEyebrow: '[ Ideas cercanas ]',
     };
 
 const allRoutes = getAllRoutes();
@@ -134,46 +144,15 @@ const routeIndex = allRoutes.findIndex((r) => r.id === route.id);
 const prevRoute = routeIndex > 0 ? allRoutes[routeIndex - 1] : null;
 const nextRoute = routeIndex < allRoutes.length - 1 ? allRoutes[routeIndex + 1] : null;
 
-const relatedRoutes = allRoutes
-  .filter((candidate) => candidate.category === route.category && candidate.id !== route.id)
-  .slice(0, 3);
-
-if (relatedRoutes.length < 3) {
-  const moreRoutes = allRoutes
-    .filter(
-      (candidate) =>
-        candidate.difficulty === route.difficulty &&
-        candidate.id !== route.id &&
-        !relatedRoutes.some((related) => related.id === candidate.id)
-    )
-    .slice(0, 3 - relatedRoutes.length);
-
-  relatedRoutes.push(...moreRoutes);
-}
-
-const evergreenPostLinks = [
-  beforeTravelPost,
-  route.category === 'tapas' || route.category === 'flamenco' ? tapasPost : null,
-]
-  .filter((item): item is NonNullable<typeof beforeTravelPost> => Boolean(item))
-  .map((item) => ({
-    url: getBlogDetailUrl(item.slug, locale),
-    title: getBlogDisplayTitle(item, locale),
-    meta: `${t('blog.readingTime', { minutes: item.readingTime })} · ${t(`blog.categories.${item.category}`)}`,
-    image: item.image,
-  }));
-
-const planningLinks = Array.from(new Map([
-  byTimeLink,
-  plannerLink,
-  ...evergreenPostLinks,
-  ...relatedRoutes.map((r) => ({
-    url: getRouteDetailUrl(r.slug, locale),
-    title: getRouteDisplayTitle(r, locale),
-    meta: `${formatDuration(r.duration, locale)} · ${t(`difficulty.${r.difficulty}`)}`,
-    image: r.image,
-  })),
-].map((link) => [link.url, link])).values()).slice(0, 5);
+const relatedGuidesList = getRelatedGuidesForRoute(route, 3);
+const relatedEventsList = getRelatedEventsForRoute(route, 3);
+const relatedRoutesList = getRelatedRoutesForRoute(route, 3);
+const relatedVenuesList = getRelatedVenuesForRoute(route, 3);
+const hasRelatedContent =
+  relatedGuidesList.length > 0 ||
+  relatedEventsList.length > 0 ||
+  relatedRoutesList.length > 0 ||
+  relatedVenuesList.length > 0;
 
 const ogImage = route.image || 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg';
 const breadcrumb = [
@@ -193,8 +172,12 @@ faq.push(
 );
 
 const distString = formatDistance(route.distance, locale);
-const distValue = distString.replace(/[^\d.,]/g, '').trim();
-const distUnit = distString.replace(/[\d.,]/g, '').trim();
+const routeFacts = [
+  { label: t('detail.duration'), value: formatDuration(route.duration, locale) },
+  { label: t('detail.distance'), value: distString },
+  { label: t('detail.difficulty'), value: t(`difficulty.${route.difficulty}`) },
+  { label: t('detail.bestTimeToVisit'), value: t(`timeOfDay.${route.timeOfDay}`) },
+];
 ---
 
 <BaseLayout
@@ -211,19 +194,16 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
 
   <div class="det-page route-page-override">
     <div class="det-content-wrap">
-      <div class="upgraded-layout">
-        <main id="main-content" class="upgraded-main">
-          <article class="upg-block upg-block--intro" data-reveal>
-            <div class="upg-block-bg"></div>
-            <div class="upg-section-heading">
-              <SectionHeader
-                eyebrow={copy.sections.aboutEyebrow}
-                title={copy.sections.aboutTitle}
-                theme="cream"
-                size="compact"
-                animateTitle={false}
-              />
-            </div>
+      <div class="route-meta-row">
+        <main id="main-content" class="upgraded-main" aria-label={displayTitle}>
+          <article class="upg-block route-article-card" id="route-content" data-reveal>
+            <section class="route-entry-section route-entry-section--intro">
+            <header class="upg-header">
+              <span class="upg-num">01</span>
+              <div class="upg-line"></div>
+              <span class="upg-eyebrow">{copy.sections.aboutEyebrow}</span>
+            </header>
+            <h2 class="upg-title">{copy.sections.aboutTitle}</h2>
 
             <div class="upg-body content-rich">
               <p class="upg-lead">{route.description[locale]}</p>
@@ -258,26 +238,12 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                 {plannerLink.title}
               </a>
             </div>
-          </article>
-
-          {planningLinks.length > 0 && (
-            <div class="upg-block upg-block--loose" data-reveal>
-              <div class="upg-block-bg"></div>
-              <header class="upg-header">
-                <span class="upg-num">02</span>
-                <div class="upg-line"></div>
-                <span class="upg-eyebrow">{copy.planningEyebrow}</span>
-              </header>
-              <h2 class="upg-title upg-title--compact">{copy.planningTitle}</h2>
-              <CrossLinksSection title={copy.planningTitle} links={planningLinks} showHeader={false} />
-            </div>
-          )}
+            </section>
 
           {route.highlights.length > 0 && (
-            <article class="upg-block" id="itinerary" data-reveal>
-              <div class="upg-block-bg"></div>
+            <section class="route-entry-section" id="itinerary">
               <header class="upg-header">
-                <span class="upg-num">03</span>
+                <span class="upg-num">02</span>
                 <div class="upg-line"></div>
                 <span class="upg-eyebrow">{copy.sections.itineraryEyebrow}</span>
               </header>
@@ -333,40 +299,42 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                   </div>
                 ))}
               </div>
-            </article>
+            </section>
           )}
 
           {route.tips.length > 0 && (
-            <article class="upg-block block-tips" id="tips" data-reveal>
-              <div class="upg-block-bg"></div>
+            <section class="route-entry-section block-tips" id="tips">
               <header class="upg-header">
-                <span class="upg-num">04</span>
+                <span class="upg-num">03</span>
                 <div class="upg-line"></div>
                 <span class="upg-eyebrow">{copy.sections.tipsEyebrow}</span>
               </header>
               <h2 class="upg-title">{copy.sections.tipsTitle}</h2>
 
-              <div class="upg-tips-content upg-tips-content--stack">
-                {route.tips.map((tip: RouteTip) => (
-                  <div class="upg-tip-item">
-                    <div class="upg-tips-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div>
-                      <h3 class="upg-tip-title">{tip.title[locale]}</h3>
-                      <p class="upg-tips-text upg-tips-text--plain">{tip.content[locale]}</p>
-                    </div>
-                  </div>
+              <div class="upg-tips-grid">
+                {route.tips.map((tip: RouteTip, index: number) => (
+                  <article class="upg-tip-card" style={`--tip-delay: ${index * 0.08}s`}>
+                    <span class="upg-tip-rule" aria-hidden="true"></span>
+                    <header class="upg-tip-head">
+                      <span class="upg-tip-num">{(index + 1).toString().padStart(2, '0')}</span>
+                      <span class="upg-tip-kicker">{copy.sections.tipsTitle}</span>
+                    </header>
+                    <h3 class="upg-tip-title">{tip.title[locale]}</h3>
+                    <p class="upg-tip-text">{tip.content[locale]}</p>
+                    <footer class="upg-tip-foot">
+                      <span class="upg-tip-tag">{copy.sections.tipsEyebrow.replace(/[\[\]]/g, '').trim()}</span>
+                      <span class="upg-tip-coord">37°10′N · 3°35′W</span>
+                    </footer>
+                  </article>
                 ))}
               </div>
-            </article>
+            </section>
           )}
 
           {(route.startingPoint || route.endingPoint || route.howToGetThere || route.estimatedBudget || route.whoIsItFor || route.accessibility || route.bestTimeToVisit) && (
-            <article class="upg-block" id="practical-info" data-reveal>
-              <div class="upg-block-bg"></div>
+            <section class="route-entry-section" id="practical-info">
               <header class="upg-header">
-                <span class="upg-num">05</span>
+                <span class="upg-num">04</span>
                 <div class="upg-line"></div>
                 <span class="upg-eyebrow">[ {t('detail.practicalInfo')} ]</span>
               </header>
@@ -416,7 +384,30 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                   </div>
                 )}
               </div>
-            </article>
+            </section>
+          )}
+
+          {route.whatToBring && (
+            <section class="upg-block" id="what-to-bring" data-reveal>
+              <header class="upg-header">
+                <span class="upg-num">05</span>
+                <div class="upg-line"></div>
+                <span class="upg-eyebrow">[ {copy.sections.bringLabel} ]</span>
+              </header>
+              <h2 class="upg-title">{copy.sections.bringLabel}</h2>
+              <ul class="route-bring-list route-bring-list--inline">
+                {route.whatToBring[locale].map((item: string) => (
+                  <li>
+                    <span aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M5 13l4 4L19 7"/>
+                      </svg>
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
           )}
 
           {route.tags.length > 0 && (
@@ -429,128 +420,59 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
               </div>
             </div>
           )}
-
-          <div class="upg-block upg-block--loose" id="route-related" data-reveal>
-            <div class="upg-block-bg"></div>
-            <header class="upg-header">
-              <span class="upg-num">06</span>
-              <div class="upg-line"></div>
-              <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
-            </header>
-            <div class="upg-related-stack" style="display: flex; flex-direction: column; gap: 2rem;">
-              <RelatedRoutes type="route" route={route} locale={locale} title={t('detail.similarRoutes')} limit={3} />
-              <RelatedEvents type="route" route={route} locale={locale} title={t('detail.relatedEvents')} limit={3} />
-              <RelatedGuides type="route" route={route} locale={locale} title={t('detail.relatedGuides')} limit={3} />
-              <RelatedVenues type="route" route={route} locale={locale} title={t('detail.relatedVenues')} limit={2} />
-            </div>
-          </div>
-
-          {(prevRoute || nextRoute) && (
-            <nav class="upg-block upg-nav-block" data-reveal aria-label={isEnglish ? 'Route navigation' : 'Navegación de rutas'}>
-              <div class="upg-block-bg"></div>
-              <div class="upg-nav-flex">
-                {prevRoute ? (
-                  <a href={getRouteDetailUrl(prevRoute.slug, locale)} class="upg-nav-link">
-                    <span class="upg-nav-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 18l-6-6 6-6"></path>
-                      </svg>
-                    </span>
-                    <span class="upg-nav-copy">
-                      <span class="upg-nav-label">{copy.nav.prev}</span>
-                      <span class="upg-nav-title">{getRouteDisplayTitle(prevRoute, locale)}</span>
-                      <span class="upg-nav-meta">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
-                    </span>
-                  </a>
-                ) : <span />}
-                {nextRoute ? (
-                  <a href={getRouteDetailUrl(nextRoute.slug, locale)} class="upg-nav-link upg-nav-link--end">
-                    <span class="upg-nav-copy">
-                      <span class="upg-nav-label">{copy.nav.next}</span>
-                      <span class="upg-nav-title">{getRouteDisplayTitle(nextRoute, locale)}</span>
-                      <span class="upg-nav-meta">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
-                    </span>
-                    <span class="upg-nav-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 18l6-6-6-6"></path>
-                      </svg>
-                    </span>
-                  </a>
-                ) : <span />}
-              </div>
-            </nav>
-          )}
+          </article>
 
         </main>
 
         <aside class="upg-sidebar" aria-label={isEnglish ? 'Route details sidebar' : 'Barra lateral de detalles de ruta'}>
           <div class="upg-sidebar-sticky">
+            <section class="route-side-card route-keyfacts-card" aria-labelledby="route-keyfacts-title" data-reveal>
+              <header class="route-side-head">
+                <span class="route-side-num">01</span>
+                <span class="route-side-line" aria-hidden="true"></span>
+                <h2 id="route-keyfacts-title" class="route-side-title">{t('detail.keyFacts')}</h2>
+              </header>
+
+              <dl class="route-facts-grid">
+                {routeFacts.map((fact) => (
+                  <div class="route-fact">
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+
             {(route.highlights.length > 0 || route.tips.length > 0 || route.startingPoint || route.endingPoint) && (
-              <nav class="upg-toc" data-reveal aria-label={isEnglish ? 'Table of contents' : 'Tabla de contenidos'}>
-                <span class="upg-toc-title">{isEnglish ? 'On this page' : 'En esta página'}</span>
-                <ul class="upg-toc-list">
+              <nav class="route-side-card route-toc-card" data-reveal aria-labelledby="route-toc-title">
+                <header class="route-side-head">
+                  <span class="route-side-num">02</span>
+                  <span class="route-side-line" aria-hidden="true"></span>
+                  <h2 id="route-toc-title" class="route-side-title">{t('detail.inThisGuide')}</h2>
+                </header>
+
+                <ol class="route-toc-list">
                   {route.highlights.length > 0 && (
-                    <li class="upg-toc-item"><a href="#itinerary"><span class="upg-toc-num">01</span> {copy.sections.itineraryTitle}</a></li>
+                    <li><a href="#itinerary" class="route-toc-link"><span>01</span><strong>{copy.sections.itineraryTitle}</strong></a></li>
                   )}
                   {route.tips.length > 0 && (
-                    <li class="upg-toc-item"><a href="#tips"><span class="upg-toc-num">02</span> {copy.sections.tipsTitle}</a></li>
+                    <li><a href="#tips" class="route-toc-link"><span>02</span><strong>{copy.sections.tipsTitle}</strong></a></li>
                   )}
                   {(route.startingPoint || route.endingPoint || route.howToGetThere || route.estimatedBudget || route.whoIsItFor || route.accessibility || route.bestTimeToVisit) && (
-                    <li class="upg-toc-item"><a href="#practical-info"><span class="upg-toc-num">03</span> {t('detail.routeInfo')}</a></li>
+                    <li><a href="#practical-info" class="route-toc-link"><span>03</span><strong>{t('detail.routeInfo')}</strong></a></li>
                   )}
-                </ul>
+                </ol>
               </nav>
             )}
-            <div class="upg-ticket-card" data-reveal>
-              <div class="upg-ticket-glass"></div>
 
-              <div class="upg-tc-header">
-                <div class="upg-tc-date-box">
-                  <span class="tc-day tc-day--time">{t(`timeOfDay.${route.timeOfDay}`).slice(0, 3).toUpperCase()}</span>
-                  <span class="tc-month">{copy.sections.timeLabel}</span>
-                </div>
-                <div class="upg-tc-info">
-                  <span class="tc-time">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                    {formatDuration(route.duration, locale)}
-                  </span>
-                  <span class="tc-category">{t(`categories.${route.category}`)}</span>
-                </div>
-              </div>
+            <section class="route-side-card route-share-card" data-reveal aria-labelledby="route-share-title">
+              <header class="route-side-head">
+                <span class="route-side-num">03</span>
+                <span class="route-side-line" aria-hidden="true"></span>
+                <h2 id="route-share-title" class="route-side-title">{copy.share.label}</h2>
+              </header>
 
-              <div class="upg-tc-price-wrap">
-                <span class="tc-price-label">{t('detail.distance')}</span>
-                <span class="tc-price-val">
-                  {distValue}<span class="tc-price-unit">{distUnit}</span>
-                </span>
-              </div>
-
-              <div class="upg-difficulty-row">
-                <span>{t(`difficulty.${route.difficulty}`)}</span>
-                <div></div>
-              </div>
-
-              {route.whatToBring && (
-                <div class="upg-bring">
-                  <span class="tc-price-label">{copy.sections.bringLabel}</span>
-                  <ul class="upg-bring-list">
-                    {route.whatToBring[locale].map((item: string) => (
-                      <li>
-                        <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 13l4 4L19 7"/></svg></span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div class="upg-tc-divider">
-                <span class="tcd-hole left"></span>
-                <div class="tcd-dashed"></div>
-                <span class="tcd-hole right"></span>
-              </div>
-
-              <div class="upg-tc-actions">
+              <div class="route-share-actions">
                 <ShareButton
                   title={route.title[locale]}
                   url={Astro.url.href}
@@ -558,55 +480,158 @@ const distUnit = distString.replace(/[\d.,]/g, '').trim();
                   copiedLabel={copy.share.copied}
                   class="upg-btn-primary"
                 />
-              </div>
-            </div>
 
-            {relatedRoutes.length > 0 && (
-              <div class="upg-related-bento" data-reveal>
-                <div class="upg-rb-header">
-                  <span class="upg-rb-title">[ {t('detail.similarRoutes')} ]</span>
-                  <a href={getRoute('routes', locale)} class="upg-rb-all">{t('detail.allRoutes')} →</a>
-                </div>
-
-                <div class="upg-rb-list">
-                  {relatedRoutes.map((related, index) => (
-                    <a href={getRouteDetailUrl(related.slug, locale)} class="upg-rel-item" style={`--rd: ${index * 0.15}s`}>
-                      <div class="uri-thumb">
-                        {related.image ? (
-                          <OptimizedImage src={related.image} alt={getRouteDisplayTitle(related, locale)} loading="lazy" sizes="(max-width: 640px) 100vw, 280px" />
-                        ) : (
-                          <div class="uri-thumb-fallback"></div>
-                        )}
-                      </div>
-                      <div class="uri-content">
-                        <span class="uri-title">{getRouteDisplayTitle(related, locale)}</span>
-                        <span class="uri-meta">{formatDuration(related.duration, locale)}</span>
-                      </div>
-                      <div class="uri-arrow" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </div>
-                    </a>
-                  ))}
+                <div class="upg-tc-channels" aria-label={copy.share.label}>
+                  <a
+                    class="upg-tc-channel upg-tc-channel--whatsapp"
+                    href={`https://wa.me/?text=${encodeURIComponent(`${displayTitle} · GRN URBAN`)}%20${encodeURIComponent(Astro.url.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={copy.share.whatsappAria}
+                    title={copy.share.whatsappAria}
+                  >
+                    <span class="upg-tc-channel-icon" aria-hidden="true">
+                      <WhatsAppIcon />
+                    </span>
+                    <span class="upg-tc-channel-label">{copy.share.whatsappLabel}</span>
+                  </a>
+                  <button
+                    type="button"
+                    class="upg-tc-channel upg-tc-channel--instagram"
+                    data-share-copy
+                    data-share-url={Astro.url.href}
+                    data-share-method="instagram"
+                    aria-label={copy.share.instagramAria}
+                    title={copy.share.instagramAria}
+                  >
+                    <span class="upg-tc-channel-icon" aria-hidden="true">
+                      <InstagramIcon />
+                    </span>
+                    <span class="upg-tc-channel-label">{copy.share.instagramLabel}</span>
+                  </button>
+                  <a
+                    class="upg-tc-channel upg-tc-channel--facebook"
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={copy.share.facebookAria}
+                    title={copy.share.facebookAria}
+                  >
+                    <span class="upg-tc-channel-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.84c0-2.52 1.5-3.91 3.8-3.91 1.1 0 2.25.2 2.25.2v2.47h-1.27c-1.25 0-1.64.78-1.64 1.57v1.89h2.8l-.45 2.91h-2.35V22A10 10 0 0 0 22 12.06Z"/>
+                      </svg>
+                    </span>
+                    <span class="upg-tc-channel-label">{copy.share.facebookLabel}</span>
+                  </a>
                 </div>
               </div>
-            )}
+            </section>
           </div>
           </aside>
         </div>
+
+        {(prevRoute || nextRoute) && (
+          <nav class="upg-block upg-nav-block route-nav-full" data-reveal aria-label={isEnglish ? 'Route navigation' : 'Navegación de rutas'}>
+            <div class="upg-block-bg"></div>
+            <div class="upg-nav-flex">
+              {prevRoute ? (
+                <a href={getRouteDetailUrl(prevRoute.slug, locale)} class="upg-nav-link">
+                  <span class="upg-nav-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                  </span>
+                  <span class="upg-nav-copy">
+                    <span class="upg-nav-label">{copy.nav.prev}</span>
+                    <span class="upg-nav-title">{getRouteDisplayTitle(prevRoute, locale)}</span>
+                    <span class="upg-nav-meta">{formatDuration(prevRoute.duration, locale)} · {t(`difficulty.${prevRoute.difficulty}`)}</span>
+                  </span>
+                </a>
+              ) : <span />}
+              {nextRoute ? (
+                <a href={getRouteDetailUrl(nextRoute.slug, locale)} class="upg-nav-link upg-nav-link--end">
+                  <span class="upg-nav-copy">
+                    <span class="upg-nav-label">{copy.nav.next}</span>
+                    <span class="upg-nav-title">{getRouteDisplayTitle(nextRoute, locale)}</span>
+                    <span class="upg-nav-meta">{formatDuration(nextRoute.duration, locale)} · {t(`difficulty.${nextRoute.difficulty}`)}</span>
+                  </span>
+                  <span class="upg-nav-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                  </span>
+                </a>
+              ) : <span />}
+            </div>
+          </nav>
+        )}
+
+        {hasRelatedContent && (
+          <section class="upg-block upg-block--loose guide-related-full" id="also-interesting" data-reveal aria-labelledby="route-related-title">
+            <header class="upg-header">
+              <span class="upg-num">05</span>
+              <span class="upg-line" aria-hidden="true"></span>
+              <h2 id="route-related-title" class="upg-eyebrow">[ {t('detail.alsoInteresting')} ]</h2>
+            </header>
+            <div class="upg-related-stack">
+              <RelatedGuides type="route" route={route} locale={locale} title={t('detail.relatedGuides')} limit={3} />
+              <RelatedEvents type="route" route={route} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+              <RelatedRoutes type="route" route={route} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+              <RelatedVenues type="route" route={route} locale={locale} title={t('detail.relatedVenues')} limit={3} />
+            </div>
+          </section>
+        )}
       </div>
 
-      <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">
+      <div class="route-collab-section">
         <CollaborateCTA locale={locale} variant="route" />
       </div>
 
       <ContinueExploring locale={locale} />
 
       <div class="det-footer-orn" aria-hidden="true">
-      <span class="det-orn-line"></span>
-      <span class="det-orn-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/></svg></span>
-      <span class="det-orn-line"></span>
-    </div>
+        <span></span>
+        <i></i>
+        <b>
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17.2l-6.2 4.1 2.4-7.4L2 9.4h7.6z"/>
+          </svg>
+        </b>
+        <i></i>
+        <span></span>
+      </div>
   </div>
 
   <Footer slot="footer" locale={locale} />
 </BaseLayout>
+
+<script is:inline>
+  (function () {
+    if (window.__guideShareCopyInitialized) return;
+    window.__guideShareCopyInitialized = true;
+
+    document.addEventListener('click', async function (event) {
+      const button = event.target.closest('[data-share-copy]');
+      if (!button) return;
+
+      const url = button.dataset.shareUrl ?? window.location.href;
+      const method = button.dataset.shareMethod ?? 'copy';
+
+      try {
+        await navigator.clipboard.writeText(url);
+        button.classList.add('is-copied');
+        window.setTimeout(function () {
+          button.classList.remove('is-copied');
+        }, 1600);
+
+        if (typeof window.grnTrackEvent === 'function') {
+          window.grnTrackEvent('share', {
+            method,
+            content_id: window.location.pathname,
+          });
+        }
+      } catch (_) {}
+    });
+  })();
+</script>
