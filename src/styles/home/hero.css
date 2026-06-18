@@ -690,6 +690,21 @@
   background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
   pointer-events: none; z-index: 6;
 }
+
+/* ── Cardinal tick marks (cartographic measurement detail) ── */
+.portal-tick {
+  position: absolute;
+  background: rgba(201, 168, 76, 0.6);
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out-expo) 0.5s;
+}
+.portal-hero.is-ready .portal-tick { opacity: 1; }
+.portal-tick-top    { top: 0.35rem;    left: 50%; width: 1px; height: 8px; transform: translateX(-50%); }
+.portal-tick-bottom { bottom: 0.35rem; left: 50%; width: 1px; height: 8px; transform: translateX(-50%); }
+.portal-tick-left   { left: 0.35rem;   top: 50%; width: 8px; height: 1px; transform: translateY(-50%); }
+.portal-tick-right  { right: 0.35rem;  top: 50%; width: 8px; height: 1px; transform: translateY(-50%); }
 .portal-inner-frame {
   position: relative;
   width: 100%; height: 100%;
@@ -822,6 +837,8 @@
   );
   z-index: 2;
 }
+
+/* Extra fine hairline just below the top gold line (white inner highlight on glass) */
 .glass-dock::after {
   content: '';
   position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
@@ -833,6 +850,24 @@
     transparent 100%
   );
   z-index: 2;
+}
+
+/* Hairline highlight that sits inside the dock, just under the top gold line */
+.glass-dock-hilite {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 5%,
+    rgba(255,255,255,0.10) 30%,
+    rgba(255,255,255,0.14) 50%,
+    rgba(255,255,255,0.10) 70%,
+    transparent 95%
+  );
+  z-index: 2;
+  pointer-events: none;
 }
 .dock-weather {
   display: flex; align-items: center; gap: 0.75rem;
@@ -883,7 +918,7 @@
 }
 .dock-cta {
   display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.55rem 1.25rem;
+  padding: 0.55rem 1.25rem 0.55rem 1.4rem;
   background: var(--color-accent);
   border: 1px solid rgba(232, 98, 42, 0.5);
   border-radius: 100px;
@@ -896,6 +931,19 @@
   position: relative;
   overflow: hidden;
 }
+/* Tiny inner gold tick on the left edge of the dock CTA (mirrors SectionHeader pattern) */
+.dock-cta-tick {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  width: 4px; height: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+  transition: transform 0.4s var(--ease-out-expo);
+}
+.dock-cta:hover .dock-cta-tick { transform: translateY(-50%) scale(1.2); }
 .dock-cta::before {
   content: '';
   position: absolute; inset: 0;
@@ -1090,4 +1138,8 @@
   .ambient-orb { display: none; }
   .light-leak { display: none; }
   .corner-glow { display: none; }
+  .portal-tick-top    { top: 0.25rem; }
+  .portal-tick-bottom { bottom: 0.25rem; }
+  .portal-tick-left   { left: 0.25rem; }
+  .portal-tick-right  { right: 0.25rem; }
 }

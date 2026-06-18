@@ -96,15 +96,24 @@ const routesHref = getRoute('routes', locale);
             />
             <div class="pane-overlay"></div>
 
+            <!-- Radial depth — subtle warm radial behind the title (active only) -->
+            <div class="pane-aura" aria-hidden="true"></div>
+
             <!-- Editorial corner brackets (gold, fade in on hover/active/focus) -->
             <span class="pane-cb pane-cb-tl" aria-hidden="true"></span>
             <span class="pane-cb pane-cb-tr" aria-hidden="true"></span>
             <span class="pane-cb pane-cb-bl" aria-hidden="true"></span>
             <span class="pane-cb pane-cb-br" aria-hidden="true"></span>
 
+            <!-- Inner hairline frame on active pane (subtle, sells the editorial spread) -->
+            <span class="pane-frame" aria-hidden="true"></span>
+
             <!-- Inactive: Vertical Label -->
             <div class="pane-vertical-label">
-              <span class="vertical-num">{(idx + 1).toString().padStart(2, '0')}</span>
+              <span class="vertical-num-wrap" aria-hidden="true">
+                <span class="vertical-num-tick"></span>
+                <span class="vertical-num">{(idx + 1).toString().padStart(2, '0')}</span>
+              </span>
               <span class="vertical-text">{catLabel}</span>
               <span class="vertical-route-title">{displayTitle}</span>
             </div>
@@ -299,6 +308,34 @@ const routesHref = getRoute('routes', locale);
       inset 0 0 0 4px rgba(201, 168, 76, 0.12);
   }
 
+  /* Inner hairline frame on the active pane — a second, finer rectangle inside the
+     corner brackets, sells the "editorial spread" feel without altering the layout. */
+  .pane-frame {
+    position: absolute;
+    inset: 2.5rem;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out-expo) 0.15s;
+  }
+  .route-pane.is-active .pane-frame { opacity: 1; }
+
+  /* Radial depth behind the title of the active pane — warm gold/orange glow,
+     very subtle, sells premium glass feel. */
+  .pane-aura {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 900ms var(--ease-out-expo) 0.2s;
+    background:
+      radial-gradient(ellipse 55% 60% at 28% 72%, rgba(201, 168, 76, 0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 50% at 70% 30%, rgba(232, 98, 42, 0.12) 0%, transparent 60%);
+  }
+  .route-pane.is-active .pane-aura { opacity: 1; }
+
   /* Editorial corner brackets on the active pane (gold L-brackets) */
   .pane-cb {
     position: absolute;
@@ -350,6 +387,21 @@ const routesHref = getRoute('routes', locale);
   .vertical-num {
     font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
     color: var(--s-orange); background: rgba(26, 22, 25, 0.8); padding: 0.4rem; border-radius: 4px;
+  }
+
+  /* Tiny gold tick above the vertical number (inactive pane refinement) */
+  .vertical-num-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .vertical-num-tick {
+    width: 14px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.85), transparent);
+    opacity: 0.7;
   }
   .vertical-text {
     writing-mode: vertical-rl; transform: rotate(180deg);
@@ -408,6 +460,18 @@ const routesHref = getRoute('routes', locale);
     box-shadow: 0 12px 32px rgba(0,0,0,0.25);
   }
 
+  /* Tiny left vertical hairline on the meta-glass — measures it like an editorial column.
+     Pairs with the existing top gold hairline. */
+  .pane-meta-glass::after {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    bottom: 1rem;
+    left: 0.6rem;
+    width: 1px;
+    background: linear-gradient(180deg, transparent 0%, rgba(26, 22, 25, 0.18) 50%, transparent 100%);
+  }
+
   /* Gold hairline accent on the top-left of the meta-glass */
   .pane-meta-glass::before {
     content: '';
@@ -455,6 +519,8 @@ const routesHref = getRoute('routes', locale);
     .pane-title { font-size: clamp(2.5rem, 10vw, 4rem); max-width: 100%; }
     .pane-meta-glass { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
     .meta-action { align-self: flex-end; }
+    .pane-frame { inset: 1.25rem; }
+    .pane-aura { opacity: 0.6; }
   }
 
   @media (max-width: 768px) {

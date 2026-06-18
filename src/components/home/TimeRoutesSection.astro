@@ -1,5 +1,5 @@
 ---
-import type { MixedRoute, Locale } from '@types';
+import type { MixedRoute, Locale, MixedStopCategory, Neighborhood, TimeDuration } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
@@ -16,7 +16,7 @@ const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
 
 // Select 3 plans with best SEO potential
-const selectedDurations = ['2h', '1day', '2days'];
+const selectedDurations: TimeDuration[] = ['2h', '1day', '2days'];
 const displayPlans = selectedDurations
   .map(duration => plans.find(p => p.duration === duration))
   .filter((p): p is MixedRoute => p !== undefined);
@@ -24,7 +24,7 @@ const displayPlans = selectedDurations
 const timeRoutesHref = `${getRoute('routes', locale)}#time-plans`;
 
 // Duration configurations with visual styling
-const durationConfig: Record<string, {
+const durationConfig: Record<TimeDuration, {
   gradient: string;
   accent: string;
   accentRgb: string;
@@ -83,7 +83,7 @@ const durationConfig: Record<string, {
 };
 
 // Images for each time plan
-const PLAN_IMAGES: Record<string, string> = {
+const PLAN_IMAGES: Record<TimeDuration, string> = {
   '2h': 'https://upload.wikimedia.org/wikipedia/commons/c/c6/Carrera_del_Darro_de_Granada.jpg',
   '6h': 'https://upload.wikimedia.org/wikipedia/commons/6/65/Granada%2C_Mirador_Ojo_de_Granada%2C_Sierra_Nevada.jpg',
   '12h': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Corral_del_Carbon_de_Granada_01.jpg',
@@ -116,9 +116,14 @@ const categoryIcons: Record<string, string> = {
   flamenco: '☀',
 };
 
-function getCategoryName(category: string): string {
+function getCategoryName(category: MixedStopCategory): string {
   const key = `mixedRoutes.stopCategories.${category}` as const;
-  return t(key as any) || category;
+  return t(key) || category;
+}
+
+function getNeighborhoodName(neighborhood: Neighborhood): string {
+  const key = `neighborhoods.${neighborhood}` as const;
+  return t(key) || neighborhood;
 }
 ---
 
@@ -177,14 +182,23 @@ function getCategoryName(category: string): string {
                 <!-- Glare Effect -->
                 <div class="visual-glare"></div>
 
+                <!-- Inner hairline frame inside the visual (sells the editorial capture) -->
+                <span class="visual-inner-frame" aria-hidden="true"></span>
+
                 <!-- Duration Badge -->
                 <div class="duration-lockup">
-                  <span class="duration-number">{config.number}</span>
+                  <span class="duration-number">
+                    {config.number}
+                    <span class="duration-tick" aria-hidden="true"></span>
+                  </span>
                   <span class="duration-unit">{config.unit}</span>
                 </div>
 
                 <!-- Label -->
-                <div class="plan-label">{config.label}</div>
+                <div class="plan-label">
+                  <span class="plan-label-dot" aria-hidden="true"></span>
+                  <span class="plan-label-text">{config.label}</span>
+                </div>
 
                 <!-- Stops Counter -->
                 <div class="stops-badge">
@@ -217,12 +231,9 @@ function getCategoryName(category: string): string {
                 <!-- Footer -->
                 <div class="card-footer">
                   <div class="neighborhoods-preview">
-                    {plan.neighborhoods.slice(0, 3).map((n) => {
-                      const nbKey = `neighborhoods.${n}` as const;
-                      return (
-                        <span class="nb-tag">{t(nbKey as any)}</span>
-                      );
-                    })}
+                    {plan.neighborhoods.slice(0, 3).map((n) => (
+                      <span class="nb-tag">{getNeighborhoodName(n)}</span>
+                    ))}
                   </div>
                   <span class="explore-arrow">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -391,7 +402,26 @@ function getCategoryName(category: string): string {
       0 20px 40px rgba(26, 22, 25, 0.08);
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    isolation: isolate;
   }
+
+  /* Subtle accent-colored radial glow that follows the card on hover — premium depth. */
+  .card-link::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 0%,
+      rgba(var(--accent-rgb), 0.22) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out-expo);
+    pointer-events: none;
+  }
+  .card-link:hover::before { opacity: 1; }
 
   .card-link:hover {
     transform: translateY(-12px) scale(1.02);
@@ -454,6 +484,23 @@ function getCategoryName(category: string): string {
     mix-blend-mode: overlay;
     z-index: 4;
     pointer-events: none;
+  }
+
+  /* Inner hairline frame inside the visual — a second, finer rectangle inside the
+     corner accents. Sells the editorial "captured frame" feel. */
+  .visual-inner-frame {
+    position: absolute;
+    inset: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.6;
+    transition: opacity 0.5s var(--ease-out-expo), border-color 0.5s var(--ease-out-expo);
+  }
+  .card-link:hover .visual-inner-frame {
+    opacity: 1;
+    border-color: rgba(255, 255, 255, 0.25);
   }
 
   .card-large .card-visual {
@@ -555,6 +602,23 @@ function getCategoryName(category: string): string {
     color: white;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     letter-spacing: -0.02em;
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .card-link:hover .duration-number {
+    transform: translateY(-2px);
+  }
+
+  /* Tiny gold tick beneath the duration number — micro-detail, sells the editorial number */
+  .duration-tick {
+    display: block;
+    width: 1.5rem;
+    height: 1px;
+    margin-top: 0.55rem;
+    background: linear-gradient(90deg, rgba(201, 168, 76, 0.95), rgba(201, 168, 76, 0.3));
+    transition: width 0.5s var(--ease-out-expo);
+  }
+  .card-link:hover .duration-tick {
+    width: 2.5rem;
   }
 
   /* Editorial hairline rule above the duration number */
@@ -599,13 +663,16 @@ function getCategoryName(category: string): string {
     top: 1.5rem;
     right: 1.5rem;
     z-index: 12;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     font-family: var(--font-display);
     font-size: 0.65rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: white;
-    padding: 0.4rem 0.875rem;
+    padding: 0.4rem 0.875rem 0.4rem 0.7rem;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -616,6 +683,25 @@ function getCategoryName(category: string): string {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  /* Tiny gold dot inside the plan-label */
+  .plan-label-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+  }
+
+  /* Text inside the plan-label — keeps overflow ellipsis working inside the flex container */
+  .plan-label-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 0 1 auto;
   }
 
   .card-small .plan-label {
@@ -733,6 +819,20 @@ function getCategoryName(category: string): string {
       rgba(201, 168, 76, 0.45) 82%,
       transparent 100%
     );
+  }
+
+  /* Tiny accent dot at the center of the top rule (editorial center mark) */
+  .card-content::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 2px #ffffff;
   }
 
   .card-small .card-content {
@@ -886,6 +986,7 @@ function getCategoryName(category: string): string {
     align-items: center;
     justify-content: center;
     background: rgba(var(--accent-rgb), 0.08);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
     border-radius: 50%;
     color: var(--accent-color);
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -999,6 +1100,10 @@ function getCategoryName(category: string): string {
 
     .card-description {
       font-size: 0.875rem;
+    }
+
+    .visual-inner-frame {
+      inset: 1rem;
     }
   }
 

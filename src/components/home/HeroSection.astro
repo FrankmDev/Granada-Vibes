@@ -221,6 +221,11 @@ const c = {
     </div>
 
     <div class="portal" data-parallax="0.05" aria-hidden="true">
+      <!-- Cardinal tick marks (cartographic measurement detail, very subtle) -->
+      <span class="portal-tick portal-tick-top" aria-hidden="true"></span>
+      <span class="portal-tick portal-tick-bottom" aria-hidden="true"></span>
+      <span class="portal-tick portal-tick-left" aria-hidden="true"></span>
+      <span class="portal-tick portal-tick-right" aria-hidden="true"></span>
       <div class="portal-inner-frame">
         <video
           class="sharp-video"
@@ -247,6 +252,7 @@ const c = {
   <!-- 4. Cinematic Dock -->
   <div class="glass-dock-layer">
     <div class="glass-dock">
+      <span class="glass-dock-hilite" aria-hidden="true"></span>
       <div class="dock-weather">
         <div class="time-block">
           <div class="live-dot" aria-hidden="true"></div>
@@ -263,6 +269,7 @@ const c = {
       <div class="dock-divider"></div>
 
       <a href={c.ctaLink} class="dock-cta" aria-label={c.cta}>
+        <span class="dock-cta-tick" aria-hidden="true"></span>
         <span class="cta-text">{c.cta}</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="cta-arrow" aria-hidden="true">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
