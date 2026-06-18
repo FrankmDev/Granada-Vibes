@@ -31,8 +31,8 @@ interface Props {
   ogType?: 'website' | 'article';
   canonical?: string;
   noindex?: boolean;
-  schemaType?: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article' | 'venue';
-  schemaData?: Event | Route | BlogPost | MixedRoute | VenueDirectoryEntry;
+  schemaType?: 'website' | 'event' | 'route' | 'timePlan' | 'organization' | 'article' | 'venue' | 'planner' | 'eventHub';
+  schemaData?: Event | Route | BlogPost | MixedRoute | VenueDirectoryEntry | Record<string, unknown>;
   breadcrumb?: BreadcrumbItem[];
   faq?: FaqItem[];
   googleSiteVerification?: string;
@@ -73,7 +73,9 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="msvalidate.01" content="6A19FE7E273FC514F82832219D058DDF" />
+    {SITE_CONFIG.bingSiteVerification && (
+      <meta name="msvalidate.01" content={SITE_CONFIG.bingSiteVerification} />
+    )}
 
     {/* Resource hints — preconnect to critical third-party origins */}
     <link rel="preconnect" href="https://upload.wikimedia.org" />

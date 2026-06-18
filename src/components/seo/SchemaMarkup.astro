@@ -16,12 +16,12 @@ interface FaqItem {
 }
 
 interface Props {
-  type: 'website' | 'event' | 'route' | 'timePlan' | 'article' | 'venue';
-  data?: Event | Route | BlogPost | MixedRoute | VenueDirectoryEntry;
+  type: 'website' | 'event' | 'route' | 'timePlan' | 'article' | 'venue' | 'planner' | 'eventHub' | 'organization';
+  data?: Event | Route | BlogPost | MixedRoute | VenueDirectoryEntry | Record<string, unknown> | undefined;
   locale: 'es' | 'en';
-  path?: string;
-  breadcrumb?: BreadcrumbItem[];
-  faq?: FaqItem[];
+  path?: string | undefined;
+  breadcrumb?: BreadcrumbItem[] | undefined;
+  faq?: FaqItem[] | undefined;
 }
 
 const { type, data, locale, path = '', breadcrumb, faq } = Astro.props;
@@ -44,6 +44,17 @@ function resolveImageUrl(image: string | undefined): string | undefined {
 
 function todayInMadrid(): string {
   return madridDateFormatter.format(new Date());
+}
+
+function isSchemaEvent(value: unknown): value is Event {
+  return Boolean(
+    value &&
+    typeof value === 'object' &&
+    'title' in value &&
+    'date' in value &&
+    'slug' in value &&
+    'venue' in value
+  );
 }
 
 // Base organization schema
@@ -479,6 +490,123 @@ switch (type) {
       };
     }
     break;
+
+  case 'organization':
+    primarySchema = organizationSchema;
+    break;
+
+  case 'planner': {
+    const plannerData = data as Record<string, unknown> | undefined;
+    primarySchema = {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      '@id': `${siteUrl}${path}#webapplication`,
+      url: `${siteUrl}${path}`,
+      inLanguage: locale,
+      name: (plannerData?.name as string) ?? SITE_CONFIG.name,
+      description: (plannerData?.description as string) ?? SITE_CONFIG.description[locale],
+      applicationCategory: (plannerData?.applicationCategory as string) ?? 'TravelApplication',
+      operatingSystem: 'Web',
+      offers: (plannerData?.offers as Record<string, unknown>) ?? {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'EUR',
+      },
+      provider: {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: SITE_CONFIG.name,
+      },
+      publisher: {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: SITE_CONFIG.name,
+      },
+    };
+    break;
+  }
+
+  case 'eventHub': {
+    const hubData = data as Record<string, unknown> | undefined;
+    const hubName = (hubData?.name as string) ?? '';
+    const hubDescription = (hubData?.description as string) ?? '';
+    const rawHubEvents = hubData?.events;
+    const hubEvents = Array.isArray(rawHubEvents) ? rawHubEvents.filter(isSchemaEvent) : [];
+
+    const eventItems: Record<string, unknown>[] = [];
+    for (const e of hubEvents.slice(0, 10)) {
+      const img = e.remoteImageUrl || e.image || e.imageUrl;
+      const imgResolved = img ? resolveImageUrl(img) : undefined;
+      const priceStatus = getPriceStatus(e);
+      const eventUrl = `${siteUrl}${locale === 'en' ? '/en/events/' : '/eventos/'}${e.slug}/`;
+      const offerUrl = e.url || e.ticketsUrl || e.sourceUrl || eventUrl;
+      const offers = priceStatus === 'paid'
+        ? {
+            '@type': 'Offer',
+            url: offerUrl,
+            price: e.price,
+            priceCurrency: e.currency,
+            availability: 'https://schema.org/InStock',
+          }
+        : priceStatus === 'free'
+          ? {
+              '@type': 'Offer',
+              url: offerUrl,
+              price: 0,
+              priceCurrency: 'EUR',
+              availability: 'https://schema.org/InStock',
+            }
+          : undefined;
+      eventItems.push({
+        '@type': 'ListItem',
+        position: eventItems.length + 1,
+        item: {
+          '@type': 'Event',
+          name: e.title[locale],
+          startDate: e.date,
+          url: eventUrl,
+          ...(e.venue ? {
+            location: {
+              '@type': 'Place',
+              name: e.venue,
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Granada',
+                addressRegion: 'Andalucía',
+                addressCountry: 'ES',
+              },
+            },
+          } : {}),
+          ...(imgResolved ? { image: imgResolved } : {}),
+          isAccessibleForFree: priceStatus === 'free',
+          ...(offers ? { offers } : {}),
+        },
+      } as Record<string, unknown>);
+    }
+
+    const itemList: Record<string, unknown> = {
+      '@type': 'ItemList',
+      itemListElement: eventItems,
+    };
+
+    const hubPath = path || '/';
+    primarySchema = {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      '@id': `${siteUrl}${hubPath}#collectionpage`,
+      url: `${siteUrl}${hubPath}`,
+      name: hubName || SITE_CONFIG.name,
+      description: hubDescription || SITE_CONFIG.description[locale],
+      inLanguage: locale,
+      mainEntity: itemList,
+      provider: {
+        '@type': 'Organization',
+        '@id': `${siteUrl}/#organization`,
+        name: SITE_CONFIG.name,
+      },
+    };
+    break;
+  }
 
   case 'venue':
     if (data && 'upcomingEvents' in data && 'name' in data) {

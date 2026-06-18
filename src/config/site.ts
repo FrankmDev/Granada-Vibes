@@ -8,6 +8,9 @@ export const SITE_CONFIG: SiteConfig = {
   },
   url: 'https://granadaurban.com',
   email: 'info@granadaurban.com',
+  ...(import.meta.env.PUBLIC_BING_SITE_VERIFICATION
+    ? { bingSiteVerification: import.meta.env.PUBLIC_BING_SITE_VERIFICATION }
+    : {}),
   defaultLocale: 'es',
   locales: ['es', 'en'],
   social: {

@@ -29,14 +29,13 @@ const byTimePath = getRoute('byTime', locale);
   title={t('planner.seoTitle')}
   description={t('planner.seoDescription')}
   ogImage={ogImage}
-  schemaType="website"
+  schemaType="planner"
   schemaData={{
-    '@type': 'WebApplication',
     name: t('planner.schemaName'),
     description: t('planner.schemaDescription'),
     applicationCategory: 'TravelApplication',
     operatingSystem: 'Web',
-    offers: { '@type': 'Offer', price: '0' },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
   }}
 >
   <SubpageHero

@@ -32,6 +32,10 @@ const VENUE_ALIASES: Record<string, { slug: string; name: string }> = {
   'plaza de toros de granada': { slug: 'plaza-de-toros-granada', name: 'Plaza de Toros de Granada' },
   'palacio de congresos de granada': { slug: 'palacio-de-congresos-granada', name: 'Palacio de Congresos de Granada' },
   'palacio de congresos': { slug: 'palacio-de-congresos-granada', name: 'Palacio de Congresos de Granada' },
+  'hotel monasterio granada adults only': { slug: 'hotel-monasterio-granada', name: 'Hotel Monasterio Granada' },
+  'hotel monasterio granada': { slug: 'hotel-monasterio-granada', name: 'Hotel Monasterio Granada' },
+  'pl. de bib-rambla, 6': { slug: 'plaza-bib-rambla-granada', name: 'Plaza Bib-Rambla' },
+  'pl de bib-rambla 6': { slug: 'plaza-bib-rambla-granada', name: 'Plaza Bib-Rambla' },
 };
 
 function todayString(): string {

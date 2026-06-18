@@ -162,6 +162,12 @@ const heroMetadata = [
   description={config.description[locale]}
   breadcrumb={breadcrumb}
   faq={faq}
+  schemaType="eventHub"
+  schemaData={{
+    name: config.h1[locale],
+    description: config.intro[locale],
+    events: featuredEvents,
+  }}
 >
   <SubpageHero
     locale={locale}

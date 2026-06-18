@@ -265,6 +265,7 @@ export interface SiteConfig {
   description: LocalizedText;
   url: string;
   email: string;
+  bingSiteVerification?: string;
   defaultLocale: Locale;
   locales: Locale[];
   social: {
