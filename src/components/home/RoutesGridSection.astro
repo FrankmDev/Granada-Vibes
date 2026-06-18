@@ -1,5 +1,5 @@
 ---
-import type { Route, Locale, RouteCategory, RouteDifficulty } from '@types';
+import type { Route, Locale, RouteCategory, RouteDifficulty, TimeOfDay } from '@types';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
@@ -46,6 +46,14 @@ function formatDuration(minutes: number): string {
   return h > 0 ? `${h}H${m > 0 ? ` ${m}M` : ''}` : `${m}M`;
 }
 
+function getExcerpt(text: string, max = 110): string {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return `${cut.slice(0, lastSpace > 0 ? lastSpace : max)}…`;
+}
+
 const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: string } = {
   tapas:       'https://upload.wikimedia.org/wikipedia/commons/a/a0/Granada%2C_La_Fontana%2C_tapas.jpg',
   monuments:   'https://upload.wikimedia.org/wikipedia/commons/0/0c/Cathedral_%26_Capilla_Real_Granada_Spain.jpg',
@@ -55,11 +63,40 @@ const ROUTE_FALLBACKS: Partial<Record<RouteCategory, string>> & { default: strin
   default:     'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg',
 };
 
+// Bearings — a deterministic pseudo-bearing derived from the route id,
+// so the active pane has a stable compass marker.
+function getBearing(id: string): string {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  const deg = (h % 360).toString().padStart(3, '0');
+  return `${deg}°`;
+}
+
+// Difficulty segment count (filled / total) for the visual bar
+function diffSegments(d: RouteDifficulty): number {
+  if (d === 'easy') return 1;
+  if (d === 'moderate') return 2;
+  return 3;
+}
+
+// Time-of-day: 4 evenly spaced marks; filled = best window.
+const TOD_FILLED: Record<TimeOfDay, number> = {
+  morning:   0,
+  afternoon: 1,
+  sunset:    2,
+  evening:   3,
+  any:       1,
+};
+
 const routesHref = getRoute('routes', locale);
 ---
 
 <section class="routes-section" aria-label={t('home.sections.routesAriaLabel')}>
   <div class="cin-grain" aria-hidden="true"></div>
+
+  <!-- Subtle topographic mesh — contour lines for cartographic atmosphere -->
+  <div class="routes-topo" aria-hidden="true"></div>
+
   <ScreenFrame tagTopLeft="37°N" tagTopRight="03°W" />
 
   <!-- ─── Masthead Header ─── -->
@@ -74,7 +111,7 @@ const routesHref = getRoute('routes', locale);
     theme="cream"
   />
 
-  <!-- ─── Cinematic Flex Accordion ─── -->
+  <!-- ─── Cinematic Flex Accordion Gallery ─── -->
   <div class="accordion-container">
     <div class="routes-accordion">
       {displayRoutes.map((route, idx) => {
@@ -83,6 +120,11 @@ const routesHref = getRoute('routes', locale);
         const diffLabel = difficultyLabels[route.difficulty] ?? route.difficulty;
         const catLabel = getCategoryLabel(route.category);
         const displayTitle = getRouteDisplayTitle(route, locale);
+        const bearing = getBearing(route.id);
+        const filled = diffSegments(route.difficulty);
+        const todIdx = TOD_FILLED[route.timeOfDay] ?? 0;
+        const excerpt = getExcerpt(route.description[locale], 120);
+        const segCount = Math.min(5, Math.max(3, route.highlights.length));
 
         return (
           <a href={href} class={`route-pane ${idx === 0 ? 'is-active' : ''}`} data-index={idx}>
@@ -96,7 +138,7 @@ const routesHref = getRoute('routes', locale);
             />
             <div class="pane-overlay"></div>
 
-            <!-- Radial depth — subtle warm radial behind the title (active only) -->
+            <!-- Radial depth — warm glow behind the title (active only) -->
             <div class="pane-aura" aria-hidden="true"></div>
 
             <!-- Editorial corner brackets (gold, fade in on hover/active/focus) -->
@@ -105,42 +147,107 @@ const routesHref = getRoute('routes', locale);
             <span class="pane-cb pane-cb-bl" aria-hidden="true"></span>
             <span class="pane-cb pane-cb-br" aria-hidden="true"></span>
 
-            <!-- Inner hairline frame on active pane (subtle, sells the editorial spread) -->
+            <!-- Inner hairline frame on active pane -->
             <span class="pane-frame" aria-hidden="true"></span>
 
-            <!-- Inactive: Vertical Label -->
+            <!-- ── Inactive state: field-survey side strip ── -->
             <div class="pane-vertical-label">
-              <span class="vertical-num-wrap" aria-hidden="true">
-                <span class="vertical-num-tick"></span>
-                <span class="vertical-num">{(idx + 1).toString().padStart(2, '0')}</span>
+              <span class="v-folio" aria-hidden="true">
+                <span class="v-folio-num">{['I','II','III','IV','V'][idx] ?? (idx + 1).toString()}</span>
+                <span class="v-folio-sub">FOLIO</span>
               </span>
-              <span class="vertical-text">{catLabel}</span>
-              <span class="vertical-route-title">{displayTitle}</span>
+
+              <span class="v-trail" aria-hidden="true">
+                {Array.from({ length: segCount }).map((_, i) => (
+                  <span class={`v-trail-dot ${i === 0 ? 'is-start' : ''} ${i === segCount - 1 ? 'is-end' : ''}`}></span>
+                ))}
+                <span class="v-trail-line"></span>
+              </span>
+
+              <span class="v-stack">
+                <span class="v-cat">{catLabel}</span>
+                <span class="v-title">{displayTitle}</span>
+              </span>
             </div>
 
-            <!-- Active: Full HUD Content -->
+            <!-- ── Active state: editorial spread ── -->
             <div class="pane-content">
-              <div class="pane-header">
+              <!-- Top row: folio marker + category pill + compass bearing -->
+              <div class="pane-toprow">
+                <span class="pane-folio">
+                  <span class="pane-folio-rule" aria-hidden="true"></span>
+                  <span class="pane-folio-text">FOLIO {['I','II','III','IV','V'][idx] ?? (idx + 1)}</span>
+                </span>
+
                 <span class="pane-category">{catLabel}</span>
-                <span class="pane-number">NO. {(idx + 1).toString().padStart(2, '0')}</span>
+
+                <span class="pane-bearing" aria-hidden="true">
+                  <svg viewBox="0 0 28 28" class="pane-bearing-svg" aria-hidden="true">
+                    <circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="0.6" />
+                    <circle cx="14" cy="14" r="1" fill="currentColor" />
+                    <line x1="14" y1="2"  x2="14" y2="5"  stroke="currentColor" stroke-width="0.8" />
+                    <line x1="14" y1="23" x2="14" y2="26" stroke="currentColor" stroke-width="0.8" />
+                    <line x1="2"  y1="14" x2="5"  y2="14" stroke="currentColor" stroke-width="0.8" />
+                    <line x1="23" y1="14" x2="26" y2="14" stroke="currentColor" stroke-width="0.8" />
+                    <text x="14" y="9.5"  text-anchor="middle" font-size="4" fill="currentColor" font-family="var(--font-display)">N</text>
+                    <text x="14" y="22"   text-anchor="middle" font-size="3.2" fill="currentColor" font-family="var(--font-display)">S</text>
+                    <text x="3.2"  y="15.5" text-anchor="middle" font-size="3.2" fill="currentColor" font-family="var(--font-display)">W</text>
+                    <text x="24.8" y="15.5" text-anchor="middle" font-size="3.2" fill="currentColor" font-family="var(--font-display)">E</text>
+                    <line x1="14" y1="14" x2="14" y2="5"
+                          stroke="var(--color-gold)" stroke-width="1.1"
+                          transform={`rotate(${parseInt(bearing, 10)} 14 14)`} />
+                  </svg>
+                  <span class="pane-bearing-text">{bearing}</span>
+                </span>
               </div>
 
+              <!-- Title block: huge display + italic excerpt -->
               <div class="pane-text-wrap">
                 <h3 class="pane-title">{displayTitle}</h3>
-                <div class="pane-meta-glass">
-                  <div class="meta-stats">
-                    <span>{formatDuration(route.duration)}</span>
-                    <span class="glass-dot"></span>
-                    <span>{route.distance} KM</span>
-                    <span class="glass-dot"></span>
-                    <span class={`diff-${route.difficulty}`}>{diffLabel}</span>
-                  </div>
-                  <div class="meta-action" aria-hidden="true">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
+                <p class="pane-excerpt">"{excerpt}"</p>
+              </div>
+
+              <!-- Bottom: metric dashboard + CTA -->
+              <div class="pane-dashboard">
+                <div class="pane-metric">
+                  <span class="pane-metric-num">{formatDuration(route.duration)}</span>
+                  <span class="pane-metric-label">TIEMPO</span>
                 </div>
+
+                <span class="pane-metric-sep" aria-hidden="true"></span>
+
+                <div class="pane-metric">
+                  <span class="pane-metric-num">{route.distance}<span class="pane-metric-unit">KM</span></span>
+                  <span class="pane-metric-label">DISTANCIA</span>
+                </div>
+
+                <span class="pane-metric-sep" aria-hidden="true"></span>
+
+                <div class="pane-metric">
+                  <span class="pane-diff">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <span class={`pane-diff-bar ${i < filled ? 'is-filled' : ''}`} aria-hidden="true"></span>
+                    ))}
+                  </span>
+                  <span class="pane-metric-label">{diffLabel.toUpperCase()}</span>
+                </div>
+
+                <span class="pane-metric-sep pane-metric-sep--right" aria-hidden="true"></span>
+
+                <div class="pane-cta" aria-hidden="true">
+                  <span class="pane-cta-label">EXPLORAR</span>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Time-of-day rail (4 marks; filled = best window) -->
+              <div class="pane-tod" aria-hidden="true">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <span class={`pane-tod-mark ${i === todIdx ? 'is-now' : ''}`}></span>
+                ))}
+                <span class="pane-tod-axis"></span>
               </div>
             </div>
           </a>
@@ -187,6 +294,9 @@ const routesHref = getRoute('routes', locale);
 </script>
 
 <style>
+  /* ============================================
+     ALHAMBRA FIELD SURVEY — ROUTES ACCORDION
+     ============================================ */
   .routes-section {
     --s-cream:    #f5f0ea;
     --s-ink:      #1a1619;
@@ -194,13 +304,15 @@ const routesHref = getRoute('routes', locale);
     --s-ink-3:    #8a7f77;
     --s-orange:   #e8622a;
     --s-gold:     #c9a84c;
+    --s-gold-soft: rgba(201, 168, 76, 0.85);
     --s-border:   rgba(26, 22, 25, 0.15);
     --s-border-s: rgba(26, 22, 25, 0.08);
+    --s-paper:    #fbf8f3;
     --s-rail: 1560px;
     --s-gutter: clamp(2rem, 3vw, 3rem);
 
     position: relative; width: 100%; box-sizing: border-box;
-    background: var(--s-cream); 
+    background: var(--s-cream);
     padding-top: clamp(5rem, 6vw, 6.5rem);
     padding-bottom: clamp(5.5rem, 7vw, 7rem);
   }
@@ -209,13 +321,26 @@ const routesHref = getRoute('routes', locale);
   .routes-section :global(.cin-corner::before),
   .routes-section :global(.cin-corner::after) { background: var(--s-ink); opacity: 0.3; }
   .routes-section :global(.cin-frame-tag) { color: var(--s-ink-3); }
-
-  .routes-section :global(.sh-editorial) { max-width: var(--s-rail); margin-left: auto; margin-right: auto; padding-left: var(--s-gutter); padding-right: var(--s-gutter); box-sizing: border-box; }
+  .routes-section :global(.sh-editorial) {
+    max-width: var(--s-rail); margin-left: auto; margin-right: auto;
+    padding-left: var(--s-gutter); padding-right: var(--s-gutter); box-sizing: border-box;
+  }
 
   .cin-grain {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
     opacity: 0.05; mix-blend-mode: multiply;
+  }
+
+  /* Subtle topographic contour mesh — a faint cartographic mood without
+     stealing attention from the panes. */
+  .routes-topo {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+      radial-gradient(ellipse 40% 30% at 18% 22%, rgba(26, 22, 25, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 35% 28% at 82% 78%, rgba(26, 22, 25, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 28% 22% at 50% 50%, rgba(26, 22, 25, 0.025) 0%, transparent 60%);
+    mix-blend-mode: multiply;
   }
 
   /* Mobile CTA — only needed in this section */
@@ -248,6 +373,9 @@ const routesHref = getRoute('routes', locale);
     background: var(--s-border);
     border-radius: 4px;
     overflow: hidden;
+    box-shadow:
+      0 30px 60px -20px rgba(26, 22, 25, 0.18),
+      0 12px 24px -10px rgba(26, 22, 25, 0.12);
   }
 
   .route-pane {
@@ -264,9 +392,7 @@ const routesHref = getRoute('routes', locale);
   .route-pane.is-active::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 1px;
     background: linear-gradient(
       90deg,
@@ -284,9 +410,7 @@ const routesHref = getRoute('routes', locale);
   .route-pane.is-active::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     height: 1px;
     background: linear-gradient(
       90deg,
@@ -300,7 +424,6 @@ const routesHref = getRoute('routes', locale);
     pointer-events: none;
   }
 
-  /* Focus-visible gold ring on the active pane */
   .route-pane:focus-visible {
     outline: none;
     box-shadow:
@@ -308,11 +431,10 @@ const routesHref = getRoute('routes', locale);
       inset 0 0 0 4px rgba(201, 168, 76, 0.12);
   }
 
-  /* Inner hairline frame on the active pane — a second, finer rectangle inside the
-     corner brackets, sells the "editorial spread" feel without altering the layout. */
+  /* Inner hairline frame on the active pane */
   .pane-frame {
     position: absolute;
-    inset: 2.5rem;
+    inset: 2.25rem;
     border: 1px solid rgba(201, 168, 76, 0.18);
     pointer-events: none;
     z-index: 4;
@@ -321,8 +443,7 @@ const routesHref = getRoute('routes', locale);
   }
   .route-pane.is-active .pane-frame { opacity: 1; }
 
-  /* Radial depth behind the title of the active pane — warm gold/orange glow,
-     very subtle, sells premium glass feel. */
+  /* Radial depth behind the title of the active pane — warm gold/orange glow */
   .pane-aura {
     position: absolute;
     inset: 0;
@@ -336,13 +457,13 @@ const routesHref = getRoute('routes', locale);
   }
   .route-pane.is-active .pane-aura { opacity: 1; }
 
-  /* Editorial corner brackets on the active pane (gold L-brackets) */
+  /* Editorial corner brackets on the active pane */
   .pane-cb {
     position: absolute;
     width: 24px;
     height: 24px;
     border-style: solid;
-    border-color: rgba(201, 168, 76, 0.85);
+    border-color: var(--s-gold-soft);
     border-width: 0;
     z-index: 5;
     pointer-events: none;
@@ -372,137 +493,324 @@ const routesHref = getRoute('routes', locale);
 
   .pane-overlay {
     position: absolute; inset: 0; z-index: 1;
-    background: linear-gradient(to top, rgba(15,12,14,0.95) 0%, rgba(15,12,14,0.4) 40%, rgba(15,12,14,0.1) 100%);
+    background: linear-gradient(
+      to top,
+      rgba(15,12,14,0.95) 0%,
+      rgba(15,12,14,0.55) 30%,
+      rgba(15,12,14,0.18) 60%,
+      rgba(15,12,14,0.08) 100%
+    );
     transition: opacity 0.6s ease; opacity: 0.8;
   }
   .route-pane.is-active .pane-overlay { opacity: 1; }
 
-  /* Inactive: Vertical Label */
+  /* ============================================
+     INACTIVE STATE — field-survey side strip
+     Vertical roman folio + waypoint trail + label
+     ============================================ */
   .pane-vertical-label {
-    position: absolute; left: 50%; bottom: 2.5rem;
-    transform: translateX(-50%); z-index: 2;
-    display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 0 1.75rem;
+    z-index: 2;
     transition: opacity 0.4s ease 0.1s, transform 0.4s ease;
   }
-  .vertical-num {
-    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
-    color: var(--s-orange); background: rgba(26, 22, 25, 0.8); padding: 0.4rem; border-radius: 4px;
+
+  /* Roman numeral folio at the top */
+  .v-folio {
+    display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+    color: var(--s-orange);
+  }
+  .v-folio-num {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--s-orange);
+  }
+  .v-folio-sub {
+    font-family: var(--font-display);
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: var(--color-text-primary);
+    opacity: 0.55;
   }
 
-  /* Tiny gold tick above the vertical number (inactive pane refinement) */
-  .vertical-num-wrap {
+  /* Waypoint trail — a vertical line with dots, the route's segments plotted
+     vertically. The route's highlight count seeds the dot count. */
+  .v-trail {
     position: relative;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
+    flex: 1;
+    width: 1px;
+    margin: 1rem 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
   }
-  .vertical-num-tick {
-    width: 14px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.85), transparent);
-    opacity: 0.7;
+  .v-trail-line {
+    position: absolute; top: 6px; bottom: 6px; left: 50%;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(240, 237, 232, 0.45) 12%,
+      rgba(240, 237, 232, 0.55) 88%,
+      transparent 100%
+    );
+    transform: translateX(-50%);
   }
-  .vertical-text {
+  .v-trail-dot {
+    position: relative; z-index: 1;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(240, 237, 232, 0.45);
+    border: 1px solid rgba(15, 12, 14, 0.6);
+    flex-shrink: 0;
+  }
+  .v-trail-dot.is-start {
+    width: 8px; height: 8px;
+    background: var(--s-orange);
+    box-shadow: 0 0 0 3px rgba(232, 98, 42, 0.18);
+  }
+  .v-trail-dot.is-end {
+    width: 8px; height: 8px;
+    background: var(--s-gold);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.18);
+  }
+
+  /* Stacked label at the bottom — category + vertical title */
+  .v-stack {
+    display: flex; flex-direction: column; align-items: center; gap: 0.85rem;
+  }
+  .v-cat {
+    font-family: var(--font-display);
+    font-size: 0.55rem; font-weight: 700;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--s-gold);
     writing-mode: vertical-rl; transform: rotate(180deg);
-    font-family: var(--font-display); font-size: 0.8rem; font-weight: 600;
-    letter-spacing: 0.3em; text-transform: uppercase;
-    color: var(--color-text-primary); white-space: nowrap;
+    white-space: nowrap;
   }
-  .vertical-route-title {
+  .v-title {
     writing-mode: vertical-rl;
     transform: rotate(180deg);
-    max-height: 16rem;
+    max-height: 14rem;
     overflow: hidden;
     font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.1;
-    color: rgba(240, 237, 232, 0.72);
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: -0.005em;
+    line-height: 1.15;
+    color: rgba(240, 237, 232, 0.78);
     text-wrap: balance;
   }
-  .route-pane.is-active .pane-vertical-label { opacity: 0; transform: translateX(-50%) translateY(20px); pointer-events: none; }
 
-  /* Active: Full HUD Content */
+  .route-pane.is-active .pane-vertical-label {
+    opacity: 0; transform: translateY(8px); pointer-events: none;
+  }
+
+  /* ============================================
+     ACTIVE STATE — editorial spread
+     ============================================ */
   .pane-content {
     position: absolute; inset: 0; z-index: 3;
-    display: flex; flex-direction: column; justify-content: space-between;
-    padding: 3rem 2.5rem; opacity: 0; pointer-events: none;
-    transform: translateY(20px); transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    padding: 2.5rem 2.75rem 2.25rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   }
-  .route-pane.is-active .pane-content { opacity: 1; pointer-events: auto; transform: translateY(0); transition-delay: 0.2s; }
+  .route-pane.is-active .pane-content {
+    opacity: 1; pointer-events: auto;
+    transition-delay: 0.18s;
+  }
 
-  .pane-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  /* Top row: folio marker · category pill · bearing */
+  .pane-toprow {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .pane-folio {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--s-gold);
+  }
+  .pane-folio-rule {
+    display: inline-block;
+    width: 22px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--s-gold-soft));
+  }
+  .pane-folio-text {
+    padding-top: 1px;
+  }
+
   .pane-category {
-    font-family: var(--font-display); font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.15em; text-transform: uppercase; color: var(--s-ink);
-    background: var(--s-cream); padding: 0.6rem 1.2rem; border-radius: 4px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  }
-  .pane-number {
-    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
-    color: var(--color-text-primary); letter-spacing: 0.2em; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    font-family: var(--font-display);
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--s-ink);
+    background: var(--s-paper);
+    padding: 0.55rem 1.05rem;
+    border-radius: 999px;
+    box-shadow:
+      0 6px 20px rgba(0, 0, 0, 0.28),
+      inset 0 0 0 1px rgba(201, 168, 76, 0.25);
   }
 
-  .pane-text-wrap { display: flex; flex-direction: column; gap: 1.5rem; }
+  /* Bearing — a tiny compass + degree readout */
+  .pane-bearing {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--s-gold);
+    font-family: var(--font-display);
+  }
+  .pane-bearing-svg {
+    width: 26px; height: 26px; flex-shrink: 0;
+    color: rgba(240, 237, 232, 0.8);
+  }
+  .pane-bearing-text {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--color-text-primary);
+  }
+
+  /* Title block */
+  .pane-text-wrap {
+    display: flex; flex-direction: column;
+    align-self: end;
+    gap: 1.1rem;
+    max-width: 92%;
+  }
   .pane-title {
-    font-family: var(--font-body); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 200;
-    letter-spacing: -0.02em; color: var(--color-text-primary); margin: 0; line-height: 1;
-    text-shadow: 0 4px 24px rgba(0,0,0,0.6); max-width: 80%;
+    font-family: var(--font-body);
+    font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+    font-weight: 200;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 0.98;
+    text-shadow: 0 4px 28px rgba(0, 0, 0, 0.55);
+    text-wrap: balance;
+  }
+  .pane-excerpt {
+    font-family: var(--font-body);
+    font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+    font-weight: 200;
+    font-style: italic;
+    letter-spacing: 0.005em;
+    line-height: 1.45;
+    color: rgba(240, 237, 232, 0.72);
+    margin: 0;
+    max-width: 56ch;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
   }
 
-  .pane-meta-glass {
-    position: relative;
-    display: flex; justify-content: space-between; align-items: center;
-    background: rgba(245, 240, 234, 0.95);
-    border: 1px solid rgba(245, 240, 234, 0.6); padding: 1rem 1.5rem; border-radius: 8px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+  /* ============================================
+     DASHBOARD — duration · distance · difficulty · CTA
+     Glass card with three metrics and a discrete action
+     ============================================ */
+  .pane-dashboard {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 1.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(240, 237, 232, 0.14);
   }
 
-  /* Tiny left vertical hairline on the meta-glass — measures it like an editorial column.
-     Pairs with the existing top gold hairline. */
-  .pane-meta-glass::after {
-    content: '';
-    position: absolute;
-    top: 1rem;
-    bottom: 1rem;
-    left: 0.6rem;
+  .pane-metric {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    min-width: 0;
+  }
+  .pane-metric-num {
+    font-family: var(--font-body);
+    font-size: clamp(1.5rem, 2.1vw, 1.85rem);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1;
+    color: var(--color-text-primary);
+    display: inline-flex; align-items: baseline; gap: 0.18em;
+  }
+  .pane-metric-unit {
+    font-family: var(--font-display);
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--s-gold);
+  }
+  .pane-metric-label {
+    font-family: var(--font-display);
+    font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.55);
+  }
+
+  .pane-metric-sep {
+    align-self: stretch;
     width: 1px;
-    background: linear-gradient(180deg, transparent 0%, rgba(26, 22, 25, 0.18) 50%, transparent 100%);
+    background: linear-gradient(180deg, transparent 0%, rgba(240, 237, 232, 0.22) 50%, transparent 100%);
   }
+  .pane-metric-sep--right { margin-left: 0.5rem; }
 
-  /* Gold hairline accent on the top-left of the meta-glass */
-  .pane-meta-glass::before {
-    content: '';
-    position: absolute;
-    top: 0.6rem;
-    left: 1.5rem;
-    width: 1.5rem;
+  /* Difficulty as a 3-bar visual indicator */
+  .pane-diff {
+    display: inline-flex; align-items: center; gap: 5px;
+    height: 1.85rem;
+  }
+  .pane-diff-bar {
+    width: 8px; height: 100%;
+    background: rgba(240, 237, 232, 0.14);
+    border-radius: 1px;
+  }
+  .pane-diff-bar.is-filled { background: var(--s-orange); }
+
+  /* CTA — small, refined, NOT a chunky chip */
+  .pane-cta {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    color: var(--s-orange);
+    transition: gap 0.3s var(--ease-out-expo);
+  }
+  .pane-cta-label {
+    font-family: var(--font-display);
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+  .route-pane:hover .pane-cta { gap: 0.9rem; }
+
+  /* Time-of-day rail — a horizontal hairline with 4 marks */
+  .pane-tod {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 12px;
+    margin-top: 0.5rem;
+  }
+  .pane-tod-axis {
+    position: absolute; top: 50%; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, rgba(201, 168, 76, 0.95), rgba(201, 168, 76, 0.3));
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(240, 237, 232, 0.16) 12%,
+      rgba(240, 237, 232, 0.22) 88%,
+      transparent 100%
+    );
+    transform: translateY(-50%);
   }
-  @media (min-width: 769px) {
-    .pane-meta-glass {
-      backdrop-filter: blur(8px) saturate(120%);
-      -webkit-backdrop-filter: blur(8px) saturate(120%);
-    }
+  .pane-tod-mark {
+    position: relative; z-index: 1;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(240, 237, 232, 0.18);
+    border: 1px solid rgba(15, 12, 14, 0.6);
   }
-  .meta-stats {
-    display: flex; align-items: center; flex-wrap: wrap; gap: 1rem;
-    font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--s-ink);
+  .pane-tod-mark.is-now {
+    width: 9px; height: 9px;
+    background: var(--s-gold);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.18);
   }
-  .glass-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--s-orange); }
-  .meta-action { color: var(--s-orange); display: flex; align-items: center; transition: transform 0.3s ease; }
-  .route-pane:hover .meta-action { transform: translateX(4px); }
 
-  /* Difficulty colors (using global tokens) */
-  .diff-easy        { color: var(--color-difficulty-easy) !important; }
-  .diff-moderate    { color: var(--color-difficulty-moderate) !important; }
-  .diff-challenging { color: var(--color-difficulty-hard) !important; }
-
-  /* ─── Responsive ─── */
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
   @media (max-width: 900px) {
     .routes-section {
       --s-gutter: 1.5rem;
@@ -510,23 +818,28 @@ const routesHref = getRoute('routes', locale);
       margin-top: 0;
     }
     .routes-accordion { flex-direction: column; height: auto; min-height: auto; max-height: none; gap: 2rem; }
-    .route-pane { flex: none; height: 50vh; min-height: 400px; }
+    .route-pane { flex: none; height: 60vh; min-height: 440px; }
     .route-pane.is-active { flex: none; }
     .pane-img { filter: grayscale(10%) brightness(0.8); transform: scale(1); }
     .route-pane:hover .pane-img { filter: grayscale(0%) brightness(0.9); transform: scale(1.05); }
     .pane-vertical-label { display: none; }
-    .pane-content { opacity: 1; transform: translateY(0); pointer-events: auto; padding: 2rem 1.5rem; }
-    .pane-title { font-size: clamp(2.5rem, 10vw, 4rem); max-width: 100%; }
-    .pane-meta-glass { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
-    .meta-action { align-self: flex-end; }
+    .pane-content { opacity: 1; transform: none; pointer-events: auto; padding: 2rem 1.5rem; }
+    .pane-title { font-size: clamp(2.4rem, 9vw, 3.6rem); max-width: 100%; }
+    .pane-excerpt { display: none; }
+    .pane-dashboard { gap: 0.9rem; flex-wrap: wrap; }
+    .pane-metric-sep { display: none; }
+    .pane-tod { display: none; }
     .pane-frame { inset: 1.25rem; }
     .pane-aura { opacity: 0.6; }
+    .pane-bearing-text { display: none; }
   }
 
   @media (max-width: 768px) {
     .routes-section { padding-top: 3.5rem; }
     .mobile-cta-wrapper { display: flex; }
     .accordion-container { padding: 0 var(--s-gutter); }
+    .pane-folio { font-size: 0.58rem; letter-spacing: 0.28em; }
+    .pane-bearing-svg { width: 22px; height: 22px; }
   }
 
   @media (max-width: 480px) {
@@ -534,6 +847,19 @@ const routesHref = getRoute('routes', locale);
       --s-gutter: 1.25rem;
       padding-top: 3rem;
     }
-    .route-pane { height: 55vh; }
+    .route-pane { height: 58vh; }
+    .pane-content { padding: 1.5rem 1.25rem; }
+    .pane-category { font-size: 0.6rem; padding: 0.45rem 0.85rem; }
+    .pane-title { font-size: clamp(2.1rem, 10vw, 2.9rem); }
+  }
+
+  /* Reduced motion — keep transitions snappy but kill the slow eases */
+  @media (prefers-reduced-motion: reduce) {
+    .routes-accordion,
+    .route-pane,
+    .pane-img,
+    .pane-content,
+    .pane-frame,
+    .pane-aura { transition-duration: 0.2s !important; }
   }
 </style>

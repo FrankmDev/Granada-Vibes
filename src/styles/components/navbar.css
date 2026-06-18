@@ -27,8 +27,8 @@
     50% { transform: translateX(3px); }
   }
   @keyframes gg-ghost-shimmer {
-    0%, 100% { -webkit-text-stroke-color: rgba(201, 168, 76, 0.12); }
-    50% { -webkit-text-stroke-color: rgba(201, 168, 76, 0.22); }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
   }
   @keyframes gg-dot-pulse {
     0%, 100% { opacity: 0.6; transform: scale(1); }
@@ -1075,21 +1075,17 @@
   }
 
   .ghost-num {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: clamp(6rem, 12vw, 11rem);
     font-weight: 800;
     line-height: 0.85;
     letter-spacing: -0.015em;
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1, "lnum" 1;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: rgba(201, 168, 76, 0.16);
-    text-shadow: none;
+    color: #c9a84c;
+    filter: url(#ghost-hollow);
     font-synthesis: none;
     -webkit-font-smoothing: antialiased;
-    paint-order: stroke fill;
     opacity: 0;
     transform: translateX(-30px);
     transition: opacity 0.24s ease 0s, transform 0.24s var(--gg-expo) 0s;

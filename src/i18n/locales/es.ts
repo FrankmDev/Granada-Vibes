@@ -378,12 +378,12 @@ ctaAriaLabel: 'Descubre Granada',
       days: 'DÍAS',
     },
     durationLabels: {
-      '2h': 'Quick Tour',
-      '6h': 'Half Day',
-      '12h': 'Full Day',
-      '1day': 'Adventure',
-      '2days': 'Weekend',
-      '3days': 'Experience',
+      '2h': 'Tour Exprés',
+      '6h': 'Medio Día',
+      '12h': 'Día Completo',
+      '1day': 'Inmersión',
+      '2days': 'Fin de Semana',
+      '3days': 'Escapada',
     },
     // Slug page (detail)
     slugDurationLabels: {

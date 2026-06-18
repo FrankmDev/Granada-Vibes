@@ -182,15 +182,21 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
                 <!-- Glare Effect -->
                 <div class="visual-glare"></div>
 
-                <!-- Inner hairline frame inside the visual (sells the editorial capture) -->
-                <span class="visual-inner-frame" aria-hidden="true"></span>
+                <!-- Diagonal light sweep — cinematic lens-leak crossing the image -->
+                <div class="visual-sweep" aria-hidden="true"></div>
+
+                <!-- Right-edge leader line — thin hairline along the far right edge -->
+                <div class="visual-leader" aria-hidden="true"></div>
+
+                <!-- Editorial reel stamp at bottom-right (safe zone, far from top-left) -->
+                <div class="visual-reel" aria-hidden="true">
+                  <span class="reel-dot"></span>
+                  <span class="reel-text">FT. 00{index + 1}</span>
+                </div>
 
                 <!-- Duration Badge -->
                 <div class="duration-lockup">
-                  <span class="duration-number">
-                    {config.number}
-                    <span class="duration-tick" aria-hidden="true"></span>
-                  </span>
+                  <span class="duration-number">{config.number}</span>
                   <span class="duration-unit">{config.unit}</span>
                 </div>
 
@@ -205,12 +211,6 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
                   <span class="stops-icon" aria-hidden="true">◉</span>
                   <span class="stops-count">{t('mixedRoutes.stopsCounter', { count: totalStops })}</span>
                 </div>
-
-                <!-- Corner Accents -->
-                <div class="corner-accent tl"></div>
-                <div class="corner-accent tr"></div>
-                <div class="corner-accent bl"></div>
-                <div class="corner-accent br"></div>
               </div>
 
               <!-- Content Layer -->
@@ -450,30 +450,6 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     background: var(--t-ink);
   }
 
-  /* Gold hairline at the top of the card visual (subtle, scales in on hover) */
-  .card-visual::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(201, 168, 76, 0.55) 30%,
-      rgba(201, 168, 76, 0.85) 50%,
-      rgba(201, 168, 76, 0.55) 70%,
-      transparent 100%
-    );
-    z-index: 8;
-    pointer-events: none;
-    transform: scaleX(0.65);
-    transform-origin: center;
-    transition: transform 0.6s var(--ease-out-expo);
-  }
-  .card-link:hover .card-visual::before { transform: scaleX(1); }
-
   /* Subtle film-grain over visual (data URI inline) */
   .card-visual::after {
     content: '';
@@ -484,23 +460,6 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     mix-blend-mode: overlay;
     z-index: 4;
     pointer-events: none;
-  }
-
-  /* Inner hairline frame inside the visual — a second, finer rectangle inside the
-     corner accents. Sells the editorial "captured frame" feel. */
-  .visual-inner-frame {
-    position: absolute;
-    inset: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 6px;
-    pointer-events: none;
-    z-index: 5;
-    opacity: 0.6;
-    transition: opacity 0.5s var(--ease-out-expo), border-color 0.5s var(--ease-out-expo);
-  }
-  .card-link:hover .visual-inner-frame {
-    opacity: 1;
-    border-color: rgba(255, 255, 255, 0.25);
   }
 
   .card-large .card-visual {
@@ -577,6 +536,80 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     left: 150%;
   }
 
+  /* Right-edge leader line — ultra-thin hairline along the far right edge of the visual.
+     Positioned at the extreme right (0px from edge), far from the number at top-left. */
+  .visual-leader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(201, 168, 76, 0.25) 20%,
+      rgba(201, 168, 76, 0.4) 50%,
+      rgba(201, 168, 76, 0.25) 80%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Diagonal light sweep — thin elongated band crossing the image like a lens leak.
+     Intentionally wide and diagonal to avoid any compact shape near the top-left. */
+  .visual-sweep {
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 140%;
+    height: 18%;
+    background: linear-gradient(
+      105deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.08) 48%,
+      rgba(255, 255, 255, 0.14) 50%,
+      rgba(255, 255, 255, 0.08) 52%,
+      transparent 65%
+    );
+    transform: rotate(-12deg);
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: screen;
+  }
+
+  /* Editorial reel stamp — bottom-right corner, a monospace timecode marker.
+     Positioned far from the top-left number, so it cannot be confused with the white-square artifact. */
+  .visual-reel {
+    position: absolute;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    z-index: 12;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.55);
+    pointer-events: none;
+  }
+
+  .visual-reel .reel-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(232, 98, 42, 0.7);
+    box-shadow: 0 0 6px rgba(232, 98, 42, 0.4);
+  }
+
+  .card-small .visual-reel {
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.55rem;
+  }
+
   /* Duration Lockup */
   .duration-lockup {
     position: absolute;
@@ -600,39 +633,12 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     font-weight: 700;
     line-height: 0.85;
     color: white;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     letter-spacing: -0.02em;
     transition: transform 0.6s var(--ease-out-expo);
   }
   .card-link:hover .duration-number {
     transform: translateY(-2px);
   }
-
-  /* Tiny gold tick beneath the duration number — micro-detail, sells the editorial number */
-  .duration-tick {
-    display: block;
-    width: 1.5rem;
-    height: 1px;
-    margin-top: 0.55rem;
-    background: linear-gradient(90deg, rgba(201, 168, 76, 0.95), rgba(201, 168, 76, 0.3));
-    transition: width 0.5s var(--ease-out-expo);
-  }
-  .card-link:hover .duration-tick {
-    width: 2.5rem;
-  }
-
-  /* Editorial hairline rule above the duration number */
-  .duration-number::before {
-    content: '';
-    position: absolute;
-    top: -0.65rem;
-    left: 0;
-    width: 1.75rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(201, 168, 76, 0.95), rgba(201, 168, 76, 0.4));
-    transition: width 420ms var(--ease-out-expo);
-  }
-  .card-link:hover .duration-number::before { width: 3rem; }
 
   .card-large .duration-number {
     font-size: 3.5rem;
@@ -728,7 +734,9 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     gap: 0.4rem;
     padding: 0.4rem 0.875rem;
     background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 100px;
     font-family: var(--font-display);
     font-size: 0.7rem;
@@ -752,44 +760,6 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
 
   .stops-icon {
     color: var(--accent-color);
-  }
-
-  /* Corner Accents — refined gold L-brackets, fade in on hover */
-  .corner-accent {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    border-color: rgba(201, 168, 76, 0.55);
-    border-style: solid;
-    border-width: 0;
-    z-index: 6;
-    opacity: 0.7;
-    transition: opacity 360ms var(--ease-out-expo), border-color 360ms var(--ease-out-expo), width 360ms var(--ease-out-expo), height 360ms var(--ease-out-expo);
-  }
-
-  .card-large .corner-accent {
-    width: 28px;
-    height: 28px;
-  }
-
-  .corner-accent.tl { top: 0.85rem; left: 0.85rem; border-top-width: 1.5px; border-left-width: 1.5px; border-radius: 2px 0 0 0; }
-  .corner-accent.tr { top: 0.85rem; right: 0.85rem; border-top-width: 1.5px; border-right-width: 1.5px; border-radius: 0 2px 0 0; }
-  .corner-accent.bl { bottom: 0.85rem; left: 0.85rem; border-bottom-width: 1.5px; border-left-width: 1.5px; }
-  .corner-accent.br { bottom: 0.85rem; right: 0.85rem; border-bottom-width: 1.5px; border-right-width: 1.5px; }
-
-  .card-large .corner-accent.tl { top: 1rem; left: 1rem; border-radius: 3px 0 0 0; }
-  .card-large .corner-accent.tr { top: 1rem; right: 1rem; border-radius: 0 3px 0 0; }
-  .card-large .corner-accent.bl { bottom: 1rem; left: 1rem; }
-  .card-large .corner-accent.br { bottom: 1rem; right: 1rem; }
-
-  .card-link:hover .corner-accent,
-  .card-link:focus-visible .corner-accent {
-    opacity: 1;
-    border-color: rgba(201, 168, 76, 1);
-  }
-  .card-link:hover .card-large .corner-accent {
-    width: 32px;
-    height: 32px;
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -821,18 +791,17 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     );
   }
 
-  /* Tiny accent dot at the center of the top rule (editorial center mark) */
+  /* Tiny accent mark at the center of the top rule — small diamond, editorial center mark */
   .card-content::after {
     content: '';
     position: absolute;
-    top: -2px;
+    top: -2.5px;
     left: 50%;
     width: 5px;
     height: 5px;
     background: var(--accent-color);
-    border-radius: 50%;
-    transform: translateX(-50%);
-    box-shadow: 0 0 0 2px #ffffff;
+    border-radius: 1px;
+    transform: translateX(-50%) rotate(45deg);
   }
 
   .card-small .card-content {
@@ -1100,10 +1069,6 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
 
     .card-description {
       font-size: 0.875rem;
-    }
-
-    .visual-inner-frame {
-      inset: 1rem;
     }
   }
 
