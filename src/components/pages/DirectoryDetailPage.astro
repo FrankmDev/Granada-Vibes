@@ -39,7 +39,7 @@ const faq = [
 ];
 
 const breadcrumb = [
-  { name: locale === 'en' ? 'Home' : 'Inicio', url: getRoute('home', locale) },
+  { name: t('nav.home'), url: getRoute('home', locale) },
   { name: indexLabel, url: indexPath },
   { name: entry.name, url: `${indexPath}${entry.slug}/` },
 ];
@@ -166,7 +166,7 @@ const heroMetadata = [
     </div>
   </section>
 
-  <section class="dir-archive" aria-label={locale === 'en' ? 'Venue collaboration' : 'Colaboración con la sala'}>
+  <section class="dir-archive" aria-label={t('directory.venueCollaborationAria')}>
     <div class="dir-wrap">
       <CollaborateCTA locale={locale} variant="venue" />
     </div>

@@ -155,6 +155,7 @@ export const es = {
 
   // Detail pages (events & routes)
   detail: {
+    liveStatus: 'En directo',
     date: 'Fecha',
     time: 'Hora',
     price: 'Precio',
@@ -759,6 +760,7 @@ ctaAriaLabel: 'Descubre Granada',
     venueMeta: 'Recinto',
     noUpcoming: 'No hay próximas fechas activas ahora mismo.',
     browseEvents: 'Ver agenda completa',
+    venueCollaborationAria: 'Colaboración con la sala',
     faqTitle: 'Preguntas frecuentes',
     venueFaqQuestion: '¿Cómo encontrar eventos en esta sala?',
     venueFaqAnswer: 'Revisa las próximas fechas de esta página y entra en cada ficha para ver horario, precio, entradas y planes relacionados.',
@@ -774,8 +776,16 @@ ctaAriaLabel: 'Descubre Granada',
   legalPages: {
     privacySeoTitle: 'Privacidad y datos en GRN URBAN',
     privacySeoDescription: 'Política de privacidad de GRN URBAN: información sobre contacto, tratamiento de datos y derechos de usuarios de la guía de Granada.',
+    privacyTitle: 'Política de privacidad',
+    privacyIntro: 'En GRN URBAN respetamos tu privacidad. Esta guía cultural utiliza Google Analytics para medir visitas de forma anónima. No almacenamos datos personales sin tu consentimiento explícito ni compartimos información con terceros salvo para el funcionamiento técnico del sitio (alojamiento web y analítica).',
+    privacyContact: 'Si tienes preguntas sobre cómo tratamos tus datos, escríbenos a',
     legalSeoTitle: 'Aviso legal de GRN URBAN',
     legalSeoDescription: 'Aviso legal de GRN URBAN: datos de contacto, condiciones generales de uso y responsabilidad editorial de la guía local de Granada.',
+    legalTitle: 'Aviso legal',
+    legalIntro: 'GRN URBAN es una guía cultural independiente de Granada. El contenido editorial se ofrece con fines informativos. Hacemos nuestro mejor esfuerzo por mantener la información actualizada, pero no garantizamos la exactitud o vigencia de los datos de terceros (eventos, horarios, precios).',
+    legalContact: 'Si tienes dudas sobre los términos de uso del sitio, puedes contactarnos en',
+    backLink: 'Volver a inicio',
+    lastUpdated: 'Última actualización: marzo 2025',
   },
 
   cookieConsent: {

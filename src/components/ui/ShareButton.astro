@@ -1,21 +1,71 @@
 ---
+/**
+ * ShareButton — Wraps a ButtonCTA with Web Share / clipboard logic.
+ *
+ * The visual styling is delegated to ButtonCTA via the `variant` prop.
+ * Defaults to primary; pass `variant="secondary"` or `variant="tertiary"`
+ * to match the surrounding page. The share SVG is always rendered on the
+ * LEFT of the label (iconPosition="left").
+ *
+ * The click handler is delegated at document level — any element with
+ * `data-share-btn` triggers the share flow. This means wrapping the
+ * ShareButton in another element does not break the behaviour.
+ */
+
 interface Props {
   title: string;
   url: string;
   label: string;
   copiedLabel?: string;
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  size?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
   class?: string;
   labelClass?: string;
+  ariaLabel?: string;
 }
 
-const { title, url, label, copiedLabel = label, class: className = '', labelClass = '' } = Astro.props;
+const {
+  title,
+  url,
+  label,
+  copiedLabel = label,
+  variant = 'primary',
+  size = 'md',
+  fullWidth = false,
+  class: className = '',
+  labelClass = '',
+  ariaLabel,
+} = Astro.props;
+
+const classes = [
+  'cta',
+  `cta--${variant}`,
+  `cta--${size}`,
+  'cta--icon-left',
+  fullWidth ? 'cta--full' : '',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
 ---
 
-<button class={className} data-share-btn data-title={title} data-url={url} data-copied={copiedLabel}>
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-    <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-  </svg>
-  <span class={labelClass} aria-live="polite">{label}</span>
+<button
+  type="button"
+  class={classes}
+  data-share-btn
+  data-title={title}
+  data-url={url}
+  data-copied={copiedLabel}
+  aria-label={ariaLabel ?? label}
+  data-cta-variant={variant}
+>
+  <span class="cta__icon cta__icon--left" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+    </svg>
+  </span>
+  <span class:list={['cta__label', labelClass]} aria-live="polite">{label}</span>
 </button>
 
 <script is:inline>
@@ -29,8 +79,8 @@ const { title, url, label, copiedLabel = label, class: className = '', labelClas
 
       const title = btn.dataset.title ?? '';
       const url   = btn.dataset.url ?? '';
-      const copiedLabel = btn.dataset.copied ?? btn.querySelector('span')?.textContent ?? '';
-      const labelSpan = btn.querySelector('span');
+      const copiedLabel = btn.dataset.copied ?? btn.querySelector('.cta__label')?.textContent ?? '';
+      const labelSpan = btn.querySelector('.cta__label');
 
       if (navigator.share) {
         try {

@@ -269,10 +269,15 @@ const c = {
       <div class="dock-divider"></div>
 
       <a href={c.ctaLink} class="dock-cta" aria-label={c.cta}>
-        <span class="dock-cta-tick" aria-hidden="true"></span>
+        <span class="dock-cta-bracket dock-cta-bracket--tl" aria-hidden="true"></span>
+        <span class="dock-cta-bracket dock-cta-bracket--tr" aria-hidden="true"></span>
+        <span class="dock-cta-bracket dock-cta-bracket--bl" aria-hidden="true"></span>
+        <span class="dock-cta-bracket dock-cta-bracket--br" aria-hidden="true"></span>
+        <span class="dock-cta-glow" aria-hidden="true"></span>
+        <span class="dock-cta-pulse" aria-hidden="true"></span>
         <span class="cta-text">{c.cta}</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="cta-arrow" aria-hidden="true">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="cta-arrow" aria-hidden="true">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </a>
     </div>
@@ -496,5 +501,49 @@ const c = {
     };
 
     setTimeout(revealHero, MAX_BOOT_MS);
+
+    // 5. Dock CTA — 3D tilt, click pulse, magnet pull
+    const dockCta = document.querySelector('.dock-cta') as HTMLElement | null;
+    if (dockCta && !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+      const pulse = dockCta.querySelector('.dock-cta-pulse') as HTMLElement | null;
+      const dockRect = () => dockCta.getBoundingClientRect();
+
+      const onMove = (e: MouseEvent) => {
+        const r = dockRect();
+        if (r.width === 0) return;
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        dockCta.style.setProperty('--cta-mx', `${(px - 0.5) * 100}%`);
+        dockCta.style.setProperty('--cta-my', `${(py - 0.5) * 100}%`);
+        const tiltX = (py - 0.5) * -2.5;
+        const tiltY = (px - 0.5) * 2.5;
+        dockCta.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-1px) scale(1.01)`;
+      };
+      const onLeave = () => {
+        dockCta.style.transform = '';
+        dockCta.style.removeProperty('--cta-mx');
+        dockCta.style.removeProperty('--cta-my');
+      };
+
+      dockCta.addEventListener('mousemove', onMove);
+      dockCta.addEventListener('mouseleave', onLeave);
+
+      dockCta.addEventListener('mousedown', (e) => {
+        if (!pulse) return;
+        const r = dockCta.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        pulse.style.left = `${x}px`;
+        pulse.style.top = `${y}px`;
+        pulse.style.transition = 'none';
+        pulse.style.opacity = '0.85';
+        pulse.style.transform = `translate(-50%, -50%) scale(0)`;
+        requestAnimationFrame(() => {
+          pulse.style.transition = 'transform 700ms cubic-bezier(0.16, 1, 0.3, 1), opacity 700ms ease-out';
+          pulse.style.transform = `translate(-50%, -50%) scale(28)`;
+          pulse.style.opacity = '0';
+        });
+      });
+    }
   })();
 </script>

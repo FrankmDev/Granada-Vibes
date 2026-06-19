@@ -3,7 +3,12 @@
  * SectionHeader — unified editorial masthead for all sections.
  * Centered layout with eyebrow lines, split title (primary / secondary),
  * optional subtitle and CTA pill. Self-contained IntersectionObserver.
+ *
+ * The CTA is rendered via the shared ButtonCTA component (primary variant)
+ * so every "view all" link across the home gets the same foundry-plate
+ * treatment (rivets, engraved text, mouse-tracking glow, click pulse).
  */
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 
 interface Props {
   eyebrow: string;
@@ -96,14 +101,9 @@ const secondaryChars = titleSecondary
   )}
 
   {ctaHref && ctaLabel && (
-    <a href={ctaHref} class="sh-cta">
-      <span class="sh-cta-tick" aria-hidden="true"></span>
-      <span class="sh-cta-highlight" aria-hidden="true"></span>
-      <span class="sh-cta-text">{ctaLabel}</span>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    <div class="sh-cta-wrap">
+      <ButtonCTA href={ctaHref} variant="primary" size="md">{ctaLabel}</ButtonCTA>
+    </div>
   )}
 
   {showDecoration && (
@@ -356,96 +356,13 @@ const secondaryChars = titleSecondary
   }
 
   /* ═══════════════════════════════════════════════════════════════
-     CTA PILL
-     ═══════════════════════════════════════════════════════════════ */
-  .sh-cta {
+     CTA WRAPPER
+     ═══════════════════════════════════════════════════════════════
+     The ButtonCTA component handles its own visual identity; the wrapper
+     just provides spacing relative to the section header content. */
+  .sh-cta-wrap {
     display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 2rem;
-    padding: 0.875rem 2.25rem;
-    background: var(--sh-ink);
-    border-radius: 100px;
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--sh-cream);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 8px 24px rgba(26, 22, 25, 0.15);
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  /* Top hairline highlight on the CTA pill (very subtle, sells the material) */
-  .sh-cta-highlight {
-    position: absolute;
-    top: 0;
-    left: 1.25rem;
-    right: 1.25rem;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.22) 50%, transparent 100%);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* Tiny gold tick on the left edge of the CTA pill */
-  .sh-cta-tick {
-    position: absolute;
-    left: 0.6rem;
-    top: 50%;
-    width: 4px;
-    height: 4px;
-    background: var(--sh-orange);
-    border-radius: 50%;
-    transform: translateY(-50%);
-    z-index: 0;
-    opacity: 0.85;
-    box-shadow: 0 0 0 2px rgba(232, 98, 42, 0.18);
-    transition: opacity 0.4s ease, transform 0.4s var(--ease-out-expo);
-  }
-  .sh-cta:hover .sh-cta-tick {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.2);
-  }
-  .sh-theme--dark .sh-cta-tick {
-    background: var(--color-text-primary);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
-  }
-
-  .sh-cta-text {
-    position: relative;
-    z-index: 1;
-  }
-  .sh-cta svg {
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
-  }
-
-  .sh-theme--dark .sh-cta {
-    background: var(--sh-orange);
-    color: var(--color-text-primary);
-    box-shadow: 0 8px 24px rgba(232, 98, 42, 0.25);
-  }
-
-  .sh-cta:hover {
-    background: var(--sh-orange);
-    color: var(--color-text-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(232, 98, 42, 0.3);
-  }
-
-  .sh-theme--dark .sh-cta:hover {
-    background: var(--sh-ink);
-    box-shadow: 0 16px 40px rgba(26, 22, 25, 0.4);
-  }
-
-  .sh-cta:hover svg {
-    transform: translateX(4px);
+    margin-top: 2.25rem;
   }
 
   /* ═══════════════════════════════════════════════════════════════
@@ -521,9 +438,8 @@ const secondaryChars = titleSecondary
       font-size: 0.95rem;
     }
 
-    .sh-cta {
-      padding: 0.75rem 1.75rem;
-      font-size: 0.7rem;
+    .sh-cta-wrap {
+      margin-top: 1.85rem;
     }
   }
 

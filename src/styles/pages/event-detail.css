@@ -159,9 +159,7 @@
   }
   .upg-badge:hover { border-color: rgba(232,98,42,0.35); color: var(--s-orange); }
   .upg-badge:focus-visible,
-  .upg-nav-link:focus-visible,
-  .upg-btn-primary:focus-visible,
-  .upg-btn-secondary:focus-visible {
+  .upg-nav-link:focus-visible {
     outline: 2px solid var(--s-orange);
     outline-offset: 3px;
   }
@@ -668,25 +666,8 @@
   .event-share-channel--facebook .event-share-icon svg { width: 17px; height: 17px; }
   .event-share-label { font-size: 0.58rem; letter-spacing: 0.1em; }
 
-  /* Primary CTA — used inside event-entry-section (e.g. tickets inline) */
-  .upg-btn-primary {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-    padding: 0.95rem 1.4rem; border-radius: 12px; background: var(--s-ink); color: var(--s-white);
-    font-family: var(--font-display); font-size: 0.76rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-    text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden;
-  }
-  .upg-btn-primary:not(.inert):hover { transform: translateY(-2px); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
-  .upg-btn-primary svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
-  .upg-btn-primary:not(.inert):hover svg { transform: translateX(4px); }
-
-  .upg-btn-secondary {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-    padding: 0.78rem 1.1rem; border-radius: 12px; background: rgba(26,22,25,0.035); color: var(--s-ink-2);
-    font-family: var(--font-display); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.05em; border: 1px solid var(--s-border); cursor: pointer;
-    transition: all 0.3s ease; text-decoration: none;
-  }
-  .upg-btn-secondary:hover { background: rgba(26,22,25,0.06); color: var(--s-ink); border-color: rgba(201,168,76,0.3); }
-  .upg-btn-secondary svg { width: 16px; height: 16px; }
+  /* Primary/Secondary CTAs now use ButtonCTA.astro. */
+  .upg-tickets-btn { letter-spacing: 0.1em; }
 
   .upg-past-notice {
     margin-top: 1.5rem;

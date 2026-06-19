@@ -285,27 +285,7 @@
   .route-toc-link:hover strong { color: var(--s-ink); }
 
   .route-share-actions { display: flex; flex-direction: column; gap: 0.55rem; }
-  .upg-btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-    width: 100%; min-width: 0; box-sizing: border-box;
-    padding: 0.85rem 1.25rem; border-radius: 12px; background: var(--s-ink); color: var(--s-white);
-    font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden; border: none; cursor: pointer;
-  }
-  .upg-btn-primary:not(.inert):hover { transform: scale(1.02); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
-  .upg-btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
-  .upg-btn-primary:not(.inert):hover svg { transform: translateX(4px); }
-  .upg-btn-secondary {
-    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
-    width: 100%; min-width: 0; box-sizing: border-box;
-    padding: 0.7rem 1.1rem; border-radius: 12px; background: rgba(26,22,25,0.03); color: var(--s-ink-2);
-    font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; border: none; cursor: pointer;
-    transition: all 0.3s ease; text-decoration: none;
-  }
-  .upg-btn-secondary:hover { background: rgba(26,22,25,0.06); color: var(--s-ink); }
-  .upg-btn-secondary svg { width: 15px; height: 15px; }
-  .mx-back-btn svg { transition: transform 0.3s ease; }
-  .mx-back-btn:hover svg { transform: translateX(-3px); }
+  /* Share and back buttons now use ButtonCTA.astro (primary/secondary variants). */
 
   /* ================================================================
      BOTTOM SECTIONS — Recommendations

@@ -468,30 +468,7 @@
       line-height: 1.6;
     }
 
-    .empty-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.875rem 1.75rem;
-      font-family: var(--font-display);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--s-bg);
-      background: var(--s-ink);
-      border: 1px solid var(--s-ink);
-      border-radius: 100px;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .empty-btn:hover {
-      background: var(--s-orange);
-      border-color: var(--s-orange);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(232, 98, 42, 0.3);
-    }
+    /* .empty-btn now uses ButtonCTA.astro (primary variant). */
 
     /* Mobile CTA */
     .mobile-cta-wrapper {
@@ -500,35 +477,7 @@
       border-top: 1px solid var(--s-border);
       background: var(--s-bg);
     }
-
-    .mobile-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      width: 100%;
-      padding: 1rem 1.75rem;
-      font-family: var(--font-display);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--s-ink);
-      background: transparent;
-      border: 1.5px solid var(--s-ink);
-      border-radius: 100px;
-      text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .mobile-cta:hover {
-      background: var(--s-orange);
-      border-color: var(--s-orange);
-      color: var(--s-bg);
-    }
-
-    .mobile-cta svg { transition: transform 0.25s ease; }
-    .mobile-cta:hover svg { transform: translateX(4px); }
+    /* .mobile-cta now uses ButtonCTA.astro (secondary variant). */
 
     /* ═══════════════════════════════════════════════════════════════
        RESPONSIVE - Mobile Optimized

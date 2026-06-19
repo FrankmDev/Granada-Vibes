@@ -3,6 +3,7 @@ import type { MixedRoute, Locale, MixedStopCategory, Neighborhood, TimeDuration 
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 
@@ -250,12 +251,9 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
 
     <!-- CTA -->
     <div class="section-footer">
-      <a href={timeRoutesHref} class="footer-cta">
-        <span class="cta-text">{t('actions.viewAll').toUpperCase()}</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <ButtonCTA href={timeRoutesHref} variant="primary" size="lg">
+        {t('actions.viewAll').toUpperCase()}
+      </ButtonCTA>
     </div>
   </div>
 </section>
@@ -996,38 +994,6 @@ function getNeighborhoodName(neighborhood: Neighborhood): string {
     display: flex;
     justify-content: center;
     margin-top: 4rem;
-  }
-
-  .footer-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2.5rem;
-    background: var(--t-ink);
-    border-radius: 100px;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: white;
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 8px 24px rgba(26, 22, 25, 0.2);
-  }
-
-  .footer-cta:hover {
-    background: var(--t-orange);
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px rgba(232, 98, 42, 0.4);
-  }
-
-  .footer-cta svg {
-    transition: transform 0.3s ease;
-  }
-
-  .footer-cta:hover svg {
-    transform: translateX(4px);
   }
 
   /* ═══════════════════════════════════════════════════════════════

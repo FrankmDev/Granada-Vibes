@@ -1,12 +1,18 @@
 const FREE_PRICE_PATTERN = /\b(gratis|entrada libre|entrada gratuita|acceso libre|acceso gratuito|de balde|free entry)\b/i;
 
 const PRICE_PATTERNS = [
-  /desde\s+(\d+)[\s]*€/i,
-  /a partir de\s+(\d+)[\s]*€/i,
-  /precio[\s:]+(\d+)[\s]*€/i,
-  /(\d+)[\s]*€/,
-  /(\d+)[\s]*euros?\b/i,
-  /(\d+)[\s]*eur\b/i,
+  // Require explicit price context: "desde 20€" / "desde 20 €"
+  /desde\s+(\d+)\s*€/i,
+  // "a partir de 20€" / "a partir de 20 €"
+  /a partir de\s+(\d+)\s*€/i,
+  // "precio: 20€" / "precio 20€"
+  /precio[\s:]+(\d+)\s*€/i,
+  // "20€" with word boundary before digits (matches only € amounts, not numbers near € by accident)
+  /(?<!\w)(\d+)\s*€/,
+  // "20 euros" / "20 euro"
+  /(?<!\w)(\d+)\s*euros?\b/i,
+  // "20 eur"
+  /(?<!\w)(\d+)\s*eur\b/i,
 ];
 
 export function extractPriceFromText(text: string): number | null | undefined {

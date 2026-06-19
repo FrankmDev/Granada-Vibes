@@ -207,7 +207,7 @@ const iconSvg: Record<string, string> = {
               <div class="sp-meta-header">
                 <div class="sp-meta-header-left">
                   <span class="sp-meta-header-pip" aria-hidden="true"></span>
-                  <span class="sp-meta-header-text">{locale === 'es' ? 'Datos clave' : 'Key data'}</span>
+                  <span class="sp-meta-header-text">{t('detail.keyFacts')}</span>
                 </div>
                 <span class="sp-meta-header-count" aria-hidden="true">{String(metadata.length).padStart(2, '0')}</span>
               </div>
@@ -266,7 +266,7 @@ const iconSvg: Record<string, string> = {
     <div class="sp-strip-inner">
       <div class="sp-strip-left">
         <span class="sp-live-dot" aria-hidden="true"></span>
-        <span class="sp-strip-text">{locale === 'es' ? 'En directo' : 'Live'}</span>
+        <span class="sp-strip-text">{t('detail.liveStatus')}</span>
       </div>
       <div class="sp-strip-center">
         <span class="sp-strip-coords">{coordinates}</span>

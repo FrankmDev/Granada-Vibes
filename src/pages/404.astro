@@ -5,6 +5,7 @@ import { useTranslations } from '@i18n/utils';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 
 const currentPath = Astro.url.pathname;
 const locale = getLocaleFromPath(currentPath);
@@ -26,15 +27,15 @@ const t = useTranslations(locale);
       <p class="not-found-desc">{t('notFound.message')}</p>
 
       <div class="not-found-actions">
-        <a href={getRoute('home', locale)} class="not-found-btn not-found-btn-primary">
+        <ButtonCTA href={getRoute('home', locale)} variant="primary" size="md">
           {t('notFound.goHome')}
-        </a>
-        <a href={getRoute('events', locale)} class="not-found-btn not-found-btn-secondary">
+        </ButtonCTA>
+        <ButtonCTA href={getRoute('events', locale)} variant="secondary" size="md">
           {t('nav.events')}
-        </a>
-        <a href={getRoute('routes', locale)} class="not-found-btn not-found-btn-secondary">
+        </ButtonCTA>
+        <ButtonCTA href={getRoute('routes', locale)} variant="secondary" size="md">
           {t('nav.routes')}
-        </a>
+        </ButtonCTA>
       </div>
     </div>
   </section>
@@ -92,41 +93,5 @@ const t = useTranslations(locale);
     flex-wrap: wrap;
     gap: 0.75rem;
     justify-content: center;
-  }
-
-  .not-found-btn {
-    font-family: var(--font-display, 'DM Sans', sans-serif);
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 0.85rem 2rem;
-    border-radius: 100px;
-    transition: all 0.3s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .not-found-btn-primary {
-    background: var(--color-accent, #e8622a);
-    color: #fff;
-  }
-
-  .not-found-btn-primary:hover {
-    background: var(--color-accent-hover, #f07040);
-    transform: translateY(-2px);
-  }
-
-  .not-found-btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--color-text-primary, #f0ede8);
-    border: 1px solid var(--color-border, #242424);
-  }
-
-  .not-found-btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--color-text-muted, #5a5550);
-    transform: translateY(-2px);
   }
 </style>

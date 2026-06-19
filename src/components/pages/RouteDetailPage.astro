@@ -3,6 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import RouteDetailHero from '@components/routes/RouteDetailHero.astro';
 import Footer from '@components/layout/Footer.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import InstagramIcon from '@components/icons/InstagramIcon.astro';
 import WhatsAppIcon from '@components/icons/WhatsAppIcon.astro';
 import { getAllRoutes } from '@data/index.js';
@@ -479,7 +480,8 @@ const routeFacts = [
                   url={Astro.url.href}
                   label={copy.share.label}
                   copiedLabel={copy.share.copied}
-                  class="upg-btn-primary"
+                  variant="primary"
+                  fullWidth
                 />
 
                 <div class="upg-tc-channels" aria-label={copy.share.label}>

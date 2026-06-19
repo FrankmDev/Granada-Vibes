@@ -86,11 +86,32 @@ export function hashId(text: string): string {
 /**
  * Parse a price string like "13€", "45,10€", "Gratis", "Entrada libre" into a number or null.
  * Returns null for free events and undefined-ish values.
+ * Requires euro/currency context — does NOT match bare standalone numbers.
  */
 export function parsePrice(text: string): number | null {
   if (!text) return null;
-  if (/gratis|libre|free/i.test(text)) return null;
-  const match = text.match(/(\d+(?:[.,]\d+)?)/);
-  if (match) return parseFloat(match[1]!.replace(',', '.'));
+  if (/gratis|entrada libre|entrada gratuita|acceso libre|acceso gratuito|de balde|free\s*entry/i.test(text)) return null;
+
+  // Require explicit currency context: €, EUR, euro(s), or "precio"
+  const currencyPatterns = [
+    /(\d+(?:[.,]\d+)?)\s*€/,
+    /(\d+(?:[.,]\d+)?)\s*euros?\b/i,
+    /(\d+(?:[.,]\d+)?)\s*eur\b/i,
+  ];
+
+  for (const pattern of currencyPatterns) {
+    const match = text.match(pattern);
+    if (match) {
+      return parseFloat(match[1]!.replace(',', '.'));
+    }
+  }
+
+  // Also catch "desde 20" or "precio 20" contexts without explicit currency symbol
+  const priceContextPattern = /(?:precio|price|coste|costo|desde|a\s+partir\s+de)\s*[:]?\s*(\d+(?:[.,]\d+)?)/i;
+  const ctxMatch = text.match(priceContextPattern);
+  if (ctxMatch) {
+    return parseFloat(ctxMatch[1]!.replace(',', '.'));
+  }
+
   return null;
 }

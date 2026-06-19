@@ -1,5 +1,6 @@
 ---
 import EventArchiveCard from '@components/events/EventArchiveCard.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import type { Event, EventCategory, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getEventDetailUrl } from '@utils/routes';
@@ -63,8 +64,14 @@ function eventHref(slug: string): string {
     </div>
     <h3 class="empty-title">{t('filters.noResults')}</h3>
     <p class="empty-text">{t('filters.noResultsDesc')}</p>
-    <button id="empty-clear-filters" class="empty-btn">
+    <ButtonCTA
+      id="empty-clear-filters"
+      type="button"
+      variant="primary"
+      size="md"
+      class="empty-btn"
+    >
       {t('filters.clearFilters')}
-    </button>
+    </ButtonCTA>
   </div>
 </div>

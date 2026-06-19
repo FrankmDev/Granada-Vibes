@@ -4,6 +4,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import EventsArchiveFilter from '@components/events/EventsArchiveFilter.astro';
 import EventsArchiveGrid from '@components/events/EventsArchiveGrid.astro';
 import { getIndexableEvents } from '@data/index.js';
@@ -163,12 +164,15 @@ const quickLinks = QUICK_HUB_IDS
 
     <!-- Mobile CTA -->
     <div class="mobile-cta-wrapper">
-      <a href={routesHref()} class="mobile-cta">
-        <span>{t('nav.byTime')}</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <ButtonCTA
+        href={routesHref()}
+        variant="secondary"
+        size="md"
+        fullWidth
+        class="mobile-cta"
+      >
+        {t('nav.byTime')}
+      </ButtonCTA>
     </div>
   </section>
 

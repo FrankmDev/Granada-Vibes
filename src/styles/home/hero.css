@@ -917,73 +917,129 @@
   flex-shrink: 0;
 }
 .dock-cta {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.55rem 1.25rem 0.55rem 1.4rem;
+  display: flex; align-items: center; gap: 0.55rem;
+  padding: 0.6rem 1.35rem;
   background: var(--color-accent);
   border: 1px solid rgba(232, 98, 42, 0.5);
-  border-radius: 100px;
+  border-radius: 4px;
   text-decoration: none; color: white;
-  transition: all 0.3s var(--ease-out-expo);
+  transition: all 0.5s var(--ease-out-expo);
   flex-shrink: 0;
   box-shadow:
     0 4px 20px rgba(232, 98, 42, 0.25),
-    inset 0 1px 0 rgba(255,255,255,0.2);
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
   position: relative;
   overflow: hidden;
+  isolation: isolate;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  perspective: 800px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.25), 0 -1px 0 rgba(255,255,255,0.18);
+  letter-spacing: 0.16em;
+  font-weight: 600;
 }
-/* Tiny inner gold tick on the left edge of the dock CTA (mirrors SectionHeader pattern) */
-.dock-cta-tick {
-  position: absolute;
-  left: 0.5rem;
-  top: 50%;
-  width: 4px; height: 4px;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
-  transition: transform 0.4s var(--ease-out-expo);
-}
-.dock-cta:hover .dock-cta-tick { transform: translateY(-50%) scale(1.2); }
+
+/* Soft inner highlight on top-left */
 .dock-cta::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
-  opacity: 0; transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.5s var(--ease-out-expo);
+  z-index: 0;
 }
+
+/* Shine sweep */
 .dock-cta::after {
   content: '';
   position: absolute;
   top: 0; left: -100%;
   width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
   transform: skewX(-20deg);
-  transition: left 0.7s var(--ease-out-expo);
+  transition: left 0.8s var(--ease-out-expo);
   pointer-events: none;
+  z-index: 0;
 }
+
+/* Corner brackets — always visible, architectural, become white on hover */
+.dock-cta .dock-cta-bracket {
+  position: absolute;
+  width: 7px; height: 7px;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.55;
+  border-color: rgba(255, 255, 255, 0.9);
+  border-style: solid;
+  border-width: 0;
+  transition: opacity 0.5s var(--ease-out-expo),
+              width 0.6s var(--ease-out-expo),
+              height 0.6s var(--ease-out-expo);
+}
+.dock-cta .dock-cta-bracket--tl { top: 0.25rem; left: 0.25rem; border-top-width: 1px; border-left-width: 1px; }
+.dock-cta .dock-cta-bracket--tr { top: 0.25rem; right: 0.25rem; border-top-width: 1px; border-right-width: 1px; }
+.dock-cta .dock-cta-bracket--bl { bottom: 0.25rem; left: 0.25rem; border-bottom-width: 1px; border-left-width: 1px; }
+.dock-cta .dock-cta-bracket--br { bottom: 0.25rem; right: 0.25rem; border-bottom-width: 1px; border-right-width: 1px; }
+.dock-cta:hover .dock-cta-bracket { opacity: 1; width: 11px; height: 11px; }
+
+/* Click pulse — positioned dynamically by the .hero-init script */
+.dock-cta .dock-cta-pulse {
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: none;
+}
+
+/* Mouse-tracking glow — uses --cta-mx, --cta-my set by the script */
+.dock-cta .dock-cta-glow {
+  position: absolute;
+  top: var(--cta-my, 50%);
+  left: var(--cta-mx, 50%);
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out-expo);
+  mix-blend-mode: screen;
+}
+.dock-cta:hover .dock-cta-glow { opacity: 1; }
+
 .dock-cta:hover {
   background: var(--color-accent-hover);
   transform: translateY(-2px) scale(1.02);
   box-shadow:
     0 8px 30px rgba(232, 98, 42, 0.4),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 .dock-cta:hover::before { opacity: 1; }
 .dock-cta:hover::after { left: 150%; }
 .cta-text {
   font-family: var(--font-display);
-  font-size: 0.75rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase;
   white-space: nowrap;
   position: relative; z-index: 1;
+  transition: transform 0.5s var(--ease-out-expo);
 }
 .cta-arrow {
   opacity: 0.9;
-  transition: transform 0.25s, opacity 0.25s;
+  transition: transform 0.5s var(--ease-out-expo), opacity 0.5s var(--ease-out-expo);
   position: relative; z-index: 1;
 }
+.dock-cta:hover .cta-text { transform: translateY(-0.5px); }
 .dock-cta:hover .cta-arrow {
   opacity: 1;
-  transform: translateX(3px);
+  transform: translateX(3px) rotate(8deg);
 }
 /* Scroll hint */
 .scroll-hint {

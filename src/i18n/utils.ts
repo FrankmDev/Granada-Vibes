@@ -8,6 +8,9 @@ const translations: Record<Locale, Translations> = {
   en,
 };
 
+/** Default locale used for fallback when a key is missing in the current locale */
+const DEFAULT_LOCALE: Locale = 'es';
+
 /**
  * Type-safe path accessor for nested translation objects
  */
@@ -19,11 +22,18 @@ type Path<T, Key extends keyof T = keyof T> = Key extends string
 
 type TranslationPath = Path<Translations>;
 
+const isDev = import.meta.env.DEV;
+
+function warnInDev(message: string): void {
+  if (!isDev) return;
+  globalThis.console.warn(message);
+}
+
 /**
  * Get a nested value from an object using a dot-notation path
  */
-function getNestedValue<T extends Record<string, unknown>>(
-  obj: T,
+function getNestedValue(
+  obj: Record<string, unknown>,
   path: string
 ): string | Record<string, unknown> | undefined {
   const keys = path.split('.');
@@ -42,33 +52,47 @@ function getNestedValue<T extends Record<string, unknown>>(
 /**
  * Replace template variables in a string
  * e.g., interpolate("Hello {{name}}", { name: "World" }) → "Hello World"
+ * Missing variables produce an empty string (never a raw token), with a dev-only warning.
  */
 function interpolate(
   template: string,
   vars: Record<string, string | number>
 ): string {
-  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => {
+  return template.replace(/\{\{(\w+)\}\}/g, (_match: string, key: string) => {
     const value = vars[key];
-    return value !== undefined ? String(value) : `{{${key}}}`;
+    if (value !== undefined) return String(value);
+    warnInDev(`[i18n] Missing interpolation variable "{{${key}}}" in template: "${template.slice(0, 80)}"`);
+    return '';
   });
 }
 
 /**
  * Hook to get translations for a specific locale
  * Returns a function to translate keys with optional interpolation
+ *
+ * Behaviour:
+ * - If the key exists as a string in the requested locale, returns it (interpolated if vars given).
+ * - Otherwise falls back to the default locale (es). If the default also lacks the key,
+ *   returns an empty string and warns in dev — never leaks raw keys into production HTML.
  */
 export function useTranslations(locale: Locale) {
-  const t = translations[locale];
+  const current = translations[locale];
+  const fallback = DEFAULT_LOCALE !== locale ? translations[DEFAULT_LOCALE] : null;
 
   return (
     key: TranslationPath,
     vars?: Record<string, string | number>
   ): string => {
-    const value = getNestedValue(t, key);
+    let value = getNestedValue(current, key);
+
+    // If not found in current locale, try default locale
+    if (typeof value !== 'string' && fallback) {
+      value = getNestedValue(fallback, key);
+    }
 
     if (typeof value !== 'string') {
-      // Return the key as fallback if translation not found
-      return key;
+      warnInDev(`[i18n] Missing translation key "${key}" for locale "${locale}" (and fallback "${DEFAULT_LOCALE}")`);
+      return '';
     }
 
     return vars ? interpolate(value, vars) : value;

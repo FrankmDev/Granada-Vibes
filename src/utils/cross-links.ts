@@ -1,4 +1,4 @@
-import type { BlogPost, Event, Neighborhood, Route, RouteCategory } from '@types';
+import type { BlogPost, Event, Neighborhood, Route } from '@types';
 import { getAllRoutes, getAllPosts, getIndexableEvents } from '@data/index.js';
 
 // ═══════════════════════════════════════════════════════════════
@@ -79,8 +79,7 @@ function scoreAgainstSource(
 
     // Category semantic bridge
     if (sourceCategory) {
-      const candidateCategory =
-        'category' in candidate ? String(candidate.category) : undefined;
+      const candidateCategory = 'category' in candidate ? candidate.category : undefined;
       if (candidateCategory) {
         const bridges = categoryBridge[sourceCategory] ?? [];
         if (bridges.includes(candidateCategory)) score += 5;
@@ -120,7 +119,6 @@ export function getRelatedRoutesForBlogPost(post: BlogPost, limit = 2): Route[] 
   const scorer = scoreAgainstSource(sourceTags, [], post.category, post.tags.join(' '));
 
   const scored = getAllRoutes()
-    .filter((r) => !post.tags.some((t) => t.toLowerCase().includes('sierra nevada')) || r.category !== 'hiking') // avoid false positives
     .map((item) => ({ type: 'route' as const, item, score: scorer(item) }));
 
   return sortAndLimit(scored, limit).map((s) => s.item);

@@ -1,5 +1,6 @@
 ---
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
 import type { Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getPlanDetailUrl } from '@utils/routes';
@@ -123,22 +124,14 @@ const categoryIcons: Record<string, string> = {
 
   <div class="timeline-container">
     <!-- Section Header -->
-    <header class="section-header">
-      <div class="header-ornament">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="header-eyebrow">{t('mixedRoutes.sectionChooseRhythm')}</span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
-      </div>
-      <h2 class="section-title">
-        <span class="title-line">{t('mixedRoutes.titleLineYourTime')}</span>
-        <span class="title-accent">{t('mixedRoutes.titleLineYourGranada')}</span>
-      </h2>
-      <p class="section-subtitle">
-        {t('mixedRoutes.sectionFullDescription')}
-      </p>
-    </header>
+    <SectionHeader
+      eyebrow={t('mixedRoutes.sectionChooseRhythm')}
+      title={t('mixedRoutes.titleMain')}
+      titleSecondary={t('mixedRoutes.titleSecondary')}
+      subtitle={t('mixedRoutes.sectionFullDescription')}
+      animateTitle={true}
+      theme="cream"
+    />
 
     <!-- Plans Grid -->
     <div class="plans-grid">

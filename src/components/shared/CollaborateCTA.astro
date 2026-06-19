@@ -14,6 +14,7 @@
 import type { Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 
 type CollaborateCtaVariant = 'event' | 'venue' | 'guide' | 'route' | 'timePlan';
 
@@ -59,27 +60,17 @@ const ariaLabel = `${copy.cta} — ${copy.title}`;
 
     <p class="ccta-subtitle">{copy.subtitle}</p>
 
-    <a
+    <ButtonCTA
       href={href}
-      class="ccta-button"
+      variant="primary"
+      size="sm"
+      icon="mail"
       data-track="generate_lead"
       aria-label={ariaLabel}
+      class="ccta-button"
     >
-      <span>{copy.cta}</span>
-      <svg
-        width="14"
-        height="14"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M5 12h14M12 5l7 7-7 7" />
-      </svg>
-    </a>
+      {copy.cta}
+    </ButtonCTA>
   </div>
 </aside>
 
@@ -204,58 +195,27 @@ const ariaLabel = `${copy.cta} — ${copy.title}`;
     text-wrap: pretty;
   }
 
+  /* ccta-button uses ButtonCTA's primary variant. Just lift it slightly. */
   .ccta-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
     margin-top: 0.4rem;
-    padding: 0.85rem 1.75rem;
-    background: var(--ccta-ink);
-    color: var(--ccta-on-dark);
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 100px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 6px 18px rgba(26, 22, 25, 0.08);
     min-height: 44px;
   }
 
-  .ccta-button:hover {
-    background: var(--ccta-orange);
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 26px rgba(232, 98, 42, 0.28);
-  }
-
-  .ccta-button:focus-visible {
-    outline: none;
-    box-shadow:
-      0 6px 18px rgba(26, 22, 25, 0.08),
-      0 0 0 3px rgba(232, 98, 42, 0.35);
-  }
-
-  .ccta-button svg { transition: transform 0.3s ease; }
-  .ccta-button:hover svg { transform: translateX(3px); }
-
-  /* Dark theme button colour */
+  /* Dark theme override: orange background instead of ink. */
   .ccta--dark .ccta-button {
-    background: var(--ccta-orange);
-    color: #fff;
+    --cta-bg: #e8622a;
+    --cta-border: #e8622a;
+    --cta-fg: #ffffff;
   }
   .ccta--dark .ccta-button:hover {
-    background: var(--ccta-gold);
-    color: #1a1619;
+    --cta-bg: #c9a84c;
+    --cta-border: #c9a84c;
+    --cta-fg: #1a1619;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ccta,
-    .ccta-corner,
-    .ccta-button,
-    .ccta-button svg {
+    .ccta-corner {
       transition: none;
       animation: none;
     }

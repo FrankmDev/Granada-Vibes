@@ -267,7 +267,7 @@ switch (type) {
             addressCountry: 'ES',
           },
         },
-        image: eventImages.length > 1 ? eventImages : eventImages[0],
+        image: eventImages.length > 0 ? eventImages : undefined,
         url: `${siteUrl}${path}`,
         isAccessibleForFree: priceStatus === 'free',
         offers: offerSchema,
@@ -365,11 +365,6 @@ switch (type) {
             audienceType: 'History Enthusiasts',
           },
         ],
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: 37.1773,
-          longitude: -3.5986,
-        },
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Granada',
@@ -377,7 +372,6 @@ switch (type) {
           addressCountry: 'ES',
         },
         additionalProperty: routeProps,
-        hasMap: 'https://www.google.com/maps/search/?api=1&query=Granada,+Spain',
       };
     }
     break;
@@ -424,11 +418,6 @@ switch (type) {
             audienceType: 'History Enthusiasts',
           },
         ],
-        geo: {
-          '@type': 'GeoCoordinates',
-          latitude: 37.1773,
-          longitude: -3.5986,
-        },
         address: {
           '@type': 'PostalAddress',
           addressLocality: 'Granada',
@@ -447,7 +436,6 @@ switch (type) {
             value: planData.neighborhoods.join(', '),
           },
         ],
-        hasMap: 'https://www.google.com/maps/search/?api=1&query=Granada,+Spain',
       };
       if (itemListElements.length > 0) {
         (primarySchema as Record<string, unknown>).itinerary = {
@@ -476,7 +464,6 @@ switch (type) {
           '@id': `${siteUrl}${path}`,
         },
         datePublished: postData.publishDate,
-        dateModified: postData.publishDate,
         articleSection: postData.category,
         wordCount: articleWordCount,
         keywords: postData.tags.join(', '),
@@ -577,7 +564,7 @@ switch (type) {
               },
             },
           } : {}),
-          ...(imgResolved ? { image: imgResolved } : {}),
+          ...(imgResolved ? { image: [imgResolved] } : {}),
           isAccessibleForFree: priceStatus === 'free',
           ...(offers ? { offers } : {}),
         },

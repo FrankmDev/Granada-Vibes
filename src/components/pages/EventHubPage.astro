@@ -95,8 +95,8 @@ const categoryLabels: Record<EventCategory, string> = {
 };
 
 const breadcrumb = [
-  { name: isEnglish ? 'Home' : 'Inicio', url: getRoute('home', locale) },
-  { name: isEnglish ? 'Events' : 'Eventos', url: getRoute('events', locale) },
+  { name: t('nav.home'), url: getRoute('home', locale) },
+  { name: t('nav.events'), url: getRoute('events', locale) },
   { name: config.h1[locale], url: locale === 'en' ? config.englishPath : config.spanishPath },
 ];
 

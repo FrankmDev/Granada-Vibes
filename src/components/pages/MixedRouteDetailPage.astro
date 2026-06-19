@@ -13,9 +13,15 @@ import { getBlogDisplayTitle } from '@utils/content-seo';
 import { getRoute, getPlanDetailUrl, getBlogDetailUrl, getRouteDetailUrl } from '@utils/routes';
 import { formatDuration } from '@utils/dates';
 import { formatDistance } from '@utils/dates';
-import { getRelatedMixedRoutesForMixedRoute } from '@utils/related-content';
+import {
+  getRelatedMixedRoutesForMixedRoute,
+  getRelatedRoutesForMixedRoute,
+  getRelatedGuidesForMixedRoute,
+  getRelatedEventsForMixedRoute,
+} from '@utils/related-content';
 import type { MixedRoute, MixedRouteStop, Locale } from '@types';
 import ShareButton from '@components/ui/ShareButton.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import ReadingProgress from '@components/ui/ReadingProgress.astro';
 import '@styles/pages/mixed-route-detail.css';
 
@@ -40,7 +46,7 @@ const oneDayPost = allPosts.find((item) => item.slug === 'granada-en-un-dia-itin
 const ogImage = plan.image || 'https://upload.wikimedia.org/wikipedia/commons/3/32/Alhambra_view_1102.jpg';
 
 const breadcrumb = [
-  { name: isEnglish ? 'Home' : 'Inicio', url: getRoute('home', locale) },
+  { name: t('nav.home'), url: getRoute('home', locale) },
   { name: t('nav.routes'), url: getRoute('routes', locale) },
   { name: plan.title[locale], url: getPlanDetailUrl(plan.slug, locale) },
 ];
@@ -147,6 +153,11 @@ const planFacts = [
 
 // Other plans (mixed routes) for bottom recommendations
 const otherPlans = getRelatedMixedRoutesForMixedRoute(plan, 3);
+
+const hasRelatedRoutesForPlan = getRelatedRoutesForMixedRoute(plan, 3).length > 0;
+const hasRelatedGuidesForPlan = getRelatedGuidesForMixedRoute(plan, 3).length > 0;
+const hasRelatedEventsForPlan = getRelatedEventsForMixedRoute(plan, 3).length > 0;
+const hasAlsoInteresting = hasRelatedRoutesForPlan || hasRelatedGuidesForPlan || hasRelatedEventsForPlan;
 
 const otherPlanLinks = otherPlans.map((p) => ({
   url: getPlanDetailUrl(p.slug, locale),
@@ -393,14 +404,19 @@ if (plan.essentialTips && plan.essentialTips.length > 0 && tocItems.length < 4) 
                     url={Astro.url.href}
                     label={t('detail.shareRoute')}
                     copiedLabel={t('detail.copied')}
-                    class="upg-btn-primary"
+                    variant="primary"
+                    fullWidth
                   />
-                  <a href={getRoute('byTime', locale)} class="upg-btn-secondary mx-back-btn">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                      <path d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span class="upg-share-label">{t('detail.backToTimeRoutes')}</span>
-                  </a>
+                  <ButtonCTA
+                    href={getRoute('byTime', locale)}
+                    variant="secondary"
+                    size="sm"
+                    icon="arrowLeft"
+                    fullWidth
+                    class="mx-back-btn"
+                  >
+                    {t('detail.backToTimeRoutes')}
+                  </ButtonCTA>
                 </div>
               </section>
 
@@ -414,32 +430,36 @@ if (plan.essentialTips && plan.essentialTips.length > 0 && tocItems.length < 4) 
         <CollaborateCTA locale={locale} variant="timePlan" />
       </div>
 
-      <section class="upg-block upg-block--loose mx-recommend" id="also-plans" data-reveal aria-labelledby="mx-plans-title">
-        <header class="upg-header">
-          <span class="upg-num">07</span>
-          <span class="upg-line" aria-hidden="true"></span>
-          <h2 id="mx-plans-title" class="upg-eyebrow">[ {t('detail.relatedPlans')} ]</h2>
-        </header>
-        <RelatedPlans
-          locale={locale}
-          plan={plan}
-          title={t('detail.relatedPlans')}
-          limit={3}
-        />
-      </section>
+      {otherPlans.length > 0 && (
+        <section class="upg-block upg-block--loose mx-recommend" id="also-plans" data-reveal aria-labelledby="mx-plans-title">
+          <header class="upg-header">
+            <span class="upg-num">07</span>
+            <span class="upg-line" aria-hidden="true"></span>
+            <h2 id="mx-plans-title" class="upg-eyebrow">[ {t('detail.relatedPlans')} ]</h2>
+          </header>
+          <RelatedPlans
+            locale={locale}
+            plan={plan}
+            title={t('detail.relatedPlans')}
+            limit={3}
+          />
+        </section>
+      )}
 
-      <section class="upg-block upg-block--loose mx-recommend" id="also-interesting" data-reveal aria-labelledby="mx-related-title">
-        <header class="upg-header">
-          <span class="upg-num">08</span>
-          <span class="upg-line" aria-hidden="true"></span>
-          <h2 id="mx-related-title" class="upg-eyebrow">[ {t('detail.alsoInteresting')} ]</h2>
-        </header>
-        <div class="upg-related-stack">
-          <RelatedRoutes type="mixedRoute" plan={plan} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
-          <RelatedGuides type="mixedRoute" plan={plan} locale={locale} title={t('detail.relatedGuides')} limit={3} />
-          <RelatedEvents type="mixedRoute" plan={plan} locale={locale} title={t('detail.relatedEvents')} limit={3} />
-        </div>
-      </section>
+      {hasAlsoInteresting && (
+        <section class="upg-block upg-block--loose mx-recommend" id="also-interesting" data-reveal aria-labelledby="mx-related-title">
+          <header class="upg-header">
+            <span class="upg-num">08</span>
+            <span class="upg-line" aria-hidden="true"></span>
+            <h2 id="mx-related-title" class="upg-eyebrow">[ {t('detail.alsoInteresting')} ]</h2>
+          </header>
+          <div class="upg-related-stack">
+            <RelatedRoutes type="mixedRoute" plan={plan} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+            <RelatedGuides type="mixedRoute" plan={plan} locale={locale} title={t('detail.relatedGuides')} limit={3} />
+            <RelatedEvents type="mixedRoute" plan={plan} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+          </div>
+        </section>
+      )}
 
       <div class="det-footer-orn" aria-hidden="true">
         <span></span>

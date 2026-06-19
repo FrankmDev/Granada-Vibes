@@ -1,5 +1,6 @@
 ---
 import '@styles/components/planificador-form.css';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import { useTranslations } from '@i18n/utils';
 import type { Locale } from '@types';
 
@@ -295,18 +296,16 @@ const plannerCopy = {
       {/* Submit */}
       <div class="submit-area">
         <div class="submit-glow-bg" aria-hidden="true"></div>
-        <button
+        <ButtonCTA
           id="btn-generar"
           type="button"
-          class="submit-btn"
+          variant="primary"
+          size="lg"
           disabled
+          class="submit-btn"
         >
-          <span class="submit-gleam" aria-hidden="true"></span>
-          <span class="submit-text">{t('planner.form.submit')}</span>
-          <svg class="submit-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </button>
+          {t('planner.form.submit')}
+        </ButtonCTA>
         <p id="btn-tooltip" class="submit-tooltip hidden">{t('planner.form.submitTooltip')}</p>
       </div>
     </form>
@@ -369,18 +368,26 @@ const plannerCopy = {
         <p id="result-nota-final" class="result-note-text"></p>
       </div>
       <div class="result-actions">
-        <button id="btn-compartir" type="button" class="result-action-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/>
-          </svg>
-          <span>{t('planner.results.share')}</span>
-        </button>
-        <button id="btn-reset" type="button" class="result-action-btn secondary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
-          </svg>
-          <span>{t('planner.results.reset')}</span>
-        </button>
+        <ButtonCTA
+          id="btn-compartir"
+          type="button"
+          variant="primary"
+          size="md"
+          icon="share"
+          class="result-action-btn"
+        >
+          {t('planner.results.share')}
+        </ButtonCTA>
+        <ButtonCTA
+          id="btn-reset"
+          type="button"
+          variant="secondary"
+          size="md"
+          icon="refresh"
+          class="result-action-btn result-action-btn--secondary"
+        >
+          {t('planner.results.reset')}
+        </ButtonCTA>
       </div>
     </div>
   </div>

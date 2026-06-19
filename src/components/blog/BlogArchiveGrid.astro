@@ -1,5 +1,6 @@
 ---
 import OptimizedImage from '@components/ui/OptimizedImage.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import type { BlogPost, BlogCategory, Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getBlogDetailUrl } from '@utils/routes';
@@ -171,8 +172,14 @@ function formatDate(dateStr: string): string {
     </div>
     <h3 class="empty-title">{t('blog.emptyTitle')}</h3>
     <p class="empty-text">{t('blog.emptyText')}</p>
-    <button id="empty-clear-filters" class="empty-btn">
+    <ButtonCTA
+      id="empty-clear-filters"
+      type="button"
+      variant="primary"
+      size="md"
+      class="empty-btn"
+    >
       {t('blog.emptyBtn')}
-    </button>
+    </ButtonCTA>
   </div>
 </div>

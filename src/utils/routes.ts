@@ -1,4 +1,5 @@
 import type { Locale } from '@types';
+import { getEnglishPath, getSpanishPath } from '../config/path-segments.mjs';
 
 type RouteName = 'home' | 'events' | 'routes' | 'blog' | 'byTime' | 'planner' | 'privacy' | 'legal' | 'collaborate';
 
@@ -50,6 +51,22 @@ export function getPlanDetailUrl(slug: string, locale: Locale): string {
   return `${ROUTE_MAP[locale].byTime}${slug}/`;
 }
 
-export function getSwitchLangUrl(locale: Locale): string {
+/**
+ * Return the URL to switch to the opposite locale.
+ * When `currentPath` is provided, preserves the equivalent deep path by
+ * translating path segments (e.g. /rutas/por-tiempo/ → /en/routes/by-time/).
+ * Without `currentPath`, falls back to the locale root for backward compatibility.
+ */
+export function getSwitchLangUrl(locale: Locale, currentPath?: string): string {
+  if (currentPath) {
+    // Translate the current path to the opposite locale
+    const oppositeLocale: Locale = locale === 'es' ? 'en' : 'es';
+    const translatedPath =
+      oppositeLocale === 'en'
+        ? getEnglishPath(currentPath)
+        : getSpanishPath(currentPath);
+    return translatedPath;
+  }
+  // Backward-compatible fallback: just switch locale root
   return locale === 'es' ? '/en/' : '/';
 }

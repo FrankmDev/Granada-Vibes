@@ -4,6 +4,9 @@ dist/
 # generated types
 .astro/
 
+# local agent planning state
+.slim/deepwork/
+
 # dependencies
 node_modules/
 scripts/.cache/

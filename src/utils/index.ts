@@ -35,7 +35,7 @@ export {
   isPastEvent,
 } from './event-seo';
 
-export { shouldIndexEventDetail } from './event-indexing';
+export { isNearDuplicateOf, shouldIndexEventDetail } from './event-indexing';
 
 // Price utilities
 export { getPriceStatus, formatPriceLabel } from './prices';

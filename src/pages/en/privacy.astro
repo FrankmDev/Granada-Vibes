@@ -19,26 +19,25 @@ const t = useTranslations(locale);
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        Back to home
+        {t('legalPages.backLink')}
       </a>
 
       <h1 class="font-display text-4xl lg:text-5xl font-bold text-surface mb-6">
-        Privacy Policy
+        {t('legalPages.privacyTitle')}
       </h1>
       
       <div class="prose prose-invert prose-lg max-w-none">
         <p class="text-surface-secondary leading-relaxed">
-          This privacy policy is being drafted. Coming soon.
+          {t('legalPages.privacyIntro')}
         </p>
         
         <p class="text-surface-secondary leading-relaxed mt-4">
-          In the meantime, if you have any questions about how we handle your data, 
-          you can contact us at <a href="mailto:info@granadaurban.com" class="text-terra hover:underline">info@granadaurban.com</a>.
+          {t('legalPages.privacyContact')} <a href="mailto:info@granadaurban.com" class="text-terra hover:underline">info@granadaurban.com</a>.
         </p>
       </div>
 
       <p class="text-surface-muted text-sm mt-12">
-        Last updated: March 2025
+        {t('legalPages.lastUpdated')}
       </p>
     </div>
   </section>

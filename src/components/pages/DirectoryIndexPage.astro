@@ -31,7 +31,7 @@ const topEntries = entries.slice(0, 48);
 const totalUpcoming = entries.reduce((sum, entry) => sum + entry.upcomingEvents.length, 0);
 
 const breadcrumb = [
-  { name: locale === 'en' ? 'Home' : 'Inicio', url: getRoute('home', locale) },
+  { name: t('nav.home'), url: getRoute('home', locale) },
   { name: h1, url: basePath },
 ];
 

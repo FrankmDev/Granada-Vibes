@@ -148,8 +148,7 @@
   .upg-badge:focus-visible,
   .upg-toc-item a:focus-visible,
   .upg-nav-link:focus-visible,
-  .upg-rel-item:focus-visible,
-  .upg-btn-primary:focus-visible {
+  .upg-rel-item:focus-visible {
     outline: 2px solid var(--s-orange);
     outline-offset: 3px;
   }
@@ -603,17 +602,8 @@
   .tcd-dashed { flex: 1; margin: 0 20px; border-top: 2px dashed rgba(26,22,25,0.1); }
 
   .upg-tc-actions { padding: 2rem 2.5rem 2.5rem; display: flex; flex-direction: column; align-items: stretch; gap: 1rem; }
-  
-  .upg-btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-    width: 100%; min-width: 0; box-sizing: border-box;
-    padding: 0.85rem 1.25rem; border-radius: 12px; background: var(--s-ink); color: var(--s-white);
-    font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden; border: none; cursor: pointer;
-  }
-  .upg-btn-primary:not(.inert):hover { transform: scale(1.02); background: var(--s-orange); box-shadow: 0 10px 20px rgba(232,98,42,0.2); }
-  .upg-btn-primary svg { width: 18px; height: 18px; transition: transform 0.3s ease; }
-  .upg-btn-primary:not(.inert):hover svg { transform: translateX(4px); }
+
+  /* Primary CTAs (share, etc.) inside the ticket card now use ButtonCTA.astro. */
 
   /* Share channels (inside ticket card) — mirrors guide aesthetic, adapted to cream ticket */
   .upg-tc-channels {

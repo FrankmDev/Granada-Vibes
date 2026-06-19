@@ -4,6 +4,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import CinematicCTA from '@components/shared/CinematicCTA.astro';
 import BlogArchiveFeaturedPost from '@components/blog/BlogArchiveFeaturedPost.astro';
 import BlogArchiveFilter from '@components/blog/BlogArchiveFilter.astro';
@@ -166,12 +167,15 @@ const byTimePath = getRoute('byTime', locale);
 
   <!-- Mobile CTA -->
   <div class="mobile-cta-wrapper">
-    <a href={byTimePath} class="mobile-cta">
-      <span>{t('nav.byTime')}</span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    <ButtonCTA
+      href={byTimePath}
+      variant="secondary"
+      size="md"
+      fullWidth
+      class="mobile-cta"
+    >
+      {t('nav.byTime')}
+    </ButtonCTA>
   </div>
 
   <script>

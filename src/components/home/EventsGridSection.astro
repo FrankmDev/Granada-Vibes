@@ -51,13 +51,16 @@ function formatPrice(price: number | null): string {
   return `${price}€`;
 }
 
-function formatDate(dateStr: string): string {
-  return new Date(dateStr)
-    .toLocaleDateString(locale === 'es' ? 'es-ES' : 'en-US', {
-      day: 'numeric',
-      month: 'short',
-    })
-    .toUpperCase();
+function formatDateParts(dateStr: string): { day: string; month: string } {
+  const d = new Date(dateStr);
+  const localeStr = locale === 'es' ? 'es-ES' : 'en-US';
+  return {
+    day: d.toLocaleDateString(localeStr, { day: 'numeric' }),
+    month: d
+      .toLocaleDateString(localeStr, { month: 'short' })
+      .replace('.', '')
+      .toUpperCase(),
+  };
 }
 
 const eventsHref = getRoute('events', locale);
@@ -87,6 +90,9 @@ const eventsHref = getRoute('events', locale);
             const category = categoryLabels[evt.category] ?? evt.category.toUpperCase();
             const href = getEventDetailUrl(evt.slug, locale);
             const displayTitle = getEventDisplayTitle(evt, locale);
+            const dateParts = formatDateParts(evt.date);
+            const priceFormatted = formatPrice(evt.price);
+            const isFree = evt.price === null;
 
             return (
               <article class="masonry-item" style={`--item-flex: ${heightVh}; --item-index: ${idx}; --col-index: ${colIndex};`}>
@@ -115,8 +121,10 @@ const eventsHref = getRoute('events', locale);
                     <span class="stamp-num">{String(idx + 1).padStart(2, '0')}</span>
                   </div>
 
+                  <!-- Stacked date badge: day (big) + month (small, orange) -->
                   <div class="date-badge">
-                    <span class="date-text">{formatDate(evt.date)}</span>
+                    <span class="date-day">{dateParts.day}</span>
+                    <span class="date-month">{dateParts.month}</span>
                   </div>
 
                   <div class="item-content">
@@ -125,8 +133,9 @@ const eventsHref = getRoute('events', locale);
                       <h3 class="item-title">{displayTitle}</h3>
                       <div class="item-footer">
                         <span class="footer-venue">{evt.venue || 'Granada'}</span>
-                        <span class="footer-separator"></span>
-                        <span class="footer-price">{formatPrice(evt.price)}</span>
+                        <span class={`price-badge${isFree ? ' price-badge--free' : ''}`}>
+                          {priceFormatted}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -394,22 +403,23 @@ const eventsHref = getRoute('events', locale);
   .item-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top,
-      rgba(0,0,0,0.92) 0%,
-      rgba(0,0,0,0.72) 20%,
-      rgba(0,0,0,0.3)  50%,
-      transparent      80%
+      rgba(0,0,0,0.98) 0%,
+      rgba(0,0,0,0.94) 8%,
+      rgba(0,0,0,0.78) 22%,
+      rgba(0,0,0,0.42) 48%,
+      transparent      76%
     );
-    transition: background 0.4s ease;
     z-index: 1;
   }
 
   .masonry-item:hover .item-overlay,
   .masonry-item:focus-within .item-overlay {
     background: linear-gradient(to top,
-      rgba(0,0,0,0.96) 0%,
-      rgba(0,0,0,0.82) 25%,
-      rgba(0,0,0,0.4)  55%,
-      transparent      85%
+      rgba(0,0,0,0.99) 0%,
+      rgba(0,0,0,0.96) 10%,
+      rgba(0,0,0,0.86) 26%,
+      rgba(0,0,0,0.52) 52%,
+      transparent      82%
     );
   }
 
@@ -420,25 +430,24 @@ const eventsHref = getRoute('events', locale);
     z-index: 2;
   }
 
-  /* Date badge: warm cream background, dark text */
+  /* Date badge: stacked calendar (day big in Fraunces, month small in DM Sans orange) */
   .date-badge {
     position: absolute; top: 1rem; right: 1rem; z-index: 3;
-    background: rgba(245, 240, 234, 0.95);
-    border: 1px solid rgba(245, 240, 234, 0.6);
-    padding: 0.55rem 0.9rem;
-    border-radius: 6px;
-    font-family: var(--font-display);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.55rem 0.8rem 0.5rem;
+    min-width: 52px;
+    background: rgba(245, 240, 234, 0.97);
+    border: 1px solid rgba(245, 240, 234, 0.55);
+    border-radius: 8px;
     color: var(--s-ink);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     transition:
-      transform 360ms var(--ease-out-expo),
-      background 360ms var(--ease-out-expo),
-      border-color 360ms var(--ease-out-expo),
-      box-shadow 360ms var(--ease-out-expo);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      transform 380ms var(--ease-out-expo),
+      background 320ms var(--ease-out-expo),
+      box-shadow 320ms var(--ease-out-expo);
   }
   @media (min-width: 769px) {
     .date-badge {
@@ -447,14 +456,31 @@ const eventsHref = getRoute('events', locale);
     }
   }
 
-  .masonry-item:hover .date-badge,
-  .masonry-item:focus-within .date-badge {
-    transform: translateY(-5px) rotate(-1deg);
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.34);
+  .date-day {
+    font-family: var(--font-body);
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--s-ink);
+    letter-spacing: -0.02em;
+  }
+  .date-month {
+    font-family: var(--font-display);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--s-orange);
+    line-height: 1;
+    margin-top: 0.18rem;
   }
 
-  .date-text { display: block; line-height: 1; }
+  .masonry-item:hover .date-badge,
+  .masonry-item:focus-within .date-badge {
+    transform: translateY(-5px) rotate(-1.5deg) scale(1.05);
+    background: rgba(255, 255, 255, 0.99);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.38);
+  }
 
   .item-text {
     max-width: 100%;
@@ -498,13 +524,15 @@ const eventsHref = getRoute('events', locale);
 
   .item-title {
     font-family: var(--font-body);
-    font-size: clamp(1rem, 1.5vw, 1.5rem);
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    font-size: clamp(1.15rem, 1.7vw, 1.8rem);
+    font-weight: 300;
+    letter-spacing: -0.018em;
+    line-height: 1.1;
     margin: 0;
-    color: var(--color-text-primary);
-    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    color: #faf8f3;
+    text-shadow:
+      0 1px 2px rgba(0,0,0,0.55),
+      0 2px 16px rgba(0,0,0,0.4);
     position: relative;
     width: fit-content;
     max-width: 100%;
@@ -515,41 +543,41 @@ const eventsHref = getRoute('events', locale);
     content: '';
     position: absolute;
     left: 0;
-    bottom: -6px;
+    bottom: -7px;
     height: 1px;
-    width: 1.25rem;
-    background: rgba(201, 168, 76, 0.85);
+    width: 1.5rem;
+    background: rgba(201, 168, 76, 0.9);
     transform-origin: left center;
-    transition: width 420ms var(--ease-out-expo), background 320ms var(--ease-out-expo);
+    transition: width 480ms var(--ease-out-expo), background 320ms var(--ease-out-expo);
   }
   .masonry-item:hover .item-title::after,
   .masonry-item:focus-within .item-title::after {
-    width: 3rem;
-    background: rgba(232, 98, 42, 0.95);
+    width: 3.5rem;
+    background: rgba(232, 98, 42, 0.98);
   }
 
   .item-footer {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
-    margin-top: 0.85rem;
+    margin-top: 0.9rem;
     padding-top: 0.75rem;
-    border-top: 1px solid rgba(245, 240, 234, 0.1);
+    border-top: 1px solid rgba(245, 240, 234, 0.12);
     font-family: var(--font-display);
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.72);
   }
 
-  .footer-separator {
-    width: 4px; height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
+  .footer-venue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
   }
-
-  .footer-venue { display: inline-flex; align-items: center; gap: 0.4rem; }
   .footer-venue::before {
     content: '';
     width: 5px; height: 5px;
@@ -559,7 +587,44 @@ const eventsHref = getRoute('events', locale);
     flex-shrink: 0;
   }
 
-  .footer-price { color: var(--color-success); font-weight: 700; }
+  /* Price badge — pill, cream for paid, orange accent for free */
+  .price-badge {
+    display: inline-flex;
+    align-items: baseline;
+    padding: 0.38rem 0.72rem;
+    background: rgba(245, 240, 234, 0.97);
+    border: 1px solid rgba(245, 240, 234, 0.5);
+    border-radius: 100px;
+    font-family: var(--font-display);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--s-ink);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    transition:
+      transform 360ms var(--ease-out-expo),
+      background 320ms var(--ease-out-expo),
+      box-shadow 320ms var(--ease-out-expo);
+  }
+  .price-badge--free {
+    background: var(--s-orange);
+    border-color: var(--s-orange);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(232, 98, 42, 0.4);
+  }
+  .masonry-item:hover .price-badge,
+  .masonry-item:focus-within .price-badge {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.42);
+  }
+  .masonry-item:hover .price-badge--free,
+  .masonry-item:focus-within .price-badge--free {
+    box-shadow: 0 8px 22px rgba(232, 98, 42, 0.52);
+  }
 
   @keyframes events-light-sweep {
     0% {

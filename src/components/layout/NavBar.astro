@@ -29,7 +29,7 @@ const navLinks = [
 ];
 
 const isHome = currentPath === '/' || currentPath === '/en/';
-const altHref = getSwitchLangUrl(locale);
+const altHref = getSwitchLangUrl(locale, currentPath);
 const altLabel = locale === 'es' ? 'EN' : 'ES';
 const homeHref = getRoute('home', locale);
 ---

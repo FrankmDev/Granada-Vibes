@@ -6,6 +6,7 @@ import VenueMap from '@components/ui/VenueMap.astro';
 import EventImage from '@components/ui/EventImage.astro';
 import EventDetailHero from '@components/events/EventDetailHero.astro';
 import ShareButton from '@components/ui/ShareButton.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import InstagramIcon from '@components/icons/InstagramIcon.astro';
 import WhatsAppIcon from '@components/icons/WhatsAppIcon.astro';
 import { getDirectoryHref, getIndexableEvents } from '@data/index.js';
@@ -21,12 +22,19 @@ import RelatedVenues from '@components/related/RelatedVenues.astro';
 import ContinueExploring from '@components/related/ContinueExploring.astro';
 import CollaborateCTA from '@components/shared/CollaborateCTA.astro';
 import {
+  getRelatedEventsForEvent,
+  getRelatedGuidesForEvent,
+  getRelatedRoutesForEvent,
+  getRelatedVenuesForEvent,
+} from '@utils/related-content';
+import {
   formatPriceLabel,
   getEventDisplayTitle,
   getEventSeoDescription,
   getEventSeoTitle,
   getPriceStatus,
   isPastEvent,
+  isNearDuplicateOf,
   shouldIndexEventDetail,
 } from '@utils';
 import type { Event, Locale } from '@types';
@@ -234,6 +242,13 @@ const eventLongDescription = needsEnglishGeneratedCopy
     ]
   : event.longDescription?.[locale]?.split('\n\n') ?? [];
 
+// Prevent rendering a first long-description paragraph that near-duplicates the lead
+const filteredLongDescription: string[] = eventLongDescription.filter((p, i) => {
+  if (!p) return false;
+  if (i === 0 && isNearDuplicateOf(p, eventDescription)) return false;
+  return true;
+});
+
 const breadcrumb = [
   { name: copy.breadcrumb.home, url: getRoute('home', locale) },
   { name: copy.breadcrumb.listing, url: getRoute('events', locale) },
@@ -289,6 +304,16 @@ const eventFacts: Array<{ label: string; value: string }> = [
   { label: t('detail.zones'), value: t(`neighborhoods.${event.neighborhood}`) },
 ];
 
+const relatedVenuesList = getRelatedVenuesForEvent(event, 2);
+const relatedEventsList = getRelatedEventsForEvent(event, 3);
+const relatedRoutesList = getRelatedRoutesForEvent(event, 3);
+const relatedGuidesList = getRelatedGuidesForEvent(event, 3);
+const hasRelatedContent =
+  relatedVenuesList.length > 0 ||
+  relatedEventsList.length > 0 ||
+  relatedRoutesList.length > 0 ||
+  relatedGuidesList.length > 0;
+
 const shareUrl = Astro.url.href;
 const encodedShareUrl = encodeURIComponent(shareUrl);
 const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
@@ -326,9 +351,9 @@ const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
 
               <div class="upg-body content-rich">
                 <p class="upg-lead">{eventDescription}</p>
-                {eventLongDescription.length > 0 && (
+                {filteredLongDescription.length > 0 && (
                   <div class="upg-long-desc">
-                    {eventLongDescription.map((paragraph) => (
+                    {filteredLongDescription.map((paragraph) => (
                       <p>{paragraph}</p>
                     ))}
                   </div>
@@ -521,17 +546,18 @@ const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
               </dl>
 
               {event.ticketsUrl && (
-                <a
+                <ButtonCTA
                   href={event.ticketsUrl}
+                  variant="primary"
+                  size="md"
+                  fullWidth
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="upg-btn-primary"
-                  style="margin-top: 0.85rem; width: 100%;"
                   data-track="click_ticket"
+                  class="upg-tickets-btn"
                 >
-                  <span>{t('detail.getTickets')}</span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </a>
+                  {t('detail.getTickets')}
+                </ButtonCTA>
               )}
             </section>
 
@@ -558,6 +584,8 @@ const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
                   url={shareUrl}
                   label={copy.share.label}
                   copiedLabel={copy.share.copied}
+                  variant="primary"
+                  fullWidth
                   class="event-share-btn"
                 />
 
@@ -616,20 +644,22 @@ const encodedShareText = encodeURIComponent(`${displayTitle} · GRN URBAN`);
         </aside>
       </div>
 
-      <section class="event-related-full upg-block upg-block--loose" id="event-related" data-reveal>
-        <div class="upg-block-bg"></div>
-        <header class="upg-header event-related-header">
-          <span class="upg-num">05</span>
-          <div class="upg-line"></div>
-          <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
-        </header>
-        <div class="upg-related-stack">
-          <RelatedVenues type="event" event={event} locale={locale} title={t('detail.relatedVenues')} limit={2} />
-          <RelatedEvents type="event" event={event} locale={locale} title={t('detail.relatedEvents')} limit={3} />
-          <RelatedRoutes type="event" event={event} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
-          <RelatedGuides type="event" event={event} locale={locale} title={t('detail.relatedGuides')} limit={3} />
-        </div>
-      </section>
+      {hasRelatedContent && (
+        <section class="event-related-full upg-block upg-block--loose" id="event-related" data-reveal>
+          <div class="upg-block-bg"></div>
+          <header class="upg-header event-related-header">
+            <span class="upg-num">05</span>
+            <div class="upg-line"></div>
+            <span class="upg-eyebrow">[ {t('detail.completePlan')} ]</span>
+          </header>
+          <div class="upg-related-stack">
+            <RelatedVenues type="event" event={event} locale={locale} title={t('detail.relatedVenues')} limit={2} />
+            <RelatedEvents type="event" event={event} locale={locale} title={t('detail.relatedEvents')} limit={3} />
+            <RelatedRoutes type="event" event={event} locale={locale} title={t('detail.relatedRoutes')} limit={3} />
+            <RelatedGuides type="event" event={event} locale={locale} title={t('detail.relatedGuides')} limit={3} />
+          </div>
+        </section>
+      )}
     </div>
 
     <div style="padding: 0 clamp(1.25rem, 4vw, 4rem);">

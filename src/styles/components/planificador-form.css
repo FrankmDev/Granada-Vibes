@@ -590,74 +590,8 @@
     50% { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
   }
 
-  .submit-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.35rem 3.5rem;
-    background: var(--ink);
-    border: 2px solid var(--ink);
-    border-radius: 100px;
-    color: var(--bg);
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.55s var(--ease-out-expo);
-    box-shadow: 0 12px 40px rgba(26,22,25,0.15);
-    z-index: 1;
-  }
-
-  .submit-btn:disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
-    background: var(--ink-4);
-    border-color: transparent;
-    box-shadow: none;
-    color: var(--ink);
-  }
-
-  .submit-btn:not(:disabled):hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: translateY(-5px);
-    box-shadow:
-      0 24px 60px rgba(232,98,42,0.30),
-      0 0 0 2px rgba(232,98,42,0.10);
-  }
-
-  .submit-btn:not(:disabled):active {
-    transform: translateY(-2px) scale(0.97);
-    transition-duration: 0.1s;
-  }
-
-  .submit-gleam {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.20) 50%, transparent 60%);
-    transform: translateX(-100%);
-    pointer-events: none;
-  }
-
-  .submit-btn:not(:disabled):hover .submit-gleam {
-    animation: gleamSweep 0.7s ease forwards;
-  }
-
-  @keyframes gleamSweep {
-    to { transform: translateX(100%); }
-  }
-
-  .submit-arrow {
-    transition: transform 0.35s var(--ease-out-expo);
-  }
-
-  .submit-btn:not(:disabled):hover .submit-arrow {
-    transform: translateX(6px);
-  }
+  /* submit-btn now uses ButtonCTA.astro (primary variant, size lg). */
+  .submit-btn { letter-spacing: 0.18em; }
 
   .submit-tooltip {
     font-family: var(--font-display);
@@ -1369,58 +1303,7 @@
     justify-content: center;
   }
 
-  .result-action-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.625rem;
-    padding: 1rem 2rem;
-    background: var(--ink);
-    border: 1.5px solid var(--ink);
-    border-radius: 100px;
-    color: var(--bg);
-    font-family: var(--font-display);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.4s var(--ease-out-expo);
-    box-shadow: 0 8px 24px rgba(26,22,25,0.12);
-  }
-
-  .result-action-btn:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(232,98,42,0.20);
-  }
-
-  .result-action-btn:active {
-    transform: translateY(0) scale(0.97);
-    transition-duration: 0.1s;
-  }
-
-  .result-action-btn.secondary {
-    background: transparent;
-    border-color: var(--border);
-    color: var(--ink-3);
-    box-shadow: none;
-  }
-
-  .result-action-btn.secondary:hover {
-    border-color: var(--ink-3);
-    color: var(--ink);
-    background: rgba(26,22,25,0.03);
-    box-shadow: none;
-  }
-
-  .result-action-btn svg {
-    transition: transform 0.3s ease;
-  }
-
-  .result-action-btn:hover svg {
-    transform: translateY(-1px);
-  }
+  /* result-action-btn now uses ButtonCTA.astro (primary / secondary variants). */
 
   /* ── Stage transition animations ── */
   .form-stage.is-leaving {

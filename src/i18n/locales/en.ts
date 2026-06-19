@@ -157,6 +157,7 @@ export const en: Translations = {
 
   // Detail pages (events & routes)
   detail: {
+    liveStatus: 'Live',
     date: 'Date',
     time: 'Time',
     price: 'Price',
@@ -744,6 +745,7 @@ ctaAriaLabel: 'Discover Granada',
   },
 
   directory: {
+    venueCollaborationAria: 'Venue collaboration',
     venuesTitle: 'Granada venues and cultural spaces',
     venuesDescription: 'Directory of Granada venues, theaters, cultural spaces and concert rooms: upcoming events, concerts, tickets and updated agenda.',
     venuesH1: 'Granada venues',
@@ -776,8 +778,16 @@ ctaAriaLabel: 'Discover Granada',
   legalPages: {
     privacySeoTitle: 'Privacy and data at GRN URBAN',
     privacySeoDescription: 'GRN URBAN privacy policy: contact information, data handling and user rights for the local Granada guide.',
+    privacyTitle: 'Privacy Policy',
+    privacyIntro: 'At GRN URBAN we respect your privacy. This cultural guide uses Google Analytics to anonymously measure visits. We do not store personal data without your explicit consent nor share information with third parties except for the technical operation of the site (web hosting and analytics).',
+    privacyContact: 'If you have questions about how we handle your data, write to us at',
     legalSeoTitle: 'GRN URBAN Legal Notice',
     legalSeoDescription: 'GRN URBAN legal notice: contact details, general terms of use and editorial responsibility for the local Granada guide.',
+    legalTitle: 'Legal Notice',
+    legalIntro: 'GRN URBAN is an independent cultural guide to Granada. Editorial content is provided for informational purposes. We make our best effort to keep information up to date, but we do not guarantee the accuracy or timeliness of third-party data (events, schedules, prices).',
+    legalContact: 'If you have questions about the terms of use of this site, you can contact us at',
+    backLink: 'Back to home',
+    lastUpdated: 'Last updated: March 2025',
   },
 
   cookieConsent: {

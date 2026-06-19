@@ -6,7 +6,15 @@ const distDir = path.join(rootDir, 'dist');
 const sitemapPath = path.join(distDir, 'sitemap-0.xml');
 const generatedEventsPath = path.join(rootDir, 'src/data/events/generated.json');
 const expectedOrigin = 'https://granadaurban.com';
-const today = new Date().toISOString().split('T')[0];
+
+// Use Europe/Madrid timezone for Granada date basis — matches event-indexing.mjs
+const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Europe/Madrid',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+const today = madridDateFormatter.format(new Date());
 
 function assertFileExists(filePath: string): void {
   if (!fs.existsSync(filePath)) {

@@ -1377,37 +1377,7 @@
       max-width: 320px;
     }
 
-    .empty-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 1rem 2rem;
-      background: var(--e-ink);
-      border: none;
-      border-radius: 100px;
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      color: white;
-      cursor: pointer;
-      transition: all 0.4s var(--ease-out-expo);
-      margin-top: 0.5rem;
-    }
-
-    .empty-btn:hover {
-      background: var(--e-orange);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .empty-btn svg {
-      transition: transform 0.3s ease;
-    }
-
-    .empty-btn:hover svg {
-      transform: translateX(4px);
-    }
+    /* .empty-btn now uses ButtonCTA.astro (primary variant). */
 
     /* No Posts State */
     .no-posts-state {
@@ -2222,8 +2192,7 @@
       .featured-link,
       .post-link,
       .filter-chip,
-      .cta-button,
-      .empty-btn {
+      .cta-button {
         transition: none;
       }
     }

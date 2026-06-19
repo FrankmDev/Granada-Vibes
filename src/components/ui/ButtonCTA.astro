@@ -1,0 +1,1053 @@
+---
+/**
+ * ButtonCTA — "The Nashiji Astrolabe" from the GRN URBAN editorial system.
+ *
+ * Three variants, each a crafted identity inspired by nashiji
+ * (Japanese gold-inlay metalwork) and Moorish astrolabe engravings.
+ *
+ *   PRIMARY   — "The Nashiji Seal"
+ *     Dark plate with a centered astrolabe rosette (line-engraved
+ *     8-point star + concentric rings + cardinal rays, NO DOTS).
+ *     At rest the rosette is a faint signature mark. On hover:
+ *       - Rosette OPENS (scale 1→1.4, opacity 0.2→0.7) and begins
+ *         a slow counter-clockwise rotation (28s loop).
+ *       - Conic-gradient GOLD BORDER draws clockwise from the cursor.
+ *       - TEXT IGNITES char-by-char: rise + gold undertone + glow.
+ *       - Plate LIFTS 3px with cursor-tilt (3D perspective).
+ *       - WARM HALO radiates from the cursor position.
+ *       - Thin gold FILAMENT sweeps across the rosette (scanner).
+ *       - Icon nudges forward and rotates 14°.
+ *     On click:
+ *       - SHOCKWAVE ring expands from the press point (700ms).
+ *       - Gold SPARK flashes at the press point (350ms).
+ *       - Rosette briefly accelerates rotation.
+ *
+ *   SECONDARY — "The Open Nashiji"
+ *     Transparent with the same rosette. On hover the rosette
+ *     becomes orange, the border draws in orange, the text
+ *     ignites orange. Shockwave on click.
+ *
+ *   TERTIARY  — "The Marginalia"
+ *     Text + arrow with hand-drawn underline and small flourish
+ *     at the end. On hover the underline draws in from the left,
+ *     the flourish extends, the arrow translates and rotates,
+ *     the text ignites to orange.
+ *
+ * Use the `as` prop to switch between anchor (`<a>`) and `<button>`.
+ * Use `iconPosition="left"` for "back" patterns (e.g. mx-back-btn).
+ */
+
+type Variant = 'primary' | 'secondary' | 'tertiary';
+type Size = 'sm' | 'md' | 'lg';
+type IconName = 'arrow' | 'arrowLeft' | 'mail' | 'share' | 'refresh' | 'check' | 'none';
+type IconPosition = 'left' | 'right';
+
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: Variant;
+  size?: Size;
+  icon?: IconName;
+  iconPosition?: IconPosition;
+  fullWidth?: boolean;
+  disabled?: boolean;
+  ariaLabel?: string;
+  class?: string;
+  id?: string;
+  target?: string;
+  rel?: string;
+  tabIndex?: number | undefined;
+  [key: `data-${string}`]: unknown;
+}
+
+const {
+  href,
+  type = 'button',
+  variant = 'primary',
+  size = 'md',
+  icon = 'arrow',
+  iconPosition = 'right',
+  fullWidth = false,
+  disabled = false,
+  ariaLabel,
+  class: className = '',
+  id,
+  target,
+  rel,
+  tabIndex,
+  ...rest
+} = Astro.props;
+
+const isLink = typeof href === 'string' && href.length > 0;
+const Tag = isLink ? 'a' : 'button';
+
+const dataAttrs: Record<string, unknown> = {};
+for (const [k, v] of Object.entries(rest)) {
+  if (k.startsWith('data-') && v !== undefined && v !== false) {
+    dataAttrs[k] = v === true ? '' : v;
+  }
+}
+
+const classes = [
+  'cta',
+  `cta--${variant}`,
+  `cta--${size}`,
+  `cta--icon-${iconPosition}`,
+  fullWidth ? 'cta--full' : '',
+  disabled ? 'cta--disabled' : '',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+
+const resolvedRel = target === '_blank' ? (rel ?? 'noopener noreferrer') : rel;
+
+let slotText = '';
+if (Astro.slots.has('default')) {
+  const slotHtml = await Astro.slots.render('default');
+  slotText = slotHtml.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+const computedAriaLabel = ariaLabel ?? (slotText || undefined);
+
+const rosetteSvg = `
+<svg viewBox="-50 -50 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="0" cy="0" r="44" fill="none" stroke="currentColor" stroke-width="0.5"/>
+  <circle cx="0" cy="0" r="34" fill="none" stroke="currentColor" stroke-width="0.35" opacity="0.7"/>
+  <path d="M 0 -28 L 6 -6 L 28 0 L 6 6 L 0 28 L -6 6 L -28 0 L -6 -6 Z" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linejoin="round"/>
+  <path d="M 0 -18 L 4 -4 L 18 0 L 4 4 L 0 18 L -4 4 L -18 0 L -4 -4 Z" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linejoin="round" transform="rotate(22.5)"/>
+  <line x1="0" y1="-34" x2="0" y2="-44" stroke="currentColor" stroke-width="0.5"/>
+  <line x1="34" y1="0" x2="44" y2="0" stroke="currentColor" stroke-width="0.5"/>
+  <line x1="0" y1="34" x2="0" y2="44" stroke="currentColor" stroke-width="0.5"/>
+  <line x1="-34" y1="0" x2="-44" y2="0" stroke="currentColor" stroke-width="0.5"/>
+  <path d="M 0 -3.5 L 1.1 -1.1 L 3.5 0 L 1.1 1.1 L 0 3.5 L -1.1 1.1 L -3.5 0 L -1.1 -1.1 Z" fill="none" stroke="currentColor" stroke-width="0.55" stroke-linejoin="round"/>
+</svg>
+`.trim();
+---
+
+<Tag
+  class={classes}
+  href={isLink ? href : undefined}
+  type={!isLink ? type : undefined}
+  disabled={!isLink && disabled ? true : undefined}
+  aria-disabled={disabled ? 'true' : undefined}
+  aria-label={computedAriaLabel}
+  id={id}
+  target={target}
+  rel={resolvedRel}
+  tabindex={tabIndex}
+  data-cta-variant={variant}
+  {...dataAttrs}
+>
+  {variant === 'primary' && (
+    <>
+      <span class="cta__halo" aria-hidden="true"></span>
+      <span class="cta__border" aria-hidden="true"></span>
+      <span class="cta__rosette" aria-hidden="true">
+        <span class="cta__rosette-spin" set:html={rosetteSvg}></span>
+        <span class="cta__filament" aria-hidden="true"></span>
+      </span>
+      <span class="cta__wave" aria-hidden="true"></span>
+      <span class="cta__spark" aria-hidden="true"></span>
+    </>
+  )}
+
+  {variant === 'secondary' && (
+    <>
+      <span class="cta__border" aria-hidden="true"></span>
+      <span class="cta__rosette" aria-hidden="true">
+        <span class="cta__rosette-spin" set:html={rosetteSvg}></span>
+      </span>
+      <span class="cta__wave" aria-hidden="true"></span>
+    </>
+  )}
+
+  {variant === 'tertiary' && (
+    <>
+      <span class="cta__rule" aria-hidden="true"></span>
+      <span class="cta__flourish" aria-hidden="true">
+        <span class="cta__flourish-line"></span>
+        <span class="cta__flourish-dot-end" aria-hidden="true"></span>
+      </span>
+    </>
+  )}
+
+  {icon !== 'none' && iconPosition === 'left' && (
+    <span class="cta__icon cta__icon--left" aria-hidden="true">
+      {icon === 'arrow' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      )}
+      {icon === 'arrowLeft' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      )}
+      {icon === 'mail' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="1.5" />
+          <path d="M3 7l9 6 9-6" />
+        </svg>
+      )}
+      {icon === 'share' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+      )}
+      {icon === 'refresh' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8" />
+          <path d="M21 3v5h-5" />
+          <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16" />
+          <path d="M3 21v-5h5" />
+        </svg>
+      )}
+      {icon === 'check' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12l5 5 9-11" />
+        </svg>
+      )}
+    </span>
+  )}
+
+  <span class="cta__label"><slot /></span>
+
+  {icon !== 'none' && iconPosition === 'right' && (
+    <span class="cta__icon cta__icon--right" aria-hidden="true">
+      {icon === 'arrow' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      )}
+      {icon === 'arrowLeft' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      )}
+      {icon === 'mail' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="1.5" />
+          <path d="M3 7l9 6 9-6" />
+        </svg>
+      )}
+      {icon === 'share' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+      )}
+      {icon === 'refresh' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 0 1 15.5-6.3L21 8" />
+          <path d="M21 3v5h-5" />
+          <path d="M21 12a9 9 0 0 1-15.5 6.3L3 16" />
+          <path d="M3 21v-5h5" />
+        </svg>
+      )}
+      {icon === 'check' && (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12l5 5 9-11" />
+        </svg>
+      )}
+    </span>
+  )}
+</Tag>
+
+<script>
+  (function initCtaInteractions() {
+    if (typeof window === 'undefined') return;
+    if ((window as unknown as { __ctaInit?: boolean }).__ctaInit) return;
+    (window as unknown as { __ctaInit?: boolean }).__ctaInit = true;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── Label char-split ──────────────────────────────────────────
+    function splitLabel(label: Element) {
+      if (label.getAttribute('data-split') === '1') return;
+      if (label.querySelector('.cta__ch')) return;
+      const text = label.textContent ?? '';
+      if (!text) return;
+      label.setAttribute('data-split', '1');
+      const chars = Array.from(text);
+      label.textContent = '';
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < chars.length; i++) {
+        const ch = chars[i];
+        if (ch === undefined) continue;
+        const span = document.createElement('span');
+        span.className = ch === ' ' || ch === '\u00A0' ? 'cta__ch cta__ch--sp' : 'cta__ch';
+        span.style.setProperty('--ch-i', String(i));
+        span.setAttribute('aria-hidden', 'true');
+        span.textContent = ch === ' ' ? '\u00A0' : ch;
+        frag.appendChild(span);
+      }
+      label.appendChild(frag);
+    }
+
+    function splitAllLabels(root: ParentNode) {
+      root.querySelectorAll('.cta__label').forEach(splitLabel);
+    }
+
+    splitAllLabels(document);
+    document.addEventListener('astro:after-swap', () => splitAllLabels(document));
+
+    // ── Mouse tracking: cursor position + 3D tilt ─────────────────
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      const btn = target?.closest?.('.cta--primary:not(.cta--disabled)') as HTMLElement | null;
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      btn.style.setProperty('--cta-mx', `${x}%`);
+      btn.style.setProperty('--cta-my', `${y}%`);
+
+      if (!prefersReduced) {
+        const tiltX = ((y - 50) / 50) * -2.5;
+        const tiltY = ((x - 50) / 50) * 2.5;
+        btn.style.setProperty('--cta-tilt', `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`);
+      }
+    });
+
+    document.addEventListener('mouseleave', (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      const btn = target?.closest?.('.cta--primary') as HTMLElement | null;
+      if (!btn) return;
+      btn.style.removeProperty('--cta-tilt');
+    }, true);
+
+    // ── Click effects: shockwave + spark ─────────────────────────
+    document.addEventListener('mousedown', (e: MouseEvent) => {
+      const target = e.target as Element | null;
+      const btn = target?.closest?.(
+        '.cta--primary:not(.cta--disabled), .cta--secondary:not(.cta--disabled)'
+      ) as HTMLElement | null;
+      if (!btn || prefersReduced) return;
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const wave = btn.querySelector('.cta__wave') as HTMLElement | null;
+      if (wave) {
+        wave.style.setProperty('--cta-px', `${x}px`);
+        wave.style.setProperty('--cta-py', `${y}px`);
+        wave.classList.remove('is-pulsing');
+        void wave.offsetWidth;
+        wave.classList.add('is-pulsing');
+      }
+
+      const spark = btn.querySelector('.cta__spark') as HTMLElement | null;
+      if (spark) {
+        spark.style.setProperty('--cta-px', `${x}px`);
+        spark.style.setProperty('--cta-py', `${y}px`);
+        spark.classList.remove('is-pulsing');
+        void spark.offsetWidth;
+        spark.classList.add('is-pulsing');
+      }
+    });
+  })();
+</script>
+
+<style>
+  /* ================================================================
+     ANIMATABLE CUSTOM PROPERTY — @property registration
+     Powers the conic-gradient border draw-in (angle 0deg → 360deg).
+     ================================================================ */
+  @property --cta-draw {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  /* ================================================================
+     BASE
+     ================================================================ */
+  .cta {
+    --cta-ease:        cubic-bezier(0.16, 1, 0.3, 1);
+    --cta-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --cta-ease-soft:   cubic-bezier(0.4, 0, 0.2, 1);
+    --cta-d-fast:      200ms;
+    --cta-d-base:      520ms;
+    --cta-d-slow:      800ms;
+
+    --cta-fg:          #f0ede8;
+    --cta-bg:          #141012;
+    --cta-accent:      #e8622a;
+    --cta-accent-hi:   #f07040;
+    --cta-gold:        #c9a84c;
+    --cta-gold-bright: #e8c66c;
+    --cta-glow:        rgba(232, 98, 42, 0.55);
+    --cta-mx:          50%;
+    --cta-my:          50%;
+    --cta-px:          50%;
+    --cta-py:          50%;
+
+    --cta-rosette-size: 30px;
+    --cta-icon-size:    1.35em;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.95rem 2rem;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    transform-style: preserve-3d;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    will-change: transform, background-color;
+    transition:
+      background-color var(--cta-d-base) var(--cta-ease),
+      color var(--cta-d-base) var(--cta-ease),
+      border-color var(--cta-d-base) var(--cta-ease),
+      transform var(--cta-d-base) var(--cta-ease),
+      box-shadow var(--cta-d-base) var(--cta-ease),
+      letter-spacing var(--cta-d-base) var(--cta-ease),
+      padding var(--cta-d-base) var(--cta-ease);
+  }
+
+  .cta:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 1px var(--cta-bg),
+      0 0 0 3px var(--cta-accent);
+  }
+
+  .cta--full { width: 100%; }
+
+  .cta--disabled,
+  .cta[aria-disabled='true'] {
+    cursor: not-aligned;
+    cursor: not-allowed;
+    opacity: 0.4;
+    pointer-events: none;
+    filter: saturate(0.6);
+  }
+
+  /* ================================================================
+     SIZES
+     ================================================================ */
+  .cta--sm {
+    padding: 0.65rem 1.4rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    gap: 0.55rem;
+    border-radius: 14px;
+    --cta-rosette-size: 22px;
+  }
+
+  .cta--md {
+    padding: 0.95rem 2rem;
+    font-size: 0.72rem;
+    border-radius: 18px;
+    --cta-rosette-size: 30px;
+  }
+
+  .cta--lg {
+    padding: 1.3rem 2.85rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    gap: 0.9rem;
+    border-radius: 22px;
+    --cta-rosette-size: 38px;
+  }
+
+  /* ================================================================
+     LABEL + PER-CHAR SPANS
+     ================================================================ */
+  .cta__label {
+    position: relative;
+    z-index: 3;
+    display: inline-block;
+    transition: transform var(--cta-d-base) var(--cta-ease);
+  }
+
+  .cta__ch {
+    display: inline-block;
+    transition:
+      color 480ms var(--cta-ease) calc(var(--ch-i, 0) * 32ms),
+      transform 520ms var(--cta-ease-spring) calc(var(--ch-i, 0) * 32ms),
+      text-shadow 480ms var(--cta-ease) calc(var(--ch-i, 0) * 32ms);
+  }
+
+  .cta__ch--sp {
+    width: 0.24em;
+    min-width: 0.24em;
+  }
+
+  /* ================================================================
+     ICON — larger + more dramatic hover choreography
+     ================================================================ */
+  .cta__icon {
+    position: relative;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition:
+      transform var(--cta-d-base) var(--cta-ease-spring),
+      filter var(--cta-d-base) var(--cta-ease);
+  }
+
+  .cta__icon svg {
+    width: var(--cta-icon-size);
+    height: var(--cta-icon-size);
+    display: block;
+    transition: transform var(--cta-d-base) var(--cta-ease-spring);
+  }
+
+  /* ================================================================
+     PRIMARY — "The Nashiji Seal"
+     ================================================================ */
+  .cta--primary {
+    background: var(--cta-bg);
+    color: var(--cta-fg);
+    border-color: rgba(201, 168, 76, 0.32);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+      0 6px 18px rgba(0, 0, 0, 0.28),
+      0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ── Film-grain texture (intensifies on hover) ── */
+  .cta--primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    transition: opacity var(--cta-d-base) var(--cta-ease);
+  }
+  .cta--primary:hover::before { opacity: 0.14; }
+
+  /* ── WARM HALO — radial gradient from cursor position ── */
+  .cta--primary .cta__halo {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    background: radial-gradient(
+      circle 75% at var(--cta-mx) var(--cta-my),
+      rgba(232, 98, 42, 0.45) 0%,
+      rgba(232, 98, 42, 0.12) 35%,
+      transparent 65%
+    );
+    mix-blend-mode: screen;
+    transition: opacity 520ms var(--cta-ease);
+  }
+
+  /* ── CONIC BORDER — gold hairline drawn clockwise from cursor ── */
+  .cta--primary .cta__border {
+    --cta-draw: 0deg;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 4;
+    padding: 1px;
+    background: conic-gradient(
+      from -90deg,
+      var(--cta-gold) 0deg,
+      var(--cta-gold) var(--cta-draw),
+      transparent var(--cta-draw) 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--cta-d-base) var(--cta-ease);
+  }
+
+  /* ── ASTROLABE ROSETTE — line-engraved sigil, no dots ── */
+  .cta--primary .cta__rosette,
+  .cta--secondary .cta__rosette {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    width: var(--cta-rosette-size);
+    height: var(--cta-rosette-size);
+    color: var(--cta-gold);
+    pointer-events: none;
+    z-index: 2;
+    transform: translateX(-50%) scale(1);
+    opacity: 0.22;
+    transition:
+      transform var(--cta-d-slow) var(--cta-ease),
+      opacity var(--cta-d-base) var(--cta-ease),
+      color var(--cta-d-base) var(--cta-ease);
+  }
+
+  .cta--primary .cta__rosette-spin,
+  .cta--secondary .cta__rosette-spin {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .cta--primary .cta__rosette-spin svg,
+  .cta--secondary .cta__rosette-spin svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ── FILAMENT — thin gold scanner line that sweeps the rosette ── */
+  .cta--primary .cta__filament {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity var(--cta-d-base) var(--cta-ease) 100ms;
+  }
+
+  .cta--primary .cta__filament::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2px;
+    width: 1.5px;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 220, 150, 0.95) 50%,
+      transparent 100%
+    );
+    filter: blur(0.4px);
+    box-shadow: 0 0 4px rgba(255, 220, 150, 0.6);
+    animation: cta-filament-sweep 1.6s linear infinite paused;
+  }
+
+  /* ── SHOCKWAVE — gold ring expanding from press point ── */
+  .cta--primary .cta__wave,
+  .cta--secondary .cta__wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--cta-gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transform: translate(
+      calc(var(--cta-px) - 50%),
+      calc(var(--cta-py) - 50%)
+    ) scale(0);
+    will-change: transform, opacity;
+  }
+
+  .cta--primary .cta__wave.is-pulsing,
+  .cta--secondary .cta__wave.is-pulsing {
+    animation: cta-wave 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ── SPARK — small gold flash at press point ── */
+  .cta--primary .cta__spark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    background: radial-gradient(
+      circle,
+      rgba(255, 245, 210, 1) 0%,
+      rgba(255, 200, 110, 0.85) 35%,
+      transparent 70%
+    );
+    transform: translate(
+      calc(var(--cta-px) - 50%),
+      calc(var(--cta-py) - 50%)
+    ) scale(0);
+    will-change: transform, opacity;
+  }
+
+  .cta--primary .cta__spark.is-pulsing {
+    animation: cta-spark 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ================================================================
+     PRIMARY — HOVER
+     Choreography (staggered):
+       0ms    plate lift + background fill + halo reveal
+       60ms   conic border draw begins
+       80ms   char ignition wave (32ms stagger per char)
+       120ms  rosette scale begins
+       220ms  rosette spin begins
+       360ms  filament sweep begins
+       520ms  icon rotate completes
+     ================================================================ */
+  .cta--primary:hover {
+    background: var(--cta-accent);
+    border-color: var(--cta-gold);
+    color: #ffffff;
+    letter-spacing: 0.14em;
+    transform: translateY(-3px) var(--cta-tilt, none);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+      0 22px 50px -10px rgba(232, 98, 42, 0.55),
+      0 0 80px -10px rgba(201, 168, 76, 0.4);
+  }
+
+  .cta--primary:hover .cta__halo    { opacity: 1; }
+  .cta--primary:hover .cta__border  { opacity: 1; --cta-draw: 360deg; transition: --cta-draw 780ms var(--cta-ease) 60ms; }
+  .cta--primary:hover .cta__rosette {
+    transform: translateX(-50%) scale(1.4);
+    opacity: 0.7;
+    color: var(--cta-gold-bright);
+  }
+  .cta--primary:hover .cta__rosette-spin svg {
+    animation: cta-rosette-spin 28s linear infinite;
+  }
+  .cta--primary:hover .cta__filament { opacity: 1; }
+  .cta--primary:hover .cta__filament::after { animation-play-state: running; }
+
+  /* Char ignition wave — multi-phase per char:
+       0%   rest (cream, normal position)
+       30%  PRESSED (darker, sunk 1px into the plate)
+       60%  IGNITION FLASH (gold, slight rise, gold glow)
+       100% SETTLED (white, resting hover state) */
+  .cta--primary:hover .cta__ch {
+    animation: cta-char-ignite 720ms var(--cta-ease) calc(var(--ch-i, 0) * 32ms) forwards;
+  }
+
+  /* Icon — nudges forward, scales up, rotates */
+  .cta--primary:hover .cta__icon {
+    transform: translateX(5px) scale(1.12);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.45));
+  }
+  .cta--primary:hover .cta__icon--left { transform: translateX(-5px) scale(1.12); }
+  .cta--primary:hover .cta__icon svg { transform: rotate(14deg); }
+  .cta--primary:hover .cta__label { transform: translateY(-0.5px); }
+
+  /* ================================================================
+     PRIMARY — ACTIVE (press the seal)
+     ================================================================ */
+  .cta--primary:active {
+    transform: translateY(-1px) scale(0.985) var(--cta-tilt, none);
+    transition-duration: 100ms;
+  }
+
+  .cta--primary:active .cta__rosette-spin svg {
+    animation-duration: 6s;
+  }
+
+  /* ================================================================
+     PRIMARY — FOCUS-VISIBLE (keyboard)
+     ================================================================ */
+  .cta--primary:focus-visible .cta__halo    { opacity: 0.7; }
+  .cta--primary:focus-visible .cta__border  { opacity: 1; --cta-draw: 360deg; }
+  .cta--primary:focus-visible .cta__rosette { opacity: 0.6; transform: translateX(-50%) scale(1.3); }
+  .cta--primary:focus-visible .cta__filament { opacity: 0.7; }
+  .cta--primary:focus-visible .cta__filament::after { animation-play-state: running; }
+
+  /* ================================================================
+     SECONDARY — "The Open Nashiji"
+     ================================================================ */
+  .cta--secondary {
+    --cta-ghost-fg:     var(--s-ink, #1a1619);
+    --cta-ghost-border: rgba(26, 22, 25, 0.22);
+    background: transparent;
+    color: var(--cta-ghost-fg);
+    border-color: var(--cta-ghost-border);
+  }
+
+  /* Dark-section override */
+  :where(.cta--secondary) {
+    --cta-ghost-border: rgba(255, 255, 255, 0.22);
+    --cta-ghost-fg:     var(--cta-fg);
+  }
+
+  .cta--secondary .cta__rosette {
+    color: currentColor;
+    opacity: 0.28;
+  }
+
+  .cta--secondary .cta__border {
+    --cta-draw: 0deg;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 4;
+    padding: 1px;
+    background: conic-gradient(
+      from -90deg,
+      var(--cta-accent) 0deg,
+      var(--cta-accent) var(--cta-draw),
+      transparent var(--cta-draw) 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity var(--cta-d-base) var(--cta-ease);
+  }
+
+  .cta--secondary .cta__wave {
+    border-color: var(--cta-accent);
+  }
+
+  .cta--secondary:hover {
+    color: var(--cta-accent);
+    border-color: var(--cta-accent);
+    letter-spacing: 0.14em;
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 0 0 1px rgba(232, 98, 42, 0.22),
+      0 0 0 1px rgba(232, 98, 42, 0.14),
+      0 14px 32px -10px rgba(232, 98, 42, 0.36);
+  }
+
+  .cta--secondary:hover .cta__border  { opacity: 1; --cta-draw: 360deg; transition: --cta-draw 780ms var(--cta-ease) 60ms; }
+  .cta--secondary:hover .cta__rosette {
+    transform: translateX(-50%) scale(1.4);
+    opacity: 0.75;
+    color: var(--cta-accent);
+  }
+  .cta--secondary:hover .cta__rosette-spin svg {
+    animation: cta-rosette-spin 22s linear infinite reverse;
+  }
+  .cta--secondary:hover .cta__ch {
+    color: var(--cta-accent);
+    transform: translateY(-0.5px);
+  }
+  .cta--secondary:hover .cta__label { transform: translateY(-0.5px); }
+  .cta--secondary:hover .cta__icon  { transform: translateX(4px) scale(1.1); }
+  .cta--secondary:hover .cta__icon--left { transform: translateX(-4px) scale(1.1); }
+  .cta--secondary:hover .cta__icon svg { transform: rotate(14deg); }
+
+  .cta--secondary:active {
+    transform: translateY(0) scale(0.99);
+    transition-duration: 100ms;
+  }
+
+  /* ================================================================
+     TERTIARY — "The Marginalia"
+     Hand-drawn underline + flourish at the end.
+     ================================================================ */
+  .cta--tertiary {
+    background: transparent;
+    border-color: transparent;
+    color: var(--s-ink, #1a1619);
+    padding-inline: 0.25rem;
+    gap: 0.65rem;
+    border-radius: 0;
+    letter-spacing: 0.14em;
+  }
+
+  /* ── Underline (hand-drawn, tapered ends) ── */
+  .cta--tertiary .cta__rule {
+    position: absolute;
+    left: 0.25rem;
+    right: 0.25rem;
+    bottom: -0.1rem;
+    height: 1.5px;
+    background: transparent;
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--cta-d-slow) var(--cta-ease);
+  }
+
+  .cta--tertiary .cta__rule::before,
+  .cta--tertiary .cta__rule::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: currentColor;
+  }
+
+  .cta--tertiary .cta__rule::before {
+    left: 0;
+    right: 50%;
+    transform-origin: left center;
+  }
+
+  .cta--tertiary .cta__rule::after {
+    left: 50%;
+    right: 0;
+    transform-origin: right center;
+    transform: scaleX(0.7);
+  }
+
+  /* ── Flourish — small ornament that extends past the arrow ── */
+  .cta--tertiary .cta__flourish {
+    position: absolute;
+    right: 0.25rem;
+    bottom: -0.1rem;
+    height: 1.5px;
+    width: 22px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform var(--cta-d-base) var(--cta-ease) 140ms;
+  }
+
+  .cta--tertiary.cta--icon-left .cta__flourish {
+    left: 0.25rem;
+    right: auto;
+    transform-origin: left center;
+  }
+
+  .cta--tertiary .cta__flourish-line {
+    flex: 1;
+    height: 100%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  .cta--tertiary .cta__flourish-dot-end {
+    display: none;
+  }
+
+  .cta--tertiary:hover {
+    color: var(--cta-accent);
+    transform: translateY(-1px);
+  }
+
+  .cta--tertiary:hover .cta__rule     { transform: scaleX(1); }
+  .cta--tertiary:hover .cta__flourish { transform: scaleX(1); }
+  .cta--tertiary:hover .cta__icon     { transform: translateX(6px) scale(1.12); }
+  .cta--tertiary:hover .cta__icon--left { transform: translateX(-6px) scale(1.12); }
+  .cta--tertiary:hover .cta__icon svg { transform: rotate(14deg); }
+  .cta--tertiary:hover .cta__ch {
+    color: var(--cta-accent);
+    transform: translateY(-0.5px);
+  }
+  .cta--tertiary:hover .cta__label { transform: translateY(-0.5px); }
+
+  .cta--tertiary:active {
+    transform: translateY(0) scale(0.99);
+    transition-duration: 100ms;
+  }
+
+  /* ================================================================
+     KEYFRAMES
+     ================================================================ */
+  @keyframes cta-rosette-spin {
+    to { transform: rotate(-360deg); }
+  }
+
+  @keyframes cta-filament-sweep {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(calc(var(--cta-rosette-size) + 4px)); }
+  }
+
+  @keyframes cta-wave {
+    0% {
+      transform: translate(
+        calc(var(--cta-px) - 50%),
+        calc(var(--cta-py) - 50%)
+      ) scale(0);
+      opacity: 0.95;
+    }
+    100% {
+      transform: translate(
+        calc(var(--cta-px) - 50%),
+        calc(var(--cta-py) - 50%)
+      ) scale(32);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cta-spark {
+    0% {
+      transform: translate(
+        calc(var(--cta-px) - 50%),
+        calc(var(--cta-py) - 50%)
+      ) scale(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translate(
+        calc(var(--cta-px) - 50%),
+        calc(var(--cta-py) - 50%)
+      ) scale(3.5);
+      opacity: 0.85;
+    }
+    100% {
+      transform: translate(
+        calc(var(--cta-px) - 50%),
+        calc(var(--cta-py) - 50%)
+      ) scale(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes cta-char-ignite {
+    0% {
+      color: var(--cta-fg);
+      transform: translateY(0) scale(1);
+      text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.14), 0 1px 0 rgba(0, 0, 0, 0.45);
+    }
+    30% {
+      color: #6a6560;
+      transform: translateY(1px) scale(0.96);
+      text-shadow: 0 -2px 0 rgba(255, 255, 255, 0.04), 0 2px 0 rgba(0, 0, 0, 0.7);
+    }
+    60% {
+      color: var(--cta-gold);
+      transform: translateY(-0.5px) scale(1.05);
+      text-shadow:
+        0 0 12px rgba(255, 220, 150, 0.85),
+        0 1px 0 rgba(0, 0, 0, 0.3);
+    }
+    100% {
+      color: #ffffff;
+      transform: translateY(-0.5px) scale(1);
+      text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.25),
+        0 -1px 0 rgba(255, 255, 255, 0.2),
+        0 1px 0 rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  /* ================================================================
+     REDUCED MOTION
+     ================================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .cta,
+    .cta *,
+    .cta *::before,
+    .cta *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+    .cta--primary:hover { transform: translateY(-1px); }
+    .cta--secondary:hover { transform: translateY(0); }
+    .cta--tertiary:hover { transform: none; }
+  }
+</style>

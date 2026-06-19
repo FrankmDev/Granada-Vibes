@@ -3,6 +3,7 @@ import type { Locale } from '@types';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 import ScreenFrame from '@components/ui/ScreenFrame.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import '@styles/components/footer.css';
 
 interface Props {
@@ -175,7 +176,13 @@ const wordmarkChars = t('footer.brand.title').split('');
             <span class="col-title">{t('footer.contact.title')}</span>
             <span class="col-bracket">]</span>
           </div>
-          <a href="mailto:info@granadaurban.com" class="contact-card">
+          <a href="mailto:info@granadaurban.com" class="contact-card" id="contact-card">
+            <span class="contact-card__bracket contact-card__bracket--tl" aria-hidden="true"></span>
+            <span class="contact-card__bracket contact-card__bracket--tr" aria-hidden="true"></span>
+            <span class="contact-card__bracket contact-card__bracket--bl" aria-hidden="true"></span>
+            <span class="contact-card__bracket contact-card__bracket--br" aria-hidden="true"></span>
+            <span class="contact-card__pulse" aria-hidden="true"></span>
+            <span class="contact-card__stamp" aria-hidden="true">REPLY →</span>
             <div class="contact-card__bg"></div>
             <div class="contact-card__content">
               <span class="contact-card__icon" aria-hidden="true">
@@ -245,15 +252,17 @@ const wordmarkChars = t('footer.brand.title').split('');
           </a>
         </div>
         <div class="bottom-right">
-          <button class="back-to-top" id="back-to-top" aria-label={t('common.backToTop')}>
-            <span class="top-line"></span>
-            <span class="top-text">{t('common.backToTop')}</span>
-            <span class="top-arrow" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-          </button>
+          <ButtonCTA
+            id="back-to-top"
+            variant="tertiary"
+            size="sm"
+            icon="arrowLeft"
+            iconPosition="left"
+            class="back-to-top-cta"
+            ariaLabel={t('common.backToTop')}
+          >
+            {t('common.backToTop')}
+          </ButtonCTA>
         </div>
       </div>
     </div>
@@ -271,12 +280,6 @@ const wordmarkChars = t('footer.brand.title').split('');
       setTimeout(() => backToTopBtn.classList.remove('is-launching'), 800);
     };
     backToTopBtn.addEventListener('click', launch);
-    backToTopBtn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        launch();
-      }
-    });
   }
 
   const currentPath = window.location.pathname;
@@ -286,4 +289,28 @@ const wordmarkChars = t('footer.brand.title').split('');
       link.classList.add('is-active');
     }
   });
+
+  // Contact-card click pulse
+  const contactCard = document.getElementById('contact-card');
+  if (contactCard) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const contactPulse = contactCard.querySelector('.contact-card__pulse') as HTMLElement | null;
+    if (contactPulse && !prefersReducedMotion) {
+      contactCard.addEventListener('mousedown', (e) => {
+        const r = contactCard.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        contactPulse.style.left = `${x}px`;
+        contactPulse.style.top = `${y}px`;
+        contactPulse.style.transition = 'none';
+        contactPulse.style.opacity = '0.7';
+        contactPulse.style.transform = 'translate(-50%, -50%) scale(0)';
+        requestAnimationFrame(() => {
+          contactPulse.style.transition = 'transform 750ms cubic-bezier(0.16, 1, 0.3, 1), opacity 750ms ease-out';
+          contactPulse.style.transform = 'translate(-50%, -50%) scale(30)';
+          contactPulse.style.opacity = '0';
+        });
+      });
+    }
+  }
 </script>

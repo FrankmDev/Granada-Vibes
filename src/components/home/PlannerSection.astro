@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '@types';
 import SectionHeader from '@components/ui/SectionHeader.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import { useTranslations } from '@i18n/utils';
 import { getRoute } from '@utils/routes';
 
@@ -151,14 +152,9 @@ const splitText = (text: string, baseDelay = 0) =>
 
     <!-- CTA -->
     <div class="cta-actions">
-      <a href={plannerHref} class="cta-button">
-        <span class="btn-glow" aria-hidden="true"></span>
-        <span class="btn-gleam" aria-hidden="true"></span>
-        <span class="btn-text">{c.cta}</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <ButtonCTA href={plannerHref} variant="primary" size="lg">
+        {c.cta}
+      </ButtonCTA>
     </div>
 
     <!-- Bottom Bar -->
@@ -618,7 +614,7 @@ const splitText = (text: string, baseDelay = 0) =>
     color: var(--s-ink-2);
   }
 
-  /* CTA Actions */
+  /* CTA Actions - container only; button visuals live in ButtonCTA */
   .cta-actions {
     display: flex;
     gap: 1.5rem;
@@ -628,73 +624,6 @@ const splitText = (text: string, baseDelay = 0) =>
     animation: fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
     animation-play-state: paused;
     padding: 1rem 0;
-  }
-
-  .cta-button {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.875rem;
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 1.1rem 2.5rem;
-    border-radius: 100px;
-    overflow: hidden;
-    transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--s-ink);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  }
-
-  .cta-button:hover {
-    background: linear-gradient(135deg, rgba(232,98,42,0.15), rgba(232,98,42,0.05));
-    border-color: rgba(232,98,42,0.3);
-    transform: translateY(-3px);
-    box-shadow: 0 16px 48px rgba(232,98,42,0.2), 0 0 0 1px rgba(232,98,42,0.1);
-  }
-
-  .btn-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232, 98, 42, 0.25) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .cta-button:hover .btn-glow {
-    opacity: 1;
-  }
-
-  .btn-gleam {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
-    transform: translateX(-100%);
-    pointer-events: none;
-  }
-
-  .cta-button:hover .btn-gleam {
-    animation: gleamSweep 0.7s ease forwards;
-  }
-
-  @keyframes gleamSweep {
-    to { transform: translateX(100%); }
-  }
-
-  .cta-button svg {
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .cta-button:hover svg {
-    transform: translateX(4px);
   }
 
   /* Bottom Bar */
@@ -839,10 +768,7 @@ const splitText = (text: string, baseDelay = 0) =>
       width: 100%;
     }
 
-    .cta-button {
-      width: 100%;
-      justify-content: center;
-    }
+    /* cta-button removed: ButtonCTA uses .cta--full for full width. */
 
     .stats-panel {
       gap: 1rem;
@@ -896,15 +822,4 @@ const splitText = (text: string, baseDelay = 0) =>
     });
     observer.observe(section);
   }
-
-  // Mouse glow effect for CTA
-  document.querySelectorAll('.cta-button').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-      const rect = btn.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      (btn as HTMLElement).style.setProperty('--mouse-x', `${x}%`);
-      (btn as HTMLElement).style.setProperty('--mouse-y', `${y}%`);
-    });
-  });
 </script>

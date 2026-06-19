@@ -3,6 +3,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import NavBar from '@components/layout/NavBar.astro';
 import Footer from '@components/layout/Footer.astro';
 import SubpageHero from '@components/shared/SubpageHero.astro';
+import ButtonCTA from '@components/ui/ButtonCTA.astro';
 import { useTranslations } from '@i18n/utils';
 import type { Locale } from '@types';
 
@@ -69,10 +70,15 @@ const mailto = `mailto:${t('collaborate.ctaEmail')}?subject=${encodeURIComponent
             <h3 class="colab-card__title">{card.title}</h3>
             <p class="colab-card__desc">{card.description}</p>
             <div class="colab-card__footer">
-              <a href={mailto} class="colab-card__cta" data-track="generate_lead">
-                <span>{card.cta}</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
+              <ButtonCTA
+                href={mailto}
+                variant="tertiary"
+                size="sm"
+                data-track="generate_lead"
+                class="colab-card__cta"
+              >
+                {card.cta}
+              </ButtonCTA>
             </div>
           </article>
         ))}
@@ -85,11 +91,16 @@ const mailto = `mailto:${t('collaborate.ctaEmail')}?subject=${encodeURIComponent
           <span class="cta-orn-line"></span>
         </div>
         <p class="colab-cta-text">{t('collaborate.ctaText')}</p>
-        <a href={mailto} class="colab-cta-btn" data-track="generate_lead">
-          <span class="cta-btn-glow" aria-hidden="true"></span>
-          <span class="cta-btn-label">{t('collaborate.ctaEmail')}</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+        <ButtonCTA
+          href={mailto}
+          variant="primary"
+          size="lg"
+          icon="mail"
+          data-track="generate_lead"
+          class="colab-cta-btn"
+        >
+          {t('collaborate.ctaEmail')}
+        </ButtonCTA>
       </div>
     </div>
   </section>
@@ -211,22 +222,16 @@ const mailto = `mailto:${t('collaborate.ctaEmail')}?subject=${encodeURIComponent
     padding-top: 1rem;
     border-top: 1px solid var(--s-border-s);
   }
+
+  /* Tertiary override: keep the orange tone from the original card CTA. */
   .colab-card__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    --cta-accent: var(--s-orange);
     color: var(--s-orange);
-    text-decoration: none;
-    transition: gap 0.3s ease;
+    padding-inline: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
   }
-  .colab-card__cta:hover { gap: 0.75rem; }
-  .colab-card__cta svg { transition: transform 0.3s ease; }
-  .colab-card__cta:hover svg { transform: translateX(3px); }
+  .colab-card__cta .cta__rule { background: currentColor; }
 
   .colab-cta-block {
     text-align: center;
@@ -267,40 +272,10 @@ const mailto = `mailto:${t('collaborate.ctaEmail')}?subject=${encodeURIComponent
     margin-bottom: 2rem;
   }
 
+  /* colab-cta-btn: primary variant, only needs a small layout override. */
   .colab-cta-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2.25rem;
-    background: var(--s-ink);
-    color: #fff;
-    border-radius: 100px;
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 600;
     letter-spacing: 0.02em;
-    text-decoration: none;
-    overflow: hidden;
-    transition: all 0.4s var(--ease-expo);
-    box-shadow: 0 8px 32px rgba(26, 22, 25, 0.15);
-  }
-  .colab-cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(26, 22, 25, 0.2);
-    background: var(--s-orange);
-  }
-  .cta-btn-glow {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.12) 50%, transparent 62%);
-    transform: translateX(-100%);
-  }
-  .colab-cta-btn:hover .cta-btn-glow {
-    animation: cta-gleam 0.9s ease forwards;
-  }
-  @keyframes cta-gleam {
-    to { transform: translateX(100%); }
+    font-size: 0.85rem;
   }
 
   @media (max-width: 1024px) {

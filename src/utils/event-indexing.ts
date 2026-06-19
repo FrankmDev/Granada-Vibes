@@ -1,54 +1,66 @@
 import type { Event, LocalizedText } from '@types';
+import {
+  hasEditorialDepth as hasEditorialDepthMjs,
+  hasRepeatedCopy,
+  isNearDuplicateOf,
+  shouldIndexEvent as shouldIndexEventMjs,
+  MIN_DESCRIPTION_WORDS,
+  MIN_LONG_DESCRIPTION_WORDS,
+  MIN_TIPS_WORDS,
+} from '../config/event-indexing.mjs';
 
-const MIN_DESCRIPTION_WORDS = 18;
-const MIN_LONG_DESCRIPTION_WORDS = 40;
-const MIN_TIPS_WORDS = 16;
+export {
+  MIN_DESCRIPTION_WORDS,
+  MIN_LONG_DESCRIPTION_WORDS,
+  MIN_TIPS_WORDS,
+  hasRepeatedCopy,
+  isNearDuplicateOf,
+};
 
-function wordCount(value: string | undefined): number {
+/**
+ * Typed wrapper — delegates to the shared .mjs implementation.
+ */
+export function hasEditorialDepth(event: Event): boolean {
+  return hasEditorialDepthMjs(event);
+}
+
+// Re-export the MJS today helper with a TS-compatible wrapper
+function madridTodayFromDate(date: Date): string {
+  // Format the given date in Europe/Madrid timezone for consistent comparison
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/Madrid',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  return formatter.format(date);
+}
+
+/**
+ * Determine if an event's detail page should be indexable by search engines.
+ *
+ * Wraps the shared .mjs logic with a typed TS signature.
+ * Uses Europe/Madrid timezone for date comparison — aligned with sitemap.
+ *
+ * @param event - The event to evaluate
+ * @param fromDate - Reference date (defaults to now). Converted to Madrid-today internally.
+ */
+export function shouldIndexEventDetail(event: Event, fromDate: Date = new Date()): boolean {
+  const today = madridTodayFromDate(fromDate);
+  return shouldIndexEventMjs(event, today);
+}
+
+/**
+ * Word count helper (re-exported for convenience).
+ */
+export function wordCount(value: string | undefined): number {
   return (value ?? '').trim().split(/\s+/).filter(Boolean).length;
 }
 
-function localizedWordCount(value: LocalizedText | undefined): number {
+/**
+ * Localized word count: returns the larger of es/en word counts.
+ */
+export function localizedWordCount(value: LocalizedText | undefined): number {
   if (!value) return 0;
   return Math.max(wordCount(value.es), wordCount(value.en));
-}
-
-function hasRepeatedShortCopy(value: LocalizedText | undefined): boolean {
-  if (!value) return false;
-
-  return [value.es, value.en].some((copy) => {
-    const normalized = copy.replace(/\s+/g, ' ').trim().toLowerCase();
-    if (normalized.length < 40) return false;
-
-    const midpoint = Math.floor(normalized.length / 2);
-    const left = normalized.slice(0, midpoint).trim();
-    const right = normalized.slice(midpoint).trim();
-    return left.length > 20 && left === right;
-  });
-}
-
-function hasEditorialDepth(event: Event): boolean {
-  if (localizedWordCount(event.description) >= MIN_DESCRIPTION_WORDS && !hasRepeatedShortCopy(event.description)) {
-    return true;
-  }
-
-  if (localizedWordCount(event.longDescription) >= MIN_LONG_DESCRIPTION_WORDS) {
-    return true;
-  }
-
-  if (localizedWordCount(event.tips) >= MIN_TIPS_WORDS) {
-    return true;
-  }
-
-  return Math.max(event.highlights?.es.length ?? 0, event.highlights?.en.length ?? 0) >= 2;
-}
-
-export function shouldIndexEventDetail(event: Event, fromDate: Date = new Date()): boolean {
-  if (event.seoIndex === 'never') return false;
-  if (event.seoIndex === 'always') return true;
-
-  const today = fromDate.toISOString().split('T')[0];
-  if (!today || (event.endDate ?? event.date) < today) return false;
-
-  return hasEditorialDepth(event);
 }
