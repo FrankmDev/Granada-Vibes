@@ -26,18 +26,6 @@ const t = useTranslations(locale);
      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
 <div class="gate" role="dialog" aria-label={t('nav.mainNavLabel')} aria-hidden="true">
 
-  <!-- SVG filter: hollow outline via morphological erosion (no internal serif artifacts) -->
-  <svg class="gate-filters" aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
-    <defs>
-      <filter id="ghost-hollow" x="-2%" y="-2%" width="104%" height="104%">
-        <feMorphology in="SourceAlpha" operator="erode" radius="0.75" result="eroded"/>
-        <feComposite in="SourceAlpha" in2="eroded" operator="out" result="ring"/>
-        <feFlood flood-color="#c9a84c" flood-opacity="0.16" result="color"/>
-        <feComposite in="color" in2="ring" operator="in"/>
-      </filter>
-    </defs>
-  </svg>
-
   <!-- Curtain panels that slide open -->
   <div class="gate-curtain gate-curtain--l" aria-hidden="true"></div>
   <div class="gate-curtain gate-curtain--r" aria-hidden="true"></div>

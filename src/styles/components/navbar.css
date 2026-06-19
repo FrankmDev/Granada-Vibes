@@ -886,6 +886,7 @@
     opacity: 0;
     transform: translateX(-50%) scaleY(0.15);
     transform-origin: center;
+    filter: blur(10px);
   }
 
   .gate.is-open::before {
@@ -1082,8 +1083,8 @@
     letter-spacing: -0.015em;
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1, "lnum" 1;
-    color: #c9a84c;
-    filter: url(#ghost-hollow);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201, 168, 76, 0.16);
     font-synthesis: none;
     -webkit-font-smoothing: antialiased;
     opacity: 0;
@@ -1778,6 +1779,7 @@
       transition-duration: 0.01ms !important;
       opacity: 1 !important;
       transform: none !important;
+      filter: none !important;
     }
 
     .gate {
