@@ -51,6 +51,12 @@ const btnTooltip = document.getElementById('btn-tooltip') as HTMLParagraphElemen
 const notesInput = document.getElementById('plan-notas') as HTMLTextAreaElement;
 const notesCount = document.getElementById('notas-count') as HTMLSpanElement;
 
+function setGenerateButtonEnabled(isEnabled: boolean): void {
+  btnGenerate.disabled = !isEnabled;
+  btnGenerate.classList.toggle('cta--disabled', !isEnabled);
+  btnGenerate.setAttribute('aria-disabled', String(!isEnabled));
+}
+
 function parsePlannerParams(): PlanParams {
   return {
     tiempo: state.tiempo as PlanParams['tiempo'],
@@ -71,7 +77,7 @@ function validateForm(): boolean {
     return Array.isArray(value) ? value.length > 0 : Boolean(value);
   });
 
-  btnGenerate.disabled = !isValid;
+  setGenerateButtonEnabled(isValid);
   btnTooltip.classList.toggle('hidden', isValid);
   updateProgress();
   return isValid;
