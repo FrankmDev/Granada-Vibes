@@ -1,4 +1,5 @@
 import type { EventInput } from './types.js';
+import { isExcludedEvent } from './exclusions.js';
 
 function mergeEvent(existing: EventInput, curated: EventInput): EventInput {
   const highlights = curated.highlights ?? existing.highlights;
@@ -32,10 +33,12 @@ export function mergeEventsBySlug(generatedEvents: EventInput[], curatedEvents: 
   const eventMap = new Map<string, EventInput>();
 
   for (const event of generatedEvents) {
+    if (isExcludedEvent(event)) continue;
     eventMap.set(event.slug, event);
   }
 
   for (const event of curatedEvents) {
+    if (isExcludedEvent(event)) continue;
     const existing = eventMap.get(event.slug);
     eventMap.set(event.slug, existing ? mergeEvent(existing, event) : event);
   }

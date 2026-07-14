@@ -487,21 +487,6 @@ Durante la velada se suelen catar varios vinos (normalmente denominaciones nacio
 During the evening, several wines are usually tasted (typically national appellations plus an international or local reference) accompanied by dishes specifically designed to highlight the nuances of each glass: from cold and hot appetizers to small sweet bites. The €99 entry includes both the menu and the tasting guided by a sommelier or head waiter, making the experience akin to a fine dining pairing event inside a centuries-old building.`
     }
   },
-  'escape-room-al-aire-libre-en-granada': {
-    description: {
-      es: 'El "Escape Room al Aire Libre en Granada" propone una gymkana urbana que arranca en Plaza de Bib‑Rambla y recorre distintos puntos del centro histórico, con entradas a 15 €. A través de una app y un kit de juego, los participantes deben resolver pistas, acertijos y pruebas físicas ligeras que los llevan por calles y plazas emblemáticas.',
-      en: 'The "Escape Room al Aire Libre en Granada" proposes an urban gymkhana that starts at Plaza de Bib-Rambla and runs through different points of the historic center, with €15 tickets. Through an app and a game kit, participants must solve clues, riddles, and light physical challenges that take them through emblematic streets and squares.'
-    },
-    longDescription: {
-      es: `El "Escape Room al Aire Libre en Granada" propone una gymkana urbana que arranca en Plaza de Bib‑Rambla y recorre distintos puntos del centro histórico, con entradas a 15 €. A través de una app y un kit de juego, los participantes deben resolver pistas, acertijos y pruebas físicas ligeras que los llevan por calles y plazas emblemáticas.
-
-Es una actividad perfecta para grupos de amigos, familias o equipos de empresa que quieran conocer la ciudad de forma diferente, mezclando turismo, juego y algo de misterio. La duración suele rondar las 2 horas, y no requiere actor presencial: la propia narrativa del juego guía el recorrido.`,
-      en: `The "Escape Room al Aire Libre en Granada" proposes an urban gymkhana that starts at Plaza de Bib-Rambla and runs through different points of the historic center, with €15 tickets. Through an app and a game kit, participants must solve clues, riddles, and light physical challenges that take them through emblematic streets and squares.
-
-It is a perfect activity for groups of friends, families, or company teams who want to discover the city in a different way, mixing tourism, gaming, and a bit of mystery. The duration is usually around 2 hours, and it does not require a live actor: the game's own narrative guides the route.`
-    },
-    price: 15
-  },
   '44-feria-del-libro-granada': {
     description: {
       es: 'La 44 Feria del Libro de Granada llena la ciudad de libros, autores y actividades culturales el 23 de abril de 2026 y fechas cercanas, consolidando la cita como uno de los grandes encuentros literarios de Andalucía. Repartida entre casetas en el centro urbano y espacios institucionales, la feria reúne a editoriales, librerías, distribuidoras y autores, ofreciendo presentaciones, firmas, mesas redondas y encuentros con lectores.',

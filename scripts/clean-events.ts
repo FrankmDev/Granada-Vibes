@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { isExcludedEvent } from '../src/data/events/exclusions.js';
 
 const generatedPath = path.resolve(import.meta.dirname, '../src/data/events/generated.json');
 const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
@@ -12,6 +13,13 @@ const madridDateFormatter = new Intl.DateTimeFormat('en-CA', {
 interface EventRecord extends Record<string, unknown> {
   date?: string;
   endDate?: string;
+  slug?: string;
+  title?: {
+    es?: string;
+    en?: string;
+  };
+  source?: string;
+  sourceId?: string;
 }
 
 function isEventRecord(value: unknown): value is EventRecord {
@@ -63,7 +71,13 @@ function main(): void {
   }
 
   let invalidDateCount = 0;
+  let excludedCount = 0;
   const filtered = events.filter((event) => {
+    if (isExcludedEvent(event)) {
+      excludedCount++;
+      return false;
+    }
+
     const endDate = getEventEndDate(event);
     const isValidDate = typeof endDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(endDate);
 
@@ -76,10 +90,14 @@ function main(): void {
   });
 
   const removed = events.length - filtered.length;
-  const pastRemoved = removed - invalidDateCount;
+  const pastRemoved = removed - invalidDateCount - excludedCount;
 
   if (invalidDateCount > 0) {
     console.warn(`[!] ${invalidDateCount} evento(s) sin fecha valida fueron descartados durante la limpieza.`);
+  }
+
+  if (excludedCount > 0) {
+    console.warn(`[!] ${excludedCount} evento(s) excluido(s) por denylist fueron descartados durante la limpieza.`);
   }
 
   if (removed === 0) {
@@ -87,7 +105,7 @@ function main(): void {
   } else {
     saveEvents(filtered);
     console.log(
-      `[OK] Eliminados ${pastRemoved} evento(s) pasado(s) y ${invalidDateCount} invalido(s). Restantes: ${filtered.length}.`
+      `[OK] Eliminados ${pastRemoved} evento(s) pasado(s), ${invalidDateCount} invalido(s) y ${excludedCount} excluido(s). Restantes: ${filtered.length}.`
     );
   }
 }

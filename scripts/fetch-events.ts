@@ -24,6 +24,7 @@ import {
 } from './utils/transform-scraped.js';
 import { detectNeighborhood } from './utils/venue-neighborhood.js';
 import { improveImageUrl } from './utils/image-quality.js';
+import { isExcludedEvent } from '../src/data/events/exclusions.js';
 import {
   type GeneratedEvent,
   type EventCategory,
@@ -184,6 +185,7 @@ interface ValidationStats {
   badDate: number;
   pastDate: number;
   cancelled: number;
+  excluded: number;
   noImage: number;
   passed: number;
 }
@@ -204,6 +206,9 @@ function isValidEvent(event: GeneratedEvent, stats: ValidationStats): boolean {
   // Filter cancelled events
   if (/^cancelad[oa]\b/i.test(event.title.es)) { stats.cancelled++; return false; }
 
+  // Permanent editorial denylist
+  if (isExcludedEvent(event)) { stats.excluded++; return false; }
+
   // Track missing images but DON'T filter them out
   if (!event.imageUrl) { stats.noImage++; }
 
@@ -223,6 +228,7 @@ function logValidationStats(sourceName: string, stats: ValidationStats): void {
     if (stats.badDate > 0) reasons.push(`${stats.badDate} fecha inválida`);
     if (stats.pastDate > 0) reasons.push(`${stats.pastDate} pasados`);
     if (stats.cancelled > 0) reasons.push(`${stats.cancelled} cancelados`);
+    if (stats.excluded > 0) reasons.push(`${stats.excluded} excluidos`);
     console.log(`  ↳ ${sourceName}: ${rejected} descartados (${reasons.join(', ')})`);
   }
   if (stats.noImage > 0) {
@@ -363,6 +369,7 @@ function deduplicateAndMerge(
   const merged = new Map<string, GeneratedEvent>();
 
   for (const event of existing) {
+    if (isExcludedEvent(event)) continue;
     if ((event.endDate ?? event.date) < today) continue;
     const eventKey = key(event);
     existingByKey.set(eventKey, event);
@@ -372,6 +379,7 @@ function deduplicateAndMerge(
   }
 
   for (const event of incoming) {
+    if (isExcludedEvent(event)) continue;
     const eventKey = key(event);
     const current = merged.get(eventKey) ?? existingByKey.get(eventKey);
     merged.set(eventKey, current ? mergeEventRecords(event, current) : event);
@@ -416,7 +424,7 @@ async function fetchFromTicketmaster(): Promise<SourceResult> {
   }
 
   const raw = await fetchTicketmasterEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformTicketmaster).filter(e => isValidEvent(e, stats));
   logValidationStats('Ticketmaster', stats);
   return { name: 'Ticketmaster', events: transformed, rawCount: raw.length };
@@ -429,7 +437,7 @@ async function fetchFromEventbrite(): Promise<SourceResult> {
   }
 
   const raw = await fetchEventbriteEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformEventbrite).filter(e => isValidEvent(e, stats));
   logValidationStats('Eventbrite', stats);
   return { name: 'Eventbrite', events: transformed, rawCount: raw.length };
@@ -439,7 +447,7 @@ async function fetchFromEventbrite(): Promise<SourceResult> {
 
 async function fetchFromConciertosGranada(): Promise<SourceResult> {
   const raw = await fetchConciertosGranadaEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformConciertosGranada).filter(e => isValidEvent(e, stats));
   logValidationStats('ConciertosenGranada', stats);
   return { name: 'ConciertosenGranada', events: transformed, rawCount: raw.length };
@@ -447,7 +455,7 @@ async function fetchFromConciertosGranada(): Promise<SourceResult> {
 
 async function fetchFromYuzin(): Promise<SourceResult> {
   const raw = await fetchYuzinEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformYuzin).filter(e => isValidEvent(e, stats));
   logValidationStats('Yuzin', stats);
   return { name: 'Yuzin', events: transformed, rawCount: raw.length };
@@ -455,7 +463,7 @@ async function fetchFromYuzin(): Promise<SourceResult> {
 
 async function fetchFromGranadaEsCultura(): Promise<SourceResult> {
   const raw = await fetchGranadaEsCulturaEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformGranadaEsCultura).filter(e => isValidEvent(e, stats));
   logValidationStats('GranadaEsCultura', stats);
   return { name: 'GranadaEsCultura', events: transformed, rawCount: raw.length };
@@ -463,7 +471,7 @@ async function fetchFromGranadaEsCultura(): Promise<SourceResult> {
 
 async function fetchFromPalacio(): Promise<SourceResult> {
   const raw = await fetchPalacioEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformPalacio).filter(e => isValidEvent(e, stats));
   logValidationStats('PalacioCongresos', stats);
   return { name: 'PalacioCongresos', events: transformed, rawCount: raw.length };
@@ -471,7 +479,7 @@ async function fetchFromPalacio(): Promise<SourceResult> {
 
 async function fetchFromTurgranada(): Promise<SourceResult> {
   const raw = await fetchTurgranadaEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformTurgranada).filter(e => isValidEvent(e, stats));
   logValidationStats('Turgranada', stats);
   return { name: 'Turgranada', events: transformed, rawCount: raw.length };
@@ -479,7 +487,7 @@ async function fetchFromTurgranada(): Promise<SourceResult> {
 
 async function fetchFromAyuntamiento(): Promise<SourceResult> {
   const raw = await fetchAyuntamientoEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformAyuntamiento).filter(e => isValidEvent(e, stats));
   logValidationStats('Ayuntamiento', stats);
   return { name: 'Ayuntamiento', events: transformed, rawCount: raw.length };
@@ -487,7 +495,7 @@ async function fetchFromAyuntamiento(): Promise<SourceResult> {
 
 async function fetchFromElegirHoy(): Promise<SourceResult> {
   const raw = await fetchElegirHoyEvents();
-  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, noImage: 0, passed: 0 };
+  const stats: ValidationStats = { total: 0, noTitle: 0, noVenue: 0, badDate: 0, pastDate: 0, cancelled: 0, excluded: 0, noImage: 0, passed: 0 };
   const transformed = raw.map(transformElegirHoy).filter(e => isValidEvent(e, stats));
   logValidationStats('ElegirHoy', stats);
   return { name: 'ElegirHoy', events: transformed, rawCount: raw.length };
