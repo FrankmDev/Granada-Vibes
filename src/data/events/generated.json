@@ -1,177 +1,5 @@
 [
   {
-    "id": "eb-1992349089760",
-    "slug": "curso-basico-chamsys-magicq-granada-espana-julio-2026",
-    "title": {
-      "es": "Curso Básico Chamsys MagicQ : Granada  España  Julio 2026",
-      "en": "Curso Básico Chamsys MagicQ : Granada  España  Julio 2026"
-    },
-    "description": {
-      "es": "Curso Básico e introductorio al ecosistema Chamsys y su software MagicQ",
-      "en": "Curso Básico e introductorio al ecosistema Chamsys y su software MagicQ"
-    },
-    "category": "cinema",
-    "date": "2026-07-21",
-    "endDate": "2026-07-22",
-    "time": "10:00",
-    "venue": "C. Graham Bell, 6",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Film, Media & Entertainment"
-    ],
-    "featured": false,
-    "source": "eventbrite",
-    "sourceId": "1992349089760",
-    "sourceUrl": "https://www.eventbrite.co.uk/e/entradas-curso-basico-chamsys-magicq-granada-espana-julio-2026-1992349089760",
-    "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1992349089760",
-    "imageUrl": "f7555b4b039a4785145c.webp",
-    "lastSyncedAt": "2026-06-28T06:50:44.590Z",
-    "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1179765838%2F1112271184863%2F1%2Foriginal.20260313-110505?auto=format%2Ccompress&q=75&sharp=10&s=d8406fc6c2387f0e11c7a524dcb6332a"
-  },
-  {
-    "id": "cg-3ynd58",
-    "slug": "jazz-en-la-costa-joe-lovano-paramount-quartet-con-julian-lage-asante-santi-debri",
-    "title": {
-      "es": "Jazz en la Costa. JOE LOVANO PARAMOUNT QUARTET con JULIAN LAGE, ASANTE SANTI DEBRIANO y WILL CALHOUN.",
-      "en": "Jazz en la Costa. JOE LOVANO PARAMOUNT QUARTET con JULIAN LAGE, ASANTE SANTI DEBRIANO y WILL CALHOUN."
-    },
-    "description": {
-      "es": "Precio: 25€.",
-      "en": "Precio: 25€."
-    },
-    "category": "concert",
-    "date": "2026-07-22",
-    "time": "22:00",
-    "venue": "Parque del Majuelo",
-    "neighborhood": "centro",
-    "price": 25,
-    "currency": "EUR",
-    "tags": [
-      "Jazz/Swing"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "3ynd58",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/120895-joe-lovano-paramount-quartet-con-julian-lage-asante-santi-debriano-y-will-calhoun",
-    "imageUrl": "22ee00a0fe6d9e1c5d9f.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
-    "remoteImageUrl": "https://conciertos.club/doc/c/2026/a_joelovano.jpg"
-  },
-  {
-    "id": "cg-5sxp5m",
-    "slug": "radio-crooner",
-    "title": {
-      "es": "Radio Crooner",
-      "en": "Radio Crooner"
-    },
-    "description": {
-      "es": "Precio: Entrada libre.",
-      "en": "Precio: Entrada libre."
-    },
-    "category": "concert",
-    "date": "2026-07-22",
-    "time": "23:30",
-    "venue": "Parque del Majuelo",
-    "neighborhood": "centro",
-    "price": null,
-    "currency": "EUR",
-    "tags": [
-      "Versiones/Tributos"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "5sxp5m",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/121605-radio-crooner",
-    "imageUrl": "c21d4f5e83fdbc708250.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
-    "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_radiocroonerduo.jpg"
-  },
-  {
-    "id": "cg-oguvd3",
-    "slug": "johnny-marr",
-    "title": {
-      "es": "Johnny Marr",
-      "en": "Johnny Marr"
-    },
-    "description": {
-      "es": "Venta anticipada: Ticketmaster.es.",
-      "en": "Venta anticipada: Ticketmaster.es."
-    },
-    "category": "concert",
-    "date": "2026-07-23",
-    "time": "Por confirmar",
-    "venue": "Palacio de Congresos y Exposiciones",
-    "neighborhood": "zaidin",
-    "price": 44,
-    "currency": "EUR",
-    "tags": [],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "oguvd3",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/116463-johnny-marr",
-    "imageUrl": "06bff7bcb95813d96f97.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
-    "remoteImageUrl": "https://conciertos.club/doc/ban/J/ban_johnnymarr.jpg"
-  },
-  {
-    "id": "cg-eylmdq",
-    "slug": "tributo-a-queen",
-    "title": {
-      "es": "Tributo a Queen",
-      "en": "Tributo a Queen"
-    },
-    "description": {
-      "es": "Precio: 12-49€.",
-      "en": "Precio: 12-49€."
-    },
-    "category": "concert",
-    "date": "2026-07-23",
-    "time": "21:00",
-    "venue": "Campo de Fútbol",
-    "neighborhood": "centro",
-    "price": 49,
-    "currency": "EUR",
-    "tags": [
-      "Pop-rock/Indie"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "eylmdq",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/122400-tributo-a-queen",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z"
-  },
-  {
-    "id": "cg-ejb3j7",
-    "slug": "jazz-en-la-costa-chico-freeman-con-francesca-tandoi-trio",
-    "title": {
-      "es": "Jazz en la Costa. CHICO FREEMAN con FRANCESCA TANDOI TRIO.",
-      "en": "Jazz en la Costa. CHICO FREEMAN con FRANCESCA TANDOI TRIO."
-    },
-    "description": {
-      "es": "Precio: 25€.",
-      "en": "Precio: 25€."
-    },
-    "category": "concert",
-    "date": "2026-07-23",
-    "time": "22:00",
-    "venue": "Parque del Majuelo",
-    "neighborhood": "centro",
-    "price": 25,
-    "currency": "EUR",
-    "tags": [
-      "Jazz/Swing"
-    ],
-    "featured": false,
-    "source": "conciertos-granada",
-    "sourceId": "ejb3j7",
-    "sourceUrl": "https://conciertosengranada.es/conciertos/120896-chico-freeman-con-francesca-tandoi-trio",
-    "imageUrl": "b12b2f4cef9cc6c1df1a.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
-    "remoteImageUrl": "https://conciertos.club/doc/c/2026/a_francescatandoi.jpg"
-  },
-  {
     "id": "cg-ahy7fr",
     "slug": "musica-en-los-rincones",
     "title": {
@@ -199,6 +27,89 @@
     "lastSyncedAt": "2026-07-22T09:22:33.035Z"
   },
   {
+    "id": "cg-oguvd3",
+    "slug": "johnny-marr",
+    "title": {
+      "es": "Johnny Marr",
+      "en": "Johnny Marr"
+    },
+    "description": {
+      "es": "Venta anticipada: Ticketmaster.es.",
+      "en": "Venta anticipada: Ticketmaster.es."
+    },
+    "category": "concert",
+    "date": "2026-07-23",
+    "time": "Por confirmar",
+    "venue": "Palacio de Congresos y Exposiciones",
+    "neighborhood": "zaidin",
+    "price": 44,
+    "currency": "EUR",
+    "tags": [],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "oguvd3",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/116463-johnny-marr",
+    "imageUrl": "06bff7bcb95813d96f97.webp",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
+    "remoteImageUrl": "https://conciertos.club/doc/ban/J/ban_johnnymarr.jpg"
+  },
+  {
+    "id": "cg-eylmdq",
+    "slug": "tributo-a-queen",
+    "title": {
+      "es": "Tributo a Queen",
+      "en": "Tributo a Queen"
+    },
+    "description": {
+      "es": "Precio: 12-49€.",
+      "en": "Precio: 12-49€."
+    },
+    "category": "concert",
+    "date": "2026-07-23",
+    "time": "21:00",
+    "venue": "Campo de Fútbol",
+    "neighborhood": "centro",
+    "price": 49,
+    "currency": "EUR",
+    "tags": [
+      "Pop-rock/Indie"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "eylmdq",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/122400-tributo-a-queen",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z"
+  },
+  {
+    "id": "cg-ejb3j7",
+    "slug": "jazz-en-la-costa-chico-freeman-con-francesca-tandoi-trio",
+    "title": {
+      "es": "Jazz en la Costa. CHICO FREEMAN con FRANCESCA TANDOI TRIO.",
+      "en": "Jazz en la Costa. CHICO FREEMAN con FRANCESCA TANDOI TRIO."
+    },
+    "description": {
+      "es": "Precio: 25€.",
+      "en": "Precio: 25€."
+    },
+    "category": "concert",
+    "date": "2026-07-23",
+    "time": "22:00",
+    "venue": "Parque del Majuelo",
+    "neighborhood": "centro",
+    "price": 25,
+    "currency": "EUR",
+    "tags": [
+      "Jazz/Swing"
+    ],
+    "featured": false,
+    "source": "conciertos-granada",
+    "sourceId": "ejb3j7",
+    "sourceUrl": "https://conciertosengranada.es/conciertos/120896-chico-freeman-con-francesca-tandoi-trio",
+    "imageUrl": "b12b2f4cef9cc6c1df1a.webp",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
+    "remoteImageUrl": "https://conciertos.club/doc/c/2026/a_francescatandoi.jpg"
+  },
+  {
     "id": "cg-7kce5r",
     "slug": "mujeres-mediterraneas",
     "title": {
@@ -224,7 +135,7 @@
     "sourceId": "7kce5r",
     "sourceUrl": "https://conciertosengranada.es/conciertos/124126-mujeres-mediterraneas",
     "imageUrl": "a0e7f404aadff60f2560.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2023/a_mujeresmediterraneas.jpg"
   },
   {
@@ -253,7 +164,7 @@
     "sourceId": "ldnxie",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121606-jesus-mata-jazz-quartet",
     "imageUrl": "10dc32886dd13ccd079a.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_jesusmata.jpg"
   },
   {
@@ -280,7 +191,7 @@
     "sourceId": "v2qq72",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=521",
     "imageUrl": "27de967106258f7c56c2.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/521.png"
   },
   {
@@ -307,7 +218,7 @@
     "sourceId": "8fugay",
     "sourceUrl": "https://www.turgranada.es/es/eventos/onda-beach-festival",
     "imageUrl": "0e0c7a1e7e2fc2c538b9.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/Captura_de_pantalla_2026-07-1.2e16d0ba.fill-275x202-c100.png"
   },
   {
@@ -334,7 +245,7 @@
     "sourceId": "uodp1z",
     "sourceUrl": "https://www.turgranada.es/es/eventos/ciclo-1001-m%C3%BAsicas-caixabank-johnny-marr",
     "imageUrl": "eb17987e1b6d52c605ef.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/JohnnyMarr.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -361,7 +272,7 @@
     "sourceId": "5w572k",
     "sourceUrl": "https://www.turgranada.es/es/eventos/concierto-national-youth-guitar-ensemble",
     "imageUrl": "8548dda7a4711ffd171f.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/orquesta.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -390,7 +301,7 @@
     "sourceId": "v6ep97",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120897-erik-truffaz-antonio-lizana",
     "imageUrl": "29012cbb66969302900f.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/T/ban_truffazlizana.jpg"
   },
   {
@@ -419,7 +330,7 @@
     "sourceId": "5vpzbn",
     "sourceUrl": "https://conciertosengranada.es/conciertos/122398-nacha-pop-la-guardia-la-frontera/1784919600",
     "imageUrl": "7a6c669544379ff4eea4.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_nachapop.jpg"
   },
   {
@@ -448,7 +359,7 @@
     "sourceId": "see6u1",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123774-la-cuchilla-ines-y-los-inesperados-ouyeah-marron-rose",
     "imageUrl": "91a4a32d73126089ab6d.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_lacaletarock2607.jpg"
   },
   {
@@ -477,7 +388,7 @@
     "sourceId": "53ixwy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121607-trianajazz",
     "imageUrl": "8e15c60ccd0d5eb807c9.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2019/a_trianajazz.jpg"
   },
   {
@@ -504,7 +415,7 @@
     "sourceId": "5t9ykc",
     "sourceUrl": "https://www.turgranada.es/es/eventos/mar-de-%C3%ADdolos-ii-chambao-25-aniversario",
     "imageUrl": "0628698e272d5567d2c7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/chambao.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -532,7 +443,7 @@
     "source": "conciertos-granada",
     "sourceId": "5ivitl",
     "sourceUrl": "https://conciertosengranada.es/conciertos/122399-natalia-david-civera-javier-ojeda-mescalina",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z"
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z"
   },
   {
     "id": "cg-vg7pi5",
@@ -560,7 +471,7 @@
     "sourceId": "vg7pi5",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123491-mr-man-the-small-frying-pan",
     "imageUrl": "13b3774f4c3221333fd7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_mrmanpan.jpg"
   },
   {
@@ -589,7 +500,7 @@
     "sourceId": "j3j0a6",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120898-china-moses",
     "imageUrl": "5cb49a0a3144f64af6ec.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_chinamoses.jpg"
   },
   {
@@ -618,7 +529,7 @@
     "sourceId": "nw4q54",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121754-maki-maria-artes",
     "imageUrl": "d5467edc2e4305a560ad.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/zafarrayas_20260725.jpg"
   },
   {
@@ -647,7 +558,7 @@
     "sourceId": "saawma",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121608-costa-jazz-quartet",
     "imageUrl": "a25b6ef626d9246f6578.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2019/a_costajazzquartet.jpg"
   },
   {
@@ -674,7 +585,7 @@
     "sourceId": "743mll",
     "sourceUrl": "https://www.turgranada.es/es/eventos/moros-y-cristianos-molv%C3%ADzar-2025",
     "imageUrl": "a6b9ab63062ecdfa1846.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/Agenda_Moros_y_Cristianos_Mol.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -701,7 +612,7 @@
     "sourceId": "csxgmf",
     "sourceUrl": "https://www.turgranada.es/es/eventos/x-zafarralla-sound",
     "imageUrl": "c17ed184288c9ff8abe7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/maki.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -728,7 +639,7 @@
     "sourceId": "ax12yp",
     "sourceUrl": "https://www.turgranada.es/es/eventos/national-youth-guitar-ensemble",
     "imageUrl": "8548dda7a4711ffd171f.webp",
-    "lastSyncedAt": "2026-07-22T09:22:29.259Z",
+    "lastSyncedAt": "2026-07-23T08:11:11.826Z",
     "remoteImageUrl": "https://cdn.dipgra.es/my-media-files-bucket/images/orquesta.2e16d0ba.fill-275x202-c100.jpg"
   },
   {
@@ -757,7 +668,7 @@
     "sourceId": "lvvvkv",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120899-roberto-fonseca",
     "imageUrl": "4d456f23a300355185a0.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_robertofonseca.jpg"
   },
   {
@@ -786,7 +697,7 @@
     "sourceId": "jyqtp9",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121725-taller-municipal-de-illora-parapanda-suena-melaza",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -815,7 +726,7 @@
     "sourceId": "sv8q9j",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121726-banda-de-musica-villa-de-illora-coral-san-rogelio",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -844,7 +755,7 @@
     "sourceId": "rkjv6r",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121727-cia-de-ramon-del-paso-morenito-de-illora-mari-paz-lucena",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -873,7 +784,7 @@
     "sourceId": "iyo4nr",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121728-omayra-arroyo-climent-y-ballarin-quinteto",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -902,7 +813,7 @@
     "sourceId": "k8zjb5",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119803-nino-de-elche",
     "imageUrl": "10fa57c5b19e9c6f6205.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_tendencias2026.jpg"
   },
   {
@@ -931,7 +842,7 @@
     "sourceId": "y69bvs",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115135-alma-de-la-sagra/1785520800",
     "imageUrl": "fa4fc4825ecc97e99a77.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_almadelasagra2026.jpg"
   },
   {
@@ -960,7 +871,7 @@
     "sourceId": "siajsh",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121729-luar-na-lubre-javier-paxarino",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -989,7 +900,7 @@
     "sourceId": "4akpk2",
     "sourceUrl": "https://conciertosengranada.es/conciertos/119804-wim-mertens",
     "imageUrl": "10fa57c5b19e9c6f6205.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_tendencias2026.jpg"
   },
   {
@@ -1018,7 +929,7 @@
     "sourceId": "s48rs2",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123492-mr-man-the-small-frying-pan",
     "imageUrl": "13b3774f4c3221333fd7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2026/a_mrmanpan.jpg"
   },
   {
@@ -1047,7 +958,7 @@
     "sourceId": "51hcgy",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121730-acetre-alicornio",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -1076,7 +987,7 @@
     "sourceId": "he1ayk",
     "sourceUrl": "https://conciertosengranada.es/conciertos/122907-zenobia-inyourface-capitan-kirk-eskobula",
     "imageUrl": "f876c740eafdb18c354e.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_patillascoloras2607.jpg"
   },
   {
@@ -1105,7 +1016,7 @@
     "sourceId": "70yd3a",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121753-festival-flamenco-lucero-del-alba",
     "imageUrl": "43a9e69ce861e6bfb5b4.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/festivalfl_20260801.jpg"
   },
   {
@@ -1134,7 +1045,7 @@
     "sourceId": "4vuesk",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121731-la-banda-morisca-lourdes-pastor",
     "imageUrl": "1a773cd128d27a8c63e7.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/f_parapandafolk2026.jpg"
   },
   {
@@ -1163,7 +1074,7 @@
     "sourceId": "kvszaw",
     "sourceUrl": "https://conciertosengranada.es/conciertos/120925-mago-de-oz",
     "imageUrl": "441650dc87b7aed9735b.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/a/2017/a_magodeoz.jpg"
   },
   {
@@ -1192,7 +1103,7 @@
     "sourceId": "yyy9kg",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123782-pasion-vega",
     "imageUrl": "622ae320f7827502f948.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/00-00089Rs20260803.jpg"
   },
   {
@@ -1219,7 +1130,7 @@
     "sourceId": "6nsvbx",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123783-baron-rojo-saratoga-reincidentes",
     "imageUrl": "3bb17b3ba07ca2693a81.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/B/ban_baronrojo.jpg"
   },
   {
@@ -1248,7 +1159,7 @@
     "sourceId": "nkjnd7",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123784-this-is-michael-tributo-a-michael-jackson",
     "imageUrl": "34e43978fcb8fa2c63b3.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/00-00089RQ20260805.jpg"
   },
   {
@@ -1277,7 +1188,7 @@
     "sourceId": "cuk4ov",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123785-raule-el-duende-callejero-vera-grv",
     "imageUrl": "6b67aea2bd65e2e88d19.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/00-00089Rt20260806.jpg"
   },
   {
@@ -1304,7 +1215,7 @@
     "sourceId": "ntwe4a",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123786-revolver-amistades-peligrosas-los-toreros-muertos-hechizo-tributo-a-heroes-del-silencio",
     "imageUrl": "87d04772156158058482.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/R/ban_revolver.jpg"
   },
   {
@@ -1333,7 +1244,7 @@
     "sourceId": "a70ak9",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116180-anaut",
     "imageUrl": "0b8d67880b2f4162ca2f.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/c/2026/c_benarock2026.jpg"
   },
   {
@@ -1360,7 +1271,7 @@
     "sourceId": "dhigii",
     "sourceUrl": "https://conciertosengranada.es/conciertos/116179-guadalupe-plata-evolfo-the-black-wizards-perro-en-llamas",
     "imageUrl": "04bee610fa138d5441cc.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/G/ban_guadalupeplata.jpg"
   },
   {
@@ -1387,7 +1298,7 @@
     "sourceId": "1vso3m",
     "sourceUrl": "https://conciertosengranada.es/conciertos/121855-la-perra-blanco-hermana-furia-carmencita-calavera",
     "imageUrl": "2829229d29612c2249ca.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/L/ban_laperrablanco.jpg"
   },
   {
@@ -1416,7 +1327,7 @@
     "sourceId": "987kif",
     "sourceUrl": "https://conciertosengranada.es/conciertos/123787-ana-torroja",
     "imageUrl": "dc13f4d7af7f28d18f91.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://doc.conciertos.club/doc/c/2026/00-00089Rr20260808.jpg"
   },
   {
@@ -1443,7 +1354,7 @@
     "sourceId": "hbqlea",
     "sourceUrl": "https://conciertosengranada.es/conciertos/115409-ariel-rot",
     "imageUrl": "474475781db1f0c93770.webp",
-    "lastSyncedAt": "2026-07-22T09:22:33.035Z",
+    "lastSyncedAt": "2026-07-23T08:11:14.692Z",
     "remoteImageUrl": "https://conciertos.club/doc/ban/A/ban_arielrot.jpg"
   },
   {
@@ -1474,7 +1385,7 @@
     "sourceUrl": "https://www.eventbrite.co.uk/e/the-andalusian-trek-challenge-a-journey-of-mountains-memories-tickets-1993607789565",
     "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1993607789565",
     "imageUrl": "a35a73a22d32136f8737.webp",
-    "lastSyncedAt": "2026-07-22T09:23:00.344Z",
+    "lastSyncedAt": "2026-07-23T08:11:39.922Z",
     "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1189054313%2F2989212592906%2F1%2Foriginal.20260717-055729?auto=format%2Ccompress&q=75&sharp=10&s=64d6244534fa6be11376c0c3abc36cb7"
   },
   {
@@ -1501,7 +1412,7 @@
     "sourceId": "Z698xZ2qZ1kb0bfuP",
     "sourceUrl": "https://www.ticketmaster.es/event/hombres-g-los-mejores-anos-de-nuestra-vida-%7C-vip-packages-tickets/624614365?language=en-us",
     "imageUrl": "48cafd1b20e1ac7e5931.webp",
-    "lastSyncedAt": "2026-07-22T09:22:27.326Z",
+    "lastSyncedAt": "2026-07-23T08:11:09.633Z",
     "remoteImageUrl": "https://s1.ticketm.net/dam/a/9ea/e6e2100f-dfc7-4686-8b20-9cd597bb69ea_SOURCE"
   },
   {
@@ -1528,7 +1439,7 @@
     "sourceId": "Z698xZ2qZ1krKag4J",
     "sourceUrl": "https://www.ticketmaster.es/event/hombres-g-los-mejores-anos-de-nuestra-vida-tickets/793275566?language=en-us",
     "imageUrl": "48cafd1b20e1ac7e5931.webp",
-    "lastSyncedAt": "2026-07-22T09:22:27.326Z",
+    "lastSyncedAt": "2026-07-23T08:11:09.633Z",
     "remoteImageUrl": "https://s1.ticketm.net/dam/a/9ea/e6e2100f-dfc7-4686-8b20-9cd597bb69ea_SOURCE"
   },
   {
@@ -1555,7 +1466,7 @@
     "sourceId": "tkf3uh",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=513",
     "imageUrl": "929f2ea2dcff78c9730b.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/513.png"
   },
   {
@@ -1582,7 +1493,7 @@
     "sourceId": "hda02m",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=488",
     "imageUrl": "a22d09be5e450b38e10e.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/488.png"
   },
   {
@@ -1609,7 +1520,7 @@
     "sourceId": "fg2sca",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=483",
     "imageUrl": "23920927fa679a9c5214.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/483.png"
   },
   {
@@ -1636,7 +1547,7 @@
     "sourceId": "99ld88",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=514",
     "imageUrl": "08ede82be63899c0f8d7.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/514.png"
   },
   {
@@ -1664,7 +1575,7 @@
     "sourceUrl": "https://www.eventbrite.nl/e/urban-sketching-retreat-in-granada-5-days-of-art-culture-tickets-1983361150592",
     "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1983361150592",
     "imageUrl": "79f89f8607185e4b56e3.webp",
-    "lastSyncedAt": "2026-07-22T09:23:00.344Z",
+    "lastSyncedAt": "2026-07-23T08:11:39.922Z",
     "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F1185422416%2F109914328939%2F1%2Foriginal.20260526-105621?auto=format%2Ccompress&q=75&sharp=10&s=10a21ba9dfa4935b9be5bc9ab970114f"
   },
   {
@@ -1717,7 +1628,7 @@
     "sourceId": "4eortd",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=515",
     "imageUrl": "787d933a93c44fe23f5c.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/515.png"
   },
   {
@@ -1771,7 +1682,7 @@
     "sourceId": "dh7vd",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=489",
     "imageUrl": "2e2eb185a8b92b978fec.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/489.png"
   },
   {
@@ -1798,7 +1709,7 @@
     "sourceId": "vo3jf3",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=522",
     "imageUrl": "f9e93fe6bfac677c8fb1.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/522.png"
   },
   {
@@ -1825,7 +1736,7 @@
     "sourceId": "7aahll",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=504",
     "imageUrl": "125e362a2094984af17b.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/504.png"
   },
   {
@@ -1879,7 +1790,7 @@
     "sourceId": "mo4kph",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=524",
     "imageUrl": "4e3fcc790de2ac54c77b.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/524.png"
   },
   {
@@ -1960,7 +1871,7 @@
     "sourceId": "8esraw",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=507",
     "imageUrl": "7f949610dd755e15906a.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.834Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/507.png"
   },
   {
@@ -1987,7 +1898,7 @@
     "sourceId": "zrfki",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=500",
     "imageUrl": "13cc6b361e6988f1e866.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/500.png"
   },
   {
@@ -2017,7 +1928,7 @@
     "sourceUrl": "https://www.eventbrite.co.uk/e/vaginal-breech-birth-study-day-granada-spain-tickets-1992272323149",
     "ticketsUrl": "https://www.eventbrite.com/checkout-external?eid=1992272323149",
     "imageUrl": "00403fd242b6ca39dfb8.webp",
-    "lastSyncedAt": "2026-07-22T09:23:00.344Z",
+    "lastSyncedAt": "2026-07-23T08:11:39.922Z",
     "remoteImageUrl": "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F460782959%2F246108877637%2F1%2Foriginal.jpg?auto=format%2Ccompress&q=75&sharp=10&s=420c700433fca58019159560a0d2c79a"
   },
   {
@@ -2044,7 +1955,7 @@
     "sourceId": "leugvp",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=512",
     "imageUrl": "5c590bafd94a2086c458.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/512.png"
   },
   {
@@ -2071,7 +1982,7 @@
     "sourceId": "wcacp0",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=448",
     "imageUrl": "c8f68cd4a52a916d1ef5.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/448.png"
   },
   {
@@ -2124,7 +2035,7 @@
     "sourceId": "c54hmk",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=510",
     "imageUrl": "9f2881c5acaf8c98c38c.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/510.png"
   },
   {
@@ -2151,7 +2062,7 @@
     "sourceId": "n1ioow",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=518",
     "imageUrl": "7274e22c55a883974505.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/518.png"
   },
   {
@@ -2178,7 +2089,7 @@
     "sourceId": "adtqcp",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=496",
     "imageUrl": "961f159735db963a11f8.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/496.png"
   },
   {
@@ -2205,7 +2116,7 @@
     "sourceId": "4f1e3r",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=491",
     "imageUrl": "025d556e39c5cc041e46.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/491.png"
   },
   {
@@ -2232,7 +2143,7 @@
     "sourceId": "dcb4q6",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=502",
     "imageUrl": "8a100b28615d32c6d530.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/502.png"
   },
   {
@@ -2259,7 +2170,7 @@
     "sourceId": "96oyzw",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=516",
     "imageUrl": "d309a44031917f58c8a5.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/516.png"
   },
   {
@@ -2286,7 +2197,7 @@
     "sourceId": "h8dlts",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=485",
     "imageUrl": "561f073f314cb478180f.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/485.png"
   },
   {
@@ -2313,7 +2224,7 @@
     "sourceId": "6k5y0s",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=505",
     "imageUrl": "771bd4a918ee8137ecde.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/505.png"
   },
   {
@@ -2340,7 +2251,7 @@
     "sourceId": "vt0ytk",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=508",
     "imageUrl": "cab2641d9312a83c99c3.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/508.png"
   },
   {
@@ -2367,7 +2278,7 @@
     "sourceId": "7plp9q",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=509",
     "imageUrl": "4d0b8264184dd3673a49.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/509.png"
   },
   {
@@ -2394,7 +2305,7 @@
     "sourceId": "rkdyfi",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=506",
     "imageUrl": "3a9cbeb19d3c6e89ad7a.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/506.png"
   },
   {
@@ -2421,7 +2332,7 @@
     "sourceId": "2oz3lu",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=511",
     "imageUrl": "6a28472b8698acd30474.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/511.png"
   },
   {
@@ -2448,7 +2359,7 @@
     "sourceId": "eo6anu",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=517",
     "imageUrl": "fa96457aec9604b69957.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/517.png"
   },
   {
@@ -2475,7 +2386,7 @@
     "sourceId": "m6bt5h",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=523",
     "imageUrl": "07ae29e5cdf39d70f06c.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/523.png"
   },
   {
@@ -2502,7 +2413,7 @@
     "sourceId": "kt5102",
     "sourceUrl": "https://www.pcgr.org/?seccion=evento&idEvento=494",
     "imageUrl": "7ce3250a485fb64e2dc2.webp",
-    "lastSyncedAt": "2026-07-22T09:23:35.383Z",
+    "lastSyncedAt": "2026-07-23T08:12:19.835Z",
     "remoteImageUrl": "https://www.pcgr.org/assets/img/curved-images/agenda/494.png"
   },
   {
